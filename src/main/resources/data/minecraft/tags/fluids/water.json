@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "changed:dark_latex",
+    "changed:dark_latex_flowing",
+    "changed:white_latex",
+    "changed:white_latex_flowing"
+  ]
+}

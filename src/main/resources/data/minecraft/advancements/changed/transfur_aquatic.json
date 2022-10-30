@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:changed/transfur",
+  "display": {
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "title": {
+      "translate": "changed:advancements.main.transfur_aquatic.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.transfur_aquatic.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "transfurred_aquatic": {
+      "trigger": "changed:transfur",
+      "conditions": {
+        "swimming": true
+      }
+    }
+  },
+  "requirements": [
+    [
+      "transfurred_aquatic"
+    ]
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "form": "changed:form_special"
+}

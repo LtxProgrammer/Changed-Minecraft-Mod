@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
+    }
+  ],
+  "form": "changed:form_latex_leaf"
+}

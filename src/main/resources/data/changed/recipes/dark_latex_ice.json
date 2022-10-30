@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:dark_latex_crystal"
+    },
+    {
+      "item": "changed:dark_latex_crystal"
+    },
+    {
+      "item": "changed:dark_latex_crystal"
+    },
+    {
+      "item": "changed:dark_latex_crystal"
+    }
+  ],
+  "result": {
+    "item": "changed:dark_latex_ice",
+    "count": 1
+  }
+}

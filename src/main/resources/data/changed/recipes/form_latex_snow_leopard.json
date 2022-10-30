@@ -1,0 +1,16 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:snowball"
+    },
+    {
+      "item": "minecraft:cod"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_latex_snow_leopard"
+}

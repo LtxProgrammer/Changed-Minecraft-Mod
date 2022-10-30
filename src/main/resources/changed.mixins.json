@@ -1,0 +1,39 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ltxprogrammer.changed.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "changed.refmap.json",
+  "mixins": [
+    "ArrowMixin",
+    "BlockBehaviourMixin",
+    "BlockMixin",
+    "BlockStateBaseMixin",
+    "EntityMixin",
+    "ItemStackMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "NoiseBasedAquiferMixin",
+    "PlayerMixin",
+    "ServerPlayerMixin",
+    "SimpleBlockFeatureMixin",
+    "StateDefinitionMixin",
+    "TreeFeaturesMixin",
+    "WallBlockMixin"
+  ],
+  "client": [
+    "BlockColorsMixin",
+    "ClientRecipeBookMixin",
+    "GameRendererMixin",
+    "LocalPlayerMixin",
+    "ModelBakeryMixin",
+    "PlayerRendererMixin",
+    "RecipeBookTabButtonMixin",
+    "RecipeButtonMixin",
+    "TextureAtlasMixin",
+    "TextureManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

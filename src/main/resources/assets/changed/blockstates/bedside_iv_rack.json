@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,full=false": {
+      "model": "changed:block/bedside_iv_rack"
+    },
+    "facing=east,full=false": {
+      "model": "changed:block/bedside_iv_rack",
+      "y": 90
+    },
+    "facing=south,full=false": {
+      "model": "changed:block/bedside_iv_rack",
+      "y": 180
+    },
+    "facing=west,full=false": {
+      "model": "changed:block/bedside_iv_rack",
+      "y": 270
+    },
+    "facing=north,full=true": {
+      "model": "changed:block/bedside_iv_rack_full"
+    },
+    "facing=east,full=true": {
+      "model": "changed:block/bedside_iv_rack_full",
+      "y": 90
+    },
+    "facing=south,full=true": {
+      "model": "changed:block/bedside_iv_rack_full",
+      "y": 180
+    },
+    "facing=west,full=true": {
+      "model": "changed:block/bedside_iv_rack_full",
+      "y": 270
+    }
+  }
+}

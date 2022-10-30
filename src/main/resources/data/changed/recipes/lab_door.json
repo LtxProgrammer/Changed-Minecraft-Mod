@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XDX",
+    "RXR"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:iron_door"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "changed:lab_door"
+  }
+}

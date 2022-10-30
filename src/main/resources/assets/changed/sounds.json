@@ -1,0 +1,119 @@
+{
+  "blow1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:blow1",
+        "stream": false
+      }
+    ]
+  },
+  "bow2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:bow2",
+        "stream": false
+      }
+    ]
+  },
+  "close1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:close1",
+        "stream": false
+      }
+    ]
+  },
+  "close3": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:close3",
+        "stream": false
+      }
+    ]
+  },
+  "evasion": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:evasion",
+        "stream": false
+      }
+    ]
+  },
+  "key": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:key",
+        "stream": false
+      }
+    ]
+  },
+  "open1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:open1",
+        "stream": false
+      }
+    ]
+  },
+  "open3": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:open3",
+        "stream": false
+      }
+    ]
+  },
+  "poison": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:poison",
+        "stream": false
+      }
+    ]
+  },
+  "save": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:save",
+        "stream": false
+      }
+    ]
+  },
+  "sound3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:sound3",
+        "stream": false
+      }
+    ]
+  },
+  "latex_dance": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "changed:latex_dance",
+        "stream": true
+      }
+    ]
+  },
+  "owo": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "changed:owo",
+        "stream": true
+      }
+    ]
+  }
+}

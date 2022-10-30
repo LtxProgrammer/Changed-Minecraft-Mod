@@ -1,0 +1,13 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_latex_watermelon_cat"
+}

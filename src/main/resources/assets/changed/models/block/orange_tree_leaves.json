@@ -1,0 +1,7 @@
+{
+  "parent": "changed:block/fruit_leaves",
+  "textures": {
+    "leaves": "minecraft:block/oak_leaves",
+    "fruit": "changed:blocks/orange_tree_oranges"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:form_aerosol_latex_wolf",
+      "changed:form_dark_latex_dragon",
+      "changed:form_dark_latex_wolf",
+      "changed:form_dark_latex_yufeng",
+      "changed:form_latex_beifeng",
+      "changed:form_latex_blue_dragon",
+      "changed:form_latex_crystal_wolf",
+      "changed:form_latex_hypno_cat",
+      "changed:form_latex_leaf",
+      "changed:form_latex_orca",
+      "changed:form_latex_shark",
+      "changed:form_latex_silver_fox",
+      "changed:form_latex_snow_leopard",
+      "changed:form_latex_squid_dog",
+      "changed:form_latex_tiger_shark",
+      "changed:form_latex_traffic_cone_dragon",
+      "changed:form_latex_watermelon_cat",
+      "changed:form_light_latex_knight",
+      "changed:form_light_latex_wolf",
+      "changed:form_special",
+      "changed:form_white_latex_wolf"
+    ]
+  },
+  "criteria": {
+    "has_base": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:latex_base"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:form_light_latex_wolf"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_base",
+      "has_the_recipe"
+    ]
+  ]
+}

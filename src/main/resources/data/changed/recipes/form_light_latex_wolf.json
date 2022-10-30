@@ -1,0 +1,10 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_light_latex_wolf"
+}

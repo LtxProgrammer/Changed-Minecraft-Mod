@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:brown_dye"
+    }
+  ],
+  "form": "changed:form_aerosol_latex_wolf"
+}

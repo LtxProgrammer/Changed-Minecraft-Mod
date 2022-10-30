@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "changed:blocks/tiles_grayblue",
+    "top": "changed:blocks/tiles_grayblue",
+    "side": "changed:blocks/tiles_grayblue"
+  }
+}

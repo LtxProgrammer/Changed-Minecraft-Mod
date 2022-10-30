@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    }
+  ],
+  "result": {
+    "item": "changed:white_latex_block",
+    "count": 1
+  }
+}

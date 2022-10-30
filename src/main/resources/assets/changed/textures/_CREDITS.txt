@@ -1,0 +1,10 @@
+Textures were originally flat colored by me (LtxProgrammer), and later shaded by people who can shade.
+
+aerosol_latex_wolf.png :: Artemka2009
+dark_latex_wolf.png :: KoBOLTA
+dark_latex_yufeng.png :: KoBOLTA
+latex_shark.png :: Artemka2009
+latex_tiger_shark.png :: Artemka2009 and KoBOLTA
+latex_beifeng.png :: KoBOLTA
+latex_traffic_cone_dragon.png :: KoBOLTA [Modeled this too]
+latex_leaf.png :: KoBOLTA [Modeled this too]

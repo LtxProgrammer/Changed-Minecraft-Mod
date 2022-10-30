@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/infuser_bottom",
+    "up": "changed:blocks/purifier_top",
+    "north": "changed:blocks/infuser_side",
+    "east": "changed:blocks/infuser_side",
+    "south": "changed:blocks/infuser_side",
+    "west": "changed:blocks/infuser_side",
+    "particle": "changed:blocks/purifier_top"
+  }
+}

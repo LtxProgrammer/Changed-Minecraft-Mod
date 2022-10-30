@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:gray_concrete",
+    "changed:tiles_gray",
+    "changed:wall_gray",
+    "changed:wall_gray_striped"
+  ]
+}

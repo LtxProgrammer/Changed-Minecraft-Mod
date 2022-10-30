@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "changed:block/latex_beifeng_crystal_bottom"
+    },
+    "half=upper": {
+      "model": "changed:block/latex_beifeng_crystal_top"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "form": "changed:form_latex_silver_fox"
+}

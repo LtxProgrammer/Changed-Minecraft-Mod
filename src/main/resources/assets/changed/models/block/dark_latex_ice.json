@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/dark_latex_ice",
+    "up": "changed:blocks/dark_latex_ice",
+    "north": "changed:blocks/dark_latex_ice",
+    "east": "changed:blocks/dark_latex_ice",
+    "south": "changed:blocks/dark_latex_ice",
+    "west": "changed:blocks/dark_latex_ice",
+    "particle": "changed:blocks/dark_latex_ice"
+  }
+}

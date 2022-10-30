@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:snowball"
+    }
+  ],
+  "form": "changed:form_latex_blue_dragon"
+}

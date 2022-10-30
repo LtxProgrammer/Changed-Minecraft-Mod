@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "changed:bedside_iv_rack",
+    "changed:computer",
+    "changed:lab_door",
+    "changed:lab_light",
+    "changed:lab_light_small",
+    "changed:lab_table_2x1",
+    "changed:latex_crystal",
+    "changed:latex_beifeng_crystal",
+    "changed:latex_wolf_crystal",
+    "changed:tiles_caution",
+    "changed:tiles_grayblue",
+    "changed:tiles_grayblue_stairs",
+    "changed:tiles_gray",
+    "changed:tiles_gray_stairs",
+    "changed:tiles_white",
+    "changed:tiles_white_stairs",
+    "changed:tiles_white_connected",
+    "changed:wall_caution",
+    "changed:wall_lightred",
+    "changed:wall_lightred_striped",
+    "changed:wall_gray",
+    "changed:wall_gray_striped",
+    "changed:wall_vent",
+    "changed:wall_white",
+    "changed:infuser",
+    "changed:purifier"
+  ]
+}

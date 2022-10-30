@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:items/latex_tipped_arrow_head",
+    "layer1": "changed:items/latex_tipped_arrow_head2",
+    "layer2": "changed:items/latex_tipped_arrow_base"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "changed:block/computer",
+  "display": {
+    "thirdperson": {
+      "rotation": [
+        10,
+        -30,
+        170
+      ],
+      "translation": [
+        0,
+        1.5,
+        -2.75
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ]
+    }
+  }
+}
