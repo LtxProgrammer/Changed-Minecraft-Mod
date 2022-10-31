@@ -56,22 +56,6 @@ public class Dynamic {
         return false;
     }
 
-    public static <T extends Entity> EntityType<T> lateRegisterEntityType(ResourceLocation name, EntityType.Builder<T> builder) {
-        boolean locked = replaceLocked(Registry.ENTITY_TYPE, false);
-        boolean frozen = replaceFrozen(Registry.ENTITY_TYPE, false);
-        boolean forgeFrozen = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.ENTITY_TYPES).isLocked();
-        RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.ENTITY_TYPES).unfreeze();
-        EntityType<T> type = (EntityType<T>) Registry.register(Registry.ENTITY_TYPE, name, builder.build(name.toString()).setRegistryName(name));
-        RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.ENTITY_TYPES).freeze();
-        replaceFrozen(Registry.ENTITY_TYPE, frozen);
-        replaceLocked(Registry.ENTITY_TYPE, locked);
-        return type;
-    }
-
-    public static <T extends LivingEntity> void lateRegisterEntityAttributes(EntityType<T> type, AttributeSupplier supplier) {
-        ForgeHooks.FORGE_ATTRIBUTES.putIfAbsent(type, supplier);
-    }
-
     public static <T> T lateRegister(Registry<T> registry, ResourceLocation name, Supplier<T> supplier) {
         boolean locked = replaceLocked(registry, false);
         boolean frozen = replaceFrozen(registry, false);
