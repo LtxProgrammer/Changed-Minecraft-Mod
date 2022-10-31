@@ -22,8 +22,6 @@ import net.minecraftforge.fml.DistExecutor;
 
 import java.util.function.Supplier;
 
-import static net.ltxprogrammer.changed.util.Dynamic.replaceLocked;
-
 public class DynamicClient {
     @OnlyIn(Dist.CLIENT)
     private static class Internal {
@@ -43,7 +41,6 @@ public class DynamicClient {
             dispatcher.renderers = builder.build();
         }
 
-        // TODO dynamically update patreon forms
         public static void lateRegisterLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
             ForgeHooksClient.registerLayerDefinition(layerLocation, supplier);
 
