@@ -386,11 +386,6 @@ public class PatreonBenefits {
 
                 CACHED_SPECIAL_FORMS.put(uuid, form);
 
-                /*RegistryObject<EntityType<SpecialLatex>> entityType = ChangedEntities.registerNoEgg("special_latex_" + name,
-                        EntityType.Builder.<SpecialLatex>of((type, level) -> new SpecialLatex(type, level, uuid), MobCategory.MONSTER)
-                                .clientTrackingRange(10).sized(form.width, form.height));
-                ChangedEntities.SPECIAL_LATEXES.put(uuid, entityType);*/
-
                 LatexVariant.Builder<?> builder = new LatexVariant.Builder<>(ChangedEntities.SPECIAL_LATEX);
                 builder.breatheMode(form.breatheMode);
                 builder.glide(form.canGlide);
