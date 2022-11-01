@@ -220,13 +220,6 @@ public class ChangedEntities {
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends WhiteLatexEntity>>> WHITE_LATEX = ImmutableList.of(
             WHITE_LATEX_WOLF
         );
-        public static final ImmutableList<RegistryObject<? extends EntityType<? extends AquaticEntity>>> AQUATIC_LATEX = ImmutableList.of(
-            LATEX_SHARK_MALE,
-            LATEX_SHARK_FEMALE,
-            LATEX_TIGER_SHARK,
-            LATEX_ORCA,
-            LATEX_SQUID_DOG
-        );
     }
 
     public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerNoEgg(
