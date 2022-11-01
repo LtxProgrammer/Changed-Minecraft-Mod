@@ -6,3 +6,4 @@ Any aspiring developer is welcome to fork and create a pull request to submit th
 - Textures are kept in *src/main/resources/assets/changed/textures*
 - Java code is in *src/main/java/net/ltxprogrammer/changed*
 - 3D models are kept here *src/main/java/net/ltxprogrammer/changed/client/renderer/model*
+Changes you make to the code should be on your own fork. Create a pull request when ready to submit.
