@@ -4,6 +4,9 @@
   "itemGroup.tab_changed_entities": "Changed Entities",
   
   "subtitles.poison": "Transfur",
+  "subtitles.open3": "Lab Door Opens",
+  "subtitles.close3": "Lab Door Closes",
+  "subtitles.bow2": "Box Opens",
   
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.blood_syringe": "Blood Syringe",
@@ -105,6 +108,7 @@
   "entity.changed.latex_leaf": "Latex Leaf",
   "entity.changed.latex_orca": "Latex Orca",
   "entity.changed.latex_red_dragon": "Latex Red Dragon",
+  "entity.changed.latex_red_panda": "Latex Red Panda",
   "entity.changed.latex_shark_female": "Female Latex Shark",
   "entity.changed.latex_shark_male": "Male Latex Shark",
   "entity.changed.latex_snow_leopard_female": "Female Latex Snow Leopard",
@@ -136,6 +140,7 @@
   "item.changed.latex_leaf_spawn_egg": "Latex Leaf Spawn Egg",
   "item.changed.latex_orca_spawn_egg": "Latex Orca Spawn Egg",
   "item.changed.latex_red_dragon_spawn_egg": "Latex Red Dragon Spawn Egg",
+  "item.changed.latex_red_panda_spawn_egg": "Latex Red Panda Spawn Egg",
   "item.changed.latex_shark_female_spawn_egg": "Female Latex Shark Spawn Egg",
   "item.changed.latex_shark_male_spawn_egg": "Male Latex Shark Spawn Egg",
   "item.changed.latex_snow_leopard_female_spawn_egg": "Female Latex Snow Leopard Spawn Egg",
