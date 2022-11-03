@@ -20,7 +20,7 @@ public class LatexBlueDragon extends LatexEntity {
     }
 
     @Override
-    public int getTicksRequiredToFreeze() { return 10000000; }
+    public int getTicksRequiredToFreeze() { return 480; }
 
     @Override
     public LatexType getLatexType() {
