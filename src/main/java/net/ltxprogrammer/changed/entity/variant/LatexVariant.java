@@ -103,6 +103,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_beifeng")));
     public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_blue_dragon")));
+    public static final LatexVariant<LatexRedDragon> LATEX_RED_DRAGON = register(Builder.of(DARK_LATEX_YUFENG, ChangedEntities.LATEX_RED_DRAGON).faction(LatexType.NEUTRAL)
+            .build(Changed.modResource("form_latex_red_dragon")));
 
     public ResourceLocation getFormId() {
         return formId;

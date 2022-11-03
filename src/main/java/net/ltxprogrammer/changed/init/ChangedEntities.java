@@ -81,7 +81,9 @@ public class ChangedEntities {
     public static boolean forestSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.FOREST;
     }
-
+    public static boolean mesaSpawning(Biome.BiomeCategory category) {
+        return category == Biome.BiomeCategory.MESA;
+    }
     public static boolean oceanSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.OCEAN || category == Biome.BiomeCategory.RIVER;
     }
@@ -166,6 +168,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexLeaf>> LATEX_LEAF = register("latex_leaf", 0xBFF298, 0x76C284,
             EntityType.Builder.of(LatexLeaf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.85F),
             ChangedEntities::forestSpawning);
+    public static final RegistryObject<EntityType<LatexRedDragon>> LATEX_RED_DRAGON = register("latex_red_dragon", 0xa54f58, 0xd8d43e,
+            EntityType.Builder.of(LatexRedDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.85F),
+            ChangedEntities::mesaSpawning);
     public static final RegistryObject<EntityType<LatexSharkMale>> LATEX_SHARK_MALE = register("latex_shark_male", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexSharkMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.85F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
