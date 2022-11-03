@@ -1,0 +1,21 @@
+package net.ltxprogrammer.changed.client.renderer;
+
+import net.ltxprogrammer.changed.client.renderer.model.LatexRedPandaModel;
+import net.ltxprogrammer.changed.client.renderer.model.LatexSnowLeopardMaleModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSnowLeopardModel;
+import net.ltxprogrammer.changed.entity.beast.LatexRedPanda;
+import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardMale;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+
+public class LatexRedPandaRenderer extends LatexHumanoidRenderer<LatexRedPanda, LatexRedPandaModel, ArmorLatexSnowLeopardModel<LatexRedPanda>> {
+    public LatexRedPandaRenderer(EntityRendererProvider.Context context) {
+        super(context, new LatexRedPandaModel(context.bakeLayer(LatexRedPandaModel.LAYER_LOCATION)),
+                ArmorLatexSnowLeopardModel::new, ArmorLatexSnowLeopardModel.INNER_ARMOR, ArmorLatexSnowLeopardModel.OUTER_ARMOR, 0.5f);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(LatexRedPanda p_114482_) {
+        return new ResourceLocation("changed:textures/latex_red_panda.png");
+    }
+}
