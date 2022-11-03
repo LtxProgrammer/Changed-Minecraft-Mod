@@ -74,11 +74,11 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_traffic_cone_dragon")));
     public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)
             .build(Changed.modResource("form_latex_leaf")));
-
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
             .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().fallImmune().scares(Creeper.class).split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
-
+    public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_RED_PANDA).faction(LatexType.NEUTRAL)
+            .build(Changed.modResource("form_latex_red_panda")));
     public static final GenderedVariant<LatexWatermelonCatMale, LatexWatermelonCatFemale> LATEX_WATERMELON_CAT = register(GenderedVariant.Builder.of(LATEX_SNOW_LEOPARD, ChangedEntities.LATEX_WATERMELON_CAT_MALE, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
             .buildGendered(Changed.modResource("form_latex_watermelon_cat")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
