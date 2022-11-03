@@ -17,6 +17,7 @@
     "PlayerMixin",
     "ServerPlayerMixin",
     "SimpleBlockFeatureMixin",
+    "SpreadingSnowyDirtBlockMixin",
     "StateDefinitionMixin",
     "TreeFeaturesMixin",
     "WallBlockMixin"
