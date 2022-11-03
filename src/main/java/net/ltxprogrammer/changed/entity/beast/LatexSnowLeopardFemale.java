@@ -11,6 +11,9 @@ public class LatexSnowLeopardFemale extends AbstractSnowLeopard {
     }
 
     @Override
+    public int getTicksRequiredToFreeze() { return 10000000; }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }

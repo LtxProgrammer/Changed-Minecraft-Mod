@@ -139,21 +139,21 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
                 .texOffs(0, 16).addBox(5.0F, -19.0F, 0.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(63, 16).addBox(1.0F, -23.0F, 0.0F, 5.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.6545F, 0.0F));
 
-        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
 
         PartDefinition tailfluff_r1 = Tail.addOrReplaceChild("tailfluff_r1", CubeListBuilder.create().texOffs(36, 17).addBox(-0.5F, -11.0F, 14.75F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.1F))
-                .texOffs(58, 48).addBox(-1.0F, -10.35F, 13.925F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0436F, 0.0F, 0.0F));
+                .texOffs(58, 48).addBox(-1.0F, -10.35F, 13.925F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, 0.0436F, 0.0F, 0.0F));
 
         PartDefinition tailfluff_r2 = Tail.addOrReplaceChild("tailfluff_r2", CubeListBuilder.create().texOffs(50, 9).addBox(-1.0F, -13.75F, 7.0F, 2.0F, 1.0F, 6.0F, new CubeDeformation(-0.25F))
-                .texOffs(16, 33).addBox(-1.5F, -13.2F, 6.9F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.25F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.1309F, 0.0F, 0.0F));
+                .texOffs(16, 33).addBox(-1.5F, -13.2F, 6.9F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.25F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, -0.1309F, 0.0F, 0.0F));
 
-        PartDefinition tailfluff_r3 = Tail.addOrReplaceChild("tailfluff_r3", CubeListBuilder.create().texOffs(48, 48).addBox(-1.0F, -15.25F, -1.75F, 2.0F, 1.0F, 6.0F, new CubeDeformation(-0.025F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition tailfluff_r3 = Tail.addOrReplaceChild("tailfluff_r3", CubeListBuilder.create().texOffs(48, 48).addBox(-1.0F, -15.25F, -1.75F, 2.0F, 1.0F, 6.0F, new CubeDeformation(-0.025F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
 
-        PartDefinition tailfluff_r4 = Tail.addOrReplaceChild("tailfluff_r4", CubeListBuilder.create().texOffs(60, 58).addBox(-1.0F, -15.0F, -6.5F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
+        PartDefinition tailfluff_r4 = Tail.addOrReplaceChild("tailfluff_r4", CubeListBuilder.create().texOffs(60, 58).addBox(-1.0F, -15.0F, -6.5F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
-        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(34, 27).addBox(-1.5F, -1.375F, -2.6983F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.025F)), PartPose.offsetAndRotation(0.0F, -12.0F, 6.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(34, 27).addBox(-1.5F, -1.375F, -2.6983F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.025F)), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, -0.3927F, 0.0F, 0.0F));
 
-        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, -2.8F, 0.4F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, -14.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
+        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, -2.8F, 0.4F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 17).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(52, 16).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
@@ -169,6 +169,7 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
 
         return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
+
 
     @Override
     public void prepareMobModel(LatexRedDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
