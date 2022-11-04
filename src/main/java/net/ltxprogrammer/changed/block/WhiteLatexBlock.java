@@ -32,7 +32,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     }
 
     public boolean skipRendering(BlockState p_53972_, BlockState p_53973_, Direction p_53974_) {
-        return p_53973_.is(this) || (p_53973_.getProperties().contains(COVERED) && p_53973_.getValue(COVERED) == LatexType.WHITE_LATEX) ? true : super.skipRendering(p_53972_, p_53973_, p_53974_);
+        return p_53973_.is(this) ? true : super.skipRendering(p_53972_, p_53973_, p_53974_);
     }
 
     /*public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {

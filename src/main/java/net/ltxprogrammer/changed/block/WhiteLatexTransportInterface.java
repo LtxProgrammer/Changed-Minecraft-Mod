@@ -42,7 +42,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         if (isEntityInWhiteLatex(entity) || entity.isDeadOrDying())
             return;
 
-        ProcessTransfur.progressTransfur(entity, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId());
+        ProcessTransfur.transfur(entity, entity.level, LatexVariant.WHITE_LATEX_WOLF, false);
 
         entity.getPersistentData().putBoolean(TRANSPORT_TAG, true);
         whiteLatexNoCollideMap.put(entity, true);
