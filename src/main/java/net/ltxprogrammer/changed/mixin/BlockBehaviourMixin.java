@@ -84,6 +84,8 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
         if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
             return;
+        if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
+            return;
 
         if (getLatexed(state) != LatexType.NEUTRAL && getLatexed(state) == getLatexed(otherState))
             callbackInfoReturnable.setReturnValue(true);
