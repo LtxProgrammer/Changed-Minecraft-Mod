@@ -14,12 +14,6 @@ public class LatexBlueDragon extends LatexEntity {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-    }
-
-    @Override
     public int getTicksRequiredToFreeze() { return 480; }
 
     @Override

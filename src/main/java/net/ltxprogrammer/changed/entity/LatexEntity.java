@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.google.common.collect.ImmutableMap;
+import net.ltxprogrammer.changed.entity.beast.AquaticEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -15,6 +16,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -132,6 +134,8 @@ public abstract class LatexEntity extends Monster {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        if (!(this instanceof AquaticEntity))
+            this.goalSelector.addGoal(5, new FloatGoal(this));
     }
 
     @Override
