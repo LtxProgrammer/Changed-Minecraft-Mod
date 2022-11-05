@@ -14,12 +14,6 @@ public class LatexTrafficConeDragon extends LatexEntity {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-    }
-
-    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }

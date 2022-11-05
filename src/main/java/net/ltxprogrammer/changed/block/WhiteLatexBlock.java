@@ -35,10 +35,6 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         return p_53973_.is(this) ? true : super.skipRendering(p_53972_, p_53973_, p_53974_);
     }
 
-    /*public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {
-        return Shapes.empty();
-    }*/
-
     public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
