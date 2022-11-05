@@ -31,10 +31,4 @@ public class LatexYuin extends LatexEntity {
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }
-
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-    }
 }
