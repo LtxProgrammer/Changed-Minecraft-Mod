@@ -204,6 +204,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexWatermelonCatFemale>> LATEX_WATERMELON_CAT_FEMALE = register("latex_watermelon_cat_female", 0x545454, 0xC7FF5A,
             EntityType.Builder.of(LatexWatermelonCatFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.85F),
             ChangedEntities::jungleSpawning);
+    public static final RegistryObject<EntityType<LatexYuin>> LATEX_YUIN = register("latex_yuin", 0xFFFFFF, 0x58005a,
+            EntityType.Builder.of(LatexYuin::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.85F),
+            ChangedEntities::mountainSpawning);
     public static final RegistryObject<EntityType<MilkPudding>> MILK_PUDDING = register("milk_pudding", 0xFFFFFF, 0xF0F0F0,
             EntityType.Builder.of(MilkPudding::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.5F),
             ChangedEntities::plainsSpawning);
