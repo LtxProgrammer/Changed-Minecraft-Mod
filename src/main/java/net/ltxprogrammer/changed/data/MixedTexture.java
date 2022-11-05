@@ -50,13 +50,11 @@ public class MixedTexture extends AbstractTexture {
 
     private final ResourceLocation baseLocation;
     private final ResourceLocation overlayLocation;
-    private final float alpha;
     private final ResourceLocation name;
 
-    public MixedTexture(ResourceLocation base, ResourceLocation overlay, float alpha, ResourceLocation name) {
+    public MixedTexture(ResourceLocation base, ResourceLocation overlay, ResourceLocation name) {
         this.baseLocation = base;
         this.overlayLocation = overlay;
-        this.alpha = alpha;
         this.name = name;
     }
 

@@ -31,10 +31,4 @@ public class LatexRedPanda extends LatexEntity {
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
-
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-    }
 }

@@ -64,7 +64,7 @@ public abstract class ModelBakeryMixin {
                                 new ResourceLocation(material.texture() + nameAppend)
                         );
                         ChangedTextures.lateRegisterTextureNoSave(saveLocation, () -> new MixedTexture(
-                                material.texture(), overlay.guessSide(refName), 0.85f, saveLocation
+                                material.texture(), overlay.guessSide(refName), saveLocation
                         ));
                     }).ifRight(string -> {
                         injectedTextures.put(refName, Either.right(string + nameAppend));
@@ -72,7 +72,7 @@ public abstract class ModelBakeryMixin {
                                 new ResourceLocation(string + nameAppend)
                         );
                         ChangedTextures.lateRegisterTextureNoSave(saveLocation, () -> new MixedTexture(
-                                new ResourceLocation(string), overlay.guessSide(refName), 0.85f, saveLocation
+                                new ResourceLocation(string), overlay.guessSide(refName), saveLocation
                         ));
                     });
                 });

@@ -16,7 +16,6 @@ public abstract class WhiteLatexEntity extends LightLatexWolfMale {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, WhiteLatexEntity.class)).setAlertOthers());
     }
 
