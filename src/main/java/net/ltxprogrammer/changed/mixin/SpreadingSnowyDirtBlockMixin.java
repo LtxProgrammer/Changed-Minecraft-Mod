@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 @Mixin(SpreadingSnowyDirtBlock.class)
-public class SpreadingSnowyDirtBlockMixin extends SnowyDirtBlock {
+public abstract class SpreadingSnowyDirtBlockMixin extends SnowyDirtBlock {
     public SpreadingSnowyDirtBlockMixin(Properties p_56640_) {
         super(p_56640_);
     }
