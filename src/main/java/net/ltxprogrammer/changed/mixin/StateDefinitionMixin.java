@@ -26,7 +26,8 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
         var self = (StateDefinition.Builder<O, S>)(Object)this;
         if (self.owner instanceof Block ownerBlock) {
             if (!(ownerBlock instanceof NonLatexCoverableBlock || ownerBlock instanceof AirBlock || ownerBlock instanceof BaseFireBlock ||
-                    ownerBlock instanceof CampfireBlock || ownerBlock instanceof TorchBlock || ownerBlock instanceof AbstractGlassBlock))
+                    ownerBlock instanceof CampfireBlock || ownerBlock instanceof TorchBlock || ownerBlock instanceof AbstractGlassBlock ||
+                    ownerBlock instanceof RedStoneWireBlock || ownerBlock instanceof NoteBlock))
                 self.add(COVERED);
         }
     }
