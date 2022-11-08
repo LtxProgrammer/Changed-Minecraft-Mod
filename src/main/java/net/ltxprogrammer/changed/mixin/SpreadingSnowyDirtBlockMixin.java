@@ -29,4 +29,18 @@ public abstract class SpreadingSnowyDirtBlockMixin extends SnowyDirtBlock {
             callbackInfoReturnable.setReturnValue(false);
         }
     }
+
+    @Inject(method = "canPropagate", at = @At("HEAD"), cancellable = true)
+    private static void canPropagate(BlockState blockState, LevelReader level, BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+        if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != LatexType.NEUTRAL) {
+            callbackInfoReturnable.setReturnValue(false);
+        }
+
+        else {
+            blockState = level.getBlockState(blockPos);
+            if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != LatexType.NEUTRAL) {
+                callbackInfoReturnable.setReturnValue(false);
+            }
+        }
+    }
 }
