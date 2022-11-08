@@ -5,9 +5,11 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.PngInfo;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.data.MixedTexture;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.Stitcher;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
@@ -38,6 +40,24 @@ public abstract class TextureAtlasMixin {
         return new ResourceLocation(p_118325_.getNamespace(), String.format("textures/%s%s", p_118325_.getPath(), ".png"));
     }
 
+    private ResourceLocation getUnderlyingLocation(ResourceLocation location) {
+        boolean flag = false;
+        for (LatexType value : LatexType.values()) {
+            if (value == LatexType.NEUTRAL) continue;
+
+            if (location.getPath().endsWith("/" + value.toString().toLowerCase())) {
+                flag = true;
+                break;
+            }
+        }
+
+        if (!flag)
+            return location;
+        else {
+            return new ResourceLocation(location.getNamespace(), location.getPath().substring(0, location.getPath().lastIndexOf('/')));
+        }
+    }
+
     /**
      * @author LtxProgrammer
      * @reason Injecting would be impossible
@@ -47,10 +67,11 @@ public abstract class TextureAtlasMixin {
         List<CompletableFuture<?>> list = Lists.newArrayList();
         Queue<TextureAtlasSprite.Info> queue = new ConcurrentLinkedQueue<>();
 
-        for(ResourceLocation resourcelocation : p_118306_) {
+        for(final ResourceLocation resourcelocation : p_118306_) {
             if (!MissingTextureAtlasSprite.getLocation().equals(resourcelocation)) {
                 list.add(CompletableFuture.runAsync(() -> {
-                    ResourceLocation resourcelocation1 = this.getResourceLocation(resourcelocation);
+                    ResourceLocation updatedLocation = getUnderlyingLocation(resourcelocation);
+                    ResourceLocation resourcelocation1 = this.getResourceLocation(updatedLocation);
 
                     TextureAtlasSprite.Info textureatlassprite$info;
                     try {
@@ -81,19 +102,11 @@ public abstract class TextureAtlasMixin {
                             resource.close();
                         }
                     } catch (RuntimeException runtimeexception) {
-                        LOGGER.error("Unable to parse metadata from {} : {}", resourcelocation1, runtimeexception);
+                        LOGGER.error("Unable to parse metadata from {} : {}", updatedLocation, runtimeexception);
                         return;
                     } catch (IOException ioexception) {
-                        // Injected code here
-                        var found = MixedTexture.findTexture(resourcelocation1);
-                        if (found == null) {
-                            LOGGER.error("Using missing texture, unable to load {} : {}", resourcelocation1, ioexception);
-                            return;
-                        }
-
-                        else {
-                            textureatlassprite$info = new TextureAtlasSprite.Info(resourcelocation, found.getWidth(), found.getHeight(), AnimationMetadataSection.EMPTY);
-                        }
+                        LOGGER.error("Using missing texture, unable to load {} : {}", updatedLocation, ioexception);
+                        return;
                     }
 
                     queue.add(textureatlassprite$info);
@@ -105,26 +118,41 @@ public abstract class TextureAtlasMixin {
         return queue;
     }
 
-    @Inject(method = "load(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite$Info;IIIII)Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", at = @At("HEAD"), cancellable = true)
-    private void load(ResourceManager p_118288_, TextureAtlasSprite.Info p_118289_, int p_118290_, int p_118291_, int p_118292_, int p_118293_, int p_118294_,
-        CallbackInfoReturnable<TextureAtlasSprite> callbackInfo) {
-        ResourceLocation resourcelocation = this.getResourceLocation(p_118289_.name());
-        if (p_118288_.hasResource(resourcelocation))
-            return;
-
-        else {
-            var texture = MixedTexture.findTexture(resourcelocation);
-            if (texture == null)
+    // Replacing mixin `load` >1000, with 1 `getLoadedSprites`
+    @Inject(method = "getLoadedSprites", at = @At("RETURN"))
+    private void getLoadedSprites(ResourceManager resourceManager, Stitcher p_118285_, int param, CallbackInfoReturnable<List<TextureAtlasSprite>> callback) {
+        var list = callback.getReturnValue(); // Append covered blocks
+        p_118285_.gatherSprites((info, i1, i2, i3, i4) -> {
+            ResourceLocation resourcelocation = this.getResourceLocation(info.name());
+            if (resourceManager.hasResource(resourcelocation) || info == MissingTextureAtlasSprite.info())
                 return;
 
-            else {
+            var texture = MixedTexture.findTexture(resourcelocation);
+            if (texture != null) {
                 try {
-                    callbackInfo.setReturnValue(new TextureAtlasSprite((TextureAtlas)(Object)this, p_118289_, p_118292_, p_118290_, p_118291_, p_118293_, p_118294_, texture));
+                    list.add(new TextureAtlasSprite((TextureAtlas)(Object)this, info, param, i1, i2, i3, i4, texture));
                 } catch (Exception exception) {
-                    LOGGER.error("Failed to load mixed texture {}", p_118289_.name(), exception);
+                    LOGGER.error("Failed to load mixed texture {}", info.name(), exception);
                     return;
                 }
             }
+
+            else {
+                LOGGER.error("Missing generated texture for {}", info.name());
+            }
+        });
+    }
+
+    @Inject(method = "load(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite$Info;IIIII)Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", at = @At("HEAD"), cancellable = true)
+    private void load(ResourceManager rm, TextureAtlasSprite.Info info, int p_118290_, int p_118291_, int p_118292_, int p_118293_, int p_118294_,
+        CallbackInfoReturnable<TextureAtlasSprite> callbackInfo) {
+        ResourceLocation resourcelocation = this.getResourceLocation(info.name());
+        if (rm.hasResource(resourcelocation) || info == MissingTextureAtlasSprite.info())
+            return;
+
+        var texture = MixedTexture.findTexture(resourcelocation);
+        if (texture != null) {
+            callbackInfo.setReturnValue(null);
         }
     }
 }
