@@ -10,7 +10,7 @@ Any aspiring developer is welcome to fork and create a pull request to submit th
 Changes you make to the code should be on your own fork. Create a pull request when ready to submit.
 
 # I want to make my own sub mod
-Alright, grab the [forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install intellij. Add the version of this mod to the './libs' directory in the new mod, then add this line in your dependancies (*build.gradle*):
+Alright, grab the [forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install intellij. Add the .jar version of this mod to the './libs' directory in the new mod, then add this line in your dependancies (*build.gradle*):
 
 ```gradle
 implementation fg.deobf('net.ltxprogrammer.changed:Changed-m1.18.2-f40.1.0:v0.7.3')
