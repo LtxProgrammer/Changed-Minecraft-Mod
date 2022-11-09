@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.*;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -42,7 +43,16 @@ public class ChangedEntities {
     private static final Map<Level, Map<EntityType<?>, Entity>> CACHED_ENTITIES = new HashMap<>();
 
     public static Pair<Integer, Integer> getEntityColor(ResourceLocation location) {
-        return ENTITY_COLOR_MAP.computeIfAbsent(location, loc -> new Pair<>(0xF0F0F0, 0xF0F0F0));
+        return ENTITY_COLOR_MAP.computeIfAbsent(location, loc -> {
+            try {
+                if (Registry.ITEM.get(new ResourceLocation(loc.getNamespace(), loc.getPath() + "_spawn_egg")) instanceof ForgeSpawnEggItem item)
+                    return new Pair<>(item.getColor(0), item.getColor(1));
+                else
+                    return new Pair<>(0xF0F0F0, 0xF0F0F0);
+            } catch (Exception ex) {
+                return new Pair<>(0xF0F0F0, 0xF0F0F0);
+            }
+        });
     }
 
     public static int getEntityColorBack(ResourceLocation location) {

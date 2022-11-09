@@ -342,7 +342,7 @@ public class LatexHumanoidModelController {
             this.RightLeg.xRot = Mth.lerp(this.swimAmount, this.RightLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
 
             if (this.hasTail) {
-                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -1.0f);
+                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -1.1f);//78f);
                 float oldTailzRot = this.Tail.zRot;
                 this.Tail.zRot = Mth.lerp(this.swimAmount, 0.0F, this.Tail.yRot);
                 this.Tail.yRot = Mth.lerp(this.swimAmount, oldTailzRot, 0.0F);
