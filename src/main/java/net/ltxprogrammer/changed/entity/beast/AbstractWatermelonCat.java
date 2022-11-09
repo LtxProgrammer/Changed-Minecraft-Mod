@@ -13,12 +13,6 @@ public abstract class AbstractWatermelonCat extends GenderedLatexEntity {
         super(p_19870_, p_19871_);
     }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-    }
-
     public boolean causeFallDamage(float p_148859_, float p_148860_, DamageSource p_148861_) { return false; }
 
     @Override

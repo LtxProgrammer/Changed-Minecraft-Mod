@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.data;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,31 +24,25 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class MixedTexture extends AbstractTexture {
     public record OverlayBlock(ResourceLocation top, ResourceLocation side, ResourceLocation bottom) {
-        public ResourceLocation guessSide(String name) {
-            if (name.contains("top"))
-                return top;
-            else if (name.contains("end"))
-                return top;
-            else if (name.contains("bottom"))
-                return bottom;
-            else if (name.contains("particle"))
-                return top;
-            else if (name.contains("side"))
-                return side;
-            else if (name.contains("texture"))
-                return side;
-            else if (name.contains("east"))
-                return side;
-            else if (name.contains("west"))
-                return side;
-            else if (name.contains("north"))
-                return side;
-            else if (name.contains("south"))
-                return side;
-            else if (name.contains("cross"))
-                return side;
+        private static final Map<String, Direction> NAME_TO_SIDE = ImmutableMap.<String, Direction>builder()
+                .put("top", Direction.UP)
+                .put("end", Direction.UP)
+                .put("bottom", Direction.DOWN)
+                .put("particle", Direction.UP)
+                .put("side", Direction.NORTH)
+                .put("texture", Direction.NORTH)
+                .put("east", Direction.EAST)
+                .put("west", Direction.WEST)
+                .put("north", Direction.NORTH)
+                .put("south", Direction.SOUTH)
+                .put("cross", Direction.NORTH).build();
 
-            return side;
+        public ResourceLocation guessSide(String name) {
+            return switch (NAME_TO_SIDE.getOrDefault(name, Direction.NORTH)) {
+                case UP -> top;
+                case DOWN -> bottom;
+                default -> side;
+            };
         }
     }
 
@@ -54,13 +50,11 @@ public class MixedTexture extends AbstractTexture {
 
     private final ResourceLocation baseLocation;
     private final ResourceLocation overlayLocation;
-    private final float alpha;
     private final ResourceLocation name;
 
-    public MixedTexture(ResourceLocation base, ResourceLocation overlay, float alpha, ResourceLocation name) {
+    public MixedTexture(ResourceLocation base, ResourceLocation overlay, ResourceLocation name) {
         this.baseLocation = base;
         this.overlayLocation = overlay;
-        this.alpha = alpha;
         this.name = name;
     }
 

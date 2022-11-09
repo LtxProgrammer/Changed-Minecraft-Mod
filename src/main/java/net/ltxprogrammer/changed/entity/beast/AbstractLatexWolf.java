@@ -46,27 +46,6 @@ public abstract class AbstractLatexWolf extends LatexEntity {
     public SoundEvent getDeathSound() {
         return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag p_20052_) {
-        super.readAdditionalSaveData(p_20052_);
-    }
-
-    @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return super.getArmorSlots();
-    }
-
-    @Override
-    public ItemStack getItemBySlot(EquipmentSlot p_21127_) {
-        return super.getItemBySlot(p_21127_);
-    }
-
-    @Override
-    public void setItemSlot(EquipmentSlot p_21036_, ItemStack p_21037_) {
-        super.setItemSlot(p_21036_, p_21037_);
-    }
-
     @Override
     public HumanoidArm getMainArm() {
         return HumanoidArm.RIGHT;
@@ -75,11 +54,5 @@ public abstract class AbstractLatexWolf extends LatexEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag p_20139_) {
         super.addAdditionalSaveData(p_20139_);
-    }
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
     }
 }

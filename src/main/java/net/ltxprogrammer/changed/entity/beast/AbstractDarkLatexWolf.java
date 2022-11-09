@@ -21,12 +21,6 @@ public abstract class AbstractDarkLatexWolf extends GenderedLatexEntity implemen
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-    }
-
-    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.DARK;
     }

@@ -58,8 +58,11 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, CallbackInfo callbackInfo) {
         if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
-            AbstractLatexBlock.randomTick(state, level, position, random, state.getValue(COVERED));
             callbackInfo.cancel();
+
+            if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+            AbstractLatexBlock.randomTick(state, level, position, random, state.getValue(COVERED));
+            return;
         }
     }
 
@@ -80,6 +83,8 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
         // Guaranteed to be client only
 
         if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
+            return;
+        if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
             return;
 
         if (getLatexed(state) != LatexType.NEUTRAL && getLatexed(state) == getLatexed(otherState))

@@ -10,7 +10,10 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.BlockStateProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -173,7 +177,23 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
                 checkState.getValue(COVERED) == LatexType.NEUTRAL) {
             if (checkDir == Direction.UP && random.nextInt(3) > 0) // Reduced chance of spreading up
                 return;
-            level.setBlock(checkPos, checkState.setValue(COVERED, latexType), 3);
+
+            for (var tag : checkState.getTags().toList()) {
+                if (tag.location().equals(new ResourceLocation("minecraft:flowers"))) {
+                    level.setBlockAndUpdate(checkPos, Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType));
+                    return;
+                }
+            }
+
+            if (checkState.is(Blocks.GRASS_BLOCK)) {
+                level.setBlockAndUpdate(checkPos, Blocks.DIRT.defaultBlockState().setValue(COVERED, latexType));
+                return;
+            }
+
+            else {
+                level.setBlockAndUpdate(checkPos, checkState.setValue(COVERED, latexType));
+                return;
+            }
         }
     }
 

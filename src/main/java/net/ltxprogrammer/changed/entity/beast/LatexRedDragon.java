@@ -28,15 +28,8 @@ public class LatexRedDragon extends LatexBlueDragon {
         return LatexType.NEUTRAL;
     }
 
-
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
-    }
-
-
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
     }
 }

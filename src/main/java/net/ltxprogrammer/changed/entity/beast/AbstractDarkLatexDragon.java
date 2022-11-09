@@ -22,12 +22,6 @@ public abstract class AbstractDarkLatexDragon extends GenderedLatexEntity implem
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(5, new FloatGoal(this));
-    }
-
-    @Override
     public ChangedParticles.Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.DARK : ChangedParticles.Color3.GRAY;
     }
