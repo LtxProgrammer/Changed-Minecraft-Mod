@@ -185,7 +185,13 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
                 }
             }
 
-            if (checkState.is(Blocks.GRASS_BLOCK)) {
+
+            if (checkState.is(Blocks.GRASS)) {
+                level.setBlockAndUpdate(checkPos, Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType));
+                return;
+            }
+
+            else if (checkState.is(Blocks.GRASS_BLOCK)) {
                 level.setBlockAndUpdate(checkPos, Blocks.DIRT.defaultBlockState().setValue(COVERED, latexType));
                 return;
             }

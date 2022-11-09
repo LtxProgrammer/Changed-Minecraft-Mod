@@ -35,6 +35,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
         this.LeftArm = root.getChild("LeftArm");
         controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).build();
     }
+    
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -136,6 +137,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
 
         return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
+    
     @Override
     public void prepareMobModel(LatexYuin p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);

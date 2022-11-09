@@ -438,7 +438,6 @@ public class ProcessTransfur {
             keepConscious = true;
 
         if (entity.level.isClientSide && keepConscious && entity instanceof LocalPlayer player) {
-
             return;
         }
 
@@ -447,10 +446,8 @@ public class ProcessTransfur {
         if (variant == null)
             return;
         if (!LatexType.hasLatexType(entity)) {
+            ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
             LatexType.setEntityLatexType(entity, variant.getLatexType());
-            if (keepConscious)
-                ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
-
             if (keepConscious && entity instanceof ServerPlayer player) {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(player, variant);
 
