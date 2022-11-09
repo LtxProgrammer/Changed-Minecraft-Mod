@@ -702,7 +702,7 @@ public class LatexVariant<T extends LatexEntity> {
         }
     }
 
-    private static <T extends LatexEntity> LatexVariant<T> register(LatexVariant<T> variant) {
+    public static <T extends LatexEntity> LatexVariant<T> register(LatexVariant<T> variant) {
         ALL_LATEX_FORMS.put(variant.formId, variant);
         PUBLIC_LATEX_FORMS.put(variant.formId, variant);
         if (variant.fusionOf.isPresent())
@@ -710,7 +710,7 @@ public class LatexVariant<T extends LatexEntity> {
         return variant;
     }
 
-    private static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
+    public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
         ALL_LATEX_FORMS.put(variant.male.formId, variant.male);
         ALL_LATEX_FORMS.put(variant.female.formId, variant.female);
         PUBLIC_LATEX_FORMS.put(variant.male.formId, variant.male);
