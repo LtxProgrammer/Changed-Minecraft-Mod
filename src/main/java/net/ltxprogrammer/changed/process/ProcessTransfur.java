@@ -195,7 +195,7 @@ public class ProcessTransfur {
         }
 
         static boolean isLatexed(LivingEntity entity) {
-            return LatexVariant.getEntityVariant(entity) != null;
+            return LatexVariant.getEntityVariant(entity) != null || LatexVariant.getEntityTransfur(entity) != null;
         }
     }
 
@@ -204,14 +204,14 @@ public class ProcessTransfur {
         if (source.entity instanceof LatexEntity latexEntity)
             flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
 
-        if (source.variant.transfurMode() == TransfurMode.ABSORPTION || flag) {
+        if (source.variant == null || source.variant.transfurMode() == TransfurMode.ABSORPTION || flag) {
             source.entity.heal(14f);
             if (source.entity instanceof Player player) {
                 player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() + 10);
                 source.entity.setPos(target.position());
                 target.discard();
 
-                if (!source.transfur.getFormId().equals(source.variant.getFormId())) {
+                if (source.variant == null || !source.transfur.getFormId().equals(source.variant.getFormId())) {
                     ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
                     ProcessTransfur.setPlayerLatexVariant(player, source.transfur.clone());
 
@@ -225,7 +225,7 @@ public class ProcessTransfur {
             ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
         }
 
-        else if (source.variant.transfurMode() == TransfurMode.REPLICATION) {
+        else {
             source.entity.heal(4f);
             transfur(target, target.level, source.transfur, false);
         }
