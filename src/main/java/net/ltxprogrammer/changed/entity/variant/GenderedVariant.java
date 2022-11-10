@@ -32,7 +32,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty());
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty());
         this.male = male;
         this.female = female;
     }
@@ -106,6 +106,14 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
 
         public Builder<M, F> glide(boolean enable) {
             this.maleBuilder.canGlide = enable; this.femaleBuilder.canGlide = enable; return this;
+        }
+
+        public Builder<M, F> doubleJump() {
+            return this.extraJumps(1);
+        }
+
+        public Builder<M, F> extraJumps(int count) {
+            this.maleBuilder.extraJumpCharges = count; this.femaleBuilder.extraJumpCharges = count; return this;
         }
 
         public Builder<M, F> additionalHealth(int value) {

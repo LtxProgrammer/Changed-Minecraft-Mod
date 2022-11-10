@@ -37,7 +37,8 @@
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
 
   "key.changed.open_extra_hands": "Open Extra Hands Menu",
-  
+  "key.changed.extra_jump": "Extra Jump",
+
   "container.changed.extra_hands": "Extra Hands Menu",
   "container.changed.infuser": "Infuser Menu",
   "container.changed.purifier": "Purifier Menu",

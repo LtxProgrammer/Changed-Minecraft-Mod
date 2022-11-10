@@ -176,6 +176,7 @@ public class LatexVariant<T extends LatexEntity> {
     private final BreatheMode breatheMode;
     private final float stepSize;
     private final boolean canGlide;
+    private final int extraJumpCharges;
     private final int additionalHealth;
     private final boolean extraHands;
     private final boolean weakLungs;
@@ -193,10 +194,11 @@ public class LatexVariant<T extends LatexEntity> {
 
     // Varient data
     protected int air = -100;
+    protected int jumpCharges = 0;
     protected float lastSwimMul = 1F;
 
     public LatexVariant(ResourceLocation formId, Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
-                        BreatheMode breatheMode, float stepSize, boolean canGlide, int additionalHealth, boolean extraHands,
+                        BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth, boolean extraHands,
                         boolean weakLungs, boolean fallImmunity, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf) {
         this.formId = formId;
@@ -207,6 +209,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
         this.canGlide = canGlide;
+        this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
         this.extraHands = extraHands;
         this.weakLungs = weakLungs;
@@ -228,7 +231,7 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public LatexVariant<T> clone() {
-        return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, additionalHealth, extraHands,
+        return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
                 weakLungs, fallImmunity, scares, transfurMode, fusionOf);
     }
 
@@ -277,6 +280,11 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canGlide() { return canGlide; }
 
+    public boolean canDoubleJump() { return extraJumpCharges > 0; }
+
+    public int getJumpCharges() { return jumpCharges; }
+    public void decJumpCharges() { jumpCharges -= 1; }
+
     public void sync(Player player) {
         if (latexForm == null) return;
 
@@ -295,6 +303,9 @@ public class LatexVariant<T extends LatexEntity> {
             player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(attributeModifierAdditionalHealth);
 
         if (player == null) return;
+
+        if (player.isOnGround())
+            jumpCharges = extraJumpCharges;
 
         // Repulse villagers
         if(!player.level.isClientSide) {
@@ -583,6 +594,7 @@ public class LatexVariant<T extends LatexEntity> {
         BreatheMode breatheMode = BreatheMode.NORMAL;
         float stepSize = 0.6F;
         boolean canGlide = false;
+        int extraJumpCharges = 0;
         int additionalHealth = 4;
         boolean extraHands = false;
         boolean weakLungs = false;
@@ -672,6 +684,14 @@ public class LatexVariant<T extends LatexEntity> {
             this.canGlide = enable; return this;
         }
 
+        public Builder<T> doubleJump() {
+            return extraJumps(1);
+        }
+
+        public Builder<T> extraJumps(int count) {
+            this.extraJumpCharges = count; return this;
+        }
+
         public Builder<T> additionalHealth(int value) {
             this.additionalHealth = value; return this;
         }
@@ -697,7 +717,7 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         public LatexVariant<T> build(ResourceLocation formId) {
-            return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, additionalHealth, extraHands,
+            return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
                     weakLungs, fallImmunity, scares, transfurMode, fusionOf);
         }
     }
