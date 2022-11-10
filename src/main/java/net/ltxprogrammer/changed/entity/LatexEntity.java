@@ -76,6 +76,10 @@ public abstract class LatexEntity extends Monster {
         return getLatexType().isHostileTo(LatexType.getEntityLatexType(player));
     }
 
+    public float getEyeHeightMul() {
+        return 0.95F;
+    }
+
     public static <T extends LatexEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement) {
         return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (entityType, world, reason, pos, random) ->

@@ -44,6 +44,7 @@ public class SyncTransfurPacket implements ChangedPacket {
             changedForms.forEach((uuid, form) -> {
                 Player player = level.getPlayerByUUID(uuid);
                 ProcessTransfur.setPlayerLatexVariantNamed(player, form);
+                player.refreshDimensions();
             });
             context.setPacketHandled(true);
         }
