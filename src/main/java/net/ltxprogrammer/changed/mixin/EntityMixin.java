@@ -1,12 +1,15 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.entity.EntityAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,6 +59,17 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 ci.setReturnValue(true);
                 ci.cancel();
             }
+        }
+    }
+
+    @Inject(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F", at = @At("HEAD"), cancellable = true)
+    protected void getEyeHeight(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> callback) {
+        if (((Entity)(Object)this) instanceof LatexEntity le) {
+            callback.setReturnValue(dimensions.height * le.getEyeHeightMul());
+        }
+
+        else if (((Entity)(Object)this) instanceof Player le && ProcessTransfur.isPlayerLatex(le)) {
+            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(le).getLatexEntity().getEyeHeight(pose));
         }
     }
 }
