@@ -251,6 +251,10 @@ public class ProcessTransfur {
     public static void onLivingAttacked(LivingAttackEvent event) {
         if (event.getSource() == ChangedDamageSources.TRANSFUR)
             return;
+        if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            event.setCanceled(true);
+            return;
+        }
         if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
             event.getEntityLiving().hurt(DamageSource.GENERIC, 1.5f);
             return;
