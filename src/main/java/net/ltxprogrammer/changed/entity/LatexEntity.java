@@ -118,6 +118,10 @@ public abstract class LatexEntity extends Monster {
         super.registerGoals();
 
         final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
+            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                if (checkVariant.isFusionOf(getSelfVariant(), livingEntity.getClass()))
+                    return true;
+            }
             if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
                 return false;
             if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
@@ -147,24 +151,6 @@ public abstract class LatexEntity extends Monster {
         super.tick();
         visualTick(this.level);
         effectTick(this.level, this);
-    }
-
-    public void setDeltaMovement(Vec3 p_20257_) {
-        if (p_20257_ == Vec3.ZERO)
-            super.setDeltaMovement(p_20257_);
-        else if (p_20257_.lengthSqr() > 0.5f)
-            super.setDeltaMovement(p_20257_);
-        else
-            super.setDeltaMovement(p_20257_);
-    }
-
-    public void setZza(float zza) {
-        if (zza == 0.0f)
-            super.setZza(zza);
-        else if (zza > 0.5f)
-            super.setZza(zza);
-        else
-            super.setZza(zza);
     }
 
     @Override

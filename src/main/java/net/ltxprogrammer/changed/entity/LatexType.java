@@ -5,9 +5,10 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.IExtensibleEnum;
 import org.jetbrains.annotations.NotNull;
 
-public enum LatexType implements StringRepresentable {
+public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL,
     DARK_LATEX,
     WHITE_LATEX;
@@ -60,5 +61,10 @@ public enum LatexType implements StringRepresentable {
     @Override
     public String getSerializedName() {
         return toString().toLowerCase();
+    }
+
+    public static LatexType create(String name)
+    {
+        throw new IllegalStateException("Enum not extended");
     }
 }

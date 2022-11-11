@@ -49,6 +49,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
+    public static Map<ResourceLocation, LatexVariant<?>> MOB_FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> SPECIAL_LATEX_FORMS = new HashMap<>();
     public static final GenderedVariant<LightLatexWolfMale, LightLatexWolfFemale> LIGHT_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.LIGHT_LATEX_WOLF_MALE, ChangedEntities.LIGHT_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.85f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing)
@@ -84,14 +85,14 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 
-    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.35f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
+    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.125f)
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
 
-    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.075f).gills().extraHands()
+    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
 
     public static final GenderedVariant<DarkLatexDragonMale, DarkLatexDragonFemale> DARK_LATEX_DRAGON = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON_MALE, ChangedEntities.DARK_LATEX_DRAGON_FEMALE).groundSpeed(1.0F).swimSpeed(0.75f).glide()
@@ -141,6 +142,18 @@ public class LatexVariant<T extends LatexEntity> {
         return false;
     }
 
+    public boolean isFusionOf(LatexVariant<?> variantA, Class<? extends LivingEntity> clazz) {
+        if (variantA == null || clazz == null)
+            return false;
+
+        if (mobFusionOf.isPresent()) {
+            return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
+                            mobFusionOf.get().getSecond().equals(clazz);
+        }
+
+        return false;
+    }
+
     public enum BreatheMode {
         NORMAL,
         WATER,
@@ -184,6 +197,7 @@ public class LatexVariant<T extends LatexEntity> {
     private final List<Class<? extends PathfinderMob>> scares;
     private final TransfurMode transfurMode;
     private final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
+    private final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
 
     private boolean dead;
     public int ticksBreathingUnderwater;
@@ -200,7 +214,8 @@ public class LatexVariant<T extends LatexEntity> {
     public LatexVariant(ResourceLocation formId, Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth, boolean extraHands,
                         boolean weakLungs, boolean fallImmunity, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
-                        Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf) {
+                        Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -217,6 +232,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.scares = scares;
         this.transfurMode = transfurMode;
         this.fusionOf = fusionOf;
+        this.mobFusionOf = mobFusionOf;
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
         attributeModifierAdditionalHealth = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d8"), "changed:trait_additional_health", additionalHealth, AttributeModifier.Operation.ADDITION);
@@ -232,7 +248,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
-                weakLungs, fallImmunity, scares, transfurMode, fusionOf);
+                weakLungs, fallImmunity, scares, transfurMode, fusionOf, mobFusionOf);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -602,6 +618,7 @@ public class LatexVariant<T extends LatexEntity> {
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
+        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
@@ -615,7 +632,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         public static <T extends LatexEntity> Builder<T> of(LatexVariant<?> variant, Supplier<EntityType<T>> entityType) {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed)
-                    .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide)
+                    .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .extraHands(variant.extraHands).weakLungs(variant.weakLungs).fallImmune(variant.fallImmunity).scares(variant.scares)
                     .transfurMode(variant.transfurMode);
         }
@@ -716,9 +733,13 @@ public class LatexVariant<T extends LatexEntity> {
             this.fusionOf = Optional.of(Pair.of(formA, formB)); return this;
         }
 
+        public Builder<T> fusionOf(LatexVariant<?> formA, Class<? extends LivingEntity> mobClass) {
+            this.mobFusionOf = Optional.of(Pair.of(formA, mobClass)); return this;
+        }
+
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
-                    weakLungs, fallImmunity, scares, transfurMode, fusionOf);
+                    weakLungs, fallImmunity, scares, transfurMode, fusionOf, mobFusionOf);
         }
     }
 
@@ -727,6 +748,8 @@ public class LatexVariant<T extends LatexEntity> {
         PUBLIC_LATEX_FORMS.put(variant.formId, variant);
         if (variant.fusionOf.isPresent())
             FUSION_LATEX_FORMS.put(variant.formId, variant);
+        if (variant.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.formId, variant);
         return variant;
     }
 
@@ -739,6 +762,10 @@ public class LatexVariant<T extends LatexEntity> {
             FUSION_LATEX_FORMS.put(variant.male.formId, variant.male);
         if (variant.female.fusionOf.isPresent())
             FUSION_LATEX_FORMS.put(variant.female.formId, variant.female);
+        if (variant.male.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.male.formId, variant);
+        if (variant.female.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.female.formId, variant);
         return variant;
     }
 
