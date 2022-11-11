@@ -32,7 +32,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty());
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty());
         this.male = male;
         this.female = female;
     }
