@@ -29,7 +29,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
@@ -147,6 +150,7 @@ public class PatreonBenefits {
 
     private static final Logger LOGGER = LogManager.getLogger(Changed.class);
     private static final Map<Dist, AtomicBoolean> UPDATE_FLAG = new HashMap<>();
+    private static final AtomicBoolean UPDATE_PLAYER_JOIN_FLAG = new AtomicBoolean(false);
     public static final Thread UPDATE_CHECKER = new Thread(() -> {
         LOGGER.info("Update checker started");
 
@@ -155,7 +159,9 @@ public class PatreonBenefits {
 
         while (true) {
             try {
-                Thread.sleep(60000);
+                Thread.sleep(60000 * 3);
+                while (!UPDATE_PLAYER_JOIN_FLAG.get()); // Loop until player joins
+                UPDATE_PLAYER_JOIN_FLAG.set(false); // Consume
                 LOGGER.info("Checking for updates");
                 int version = Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
 
@@ -172,6 +178,17 @@ public class PatreonBenefits {
             }
         }
     });
+
+    @Mod.EventBusSubscriber
+    private static class EventSub {
+        @SubscribeEvent
+        public static void onPlayerJoin(EntityJoinWorldEvent playerJoin) {
+            if (playerJoin.getEntity() instanceof Player player) {
+                LOGGER.info("Player joined, setting enabling update checker flag");
+                UPDATE_PLAYER_JOIN_FLAG.set(true);
+            }
+        }
+    }
 
     public static boolean checkForUpdates() throws IOException, InterruptedException {
         if (UPDATE_FLAG.computeIfAbsent(FMLEnvironment.dist, dist -> new AtomicBoolean(false)).get()) {
