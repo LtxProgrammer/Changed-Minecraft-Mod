@@ -237,8 +237,8 @@ public class LatexHumanoidModelController {
             this.LeftLeg.y = 12.2F + hipOffset;
             this.Head.y = 4.2F + hipOffset;
             this.Torso.y = 3.2F + hipOffset;
-            this.LeftArm.y = 5.2F + hipOffset;
-            this.RightArm.y = 5.2F + hipOffset;
+            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
+            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
                 if (this.hasTail) {
                     this.Tail.z = 3.25F;
@@ -252,6 +252,14 @@ public class LatexHumanoidModelController {
                 this.RightLeg2.z = 13.0F;
                 this.LeftLeg2.z = 13.0F;
             }
+            if (this.hasArms2) {
+                this.RightArm2.z = 0.0F;
+                this.RightArm2.y = this.RightArm.y - 4.0F;
+                this.RightArm2.x = -5.0F;
+                this.LeftArm2.z = 0.0F;
+                this.LeftArm2.y = this.LeftArm.y - 4.0F;
+                this.LeftArm2.x = 5.0F;
+            }
         } else {
             this.Torso.xRot = 0.0F;
             this.RightLeg.z = 0.1F;
@@ -260,8 +268,8 @@ public class LatexHumanoidModelController {
             this.LeftLeg.y = 12.0F + hipOffset;
             this.Head.y = 0.0F + hipOffset;
             this.Torso.y = 0.0F + hipOffset;
-            this.LeftArm.y = 2.0F + hipOffset;
-            this.RightArm.y = 2.0F + hipOffset;
+            this.LeftArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
+            this.RightArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
                 if (this.hasTail) {
                     this.Tail.z = 7.25F;
@@ -274,6 +282,14 @@ public class LatexHumanoidModelController {
                 this.LeftLeg2.y = 12.0F + hipOffset;
                 this.RightLeg2.z = 9.1F;
                 this.LeftLeg2.z = 9.1F;
+            }
+            if (this.hasArms2) {
+                this.RightArm2.z = 0.0F;
+                this.RightArm2.y = this.RightArm.y - 4.0F;
+                this.RightArm2.x = -5.0F;
+                this.LeftArm2.z = 0.0F;
+                this.LeftArm2.y = this.LeftArm.y - 4.0F;
+                this.LeftArm2.x = 5.0F;
             }
         }
 
@@ -356,21 +372,12 @@ public class LatexHumanoidModelController {
         }
 
         if (this.hasArms2) {
-            this.RightArm.z -= 1.0F;
-            this.LeftArm.z -= 1.0F;
-            this.RightArm2.z = this.RightArm.z + 2.0F;
-            this.RightArm2.y = this.RightArm.y;
-            this.RightArm2.x = this.RightArm.x;
-            this.LeftArm2.z = this.LeftArm.z + 2.0F;
-            this.LeftArm2.y = this.LeftArm.y;
-            this.LeftArm2.x = this.LeftArm.x;
-
-            this.RightArm2.xRot = this.RightArm.xRot * 0.66F;
-            this.RightArm2.yRot = this.RightArm.yRot * 0.66F;
-            this.RightArm2.zRot = this.RightArm.zRot * 0.66F;
-            this.LeftArm2.xRot = this.LeftArm.xRot * 0.66F;
-            this.LeftArm2.yRot = this.LeftArm.yRot * 0.66F;
-            this.LeftArm2.zRot = this.LeftArm.zRot * 0.66F;
+            this.RightArm2.xRot = this.RightArm.xRot * 0.22F;
+            this.RightArm2.yRot = this.RightArm.yRot * 0.22F;
+            this.RightArm2.zRot = this.RightArm.zRot * 0.22F;
+            this.LeftArm2.xRot = this.LeftArm.xRot * 0.22F;
+            this.LeftArm2.yRot = this.LeftArm.yRot * 0.22F;
+            this.LeftArm2.zRot = this.LeftArm.zRot * 0.22F;
         }
     }
 

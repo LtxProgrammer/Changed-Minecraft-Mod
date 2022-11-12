@@ -92,7 +92,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
 
-    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).gills().extraHands()
+    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(20).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
 
     public static final GenderedVariant<DarkLatexDragonMale, DarkLatexDragonFemale> DARK_LATEX_DRAGON = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON_MALE, ChangedEntities.DARK_LATEX_DRAGON_FEMALE).groundSpeed(1.0F).swimSpeed(0.75f).glide()
