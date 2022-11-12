@@ -197,8 +197,8 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSnowLeopardFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexSquidDog>> LATEX_SQUID_DOG = register("latex_squid_dog", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDog::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
+            EntityType.Builder.of(LatexSquidDog::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.2F),
+            ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER, LatexSquidDog::createAttributes);
     public static final RegistryObject<EntityType<LatexTigerShark>> LATEX_TIGER_SHARK = register("latex_tiger_shark", 0x969696, 0x0,
             EntityType.Builder.of(LatexTigerShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
@@ -268,11 +268,22 @@ public class ChangedEntities {
             EntityType.Builder<T> builder,
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
+        return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+    }
+
+    public static <T extends LatexEntity> RegistryObject<EntityType<T>> register(
+            String name,
+            int eggBack,
+            int eggHighlight,
+            EntityType.Builder<T> builder,
+            Predicate<Biome.BiomeCategory> category,
+            SpawnPlacements.Type spawnType,
+            Supplier<AttributeSupplier.Builder> attributes) {
         ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
         String regName = Changed.modResource(name).toString();
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
         INIT_FUNC_REGISTRY.add(LatexEntity.getInit(entityType, spawnType));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, attributes));
         RegistryObject<Item> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, eggBack, eggHighlight,
                 new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ENTITIES)));
         SPAWN_EGGS.add(() -> (ForgeSpawnEggItem) spawnEggItem.get());

@@ -32,7 +32,7 @@ displayName="Changed: Minecraft Mod" #mandatory
 credits='''Dragon Snow for the original game, alex_n_italy for the original mod, iChun for open sourcing their morph mod
 
 Artemka2009 and KoBOLTA for entity textures, and some models
-ÒwÓ#0256, Twix#5803, and KoBOLTA for some paintings''' #optional
+ÒwÓ#0256, Twix#5803, and KoBOLTA for some paintings, Alex_n_Italy for some models''' #optional
 # A text field displayed in the mod UI
 authors="LtxProgrammer" #optional
 # The description text for the mod (multi line!) (#mandatory)
