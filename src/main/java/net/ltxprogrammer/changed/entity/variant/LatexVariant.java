@@ -194,6 +194,7 @@ public class LatexVariant<T extends LatexEntity> {
     private final boolean extraHands;
     private final boolean weakLungs;
     private final boolean fallImmunity;
+    private final boolean canClimb;
     private final List<Class<? extends PathfinderMob>> scares;
     private final TransfurMode transfurMode;
     private final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
@@ -213,7 +214,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant(ResourceLocation formId, Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth, boolean extraHands,
-                        boolean weakLungs, boolean fallImmunity, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        boolean weakLungs, boolean fallImmunity, boolean canClimb,
+                        List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
                         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf) {
         this.formId = formId;
@@ -229,6 +231,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.extraHands = extraHands;
         this.weakLungs = weakLungs;
         this.fallImmunity = fallImmunity;
+        this.canClimb = canClimb;
         this.scares = scares;
         this.transfurMode = transfurMode;
         this.fusionOf = fusionOf;
@@ -248,7 +251,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
-                weakLungs, fallImmunity, scares, transfurMode, fusionOf, mobFusionOf);
+                weakLungs, fallImmunity, canClimb, scares, transfurMode, fusionOf, mobFusionOf);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -295,6 +298,8 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public boolean canGlide() { return canGlide; }
+
+    public boolean canClimb() { return canClimb; }
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
@@ -615,6 +620,7 @@ public class LatexVariant<T extends LatexEntity> {
         boolean extraHands = false;
         boolean weakLungs = false;
         boolean fallImmunity = false;
+        boolean canClimb = false;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
@@ -633,7 +639,7 @@ public class LatexVariant<T extends LatexEntity> {
         public static <T extends LatexEntity> Builder<T> of(LatexVariant<?> variant, Supplier<EntityType<T>> entityType) {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed)
                     .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
-                    .extraHands(variant.extraHands).weakLungs(variant.weakLungs).fallImmune(variant.fallImmunity).scares(variant.scares)
+                    .extraHands(variant.extraHands).weakLungs(variant.weakLungs).fallImmune(variant.fallImmunity).canClimb(variant.canClimb).scares(variant.scares)
                     .transfurMode(variant.transfurMode);
         }
 
@@ -671,6 +677,14 @@ public class LatexVariant<T extends LatexEntity> {
 
         public Builder<T> fallImmune(boolean v) {
             this.fallImmunity = v; return this;
+        }
+
+        public Builder<T> canClimb() {
+            this.canClimb = true; return this;
+        }
+
+        public Builder<T> canClimb(boolean v) {
+            this.canClimb = v; return this;
         }
 
         public <E extends PathfinderMob> Builder<T> scares(Class<E> type) {
@@ -739,7 +753,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth, extraHands,
-                    weakLungs, fallImmunity, scares, transfurMode, fusionOf, mobFusionOf);
+                    weakLungs, fallImmunity, canClimb, scares, transfurMode, fusionOf, mobFusionOf);
         }
     }
 

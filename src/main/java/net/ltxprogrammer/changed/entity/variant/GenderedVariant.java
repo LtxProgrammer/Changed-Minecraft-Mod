@@ -32,7 +32,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty());
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty());
         this.male = male;
         this.female = female;
     }
@@ -78,6 +78,14 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
 
         public Builder<M, F> fallImmune(boolean v) {
             this.maleBuilder.fallImmunity = v; this.femaleBuilder.fallImmunity = v; return this;
+        }
+
+        public Builder<M, F> canClimb() {
+            this.maleBuilder.canClimb = true; this.femaleBuilder.canClimb = true; return this;
+        }
+
+        public Builder<M, F> canClimb(boolean v) {
+            this.maleBuilder.canClimb = v; this.femaleBuilder.canClimb = v; return this;
         }
 
         public <E extends PathfinderMob> Builder<M, F> scares(Class<E> type) {
