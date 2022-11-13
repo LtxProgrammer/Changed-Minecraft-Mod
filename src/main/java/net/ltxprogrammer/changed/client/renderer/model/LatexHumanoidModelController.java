@@ -174,8 +174,8 @@ public class LatexHumanoidModelController {
             this.Tail.zRot = 0.0F;
         }
 
-        if (this.RightWing != null) { this.RightWing.x = 0.0F; this.RightWing.y = 25.5F; this.RightWing.zRot = 0.0F; }
-        if (this.LeftWing != null) { this.LeftWing.x = 0.0F; this.LeftWing.y = 25.5F; this.LeftWing.zRot = 0.0F; }
+        if (this.RightWing != null) { this.RightWing.zRot = 0.0F; }
+        if (this.LeftWing != null) { this.LeftWing.zRot = 0.0F; }
 
         if (entityModel.riding) {
             this.RightArm.xRot += (-(float)Math.PI / 5F);
@@ -308,14 +308,10 @@ public class LatexHumanoidModelController {
                 this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, -1.0f);
 
             if (this.RightWing != null) {
-                this.RightWing.x = Mth.lerp(f2, this.RightWing.x, 16.0f);
-                this.RightWing.y = Mth.lerp(f2, this.RightWing.y, 22.0F);
                 this.RightWing.zRot = Mth.lerp(f2, this.RightWing.zRot, -0.8f);
             }
 
             if (this.LeftWing != null) {
-                this.LeftWing.x = Mth.lerp(f2, this.LeftWing.x, -16.0f);
-                this.LeftWing.y = Mth.lerp(f2, this.LeftWing.y, 22.0f);
                 this.LeftWing.zRot = Mth.lerp(f2, this.LeftWing.zRot, 0.8f);
             }
         }
