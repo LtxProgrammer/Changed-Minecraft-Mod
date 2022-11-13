@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -28,6 +29,14 @@ public abstract class LivingEntityMixin extends Entity {
                 this.setSharedFlag(7, player.isFallFlying() && !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
                 ci.cancel();
             }
+        }
+    }
+
+    @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
+    public void onClimbable(CallbackInfoReturnable<Boolean> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (ProcessTransfur.getPlayerLatexVariant(player).canClimb() && player.horizontalCollision)
+                callback.setReturnValue(true);
         }
     }
 }
