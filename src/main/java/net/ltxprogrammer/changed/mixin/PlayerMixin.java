@@ -16,6 +16,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -95,5 +98,12 @@ public abstract class PlayerMixin extends LivingEntity {
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress((Player)(LivingEntity)this).type().toString());
         if (latexVariant != null)
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
+    }
+
+    @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
+    public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
+        if (ProcessTransfur.isPlayerLatex((Player)(Object)this))
+            if (ProcessTransfur.getPlayerLatexVariant((Player)(Object)this).canClimb() && state.is(Blocks.COBWEB))
+                ci.cancel();
     }
 }
