@@ -37,7 +37,7 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
         super(context, new SpecialLatexModel(context.bakeLayer(form.modelLayerLocation().get()), form),
                 (part) -> new ArmorSpecialLatexModel<>(part, form), form.armorModelLayerLocation().inner().get(), form.armorModelLayerLocation().outer().get(), form.shadowSize());
         if (form.emissive().isPresent())
-            this.addLayer(new EmissiveBodyLayer<>(this, null));
+            this.addLayer(new EmissiveBodyLayer<>(this, form.emissive().get()));
         this.isDelegate = false;
         this.context = context;
     }
