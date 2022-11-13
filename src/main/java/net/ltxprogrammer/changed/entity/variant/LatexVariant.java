@@ -331,8 +331,8 @@ public class LatexVariant<T extends LatexEntity> {
         // Repulse villagers
         if(!player.level.isClientSide) {
             final double distance = 8D;
-            final double farRunSpeed = 1D;
-            final double nearRunSpeed = 1D;
+            final double farRunSpeed = 0.5D;
+            final double nearRunSpeed = 0.6666D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : scares) {
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 3D, distance), Objects::nonNull);
