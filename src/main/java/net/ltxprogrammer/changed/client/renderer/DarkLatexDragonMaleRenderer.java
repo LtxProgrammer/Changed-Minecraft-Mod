@@ -14,6 +14,6 @@ public class DarkLatexDragonMaleRenderer extends LatexHumanoidRenderer<DarkLatex
 
     @Override
     public ResourceLocation getTextureLocation(DarkLatexDragonMale p_114482_) {
-        return new ResourceLocation("changed:textures/dark_latex_dragon.png");
+        return new ResourceLocation("changed:textures/dark_latex_dragon_male.png");
     }
 }
