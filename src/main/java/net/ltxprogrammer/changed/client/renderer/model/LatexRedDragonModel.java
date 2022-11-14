@@ -123,21 +123,21 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
 
         PartDefinition righttuft_r1 = Torso.addOrReplaceChild("righttuft_r1", CubeListBuilder.create().texOffs(56, 16).addBox(10.5F, -23.5F, -2.5F, 1.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
 
-        PartDefinition RightWing = Torso.addOrReplaceChild("RightWing", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition rightwing = Torso.addOrReplaceChild("rightwing", CubeListBuilder.create(), PartPose.offset(-2.0F, -21.0F, 2.0F));
 
-        PartDefinition wingbase_r1 = RightWing.addOrReplaceChild("wingbase_r1", CubeListBuilder.create().texOffs(40, 47).addBox(-11.0F, -26.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition wingbase_r1 = rightwing.addOrReplaceChild("wingbase_r1", CubeListBuilder.create().texOffs(40, 47).addBox(-11.0F, -26.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 61).addBox(-8.0F, -25.0F, 0.0F, 1.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(60, 63).addBox(-7.0F, -24.0F, 0.0F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 18).addBox(-6.0F, -19.0F, 0.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 61).addBox(-6.0F, -23.0F, 0.0F, 5.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.6545F, 0.0F));
+                .texOffs(48, 61).addBox(-6.0F, -23.0F, 0.0F, 5.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, 21.0F, -2.0F, 0.0F, 0.6545F, 0.0F));
 
-        PartDefinition LeftWing = Torso.addOrReplaceChild("LeftWing", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition leftwing = Torso.addOrReplaceChild("leftwing", CubeListBuilder.create(), PartPose.offset(2.0F, -21.0F, 2.0F));
 
-        PartDefinition wingbase_r2 = LeftWing.addOrReplaceChild("wingbase_r2", CubeListBuilder.create().texOffs(32, 47).addBox(8.0F, -26.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition wingbase_r2 = leftwing.addOrReplaceChild("wingbase_r2", CubeListBuilder.create().texOffs(32, 47).addBox(8.0F, -26.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(20, 61).addBox(7.0F, -25.0F, 0.0F, 1.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 61).addBox(6.0F, -24.0F, 0.0F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 16).addBox(5.0F, -19.0F, 0.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(63, 16).addBox(1.0F, -23.0F, 0.0F, 5.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.6545F, 0.0F));
+                .texOffs(63, 16).addBox(1.0F, -23.0F, 0.0F, 5.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, 21.0F, -2.0F, 0.0F, -0.6545F, 0.0F));
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
 
@@ -167,7 +167,7 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
                 .texOffs(27, 52).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(52, 18).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
-        return LayerDefinition.create(process(meshdefinition), 128, 128);
+        return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
 
