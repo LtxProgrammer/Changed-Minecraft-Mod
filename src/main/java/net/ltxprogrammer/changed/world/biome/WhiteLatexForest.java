@@ -74,7 +74,7 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
 
     @Override
     public BlockState groundBlock() {
-        return Blocks.GRASS_BLOCK.defaultBlockState().setValue(COVERED, LatexType.WHITE_LATEX);
+        return Blocks.DIRT.defaultBlockState().setValue(COVERED, LatexType.WHITE_LATEX);
     }
 
     @Override

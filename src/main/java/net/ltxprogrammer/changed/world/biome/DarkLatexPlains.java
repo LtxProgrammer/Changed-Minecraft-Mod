@@ -96,7 +96,7 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
 
     @Override
     public BlockState groundBlock() {
-        return Blocks.GRASS_BLOCK.defaultBlockState().setValue(COVERED, LatexType.DARK_LATEX);
+        return Blocks.DIRT.defaultBlockState().setValue(COVERED, LatexType.DARK_LATEX);
     }
 
     @Override
