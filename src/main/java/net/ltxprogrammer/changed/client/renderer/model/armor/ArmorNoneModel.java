@@ -18,7 +18,7 @@ public class ArmorNoneModel<T extends LatexEntity> extends LatexHumanoidArmorMod
 
     public ArmorNoneModel(ModelPart root) {
         super(
-                root, root, root, root, root, root, root, false);
+                root, root, root, root, root, root, root, null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

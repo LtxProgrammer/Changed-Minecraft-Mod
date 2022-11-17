@@ -178,6 +178,10 @@ public abstract class LatexEntity extends Monster {
 
     public void effectTick(Level level, LivingEntity self) {}
 
+    public double getPassengersRidingOffset() {
+        return this.isCrouching() ? -0.4 : 0.0;
+    }
+
     public double getMyRidingOffset() {
         return -0.4;
     }

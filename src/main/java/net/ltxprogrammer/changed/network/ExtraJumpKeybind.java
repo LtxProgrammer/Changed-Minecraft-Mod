@@ -15,7 +15,6 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ExtraJumpKeybind {
     private static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
 
@@ -42,11 +41,5 @@ public class ExtraJumpKeybind {
             }
         });
         context.setPacketHandled(true);
-    }
-
-    @SubscribeEvent
-    public static void registerMessage(FMLCommonSetupEvent event) {
-        Changed.addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
-                ExtraJumpKeybind::handler);
     }
 }
