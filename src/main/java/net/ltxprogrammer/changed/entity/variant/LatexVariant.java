@@ -315,6 +315,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
+    public boolean rideable() { return this.ability == ABILITY_RIDE; }
+
     public int getJumpCharges() { return jumpCharges; }
     public void decJumpCharges() { jumpCharges -= 1; }
 
@@ -340,7 +342,7 @@ public class LatexVariant<T extends LatexEntity> {
         if (player.isOnGround())
             jumpCharges = extraJumpCharges;
 
-        if (this.ability == ABILITY_RIDE)
+        if (rideable())
             player.stopRiding();
 
         // Repulse villagers

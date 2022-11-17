@@ -235,11 +235,13 @@ public class LatexHumanoidModelController {
         if (this.crouching) {
             if (this.hasTail)
                 this.Tail.xRot -= 0.3F;
-            this.Torso.xRot = 0.5F;
-            this.RightArm.xRot += 0.4F;
-            this.LeftArm.xRot += 0.4F;
-            this.RightLeg.z = 4.0F + forewardOffset;
-            this.LeftLeg.z = 4.0F + forewardOffset;
+            if (!this.hasLegs2) {
+                this.Torso.xRot = 0.5F;
+                this.RightArm.xRot += 0.4F;
+                this.LeftArm.xRot += 0.4F;
+                this.RightLeg.z = 4.0F + forewardOffset;
+                this.LeftLeg.z = 4.0F + forewardOffset;
+            }
             this.RightLeg.y = 12.2F + hipOffset;
             this.LeftLeg.y = 12.2F + hipOffset;
             this.Head.y = 4.2F + hipOffset;
@@ -247,13 +249,8 @@ public class LatexHumanoidModelController {
             this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
-                /*this.LowerTorso.z = -6.0F;
-                this.LowerTorso.y = 22.5F;
-                this.LowerTorso.xRot = -0.5F;*/
                 this.RightLeg2.y = 12.2F + hipOffset;
                 this.LeftLeg2.y = 12.2F + hipOffset;
-                this.RightLeg2.z = 13.0F;
-                this.LeftLeg2.z = 13.0F;
             }
             if (this.hasArms2) {
                 this.RightArm2.z = 0.0F;
@@ -274,13 +271,8 @@ public class LatexHumanoidModelController {
             this.LeftArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             this.RightArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
-                /*this.LowerTorso.z = 0.0F;
-                this.LowerTorso.y = 25.5F;
-                this.LowerTorso.xRot = 0.0F;*/
                 this.RightLeg2.y = 12.0F + hipOffset;
                 this.LeftLeg2.y = 12.0F + hipOffset;
-                this.RightLeg2.z = 9.1F;
-                this.LeftLeg2.z = 9.1F;
             }
             if (this.hasArms2) {
                 this.RightArm2.z = 0.0F;

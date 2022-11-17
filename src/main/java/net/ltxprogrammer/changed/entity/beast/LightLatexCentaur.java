@@ -76,7 +76,7 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     }
 
     public double getPassengersRidingOffset() {
-        return 0.5;
+        return 0.8;
     }
 
     public InteractionResult mobInteract(Player p_30713_, InteractionHand p_30714_) {
