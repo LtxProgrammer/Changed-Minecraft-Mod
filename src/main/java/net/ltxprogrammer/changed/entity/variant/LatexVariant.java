@@ -54,6 +54,9 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
 
+    private static final Consumer<Player> ABILITY_RIDE = player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleScreen.CONTAINER_TITLE));
+
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
@@ -336,6 +339,9 @@ public class LatexVariant<T extends LatexEntity> {
 
         if (player.isOnGround())
             jumpCharges = extraJumpCharges;
+
+        if (this.ability == ABILITY_RIDE)
+            player.stopRiding();
 
         // Repulse villagers
         if(!player.level.isClientSide) {
@@ -748,8 +754,7 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         public Builder<T> rideable() {
-            return ability(player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleScreen.CONTAINER_TITLE)));
+            return ability(ABILITY_RIDE);
         }
 
         public Builder<T> absorbing() {
