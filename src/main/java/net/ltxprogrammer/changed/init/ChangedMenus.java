@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
+import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.ltxprogrammer.changed.world.inventory.InfuserMenu;
@@ -21,6 +22,8 @@ public class ChangedMenus {
             ComputerMenu::new);
     public static final MenuType<ExtraHandsMenu> EXTRA_HANDS = register("extra_hands",
             ExtraHandsMenu::new);
+    public static final MenuType<CentaurSaddleMenu> CENTAUR_SADDLE = register("centaur_saddle",
+            CentaurSaddleMenu::new);
     public static final MenuType<InfuserMenu> INFUSER = register("infuser",
             InfuserMenu::new);
     public static final MenuType<PurifierMenu> PURIFIER = register("purifier",

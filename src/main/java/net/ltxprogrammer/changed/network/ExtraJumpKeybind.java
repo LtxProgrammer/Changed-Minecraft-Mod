@@ -40,9 +40,6 @@ public class ExtraJumpKeybind {
                     sender.jumpFromGround();
                 }
             }
-            if (ProcessTransfur.isPlayerLatex(sender) && ProcessTransfur.getPlayerLatexVariant(sender).canHoldExtra())
-                sender.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                        new ExtraHandsMenu(p_52229_, p_52230_, null), CONTAINER_TITLE));
         });
         context.setPacketHandled(true);
     }

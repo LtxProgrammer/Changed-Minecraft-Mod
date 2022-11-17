@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -70,6 +72,20 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
         else if (((Entity)(Object)this) instanceof Player le && ProcessTransfur.isPlayerLatex(le)) {
             callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(le).getLatexEntity().getEyeHeight(pose));
+        }
+    }
+
+    @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
+    public void interact(Player p_19978_, InteractionHand p_19979_, CallbackInfoReturnable<InteractionResult> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().interact(p_19978_, p_19979_));
+        }
+    }
+
+    @Inject(method = "getPassengersRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void getPassengersRidingOffset(CallbackInfoReturnable<Double> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getPassengersRidingOffset());
         }
     }
 }

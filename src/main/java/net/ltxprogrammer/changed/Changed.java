@@ -58,6 +58,7 @@ public class Changed {
         // Initialize packet types
 
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
+        addNetworkMessage(MountLatexPacket.class, MountLatexPacket::new);
         addNetworkMessage(SyncSwitchPacket.class, SyncSwitchPacket::new);
         addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);
         addNetworkMessage(SyncTransfurProgressPacket.class, SyncTransfurProgressPacket::new);
