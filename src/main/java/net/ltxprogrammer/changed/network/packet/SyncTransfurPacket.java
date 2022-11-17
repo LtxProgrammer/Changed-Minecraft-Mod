@@ -10,8 +10,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 import oshi.util.tuples.Pair;
 
 import java.util.HashMap;
@@ -61,6 +63,13 @@ public class SyncTransfurPacket implements ChangedPacket {
                 TagUtil.replace(listing.data, player.getPersistentData());
                 player.refreshDimensions();
             });
+            context.setPacketHandled(true);
+        }
+        else if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
+            ServerPlayer sender = context.getSender();
+            if (sender != null) {
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), this);
+            }
             context.setPacketHandled(true);
         }
     }

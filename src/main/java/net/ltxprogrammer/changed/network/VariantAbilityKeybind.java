@@ -37,10 +37,4 @@ public class VariantAbilityKeybind {
         });
         context.setPacketHandled(true);
     }
-
-    @SubscribeEvent
-    public static void registerMessage(FMLCommonSetupEvent event) {
-        Changed.addNetworkMessage(VariantAbilityKeybind.class, VariantAbilityKeybind::buffer, VariantAbilityKeybind::new,
-                VariantAbilityKeybind::handler);
-    }
 }

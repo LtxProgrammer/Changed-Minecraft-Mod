@@ -25,7 +25,7 @@ public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<Li
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), false);
+                modelPart.getChild("RightArm"), null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

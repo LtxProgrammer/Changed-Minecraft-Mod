@@ -268,8 +268,12 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 player.ejectPassengers();
             }
 
-            if (!old.equals(tag))
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+            if (!old.equals(tag)) {
+                if (player.level.isClientSide)
+                    Changed.PACKET_HANDLER.sendToServer(SyncTransfurPacket.Builder.of(player));
+                else
+                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+            }
         }
 
         if (player.isDeadOrDying()/* && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)*/) {

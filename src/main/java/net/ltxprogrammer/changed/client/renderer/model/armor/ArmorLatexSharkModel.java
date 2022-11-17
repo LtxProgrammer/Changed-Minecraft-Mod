@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,7 +23,7 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), true);
+                modelPart.getChild("RightArm"), LatexHumanoidModelController.Builder::tailAidsInSwim);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
