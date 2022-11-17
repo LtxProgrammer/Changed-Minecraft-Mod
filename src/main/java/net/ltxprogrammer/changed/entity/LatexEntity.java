@@ -177,4 +177,8 @@ public abstract class LatexEntity extends Monster {
     }
 
     public void effectTick(Level level, LivingEntity self) {}
+
+    public double getMyRidingOffset() {
+        return -0.4;
+    }
 }

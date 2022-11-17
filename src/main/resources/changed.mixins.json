@@ -10,6 +10,7 @@
     "BlockMixin",
     "BlockStateBaseMixin",
     "EntityMixin",
+    "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "MobMixin",

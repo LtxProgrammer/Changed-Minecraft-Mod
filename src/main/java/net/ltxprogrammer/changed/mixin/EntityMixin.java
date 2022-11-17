@@ -88,4 +88,11 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getPassengersRidingOffset());
         }
     }
+
+    @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getMyRidingOffset());
+        }
+    }
 }
