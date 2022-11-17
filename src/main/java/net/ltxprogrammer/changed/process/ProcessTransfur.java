@@ -298,6 +298,11 @@ public class ProcessTransfur {
         if (event.getEntityLiving().isBlocking())
             return;
 
+        if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
+            event.setCanceled(true);
+            return;
+        }
+
         LatexVariant<?> sourceVariant = LatexVariant.getEntityVariant(sourceEntity);
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(event.getEntityLiving());
         for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {

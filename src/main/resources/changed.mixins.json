@@ -24,6 +24,7 @@
   ],
   "client": [
     "BlockColorsMixin",
+    "CameraMixin",
     "ClientRecipeBookMixin",
     "GameRendererMixin",
     "LocalPlayerMixin",

@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty());
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty(), null);
         this.male = male;
         this.female = female;
     }
@@ -128,12 +129,12 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder.additionalHealth = value; this.femaleBuilder.additionalHealth = value; return this;
         }
 
-        public Builder<M, F> extraHands() {
-            this.maleBuilder.extraHands = true; this.femaleBuilder.extraHands = true; return this;
+        public Builder<M, F> ability(Consumer<Player> ability) {
+            this.maleBuilder.ability(ability); this.femaleBuilder.ability(ability); return this;
         }
 
-        public Builder<M, F> extraHands(boolean v) {
-            this.maleBuilder.extraHands = v; this.femaleBuilder.extraHands = v; return this;
+        public Builder<M, F> extraHands() {
+            this.maleBuilder.extraHands(); this.femaleBuilder.extraHands(); return this;
         }
 
         public Builder<M, F> absorbing() {

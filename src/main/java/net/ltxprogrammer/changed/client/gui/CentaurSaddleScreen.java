@@ -2,26 +2,29 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
+import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
-public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
-    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
+import java.util.HashMap;
 
-    public ExtraHandsScreen(ExtraHandsMenu container, Inventory inventory, Component text) {
+public class CentaurSaddleScreen extends AbstractContainerScreen<CentaurSaddleMenu> {
+    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
+
+    private final static HashMap<String, Object> guistate = CentaurSaddleMenu.guistate;
+
+    public CentaurSaddleScreen(CentaurSaddleMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
-        this.imageWidth = 218;
-        this.imageHeight = 92;
+        this.imageWidth = 182;
+        this.imageHeight = 126;
     }
 
-    private static final ResourceLocation texture = new ResourceLocation("changed:textures/gui/extra_hands.png");
+    private static final ResourceLocation texture = Changed.modResource("textures/gui/centaur_saddle.png");
 
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
@@ -73,5 +76,7 @@ public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
         super.init();
 
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
+
     }
+
 }

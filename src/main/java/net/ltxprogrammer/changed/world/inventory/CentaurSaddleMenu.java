@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.world.inventory;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedMenus;
+import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.TickEvent;
@@ -19,28 +22,30 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.network.PacketDistributor;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
-public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
-
+public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public final static HashMap<String, Object> guistate = new HashMap<>();
+    public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
 
     public final Level world;
     public final Player entity;
     public int x, y, z;
 
-    IItemHandler internal;
+    private IItemHandler internal;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
 
     private boolean bound = false;
 
-    public ExtraHandsMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(ChangedMenus.EXTRA_HANDS, id);
+    public CentaurSaddleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(ChangedMenus.CENTAUR_SADDLE, id);
 
         this.entity = inv.player;
         this.world = inv.player.level;
@@ -86,25 +91,24 @@ public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Ma
             }
         }
 
-        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 193, 67) {
-
-        }));
-        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 7, 67) {
-
+        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 82, 14) {
+            @Override
+            public boolean mayPlace(@Nonnull ItemStack stack) {
+                return stack.is(Items.SADDLE);
+            }
         }));
 
         for (int si = 0; si < 3; ++si)
             for (int sj = 0; sj < 9; ++sj)
-                this.addSlot(new Slot(inv, sj + (si + 1) * 9, 21 + 8 + sj * 18, -75 + 84 + si * 18));
+                this.addSlot(new Slot(inv, sj + (si + 1) * 9, 3 + 8 + sj * 18, -43 + 84 + si * 18));
 
         for (int si = 0; si < 9; ++si)
-            this.addSlot(new Slot(inv, si, 21 + 8 + si * 18, -75 + 142));
+            this.addSlot(new Slot(inv, si, 3 + 8 + si * 18, -43 + 142));
+
 
         CompoundTag tag = entity.getPersistentData();
-        if (tag.contains("changed:extra_hands_rh"))
-            internal.insertItem(0, ItemStack.of(tag.getCompound("changed:extra_hands_rh")), false);
-        if (tag.contains("changed:extra_hands_lh"))
-            internal.insertItem(1, ItemStack.of(tag.getCompound("changed:extra_hands_lh")), false);
+        if (tag.contains(SADDLE_LOCATION))
+            internal.insertItem(0, ItemStack.of(tag.getCompound(SADDLE_LOCATION)), false);
     }
 
     @Override
@@ -254,20 +258,25 @@ public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Ma
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        if (event.phase == TickEvent.Phase.END && player.containerMenu instanceof ExtraHandsMenu menu) {
+        if (event.phase == TickEvent.Phase.END && player.containerMenu instanceof CentaurSaddleMenu menu) {
+            CompoundTag old = player.getPersistentData().copy();
             CompoundTag tag = player.getPersistentData();
-            tag.put("changed:extra_hands_rh", menu.internal.getStackInSlot(0).serializeNBT());
-            tag.put("changed:extra_hands_lh", menu.internal.getStackInSlot(1).serializeNBT());
+            if (!menu.internal.getStackInSlot(0).isEmpty())
+                tag.put(SADDLE_LOCATION, menu.internal.getStackInSlot(0).serializeNBT());
+            else {
+                tag.remove(SADDLE_LOCATION);
+                player.ejectPassengers();
+            }
+
+            if (!old.equals(tag))
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
         }
 
         if (player.isDeadOrDying()/* && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)*/) {
             CompoundTag tag = player.getPersistentData();
-            if (tag.contains("changed:extra_hands_rh"))
-                player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_rh")), true);
-            if (tag.contains("changed:extra_hands_lh"))
-                player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_lh")), true);
-            tag.remove("changed:extra_hands_rh");
-            tag.remove("changed:extra_hands_lh");
+            if (tag.contains(SADDLE_LOCATION))
+                player.drop(ItemStack.of(tag.getCompound(SADDLE_LOCATION)), true);
+            tag.remove(SADDLE_LOCATION);
         }
     }
 }

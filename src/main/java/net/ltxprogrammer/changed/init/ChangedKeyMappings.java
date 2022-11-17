@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
-import net.ltxprogrammer.changed.network.OpenExtraHandsKeybind;
+import net.ltxprogrammer.changed.network.VariantAbilityKeybind;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -17,12 +17,12 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class ChangedKeyMappings {
-    public static final KeyMapping OPEN_EXTRA_HANDS = new KeyMapping("key.changed.open_extra_hands", GLFW.GLFW_KEY_H, "key.categories.ui");
+    public static final KeyMapping VARIANT_ABILITY = new KeyMapping("key.changed.variant_ability", GLFW.GLFW_KEY_H, "key.categories.ui");
     public static final KeyMapping EXTRA_JUMP = new KeyMapping("key.changed.extra_jump", GLFW.GLFW_KEY_SPACE, "key.categories.movement");
 
     @SubscribeEvent
     public static void registerKeyBindings(FMLClientSetupEvent event) {
-        ClientRegistry.registerKeyBinding(OPEN_EXTRA_HANDS);
+        ClientRegistry.registerKeyBinding(VARIANT_ABILITY);
         ClientRegistry.registerKeyBinding(EXTRA_JUMP);
     }
 
@@ -34,8 +34,8 @@ public class ChangedKeyMappings {
             if (local == null)
                 return;
             if (Minecraft.getInstance().screen == null) {
-                if (event.getKey() == OPEN_EXTRA_HANDS.getKey().getValue() && event.getAction() == GLFW.GLFW_RELEASE)
-                    Changed.PACKET_HANDLER.sendToServer(new OpenExtraHandsKeybind());
+                if (event.getKey() == VARIANT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_RELEASE)
+                    Changed.PACKET_HANDLER.sendToServer(new VariantAbilityKeybind());
                 else if (event.getKey() == EXTRA_JUMP.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     if (!local.isOnGround() && ProcessTransfur.isPlayerLatex(local) && ProcessTransfur.getPlayerLatexVariant(local).canDoubleJump()) {
                         if (ProcessTransfur.getPlayerLatexVariant(local).getJumpCharges() > 0) {
