@@ -73,12 +73,12 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder.breatheMode = mode; this.femaleBuilder.breatheMode = mode; return this;
         }
 
-        public Builder<M, F> fallImmune() {
-            this.maleBuilder.fallImmunity = true; this.femaleBuilder.fallImmunity = true; return this;
+        public Builder<M, F> reducedFall() {
+            this.maleBuilder.reducedFall = true; this.femaleBuilder.reducedFall = true; return this;
         }
 
-        public Builder<M, F> fallImmune(boolean v) {
-            this.maleBuilder.fallImmunity = v; this.femaleBuilder.fallImmunity = v; return this;
+        public Builder<M, F> reducedFall(boolean v) {
+            this.maleBuilder.reducedFall = v; this.femaleBuilder.reducedFall = v; return this;
         }
 
         public Builder<M, F> canClimb() {

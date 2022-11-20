@@ -13,8 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
-    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
-
     public ExtraHandsScreen(ExtraHandsMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
         this.imageWidth = 218;

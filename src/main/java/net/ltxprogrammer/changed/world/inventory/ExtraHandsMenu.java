@@ -4,6 +4,8 @@ import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +28,7 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
 public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
 
     public final static HashMap<String, Object> guistate = new HashMap<>();
 
