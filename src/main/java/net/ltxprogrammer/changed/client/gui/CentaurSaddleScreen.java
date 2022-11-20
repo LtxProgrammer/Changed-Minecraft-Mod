@@ -14,8 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.HashMap;
 
 public class CentaurSaddleScreen extends AbstractContainerScreen<CentaurSaddleMenu> {
-    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
-
     private final static HashMap<String, Object> guistate = CentaurSaddleMenu.guistate;
 
     public CentaurSaddleScreen(CentaurSaddleMenu container, Inventory inventory, Component text) {

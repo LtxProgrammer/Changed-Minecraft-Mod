@@ -422,18 +422,6 @@ public class ProcessTransfur {
     }
 
     @SubscribeEvent
-    public static void onSizeEvent(EntityEvent.Size event) {
-        if (event.getEntity() instanceof Player player) {
-            if (player.isAddedToWorld() && isPlayerLatex(player)) {
-                LatexEntity latexEntity = getPlayerLatexVariant(player).getLatexEntity();
-
-                event.setNewSize(latexEntity.getDimensions(event.getPose()));
-                event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
             LatexVariant<?> variant = getPlayerLatexVariant(player);

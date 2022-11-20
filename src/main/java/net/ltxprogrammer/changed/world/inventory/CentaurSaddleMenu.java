@@ -6,6 +6,8 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +33,8 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
 public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
+
     public final static HashMap<String, Object> guistate = new HashMap<>();
     public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
 
