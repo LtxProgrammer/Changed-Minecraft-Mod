@@ -36,8 +36,9 @@
   "gamerule.changed:latexSpread": "Let Latex Spread Naturally",
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
 
-  "key.changed.open_extra_hands": "Open Extra Hands Menu",
-  
+  "key.changed.variant_ability": "Active Variant Ability",
+  "key.changed.extra_jump": "Extra Jump",
+
   "container.changed.extra_hands": "Extra Hands Menu",
   "container.changed.infuser": "Infuser Menu",
   "container.changed.purifier": "Purifier Menu",
@@ -67,7 +68,7 @@
   "block.changed.orange_tree_leaves": "Orange Tree Leaves",
   "block.changed.purifier": "Purifier",
   "block.changed.retinal_scanner": "Retinal Scanner",
-  "block.changed.tiles_caution": "Caution Caution",
+  "block.changed.tiles_caution": "Caution Tiles",
   "block.changed.tiles_grayblue": "Grayblue Tiles",
   "block.changed.tiles_grayblue_stairs": "Grayblue Tile Stairs",
   "block.changed.tiles_gray": "Gray Tiles",

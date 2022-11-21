@@ -10,6 +10,7 @@
     "BlockMixin",
     "BlockStateBaseMixin",
     "EntityMixin",
+    "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "MobMixin",
@@ -24,6 +25,7 @@
   ],
   "client": [
     "BlockColorsMixin",
+    "CameraMixin",
     "ClientRecipeBookMixin",
     "GameRendererMixin",
     "LocalPlayerMixin",

@@ -16,6 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.function.Consumer;
+
 public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
     public final ModelPart head;
     public final ModelPart body;
@@ -31,7 +33,7 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
     public final LatexHumanoidModelController controller;
 
     public LatexHumanoidArmorModel(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm,
-                                   boolean swimTail) {
+                                   Consumer<LatexHumanoidModelController.Builder> consumer) {
         this.head = head;
         this.body = body;
         this.tail = tail;
@@ -44,13 +46,13 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         this.rightLeg2 = null;
 
         var builder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
-        if (swimTail)
-            builder.tailAidsInSwim();
+        if (consumer != null)
+            consumer.accept(builder);
         this.controller = builder.build();
     }
 
     public LatexHumanoidArmorModel(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm,
-                                   boolean swimTail, ModelPart lowerTorso, ModelPart leftLeg2, ModelPart rightLeg2) {
+                                   ModelPart lowerTorso, ModelPart leftLeg2, ModelPart rightLeg2, Consumer<LatexHumanoidModelController.Builder> consumer) {
         this.head = head;
         this.body = body;
         this.tail = tail;
@@ -64,8 +66,8 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
         var builder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
         builder.legs2(lowerTorso, rightLeg2, leftLeg2);
-        if (swimTail)
-            builder.tailAidsInSwim();
+        if (consumer != null)
+            consumer.accept(builder);
         this.controller = builder.build();
     }
 

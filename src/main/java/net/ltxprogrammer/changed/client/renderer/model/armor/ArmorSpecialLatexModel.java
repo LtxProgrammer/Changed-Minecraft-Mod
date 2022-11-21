@@ -19,6 +19,8 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), form.tailAidsInSwim());
+                modelPart.getChild("RightArm"), builder -> {
+                    if (form.tailAidsInSwim()) builder.tailAidsInSwim();
+                });
     }
 }

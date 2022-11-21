@@ -12,15 +12,19 @@ import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.world.inventory.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -32,23 +36,32 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-
+@Mod.EventBusSubscriber(modid = Changed.MODID)
 public class LatexVariant<T extends LatexEntity> {
     public static final String NBT_PLAYER_ID = "changed:player_id";
 
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
 
+    private static final Consumer<Player> ABILITY_RIDE = player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE));
+
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
+    public static Map<ResourceLocation, LatexVariant<?>> MOB_FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> SPECIAL_LATEX_FORMS = new HashMap<>();
     public static final GenderedVariant<LightLatexWolfMale, LightLatexWolfFemale> LIGHT_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.LIGHT_LATEX_WOLF_MALE, ChangedEntities.LIGHT_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.85f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing)
@@ -58,7 +71,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
             .fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.09f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(2)
+    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF)
             .build(Changed.modResource("form_aerosol_latex_wolf")));
@@ -75,7 +88,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)
             .build(Changed.modResource("form_latex_leaf")));
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
-            .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().fallImmune().scares(Creeper.class).split(Builder::ignored, Builder::absorbing)
+            .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_RED_PANDA).faction(LatexType.NEUTRAL)
             .build(Changed.modResource("form_latex_red_panda")));
@@ -84,14 +97,14 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 
-    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.35f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
+    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.125f)
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
 
-    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.075f).gills().extraHands()
+    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(20).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
 
     public static final GenderedVariant<DarkLatexDragonMale, DarkLatexDragonFemale> DARK_LATEX_DRAGON = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON_MALE, ChangedEntities.DARK_LATEX_DRAGON_FEMALE).groundSpeed(1.0F).swimSpeed(0.75f).glide()
@@ -111,12 +124,8 @@ public class LatexVariant<T extends LatexEntity> {
         return formId;
     }
 
-    public boolean canHoldExtra() {
-        return extraHands;
-    }
-
-    public boolean isFallImmune() {
-        return fallImmunity;
+    public boolean isReducedFall() {
+        return reducedFall;
     }
 
     public TransfurMode transfurMode() { return transfurMode; }
@@ -139,6 +148,31 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         return false;
+    }
+
+    public boolean isFusionOf(LatexVariant<?> variantA, Class<? extends LivingEntity> clazz) {
+        if (variantA == null || clazz == null)
+            return false;
+
+        if (mobFusionOf.isPresent()) {
+            return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
+                            mobFusionOf.get().getSecond().equals(clazz);
+        }
+
+        return false;
+    }
+
+    public void activateAbility(Player player) {
+        if (ability != null)
+            ability.accept(player);
+    }
+
+    public float swimMultiplier() {
+        return swimSpeed;
+    }
+
+    public float landMultiplier() {
+        return groundSpeed;
     }
 
     public enum BreatheMode {
@@ -176,13 +210,16 @@ public class LatexVariant<T extends LatexEntity> {
     private final BreatheMode breatheMode;
     private final float stepSize;
     private final boolean canGlide;
+    private final int extraJumpCharges;
     private final int additionalHealth;
-    private final boolean extraHands;
     private final boolean weakLungs;
-    private final boolean fallImmunity;
+    private final boolean reducedFall;
+    private final boolean canClimb;
     private final List<Class<? extends PathfinderMob>> scares;
     private final TransfurMode transfurMode;
     private final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
+    private final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
+    private final Consumer<Player> ability;
 
     private boolean dead;
     public int ticksBreathingUnderwater;
@@ -193,12 +230,15 @@ public class LatexVariant<T extends LatexEntity> {
 
     // Varient data
     protected int air = -100;
+    protected int jumpCharges = 0;
     protected float lastSwimMul = 1F;
 
     public LatexVariant(ResourceLocation formId, Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
-                        BreatheMode breatheMode, float stepSize, boolean canGlide, int additionalHealth, boolean extraHands,
-                        boolean weakLungs, boolean fallImmunity, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
-                        Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf) {
+                        BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
+                        boolean weakLungs, boolean reducedFall, boolean canClimb,
+                        List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -207,13 +247,16 @@ public class LatexVariant<T extends LatexEntity> {
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
         this.canGlide = canGlide;
+        this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
-        this.extraHands = extraHands;
+        this.ability = ability;
         this.weakLungs = weakLungs;
-        this.fallImmunity = fallImmunity;
+        this.reducedFall = reducedFall;
+        this.canClimb = canClimb;
         this.scares = scares;
         this.transfurMode = transfurMode;
         this.fusionOf = fusionOf;
+        this.mobFusionOf = mobFusionOf;
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
         attributeModifierAdditionalHealth = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d8"), "changed:trait_additional_health", additionalHealth, AttributeModifier.Operation.ADDITION);
@@ -228,8 +271,8 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public LatexVariant<T> clone() {
-        return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, additionalHealth, extraHands,
-                weakLungs, fallImmunity, scares, transfurMode, fusionOf);
+        return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
+                weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -277,6 +320,15 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canGlide() { return canGlide; }
 
+    public boolean canClimb() { return canClimb; }
+
+    public boolean canDoubleJump() { return extraJumpCharges > 0; }
+
+    public boolean rideable() { return this.ability == ABILITY_RIDE; }
+
+    public int getJumpCharges() { return jumpCharges; }
+    public void decJumpCharges() { jumpCharges -= 1; }
+
     public void sync(Player player) {
         if (latexForm == null) return;
 
@@ -296,11 +348,17 @@ public class LatexVariant<T extends LatexEntity> {
 
         if (player == null) return;
 
+        if (player.isOnGround())
+            jumpCharges = extraJumpCharges;
+
+        if (rideable())
+            player.stopRiding();
+
         // Repulse villagers
         if(!player.level.isClientSide) {
             final double distance = 8D;
-            final double farRunSpeed = 1D;
-            final double nearRunSpeed = 1D;
+            final double farRunSpeed = 0.5D;
+            final double nearRunSpeed = 0.6666D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : scares) {
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 3D, distance), Objects::nonNull);
@@ -539,6 +597,8 @@ public class LatexVariant<T extends LatexEntity> {
         //Sync potions for rendering purposes
         living.getActiveEffectsMap().putAll(player.getActiveEffectsMap());
 
+        TagUtil.replace(player.getPersistentData(), living.getPersistentData());
+
         specialEntityPlayerSync(living, player);
     }
 
@@ -583,13 +643,16 @@ public class LatexVariant<T extends LatexEntity> {
         BreatheMode breatheMode = BreatheMode.NORMAL;
         float stepSize = 0.6F;
         boolean canGlide = false;
+        int extraJumpCharges = 0;
         int additionalHealth = 4;
-        boolean extraHands = false;
         boolean weakLungs = false;
-        boolean fallImmunity = false;
+        boolean reducedFall = false;
+        boolean canClimb = false;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
+        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
+        Consumer<Player> ability = null;
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
@@ -603,8 +666,8 @@ public class LatexVariant<T extends LatexEntity> {
 
         public static <T extends LatexEntity> Builder<T> of(LatexVariant<?> variant, Supplier<EntityType<T>> entityType) {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed)
-                    .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide)
-                    .extraHands(variant.extraHands).weakLungs(variant.weakLungs).fallImmune(variant.fallImmunity).scares(variant.scares)
+                    .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
+                    .ability(variant.ability).weakLungs(variant.weakLungs).reducedFall(variant.reducedFall).canClimb(variant.canClimb).scares(variant.scares)
                     .transfurMode(variant.transfurMode);
         }
 
@@ -636,12 +699,20 @@ public class LatexVariant<T extends LatexEntity> {
             this.breatheMode = mode; return this;
         }
 
-        public Builder<T> fallImmune() {
-            this.fallImmunity = true; return this;
+        public Builder<T> reducedFall() {
+            this.reducedFall = true; return this;
         }
 
-        public Builder<T> fallImmune(boolean v) {
-            this.fallImmunity = v; return this;
+        public Builder<T> reducedFall(boolean v) {
+            this.reducedFall = v; return this;
+        }
+
+        public Builder<T> canClimb() {
+            this.canClimb = true; return this;
+        }
+
+        public Builder<T> canClimb(boolean v) {
+            this.canClimb = v; return this;
         }
 
         public <E extends PathfinderMob> Builder<T> scares(Class<E> type) {
@@ -672,16 +743,29 @@ public class LatexVariant<T extends LatexEntity> {
             this.canGlide = enable; return this;
         }
 
+        public Builder<T> doubleJump() {
+            return extraJumps(1);
+        }
+
+        public Builder<T> extraJumps(int count) {
+            this.extraJumpCharges = count; return this;
+        }
+
         public Builder<T> additionalHealth(int value) {
             this.additionalHealth = value; return this;
         }
-
-        public Builder<T> extraHands() {
-            this.extraHands = true; return this;
+        
+        public Builder<T> ability(Consumer<Player> ability) {
+            this.ability = ability; return this;
         }
 
-        public Builder<T> extraHands(boolean v) {
-            this.extraHands = v; return this;
+        public Builder<T> extraHands() {
+            return ability(player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+                new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE)));
+        }
+
+        public Builder<T> rideable() {
+            return ability(ABILITY_RIDE);
         }
 
         public Builder<T> absorbing() {
@@ -696,21 +780,27 @@ public class LatexVariant<T extends LatexEntity> {
             this.fusionOf = Optional.of(Pair.of(formA, formB)); return this;
         }
 
+        public Builder<T> fusionOf(LatexVariant<?> formA, Class<? extends LivingEntity> mobClass) {
+            this.mobFusionOf = Optional.of(Pair.of(formA, mobClass)); return this;
+        }
+
         public LatexVariant<T> build(ResourceLocation formId) {
-            return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, additionalHealth, extraHands,
-                    weakLungs, fallImmunity, scares, transfurMode, fusionOf);
+            return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
+                    weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability);
         }
     }
 
-    private static <T extends LatexEntity> LatexVariant<T> register(LatexVariant<T> variant) {
+    public static <T extends LatexEntity> LatexVariant<T> register(LatexVariant<T> variant) {
         ALL_LATEX_FORMS.put(variant.formId, variant);
         PUBLIC_LATEX_FORMS.put(variant.formId, variant);
         if (variant.fusionOf.isPresent())
             FUSION_LATEX_FORMS.put(variant.formId, variant);
+        if (variant.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.formId, variant);
         return variant;
     }
 
-    private static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
+    public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
         ALL_LATEX_FORMS.put(variant.male.formId, variant.male);
         ALL_LATEX_FORMS.put(variant.female.formId, variant.female);
         PUBLIC_LATEX_FORMS.put(variant.male.formId, variant.male);
@@ -719,6 +809,10 @@ public class LatexVariant<T extends LatexEntity> {
             FUSION_LATEX_FORMS.put(variant.male.formId, variant.male);
         if (variant.female.fusionOf.isPresent())
             FUSION_LATEX_FORMS.put(variant.female.formId, variant.female);
+        if (variant.male.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.male.formId, variant);
+        if (variant.female.mobFusionOf.isPresent())
+            MOB_FUSION_LATEX_FORMS.put(variant.female.formId, variant);
         return variant;
     }
 
@@ -760,13 +854,23 @@ public class LatexVariant<T extends LatexEntity> {
         return null;
     }
 
-    private static @NotNull LatexVariant<?> getVariantFromEntity(@NotNull LatexEntity entity) {
-        for (var entry : ALL_LATEX_FORMS.entrySet()) {
-            if (entity.getType().equals(entry.getValue().ctor.get())) {
-                return entry.getValue();
+    @SubscribeEvent
+    public static void onLivingFallEvent(LivingFallEvent event) {
+        LatexVariant<?> variant = getEntityVariant(event.getEntityLiving());
+        if (variant != null && variant.isReducedFall()) {
+            event.setDistance(event.getDistance() * 0.5f);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSizeEvent(EntityEvent.Size event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player.isAddedToWorld() && ProcessTransfur.isPlayerLatex(player)) {
+                LatexEntity latexEntity = ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity();
+
+                event.setNewSize(latexEntity.getDimensions(event.getPose()));
+                event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
             }
         }
-
-        throw new InvalidParameterException("Could not find form for entity \"" + entity + "\"");
     }
 }

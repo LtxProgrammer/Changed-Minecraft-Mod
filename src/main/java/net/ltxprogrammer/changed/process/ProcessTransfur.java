@@ -44,6 +44,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -184,6 +185,7 @@ public class ProcessTransfur {
     public static class LatexedEntity {
         final LivingEntity entity;
         final LatexVariant<?> variant;
+        @NotNull
         final LatexVariant<?> transfur;
         final boolean isPlayer;
 
@@ -195,39 +197,69 @@ public class ProcessTransfur {
         }
 
         static boolean isLatexed(LivingEntity entity) {
-            return LatexVariant.getEntityVariant(entity) != null;
+            return LatexVariant.getEntityVariant(entity) != null || LatexVariant.getEntityTransfur(entity) != null;
         }
     }
 
     static void nonLatexedEntityKillingBlowByLatexEntity(LivingAttackEvent event, LivingEntity target, LatexedEntity source) {
         boolean flag = false;
-        if (source.entity instanceof LatexEntity latexEntity)
-            flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+        List<LatexVariant<?>> mobFusion = new ArrayList<>();
+        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+            if (checkVariant.isFusionOf(source.transfur, event.getEntityLiving().getClass())) {
+                mobFusion.add(checkVariant);
+            }
+        }
+        if (mobFusion.isEmpty()) {
+            if (source.entity instanceof LatexEntity latexEntity)
+                flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
 
-        if (source.variant.transfurMode() == TransfurMode.ABSORPTION || flag) {
+            if (source.variant == null || source.variant.transfurMode() == TransfurMode.ABSORPTION || flag) {
+                source.entity.heal(14f);
+                if (source.entity instanceof Player player) {
+                    player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() + 10);
+                    source.entity.setPos(target.position());
+                    target.discard();
+
+                    if (source.variant == null || !source.transfur.getFormId().equals(source.variant.getFormId())) {
+                        ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
+                        ProcessTransfur.setPlayerLatexVariant(player, source.transfur.clone());
+
+                        Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+                    }
+                }
+                else {
+                    LatexEntity newEntity = source.transfur.replaceEntity(target);
+                    source.entity.discard();
+                }
+                ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            }
+
+            else {
+                source.entity.heal(4f);
+                transfur(target, target.level, source.transfur, false);
+            }
+        }
+
+        else {
+            LatexVariant<?> fuseVariant = mobFusion.get(target.getRandom().nextInt(mobFusion.size()));
             source.entity.heal(14f);
             if (source.entity instanceof Player player) {
                 player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() + 10);
                 source.entity.setPos(target.position());
                 target.discard();
 
-                if (!source.transfur.getFormId().equals(source.variant.getFormId())) {
+                if (source.variant == null || !fuseVariant.getFormId().equals(source.variant.getFormId())) {
                     ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
-                    ProcessTransfur.setPlayerLatexVariant(player, source.transfur.clone());
+                    ProcessTransfur.setPlayerLatexVariant(player, fuseVariant.clone());
 
                     Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
                 }
             }
             else {
-                LatexEntity newEntity = source.transfur.replaceEntity(target);
+                LatexEntity newEntity = fuseVariant.replaceEntity(target);
                 source.entity.discard();
             }
             ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
-        }
-
-        else if (source.variant.transfurMode() == TransfurMode.REPLICATION) {
-            source.entity.heal(4f);
-            transfur(target, target.level, source.transfur, false);
         }
 
         event.setCanceled(true);
@@ -251,6 +283,10 @@ public class ProcessTransfur {
     public static void onLivingAttacked(LivingAttackEvent event) {
         if (event.getSource() == ChangedDamageSources.TRANSFUR)
             return;
+        if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            event.setCanceled(true);
+            return;
+        }
         if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
             event.getEntityLiving().hurt(DamageSource.GENERIC, 1.5f);
             return;
@@ -261,6 +297,11 @@ public class ProcessTransfur {
             return;
         if (event.getEntityLiving().isBlocking())
             return;
+
+        if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
+            event.setCanceled(true);
+            return;
+        }
 
         LatexVariant<?> sourceVariant = LatexVariant.getEntityVariant(sourceEntity);
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(event.getEntityLiving());
@@ -290,7 +331,14 @@ public class ProcessTransfur {
             return;
         }
 
-        if (!event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS))
+        boolean mobFusion = false;
+        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+            if (checkVariant.isFusionOf(sourceVariant, event.getEntityLiving().getClass())) {
+                mobFusion = true;
+                break;
+            }
+        }
+        if (!event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !mobFusion)
             return;
 
         if ((LatexVariant.getEntityVariant(event.getEntityLiving()) != null) == (LatexVariant.getEntityTransfur(sourceEntity) != null))
@@ -341,7 +389,6 @@ public class ProcessTransfur {
                 try {
                     if (PatreonBenefits.checkForUpdates())
                         Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new CheckForUpdatesPacket(PatreonBenefits.currentVersion));
-                        // TODO: Unknown custom packet identifier
                 }
 
                 catch (Exception ex) {
@@ -371,18 +418,6 @@ public class ProcessTransfur {
 
             else if (event.side.isServer() && !event.player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
                 CACHED_FORMS.remove(event.player.getUUID());
-        }
-    }
-
-    @SubscribeEvent
-    public static void onSizeEvent(EntityEvent.Size event) {
-        if (event.getEntity() instanceof Player player) {
-            if (player.isAddedToWorld() && isPlayerLatex(player)) {
-                LatexEntity latexEntity = getPlayerLatexVariant(player).getLatexEntity();
-
-                event.setNewSize(latexEntity.getDimensions(event.getPose()));
-                event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
-            }
         }
     }
 
@@ -432,8 +467,6 @@ public class ProcessTransfur {
     public static void transfur(LivingEntity entity, Level level, LatexVariant<?> variant, boolean keepConscious) {
         if (entity.isDeadOrDying())
             return; // To prevent most bugs, entity has to be alive to transfur
-        if (!entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(entity instanceof LatexEntity))
-            return;
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
             keepConscious = true;
 

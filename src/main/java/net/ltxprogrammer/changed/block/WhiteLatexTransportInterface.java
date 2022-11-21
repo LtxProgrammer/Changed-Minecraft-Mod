@@ -94,6 +94,8 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 multiplyMotion(event.player, 1.05F);
                 if (form != null)
                     form.ticksWhiteLatex++;
+                else
+                    ProcessTransfur.transfur(event.player, event.player.level, LatexVariant.WHITE_LATEX_WOLF, false);
 
                 if (!(whiteLatex(blockState) || whiteLatex(blockStateEye))) {
                     whiteLatexNoCollideMap.remove(event.player);

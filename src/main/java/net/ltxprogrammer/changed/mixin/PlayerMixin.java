@@ -10,14 +10,20 @@ import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,6 +31,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
+    @Shadow public abstract boolean isSwimming();
+
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
     }
@@ -62,15 +70,6 @@ public abstract class PlayerMixin extends LivingEntity {
         }
     }
 
-    @Inject(method = "causeFallDamage", at = @At("HEAD"), cancellable = true)
-    public void causeFallDamage(float p_148859_, float p_148860_, DamageSource p_148861_, CallbackInfoReturnable<Boolean> ci) {
-        Player player = (Player)(Object)this;
-        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).isFallImmune()) {
-            ci.setReturnValue(false);
-            ci.cancel();
-        }
-    }
-
     // ADDITIONAL DATA
     public LatexVariant<?> latexVariant = null;
     public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.LIGHT_LATEX_WOLF.male().getFormId());
@@ -95,5 +94,33 @@ public abstract class PlayerMixin extends LivingEntity {
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress((Player)(LivingEntity)this).type().toString());
         if (latexVariant != null)
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
+    }
+
+    @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
+    public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
+        if (ProcessTransfur.isPlayerLatex((Player)(Object)this))
+            if (ProcessTransfur.getPlayerLatexVariant((Player)(Object)this).canClimb() && state.is(Blocks.COBWEB))
+                ci.cancel();
+    }
+
+    private float getFoodMul(LatexVariant<?> variant) {
+        if (isSwimming() || this.isEyeInFluid(FluidTags.WATER) || this.isInWater()) {
+            return 1.0f - (variant.swimMultiplier() - 1.0f) * 0.85f;
+        }
+
+        else if (onGround && isSprinting()) {
+            return 1.0f - (variant.landMultiplier() - 1.0f) * 0.85f;
+        }
+
+        return 1.0f;
+    }
+
+    @Inject(method = "causeFoodExhaustion", at = @At("HEAD"), cancellable = true)
+    public void causeFoodExhaustion(float amount, CallbackInfo ci) {
+        Player player = (Player)(Object)this;
+        if (ProcessTransfur.isPlayerLatex(player) && !player.getAbilities().invulnerable && !this.level.isClientSide) {
+            ci.cancel();
+            player.getFoodData().addExhaustion(amount * getFoodMul(ProcessTransfur.getPlayerLatexVariant(player)));
+        }
     }
 }

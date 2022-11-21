@@ -8,8 +8,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Objects;
 
 public class TagUtil {
+    public static void replace(CompoundTag from, CompoundTag target) {
+        HashSet<String> oldKeys = new HashSet<>(target.getAllKeys());
+        oldKeys.forEach(target::remove);
+        from.getAllKeys().forEach(key -> {
+            target.put(key, Objects.requireNonNull(from.get(key)));
+        });
+    }
+
     public static String getStringOrDefault(@Nullable CompoundTag tag, String name, String _default) {
         return tag != null && tag.contains(name) ? tag.getString(name) : _default;
     }

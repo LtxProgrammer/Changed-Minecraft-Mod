@@ -16,10 +16,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -76,6 +73,10 @@ public abstract class LatexEntity extends Monster {
         return getLatexType().isHostileTo(LatexType.getEntityLatexType(player));
     }
 
+    public float getEyeHeightMul() {
+        return 0.95F;
+    }
+
     public static <T extends LatexEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement) {
         return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (entityType, world, reason, pos, random) ->
@@ -114,6 +115,10 @@ public abstract class LatexEntity extends Monster {
         super.registerGoals();
 
         final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
+            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                if (checkVariant.isFusionOf(getSelfVariant(), livingEntity.getClass()))
+                    return true;
+            }
             if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
                 return false;
             if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
@@ -129,6 +134,7 @@ public abstract class LatexEntity extends Monster {
 
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
@@ -143,24 +149,6 @@ public abstract class LatexEntity extends Monster {
         super.tick();
         visualTick(this.level);
         effectTick(this.level, this);
-    }
-
-    public void setDeltaMovement(Vec3 p_20257_) {
-        if (p_20257_ == Vec3.ZERO)
-            super.setDeltaMovement(p_20257_);
-        else if (p_20257_.lengthSqr() > 0.5f)
-            super.setDeltaMovement(p_20257_);
-        else
-            super.setDeltaMovement(p_20257_);
-    }
-
-    public void setZza(float zza) {
-        if (zza == 0.0f)
-            super.setZza(zza);
-        else if (zza > 0.5f)
-            super.setZza(zza);
-        else
-            super.setZza(zza);
     }
 
     @Override
@@ -189,4 +177,12 @@ public abstract class LatexEntity extends Monster {
     }
 
     public void effectTick(Level level, LivingEntity self) {}
+
+    public double getPassengersRidingOffset() {
+        return this.isCrouching() ? -0.4 : 0.0;
+    }
+
+    public double getMyRidingOffset() {
+        return -0.4;
+    }
 }

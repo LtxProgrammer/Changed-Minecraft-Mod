@@ -14,22 +14,24 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 
 public class LatexHumanoidModelController {
-    private final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;
+    public final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;
     @Nullable
-    private final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2;
-    private final boolean hasTail, hasWings, hasArms2, hasLegs2;
-    private final EntityModel<?> entityModel;
-    private final float hipOffset;
-    private final boolean swimTail;
+    public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2;
+    public final boolean hasTail, hasWings, hasArms2, hasLegs2;
+    public final EntityModel<?> entityModel;
+    public final float hipOffset;
+    public final float forewardOffset;
+    public final boolean swimTail;
     public HumanoidModel.ArmPose leftArmPose = HumanoidModel.ArmPose.EMPTY;
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount;
 
-    public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
+    public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
                                         @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2) {
         this.entityModel = entityModel;
         this.hipOffset = hipOffset;
+        this.forewardOffset = forewardOffset;
         this.swimTail = swimTail;
         Head = head;
         Torso = torso;
@@ -56,6 +58,7 @@ public class LatexHumanoidModelController {
         private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2;
         private final EntityModel<?> entityModel;
         private float hipOffset = -2.0F;
+        private float forewardOffset = 0.0F;
         private boolean swimTail = false;
 
         public Builder(EntityModel model, ModelPart head, ModelPart torso, ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
@@ -81,6 +84,10 @@ public class LatexHumanoidModelController {
             this.hipOffset = f; return this;
         }
 
+        public Builder forewardOffset(float f) {
+            this.forewardOffset = f; return this;
+        }
+
         public Builder wings(ModelPart rightWing, ModelPart leftWing) {
             this.RightWing = rightWing; this.LeftWing = leftWing; return this;
         }
@@ -95,7 +102,7 @@ public class LatexHumanoidModelController {
         }
 
         public LatexHumanoidModelController build() {
-            return new LatexHumanoidModelController(entityModel, hipOffset, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
+            return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
                     LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2);
         }
     }
@@ -103,13 +110,13 @@ public class LatexHumanoidModelController {
     public void setupHand() {
         this.RightArm.x += 3F;
         this.LeftArm.x += -3F;
-        this.RightArm.z += -1F;
-        this.LeftArm.z += -1F;
+        this.RightArm.z += -1F - forewardOffset;
+        this.LeftArm.z += -1F - forewardOffset;
         if (this.hasArms2) {
             this.RightArm2.x += 3F;
             this.LeftArm2.x += -3F;
-            this.RightArm2.z += -1F;
-            this.LeftArm2.z += -1F;
+            this.RightArm2.z += -1F - forewardOffset;
+            this.LeftArm2.z += -1F - forewardOffset;
         }
     }
 
@@ -135,9 +142,9 @@ public class LatexHumanoidModelController {
         }
 
         this.Torso.yRot = 0.0F;
-        this.RightArm.z = 0.0F;
+        this.RightArm.z = forewardOffset;
         this.RightArm.x = -5.0F;
-        this.LeftArm.z = 0.0F;
+        this.LeftArm.z = forewardOffset;
         this.LeftArm.x = 5.0F;
         float f = 1.0F;
         if (flag) {
@@ -174,8 +181,8 @@ public class LatexHumanoidModelController {
             this.Tail.zRot = 0.0F;
         }
 
-        if (this.RightWing != null) { this.RightWing.x = 0.0F; this.RightWing.y = 25.5F; this.RightWing.zRot = 0.0F; }
-        if (this.LeftWing != null) { this.LeftWing.x = 0.0F; this.LeftWing.y = 25.5F; this.LeftWing.zRot = 0.0F; }
+        if (this.RightWing != null) { this.RightWing.zRot = 0.0F; }
+        if (this.LeftWing != null) { this.LeftWing.zRot = 0.0F; }
 
         if (entityModel.riding) {
             this.RightArm.xRot += (-(float)Math.PI / 5F);
@@ -228,52 +235,52 @@ public class LatexHumanoidModelController {
         if (this.crouching) {
             if (this.hasTail)
                 this.Tail.xRot -= 0.3F;
-            this.Torso.xRot = 0.5F;
-            this.RightArm.xRot += 0.4F;
-            this.LeftArm.xRot += 0.4F;
-            this.RightLeg.z = 4.0F;
-            this.LeftLeg.z = 4.0F;
+            if (!this.hasLegs2) {
+                this.Torso.xRot = 0.5F;
+                this.RightArm.xRot += 0.4F;
+                this.LeftArm.xRot += 0.4F;
+                this.RightLeg.z = 4.0F + forewardOffset;
+                this.LeftLeg.z = 4.0F + forewardOffset;
+            }
             this.RightLeg.y = 12.2F + hipOffset;
             this.LeftLeg.y = 12.2F + hipOffset;
             this.Head.y = 4.2F + hipOffset;
             this.Torso.y = 3.2F + hipOffset;
-            this.LeftArm.y = 5.2F + hipOffset;
-            this.RightArm.y = 5.2F + hipOffset;
+            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
+            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
-                if (this.hasTail) {
-                    this.Tail.z = 3.25F;
-                    this.Tail.y = -1.0F;
-                }
-                this.LowerTorso.z = -6.0F;
-                this.LowerTorso.y = 22.5F;
-                this.LowerTorso.xRot = -0.5F;
                 this.RightLeg2.y = 12.2F + hipOffset;
                 this.LeftLeg2.y = 12.2F + hipOffset;
-                this.RightLeg2.z = 13.0F;
-                this.LeftLeg2.z = 13.0F;
+            }
+            if (this.hasArms2) {
+                this.RightArm2.z = 0.0F;
+                this.RightArm2.y = this.RightArm.y - 4.0F;
+                this.RightArm2.x = -5.0F;
+                this.LeftArm2.z = 0.0F;
+                this.LeftArm2.y = this.LeftArm.y - 4.0F;
+                this.LeftArm2.x = 5.0F;
             }
         } else {
             this.Torso.xRot = 0.0F;
-            this.RightLeg.z = 0.1F;
-            this.LeftLeg.z = 0.1F;
+            this.RightLeg.z = 0.1F + forewardOffset;
+            this.LeftLeg.z = 0.1F + forewardOffset;
             this.RightLeg.y = 12.0F + hipOffset;
             this.LeftLeg.y = 12.0F + hipOffset;
             this.Head.y = 0.0F + hipOffset;
             this.Torso.y = 0.0F + hipOffset;
-            this.LeftArm.y = 2.0F + hipOffset;
-            this.RightArm.y = 2.0F + hipOffset;
+            this.LeftArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
+            this.RightArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F);
             if (this.hasLegs2) {
-                if (this.hasTail) {
-                    this.Tail.z = 7.25F;
-                    this.Tail.y = 1.0F;
-                }
-                this.LowerTorso.z = 0.0F;
-                this.LowerTorso.y = 25.5F;
-                this.LowerTorso.xRot = 0.0F;
                 this.RightLeg2.y = 12.0F + hipOffset;
                 this.LeftLeg2.y = 12.0F + hipOffset;
-                this.RightLeg2.z = 9.1F;
-                this.LeftLeg2.z = 9.1F;
+            }
+            if (this.hasArms2) {
+                this.RightArm2.z = 0.0F;
+                this.RightArm2.y = this.RightArm.y - 4.0F;
+                this.RightArm2.x = -5.0F;
+                this.LeftArm2.z = 0.0F;
+                this.LeftArm2.y = this.LeftArm.y - 4.0F;
+                this.LeftArm2.x = 5.0F;
             }
         }
 
@@ -292,14 +299,10 @@ public class LatexHumanoidModelController {
                 this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, -1.0f);
 
             if (this.RightWing != null) {
-                this.RightWing.x = Mth.lerp(f2, this.RightWing.x, 16.0f);
-                this.RightWing.y = Mth.lerp(f2, this.RightWing.y, 22.0F);
                 this.RightWing.zRot = Mth.lerp(f2, this.RightWing.zRot, -0.8f);
             }
 
             if (this.LeftWing != null) {
-                this.LeftWing.x = Mth.lerp(f2, this.LeftWing.x, -16.0f);
-                this.LeftWing.y = Mth.lerp(f2, this.LeftWing.y, 22.0f);
                 this.LeftWing.zRot = Mth.lerp(f2, this.LeftWing.zRot, 0.8f);
             }
         }
@@ -342,7 +345,7 @@ public class LatexHumanoidModelController {
             this.RightLeg.xRot = Mth.lerp(this.swimAmount, this.RightLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
 
             if (this.hasTail) {
-                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -1.0f);
+                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -1.1f);//78f);
                 float oldTailzRot = this.Tail.zRot;
                 this.Tail.zRot = Mth.lerp(this.swimAmount, 0.0F, this.Tail.yRot);
                 this.Tail.yRot = Mth.lerp(this.swimAmount, oldTailzRot, 0.0F);
@@ -356,21 +359,12 @@ public class LatexHumanoidModelController {
         }
 
         if (this.hasArms2) {
-            this.RightArm.z -= 1.0F;
-            this.LeftArm.z -= 1.0F;
-            this.RightArm2.z = this.RightArm.z + 2.0F;
-            this.RightArm2.y = this.RightArm.y;
-            this.RightArm2.x = this.RightArm.x;
-            this.LeftArm2.z = this.LeftArm.z + 2.0F;
-            this.LeftArm2.y = this.LeftArm.y;
-            this.LeftArm2.x = this.LeftArm.x;
-
-            this.RightArm2.xRot = this.RightArm.xRot * 0.66F;
-            this.RightArm2.yRot = this.RightArm.yRot * 0.66F;
-            this.RightArm2.zRot = this.RightArm.zRot * 0.66F;
-            this.LeftArm2.xRot = this.LeftArm.xRot * 0.66F;
-            this.LeftArm2.yRot = this.LeftArm.yRot * 0.66F;
-            this.LeftArm2.zRot = this.LeftArm.zRot * 0.66F;
+            this.RightArm2.xRot = this.RightArm.xRot * 0.22F;
+            this.RightArm2.yRot = this.RightArm.yRot * 0.22F;
+            this.RightArm2.zRot = this.RightArm.zRot * 0.22F;
+            this.LeftArm2.xRot = this.LeftArm.xRot * 0.22F;
+            this.LeftArm2.yRot = this.LeftArm.yRot * 0.22F;
+            this.LeftArm2.zRot = this.LeftArm.zRot * 0.22F;
         }
     }
 
@@ -479,9 +473,9 @@ public class LatexHumanoidModelController {
                 this.Torso.yRot *= -1.0F;
             }
 
-            this.RightArm.z = Mth.sin(this.Torso.yRot) * 5.0F;
+            this.RightArm.z = Mth.sin(this.Torso.yRot) * 5.0F + forewardOffset;
             this.RightArm.x = -Mth.cos(this.Torso.yRot) * 5.0F;
-            this.LeftArm.z = -Mth.sin(this.Torso.yRot) * 5.0F;
+            this.LeftArm.z = -Mth.sin(this.Torso.yRot) * 5.0F + forewardOffset;
             this.LeftArm.x = Mth.cos(this.Torso.yRot) * 5.0F;
             this.RightArm.yRot += this.Torso.yRot;
             this.LeftArm.yRot += this.Torso.yRot;

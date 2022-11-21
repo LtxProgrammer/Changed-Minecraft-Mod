@@ -15,35 +15,31 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class OpenExtraHandsKeybind {
+public class ExtraJumpKeybind {
     private static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
 
-    public OpenExtraHandsKeybind() {
+    public ExtraJumpKeybind() {
     }
 
-    public OpenExtraHandsKeybind(FriendlyByteBuf buffer) {
+    public ExtraJumpKeybind(FriendlyByteBuf buffer) {
     }
 
-    public static void buffer(OpenExtraHandsKeybind message, FriendlyByteBuf buffer) {
+    public static void buffer(ExtraJumpKeybind message, FriendlyByteBuf buffer) {
     }
 
-    public static void handler(OpenExtraHandsKeybind message, Supplier<NetworkEvent.Context> contextSupplier) {
+    public static void handler(ExtraJumpKeybind message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ServerPlayer sender = context.getSender();
             if (sender == null)
                 return;
-            if (ProcessTransfur.isPlayerLatex(sender) && ProcessTransfur.getPlayerLatexVariant(sender).canHoldExtra())
-                sender.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                        new ExtraHandsMenu(p_52229_, p_52230_, null), CONTAINER_TITLE));
+            if (ProcessTransfur.isPlayerLatex(sender) && ProcessTransfur.getPlayerLatexVariant(sender).canDoubleJump()) {
+                if (ProcessTransfur.getPlayerLatexVariant(sender).getJumpCharges() > 0) {
+                    ProcessTransfur.getPlayerLatexVariant(sender).decJumpCharges();
+                    sender.jumpFromGround();
+                }
+            }
         });
         context.setPacketHandled(true);
-    }
-
-    @SubscribeEvent
-    public static void registerMessage(FMLCommonSetupEvent event) {
-        Changed.addNetworkMessage(OpenExtraHandsKeybind.class, OpenExtraHandsKeybind::buffer, OpenExtraHandsKeybind::new,
-                OpenExtraHandsKeybind::handler);
     }
 }

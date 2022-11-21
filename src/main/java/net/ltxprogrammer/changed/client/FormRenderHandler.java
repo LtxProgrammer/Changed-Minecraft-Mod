@@ -64,10 +64,10 @@ public class FormRenderHandler {
             if (entRenderer instanceof LatexHumanoidRenderer<?,?,?> tmp) {
                 latexRenderer = tmp;
 
-                stack.pushPose();
+                /*stack.pushPose();
                 stack.translate(0D, -500D, 0D);
                 renderLiving(livingInstance, stack, buffer, light, lastPartialTick);
-                stack.popPose();
+                stack.popPose();*/
 
                 LatexHumanoidModel entityModel = latexRenderer.getModel((LatexEntity) livingInstance);
                 if (entityModel == null)
@@ -128,27 +128,24 @@ public class FormRenderHandler {
     }
 
     private static void renderModelPartWithTexture(ModelPart part, PoseStack stackCorrector, PoseStack stack, VertexConsumer buffer, int light, float alpha) {
-            if(part == null) return;
+        if(part == null) return;
 
-            float prevX = part.xRot;
-            part.xRot = 0F;
+        float prevX = part.xRot;
+        part.xRot = 0F;
 
-            //taken from ModelRenderer.render
-            if(part.visible && (!part.isEmpty())) {
-                stack.pushPose();
+        //taken from ModelRenderer.render
+        if(part.visible) {
+            stack.pushPose();
 
-                part.translateAndRotate(stack);
+            part.translateAndRotate(stack);
 
-                stack.mulPoseMatrix(stackCorrector.last().pose());
+            stack.mulPoseMatrix(stackCorrector.last().pose());
 
-                part.render(stack, buffer, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, alpha);
+            part.render(stack, buffer, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, alpha);
 
-                part.getAllParts().forEach((modelPart) ->
-                        modelPart.render(stack, buffer, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, alpha));
+            stack.popPose();
+        }
 
-                stack.popPose();
-            }
-
-            part.xRot = prevX;
+        part.xRot = prevX;
     }
 }

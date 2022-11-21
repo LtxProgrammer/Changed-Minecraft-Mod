@@ -6,24 +6,15 @@ import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
-
-    private final Level world;
-    private final int x, y, z;
-    private final Player entity;
-
     public ExtraHandsScreen(ExtraHandsMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
-        this.world = container.world;
-        this.x = container.x;
-        this.y = container.y;
-        this.z = container.z;
-        this.entity = container.entity;
         this.imageWidth = 218;
         this.imageHeight = 92;
     }

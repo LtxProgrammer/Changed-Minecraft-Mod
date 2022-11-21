@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 20, false, false, false, null, TransfurMode.REPLICATION, Optional.empty());
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty(), null);
         this.male = male;
         this.female = female;
     }
@@ -72,12 +73,20 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder.breatheMode = mode; this.femaleBuilder.breatheMode = mode; return this;
         }
 
-        public Builder<M, F> fallImmune() {
-            this.maleBuilder.fallImmunity = true; this.femaleBuilder.fallImmunity = true; return this;
+        public Builder<M, F> reducedFall() {
+            this.maleBuilder.reducedFall = true; this.femaleBuilder.reducedFall = true; return this;
         }
 
-        public Builder<M, F> fallImmune(boolean v) {
-            this.maleBuilder.fallImmunity = v; this.femaleBuilder.fallImmunity = v; return this;
+        public Builder<M, F> reducedFall(boolean v) {
+            this.maleBuilder.reducedFall = v; this.femaleBuilder.reducedFall = v; return this;
+        }
+
+        public Builder<M, F> canClimb() {
+            this.maleBuilder.canClimb = true; this.femaleBuilder.canClimb = true; return this;
+        }
+
+        public Builder<M, F> canClimb(boolean v) {
+            this.maleBuilder.canClimb = v; this.femaleBuilder.canClimb = v; return this;
         }
 
         public <E extends PathfinderMob> Builder<M, F> scares(Class<E> type) {
@@ -108,16 +117,24 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder.canGlide = enable; this.femaleBuilder.canGlide = enable; return this;
         }
 
+        public Builder<M, F> doubleJump() {
+            return this.extraJumps(1);
+        }
+
+        public Builder<M, F> extraJumps(int count) {
+            this.maleBuilder.extraJumpCharges = count; this.femaleBuilder.extraJumpCharges = count; return this;
+        }
+
         public Builder<M, F> additionalHealth(int value) {
             this.maleBuilder.additionalHealth = value; this.femaleBuilder.additionalHealth = value; return this;
         }
 
-        public Builder<M, F> extraHands() {
-            this.maleBuilder.extraHands = true; this.femaleBuilder.extraHands = true; return this;
+        public Builder<M, F> ability(Consumer<Player> ability) {
+            this.maleBuilder.ability(ability); this.femaleBuilder.ability(ability); return this;
         }
 
-        public Builder<M, F> extraHands(boolean v) {
-            this.maleBuilder.extraHands = v; this.femaleBuilder.extraHands = v; return this;
+        public Builder<M, F> extraHands() {
+            this.maleBuilder.extraHands(); this.femaleBuilder.extraHands(); return this;
         }
 
         public Builder<M, F> absorbing() {

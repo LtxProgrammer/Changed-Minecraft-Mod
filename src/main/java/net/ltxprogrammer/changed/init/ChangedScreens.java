@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
-import net.ltxprogrammer.changed.client.gui.ComputerScreen;
-import net.ltxprogrammer.changed.client.gui.ExtraHandsScreen;
-import net.ltxprogrammer.changed.client.gui.InfuserScreen;
-import net.ltxprogrammer.changed.client.gui.PurifierScreen;
+import net.ltxprogrammer.changed.client.gui.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,6 +14,7 @@ public class ChangedScreens {
         event.enqueueWork(() -> {
             MenuScreens.register(ChangedMenus.COMPUTER, ComputerScreen::new);
             MenuScreens.register(ChangedMenus.EXTRA_HANDS, ExtraHandsScreen::new);
+            MenuScreens.register(ChangedMenus.CENTAUR_SADDLE, CentaurSaddleScreen::new);
             MenuScreens.register(ChangedMenus.INFUSER, InfuserScreen::new);
             MenuScreens.register(ChangedMenus.PURIFIER, PurifierScreen::new);
         });
