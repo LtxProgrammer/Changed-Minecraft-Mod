@@ -162,6 +162,8 @@ public class ProcessTransfur {
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
+            if (oldVariant != null)
+                oldVariant.unhookAll(player);
             if (variant != null)
                 variant.generateForm(player, player.level);
         } catch (Exception ignored) {}
