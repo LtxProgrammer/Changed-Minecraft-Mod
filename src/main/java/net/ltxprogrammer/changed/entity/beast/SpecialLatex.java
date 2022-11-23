@@ -29,14 +29,14 @@ public class SpecialLatex extends LatexEntity {
     public LatexType getLatexType() {
         if (specialLatexForm == null)
             return LatexType.NEUTRAL;
-        return specialLatexForm.latexType();
+        return specialLatexForm.variant().getLatexType();
     }
 
     @Override
     public TransfurMode getTransfurMode() {
         if (specialLatexForm == null)
             return TransfurMode.REPLICATION;
-        return specialLatexForm.transfurMode();
+        return specialLatexForm.variant().transfurMode();
     }
 
     @Override
