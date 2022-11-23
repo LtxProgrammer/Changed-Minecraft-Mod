@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component>
+  <configuration default="false" factoryName="Application" name="runGameTestServer" singleton="false" type="Application">
+    <option name="MAIN_CLASS_NAME" value="cpw.mods.bootstraplauncher.BootstrapLauncher"/>
+    <option name="VM_PARAMETERS" value="-Dforge.logging.console.level=debug -Dforge.logging.markers=REGISTRIES -DlegacyClassPath.file=C:\Users\Ben\IdeaProjects\Changed-Minecraft-Mod\build\classpath\runGameTestServer_minecraftClasspath.txt -Dnet.minecraftforge.gradle.GradleStart.srg.srg-mcp=C:\Users\Ben\IdeaProjects\Changed-Minecraft-Mod\build\createSrgToMcp\output.srg -Dmixin.env.remapRefMap=true -Dmixin.env.refMapRemappingFile=C:\Users\Ben\IdeaProjects\Changed-Minecraft-Mod\build\createSrgToMcp\output.srg -DignoreList=bootstraplauncher,securejarhandler,asm-commons,asm-util,asm-analysis,asm-tree,asm,client-extra,fmlcore,javafmllanguage,lowcodelanguage,mclanguage,forge- -DmergeModules=jna-5.10.0.jar,jna-platform-5.10.0.jar,java-objc-bridge-1.0.0.jar -Dforge.enabledGameTestNamespaces=changed -Djava.net.preferIPv6Addresses=system -p C:\Users\Ben\.gradle\caches\modules-2\files-2.1\cpw.mods\bootstraplauncher\1.0.0\f55ddbb35612c6745cefc47d1a0d6dbfb25d3982\bootstraplauncher-1.0.0.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\cpw.mods\securejarhandler\1.0.3\acbf5e3c8a38fb8bf824a54fe45eee121c510392\securejarhandler-1.0.3.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-commons\9.2\f4d7f0fc9054386f2893b602454d48e07d4fbead\asm-commons-9.2.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-util\9.2\fbc178fc5ba3dab50fd7e8a5317b8b647c8e8946\asm-util-9.2.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-analysis\9.2\7487dd756daf96cab9986e44b9d7bcb796a61c10\asm-analysis-9.2.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-tree\9.2\d96c99a30f5e1a19b0e609dbb19a44d8518ac01e\asm-tree-9.2.jar;C:\Users\Ben\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm\9.2\81a03f76019c67362299c40e0ba13405f5467bff\asm-9.2.jar --add-modules ALL-MODULE-PATH --add-opens java.base/java.util.jar=cpw.mods.securejarhandler --add-exports java.base/sun.security.util=cpw.mods.securejarhandler --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming"/>
+    <option name="PROGRAM_PARAMETERS" value="--launchTarget forgegametestserveruserdev --gameDir . --fml.forgeVersion 40.1.85 --fml.mcVersion 1.18.2 --fml.forgeGroup net.minecraftforge --fml.mcpVersion 20220404.173914 --mixin.config changed.mixins.json"/>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$\run"/>
+    <module name="Changed-m1.18.2-f40.1.0.main"/>
+    <envs>
+      <env name="MOD_CLASSES" value="changed%%$PROJECT_DIR$\build\resources\main;changed%%$PROJECT_DIR$\build\classes\java\main"/>
+      <env name="MCP_MAPPINGS" value="official_1.18.2"/>
+    </envs>
+    <method v="2">
+      <option enabled="true" name="Make"/>
+      <option enabled="true" externalProjectPath="$PROJECT_DIR$" name="Gradle.BeforeRunTask" tasks=":prepareRunGameTestServer"/>
+    </method>
+  </configuration>
+</component>
