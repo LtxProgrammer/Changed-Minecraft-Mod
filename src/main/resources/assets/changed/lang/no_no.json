@@ -47,6 +47,7 @@
   "text.changed.game_saved_fail": "Kan ikke lagre spill.",
   "text.changed.game_loaded": "Spill lastet.",
   "text.changed.game_loaded_fail": "Kan ikke laste spill.",
+  "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   
   "block.changed.aerosol_latex": "Aerosol Lateks",
   "block.changed.bedside_iv_rack": "IV Rack",
@@ -213,7 +214,7 @@
   "changed:advancements.main.aquatic_swimming.description": "Tilbring en hel dag under vann som en akvatisk form",
 
   "changed:advancements.main.transfur_white.title": "En i samme",
-  "changed:advancements.main.transfur_white.description": "Transpels deg selv inn i en hvitt lateksform",
+  "changed:advancements.main.transfur_white.description": "Transpels deg selv inn i en hvit lateksform",
 
   "changed:advancements.main.transfur_dark.title": "Brorskap",
   "changed:advancements.main.transfur_dark.description": "Transpels deg selv inn i en mørk lateksform",

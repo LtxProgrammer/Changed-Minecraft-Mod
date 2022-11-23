@@ -47,6 +47,8 @@
   "text.changed.game_saved_fail": "Cannot save game.",
   "text.changed.game_loaded": "Game loaded.",
   "text.changed.game_loaded_fail": "Cannot load game.",
+
+  "effect.changed.hypercoagulation": "Hypercoagulation",
   
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
