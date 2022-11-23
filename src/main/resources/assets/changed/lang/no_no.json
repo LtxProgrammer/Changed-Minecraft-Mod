@@ -20,8 +20,8 @@
   "item.changed.latex_tipped_arrow": "Lateks tippet pil",
   "item.changed.orange": "Appelsiner",
   "item.changed.syringe": "Sprøyte",
-  "item.changed.white_latex_goo": "Hvitt lateks goo",
-  "item.changed.white_latex_bucket": "Hvitt lateksbøtte",
+  "item.changed.white_latex_goo": "Hvit lateks goo",
+  "item.changed.white_latex_bucket": "Hvit lateksbøtte",
 
   "item.changed.latex_dance_record": "Lateks dansemusikkplate",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
@@ -75,9 +75,9 @@
   "block.changed.tiles_gray_stairs": "Trapp av grå fliser",
   "block.changed.tiles_library_brown": "Brun bibliotekfliser",
   "block.changed.tiles_library_tan": "Tan bibliotekfliser",
-  "block.changed.tiles_white": "Hvitt fliser",
+  "block.changed.tiles_white": "Hvit fliser",
   "block.changed.tiles_white_stairs": "Trapp av Hvitt fliser",
-  "block.changed.tiles_white_connected": "Tilkoblede hvitt fliser",
+  "block.changed.tiles_white_connected": "Tilkoblede hvit fliser",
   "block.changed.wall_caution": "Forsiktigvegg",
   "block.changed.wall_library_upper": "Øvre bibliotekvegg",
   "block.changed.wall_library_lower": "Nedre bibliotekvegg",
@@ -86,12 +86,12 @@
   "block.changed.wall_gray": "Grå vegg",
   "block.changed.wall_gray_striped": "Stripet grå vegg",
   "block.changed.wall_vent": "Ventilasjonsvegg",
-  "block.changed.wall_white": "Hvitt vegg",
-  "block.changed.white_latex_block": "Hvitt lateksblokk",
-  "block.changed.white_latex_pillar": "Hvitt lateksøyle",
+  "block.changed.wall_white": "Hvit vegg",
+  "block.changed.white_latex_block": "Hvit lateksblokk",
+  "block.changed.white_latex_pillar": "Hvit lateksøyle",
 
   "biome.changed.dark_latex_plains": "Mørk lateksfelt",
-  "biome.changed.white_latex_forest": "Hvitt lateks skog",
+  "biome.changed.white_latex_forest": "Hvit lateks skog",
 
   "entity.changed.special": "Spesiell lateks",
   "entity.changed.aerosol_latex_wolf": "Gass lateks ulv",
@@ -127,7 +127,7 @@
   "entity.changed.light_latex_knight": "Lys lateks ridder",
   "entity.changed.light_latex_wolf_female": "Kvinnelig lys lateks ulv",
   "entity.changed.light_latex_wolf_male": "Mannlig lys lateks ulv",
-  "entity.changed.white_latex_wolf": "Hvitt lateks ulv",
+  "entity.changed.white_latex_wolf": "Hvit lateks ulv",
   
   "item.changed.aerosol_latex_wolf_spawn_egg": "Fremkallingsegg for gass lateks ulv",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig mørk lateks ulv",
@@ -161,7 +161,7 @@
   "item.changed.light_latex_knight_spawn_egg": "Fremkallingsegg for lys lateks ridder",
   "item.changed.light_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig lys lateks ulv",
   "item.changed.light_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig lys lateks ulv",
-  "item.changed.white_latex_wolf_spawn_egg": "Fremkallingsegg for hvitt lateks ulv",
+  "item.changed.white_latex_wolf_spawn_egg": "Fremkallingsegg for hvit lateks ulv",
 
   "changed.patreon.level0": "Discord Medlem",
   "changed.patreon.level1": "Nivå 1",
@@ -219,7 +219,7 @@
   "changed:advancements.main.transfur_dark.description": "Transpels deg selv inn i en mørk lateksform",
 
   "changed:advancements.main.white_latex_fuse.title": "Homogenitet",
-  "changed:advancements.main.white_latex_fuse.description": "Slå sammen til hvitt lateks som en hvitt lateksform",
+  "changed:advancements.main.white_latex_fuse.description": "Slå sammen til hvit lateks som en hvit lateksform",
 
   "changed:advancements.main.transfur_aerial.title": "Flytimer",
   "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform"
