@@ -35,7 +35,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
         this.LeftArm = root.getChild("LeftArm");
         controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).build();
     }
-    
+
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -84,16 +84,16 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
                 .texOffs(24, 28).addBox(-8.75F, 5.0F, 22.0F, 1.0F, 3.0F, 9.0F, new CubeDeformation(0.0F))
                 .texOffs(48, 36).addBox(-8.75F, 4.0F, 24.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 1.7453F, 0.0F, 0.1309F));
 
-        PartDefinition Horn_r1 = Head.addOrReplaceChild("Horn_r1", CubeListBuilder.create().texOffs(39, 61).addBox(2.25F, -18.65F, 26.75F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 1.0472F, 0.1309F, 0.0F));
+        PartDefinition Horn_r1 = Head.addOrReplaceChild("Horn_r1", CubeListBuilder.create().texOffs(39, 61).addBox(2.25F, -18.65F, 26.5F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 1.0472F, 0.1309F, 0.0F));
 
-        PartDefinition Horn_r2 = Head.addOrReplaceChild("Horn_r2", CubeListBuilder.create().texOffs(49, 61).addBox(-3.25F, -18.65F, 26.75F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 1.0472F, -0.1309F, 0.0F));
+        PartDefinition Horn_r2 = Head.addOrReplaceChild("Horn_r2", CubeListBuilder.create().texOffs(49, 61).addBox(-3.25F, -18.65F, 26.5F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, 1.0472F, -0.1309F, 0.0F));
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 6).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(34, 16).addBox(-2.0F, -34.75F, -3.0F, 4.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 16).addBox(-4.0F, -34.5F, -4.0F, 8.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 28).addBox(3.5F, -34.0F, -4.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.025F))
-                .texOffs(0, 51).addBox(-3.5F, -33.25F, -4.25F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 51).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 25).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 21).addBox(-4.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 16).addBox(2.5F, -34.0F, -2.0F, 2.0F, 6.0F, 2.0F, new CubeDeformation(0.0F))

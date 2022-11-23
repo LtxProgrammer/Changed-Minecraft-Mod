@@ -99,7 +99,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f)
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
@@ -116,6 +116,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_beifeng")));
     public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_blue_dragon")));
+    public static final LatexVariant<LatexPinkWyvern> LATEX_PINK_WYVERN = register(Builder.of(LATEX_BLUE_DRAGON, ChangedEntities.LATEX_PINK_WYVERN).faction(LatexType.NEUTRAL)
+            .build(Changed.modResource("form_latex_pink_wyvern")));
     public static final LatexVariant<LatexRedDragon> LATEX_RED_DRAGON = register(Builder.of(DARK_LATEX_YUFENG, ChangedEntities.LATEX_RED_DRAGON).faction(LatexType.NEUTRAL)
             .build(Changed.modResource("form_latex_red_dragon")));
     public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_YUIN)

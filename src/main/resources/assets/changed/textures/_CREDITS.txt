@@ -1,10 +1,17 @@
 Textures were originally flat colored by me (LtxProgrammer), and later shaded by people who can shade.
 
-aerosol_latex_wolf.png :: Artemka2009
+aerosol_latex_wolf.png :: Bijimio [remodel]
 dark_latex_wolf.png :: KoBOLTA
 dark_latex_yufeng.png :: KoBOLTA
+dark_latex_dragon_male.png :: Bijimio [remodel]
 latex_shark.png :: Artemka2009
 latex_tiger_shark.png :: Artemka2009 and KoBOLTA
 latex_beifeng.png :: KoBOLTA
 latex_traffic_cone_dragon.png :: KoBOLTA [Modeled this too]
 latex_leaf.png :: KoBOLTA [Modeled this too]
+latex_red_dragon.png :: Bijimio
+latex_red_panda.png :: Bijimio
+latex_yuin.png :: Bijimio
+latex_crystal_wolf.png :: Bijimio [remodel]
+latex_blue_dragon.png :: KoBOLTA and Bijimio
+litght_latex_knight_fusion :: KoBOLTA
