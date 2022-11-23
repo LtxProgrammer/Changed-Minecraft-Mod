@@ -94,8 +94,6 @@ public class PatreonBenefits {
 
     public record SpecialLatexForm(
             UUID uuid,
-            LatexType latexType,
-            TransfurMode transfurMode,
             List<ChangedParticles.Color3> weightedColors,
             ResourceLocation texture,
             Optional<ResourceLocation> emissive,
@@ -105,18 +103,13 @@ public class PatreonBenefits {
             DelayLoadedModel armorModelInner,
             DelayLoadedModel armorModelOuter,
             AnimationData animationData,
-            float waterSpeed,
-            float landSpeed,
-            float stepSize,
             float shadowSize,
             float width,
             float height,
-            LatexVariant.BreatheMode breatheMode,
-            int maxHealth,
-            boolean canGlide) {
+            LatexVariant<?> variant) {
 
         public boolean tailAidsInSwim() {
-            return breatheMode.canBreatheWater();
+            return variant.getBreatheMode().canBreatheWater();
         }
     }
 
@@ -192,6 +185,7 @@ public class PatreonBenefits {
 
     public static boolean checkForUpdates() throws IOException, InterruptedException {
         if (UPDATE_FLAG.computeIfAbsent(FMLEnvironment.dist, dist -> new AtomicBoolean(false)).get()) {
+            UPDATE_FLAG.get(FMLEnvironment.dist).set(false); // Consume update flag
             HttpClient client = HttpClient.newHttpClient();
 
             {
@@ -249,8 +243,6 @@ public class PatreonBenefits {
 
                         SpecialLatexForm form = new SpecialLatexForm(
                                 uuid,
-                                LatexType.valueOf(object.get("type").getAsString()),
-                                TransfurMode.valueOf(object.get("mode").getAsString()),
                                 colors,
                                 textureLocation,
                                 GsonHelper.getAsBoolean(object, "emissive", false) ?
@@ -261,15 +253,10 @@ public class PatreonBenefits {
                                 DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelInnerRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
                                 DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelOuterRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
                                 AnimationData.from(object.get("animation")),
-                                object.get("waterspeed").getAsFloat(),
-                                object.get("landspeed").getAsFloat(),
-                                object.get("stepsize").getAsFloat(),
                                 object.get("shadowsize").getAsFloat(),
                                 object.get("width").getAsFloat(),
                                 object.get("height").getAsFloat(),
-                                LatexVariant.BreatheMode.valueOf(object.get("breathemode").getAsString()),
-                                object.get("maxhealth").getAsInt(),
-                                object.get("canglide").getAsBoolean()
+                                LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject())
                         );
 
                         form.emissive.ifPresent(location -> {
@@ -287,26 +274,7 @@ public class PatreonBenefits {
 
                         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Internal.lateRegisterModel(layerLocation, armorLocations, form));
 
-                        /*var entityType = Dynamic.lateRegisterEntityType(Changed.modResource("special_latex_" + name),
-                                EntityType.Builder.<SpecialLatex>of((type, level) -> new SpecialLatex(type, level, uuid), MobCategory.MONSTER)
-                                        .clientTrackingRange(10).sized(form.width, form.height));
-
-                        Dynamic.lateRegisterEntityAttributes(entityType, SpecialLatex.createMonsterAttributes().build());
-
-                        ChangedEntities.SPECIAL_LATEXES.put(uuid, () -> entityType);
-
-                        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Internal.lateRegisterEntityRenderer(entityType, uuid));*/
-
-                        LatexVariant.Builder<?> builder = new LatexVariant.Builder<>(ChangedEntities.SPECIAL_LATEX);
-                        builder.breatheMode(form.breatheMode);
-                        builder.glide(form.canGlide);
-                        builder.additionalHealth(form.maxHealth);
-                        builder.faction(form.latexType);
-                        builder.groundSpeed(form.landSpeed);
-                        builder.swimSpeed(form.waterSpeed);
-                        builder.stepSize(form.stepSize);
-
-                        LatexVariant.registerSpecial(builder.build(Changed.modResource("special/form_" + uuid)));
+                        LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
@@ -372,8 +340,6 @@ public class PatreonBenefits {
 
                 SpecialLatexForm form = new SpecialLatexForm(
                         uuid,
-                        LatexType.valueOf(object.get("type").getAsString()),
-                        TransfurMode.valueOf(object.get("mode").getAsString()),
                         colors,
                         textureLocation,
                         GsonHelper.getAsBoolean(object, "emissive", false) ?
@@ -384,15 +350,10 @@ public class PatreonBenefits {
                         DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelInnerRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
                         DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelOuterRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
                         AnimationData.from(object.get("animation")),
-                        object.get("waterspeed").getAsFloat(),
-                        object.get("landspeed").getAsFloat(),
-                        object.get("stepsize").getAsFloat(),
                         object.get("shadowsize").getAsFloat(),
                         object.get("width").getAsFloat(),
                         object.get("height").getAsFloat(),
-                        LatexVariant.BreatheMode.valueOf(object.get("breathemode").getAsString()),
-                        object.get("maxhealth").getAsInt(),
-                        object.get("canglide").getAsBoolean()
+                        LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject())
                 );
 
                 form.emissive.ifPresent(location -> ONLINE_TEXTURES.add(OnlineResource.of(
@@ -403,16 +364,7 @@ public class PatreonBenefits {
 
                 CACHED_SPECIAL_FORMS.put(uuid, form);
 
-                LatexVariant.Builder<?> builder = new LatexVariant.Builder<>(ChangedEntities.SPECIAL_LATEX);
-                builder.breatheMode(form.breatheMode);
-                builder.glide(form.canGlide);
-                builder.additionalHealth(form.maxHealth);
-                builder.faction(form.latexType);
-                builder.groundSpeed(form.landSpeed);
-                builder.swimSpeed(form.waterSpeed);
-                builder.stepSize(form.stepSize);
-
-                LatexVariant.registerSpecial(builder.build(Changed.modResource("special/form_" + uuid)));
+                LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
@@ -439,15 +391,7 @@ public class PatreonBenefits {
         if (form == null)
             return null;
 
-        LatexVariant.Builder<?> builder = new LatexVariant.Builder<>(ChangedEntities.SPECIAL_LATEX);
-        builder.breatheMode(form.breatheMode);
-        builder.glide(form.canGlide);
-        builder.additionalHealth(form.maxHealth);
-        builder.faction(form.latexType);
-        builder.groundSpeed(form.landSpeed);
-        builder.swimSpeed(form.waterSpeed);
-        builder.stepSize(form.stepSize);
-        return builder.build(Changed.modResource("special/form_" + player.toString()));
+        return form.variant;
     }
 
     public static Component getPlayerName(Player player) {

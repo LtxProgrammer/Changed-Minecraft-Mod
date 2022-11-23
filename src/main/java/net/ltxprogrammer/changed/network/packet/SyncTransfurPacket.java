@@ -61,7 +61,6 @@ public class SyncTransfurPacket implements ChangedPacket {
                 Player player = level.getPlayerByUUID(uuid);
                 ProcessTransfur.setPlayerLatexVariantNamed(player, listing.form);
                 TagUtil.replace(listing.data, player.getPersistentData());
-                player.refreshDimensions();
             });
             context.setPacketHandled(true);
         }

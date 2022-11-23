@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.GenderedLatexEntity;
@@ -15,9 +17,11 @@ import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.inventory.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -43,9 +47,11 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
+import javax.naming.InvalidNameException;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -55,8 +61,17 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
 
-    private static final Consumer<Player> ABILITY_RIDE = player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE));
+    private static final Map<ResourceLocation, Consumer<Player>> ABILITY_REGISTRY = new HashMap<>();
+    private static final Consumer<Player> ABILITY_EXTRA_HANDS = registerAbility(Changed.modResource("extra_hands"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+            new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE)));
+    private static final Consumer<Player> ABILITY_RIDE = registerAbility(Changed.modResource("ride"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE)));
+
+    public static Consumer<Player> registerAbility(ResourceLocation name, Consumer<Player> ability) {
+        if (ABILITY_REGISTRY.containsKey(name))
+            Changed.LOGGER.error("Duplicate ability name");
+        return ABILITY_REGISTRY.computeIfAbsent(name, _a -> ability);
+    }
 
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
@@ -482,6 +497,8 @@ public class LatexVariant<T extends LatexEntity> {
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
             player.getAttribute(Attributes.MAX_HEALTH).removePermanentModifier(attributeModifierAdditionalHealth.getId());
+        player.maxUpStep = 0.6F;
+        player.refreshDimensions();
     }
 
     public void setDead() {
@@ -760,8 +777,7 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         public Builder<T> extraHands() {
-            return ability(player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE)));
+            return ability(ABILITY_EXTRA_HANDS);
         }
 
         public Builder<T> rideable() {
@@ -872,5 +888,55 @@ public class LatexVariant<T extends LatexEntity> {
                 event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
             }
         }
+    }
+
+    // Parses variant from JSON, does not register variant
+    public static LatexVariant<?> fromJson(ResourceLocation id, JsonObject root) {
+        ResourceLocation entityType = ResourceLocation.tryParse(GsonHelper.getAsString(root, "entity", ChangedEntities.SPECIAL_LATEX.getId().toString()));
+
+        List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
+        GsonHelper.getAsJsonArray(root, "scares", new JsonArray()).forEach(element -> {
+            try {
+                scares.add((Class<? extends PathfinderMob>) Class.forName(element.getAsString()));
+            } catch (Exception e) {
+                Changed.LOGGER.error("Invalid class given: {}", element.getAsString());
+            }
+        });
+
+        List<LatexVariant<?>> fusionOf = new ArrayList<>();
+        GsonHelper.getAsJsonArray(root, "fusionOf", new JsonArray()).forEach(element -> {
+            fusionOf.add(ALL_LATEX_FORMS.get(ResourceLocation.tryParse(element.getAsString())));
+        });
+
+        AtomicReference<LatexVariant<?>> mobFusionLatex = new AtomicReference<>(null);
+        AtomicReference<Class<? extends LivingEntity>> mobFusionMob = null;
+        GsonHelper.getAsJsonArray(root, "mobFusionOf", new JsonArray()).forEach(element -> {
+            mobFusionLatex.set(ALL_LATEX_FORMS.getOrDefault(ResourceLocation.tryParse(element.getAsString()), mobFusionLatex.get()));
+            try {
+                mobFusionMob.compareAndSet(null, (Class<? extends LivingEntity>)Class.forName(element.getAsString()));
+            } catch (ClassNotFoundException ignored) {}
+        });
+
+        return new LatexVariant<>(
+                id,
+                () -> (EntityType<LatexEntity>) Registry.ENTITY_TYPE.get(entityType),
+                LatexType.valueOf(GsonHelper.getAsString(root, "latexType", LatexType.NEUTRAL.toString())),
+                GsonHelper.getAsFloat(root, "groundSpeed", 1.0f),
+                GsonHelper.getAsFloat(root, "swimSpeed", 1.0f),
+                BreatheMode.valueOf(GsonHelper.getAsString(root, "breatheMode", BreatheMode.NORMAL.toString())),
+                GsonHelper.getAsFloat(root, "stepSize", 0.6f),
+                GsonHelper.getAsBoolean(root, "canGlide", false),
+                GsonHelper.getAsInt(root, "extraJumpCharges", 0),
+                GsonHelper.getAsInt(root, "additionalHealth", 4),
+                GsonHelper.getAsBoolean(root, "weakLungs", false),
+                GsonHelper.getAsBoolean(root, "reducedFall", false),
+                GsonHelper.getAsBoolean(root, "canClimb", false),
+                scares,
+                TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),
+                fusionOf.size() < 2 ? Optional.empty() : Optional.of(new Pair<>(
+                        fusionOf.get(0), fusionOf.get(1)
+                )),
+                mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
+                ABILITY_REGISTRY.getOrDefault(ResourceLocation.tryParse(GsonHelper.getAsString(root, "ability", "none")), null));
     }
 }
