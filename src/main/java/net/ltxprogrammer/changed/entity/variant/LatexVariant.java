@@ -497,6 +497,8 @@ public class LatexVariant<T extends LatexEntity> {
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
             player.getAttribute(Attributes.MAX_HEALTH).removePermanentModifier(attributeModifierAdditionalHealth.getId());
+        player.maxUpStep = 0.6F;
+        player.refreshDimensions();
     }
 
     public void setDead() {
