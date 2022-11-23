@@ -47,6 +47,8 @@
   "text.changed.game_saved_fail": "Kan ikke lagre spill.",
   "text.changed.game_loaded": "Spill lastet.",
   "text.changed.game_loaded_fail": "Kan ikke laste spill.",
+
+  "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   
   "block.changed.aerosol_latex": "Aerosol Lateks",
   "block.changed.bedside_iv_rack": "IV Rack",
