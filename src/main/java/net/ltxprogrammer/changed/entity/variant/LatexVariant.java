@@ -172,7 +172,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         if (mobFusionOf.isPresent()) {
             return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            mobFusionOf.get().getSecond().equals(clazz);
+                            mobFusionOf.get().getSecond().isAssignableFrom(clazz);
         }
 
         return false;
