@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.entity.EntityAccess;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -93,6 +95,29 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
         if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getMyRidingOffset());
+        }
+    }
+
+    @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
+    public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+            var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
+            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
+            callback.setReturnValue(vec.add(look.x() * z, 0.0f, look.z() * z));
+        }
+    }
+
+    @Inject(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
+    public final void getEyePosition(float v, CallbackInfoReturnable<Vec3> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
+
+            double d0 = Mth.lerp(v, player.xo + look.x() * z, player.getX() + look.x() * z);
+            double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
+            double d2 = Mth.lerp(v, player.zo + look.z() * z, player.getZ() + look.z() * z);
+            callback.setReturnValue(new Vec3(d0, d1, d2));
         }
     }
 }

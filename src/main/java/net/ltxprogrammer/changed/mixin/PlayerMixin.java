@@ -40,7 +40,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     protected void tryToStartFallFlying(CallbackInfoReturnable<Boolean> ci) {
         Player player = (Player)(Object)this;
-        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).canGlide()) {
+        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).canGlide) {
             if (!player.isOnGround() && !player.isFallFlying() && !player.isInWater() && !player.hasEffect(MobEffects.LEVITATION)) {
                 player.startFallFlying();
                 ci.setReturnValue(true);
@@ -99,7 +99,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
         if (ProcessTransfur.isPlayerLatex((Player)(Object)this))
-            if (ProcessTransfur.getPlayerLatexVariant((Player)(Object)this).canClimb() && state.is(Blocks.COBWEB))
+            if (ProcessTransfur.getPlayerLatexVariant((Player)(Object)this).canClimb && state.is(Blocks.COBWEB))
                 ci.cancel();
     }
 

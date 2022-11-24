@@ -41,7 +41,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         if (!player.level.isClientSide) return;
 
         LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-        if (variant != null && variant.canGlide()) {
+        if (variant != null && variant.canGlide) {
             boolean flag = player.input.jumping;
 
             KeyboardInput kb = null;
