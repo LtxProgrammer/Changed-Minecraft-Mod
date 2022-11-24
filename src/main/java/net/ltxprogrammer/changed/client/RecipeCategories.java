@@ -66,7 +66,7 @@ public class RecipeCategories {
                 return categories;
             if (variant.getBreatheMode().canBreatheWater())
                 categories.add(INFUSER_AQUATIC);
-            if (variant.canGlide())
+            if (variant.canGlide)
                 categories.add(INFUSER_AERIAL);
             if (variant.getLatexType() == LatexType.DARK_LATEX)
                 categories.add(INFUSER_DARK_LATEX);
