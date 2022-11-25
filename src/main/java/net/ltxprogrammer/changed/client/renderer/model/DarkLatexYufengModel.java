@@ -84,27 +84,41 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 0).addBox(-1.5F, -1.0F, -6.0F, 3.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offsetAndRotation(-3.0F, -7.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
+        PartDefinition Base_r1 = Head.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(32, 11).addBox(-1.4F, 0.35F, 2.3F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.5F, -4.0F, 0.0F, -1.4312F, 0.6458F, 0.4974F));
 
-        PartDefinition Base_r1 = RightEar.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(58, 0).addBox(-0.6209F, -1.5909F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.211F, -0.056F, 0.0059F));
+        PartDefinition Base_r2 = Head.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(54, 19).addBox(-0.6F, 0.35F, 2.3F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.5F, -4.0F, 0.0F, -1.4312F, -0.6458F, -0.4974F));
 
-        PartDefinition Base_r2 = RightEar.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(32, 11).addBox(1.6172F, -0.94F, -1.3634F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.5F, 3.0F, -1.35F, -2.2454F, -0.186F, 1.3485F));
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(45, 68).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(1, 66).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(63, 24).addBox(2.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(65, 40).addBox(2.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(67, 11).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(66, 2).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(81, 2).addBox(-4.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(66, 68).addBox(2.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
+                .texOffs(79, 24).addBox(-4.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
+                .texOffs(22, 65).addBox(-4.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(66, 61).addBox(-4.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(67, 36).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 75).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 27.0F, 0.0F));
 
-        PartDefinition Base_r3 = RightEar.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(54, 24).addBox(-1.3F, -1.5F, -0.975F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.2872F, 2.969F, -0.6745F, -2.087F, -0.3257F, 1.3714F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offsetAndRotation(-2.5F, -7.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
-        PartDefinition Base_r4 = RightEar.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(47, 49).addBox(-1.5088F, -5.0341F, -1.0F, 2.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7681F, -0.1841F, 0.0746F));
+        PartDefinition Base_r3 = RightEar.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(58, 0).addBox(-0.6209F, -1.8F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.0F, 0.0F, -0.2094F, -0.056F, 0.0059F));
+
+        PartDefinition Base_r4 = RightEar.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(54, 24).addBox(-1.3F, -1.5F, -0.975F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.7872F, 2.969F, -0.6745F, -2.087F, -0.3257F, 1.3714F));
+
+        PartDefinition Base_r5 = RightEar.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(47, 49).addBox(-2.0088F, -5.0341F, -1.0F, 2.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7681F, -0.1841F, 0.0746F));
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offsetAndRotation(2.5F, -7.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
-        PartDefinition Base_r5 = LeftEar.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(58, 5).addBox(0.1209F, -1.7159F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.211F, 0.056F, -0.0059F));
-
-        PartDefinition Base_r6 = LeftEar.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(54, 19).addBox(-0.7773F, -0.0903F, 1.3327F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, 3.0F, 0.0F, -1.4379F, 0.6464F, 0.3107F));
+        PartDefinition Base_r6 = LeftEar.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(58, 5).addBox(-0.3791F, -1.8F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, -0.2094F, 0.056F, -0.0059F));
 
         PartDefinition Base_r7 = LeftEar.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(56, 29).addBox(-1.7048F, -0.3091F, -1.3212F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, 3.0F, 0.0F, -1.1519F, 0.4605F, 0.4624F));
 
         PartDefinition Base_r8 = LeftEar.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(48, 0).addBox(0.0088F, -5.0341F, -1.0F, 2.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7681F, 0.1841F, -0.0746F));
 
-        PartDefinition Mask = Head.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(57, 49).addBox(-1.0F, -34.0F, -5.0F, 2.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition Mask = Head.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(57, 49).addBox(-1.0F, -33.999F, -5.0F, 2.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 32).addBox(-2.0F, -33.0F, -5.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 4).addBox(1.0F, -33.0F, -5.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(12, 48).addBox(2.0F, -32.0F, -5.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
@@ -121,13 +135,17 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        PartDefinition Base_r9 = Tail.addOrReplaceChild("Base_r9", CubeListBuilder.create().texOffs(0, 54).addBox(-1.0F, 0.1914F, -0.9483F, 2.0F, 7.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+        PartDefinition Base_r9 = Tail.addOrReplaceChild("Base_r9", CubeListBuilder.create().texOffs(67, 53).addBox(-1.0F, -10.35F, 13.925F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, 0.0436F, 0.0F, 0.0F));
 
-        PartDefinition Base_r10 = Tail.addOrReplaceChild("Base_r10", CubeListBuilder.create().texOffs(47, 39).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        PartDefinition Base_r10 = Tail.addOrReplaceChild("Base_r10", CubeListBuilder.create().texOffs(65, 14).addBox(-1.5F, -13.2F, 6.9F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.25F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, -0.1309F, 0.0F, 0.0F));
+
+        PartDefinition Base_r11 = Tail.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(67, 0).addBox(-1.5F, -1.375F, -2.6983F, 3.0F, 3.0F, 6.0F, new CubeDeformation(-0.025F)), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, -0.3927F, 0.0F, 0.0F));
+
+        PartDefinition Base_r12 = Tail.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(45, 60).addBox(-2.0F, -2.8F, 0.4F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
         PartDefinition LeftWing = Torso.addOrReplaceChild("LeftWing", CubeListBuilder.create(), PartPose.offset(2.0F, 5.0F, 2.0F));
 
-        PartDefinition Base_r11 = LeftWing.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(39, 42).addBox(8.0F, -27.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition Base_r13 = LeftWing.addOrReplaceChild("Base_r13", CubeListBuilder.create().texOffs(39, 42).addBox(8.0F, -27.0F, 0.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(20, 52).addBox(7.0F, -26.0F, 0.0F, 1.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(57, 55).addBox(5.0F, -24.0F, 0.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(8, 54).addBox(6.0F, -25.0F, 0.0F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
@@ -135,7 +153,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         PartDefinition RightWing = Torso.addOrReplaceChild("RightWing", CubeListBuilder.create(), PartPose.offset(-2.0F, 5.0F, 2.0F));
 
-        PartDefinition Base_r12 = RightWing.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(31, 42).addBox(8.0F, -27.0F, -1.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition Base_r14 = RightWing.addOrReplaceChild("Base_r14", CubeListBuilder.create().texOffs(31, 42).addBox(8.0F, -27.0F, -1.0F, 3.0F, 16.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(16, 52).addBox(7.0F, -26.0F, -1.0F, 1.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 52).addBox(6.0F, -25.0F, -1.0F, 1.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(12, 54).addBox(5.0F, -24.0F, -1.0F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F))
@@ -155,6 +173,9 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
+
+
+
 
     @Override
     public void prepareMobModel(DarkLatexYufeng p_102861_, float p_102862_, float p_102863_, float p_102864_) {
