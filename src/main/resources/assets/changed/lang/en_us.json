@@ -47,6 +47,8 @@
   "text.changed.game_saved_fail": "Cannot save game.",
   "text.changed.game_loaded": "Game loaded.",
   "text.changed.game_loaded_fail": "Cannot load game.",
+
+  "effect.changed.hypercoagulation": "Hypercoagulation",
   
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
@@ -108,6 +110,7 @@
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
   "entity.changed.latex_leaf": "Latex Leaf",
   "entity.changed.latex_orca": "Latex Orca",
+  "entity.changed.latex_pink_wyvern": "Latex Pink Wyvern",
   "entity.changed.latex_red_dragon": "Latex Red Dragon",
   "entity.changed.latex_red_panda": "Latex Red Panda",
   "entity.changed.latex_shark_female": "Female Latex Shark",
@@ -141,6 +144,7 @@
   "item.changed.latex_hypno_cat_spawn_egg": "Latex Hypno Cat Spawn Egg",
   "item.changed.latex_leaf_spawn_egg": "Latex Leaf Spawn Egg",
   "item.changed.latex_orca_spawn_egg": "Latex Orca Spawn Egg",
+  "item.changed.latex_pink_wyvern_spawn_egg": "Latex Pink Wyvern Spawn Egg",
   "item.changed.latex_red_dragon_spawn_egg": "Latex Red Dragon Spawn Egg",
   "item.changed.latex_red_panda_spawn_egg": "Latex Red Panda Spawn Egg",
   "item.changed.latex_shark_female_spawn_egg": "Female Latex Shark Spawn Egg",

@@ -47,7 +47,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
-import javax.naming.InvalidNameException;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -86,7 +85,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
             .fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
+    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF)
             .build(Changed.modResource("form_aerosol_latex_wolf")));
@@ -114,7 +113,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f)
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
@@ -131,6 +130,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_beifeng")));
     public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_blue_dragon")));
+    public static final LatexVariant<LatexPinkWyvern> LATEX_PINK_WYVERN = register(Builder.of(LATEX_BLUE_DRAGON, ChangedEntities.LATEX_PINK_WYVERN).faction(LatexType.NEUTRAL)
+            .build(Changed.modResource("form_latex_pink_wyvern")));
     public static final LatexVariant<LatexRedDragon> LATEX_RED_DRAGON = register(Builder.of(DARK_LATEX_YUFENG, ChangedEntities.LATEX_RED_DRAGON).faction(LatexType.NEUTRAL)
             .build(Changed.modResource("form_latex_red_dragon")));
     public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_YUIN)
@@ -171,7 +172,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         if (mobFusionOf.isPresent()) {
             return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            mobFusionOf.get().getSecond().equals(clazz);
+                            mobFusionOf.get().getSecond().isAssignableFrom(clazz);
         }
 
         return false;
@@ -217,24 +218,25 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     // Varient properties
-    private final ResourceLocation formId;
-    private final Supplier<EntityType<T>> ctor;
-    private final LatexType type;
-    private final float groundSpeed;
-    private final float swimSpeed;
-    private final BreatheMode breatheMode;
-    private final float stepSize;
-    private final boolean canGlide;
-    private final int extraJumpCharges;
-    private final int additionalHealth;
-    private final boolean weakLungs;
-    private final boolean reducedFall;
-    private final boolean canClimb;
-    private final List<Class<? extends PathfinderMob>> scares;
-    private final TransfurMode transfurMode;
-    private final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
-    private final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
-    private final Consumer<Player> ability;
+    public final ResourceLocation formId;
+    public final Supplier<EntityType<T>> ctor;
+    public final LatexType type;
+    public final float groundSpeed;
+    public final float swimSpeed;
+    public final BreatheMode breatheMode;
+    public final float stepSize;
+    public final boolean canGlide;
+    public final int extraJumpCharges;
+    public final int additionalHealth;
+    public final boolean weakLungs;
+    public final boolean reducedFall;
+    public final boolean canClimb;
+    public final List<Class<? extends PathfinderMob>> scares;
+    public final TransfurMode transfurMode;
+    public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
+    public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
+    public final Consumer<Player> ability;
+    public final float cameraZOffset;
 
     private boolean dead;
     public int ticksBreathingUnderwater;
@@ -253,7 +255,7 @@ public class LatexVariant<T extends LatexEntity> {
                         boolean weakLungs, boolean reducedFall, boolean canClimb,
                         List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability, float cameraZOffset) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -272,6 +274,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.transfurMode = transfurMode;
         this.fusionOf = fusionOf;
         this.mobFusionOf = mobFusionOf;
+        this.cameraZOffset = cameraZOffset;
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
         attributeModifierAdditionalHealth = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d8"), "changed:trait_additional_health", additionalHealth, AttributeModifier.Operation.ADDITION);
@@ -287,7 +290,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability);
+                weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -332,10 +335,6 @@ public class LatexVariant<T extends LatexEntity> {
     public BreatheMode getBreatheMode() {
         return breatheMode;
     }
-
-    public boolean canGlide() { return canGlide; }
-
-    public boolean canClimb() { return canClimb; }
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
@@ -670,6 +669,7 @@ public class LatexVariant<T extends LatexEntity> {
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
         Consumer<Player> ability = null;
+        float cameraZOffset = 0.0F;
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
@@ -685,7 +685,7 @@ public class LatexVariant<T extends LatexEntity> {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed)
                     .swimSpeed(variant.swimSpeed).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .ability(variant.ability).weakLungs(variant.weakLungs).reducedFall(variant.reducedFall).canClimb(variant.canClimb).scares(variant.scares)
-                    .transfurMode(variant.transfurMode);
+                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset);
         }
 
         public static <T extends LatexEntity> Builder<T> of(GenderedVariant<?, ?> variant, Supplier<EntityType<T>> entityType) {
@@ -800,9 +800,13 @@ public class LatexVariant<T extends LatexEntity> {
             this.mobFusionOf = Optional.of(Pair.of(formA, mobClass)); return this;
         }
 
+        public Builder<T> cameraZOffset(float v) {
+            this.cameraZOffset = v; return this;
+        }
+
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability);
+                    weakLungs, reducedFall, canClimb, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
         }
     }
 
@@ -937,6 +941,7 @@ public class LatexVariant<T extends LatexEntity> {
                         fusionOf.get(0), fusionOf.get(1)
                 )),
                 mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
-                ABILITY_REGISTRY.getOrDefault(ResourceLocation.tryParse(GsonHelper.getAsString(root, "ability", "none")), null));
+                ABILITY_REGISTRY.getOrDefault(ResourceLocation.tryParse(GsonHelper.getAsString(root, "ability", "none")), null),
+                GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F));
     }
 }

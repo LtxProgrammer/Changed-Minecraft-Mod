@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel.process;
 
-public class ArmorLatexBlueDragonModel<T extends LatexBlueDragon> extends LatexHumanoidArmorModel<T> {
+public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_blue_dragon")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_blue_dragon")).get();
 
