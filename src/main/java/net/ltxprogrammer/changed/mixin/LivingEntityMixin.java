@@ -39,4 +39,11 @@ public abstract class LivingEntityMixin extends Entity {
                 callback.setReturnValue(true);
         }
     }
+
+    @Inject(method = "getJumpBoostPower", at = @At("RETURN"), cancellable = true)
+    public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            callback.setReturnValue(callback.getReturnValue() * ProcessTransfur.getPlayerLatexVariant(player).jumpStrength);
+        }
+    }
 }
