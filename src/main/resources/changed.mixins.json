@@ -9,6 +9,7 @@
     "BlockBehaviourMixin",
     "BlockMixin",
     "BlockStateBaseMixin",
+    "EnchantmentHelperMixin",
     "EntityMixin",
     "ItemMixin",
     "ItemStackMixin",
