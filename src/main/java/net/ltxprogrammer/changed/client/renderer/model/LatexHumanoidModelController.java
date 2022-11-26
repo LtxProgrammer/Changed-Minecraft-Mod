@@ -468,7 +468,10 @@ public class LatexHumanoidModelController {
             HumanoidArm humanoidarm = this.getAttackArm(p_102858_);
             ModelPart modelpart = this.getArm(humanoidarm, false);
             float f = entityModel.attackTime;
-            this.Torso.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+            if (!this.hasLegs2)
+                this.Torso.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+            else
+                this.Torso.yRot = 0.0F;
             if (humanoidarm == HumanoidArm.LEFT) {
                 this.Torso.yRot *= -1.0F;
             }
