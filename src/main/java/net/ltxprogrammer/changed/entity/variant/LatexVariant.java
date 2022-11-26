@@ -107,7 +107,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)
             .build(Changed.modResource("form_latex_leaf")));
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
-            .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing)
+            .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_RED_PANDA).faction(LatexType.NEUTRAL)
             .build(Changed.modResource("form_latex_red_panda")));
@@ -208,6 +208,8 @@ public class LatexVariant<T extends LatexEntity> {
         public boolean canBreatheAir() {
             return this == NORMAL || this == ANY;
         }
+
+        public boolean hasAquaAffinity() { return canBreatheWater(); }
     }
 
     private LatexEntity latexForm = null;
