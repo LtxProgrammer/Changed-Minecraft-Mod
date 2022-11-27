@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,20 +28,24 @@ import net.minecraftforge.common.PlantType;
 import net.minecraftforge.fml.DistExecutor;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
     private final LatexVariant variant;
+    private final Supplier<Item> crystal;
 
-    public AbstractLatexCrystal(LatexVariant variant, Properties p_53514_) {
+    public AbstractLatexCrystal(LatexVariant variant, Supplier<Item> crystal, Properties p_53514_) {
         super(p_53514_);
         this.variant = variant;
+        this.crystal = crystal;
     }
 
-    public AbstractLatexCrystal(Properties properties) {
+    public AbstractLatexCrystal(Supplier<Item> crystal, Properties properties) {
         super(properties);
         this.variant = null;
+        this.crystal = crystal;
     }
 
     public static void cutoutRenderer(Block block) {
@@ -89,6 +94,6 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
 
     @Override
     public List<ItemStack> getDrops(BlockState p_60537_, LootContext.Builder p_60538_) {
-        return List.of(new ItemStack(ChangedItems.DARK_LATEX_CRYSTAL.get(), 2));
+        return List.of(new ItemStack(crystal.get(), 2));
     }
 }
