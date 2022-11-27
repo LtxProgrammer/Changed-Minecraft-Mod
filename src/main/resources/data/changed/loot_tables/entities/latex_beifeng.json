@@ -1,7 +1,7 @@
 {
   "type": "minecraft:entity",
   "pools": [
-      {
+        {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -27,8 +27,14 @@
             }
           ],
           "name": "changed:latex_base"
-        },
-		  {
+        }
+      ]
+    },
+	{
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -49,9 +55,9 @@
               }
             }
           ],
-          "name": "changed:white_latex_goo"
+          "name": "changed:dark_latex_goo"
         },
-				  {
+		        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -72,9 +78,10 @@
               }
             }
           ],
-          "name": "changed:white_latex_goo"
+          "name": "changed:dark_latex_crystal"
         }
       ]
     }
+
   ]
 }
