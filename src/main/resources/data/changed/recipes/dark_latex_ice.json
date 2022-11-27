@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "changed:dark_latex_crystal"
+      "item": "changed:dark_latex_crystal_fragment"
     },
     {
-      "item": "changed:dark_latex_crystal"
+      "item": "changed:dark_latex_crystal_fragment"
     },
     {
-      "item": "changed:dark_latex_crystal"
+      "item": "changed:dark_latex_crystal_fragment"
     },
     {
-      "item": "changed:dark_latex_crystal"
+      "item": "changed:dark_latex_crystal_fragment"
     }
   ],
   "result": {
