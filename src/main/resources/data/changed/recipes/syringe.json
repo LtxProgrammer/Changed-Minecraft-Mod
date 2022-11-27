@@ -1,13 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:iron_ingot"
-    },
-    {
-      "item": "minecraft:glass_bottle"
-    }
+  "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "X",
+    "#"
   ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_bottle"
+    },
+    "#": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
   "result": {
     "item": "changed:syringe",
     "count": 1
