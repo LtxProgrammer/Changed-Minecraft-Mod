@@ -25,7 +25,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (this.level.isClientSide) return;
         if ((LivingEntity)(Object)this instanceof Player player) {
             LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-            if (variant != null && variant.canGlide()) {
+            if (variant != null && variant.canGlide) {
                 this.setSharedFlag(7, player.isFallFlying() && !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
                 ci.cancel();
             }
@@ -35,8 +35,15 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
     public void onClimbable(CallbackInfoReturnable<Boolean> callback) {
         if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            if (ProcessTransfur.getPlayerLatexVariant(player).canClimb() && player.horizontalCollision)
+            if (ProcessTransfur.getPlayerLatexVariant(player).canClimb && player.horizontalCollision)
                 callback.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "getJumpBoostPower", at = @At("RETURN"), cancellable = true)
+    public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            callback.setReturnValue(callback.getReturnValue() * ProcessTransfur.getPlayerLatexVariant(player).jumpStrength);
         }
     }
 }

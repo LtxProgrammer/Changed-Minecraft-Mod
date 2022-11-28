@@ -22,22 +22,14 @@ public abstract class CameraMixin {
     protected void setPosition(Vec3 vec, CallbackInfo callbackInfo) {
         Camera self = (Camera)(Object)this;
         if (self.getEntity() instanceof Player player && !player.isSpectator() && ProcessTransfur.isPlayerLatex(player)) {
-            LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-            LatexEntity livingInstance = variant.getLatexEntity();
-            if (livingInstance == null) return;
-            EntityRenderer entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(livingInstance);
-            if (entRenderer instanceof LatexHumanoidRenderer<?,?,?> latexRenderer) {
-                if (latexRenderer.getModel(livingInstance) instanceof LatexHumanoidModelInterface controlled) {
-                    float z = -controlled.getController().forewardOffset / 16.0f;
-                    var look = self.getLookVector().copy();
-                    look.mul(1.0f, 0.0f, 1.0f);
-                    look.normalize();
-                    var newVec = vec.add(look.x() * z, 0.0f, look.z() * z);
-                    self.position = newVec;
-                    self.blockPosition.set(newVec.x, newVec.y, newVec.z);
-                    callbackInfo.cancel();
-                }
-            }
+            float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+            var look = self.getLookVector().copy();
+            look.mul(1.0f, 0.0f, 1.0f);
+            look.normalize();
+            var newVec = vec.add(look.x() * z, 0.0f, look.z() * z);
+            self.position = newVec;
+            self.blockPosition.set(newVec.x, newVec.y, newVec.z);
+            callbackInfo.cancel();
         }
     }
 }

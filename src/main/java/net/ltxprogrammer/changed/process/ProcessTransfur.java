@@ -93,8 +93,17 @@ public class ProcessTransfur {
         else {
             float damage = amount / 1200.0f;
             float health = entity.getHealth();
+            List<LatexVariant<?>> mobFusion = new ArrayList<>();
+            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                if (checkVariant.isFusionOf(LatexVariant.ALL_LATEX_FORMS.get(type), entity.getClass())) {
+                    mobFusion.add(checkVariant);
+                }
+            }
+            if (mobFusion.isEmpty())
+                return false;
+
             if (health <= damage && health > 0.0F) {
-                ProcessTransfur.transfur(entity, entity.level, LatexVariant.ALL_LATEX_FORMS.get(type), false);
+                ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false);
                 return true;
             }
 

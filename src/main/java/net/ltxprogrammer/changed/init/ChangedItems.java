@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class ChangedItems {
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Changed.MODID);
     public static final RegistryObject<Item> AEROSOL_LATEX_BUCKET = register("aerosol_latex_bucket", AbstractLatexBucket.from(ChangedFluids.AEROSOL_LATEX));
-    public static final RegistryObject<Item> DARK_LATEX_CRYSTAL = register("dark_latex_crystal", AbstractLatexItem::new);
+    public static final RegistryObject<Item> DARK_LATEX_CRYSTAL_FRAGMENT = register("dark_latex_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<Item> DARK_LATEX_GOO = register("dark_latex_goo", AbstractLatexItem::new);
     public static final RegistryObject<Item> DARK_LATEX_MASK = register("dark_latex_mask", DarkLatexMask::new);
     public static final RegistryObject<Item> DARK_LATEX_BUCKET = register("dark_latex_bucket", AbstractLatexBucket.from(ChangedFluids.DARK_LATEX));
@@ -27,8 +27,10 @@ public class ChangedItems {
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new Item((new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Item> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> BLOOD_SYRINGE = register("blood_syringe", () -> new Syringe.BloodSyringe(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<Item> LATEX_SYRINGE = register("latex_syringe", () -> new Syringe.LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
+    public static final RegistryObject<Item> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<Item> WHITE_LATEX_GOO = register("white_latex_goo", AbstractLatexItem::new);
     public static final RegistryObject<Item> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
