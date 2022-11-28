@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -16,22 +17,18 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class LatexCrystal extends AbstractLatexCrystal {
-    public LatexCrystal(Properties properties) {
-        super(properties.randomTicks());
-    }
+    ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable;
 
-    private static final List<Supplier<EntityType<? extends DarkLatexEntity>>> DARK_LATEXES = new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
-            .add(ChangedEntities.DARK_LATEX_WOLF_MALE::get)
-            .add(ChangedEntities.DARK_LATEX_WOLF_FEMALE::get)
-            .add(ChangedEntities.DARK_LATEX_DRAGON_MALE::get)
-            .add(ChangedEntities.DARK_LATEX_DRAGON_FEMALE::get)
-            .add(ChangedEntities.DARK_LATEX_YUFENG::get).build();
+    public LatexCrystal(ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable, Supplier<Item> crystal, Properties properties) {
+        super(crystal, properties.randomTicks());
+        this.spawnable = spawnable;
+    }
 
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         super.randomTick(state, level, position, random);
         if (random.nextInt(10) == 0) {
-            Supplier<EntityType<? extends DarkLatexEntity>> entityTypeSupplier = DARK_LATEXES.get(random.nextInt(DARK_LATEXES.size()));
+            Supplier<EntityType<? extends DarkLatexEntity>> entityTypeSupplier = spawnable.get(random.nextInt(spawnable.size()));
 
             entityTypeSupplier.get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
             level.setBlock(position, Blocks.AIR.defaultBlockState(), 3);

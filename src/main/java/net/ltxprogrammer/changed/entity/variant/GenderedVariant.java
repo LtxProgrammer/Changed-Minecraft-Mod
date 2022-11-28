@@ -85,6 +85,14 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder.canClimb = true; this.femaleBuilder.canClimb = true; return this;
         }
 
+        public Builder<M, F> nightVision() {
+            this.maleBuilder.nightVision = true; this.femaleBuilder.nightVision = true; return this;
+        }
+
+        public Builder<M, F> nightVision(boolean v) {
+            this.maleBuilder.nightVision = v; this.femaleBuilder.nightVision = v; return this;
+        }
+
         public Builder<M, F> canClimb(boolean v) {
             this.maleBuilder.canClimb = v; this.femaleBuilder.canClimb = v; return this;
         }

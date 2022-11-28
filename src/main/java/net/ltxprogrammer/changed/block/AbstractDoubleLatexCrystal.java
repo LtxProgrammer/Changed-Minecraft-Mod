@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -23,18 +24,19 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal implements DoubleBlockPlace {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     //public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public AbstractDoubleLatexCrystal(LatexVariant variant, Properties p_53514_) {
-        super(variant, p_53514_);
+    public AbstractDoubleLatexCrystal(LatexVariant variant, Supplier<Item> crystal, Properties p_53514_) {
+        super(variant, crystal, p_53514_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    public AbstractDoubleLatexCrystal(Properties p_53514_) {
-        super(p_53514_);
+    public AbstractDoubleLatexCrystal(Supplier<Item> crystal, Properties p_53514_) {
+        super(crystal, p_53514_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 

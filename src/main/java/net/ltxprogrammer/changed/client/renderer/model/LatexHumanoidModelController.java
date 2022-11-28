@@ -359,12 +359,12 @@ public class LatexHumanoidModelController {
         }
 
         if (this.hasArms2) {
-            this.RightArm2.xRot = this.RightArm.xRot * 0.22F;
-            this.RightArm2.yRot = this.RightArm.yRot * 0.22F;
-            this.RightArm2.zRot = this.RightArm.zRot * 0.22F;
-            this.LeftArm2.xRot = this.LeftArm.xRot * 0.22F;
-            this.LeftArm2.yRot = this.LeftArm.yRot * 0.22F;
-            this.LeftArm2.zRot = this.LeftArm.zRot * 0.22F;
+            this.RightArm2.xRot = this.RightArm.xRot * 0.44F;
+            this.RightArm2.yRot = this.RightArm.yRot * 0.44F;
+            this.RightArm2.zRot = this.RightArm.zRot * 0.44F;
+            this.LeftArm2.xRot = this.LeftArm.xRot * 0.44F;
+            this.LeftArm2.yRot = this.LeftArm.yRot * 0.44F;
+            this.LeftArm2.zRot = this.LeftArm.zRot * 0.44F;
         }
     }
 
