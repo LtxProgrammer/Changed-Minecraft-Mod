@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
@@ -26,12 +27,17 @@ public class ShovelItemMixin {
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = level.getBlockState(blockpos);
-        if (blockstate.getProperties().contains(COVERED) && blockstate.getValue(COVERED) != LatexType.NEUTRAL) {
+        Player player = context.getPlayer();
+        if (player != null && blockstate.getProperties().contains(COVERED) && blockstate.getValue(COVERED) != LatexType.NEUTRAL) {
             level.setBlockAndUpdate(blockpos, blockstate.setValue(COVERED, LatexType.NEUTRAL));
-            if (!context.getPlayer().isCreative() && !context.getPlayer().isSpectator())
+            if (player == null || (!player.isCreative() && !player.isSpectator()))
                 Block.popResource(level, blockpos, new ItemStack(blockstate.getValue(COVERED).goo.get()));
             level.playSound(context.getPlayer(), blockpos, SoundEvents.SLIME_BLOCK_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
-            callback.setReturnValue(InteractionResult.sidedSuccess(true));
+            callback.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
+
+            context.getItemInHand().hurtAndBreak(1, player, (p_43122_) -> {
+                p_43122_.broadcastBreakEvent(context.getHand());
+            });
         }
     }
 }
