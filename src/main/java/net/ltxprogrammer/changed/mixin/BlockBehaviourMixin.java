@@ -69,10 +69,8 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     @Inject(method = "getDrops", at = @At("RETURN"), cancellable = true)
     public void getDrops(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> callbackInfoReturnable) {
         if (isLatexed(state)) {
-            var goo = AbstractLatexBlock.getGooFromType(getLatexed(state));
+            var goo = getLatexed(state).goo;
             ArrayList<ItemStack> newList = new ArrayList<>(callbackInfoReturnable.getReturnValue());
-            newList.add(goo.get().getDefaultInstance());
-            newList.add(goo.get().getDefaultInstance());
             newList.add(goo.get().getDefaultInstance());
             callbackInfoReturnable.setReturnValue(newList);
         }
