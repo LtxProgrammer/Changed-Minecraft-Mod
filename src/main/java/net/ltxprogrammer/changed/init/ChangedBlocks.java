@@ -57,14 +57,14 @@ public class ChangedBlocks {
             .add(ChangedEntities.DARK_LATEX_WOLF_FEMALE::get)
             .add(ChangedEntities.DARK_LATEX_DRAGON_MALE::get)
             .add(ChangedEntities.DARK_LATEX_DRAGON_FEMALE::get)
-            .add(ChangedEntities.DARK_LATEX_YUFENG::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST).noOcclusion().noCollission().dynamicShape().strength(3.0F, 18.0F)), AbstractLatexCrystal::translucentRenderer);
+            .add(ChangedEntities.DARK_LATEX_YUFENG::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST).noOcclusion().noCollission().dynamicShape().strength(3.0F, 18.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
-    public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::translucentRenderer);
+    public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL_SMALL = register("latex_beifeng_crystal_small", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
-            .add(ChangedEntities.LATEX_BEIFENG::get).build(), ChangedItems.LATEX_BEIFENG_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), AbstractLatexCrystal::translucentRenderer);
-    public static final RegistryObject<Block> LATEX_WOLF_CRYSTAL = register("latex_wolf_crystal", () -> new LatexWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::translucentRenderer);
+            .add(ChangedEntities.LATEX_BEIFENG::get).build(), ChangedItems.LATEX_BEIFENG_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), AbstractLatexCrystal::cutoutRenderer);
+    public static final RegistryObject<Block> LATEX_WOLF_CRYSTAL = register("latex_wolf_crystal", () -> new LatexWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_WOLF_CRYSTAL_SMALL = register("latex_wolf_crystal_small", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
-            .add(ChangedEntities.LATEX_CRYSTAL_WOLF::get).build(), ChangedItems.LATEX_WOLF_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), AbstractLatexCrystal::translucentRenderer);
+            .add(ChangedEntities.LATEX_CRYSTAL_WOLF::get).build(), ChangedItems.LATEX_WOLF_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<Block> TILES_CAUTION = register("tiles_caution", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_YELLOW).sound(SoundType.STONE).strength(1.5F, 6.0F)));
     public static final RegistryObject<Block> TILES_GRAYBLUE = register("tiles_grayblue", () -> new LabBlock(BlockBehaviour.Properties.copy(TILES_CAUTION.get()).color(MaterialColor.COLOR_LIGHT_BLUE)));
