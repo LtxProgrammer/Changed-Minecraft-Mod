@@ -34,10 +34,10 @@ import static net.ltxprogrammer.changed.block.AbstractDoubleLatexCrystal.HALF;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
-    private final LatexVariant variant;
+    private final LatexVariant<?> variant;
     private final Supplier<Item> crystal;
 
-    public AbstractLatexCrystal(LatexVariant variant, Supplier<Item> crystal, Properties p_53514_) {
+    public AbstractLatexCrystal(LatexVariant<?> variant, Supplier<Item> crystal, Properties p_53514_) {
         super(p_53514_);
         this.variant = variant;
         this.crystal = crystal;
