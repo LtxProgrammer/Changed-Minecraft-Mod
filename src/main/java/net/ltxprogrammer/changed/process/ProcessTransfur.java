@@ -82,6 +82,8 @@ public class ProcessTransfur {
     }
 
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
+        if (player.isCreative() || player.isSpectator())
+            return false;
         int next = getPlayerTransfurProgress(player).ticks + amount;
         setPlayerTransfurProgress(player, new TransfurProgress(next, type));
         return next >= TRANSFUR_PROGRESSION_TAKEOVER;

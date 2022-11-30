@@ -31,7 +31,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof MagmaBlock || ownerBlock instanceof EndPortalFrameBlock || ownerBlock instanceof NetherPortalBlock ||
                     ownerBlock instanceof EndPortalBlock || ownerBlock instanceof EndGatewayBlock || ownerBlock instanceof BeaconBlock ||
                     ownerBlock instanceof IceBlock || ownerBlock instanceof PowderSnowBlock || ownerBlock instanceof SnowLayerBlock ||
-                    ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock || ownerBlock instanceof FrostedIceBlock))
+                    ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock))
                 self.add(COVERED);
         }
     }

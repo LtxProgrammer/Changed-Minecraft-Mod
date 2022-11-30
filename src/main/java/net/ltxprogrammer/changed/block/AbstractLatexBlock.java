@@ -44,14 +44,6 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     private final LatexType latexType;
     private final Supplier<Item> goo;
 
-    public static Supplier<Item> getGooFromType(LatexType type) {
-        return switch (type) {
-            case DARK_LATEX -> ChangedItems.DARK_LATEX_GOO;
-            case WHITE_LATEX -> ChangedItems.WHITE_LATEX_GOO;
-            case NEUTRAL -> null;
-        };
-    }
-
     public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<Item> goo) {
         super(p_49795_.randomTicks().dynamicShape());
         this.latexType = latexType;
