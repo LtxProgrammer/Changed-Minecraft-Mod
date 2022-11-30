@@ -75,7 +75,7 @@ public class LatexVariant<T extends LatexEntity> {
         return ABILITY_REGISTRY.computeIfAbsent(name, _a -> ability);
     }
 
-    private static MobEffectInstance VARIANT_NV = new MobEffectInstance(MobEffects.NIGHT_VISION, 8, 1, false, false, false);
+    private static MobEffectInstance VARIANT_NV = new MobEffectInstance(MobEffects.NIGHT_VISION, 15, 1, false, false, false);
 
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
