@@ -3,10 +3,10 @@
   "textures": {
     "down": "changed:blocks/infuser_bottom",
     "up": "changed:blocks/purifier_top",
-    "north": "changed:blocks/infuser_side",
-    "east": "changed:blocks/infuser_side",
+    "north": "changed:blocks/purifier_front",
+    "east": "changed:blocks/purifier_side_b",
     "south": "changed:blocks/infuser_side",
-    "west": "changed:blocks/infuser_side",
+    "west": "changed:blocks/purifier_side_a",
     "particle": "changed:blocks/purifier_top"
   }
 }

@@ -89,6 +89,10 @@
   "block.changed.wall_white": "白色墙块",
   "block.changed.white_latex_block": "白胶块",
   "block.changed.white_latex_pillar": "白胶柱",
+  "item.changed.latex_beifeng_crystal_fragment": "胶液Beifeng水晶碎片",
+  "item.changed.latex_wolf_crystal_fragment": "胶液狼水晶碎片",
+  "block.changed.latex_beifeng_crystal_small": "小胶液Beifeng水晶",
+  "block.changed.latex_wolf_crystal_small": "小胶液狼水晶",
 
   "biome.changed.dark_latex_plains": "黑胶平原",
   "biome.changed.white_latex_forest": "白胶森林",

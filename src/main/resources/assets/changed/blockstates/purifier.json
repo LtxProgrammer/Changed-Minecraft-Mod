@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "changed:block/purifier"
+    },
+    "facing=east": {
+      "model": "changed:block/purifier",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/purifier",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/purifier",
+      "y": 270
     }
   }
 }
