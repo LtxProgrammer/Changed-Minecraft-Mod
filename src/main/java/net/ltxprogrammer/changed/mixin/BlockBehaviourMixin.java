@@ -69,10 +69,8 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     @Inject(method = "getDrops", at = @At("RETURN"), cancellable = true)
     public void getDrops(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> callbackInfoReturnable) {
         if (isLatexed(state)) {
-            var goo = AbstractLatexBlock.getGooFromType(getLatexed(state));
+            var goo = getLatexed(state).goo;
             ArrayList<ItemStack> newList = new ArrayList<>(callbackInfoReturnable.getReturnValue());
-            newList.add(goo.get().getDefaultInstance());
-            newList.add(goo.get().getDefaultInstance());
             newList.add(goo.get().getDefaultInstance());
             callbackInfoReturnable.setReturnValue(newList);
         }
@@ -82,19 +80,15 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     public void skipRendering(BlockState state, BlockState otherState, Direction direction, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         // Guaranteed to be client only
 
-        if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
+        if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
             return;
-        if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
+        if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
             return;
 
-        if (getLatexed(state) != LatexType.NEUTRAL && getLatexed(state) == getLatexed(otherState))
+        if (isLatexed(state) && getLatexed(state) == getLatexed(otherState))
             callbackInfoReturnable.setReturnValue(true);
-        else if (otherState.getBlock() instanceof AbstractLatexBlock abstractLatexBlock) {
-            if (abstractLatexBlock instanceof WhiteLatexBlock && getLatexed(state) == LatexType.WHITE_LATEX)
-                callbackInfoReturnable.setReturnValue(true);
-            if (abstractLatexBlock instanceof DarkLatexBlock && getLatexed(state) == LatexType.DARK_LATEX)
-                callbackInfoReturnable.setReturnValue(true);
-        }
+        else if (otherState.is(getLatexed(state).block.get()))
+            callbackInfoReturnable.setReturnValue(true);
     }
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)

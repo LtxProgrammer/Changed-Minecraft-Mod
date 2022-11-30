@@ -18,6 +18,7 @@
     "NoiseBasedAquiferMixin",
     "PlayerMixin",
     "ServerPlayerMixin",
+    "ShovelItemMixin",
     "SimpleBlockFeatureMixin",
     "SpreadingSnowyDirtBlockMixin",
     "StateDefinitionMixin",
