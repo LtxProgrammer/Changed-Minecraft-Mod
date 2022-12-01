@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -215,36 +216,16 @@ public class Syringe extends Item {
             if (player != null) {
                 CompoundTag tag = stack.getTag();
 
-                if (tag != null && tag.contains("form") && tag.contains("owner")) {
-                    if (tag.getString("form").equals(LatexVariant.SPECIAL_LATEX.toString())) {
-                        String unique = tag.getString("form") + "_" + entity.getUUID();
-                        if (!LatexVariant.ALL_LATEX_FORMS.containsKey(new ResourceLocation(unique)))
-                            ProcessTransfur.transfur(entity, level, LatexVariant.LIGHT_LATEX_WOLF, false);
-                        else
-                            ProcessTransfur.transfur(entity, level, LatexVariant.SPECIAL_LATEX_FORMS.get(new ResourceLocation(unique)),
-                                    tag.getUUID("owner").equals(player.getUUID()) && tag.getBoolean("safe"));
-                    }
-                    else
-                        ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.get(new ResourceLocation(tag.getString("form"))),
-                            tag.getUUID("owner").equals(player.getUUID()) && tag.getBoolean("safe"));
-                }
-
-                else if (tag != null && tag.contains("form")) {
-                    if (tag.getString("form").equals(LatexVariant.SPECIAL_LATEX.toString())) {
-                        String unique = tag.getString("form") + "_" + entity.getUUID();
-                        if (!LatexVariant.ALL_LATEX_FORMS.containsKey(new ResourceLocation(unique)))
-                            ProcessTransfur.transfur(entity, level, LatexVariant.LIGHT_LATEX_WOLF.male(), false);
-                        else
-                            ProcessTransfur.transfur(entity, level, LatexVariant.SPECIAL_LATEX_FORMS.get(new ResourceLocation(unique)),
-                                    false);
-                    }
-                    else
-                        ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.get(new ResourceLocation(tag.getString("form"))),
-                                false);
+                if (tag != null && tag.contains("form")) {
+                    ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
+                    if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
+                        formLocation = Changed.modResource("special/form_" + entity.getUUID());
+                    ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.LIGHT_LATEX_WOLF.male()),
+                            false);
                 }
 
                 else {
-                    ProcessTransfur.transfur(entity, level, LatexVariant.LIGHT_LATEX_WOLF.male(), false);
+                    ProcessTransfur.transfur(entity, level, LatexVariant.LIGHT_LATEX_WOLF.male(), player.isCreative());
                 }
 
                 player.awardStat(Stats.ITEM_USED.get(this));
