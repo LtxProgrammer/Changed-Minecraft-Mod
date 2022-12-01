@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -33,12 +34,11 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
     public final int TRANSFUR_REQUIRED_TIME = 20 * 20; // 20 seconds
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BedsideIVRackBlockEntity ivRack) {
-        final AtomicReference<ItemStack> itemstack = new AtomicReference<>(ivRack.items.get(0));
-        final AtomicReference<Boolean> success = new AtomicReference<>(false);
-        CompoundTag tag = itemstack.get().getOrCreateTag();
+        Boolean success = false;
+        CompoundTag tag = ivRack.items.get(0).getOrCreateTag();
         if (!tag.contains("owner")) return;
         UUID owner = tag.getUUID("owner");
-        if (!itemstack.get().isEmpty() && itemstack.get().is(ChangedItems.LATEX_SYRINGE.get())) {
+        if (!ivRack.items.get(0).isEmpty() && ivRack.items.get(0).is(ChangedItems.LATEX_SYRINGE.get())) {
             for (Direction direction : Direction.values()) {
                 if (direction == Direction.DOWN || direction == Direction.UP)
                     continue;
@@ -47,38 +47,39 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
                 BlockState adjacentState = level.getBlockState(adjacent);
                 BlockEntity adjacentEntity = level.getBlockEntity(adjacent);
                 if (adjacentState.getBlock() instanceof BedBlock bed && adjacentEntity instanceof BedBlockEntity bedEntity) {
-                    level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(adjacent), EntitySelector.NO_SPECTATORS).forEach(player -> {
+                    for (Player player : level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(adjacent), EntitySelector.NO_SPECTATORS)) {
                         if (!player.getUUID().equals(owner))
-                            return;
+                            continue;
 
                         if (ProcessTransfur.isPlayerLatex(player))
-                            return;
+                            continue;
 
-                        if (player.getSleepTimer() > 95 && ivRack.tickCount < ivRack.TRANSFUR_REQUIRED_TIME && !itemstack.get().isEmpty()) {
+                        if (player.getSleepTimer() > 95 && ivRack.tickCount < ivRack.TRANSFUR_REQUIRED_TIME && !ivRack.items.get(0).isEmpty()) {
                             ivRack.tickCount++;
                             player.sleepCounter = 95;
-                            success.set(true);
+                            success = true;
                             ivRack.setChanged();
                         }
 
-                        else if (player.getSleepTimer() > 95 && !itemstack.get().isEmpty()) {
+                        else if (player.getSleepTimer() > 95 && !ivRack.items.get(0).isEmpty()) {
                             ivRack.tickCount = 0;
                             ivRack.items.set(0, ItemStack.EMPTY);
                             try {
-                                ProcessTransfur.transfur(player, level, LatexVariant.ALL_LATEX_FORMS.get(
-                                                new ResourceLocation(tag.getString("form"))),
-                                        true);
+                                ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
+                                if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
+                                    formLocation = Changed.modResource("special/form_" + player.getUUID());
+                                ProcessTransfur.transfur(player, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.LIGHT_LATEX_WOLF.male()), true);
                             } catch (NullPointerException ex) {
                             }
-                            itemstack.set(ItemStack.EMPTY);
+                            ivRack.items.get(0).shrink(1);
                             ivRack.setChanged();
                         }
-                    });
+                    }
                 }
             }
         }
 
-        if (!success.get()) {
+        if (!success) {
             ivRack.tickCount = 0;
         }
     }

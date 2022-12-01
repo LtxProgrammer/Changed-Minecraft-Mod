@@ -480,7 +480,7 @@ public class ProcessTransfur {
     public static void transfur(LivingEntity entity, Level level, LatexVariant<?> variant, boolean keepConscious) {
         if (entity.isDeadOrDying())
             return; // To prevent most bugs, entity has to be alive to transfur
-        if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
+        if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN) || (entity instanceof Player player && player.isCreative()))
             keepConscious = true;
 
         if (entity.level.isClientSide && keepConscious && entity instanceof LocalPlayer player) {
