@@ -10,7 +10,7 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 public class AbstractLatexGoo extends AbstractLatexItem {
     public InteractionResult useOn(UseOnContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-        if (state.getProperties().contains(COVERED)) {
+        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) == LatexType.NEUTRAL) {
             for (LatexType type : LatexType.values())
                 if (this.getDefaultInstance().is(type.goo.get())) {
                     context.getLevel().setBlockAndUpdate(context.getClickedPos(), state.setValue(COVERED, type));
