@@ -109,9 +109,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
             .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
-    public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_RED_PANDA).faction(LatexType.NEUTRAL)
-            .build(Changed.modResource("form_latex_red_panda")));
-    public static final GenderedVariant<LatexWatermelonCatMale, LatexWatermelonCatFemale> LATEX_WATERMELON_CAT = register(GenderedVariant.Builder.of(LATEX_SNOW_LEOPARD, ChangedEntities.LATEX_WATERMELON_CAT_MALE, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
+    public static final GenderedVariant<LatexWatermelonCatMale, LatexWatermelonCatFemale> LATEX_WATERMELON_CAT = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.LATEX_WATERMELON_CAT_MALE, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
             .buildGendered(Changed.modResource("form_latex_watermelon_cat")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
@@ -141,6 +139,10 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_red_dragon")));
     public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_YUIN)
             .build(Changed.modResource("form_latex_yuin")));
+    public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_DEER)
+            .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_RED_PANDA)
+            .build(Changed.modResource("form_latex_red_panda")));
     public ResourceLocation getFormId() {
         return formId;
     }

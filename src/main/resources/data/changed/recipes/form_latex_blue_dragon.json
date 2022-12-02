@@ -5,7 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:snowball"
+      "item": "minecraft:ice"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
     }
   ],
   "form": "changed:form_latex_blue_dragon"

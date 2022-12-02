@@ -5,7 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:sugar"
+      "item": "minecraft:glowstone"
+    },
+    {
+      "item": "minecraft:glow_ink_sac"
     }
   ],
   "form": "changed:form_latex_hypno_cat"
