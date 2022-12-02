@@ -230,5 +230,8 @@
   "changed:advancements.main.white_latex_fuse.description": "Fuse into white latex as a white latex form",
 
   "changed:advancements.main.transfur_aerial.title": "Flying Lessons",
-  "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form"
+  "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form",
+  
+  "changed:advancements.main.transfur_mask.title": "Rejecting Humanity",
+  "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask."
 }

@@ -75,8 +75,6 @@ public class LatexVariant<T extends LatexEntity> {
         return ABILITY_REGISTRY.computeIfAbsent(name, _a -> ability);
     }
 
-    private static MobEffectInstance VARIANT_NV = new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false, false);
-
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
@@ -496,10 +494,6 @@ public class LatexVariant<T extends LatexEntity> {
                     multiplyMotion(player, groundSpeed);
                 }
             }
-        }
-
-        if (nightVision) {
-            player.addEffect(VARIANT_NV);
         }
 
         // Step size
