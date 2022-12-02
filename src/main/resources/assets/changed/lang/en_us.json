@@ -111,6 +111,7 @@
   "entity.changed.latex_beifeng": "Latex Beifeng",
   "entity.changed.latex_blue_dragon": "Latex Blue Dragon",
   "entity.changed.latex_crystal_wolf": "Latex Crystal Wolf",
+  "entity.changed.latex_deer": "Latex Deer",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
   "entity.changed.latex_leaf": "Latex Leaf",
   "entity.changed.latex_orca": "Latex Orca",
@@ -145,6 +146,7 @@
   "item.changed.latex_beifeng_spawn_egg": "Latex Beifeng Spawn Egg",
   "item.changed.latex_blue_dragon_spawn_egg": "Latex Blue Dragon Spawn Egg",
   "item.changed.latex_crystal_wolf_spawn_egg": "Latex Crystal Wolf Spawn Egg",
+  "item.changed.latex_deer_spawn_egg": "Latex Deer Spawn Egg",
   "item.changed.latex_hypno_cat_spawn_egg": "Latex Hypno Cat Spawn Egg",
   "item.changed.latex_leaf_spawn_egg": "Latex Leaf Spawn Egg",
   "item.changed.latex_orca_spawn_egg": "Latex Orca Spawn Egg",
@@ -228,5 +230,8 @@
   "changed:advancements.main.white_latex_fuse.description": "Fuse into white latex as a white latex form",
 
   "changed:advancements.main.transfur_aerial.title": "Flying Lessons",
-  "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form"
+  "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form",
+  
+  "changed:advancements.main.transfur_mask.title": "Rejecting Humanity",
+  "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask."
 }

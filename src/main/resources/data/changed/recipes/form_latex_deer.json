@@ -5,11 +5,11 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "minecraft:stick"
     },
     {
-      "item": "minecraft:red_dye"
+      "item": "minecraft:leather"
     }
   ],
-  "form": "changed:form_latex_red_panda"
+  "form": "changed:form_latex_deer"
 }

@@ -18,9 +18,13 @@ public abstract class GameRendererMixin {
     private static void getNightVisionScale(LivingEntity p_109109_, float p_109110_, CallbackInfoReturnable<Float> ci) {
         if (p_109109_ instanceof Player player) {
             if (ProcessTransfur.isPlayerLatex(player)) {
+                if (ProcessTransfur.getPlayerLatexVariant(player).nightVision) {
+                    ci.setReturnValue(1.0f);
+                    return;
+                }
+
                 if (ProcessTransfur.getPlayerLatexVariant(player).getBreatheMode().canBreatheWater()) {
                     ci.setReturnValue(0.85f);
-                    ci.cancel();
                     return;
                 }
             }

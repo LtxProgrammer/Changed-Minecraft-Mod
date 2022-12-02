@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 @Mixin(ShovelItem.class)
-public class ShovelItemMixin {
+public abstract class ShovelItemMixin {
     @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
     public void useOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> callback) {
         Level level = context.getLevel();
