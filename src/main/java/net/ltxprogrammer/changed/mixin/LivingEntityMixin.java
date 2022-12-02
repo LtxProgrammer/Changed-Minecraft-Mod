@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,6 +46,22 @@ public abstract class LivingEntityMixin extends Entity {
     public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
         if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             callback.setReturnValue(callback.getReturnValue() * ProcessTransfur.getPlayerLatexVariant(player).jumpStrength);
+        }
+    }
+
+    @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
+    public void hasEffect(MobEffect effect, CallbackInfoReturnable<Boolean> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (ProcessTransfur.getPlayerLatexVariant(player).nightVision && effect.equals(MobEffects.NIGHT_VISION))
+                callback.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
+    public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (ProcessTransfur.getPlayerLatexVariant(player).nightVision && effect.equals(MobEffects.NIGHT_VISION))
+                callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
         }
     }
 }
