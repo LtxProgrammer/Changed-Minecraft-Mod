@@ -1,7 +1,7 @@
 {
-  "itemGroup.tab_changed_blocks": "Changed Blocks",
-  "itemGroup.tab_changed_items": "Changed Items",
-  "itemGroup.tab_changed_entities": "Changed Entities",
+  "itemGroup.tab_changed_blocks": "Блоки Changed",
+  "itemGroup.tab_changed_items": "Предметы Changed",
+  "itemGroup.tab_changed_entities": "Сущности Changed",
   
   "subtitles.poison": "Кто-то Трансфурмирован",
   "subtitles.open3": "Лабораторная Дверь Открылась",
@@ -16,9 +16,9 @@
   "item.changed.dark_latex_bucket": "Ведро Тёмного Латекса",
   "item.changed.floppy_disk": "Дискета",
   "item.changed.latex_base": "Первичный Латекс",
-  "item.changed.latex_beifeng_crystal_fragment": "Фрагмент Зеленого Кристалла",
+  "item.changed.latex_beifeng_crystal_fragment": "Фрагмент Зелёного Кристалльного Латекса",
   "item.changed.latex_syringe": "Шприц С Латексом",
-  "item.changed.latex_wolf_crystal_fragment": "Фрагмент Красного Кристалла",
+  "item.changed.latex_wolf_crystal_fragment": "Фрагмент Красного Кристалльного Латекса",
   "item.changed.latex_tipped_arrow": "Стрела С Латексным Наконечником",
   "item.changed.orange": "Апельсин",
   "item.changed.orange.desc": "Очень кислый",
