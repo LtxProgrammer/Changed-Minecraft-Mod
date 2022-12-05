@@ -15,9 +15,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -152,11 +150,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = register("aerosol_latex_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(AerosolLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<DarkLatexDragonFemale>> DARK_LATEX_DRAGON_FEMALE = register("dark_latex_dragon_female", 0x393939, 0x909090,
-            EntityType.Builder.of(DarkLatexDragonFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::mountainSpawning);
-    public static final RegistryObject<EntityType<DarkLatexDragonMale>> DARK_LATEX_DRAGON_MALE = register("dark_latex_dragon_male", 0x393939, 0x909090,
-            EntityType.Builder.of(DarkLatexDragonMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+    public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = register("dark_latex_dragon", 0x393939, 0x909090,
+            EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mountainSpawning);
     public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = register("dark_latex_wolf_male", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
@@ -238,8 +233,7 @@ public class ChangedEntities {
 
     public static class Category {
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends DarkLatexEntity>>> DARK_LATEX = ImmutableList.of(
-            DARK_LATEX_DRAGON_MALE,
-            DARK_LATEX_DRAGON_FEMALE,
+            DARK_LATEX_DRAGON,
             DARK_LATEX_WOLF_MALE,
             DARK_LATEX_WOLF_FEMALE,
             DARK_LATEX_YUFENG

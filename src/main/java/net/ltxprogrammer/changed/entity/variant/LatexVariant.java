@@ -24,9 +24,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -122,9 +119,9 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
 
-    public static final GenderedVariant<DarkLatexDragonMale, DarkLatexDragonFemale> DARK_LATEX_DRAGON = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON_MALE, ChangedEntities.DARK_LATEX_DRAGON_FEMALE).groundSpeed(1.0F).swimSpeed(0.75f).glide()
-            .stepSize(0.7f).faction(LatexType.DARK_LATEX).split(Builder::ignored, Builder::absorbing).buildGendered(Changed.modResource("form_dark_latex_dragon")));
-    public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON.male(), ChangedEntities.DARK_LATEX_YUFENG)
+    public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide()
+            .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
             .build(Changed.modResource("form_dark_latex_yufeng")));
 
     public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f)
