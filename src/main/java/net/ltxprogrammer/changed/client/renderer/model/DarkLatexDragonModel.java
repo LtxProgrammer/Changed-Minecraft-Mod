@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexDragonMale;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexDragon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,9 +14,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class DarkLatexDragonMaleModel extends LatexHumanoidModel<DarkLatexDragonMale> implements LatexHumanoidModelInterface {
+public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> implements LatexHumanoidModelInterface {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_dragon_male"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_dragon"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -28,7 +28,7 @@ public class DarkLatexDragonMaleModel extends LatexHumanoidModel<DarkLatexDragon
     private final ModelPart LeftWing;
     private final LatexHumanoidModelController controller;
 
-    public DarkLatexDragonMaleModel(ModelPart root) {
+    public DarkLatexDragonModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -150,7 +150,7 @@ public class DarkLatexDragonMaleModel extends LatexHumanoidModel<DarkLatexDragon
     }
 
     @Override
-    public void prepareMobModel(DarkLatexDragonMale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(DarkLatexDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -159,7 +159,7 @@ public class DarkLatexDragonMaleModel extends LatexHumanoidModel<DarkLatexDragon
     }
 
     @Override
-    public void setupAnim(@NotNull DarkLatexDragonMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull DarkLatexDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 

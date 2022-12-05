@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.client.renderer.*;
-import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,8 +11,7 @@ public class ChangedEntityRenderers {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ChangedEntities.AEROSOL_LATEX_WOLF.get(), AerosolLatexWolfRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON_FEMALE.get(), DarkLatexDragonFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON_MALE.get(), DarkLatexDragonMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
