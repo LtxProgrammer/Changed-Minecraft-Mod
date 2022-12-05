@@ -105,7 +105,7 @@
 
   "entity.changed.dark_latex_wolf_female": "Волчица Из Тёмного Латекса",
   "entity.changed.dark_latex_wolf_male": "Волк Из Тёмного Латекса",
-  "entity.changed.dark_latex_dragon_male": "Дракон Из Тёмного Латекса",
+  "entity.changed.dark_latex_dragon": "Дракон Из Тёмного Латекса",
   "entity.changed.dark_latex_yufeng": "Ю Фэн Из Тёмного Латекса",
   "entity.changed.milk_pudding": "Молочный Пудинг",
   "entity.changed.latex_beifeng": "Латексный Бейфенг",
@@ -138,7 +138,7 @@
   "item.changed.aerosol_latex_wolf_spawn_egg": "Яицо Призыва Газовый Волк",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Яицо Призыва Волчица Из Тёмного Латекса",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Яицо Призыв Волк Из Тёмного Латекса",
-  "item.changed.dark_latex_dragon_male_spawn_egg": "Яицо Призыва Дракон Из Тёмного Латекса",
+  "item.changed.dark_latex_dragon_spawn_egg": "Яицо Призыва Дракон Из Тёмного Латекса",
   "item.changed.dark_latex_yufeng_spawn_egg": "Яицо Призыва Ю Фэн Из Тёмного Латекса",
   "item.changed.milk_pudding_spawn_egg": "Яицо Призыва Молочный Пудинг",
   "item.changed.latex_beifeng_spawn_egg": "Яицо Призыва Латексный Бейфенг",
@@ -185,10 +185,10 @@
   "changed.floppy_disk.title.dark_latex_yufeng": "Драконы в масках?",
   "changed.floppy_disk.content.dark_latex_yufeng": "После изпользования тех же материалов, что и в волке из тёмного латекса но добавив перо, мы создали существо способное планировать по воздуху, но всё ещё не умеющее летать. Оно почти похоже на дракона, но только с маской.",
   "changed.floppy_disk.title.dark_latex_dragon": "Драконы",
-  "changed.floppy_disk.content.dark_latex_dragon": "Не смотря на то что это существо происходит от волков из тёмного латекса, оно на удивление не имеет маски. Эти использующие свои задние лапы \"Драконы\" способны планировать. Объединив мембрану фантома и то же с помощью чего создаются волки из тёмного латекса, создается ДНК дракона.",
+  "changed.floppy_disk.content.dark_latex_dragon": "Не смотря на то что это существо происходит от волков из тёмного латекса, оно на удивление не имеет маски. Эти использующие свои задние лапы \"Драконы\" способны планировать. Объединив мембрану фантома и то же с помощью чего комбинируются волки из тёмного латекса, создается ДНК дракона.",
 
   "changed.floppy_disk.title.latex_beifeng": "Резюме по рептилиям",
-  "changed.floppy_disk.content.latex_beifeng": "Смешав синий пигмент/ краску с первичным латексом было создано ящероподобное существо, немного более быстрое как на суше так и в воде чем обычное латексное существо.",
+  "changed.floppy_disk.content.latex_beifeng": "Смешав синий пигмент/ краску с первичным латексом было создано ящероподобное существо, немного более быстрое чем обычное латексное существо, как на суше так и в воде.",
 
   "changed.floppy_disk.title.latex_shark": "Первый взгляд на акул",
   "changed.floppy_disk.content.latex_shark": "Акул что мы создали, действительно могут дышать подводой. А ценой мобильности на суше их скорость в воде невероятна.",
