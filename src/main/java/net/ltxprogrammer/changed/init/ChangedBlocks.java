@@ -55,8 +55,7 @@ public class ChangedBlocks {
     public static final RegistryObject<Block> LATEX_CRYSTAL = register("latex_crystal", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
             .add(ChangedEntities.DARK_LATEX_WOLF_MALE::get)
             .add(ChangedEntities.DARK_LATEX_WOLF_FEMALE::get)
-            .add(ChangedEntities.DARK_LATEX_DRAGON_MALE::get)
-            .add(ChangedEntities.DARK_LATEX_DRAGON_FEMALE::get)
+            .add(ChangedEntities.DARK_LATEX_DRAGON::get)
             .add(ChangedEntities.DARK_LATEX_YUFENG::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST).noOcclusion().noCollission().dynamicShape().strength(3.0F, 18.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
     public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);

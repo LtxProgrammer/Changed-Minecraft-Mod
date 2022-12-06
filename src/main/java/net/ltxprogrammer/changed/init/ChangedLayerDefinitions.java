@@ -15,8 +15,7 @@ public class ChangedLayerDefinitions {
     @SubscribeEvent
     public static void registerLayerDefinitions(FMLCommonSetupEvent event) {
         ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION, AerosolLatexWolfModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexDragonFemaleModel.LAYER_LOCATION, DarkLatexDragonFemaleModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexDragonMaleModel.LAYER_LOCATION, DarkLatexDragonMaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION, DarkLatexDragonModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION, DarkLatexWolfFemaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION, DarkLatexWolfMaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION, DarkLatexYufengModel::createBodyLayer);

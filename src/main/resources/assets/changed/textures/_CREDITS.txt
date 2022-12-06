@@ -3,7 +3,7 @@ Textures were originally flat colored by me (LtxProgrammer), and later shaded by
 aerosol_latex_wolf.png :: Bijimio [remodel]
 dark_latex_wolf.png :: KoBOLTA
 dark_latex_yufeng.png :: KoBOLTA
-dark_latex_dragon_male.png :: Bijimio [remodel]
+dark_latex_dragon.png :: Bijimio [remodel]
 latex_shark.png :: Artemka2009
 latex_tiger_shark.png :: Artemka2009 and KoBOLTA
 latex_beifeng.png :: KoBOLTA

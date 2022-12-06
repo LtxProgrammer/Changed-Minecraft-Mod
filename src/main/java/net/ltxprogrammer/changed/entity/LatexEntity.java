@@ -28,6 +28,7 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -62,6 +63,25 @@ public abstract class LatexEntity extends Monster {
         return underlyingPlayer != null && underlyingPlayer.level.isClientSide ?
                 FMLEnvironment.dist == Dist.CLIENT && !(underlyingPlayer instanceof LocalPlayer) : super.isCustomNameVisible();
     }
+
+    public ItemStack getUseItem() {
+        return underlyingPlayer == null ?
+                super.getUseItem() :
+                underlyingPlayer.getUseItem();
+    }
+
+    public ItemStack getMainHandItem() {
+        return underlyingPlayer == null ?
+                super.getMainHandItem() :
+                underlyingPlayer.getMainHandItem();
+    }
+
+    public ItemStack getOffhandItem() {
+        return underlyingPlayer == null ?
+                super.getOffhandItem() :
+                underlyingPlayer.getOffhandItem();
+    }
+
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
