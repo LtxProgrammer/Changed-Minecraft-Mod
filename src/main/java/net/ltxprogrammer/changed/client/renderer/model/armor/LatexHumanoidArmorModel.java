@@ -124,15 +124,15 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-        leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-        head.render(poseStack, buffer, packedLight, packedOverlay);
-        body.render(poseStack, buffer, packedLight, packedOverlay);
-        rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-        leftArm.render(poseStack, buffer, packedLight, packedOverlay);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (rightLeg2 != null)
-            rightLeg2.render(poseStack, buffer, packedLight, packedOverlay);
+            rightLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftLeg2 != null)
-            leftLeg2.render(poseStack, buffer, packedLight, packedOverlay);
+            leftLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
