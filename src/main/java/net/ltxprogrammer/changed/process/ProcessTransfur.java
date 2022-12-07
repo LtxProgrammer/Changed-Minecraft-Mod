@@ -95,23 +95,39 @@ public class ProcessTransfur {
         else {
             float damage = amount / 1200.0f;
             float health = entity.getHealth();
-            List<LatexVariant<?>> mobFusion = new ArrayList<>();
-            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-                if (checkVariant.isFusionOf(LatexVariant.ALL_LATEX_FORMS.get(type), entity.getClass())) {
-                    mobFusion.add(checkVariant);
-                }
-            }
-            if (mobFusion.isEmpty())
-                return false;
+            LatexVariant<?> latexVariant = LatexVariant.ALL_LATEX_FORMS.getOrDefault(type, LatexVariant.LIGHT_LATEX_WOLF.male());
 
-            if (health <= damage && health > 0.0F) {
-                ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false);
-                return true;
+            if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+                if (health <= damage && health > 0.0F) {
+                    ProcessTransfur.transfur(entity, entity.level, latexVariant, false);
+                    return true;
+                }
+
+                else {
+                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    return false;
+                }
             }
 
             else {
-                entity.hurt(ChangedDamageSources.TRANSFUR, damage);
-                return false;
+                List<LatexVariant<?>> mobFusion = new ArrayList<>();
+                for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                    if (checkVariant.isFusionOf(latexVariant, entity.getClass())) {
+                        mobFusion.add(checkVariant);
+                    }
+                }
+                if (mobFusion.isEmpty())
+                    return false;
+
+                if (health <= damage && health > 0.0F) {
+                    ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false);
+                    return true;
+                }
+
+                else {
+                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    return false;
+                }
             }
         }
     }
