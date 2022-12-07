@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.block.BedsideIVRack;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -22,6 +24,8 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.entity.BedBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 
@@ -34,6 +38,16 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
     public final int TRANSFUR_REQUIRED_TIME = 20 * 20; // 20 seconds
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BedsideIVRackBlockEntity ivRack) {
+        // Handle Blockstate
+        if (ivRack.items.get(0).isEmpty() && state.getValue(BedsideIVRack.FULL)) {
+            level.setBlockAndUpdate(pos, state.setValue(BedsideIVRack.FULL, false));
+        }
+
+        else if (!ivRack.items.get(0).isEmpty() && !state.getValue(BedsideIVRack.FULL)) {
+            level.setBlockAndUpdate(pos, state.setValue(BedsideIVRack.FULL, true));
+            level.setBlockAndUpdate(pos.above(), state.setValue(BedsideIVRack.FULL, true).setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
+        }
+
         Boolean success = false;
         CompoundTag tag = ivRack.items.get(0).getOrCreateTag();
         if (!tag.contains("owner")) return;
