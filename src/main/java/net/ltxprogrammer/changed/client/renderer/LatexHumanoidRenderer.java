@@ -35,7 +35,7 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
         this.addLayer(new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter))));
         this.addLayer(new LatexArrowLayer<>(context, this));
         //this.addLayer(new LatexCapeLayer<>(this));
-        this.addLayer(new ElytraLayer<>(this, context.getModelSet()));
+        this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParrotOnShoulderLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexBeeStingerLayer<>(this));
     }

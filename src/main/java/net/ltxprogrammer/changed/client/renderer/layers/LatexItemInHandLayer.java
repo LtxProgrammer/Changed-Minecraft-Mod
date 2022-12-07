@@ -35,6 +35,37 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
 
     }
 
+    private ModelPart.Cube findHeadCube(ModelPart head) {
+        ModelPart.Cube largest = null;
+        float mass = 0.0f;
+        for (var cube : head.cubes) {
+            float dX = cube.maxX - cube.minX;
+            float dY = cube.maxY - cube.minY;
+            float dZ = cube.maxZ - cube.minZ;
+
+            if (dX * dY * dZ > mass) {
+                largest = cube;
+                mass = dX * dY * dZ;
+            }
+        }
+
+        for (var entry : head.children.entrySet()) {
+            var cube = findHeadCube(entry.getValue());
+            if (cube != null) {
+                float dX = cube.maxX - cube.minX;
+                float dY = cube.maxY - cube.minY;
+                float dZ = cube.maxZ - cube.minZ;
+
+                if (dX * dY * dZ > mass) {
+                    largest = cube;
+                    mass = dX * dY * dZ;
+                }
+            }
+        }
+
+        return largest;
+    }
+
     private void renderArmWithSpyglass(LivingEntity p_174518_, ItemStack p_174519_, HumanoidArm p_174520_, PoseStack p_174521_, MultiBufferSource p_174522_, int p_174523_) {
         p_174521_.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
@@ -44,7 +75,12 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(p_174521_, false);
         boolean flag = p_174520_ == HumanoidArm.LEFT;
-        float dH = 0.5f - modelpart.cubes.get(0).maxY;
+        var headCube = findHeadCube(modelpart);
+        if (headCube == null) {
+            p_174521_.popPose();
+            return;
+        }
+        float dH = 0.5f - headCube.maxY;
         p_174521_.translate((double)((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
         Minecraft.getInstance().getItemInHandRenderer().renderItem(p_174518_, p_174519_, ItemTransforms.TransformType.HEAD, false, p_174521_, p_174522_, p_174523_);
         p_174521_.popPose();
