@@ -12,14 +12,14 @@ import java.util.UUID;
 
 public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
     public ArmorSpecialLatexModel(ModelPart modelPart, PatreonBenefits.SpecialLatexForm form) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 form.animationData().hasTail() ? modelPart.getChild("Torso").getChild("Tail") : null,
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), builder -> {
+                modelPart.getChild("RightArm")), builder -> {
                     if (form.tailAidsInSwim()) builder.tailAidsInSwim();
                 });
     }

@@ -18,14 +18,14 @@ public class ArmorLightLatexKnightModel extends LatexHumanoidArmorModel<LightLat
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_knight")).get();
 
     public ArmorLightLatexKnightModel(ModelPart modelPart) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 modelPart.getChild("Torso").getChild("Tail"),
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), null);
+                modelPart.getChild("RightArm")), null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
