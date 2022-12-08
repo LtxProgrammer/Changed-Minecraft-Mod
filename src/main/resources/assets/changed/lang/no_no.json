@@ -60,6 +60,7 @@
   "block.changed.dark_latex_block": "Mørk lateksblokk",
   "block.changed.dark_latex_ice": "Mørk lateks is",
   "block.changed.infuser": "Infuser",
+  "block.changed.iron_crate": "Jernkasse",
   "block.changed.latex_beifeng_crystal": "Lateks beifeng krystall",
   "block.changed.latex_wolf_crystal": "Lateks ulv krystall",
   "block.changed.latex_beifeng_crystal_small": "Liten lateks beifeng krystall",
@@ -228,5 +229,8 @@
   "changed:advancements.main.white_latex_fuse.description": "Slå sammen til hvit lateks som en hvit lateksform",
 
   "changed:advancements.main.transfur_aerial.title": "Flytimer",
-  "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform"
+  "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform",
+
+  "changed:advancements.main.transfur_mask.title": "Avviser menneskeheten",
+  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske."
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/iron_crate",
+  "textures": {
+    "all": "changed:blocks/iron_crate",
+    "particle": "changed:blocks/iron_crate",
+    "0": "changed:blocks/iron_crate"
+  }
+}
