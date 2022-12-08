@@ -33,7 +33,7 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
         this.RightArm2 = root.getChild("rightArm2");
         this.LeftArm = root.getChild("leftArm");
         this.LeftArm2 = root.getChild("leftArm2");
-        this.controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Torso.getChild("Tail"), RightArm, LeftArm, RightLeg, LeftLeg).arms2(RightArm2, LeftArm2).build();
+        this.controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Torso.getChild("Tail"), RightArm, LeftArm, RightLeg, LeftLeg).arms2(RightArm2, LeftArm2).hipOffset(-4.0f).build();
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -283,6 +283,12 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
     @Override
     public void setupAnim(LatexSquidDog entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
+    }
+
+    public PoseStack getPlacementCorrectors(HumanoidArm arm) {
+        PoseStack corrector = new PoseStack();
+        corrector.translate(0.0f, -4.0f / 16.0f, 0.0f);
+        return corrector;
     }
 
     @Override

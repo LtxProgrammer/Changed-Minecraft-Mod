@@ -16,14 +16,14 @@ public class ArmorLatexYuinModel<T extends LatexYuin> extends LatexHumanoidArmor
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_yuin")).get();
 
     public ArmorLatexYuinModel(ModelPart modelPart) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 modelPart.getChild("Torso").getChild("Tail"),
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), null);
+                modelPart.getChild("RightArm")), null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

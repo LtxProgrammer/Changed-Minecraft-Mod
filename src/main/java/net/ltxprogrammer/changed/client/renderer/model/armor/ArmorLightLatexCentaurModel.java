@@ -18,17 +18,17 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<LightLa
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
 
     public ArmorLightLatexCentaurModel(ModelPart modelPart) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 modelPart.getChild("Torso").getChild("LowerTorso").getChild("Tail"),
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"),
-                modelPart.getChild("Torso").getChild("LowerTorso"),
-                modelPart.getChild("LeftLeg2"),
-                modelPart.getChild("RightLeg2"),
+                modelPart.getChild("RightArm")).legs2(
+                    modelPart.getChild("Torso").getChild("LowerTorso"),
+                    modelPart.getChild("LeftLeg2"),
+                    modelPart.getChild("RightLeg2")),
                 builder -> builder.forewardOffset(-7.0f));
     }
 
