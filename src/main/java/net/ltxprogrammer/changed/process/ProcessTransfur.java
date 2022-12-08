@@ -208,7 +208,6 @@ public class ProcessTransfur {
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
         WhiteLatexBlock.whiteLatexNoCollideMap.clear();
-        CACHED_FORMS.clear();
     }
 
     public static class LatexedEntity {
@@ -440,13 +439,7 @@ public class ProcessTransfur {
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
-
-                if (event.side.isServer())
-                    CACHED_FORMS.put(event.player.getUUID(), variant.getFormId());
             }
-
-            else if (event.side.isServer() && !event.player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
-                CACHED_FORMS.remove(event.player.getUUID());
         }
     }
 
@@ -454,14 +447,12 @@ public class ProcessTransfur {
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
             LatexVariant<?> variant = getPlayerLatexVariant(player);
-            if (variant != null && !player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
+            if (variant != null) {
                 variant.setDead();
                 variant.unhookAll(player);
             }
         }
     }
-
-    private static Map<UUID, ResourceLocation> CACHED_FORMS = new HashMap<>();
 
     @SubscribeEvent
     public static void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event) {
@@ -470,12 +461,6 @@ public class ProcessTransfur {
             if (variant != null && variant.isDead()) {
                 variant.unhookAll(player);
                 setPlayerLatexVariant(player, null);
-                if (!player.level.isClientSide)
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-            }
-
-            if (variant == null && CACHED_FORMS.containsKey(player.getUUID())) {
-                setPlayerLatexVariantNamed(player, CACHED_FORMS.get(player.getUUID()));
                 if (!player.level.isClientSide)
                     Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
             }
