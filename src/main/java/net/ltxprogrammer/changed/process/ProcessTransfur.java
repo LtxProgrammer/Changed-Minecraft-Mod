@@ -95,23 +95,39 @@ public class ProcessTransfur {
         else {
             float damage = amount / 1200.0f;
             float health = entity.getHealth();
-            List<LatexVariant<?>> mobFusion = new ArrayList<>();
-            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-                if (checkVariant.isFusionOf(LatexVariant.ALL_LATEX_FORMS.get(type), entity.getClass())) {
-                    mobFusion.add(checkVariant);
-                }
-            }
-            if (mobFusion.isEmpty())
-                return false;
+            LatexVariant<?> latexVariant = LatexVariant.ALL_LATEX_FORMS.getOrDefault(type, LatexVariant.LIGHT_LATEX_WOLF.male());
 
-            if (health <= damage && health > 0.0F) {
-                ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false);
-                return true;
+            if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+                if (health <= damage && health > 0.0F) {
+                    ProcessTransfur.transfur(entity, entity.level, latexVariant, false);
+                    return true;
+                }
+
+                else {
+                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    return false;
+                }
             }
 
             else {
-                entity.hurt(ChangedDamageSources.TRANSFUR, damage);
-                return false;
+                List<LatexVariant<?>> mobFusion = new ArrayList<>();
+                for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                    if (checkVariant.isFusionOf(latexVariant, entity.getClass())) {
+                        mobFusion.add(checkVariant);
+                    }
+                }
+                if (mobFusion.isEmpty())
+                    return false;
+
+                if (health <= damage && health > 0.0F) {
+                    ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false);
+                    return true;
+                }
+
+                else {
+                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    return false;
+                }
             }
         }
     }
@@ -173,10 +189,10 @@ public class ProcessTransfur {
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
-            if (oldVariant != null)
-                oldVariant.unhookAll(player);
             if (variant != null)
                 variant.generateForm(player, player.level);
+            if (oldVariant != null)
+                oldVariant.unhookAll(player);
         } catch (Exception ignored) {}
     }
 
@@ -192,7 +208,6 @@ public class ProcessTransfur {
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
         WhiteLatexBlock.whiteLatexNoCollideMap.clear();
-        CACHED_FORMS.clear();
     }
 
     public static class LatexedEntity {
@@ -424,13 +439,7 @@ public class ProcessTransfur {
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
-
-                if (event.side.isServer())
-                    CACHED_FORMS.put(event.player.getUUID(), variant.getFormId());
             }
-
-            else if (event.side.isServer() && !event.player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
-                CACHED_FORMS.remove(event.player.getUUID());
         }
     }
 
@@ -438,14 +447,12 @@ public class ProcessTransfur {
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
             LatexVariant<?> variant = getPlayerLatexVariant(player);
-            if (variant != null && !player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
+            if (variant != null) {
                 variant.setDead();
                 variant.unhookAll(player);
             }
         }
     }
-
-    private static Map<UUID, ResourceLocation> CACHED_FORMS = new HashMap<>();
 
     @SubscribeEvent
     public static void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event) {
@@ -454,12 +461,6 @@ public class ProcessTransfur {
             if (variant != null && variant.isDead()) {
                 variant.unhookAll(player);
                 setPlayerLatexVariant(player, null);
-                if (!player.level.isClientSide)
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-            }
-
-            if (variant == null && CACHED_FORMS.containsKey(player.getUUID())) {
-                setPlayerLatexVariantNamed(player, CACHED_FORMS.get(player.getUUID()));
                 if (!player.level.isClientSide)
                     Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
             }

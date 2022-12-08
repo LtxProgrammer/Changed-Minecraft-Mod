@@ -27,48 +27,72 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
     public final ModelPart leftArm;
     public final ModelPart rightArm;
 
+    public final ModelPart leftArm2;
+    public final ModelPart rightArm2;
+    public final ModelPart lowerTorso;
     public final ModelPart leftLeg2;
     public final ModelPart rightLeg2;
 
     public final LatexHumanoidModelController controller;
 
-    public LatexHumanoidArmorModel(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm,
-                                   Consumer<LatexHumanoidModelController.Builder> consumer) {
-        this.head = head;
-        this.body = body;
-        this.tail = tail;
-        this.leftLeg = leftLeg;
-        this.rightLeg = rightLeg;
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+    public static class Builder {
+        public ModelPart head;
+        public ModelPart body;
+        public ModelPart tail;
+        public ModelPart leftLeg;
+        public ModelPart rightLeg;
+        public ModelPart leftArm;
+        public ModelPart rightArm;
 
-        this.leftLeg2 = null;
-        this.rightLeg2 = null;
+        public ModelPart leftArm2 = null;
+        public ModelPart rightArm2 = null;
+        public ModelPart lowerTorso = null;
+        public ModelPart leftLeg2 = null;
+        public ModelPart rightLeg2 = null;
 
-        var builder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
-        if (consumer != null)
-            consumer.accept(builder);
-        this.controller = builder.build();
+        public Builder(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm) {
+            this.head = head;
+            this.body = body;
+            this.tail = tail;
+            this.leftLeg = leftLeg;
+            this.rightLeg = rightLeg;
+            this.leftArm = leftArm;
+            this.rightArm = rightArm;
+        }
+
+        public Builder arms2(ModelPart leftArm2, ModelPart rightArm2) {
+            this.leftArm2 = leftArm2;
+            this.rightArm2 = rightArm2;
+            return this;
+        }
+
+        public Builder legs2(ModelPart lowerTorso, ModelPart leftLeg2, ModelPart rightLeg2) {
+            this.lowerTorso = lowerTorso;
+            this.leftLeg2 = leftLeg2;
+            this.rightLeg2 = rightLeg2;
+            return this;
+        }
     }
 
-    public LatexHumanoidArmorModel(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm,
-                                   ModelPart lowerTorso, ModelPart leftLeg2, ModelPart rightLeg2, Consumer<LatexHumanoidModelController.Builder> consumer) {
-        this.head = head;
-        this.body = body;
-        this.tail = tail;
-        this.leftLeg = leftLeg;
-        this.rightLeg = rightLeg;
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+    public LatexHumanoidArmorModel(Builder builder, Consumer<LatexHumanoidModelController.Builder> consumer) {
+        this.head = builder.head;
+        this.body = builder.body;
+        this.tail = builder.tail;
+        this.leftLeg = builder.leftLeg;
+        this.rightLeg = builder.rightLeg;
+        this.leftArm = builder.leftArm;
+        this.rightArm = builder.rightArm;
 
-        this.leftLeg2 = leftLeg2;
-        this.rightLeg2 = rightLeg2;
+        this.leftLeg2 = builder.leftLeg2;
+        this.rightLeg2 = builder.rightLeg2;
+        this.lowerTorso = builder.lowerTorso;
+        this.leftArm2 = builder.leftArm2;
+        this.rightArm2 = builder.rightArm2;
 
-        var builder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
-        builder.legs2(lowerTorso, rightLeg2, leftLeg2);
+        var controllerBuilder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
         if (consumer != null)
-            consumer.accept(builder);
-        this.controller = builder.build();
+            consumer.accept(controllerBuilder);
+        this.controller = controllerBuilder.build();
     }
 
     public void setAllVisible(boolean b) {
@@ -124,15 +148,21 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        rightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-        leftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-        head.render(poseStack, buffer, packedLight, packedOverlay);
-        body.render(poseStack, buffer, packedLight, packedOverlay);
-        rightArm.render(poseStack, buffer, packedLight, packedOverlay);
-        leftArm.render(poseStack, buffer, packedLight, packedOverlay);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (lowerTorso != null)
+            lowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (rightLeg2 != null)
-            rightLeg2.render(poseStack, buffer, packedLight, packedOverlay);
+            rightLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftLeg2 != null)
-            leftLeg2.render(poseStack, buffer, packedLight, packedOverlay);
+            leftLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (rightArm2 != null)
+            rightArm2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (leftArm2 != null)
+            leftArm2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

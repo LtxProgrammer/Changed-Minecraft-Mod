@@ -15,14 +15,14 @@ public class ArmorLatexDragonModel<T extends LatexEntity> extends LatexHumanoidA
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_dragon")).get();
 
     public ArmorLatexDragonModel(ModelPart modelPart) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 modelPart.getChild("Torso").getChild("Tail"),
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), null);
+                modelPart.getChild("RightArm")), null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

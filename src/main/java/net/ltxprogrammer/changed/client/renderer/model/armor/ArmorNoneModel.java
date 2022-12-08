@@ -17,8 +17,8 @@ public class ArmorNoneModel<T extends LatexEntity> extends LatexHumanoidArmorMod
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_none")).get();
 
     public ArmorNoneModel(ModelPart root) {
-        super(
-                root, root, root, root, root, root, root, null);
+        super(new Builder(
+                root, root, root, root, root, root, root), null);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

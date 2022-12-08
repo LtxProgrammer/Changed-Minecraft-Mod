@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -28,6 +29,7 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -62,6 +64,49 @@ public abstract class LatexEntity extends Monster {
         return underlyingPlayer != null && underlyingPlayer.level.isClientSide ?
                 FMLEnvironment.dist == Dist.CLIENT && !(underlyingPlayer instanceof LocalPlayer) : super.isCustomNameVisible();
     }
+
+    public ItemStack getUseItem() {
+        return underlyingPlayer == null ?
+                super.getUseItem() :
+                underlyingPlayer.getUseItem();
+    }
+
+    public boolean isUsingItem() {
+        return underlyingPlayer == null ?
+                super.isUsingItem() :
+                underlyingPlayer.isUsingItem();
+    }
+
+    public InteractionHand getUsedItemHand() {
+        return underlyingPlayer == null ?
+                super.getUsedItemHand() :
+                underlyingPlayer.getUsedItemHand();
+    }
+
+    public int getUseItemRemainingTicks() {
+        return underlyingPlayer == null ?
+                super.getUseItemRemainingTicks() :
+                underlyingPlayer.getUseItemRemainingTicks();
+    }
+
+    public int getTicksUsingItem() {
+        return underlyingPlayer == null ?
+                super.getTicksUsingItem() :
+                underlyingPlayer.getTicksUsingItem();
+    }
+
+    public ItemStack getMainHandItem() {
+        return underlyingPlayer == null ?
+                super.getMainHandItem() :
+                underlyingPlayer.getMainHandItem();
+    }
+
+    public ItemStack getOffhandItem() {
+        return underlyingPlayer == null ?
+                super.getOffhandItem() :
+                underlyingPlayer.getOffhandItem();
+    }
+
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();

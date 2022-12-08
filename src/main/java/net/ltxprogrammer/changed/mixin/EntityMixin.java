@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,8 +15,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityAccess;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -118,6 +123,22 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
             double d2 = Mth.lerp(v, player.zo + look.z() * z, player.getZ() + look.z() * z);
             callback.setReturnValue(new Vec3(d0, d1, d2));
+        }
+    }
+
+    @Inject(method = "isInWall", at = @At("HEAD"), cancellable = true)
+    public void isInWall(CallbackInfoReturnable<Boolean> callback) {
+        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (player.noPhysics) {
+                callback.setReturnValue(false);
+            } else {
+                float f = player.getDimensions(player.getPose()).width * 0.8F;
+                AABB aabb = AABB.ofSize(new Vec3(player.getX(), player.getEyeY(), player.getZ()), (double)f, 1.0E-6D, (double)f);
+                callback.setReturnValue(BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
+                    BlockState blockstate = player.level.getBlockState(p_201942_);
+                    return !blockstate.isAir() && blockstate.isSuffocating(player.level, p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(player.level, p_201942_).move((double)p_201942_.getX(), (double)p_201942_.getY(), (double)p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
+                }));
+            }
         }
     }
 }

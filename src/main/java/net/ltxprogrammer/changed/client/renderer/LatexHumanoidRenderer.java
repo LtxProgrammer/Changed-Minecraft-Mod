@@ -31,10 +31,11 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
                                  Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.addLayer(new ItemInHandLayer<>(this));
+        this.addLayer(new LatexItemInHandLayer<>(this));
         this.addLayer(new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter))));
         this.addLayer(new LatexArrowLayer<>(context, this));
         //this.addLayer(new LatexCapeLayer<>(this));
+        this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParrotOnShoulderLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexBeeStingerLayer<>(this));
     }

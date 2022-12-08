@@ -11,6 +11,7 @@
     "BlockStateBaseMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
+    "IronGolemMixin",
     "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",

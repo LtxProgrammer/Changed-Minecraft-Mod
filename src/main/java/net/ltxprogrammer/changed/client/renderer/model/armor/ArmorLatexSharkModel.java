@@ -16,14 +16,14 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark")).get();
 
     public ArmorLatexSharkModel(ModelPart modelPart) {
-        super(
+        super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
                 modelPart.getChild("Torso").getChild("Tail"),
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm"), LatexHumanoidModelController.Builder::tailAidsInSwim);
+                modelPart.getChild("RightArm")), LatexHumanoidModelController.Builder::tailAidsInSwim);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

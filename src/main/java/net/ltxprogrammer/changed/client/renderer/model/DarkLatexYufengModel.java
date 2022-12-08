@@ -88,7 +88,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         PartDefinition Base_r2 = Head.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(54, 19).addBox(-0.6F, 0.35F, 2.3F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.5F, -4.0F, 0.0F, -1.4312F, -0.6458F, -0.4974F));
 
-        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(45, 68).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+        PartDefinition Hair2 = Head.addOrReplaceChild("Hair2", CubeListBuilder.create().texOffs(45, 68).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(1, 66).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(63, 24).addBox(2.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(65, 40).addBox(2.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
@@ -104,7 +104,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offsetAndRotation(-2.5F, -7.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
-        PartDefinition Base_r3 = RightEar.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(58, 0).addBox(-0.6209F, -1.8F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.0F, 0.0F, -0.2094F, -0.056F, 0.0059F));
+        PartDefinition Base_r3 = RightEar.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(58, 0).addBox(-0.6209F, -1.775F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.0F, 0.0F, -0.2094F, -0.056F, 0.0059F));
 
         PartDefinition Base_r4 = RightEar.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(54, 24).addBox(-1.3F, -1.5F, -0.975F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.7872F, 2.969F, -0.6745F, -2.087F, -0.3257F, 1.3714F));
 

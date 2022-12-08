@@ -82,7 +82,8 @@ public abstract class PlayerMixin extends LivingEntity {
                     new ResourceLocation(tag.getString("TransfurProgressType"))));
         if (tag.contains("LatexVariant")) {
             if (latexVariant == null || latexVariant.getFormId().equals(TagUtil.getResourceLocation(tag, "LatexVariant"))) {
-                latexVariant = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(tag, "LatexVariant")).clone();
+                LatexVariant<?> type = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(tag, "LatexVariant"));
+                latexVariant = type == null ? null : type.clone();
                 latexVariant.generateForm((Player)(LivingEntity)this, level);
             }
         }

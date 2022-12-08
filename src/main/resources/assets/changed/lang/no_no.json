@@ -60,6 +60,7 @@
   "block.changed.dark_latex_block": "Mørk lateksblokk",
   "block.changed.dark_latex_ice": "Mørk lateks is",
   "block.changed.infuser": "Infuser",
+  "block.changed.iron_crate": "Jernkasse",
   "block.changed.latex_beifeng_crystal": "Lateks beifeng krystall",
   "block.changed.latex_wolf_crystal": "Lateks ulv krystall",
   "block.changed.latex_beifeng_crystal_small": "Liten lateks beifeng krystall",
@@ -104,8 +105,7 @@
 
   "entity.changed.dark_latex_wolf_female": "Kvinnelig mørk lateks ulv",
   "entity.changed.dark_latex_wolf_male": "Mannlig mørk lateks ulv",
-  "entity.changed.dark_latex_dragon_female": "Kvinnelig mørk lateks drage",
-  "entity.changed.dark_latex_dragon_male": "Mannlig mørk lateks drage",
+  "entity.changed.dark_latex_dragon": "Mørk lateks drage",
   "entity.changed.dark_latex_yufeng": "Mørk lateks yufeng",
   "entity.changed.milk_pudding": "Melkepudding",
   "entity.changed.latex_beifeng": "Lateks beifeng",
@@ -139,8 +139,7 @@
   "item.changed.aerosol_latex_wolf_spawn_egg": "Fremkallingsegg for gass lateks ulv",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig mørk lateks ulv",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig mørk lateks ulv",
-  "item.changed.dark_latex_dragon_female_spawn_egg": "Fremkallingsegg for kvinnelig mørk lateks drage",
-  "item.changed.dark_latex_dragon_male_spawn_egg": "Fremkallingsegg for mannlig mørk lateks drage",
+  "item.changed.dark_latex_dragon_spawn_egg": "Fremkallingsegg for mørk lateks drage",
   "item.changed.dark_latex_yufeng_spawn_egg": "Fremkallingsegg for mørk lateks yufeng",
   "item.changed.milk_pudding_spawn_egg": "Fremkallingsegg for melkepudding",
   "item.changed.latex_beifeng_spawn_egg": "Fremkallingsegg for lateks beifeng",
@@ -230,5 +229,8 @@
   "changed:advancements.main.white_latex_fuse.description": "Slå sammen til hvit lateks som en hvit lateksform",
 
   "changed:advancements.main.transfur_aerial.title": "Flytimer",
-  "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform"
+  "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform",
+
+  "changed:advancements.main.transfur_mask.title": "Avviser menneskeheten",
+  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske."
 }
