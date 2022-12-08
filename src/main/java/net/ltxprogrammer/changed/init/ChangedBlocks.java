@@ -44,8 +44,10 @@ public class ChangedBlocks {
     public static final RegistryObject<Block> AEROSOL_LATEX = registerNoItem("aerosol_latex", AerosolLatex::new);
     public static final RegistryObject<Block> BEDSIDE_IV_RACK = register("bedside_iv_rack", BedsideIVRack::new, AbstractLatexCrystal::translucentRenderer);
     public static final RegistryObject<Block> BOOK_STACK = register("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F, 6.0F)));
+    public static final RegistryObject<Block> CLIPBOARD = register("clipboard", () -> new BookStack(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.CANDLE).strength(0.2F, 3.0F)));
     public static final RegistryObject<Block> COMPUTER = register("computer", () -> new Computer(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel((state) -> 8)));
     public static final RegistryObject<Block> CARDBOARD_BOX = register("cardboard_box", CardboardBox::new);
+    public static final RegistryObject<Block> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).strength(4.0F, 30.0F)));
     public static final RegistryObject<Block> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluid::new);
     public static final RegistryObject<Block> LAB_DOOR = register("lab_door", () -> new LabDoor(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 18.0F)));
     public static final RegistryObject<Block> LAB_LIGHT = register("lab_light", () -> new LabLight(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel(
