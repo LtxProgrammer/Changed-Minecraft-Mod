@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/book_stack"
+    },
+    "facing=northeast": {
+      "model": "changed:block/book_stack",
+      "y": 45
+    },
+    "facing=east": {
+      "model": "changed:block/book_stack",
+      "y": 90
+    },
+    "facing=southeast": {
+      "model": "changed:block/book_stack",
+      "y": 135
+    },
+    "facing=south": {
+      "model": "changed:block/book_stack",
+      "y": 180
+    },
+    "facing=southwest": {
+      "model": "changed:block/book_stack",
+      "y": 225
+    },
+    "facing=west": {
+      "model": "changed:block/book_stack",
+      "y": 270
+    },
+    "facing=northwest": {
+      "model": "changed:block/book_stack",
+      "y": 315
+    }
+  }
+}
