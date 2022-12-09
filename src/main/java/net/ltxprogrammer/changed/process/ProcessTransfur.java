@@ -338,8 +338,10 @@ public class ProcessTransfur {
                 event.setCanceled(true);
                 transfur(event.getEntityLiving(), sourceEntity.level, sourceVariant, true);
                 if (sourceEntity instanceof Player) {
-                    if (event.getEntityLiving() instanceof Player pvpLoser)
-                        pvpLoser.kill();
+                    if (event.getEntityLiving() instanceof Player pvpLoser) {
+                        pvpLoser.setLastHurtByMob(sourceEntity);
+                        pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
+                    }
                     else
                         event.getEntityLiving().discard();
                 }
