@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NWN"
+  ],
+  "key": {
+    "W": {
+      "item": "changed:wall_white"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "item": "changed:wall_vent"
+  }
+}

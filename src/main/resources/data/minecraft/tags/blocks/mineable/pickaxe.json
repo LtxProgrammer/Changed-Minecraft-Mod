@@ -29,6 +29,7 @@
     "changed:wall_vent",
     "changed:wall_white",
     "changed:infuser",
-    "changed:purifier"
+    "changed:purifier",
+    "changed:iron_crate"
   ]
 }
