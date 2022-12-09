@@ -102,6 +102,20 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         rightLeg.visible = b;
         leftArm.visible = b;
         rightArm.visible = b;
+        if (lowerTorso != null)
+            lowerTorso.visible = b;
+        if (leftLeg2 != null)
+            leftLeg2.visible = b;
+        if (leftLeg2 != null)
+            rightLeg2.visible = b;
+        if (leftLeg2 != null)
+            leftArm2.visible = b;
+        if (leftLeg2 != null)
+            rightArm2.visible = b;
+    }
+
+    public void translateToHand(HumanoidArm arm, PoseStack stack) {
+
     }
 
     public void prepareMobModel(LatexHumanoidModelController controller, T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
@@ -130,10 +144,6 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
-    }
-
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
     }
 
     @Override

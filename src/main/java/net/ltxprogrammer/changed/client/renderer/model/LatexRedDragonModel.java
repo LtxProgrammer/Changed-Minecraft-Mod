@@ -188,10 +188,6 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
     }
 
 
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
-    }
-
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;

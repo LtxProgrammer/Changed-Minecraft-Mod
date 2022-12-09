@@ -29,7 +29,9 @@
   "item.changed.latex_dance_record.desc": "By LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ Music Disc",
   "item.changed.owo_record.desc": "By Artemka2009",
-  
+
+  "death.attack.transfur.player": "%1$s was transfurred by %2$s",
+
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
@@ -111,6 +113,7 @@
   "entity.changed.milk_pudding": "Milk Pudding",
   "entity.changed.latex_beifeng": "Latex Beifeng",
   "entity.changed.latex_blue_dragon": "Latex Blue Dragon",
+  "entity.changed.latex_crocodile": "Latex Crocodile",
   "entity.changed.latex_crystal_wolf": "Latex Crystal Wolf",
   "entity.changed.latex_deer": "Latex Deer",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
@@ -145,6 +148,7 @@
   "item.changed.milk_pudding_spawn_egg": "Milk Pudding Spawn Egg",
   "item.changed.latex_beifeng_spawn_egg": "Latex Beifeng Spawn Egg",
   "item.changed.latex_blue_dragon_spawn_egg": "Latex Blue Dragon Spawn Egg",
+  "item.changed.latex_crocodile_spawn_egg": "Latex Crocodile Spawn Egg",
   "item.changed.latex_crystal_wolf_spawn_egg": "Latex Crystal Wolf Spawn Egg",
   "item.changed.latex_deer_spawn_egg": "Latex Deer Spawn Egg",
   "item.changed.latex_hypno_cat_spawn_egg": "Latex Hypno Cat Spawn Egg",

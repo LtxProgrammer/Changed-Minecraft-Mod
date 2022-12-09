@@ -310,11 +310,6 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
     }
 
     @Override
-    public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
-        this.getArm(p_102108_).translateAndRotate(p_102109_);
-    }
-
-    @Override
     public ModelPart getHead() {
         return Head;
     }

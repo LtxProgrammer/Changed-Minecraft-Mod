@@ -89,11 +89,17 @@ public class ChangedEntities {
     public static boolean forestSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.FOREST;
     }
+
     public static boolean mesaSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.MESA;
     }
+
     public static boolean oceanSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.OCEAN || category == Biome.BiomeCategory.RIVER;
+    }
+
+    public static boolean swampSpawning(Biome.BiomeCategory category) {
+        return category == Biome.BiomeCategory.SWAMP;
     }
 
     public static boolean undergroundSpawning(Biome.BiomeCategory category) {
@@ -170,6 +176,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexBlueDragon>> LATEX_BLUE_DRAGON = register("latex_blue_dragon", 0xCDFEFF, 0x5c72ab,
             EntityType.Builder.of(LatexBlueDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);
+    public static final RegistryObject<EntityType<LatexCrocodile>> LATEX_CROCODILE = register("latex_crocodile", 0x216d50, 0x43b058,
+            EntityType.Builder.of(LatexCrocodile::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.625F),
+            ChangedEntities::swampSpawning);
     public static final RegistryObject<EntityType<LatexHypnoCat>> LATEX_HYPNO_CAT = register("latex_hypno_cat", 0x52596D, 0xD7FF46,
             EntityType.Builder.of(LatexHypnoCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::savannaSpawning);
