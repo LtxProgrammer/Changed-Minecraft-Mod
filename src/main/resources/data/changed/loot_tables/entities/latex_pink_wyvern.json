@@ -1,7 +1,7 @@
 {
   "type": "minecraft:entity",
-    "pools": [
-        {
+  "pools": [
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -30,7 +30,7 @@
         }
       ]
     },
-	  {
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -57,7 +57,7 @@
           ],
           "name": "minecraft:pink_dye"
         },
-		  {
+        {
           "type": "minecraft:item",
           "functions": [
             {
