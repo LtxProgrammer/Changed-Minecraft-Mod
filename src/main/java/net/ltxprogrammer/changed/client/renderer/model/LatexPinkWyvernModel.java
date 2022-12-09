@@ -160,7 +160,7 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
                 .texOffs(0, 48).addBox(6.999F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(47, 45).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
-        PartDefinition Wing_r5 = LeftArm.addOrReplaceChild("Wing_r5", CubeListBuilder.create().texOffs(44, 0).addBox(5.5F, -13.89F, 7.8F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(1.0F, -1.0F, 0.0F, 0.3491F, 0.2182F, 0.0F));
+        PartDefinition Wing_r5 = LeftArm.addOrReplaceChild("Wing_r5", CubeListBuilder.create().texOffs(44, 0).addBox(5.5F, -13.89F, 7.7F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(1.0F, -1.0F, 0.0F, 0.3491F, 0.2182F, 0.0F));
 
         PartDefinition Wing_r6 = LeftArm.addOrReplaceChild("Wing_r6", CubeListBuilder.create().texOffs(0, 0).addBox(6.0F, -9.1F, 17.0F, 0.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 2).addBox(6.0F, -10.1F, 14.0F, 0.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
