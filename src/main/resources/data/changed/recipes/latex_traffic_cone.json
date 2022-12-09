@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" Y ",
+		"BPB",
+		"YLY"
+	],
+	"key": {
+		"P": {
+			"item": "minecraft:paper"
+		},
+		"L": {
+			"item": "changed:latex_base"
+		},
+		"B": {
+			"item": "minecraft:black_dye"
+		},
+		"Y": {
+			"item": "minecraft:yellow_dye"
+		}
+	},
+	"result": {
+		"item": "changed:latex_traffic_cone"
+	}
+}
