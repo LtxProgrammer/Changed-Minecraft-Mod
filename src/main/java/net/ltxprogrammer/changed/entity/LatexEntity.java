@@ -107,6 +107,12 @@ public abstract class LatexEntity extends Monster {
                 underlyingPlayer.getOffhandItem();
     }
 
+    public boolean isAutoSpinAttack() {
+        return underlyingPlayer == null ?
+                super.isAutoSpinAttack() :
+                underlyingPlayer.isAutoSpinAttack();
+    }
+
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
