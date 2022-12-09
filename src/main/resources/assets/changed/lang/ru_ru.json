@@ -21,7 +21,6 @@
   "item.changed.latex_wolf_crystal_fragment": "Фрагмент Красного Кристалльного Латекса",
   "item.changed.latex_tipped_arrow": "Стрела С Латексным Наконечником",
   "item.changed.orange": "Апельсин",
-  "item.changed.orange.desc": "Очень кислый",
   "item.changed.syringe": "Шприц",
   "item.changed.white_latex_goo": "Белая Латексная Субстанция",
   "item.changed.white_latex_bucket": "Ведро Белого Латекса",
@@ -232,6 +231,6 @@
   "changed:advancements.main.transfur_aerial.title": "Уроки полета",
   "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс"
   
-   "changed:advancements.main.transfur_mask.title": "Отрекая человечность",
+  "changed:advancements.main.transfur_mask.title": "Отрекая человечность",
   "changed:advancements.main.transfur_mask.description": "Получите и наденьте маску из тёмного латекса."
 }
