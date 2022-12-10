@@ -319,7 +319,7 @@ public class ProcessTransfur {
             return;
         if (event.getSource().isProjectile())
             return;
-        if (event.getEntityLiving().isBlocking())
+        if (event.getEntityLiving().isDamageSourceBlocked(event.getSource()))
             return;
 
         if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
