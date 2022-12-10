@@ -120,7 +120,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
 
-    public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12)
+    public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_crocodile")));
 
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide()
@@ -461,6 +461,16 @@ public class LatexVariant<T extends LatexEntity> {
                 int air = player.getAirSupply();
                 if (air > -10)
                     player.setAirSupply(air-1);
+                this.ticksBreathingUnderwater = 0;
+            }
+        }
+
+        else if (player.isAlive() && !breatheMode.canBreatheWater() && breatheMode == BreatheMode.STRONG) {
+            //if the player is in water, add 1 air every other tick
+            if (player.isEyeInFluid(FluidTags.WATER)) {
+                int air = player.getAirSupply();
+                if (air > -10 && player.tickCount % 2 == 0)
+                    player.setAirSupply(air+1);
                 this.ticksBreathingUnderwater = 0;
             }
         }
