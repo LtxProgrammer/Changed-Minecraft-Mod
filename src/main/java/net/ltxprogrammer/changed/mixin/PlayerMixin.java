@@ -74,29 +74,6 @@ public abstract class PlayerMixin extends LivingEntity {
     public LatexVariant<?> latexVariant = null;
     public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.LIGHT_LATEX_WOLF.male().getFormId());
 
-    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-    protected void readAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
-        if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType"))
-            ProcessTransfur.setPlayerTransfurProgress((Player)(LivingEntity)this,
-                    new ProcessTransfur.TransfurProgress(tag.getInt("TransfurProgress"),
-                    new ResourceLocation(tag.getString("TransfurProgressType"))));
-        if (tag.contains("LatexVariant")) {
-            if (latexVariant == null || latexVariant.getFormId().equals(TagUtil.getResourceLocation(tag, "LatexVariant"))) {
-                LatexVariant<?> type = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(tag, "LatexVariant"));
-                latexVariant = type == null ? null : type.clone();
-                latexVariant.generateForm((Player)(LivingEntity)this, level);
-            }
-        }
-    }
-
-    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
-    protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
-        tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress((Player)(LivingEntity)this).ticks());
-        tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress((Player)(LivingEntity)this).type().toString());
-        if (latexVariant != null)
-            TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
-    }
-
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
         if (ProcessTransfur.isPlayerLatex((Player)(Object)this))
