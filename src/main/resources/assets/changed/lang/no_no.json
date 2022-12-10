@@ -29,6 +29,8 @@
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ musikkplate",
   "item.changed.owo_record.desc": "Av Artemka2009",
+
+  "death.attack.transfur.player": "%1$s ble transpelsert av %2$s",
   
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
@@ -111,6 +113,7 @@
   "entity.changed.milk_pudding": "Melkepudding",
   "entity.changed.latex_beifeng": "Lateks beifeng",
   "entity.changed.latex_blue_dragon": "Lateks blå drage",
+  "entity.changed.latex_crocodile": "Lateks krokodille",
   "entity.changed.latex_crystal_wolf": "Lateks krystall ulv",
   "entity.changed.latex_deer": "Lateks hjort",
   "entity.changed.latex_hypno_cat": "Lateks hypnose katt",
@@ -145,6 +148,7 @@
   "item.changed.milk_pudding_spawn_egg": "Fremkallingsegg for melkepudding",
   "item.changed.latex_beifeng_spawn_egg": "Fremkallingsegg for lateks beifeng",
   "item.changed.latex_blue_dragon_spawn_egg": "Fremkallingsegg for lateks blå drage",
+  "item.changed.latex_crocodile_spawn_egg": "Fremkallingsegg for lateks krokodille",
   "item.changed.latex_crystal_wolf_spawn_egg": "Fremkallingsegg for lateks krystall ulv",
   "item.changed.latex_deer_spawn_egg": "Fremkallingsegg for lateks hjort",
   "item.changed.latex_hypno_cat_spawn_egg": "Fremkallingsegg for lateks hypnose katt",
