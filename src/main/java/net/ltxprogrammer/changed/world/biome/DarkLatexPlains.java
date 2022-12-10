@@ -44,9 +44,12 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
             Climate.Parameter.span(0.657142857143f, 0.942857142857f), Climate.Parameter.point(0),
             Climate.Parameter.span(-0.709325650395f, -0.423611364681f), 0);*/
 
-    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(Climate.Parameter.span(-0.125f, 0.125f),
-            Climate.Parameter.span(-0.125f, 0.125f), Climate.Parameter.span(0.0f, 1.0f),
-            Climate.Parameter.span(0.0f, 1.0f), Climate.Parameter.point(0),
+    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
+            Climate.Parameter.span(-0.125f, 0.125f),
+            Climate.Parameter.span(-0.125f, 0.125f),
+            Climate.Parameter.span(0.0f, 1.0f),
+            Climate.Parameter.span(0.0f, 1.0f),
+            Climate.Parameter.point(0),
             Climate.Parameter.span(-0.25f, 0.25f), 0);
 
 

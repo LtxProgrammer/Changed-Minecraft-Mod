@@ -16,7 +16,6 @@
     "ItemStackMixin",
     "LivingEntityMixin",
     "MobMixin",
-    "NoiseBasedAquiferMixin",
     "PlayerMixin",
     "ServerPlayerMixin",
     "ShovelItemMixin",
