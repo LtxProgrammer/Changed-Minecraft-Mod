@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity;
 
 import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.entity.beast.AquaticEntity;
+import net.ltxprogrammer.changed.entity.beast.Pudding;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
@@ -156,9 +158,12 @@ public abstract class LatexEntity extends Monster {
     public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.setAttributes(getAttributes());
+        if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
+            navigation.setCanOpenDoors(true);
     }
 
     protected void setAttributes(AttributeMap attributes) {
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(24.0);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
@@ -196,6 +201,8 @@ public abstract class LatexEntity extends Monster {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
+        if (!(this instanceof Pudding))
+            this.goalSelector.addGoal(4, new OpenDoorGoal(this, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));

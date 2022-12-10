@@ -18,6 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController.findLargestCube;
+
 public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     private static final float X_ROT_MIN = (-(float)Math.PI / 6F);
     private static final float X_ROT_MAX = ((float)Math.PI / 2F);
@@ -35,37 +37,6 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
 
     }
 
-    private ModelPart.Cube findHeadCube(ModelPart head) {
-        ModelPart.Cube largest = null;
-        float mass = 0.0f;
-        for (var cube : head.cubes) {
-            float dX = cube.maxX - cube.minX;
-            float dY = cube.maxY - cube.minY;
-            float dZ = cube.maxZ - cube.minZ;
-
-            if (dX * dY * dZ > mass) {
-                largest = cube;
-                mass = dX * dY * dZ;
-            }
-        }
-
-        for (var entry : head.children.entrySet()) {
-            var cube = findHeadCube(entry.getValue());
-            if (cube != null) {
-                float dX = cube.maxX - cube.minX;
-                float dY = cube.maxY - cube.minY;
-                float dZ = cube.maxZ - cube.minZ;
-
-                if (dX * dY * dZ > mass) {
-                    largest = cube;
-                    mass = dX * dY * dZ;
-                }
-            }
-        }
-
-        return largest;
-    }
-
     private void renderArmWithSpyglass(LivingEntity p_174518_, ItemStack p_174519_, HumanoidArm p_174520_, PoseStack p_174521_, MultiBufferSource p_174522_, int p_174523_) {
         p_174521_.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
@@ -75,11 +46,12 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(p_174521_, false);
         boolean flag = p_174520_ == HumanoidArm.LEFT;
-        var headCube = findHeadCube(modelpart);
-        if (headCube == null) {
+        var list = findLargestCube(modelpart);
+        if (list.isEmpty()) {
             p_174521_.popPose();
             return;
         }
+        var headCube = list.get(0);
         float dH = 0.5f - headCube.maxY;
         p_174521_.translate((double)((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
         Minecraft.getInstance().getItemInHandRenderer().renderItem(p_174518_, p_174519_, ItemTransforms.TransformType.HEAD, false, p_174521_, p_174522_, p_174523_);

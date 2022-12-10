@@ -37,6 +37,7 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.waterNavigation = new WaterBoundPathNavigation(this, p_19871_);
         this.groundNavigation = new GroundPathNavigation(this, p_19871_);
+        this.groundNavigation.setCanOpenDoors(true);
     }
 
     @Override
