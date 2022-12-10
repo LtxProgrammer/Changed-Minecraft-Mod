@@ -103,7 +103,7 @@ public class LatexHumanoidModelController {
             if (leftLeg != null)
                 this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f);
             if (leftArm != null) {
-                this.torsoWidth = (leftArm.x - 5.0f);
+                this.torsoWidth = Math.max(leftArm.x - 5.0f, 0.0f);
 
                 var list = findLargestCube(leftArm);
                 AtomicBoolean flag = new AtomicBoolean(false);
