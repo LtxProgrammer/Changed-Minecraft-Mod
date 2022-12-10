@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
@@ -157,6 +158,8 @@ public abstract class LatexEntity extends Monster {
     public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.setAttributes(getAttributes());
+        if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
+            navigation.setCanOpenDoors(true);
     }
 
     protected void setAttributes(AttributeMap attributes) {

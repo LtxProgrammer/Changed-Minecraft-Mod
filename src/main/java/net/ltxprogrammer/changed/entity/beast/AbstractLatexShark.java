@@ -59,6 +59,7 @@ public abstract class AbstractLatexShark extends GenderedLatexEntity implements 
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.waterNavigation = new WaterBoundPathNavigation(this, p_19871_);
         this.groundNavigation = new GroundPathNavigation(this, p_19871_);
+        this.groundNavigation.setCanOpenDoors(true);
     }
 
     private static boolean isDeepEnoughToSpawn(LevelAccessor p_32367_, BlockPos p_32368_) {
