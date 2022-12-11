@@ -35,7 +35,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).hipOffset(-5.0f).build();
+        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).hipOffset(-5.0f).armLengthOffset(8.0f).build();
     }
 
     public static LayerDefinition createBodyLayer() {
