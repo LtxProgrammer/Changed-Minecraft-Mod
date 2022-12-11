@@ -29,6 +29,9 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
     }
 
     protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_) {
+        if (p_174525_ instanceof LatexEntity latexEntity && latexEntity.getUnderlyingPlayer() != null)
+            p_174525_ = latexEntity.getUnderlyingPlayer();
+
         if (p_174526_.is(Items.SPYGLASS) && p_174525_.getUseItem() == p_174526_ && p_174525_.swingTime == 0) {
             this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, p_174529_, p_174530_, p_174531_);
         } else {

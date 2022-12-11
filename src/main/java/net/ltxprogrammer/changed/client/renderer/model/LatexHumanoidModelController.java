@@ -86,7 +86,7 @@ public class LatexHumanoidModelController {
         private float hipOffset = -2.0F;
         private float forewardOffset = 0.0F;
         private float legLength = 0.0F;
-        private float armLength = 0.0F;
+        private float armLength = 0.5F;
         private float torsoWidth = 0.0F;
         private boolean swimTail = false;
 
@@ -102,21 +102,8 @@ public class LatexHumanoidModelController {
 
             if (leftLeg != null)
                 this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f);
-            if (leftArm != null) {
+            if (leftArm != null)
                 this.torsoWidth = Math.max(leftArm.x - 5.0f, 0.0f);
-
-                var list = findLargestCube(leftArm);
-                AtomicBoolean flag = new AtomicBoolean(false);
-                AtomicReference<Float> minY = new AtomicReference<>(9999999.0f);
-                AtomicReference<Float> maxY = new AtomicReference<>(-9999999.0f);
-                list.forEach(cube -> {
-                    minY.set(Math.min(cube.minY, minY.get()));
-                    maxY.set(Math.max(cube.maxY, maxY.get()));
-                    flag.set(true);
-                });
-                if (flag.getAcquire())
-                    this.armLength = (maxY.getAcquire() - minY.getAcquire()) - 12.0f;
-            }
         }
 
         public static Builder of(EntityModel model, ModelPart head, ModelPart torso, ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
@@ -133,6 +120,10 @@ public class LatexHumanoidModelController {
 
         public Builder forewardOffset(float f) {
             this.forewardOffset = f; return this;
+        }
+
+        public Builder armLengthOffset(float f) {
+            this.armLength = f; return this;
         }
 
         public Builder wings(ModelPart rightWing, ModelPart leftWing) {
