@@ -45,7 +45,10 @@ public class MountLatexPacket implements ChangedPacket {
             ClientLevel level = Minecraft.getInstance().level;
             Objects.requireNonNull(level);
 
-            level.getPlayerByUUID(entity).startRiding(level.getPlayerByUUID(mount));
+            if (entity.equals(mount))
+                level.getPlayerByUUID(entity).stopRiding();
+            else
+                level.getPlayerByUUID(entity).startRiding(level.getPlayerByUUID(mount));
         }
     }
 }

@@ -372,7 +372,7 @@ public class ProcessTransfur {
 
         float damageAdjustment = sourceEntity instanceof Player && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR) ? 4.0f : 1.0f;
         if (damageAdjustment > 1.0f)
-            event.getEntityLiving().hurt(ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
+            event.getEntityLiving().actuallyHurt(ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
 
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntityLiving().getPersistentData().contains(LatexVariant.NBT_PLAYER_ID)) {

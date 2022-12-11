@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
+import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -13,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -60,5 +62,11 @@ public abstract class ServerPlayerMixin extends Player {
         LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);
         if (latexVariant != null)
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
+    }
+
+    @Inject(method = "stopRiding", at = @At("HEAD"))
+    public void stopRiding(CallbackInfo callbackInfo) {
+        if (this.getVehicle() instanceof Player)
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(getUUID(), getUUID()));
     }
 }
