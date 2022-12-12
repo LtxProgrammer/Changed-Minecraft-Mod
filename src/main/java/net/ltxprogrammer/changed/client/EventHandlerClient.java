@@ -1,13 +1,19 @@
 package net.ltxprogrammer.changed.client;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.data.Listener;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
+import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
+import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,5 +59,11 @@ public class EventHandlerClient {
         {
             FormRenderHandler.lastPartialTick = event.getPartialTicks();
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
+        Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
     }
 }
