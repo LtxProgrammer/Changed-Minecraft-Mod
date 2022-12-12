@@ -28,6 +28,6 @@ public class LatexBlueDragon extends LatexEntity {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#cdfeff");
+        return ChangedParticles.Color3.getColor("#cae5fe");
     }
 }
