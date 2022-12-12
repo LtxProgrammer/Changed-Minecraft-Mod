@@ -145,7 +145,7 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
 
     boolean wantsToSwim() {
         LivingEntity livingentity = this.getTarget();
-        return livingentity != null && livingentity.isInWater();
+        return livingentity == null || livingentity.isInWater();
     }
 
     static class AquaticMoveControl extends MoveControl {
