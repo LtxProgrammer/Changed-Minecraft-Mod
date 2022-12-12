@@ -85,10 +85,20 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
                 p_117126_.body.visible = true;
                 p_117126_.rightLeg.visible = true;
                 p_117126_.leftLeg.visible = true;
+                if (p_117126_.lowerTorso != null)
+                    p_117126_.lowerTorso.visible = true;
+                if (p_117126_.rightLeg2 != null)
+                    p_117126_.rightLeg2.visible = true;
+                if (p_117126_.leftLeg2 != null)
+                    p_117126_.leftLeg2.visible = true;
                 break;
             case FEET:
                 p_117126_.rightLeg.visible = true;
                 p_117126_.leftLeg.visible = true;
+                if (p_117126_.rightLeg2 != null)
+                    p_117126_.rightLeg2.visible = true;
+                if (p_117126_.leftLeg2 != null)
+                    p_117126_.leftLeg2.visible = true;
         }
 
     }
