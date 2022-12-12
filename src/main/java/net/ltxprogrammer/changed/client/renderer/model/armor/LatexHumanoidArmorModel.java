@@ -106,11 +106,11 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
             lowerTorso.visible = b;
         if (leftLeg2 != null)
             leftLeg2.visible = b;
-        if (leftLeg2 != null)
+        if (rightLeg2 != null)
             rightLeg2.visible = b;
-        if (leftLeg2 != null)
+        if (leftArm2 != null)
             leftArm2.visible = b;
-        if (leftLeg2 != null)
+        if (rightArm2 != null)
             rightArm2.visible = b;
     }
 
