@@ -7,10 +7,7 @@ import net.ltxprogrammer.changed.entity.beast.LightLatexWolfMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,13 +79,17 @@ public class LightLatexWolfMaleModel extends LatexHumanoidModel<LightLatexWolfMa
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(16, 50).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(0.5F, 0.0F + 26.5F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(24, 0).addBox(-1.5088F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(32, 11).addBox(-0.5088F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(28, 34).addBox(0.4912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(-3.0F, -34.0F + 26.5F, 0.0F, 0.0F, 0.0F, -0.2618F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(-3.0F, -7.0F, 0.0F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(20, 16).addBox(-0.9912F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(24, 6).addBox(-0.9912F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(15, 34).addBox(-0.9912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(2.5F, -34.0F + 26.5F, 0.0F, 0.0F, 0.0F, 0.2618F));
+        PartDefinition Head_r1 = RightEar.addOrReplaceChild("Head_r1", CubeListBuilder.create().texOffs(19, 20).addBox(-1.5F, -1.75F, -1.625F, 1.0F, 1.0F, 2.0F, NO_DEFORMATION)
+                .texOffs(21, 20).addBox(-1.5F, -0.75F, -1.625F, 1.0F, 3.0F, 3.0F, NO_DEFORMATION)
+                .texOffs(26, 19).addBox(-0.5F, -0.75F, -1.625F, 1.0F, 3.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(-0.5F, -1.375F, 0.5F, 0.0F, -1.5708F, -0.3927F));
+
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offset(2.5F, -7.0F, 0.0F));
+
+        PartDefinition Head_r2 = LeftEar.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(4, 21).addBox(-0.5F, -0.75F, -1.625F, 1.0F, 3.0F, 3.0F, NO_DEFORMATION)
+                .texOffs(6, 22).addBox(0.5F, -1.75F, -1.625F, 1.0F, 1.0F, 2.0F, NO_DEFORMATION)
+                .texOffs(6, 18).addBox(0.5F, -0.75F, -1.625F, 1.0F, 3.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(1.0F, -1.375F, 0.5F, 0.0F, 1.5708F, 0.3927F));
 
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, -25.0F + 25.5F, -2.0F, 8.0F, 12.0F, 4.0F, NO_DEFORMATION), PartPose.offset(0.0F, 24.0F, 0.0F));
 

@@ -19,9 +19,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
 
 public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
     private static final ResourceLocation WINGS_LOCATION = new ResourceLocation("textures/entity/elytra.png");
@@ -29,7 +31,49 @@ public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidMode
 
     public LatexElytraLayer(RenderLayerParent<T, M> p_174493_, EntityModelSet p_174494_) {
         super(p_174493_);
-        this.elytraModel = new ElytraModel<>(p_174494_.bakeLayer(ModelLayers.ELYTRA));
+        this.elytraModel = new ElytraModel<>(p_174494_.bakeLayer(ModelLayers.ELYTRA)){
+            public void setupAnim(T p_102544_, float p_102545_, float p_102546_, float p_102547_, float p_102548_, float p_102549_) {
+                float f = 0.2617994F;
+                float f1 = -0.2617994F;
+                float f2 = 0.0F;
+                float f3 = 0.0F;
+                if (p_102544_.isFallFlying()) {
+                    float f4 = 1.0F;
+                    Vec3 vec3 = p_102544_.getDeltaMovement();
+                    if (vec3.y < 0.0D) {
+                        Vec3 vec31 = vec3.normalize();
+                        f4 = 1.0F - (float)Math.pow(-vec31.y, 1.5D);
+                    }
+
+                    f = f4 * 0.34906584F + (1.0F - f4) * f;
+                    f1 = f4 * (-(float)Math.PI / 2F) + (1.0F - f4) * f1;
+                } else if (p_102544_.isCrouching()) {
+                    f = 0.6981317F;
+                    f1 = (-(float)Math.PI / 4F);
+                    f2 = 3.0F;
+                    f3 = 0.08726646F;
+                }
+
+                this.leftWing.y = f2;
+                if (p_102544_.getUnderlyingPlayer() instanceof AbstractClientPlayer abstractclientplayer) {
+                    abstractclientplayer.elytraRotX += (f - abstractclientplayer.elytraRotX) * 0.1F;
+                    abstractclientplayer.elytraRotY += (f3 - abstractclientplayer.elytraRotY) * 0.1F;
+                    abstractclientplayer.elytraRotZ += (f1 - abstractclientplayer.elytraRotZ) * 0.1F;
+                    this.leftWing.xRot = abstractclientplayer.elytraRotX;
+                    this.leftWing.yRot = abstractclientplayer.elytraRotY;
+                    this.leftWing.zRot = abstractclientplayer.elytraRotZ;
+                } else {
+                    this.leftWing.xRot = f;
+                    this.leftWing.zRot = f1;
+                    this.leftWing.yRot = f3;
+                }
+
+                this.rightWing.yRot = -this.leftWing.yRot;
+                this.rightWing.y = this.leftWing.y;
+                this.rightWing.xRot = this.leftWing.xRot;
+                this.rightWing.zRot = -this.leftWing.zRot;
+            }
+        };
     }
 
     public void render(PoseStack p_116951_, MultiBufferSource p_116952_, int p_116953_, T p_116954_, float p_116955_, float p_116956_, float p_116957_, float p_116958_, float p_116959_, float p_116960_) {

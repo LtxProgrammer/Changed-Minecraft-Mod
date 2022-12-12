@@ -29,10 +29,13 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<LightLa
                     modelPart.getChild("Torso").getChild("LowerTorso"),
                     modelPart.getChild("LeftLeg2"),
                     modelPart.getChild("RightLeg2")),
-                builder -> builder.forewardOffset(-7.0f));
+                builder -> builder.forewardOffset(-7.0f).legs2(
+                        modelPart.getChild("Torso").getChild("LowerTorso"),
+                        modelPart.getChild("RightLeg2"),
+                        modelPart.getChild("LeftLeg2")));
     }
 
-    public static LayerDefinition createArmorLayer(ArmorModel layer) { // TODO
+    public static LayerDefinition createArmorLayer(ArmorModel layer) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 

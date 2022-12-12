@@ -60,7 +60,7 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
             LatexEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());
             entity.tickCount = (int)self.time;
 
-            InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, 10, (float) (Math.sin(self.time / 60.0f) * 60.0f), 0.0f, entity);
+            InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, self.isHoveredOrFocused() ? 40 : 10, (float) (Math.sin(self.time / 60.0f) * 60.0f), 0.0f, entity);
 
             ci.cancel();
         }

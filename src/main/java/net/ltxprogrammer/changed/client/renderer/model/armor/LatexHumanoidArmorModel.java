@@ -164,8 +164,6 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        if (lowerTorso != null)
-            lowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (rightLeg2 != null)
             rightLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftLeg2 != null)
