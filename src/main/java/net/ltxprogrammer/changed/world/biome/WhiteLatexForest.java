@@ -32,9 +32,12 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
             FeatureUtils.register(Changed.modResourceStr("patch_white_latex_pillar"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.WHITE_LATEX_PILLAR), 8));
 
-    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(Climate.Parameter.span(-0.15f, 0.1f),
-            Climate.Parameter.span(-0.125f, 0.125f), Climate.Parameter.span(0.0f, 1.0f),
-            Climate.Parameter.span(0.0f, 1.0f), Climate.Parameter.point(0),
+    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
+            Climate.Parameter.span(-0.15f, 0.1f),
+            Climate.Parameter.span(-0.125f, 0.125f),
+            farInlandContinentalness,
+            Climate.Parameter.span(-0.75f, 0.0f),
+            Climate.Parameter.point(0),
             Climate.Parameter.span(-0.25f, 0.25f), 0);
 
 
