@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -24,6 +25,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class FormRenderHandler {
@@ -113,12 +117,22 @@ public class FormRenderHandler {
 
             if(handPart != null && texture != null) {
                 renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
-                ModelPart finalHandPart = handPart;
-                PoseStack finalStackCorrector = stackCorrector;
-                latexRenderer.layers.forEach(layer -> {
-                    if (layer instanceof EmissiveBodyLayer<?,?> emissiveBodyLayer)
-                        renderModelPartWithTexture(finalHandPart, finalStackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(emissiveBodyLayer.getEmissiveTexture())), 0xFFFFFF, 1F);
-                });
+                for (var layer : latexRenderer.layers)  {
+                    if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
+                        renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(emissiveBodyLayer.getEmissiveTexture())), 0xFFFFFF, 1F);
+                    if (layer instanceof LatexGelLayer<?,?> gelLayer) {
+                        LatexHumanoidModel entityModel =gelLayer.getModel();
+                        var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
+                        LatexHumanoidModelController controller = latexHumanoidModel.getController();
+
+                        boolean lastCrouch = controller.crouching;
+                        controller.crouching = false;
+                        entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+                        latexHumanoidModel.setupHand();
+                        controller.crouching = lastCrouch;
+                        renderModelPartWithTexture(gelLayer.getModel().getArm(handSide), stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
+                    }
+                }
             }
 
             return true;

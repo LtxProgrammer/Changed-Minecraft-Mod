@@ -142,6 +142,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_deer")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_RED_PANDA)
             .build(Changed.modResource("form_latex_red_panda")));
+    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD)
+            .build(Changed.modResource("form_latex_translucent_lizard")));
     public ResourceLocation getFormId() {
         return formId;
     }

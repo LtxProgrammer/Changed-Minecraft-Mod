@@ -45,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEntityVariant;
@@ -163,10 +164,10 @@ public abstract class LatexEntity extends Monster {
     }
 
     protected void setAttributes(AttributeMap attributes) {
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getLatexMaxHealth());
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(24.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getLatexLandSpeed());
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getLatexSwimSpeed());
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
         attributes.getInstance(Attributes.ARMOR).setBaseValue(2.0);
     }
@@ -253,4 +254,14 @@ public abstract class LatexEntity extends Monster {
     public double getMyRidingOffset() {
         return -0.4;
     }
+
+    private <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
+        return variant == null ? def : func.apply(variant);
+    }
+
+    public double getLatexMaxHealth() { return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 20.0); }
+
+    public double getLatexLandSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.groundSpeed, 1.0); }
+
+    public double getLatexSwimSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.swimSpeed, 1.0); }
 }
