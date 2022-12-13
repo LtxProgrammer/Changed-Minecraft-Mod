@@ -84,13 +84,15 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
                 .texOffs(12, 32).addBox(-2.0F, -29.0F, -6.0F, 4.0F, 2.0F, 2.0F, NO_DEFORMATION)
                 .texOffs(20, 17).addBox(-1.5F, -27.0F, -5.0F, 3.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offset(0.0F, 25.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5088F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(16, 38).addBox(-0.5088F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(8, 48).addBox(0.4912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F,NO_DEFORMATION), PartPose.offsetAndRotation(-3.0F, -34.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(36, 17).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(32, 57).addBox(-0.5F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(34, 38).addBox(-0.5F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(4, 0).addBox(0.5F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(-3.05F, -34.25F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(0, 0).addBox(-1.4912F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(16, 36).addBox(-1.4912F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(4, 48).addBox(-1.4912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(3.0F, -34.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(16, 36).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(44, 28).addBox(-1.0F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(34, 36).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
+                .texOffs(40, 13).addBox(-1.0F, -2.9F, -1.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(2.6F, -34.45F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, NO_DEFORMATION)
                 .texOffs(36, 17).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 3.0F, NO_DEFORMATION)
@@ -139,6 +141,8 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
 
         return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
+
+
 
 
     @Override
