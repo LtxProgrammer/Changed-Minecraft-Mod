@@ -101,7 +101,7 @@ public class LatexHumanoidModelController {
             this.entityModel = model;
 
             if (leftLeg != null)
-                this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f);
+                this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f) + (hipOffset + 2.0f);
             if (leftArm != null)
                 this.torsoWidth = Math.max(leftArm.x - 5.0f, 0.0f);
         }
@@ -397,12 +397,12 @@ public class LatexHumanoidModelController {
         }
 
         if (this.hasArms2) {
-            this.RightArm2.xRot = this.RightArm.xRot * 0.44F;
-            this.RightArm2.yRot = this.RightArm.yRot * 0.44F;
-            this.RightArm2.zRot = this.RightArm.zRot * 0.44F;
-            this.LeftArm2.xRot = this.LeftArm.xRot * 0.44F;
-            this.LeftArm2.yRot = this.LeftArm.yRot * 0.44F;
-            this.LeftArm2.zRot = this.LeftArm.zRot * 0.44F;
+            this.RightArm2.xRot = this.RightArm.xRot * 0.88F;
+            this.RightArm2.yRot = this.RightArm.yRot * 0.88F;
+            this.RightArm2.zRot = this.RightArm.zRot * 0.88F;
+            this.LeftArm2.xRot = this.LeftArm.xRot * 0.88F;
+            this.LeftArm2.yRot = this.LeftArm.yRot * 0.88F;
+            this.LeftArm2.zRot = this.LeftArm.zRot * 0.88F;
         }
     }
 
