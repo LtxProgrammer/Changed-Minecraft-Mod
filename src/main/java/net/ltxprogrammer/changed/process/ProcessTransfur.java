@@ -84,9 +84,19 @@ public class ProcessTransfur {
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
         if (player.isCreative() || player.isSpectator())
             return false;
-        int next = getPlayerTransfurProgress(player).ticks + amount;
-        setPlayerTransfurProgress(player, new TransfurProgress(next, type));
-        return next >= TRANSFUR_PROGRESSION_TAKEOVER;
+        if (player.invulnerableTime > 10.0F) {
+            return getPlayerTransfurProgress(player).ticks >= TRANSFUR_PROGRESSION_TAKEOVER;
+        }
+
+        else {
+            player.invulnerableTime = 20;
+            player.hurtDuration = 10;
+            player.hurtTime = player.hurtDuration;
+
+            int next = getPlayerTransfurProgress(player).ticks + amount;
+            setPlayerTransfurProgress(player, new TransfurProgress(next, type));
+            return next >= TRANSFUR_PROGRESSION_TAKEOVER;
+        }
     }
 
     public static boolean progressTransfur(LivingEntity entity, int amount, ResourceLocation type) {
