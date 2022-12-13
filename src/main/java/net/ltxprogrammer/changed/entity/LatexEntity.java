@@ -199,11 +199,23 @@ public abstract class LatexEntity extends Monster {
             return false;
         };
 
+        final LatexEntity self = this;
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
+            public boolean canUse() {
+                if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
+                    return super.canUse();
+                else
+                    return false;
+            }
+        });
         if (!(this instanceof Pudding))
-            this.goalSelector.addGoal(4, new OpenDoorGoal(this, false));
+            this.goalSelector.addGoal(4, new OpenDoorGoal(this, false) {
+                public void stop() {
+                    // NO CODE
+                }
+            });
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));

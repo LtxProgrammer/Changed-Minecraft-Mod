@@ -55,7 +55,6 @@ public abstract class LatexStuckInBodyLayer<T extends LatexEntity, M extends Lat
         }
 
         catch (IllegalArgumentException e) {
-            e.printStackTrace();
             if (pushedPose)
                 p_117586_.popPose();
         }
