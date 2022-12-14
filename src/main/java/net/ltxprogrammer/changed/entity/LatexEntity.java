@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.entity;
 
 import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.entity.beast.AquaticEntity;
+import net.ltxprogrammer.changed.entity.beast.Pudding;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -16,20 +19,24 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -43,6 +50,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEntityVariant;
@@ -107,6 +115,12 @@ public abstract class LatexEntity extends Monster {
                 underlyingPlayer.getOffhandItem();
     }
 
+    public boolean isAutoSpinAttack() {
+        return underlyingPlayer == null ?
+                super.isAutoSpinAttack() :
+                underlyingPlayer.isAutoSpinAttack();
+    }
+
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
@@ -150,12 +164,15 @@ public abstract class LatexEntity extends Monster {
     public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.setAttributes(getAttributes());
+        if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
+            navigation.setCanOpenDoors(true);
     }
 
     protected void setAttributes(AttributeMap attributes) {
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getLatexMaxHealth());
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(24.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getLatexLandSpeed());
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getLatexSwimSpeed());
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
         attributes.getInstance(Attributes.ARMOR).setBaseValue(2.0);
     }
@@ -187,9 +204,19 @@ public abstract class LatexEntity extends Monster {
             return false;
         };
 
+        final LatexEntity self = this;
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3));
-        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
+        this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
+            public boolean canUse() {
+                if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
+                    return super.canUse();
+                else
+                    return false;
+            }
+        });
+        if (!(this instanceof Pudding))
+            this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
@@ -240,4 +267,14 @@ public abstract class LatexEntity extends Monster {
     public double getMyRidingOffset() {
         return -0.4;
     }
+
+    private <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
+        return variant == null ? def : func.apply(variant);
+    }
+
+    public double getLatexMaxHealth() { return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 20.0); }
+
+    public double getLatexLandSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.groundSpeed, 1.0); }
+
+    public double getLatexSwimSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.swimSpeed, 1.0); }
 }

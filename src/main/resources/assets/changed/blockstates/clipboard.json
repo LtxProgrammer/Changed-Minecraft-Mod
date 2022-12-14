@@ -1,7 +1,20 @@
 {
   "variants": {
-    "": {
-      "model": "changed:block/clipboard"
+    "facing=north": {
+      "model": "changed:block/clipboard",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "changed:block/clipboard",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "changed:block/clipboard",
+      "y": 0
+    },
+    "facing=west": {
+      "model": "changed:block/clipboard",
+      "y": 90
     }
   }
 }

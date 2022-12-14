@@ -59,8 +59,12 @@ public class SyncTransfurPacket implements ChangedPacket {
             Objects.requireNonNull(level);
             changedForms.forEach((uuid, listing) -> {
                 Player player = level.getPlayerByUUID(uuid);
-                ProcessTransfur.setPlayerLatexVariantNamed(player, listing.form);
-                TagUtil.replace(listing.data, player.getPersistentData());
+                if (player != null) {
+                    if (!LatexVariant.ALL_LATEX_FORMS.containsKey(listing.form) && !listing.form.equals(NO_FORM))
+                        Changed.chatLogLocalError("Form " + listing.form + " isn't registered.");
+                    ProcessTransfur.setPlayerLatexVariantNamed(player, listing.form);
+                    TagUtil.replace(listing.data, player.getPersistentData());
+                }
             });
             context.setPacketHandled(true);
         }

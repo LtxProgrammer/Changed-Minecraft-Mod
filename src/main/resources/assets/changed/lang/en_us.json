@@ -29,7 +29,10 @@
   "item.changed.latex_dance_record.desc": "By LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ Music Disc",
   "item.changed.owo_record.desc": "By Artemka2009",
-  
+
+  "death.attack.transfur.player": "%1$s was transfurred by %2$s",
+  "death.attack.white_latex": "%1$s was dissolved by white latex",
+
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
@@ -56,6 +59,7 @@
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.book_stack": "Book Stack",
   "block.changed.computer": "Computer",
+  "block.changed.clipboard": "Clipboard",
   "block.changed.cardboard_box": "Cardboard Box",
   "block.changed.dark_latex_block": "Dark Latex Block",
   "block.changed.dark_latex_ice": "Dark Latex Ice",
@@ -110,6 +114,7 @@
   "entity.changed.milk_pudding": "Milk Pudding",
   "entity.changed.latex_beifeng": "Latex Beifeng",
   "entity.changed.latex_blue_dragon": "Latex Blue Dragon",
+  "entity.changed.latex_crocodile": "Latex Crocodile",
   "entity.changed.latex_crystal_wolf": "Latex Crystal Wolf",
   "entity.changed.latex_deer": "Latex Deer",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
@@ -126,6 +131,7 @@
   "entity.changed.latex_squid_dog": "Latex Squid Dog",
   "entity.changed.latex_tiger_shark": "Latex Tiger Shark",
   "entity.changed.latex_traffic_cone_dragon": "Latex Traffic Cone Dragon",
+  "entity.changed.latex_translucent_lizard": "Latex Translucent Lizard",
   "entity.changed.latex_watermelon_cat_female": "Female Latex Watermelon Cat",
   "entity.changed.latex_watermelon_cat_male": "Male Latex Watermelon Cat",
   "entity.changed.latex_yuin": "Latex Yuin",
@@ -144,6 +150,7 @@
   "item.changed.milk_pudding_spawn_egg": "Milk Pudding Spawn Egg",
   "item.changed.latex_beifeng_spawn_egg": "Latex Beifeng Spawn Egg",
   "item.changed.latex_blue_dragon_spawn_egg": "Latex Blue Dragon Spawn Egg",
+  "item.changed.latex_crocodile_spawn_egg": "Latex Crocodile Spawn Egg",
   "item.changed.latex_crystal_wolf_spawn_egg": "Latex Crystal Wolf Spawn Egg",
   "item.changed.latex_deer_spawn_egg": "Latex Deer Spawn Egg",
   "item.changed.latex_hypno_cat_spawn_egg": "Latex Hypno Cat Spawn Egg",
@@ -160,6 +167,7 @@
   "item.changed.latex_silver_fox_spawn_egg": "Latex Silver Fox Spawn Egg",
   "item.changed.latex_tiger_shark_spawn_egg": "Latex Tiger Shark Spawn Egg",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Latex Traffic Cone Dragon Spawn Egg",
+  "item.changed.latex_translucent_lizard_spawn_egg": "Latex Translucent Lizard Spawn Egg",
   "item.changed.latex_watermelon_cat_female_spawn_egg": "Female Latex Watermelon Cat Spawn Egg",
   "item.changed.latex_watermelon_cat_male_spawn_egg": "Male Latex Watermelon Cat Spawn Egg",
   "item.changed.latex_yuin_spawn_egg": "Latex Yuin Spawn Egg",

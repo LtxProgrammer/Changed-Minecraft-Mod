@@ -38,6 +38,7 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
         this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParrotOnShoulderLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexBeeStingerLayer<>(this));
+        this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
     }
 
     protected void setupRotations(@NotNull T p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_) {

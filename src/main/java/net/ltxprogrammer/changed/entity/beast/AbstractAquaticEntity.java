@@ -37,16 +37,11 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.waterNavigation = new WaterBoundPathNavigation(this, p_19871_);
         this.groundNavigation = new GroundPathNavigation(this, p_19871_);
+        this.groundNavigation.setCanOpenDoors(true);
     }
 
     @Override
     public int getTicksRequiredToFreeze() { return 100; }
-
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.8);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.2);
-    }
 
     @Override
     public LatexType getLatexType() {
@@ -126,29 +121,28 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
 
     }
 
-    protected static final AttributeModifier SPEED_BOOST = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", 1.2F, AttributeModifier.Operation.MULTIPLY_BASE);
-
     public void updateSwimming() {
         if (!this.level.isClientSide) {
-            if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim()) {
+            if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim())
                 this.navigation = this.waterNavigation;
-                this.setSwimming(true);
-
-                if (!this.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(SPEED_BOOST))
-                    this.getAttribute(ForgeMod.SWIM_SPEED.get()).addPermanentModifier(SPEED_BOOST);
-            } else {
+            else
                 this.navigation = this.groundNavigation;
-                this.setSwimming(false);
 
-                if (this.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(SPEED_BOOST))
-                    this.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(SPEED_BOOST.getId());
+            if (this.isInWater() && !this.isOnGround()) {
+                this.setPose(Pose.SWIMMING);
+                this.setSwimming(true);
+            } else {
+                this.setPose(Pose.STANDING);
+                this.setSwimming(false);
             }
+
+            this.maxUpStep = this.isInWater() ? 1.0f : 0.7f;
         }
     }
 
     boolean wantsToSwim() {
         LivingEntity livingentity = this.getTarget();
-        return livingentity != null && livingentity.isInWater();
+        return livingentity == null || livingentity.isInWater();
     }
 
     static class AquaticMoveControl extends MoveControl {
@@ -186,17 +180,10 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
                 this.aquaticEntity.yBodyRot = this.aquaticEntity.getYRot();
                 float f1 = (float)(this.speedModifier * this.aquaticEntity.getAttributeValue(ForgeMod.SWIM_SPEED.get()));
                 float f2 = Mth.lerp(0.125F, this.aquaticEntity.getSpeed(), f1);
-                this.aquaticEntity.setSpeed(f2 * 1.25f);
+                this.aquaticEntity.setSpeed(f2 * 1.05f);
                 this.aquaticEntity.setDeltaMovement(this.aquaticEntity.getDeltaMovement().add((double)f2 * d0 * 0.005D, (double)f2 * d1 * 0.1D, (double)f2 * d2 * 0.005D));
             } else {
-                /*this.aquaticEntity.setSpeed((float)this.aquaticEntity.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                if (!this.aquaticEntity.onGround) {
-                    this.aquaticEntity.setDeltaMovement(this.aquaticEntity.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
-                }*/
-                if (this.strafeForwards > 0.5f)
-                    super.tick();
-                else
-                    super.tick();
+                super.tick();
             }
         }
     }

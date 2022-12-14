@@ -106,11 +106,11 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
 
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, -25.0F, -2.0F, 8.0F, 12.0F, 4.0F, NO_DEFORMATION), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
 
-        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(39, 56).addBox(-1.5F, -0.8086F, -1.1983F, 3.0F, 5.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(0.0F, -12.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(39, 56).addBox(-1.5F, -0.8086F, -1.1983F, 3.0F, 5.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
 
-        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(14, 54).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 6.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(0.0F, -14.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(14, 54).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 6.0F, 3.0F, NO_DEFORMATION), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 17).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, NO_DEFORMATION)
                 .texOffs(40, 21).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION)
@@ -139,10 +139,6 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
     @Override
     public void setupAnim(@NotNull LightLatexKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-    }
-
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {

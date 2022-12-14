@@ -84,9 +84,21 @@ public class ProcessTransfur {
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
         if (player.isCreative() || player.isSpectator())
             return false;
-        int next = getPlayerTransfurProgress(player).ticks + amount;
-        setPlayerTransfurProgress(player, new TransfurProgress(next, type));
-        return next >= TRANSFUR_PROGRESSION_TAKEOVER;
+        boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
+
+        if (player.invulnerableTime > 10 && !justHit) {
+            return getPlayerTransfurProgress(player).ticks >= TRANSFUR_PROGRESSION_TAKEOVER;
+        }
+
+        else {
+            player.invulnerableTime = 20;
+            player.hurtDuration = 10;
+            player.hurtTime = player.hurtDuration;
+
+            int next = getPlayerTransfurProgress(player).ticks + amount;
+            setPlayerTransfurProgress(player, new TransfurProgress(next, type));
+            return next >= TRANSFUR_PROGRESSION_TAKEOVER;
+        }
     }
 
     public static boolean progressTransfur(LivingEntity entity, int amount, ResourceLocation type) {
@@ -181,6 +193,9 @@ public class ProcessTransfur {
 
     public static void setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
         try {
+            if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
+                variant = variant.clone();
+
             var oldVariant = (LatexVariant<?>)latexVariantField.get(player);
             if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
                 return;
@@ -193,12 +208,13 @@ public class ProcessTransfur {
                 variant.generateForm(player, player.level);
             if (oldVariant != null)
                 oldVariant.unhookAll(player);
+            if (!player.level.isClientSide)
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
         } catch (Exception ignored) {}
     }
 
     public static void setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
-        var type = LatexVariant.ALL_LATEX_FORMS.get(variant);
-        setPlayerLatexVariant(player, type == null ? null : type.clone());
+        setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.get(variant));
     }
 
     public static boolean isPlayerLatex(Player player) {
@@ -248,12 +264,8 @@ public class ProcessTransfur {
                     source.entity.setPos(target.position());
                     target.discard();
 
-                    if (source.variant == null || !source.transfur.getFormId().equals(source.variant.getFormId())) {
-                        ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
+                    if (source.variant == null || !source.transfur.getFormId().equals(source.variant.getFormId()))
                         ProcessTransfur.setPlayerLatexVariant(player, source.transfur.clone());
-
-                        Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-                    }
                 }
                 else {
                     LatexEntity newEntity = source.transfur.replaceEntity(target);
@@ -276,12 +288,8 @@ public class ProcessTransfur {
                 source.entity.setPos(target.position());
                 target.discard();
 
-                if (source.variant == null || !fuseVariant.getFormId().equals(source.variant.getFormId())) {
-                    ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
+                if (source.variant == null || !fuseVariant.getFormId().equals(source.variant.getFormId()))
                     ProcessTransfur.setPlayerLatexVariant(player, fuseVariant.clone());
-
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-                }
             }
             else {
                 LatexEntity newEntity = fuseVariant.replaceEntity(target);
@@ -323,7 +331,7 @@ public class ProcessTransfur {
             return;
         if (event.getSource().isProjectile())
             return;
-        if (event.getEntityLiving().isBlocking())
+        if (event.getEntityLiving().isDamageSourceBlocked(event.getSource()))
             return;
 
         if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
@@ -338,8 +346,10 @@ public class ProcessTransfur {
                 event.setCanceled(true);
                 transfur(event.getEntityLiving(), sourceEntity.level, sourceVariant, true);
                 if (sourceEntity instanceof Player) {
-                    if (event.getEntityLiving() instanceof Player pvpLoser)
-                        pvpLoser.kill();
+                    if (event.getEntityLiving() instanceof Player pvpLoser) {
+                        pvpLoser.setLastHurtByMob(sourceEntity);
+                        pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
+                    }
                     else
                         event.getEntityLiving().discard();
                 }
@@ -373,8 +383,8 @@ public class ProcessTransfur {
             return;
 
         float damageAdjustment = sourceEntity instanceof Player && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR) ? 4.0f : 1.0f;
-        if (damageAdjustment > 1.0f)
-            event.getEntityLiving().hurt(ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
+        /*if (damageAdjustment > 1.0f)
+            event.getEntityLiving().actuallyHurt(ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));*/
 
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntityLiving().getPersistentData().contains(LatexVariant.NBT_PLAYER_ID)) {
@@ -461,8 +471,6 @@ public class ProcessTransfur {
             if (variant != null && variant.isDead()) {
                 variant.unhookAll(player);
                 setPlayerLatexVariant(player, null);
-                if (!player.level.isClientSide)
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
             }
         }
     }
@@ -501,8 +509,6 @@ public class ProcessTransfur {
                 LatexVariant<?> uniqueVariant = variant.clone();
 
                 setPlayerLatexVariant(player, uniqueVariant);
-
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
 
                 // Force retargeting
                 for (LatexEntity latexEntity : level.getEntitiesOfClass(LatexEntity.class, player.getBoundingBox().inflate(64))) {
@@ -547,8 +553,6 @@ public class ProcessTransfur {
                 LatexVariant<?> uniqueVariant = fusion.clone();
 
                 setPlayerLatexVariant(player, uniqueVariant);
-
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
 
                 // Force retargeting
                 for (LatexEntity latexEntity : level.getEntitiesOfClass(LatexEntity.class, player.getBoundingBox().inflate(64))) {

@@ -14,6 +14,6 @@ public class DarkLatexWolfFemaleRenderer extends LatexHumanoidRenderer<DarkLatex
 
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexWolfFemale p_114482_) {
-		return new ResourceLocation("changed:textures/dark_latex_wolf.png");
+		return new ResourceLocation("changed:textures/dark_latex_wolf_female.png");
 	}
 }

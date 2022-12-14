@@ -102,6 +102,20 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         rightLeg.visible = b;
         leftArm.visible = b;
         rightArm.visible = b;
+        if (lowerTorso != null)
+            lowerTorso.visible = b;
+        if (leftLeg2 != null)
+            leftLeg2.visible = b;
+        if (rightLeg2 != null)
+            rightLeg2.visible = b;
+        if (leftArm2 != null)
+            leftArm2.visible = b;
+        if (rightArm2 != null)
+            rightArm2.visible = b;
+    }
+
+    public void translateToHand(HumanoidArm arm, PoseStack stack) {
+
     }
 
     public void prepareMobModel(LatexHumanoidModelController controller, T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
@@ -132,10 +146,6 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         return p_102852_ == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
     }
 
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
-    }
-
     @Override
     public void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
         controller.setupAnim(p_102618_, p_102619_, p_102620_, p_102621_, p_102622_, p_102623_);
@@ -154,8 +164,6 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         rightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         leftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        if (lowerTorso != null)
-            lowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (rightLeg2 != null)
             rightLeg2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftLeg2 != null)

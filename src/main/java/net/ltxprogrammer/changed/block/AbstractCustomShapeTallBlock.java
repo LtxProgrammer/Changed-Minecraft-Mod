@@ -103,14 +103,6 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
         super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
     }
 
-    public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {
-        return Shapes.empty();
-    }
-
-    public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
-        return getInteractionShape(p_54577_, p_54578_, p_54579_);
-    }
-
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
         if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
             return Block.box(0.0, 0.0, 0.0, 16.0, 32.0, 16.0);

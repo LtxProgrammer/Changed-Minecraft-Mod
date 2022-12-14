@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolf;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -78,7 +79,10 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                         entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     }
 
-                    else if (ProcessTransfur.progressPlayerTransfur(event.player, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId()))
+                    else if (ProcessTransfur.getPlayerLatexVariant(event.player).getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                        event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
+
+                    else if (!ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.progressPlayerTransfur(event.player, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId()))
                         entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                 }
             }

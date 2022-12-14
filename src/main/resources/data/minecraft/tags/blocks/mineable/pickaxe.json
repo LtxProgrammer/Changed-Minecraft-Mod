@@ -19,7 +19,6 @@
     "changed:tiles_gray",
     "changed:tiles_gray_stairs",
     "changed:tiles_white",
-    "changed:iron_crate",
     "changed:tiles_white_stairs",
     "changed:tiles_white_connected",
     "changed:wall_caution",
@@ -30,6 +29,7 @@
     "changed:wall_vent",
     "changed:wall_white",
     "changed:infuser",
-    "changed:purifier"
+    "changed:purifier",
+    "changed:iron_crate"
   ]
 }

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -47,6 +48,14 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             controller.rightArmPose = humanoidmodel$armpose1;
             controller.leftArmPose = humanoidmodel$armpose;
         }
+    }
+
+    public abstract ModelPart getArm(HumanoidArm arm);
+
+    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
+        this.getArm(p_102854_).translateAndRotate(p_102855_);
+        if (this instanceof LatexHumanoidModelInterface modelInterface)
+            p_102855_.translate(0.0, modelInterface.getController().armLength / 20.0, 0.0);
     }
 
     public ModelPart getRandomModelPart(Random random) {

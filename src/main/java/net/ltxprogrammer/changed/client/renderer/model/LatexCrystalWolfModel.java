@@ -75,17 +75,19 @@ public class LatexCrystalWolfModel extends LatexHumanoidModel<LatexCrystalWolf> 
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 19).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5088F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(16, 38).addBox(-0.5088F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 31).addBox(0.4912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.0F, -34.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(63, 51).addBox(-1.495F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(0, 66).addBox(-0.495F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(43, 66).addBox(-0.495F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(65, 5).addBox(0.505F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(-3.075F, -34.25F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(0, 0).addBox(-1.4912F, -1.0341F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(16, 36).addBox(-1.4912F, -2.0341F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(8, 48).addBox(-1.4912F, -3.0341F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, -34.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(13, 62).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(62, 25).addBox(-1.0F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(26, 56).addBox(-1.0F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(66, 13).addBox(-1.0F, -2.9F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.6F, -34.475F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(36, 17).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 60).addBox(2.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 60).addBox(2.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(16, 33).addBox(2.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
                 .texOffs(24, 4).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 32).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
@@ -93,7 +95,7 @@ public class LatexCrystalWolfModel extends LatexHumanoidModel<LatexCrystalWolf> 
                 .texOffs(28, 54).addBox(2.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
                 .texOffs(14, 54).addBox(-4.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
                 .texOffs(32, 25).addBox(-4.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
-                .texOffs(54, 58).addBox(-4.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(54, 58).addBox(-4.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(55, 17).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 47).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -131,6 +133,7 @@ public class LatexCrystalWolfModel extends LatexHumanoidModel<LatexCrystalWolf> 
         return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
 
+
     @Override
     public void prepareMobModel(LatexCrystalWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
@@ -148,10 +151,6 @@ public class LatexCrystalWolfModel extends LatexHumanoidModel<LatexCrystalWolf> 
     @Override
     public void setupAnim(LatexCrystalWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-    }
-
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
