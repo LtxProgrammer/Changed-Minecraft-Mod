@@ -116,6 +116,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
+    public static final LatexVariant<LatexMermaidShark> LATEX_MERMAID_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_MERMAID_SHARK).groundSpeed(0.5f).swimSpeed(2.0f)
+            .build(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
