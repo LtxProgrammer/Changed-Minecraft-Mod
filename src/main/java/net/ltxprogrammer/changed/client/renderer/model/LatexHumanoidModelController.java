@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +22,7 @@ public class LatexHumanoidModelController {
     public final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;
     @Nullable
     public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
+    public final List<ModelPart> TailJoints;
     public final boolean hasTail, hasWings, hasArms2, hasLegs2, hasLegs;
     public final EntityModel<?> entityModel;
     public final float hipOffset;
@@ -36,7 +38,7 @@ public class LatexHumanoidModelController {
 
     public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, float legLength, float armLength, float torsoWidth, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
                                         @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2,
-                                        @Nullable ModelPart abdomen, @Nullable ModelPart lowerAbdomen) {
+                                        @Nullable ModelPart abdomen, @Nullable ModelPart lowerAbdomen, @Nullable List<ModelPart> tailJoints) {
         this.entityModel = entityModel;
         this.hipOffset = hipOffset;
         this.forewardOffset = forewardOffset;
@@ -65,6 +67,7 @@ public class LatexHumanoidModelController {
         Abdomen = abdomen;
         LowerAbdomen = lowerAbdomen;
         hasLegs = Abdomen == null && LowerAbdomen == null;
+        TailJoints = tailJoints;
     }
 
     public static List<ModelPart.Cube> findLargestCube(ModelPart part) {
@@ -86,6 +89,7 @@ public class LatexHumanoidModelController {
     public static class Builder {
         private final ModelPart Head, Torso, Tail, LeftArm, RightArm, LeftLeg, RightLeg;
         private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
+        public List<ModelPart> TailJoints = new ArrayList<>();
         private final EntityModel<?> entityModel;
         private float hipOffset = -2.0F;
         private float forewardOffset = 0.0F;
@@ -155,9 +159,14 @@ public class LatexHumanoidModelController {
             return this;
         }
 
+        public Builder tailJoints(List<ModelPart> tailJoints) {
+            this.TailJoints = tailJoints;
+            return this;
+        }
+
         public LatexHumanoidModelController build() {
             return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, legLength, armLength, torsoWidth, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
-                    LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen);
+                    LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen, TailJoints);
         }
     }
 
@@ -244,6 +253,14 @@ public class LatexHumanoidModelController {
             this.Tail.xRot = (float) Math.toRadians(40);
             this.Tail.zRot = 0.0F;
             this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
+
+            float offset = 0.0F;
+            for (ModelPart joint : this.TailJoints) {
+                offset += 1.0F;
+                joint.xRot = 0.0F;
+                joint.zRot = 0.0F;
+                joint.yRot = Mth.cos(limbSwing * 0.6662F - (((float)Math.PI / 3.0F) * offset)) * 0.125F * limbSwingAmount / f;
+            }
         }
 
         if (this.RightWing != null) { this.RightWing.zRot = 0.0F; }
@@ -444,10 +461,18 @@ public class LatexHumanoidModelController {
                 this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F));
                 this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
                 this.LowerAbdomen.yRot = Mth.lerp(f2, this.LowerAbdomen.yRot, 0.0f);
-                this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 4.0F)));
+                this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 3.0F)));
                 this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
                 this.Tail.yRot = Mth.lerp(f2, this.Tail.yRot, 0.0f);
-                this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 2.0F)));
+                this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 1.5F)));
+
+                float offset = 0.0F;
+                for (ModelPart joint : this.TailJoints) {
+                    offset += 1.0F;
+                    joint.xRot = 0.0F;
+                    joint.zRot = 0.0F;
+                    joint.yRot = Mth.lerp(this.swimAmount, joint.yRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - (((float)Math.PI / 3.0F) * offset)));
+                }
 
                 if (swimTail) {
                     this.LeftArm.xRot = Mth.lerp(this.swimAmount, this.LeftArm.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
