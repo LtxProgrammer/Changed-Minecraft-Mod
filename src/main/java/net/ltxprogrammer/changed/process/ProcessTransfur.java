@@ -84,7 +84,9 @@ public class ProcessTransfur {
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
         if (player.isCreative() || player.isSpectator())
             return false;
-        if (player.invulnerableTime > 10.0F) {
+        boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
+
+        if (player.invulnerableTime > 10 && !justHit) {
             return getPlayerTransfurProgress(player).ticks >= TRANSFUR_PROGRESSION_TAKEOVER;
         }
 

@@ -125,6 +125,7 @@ public class FormRenderHandler {
                         var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
                         LatexHumanoidModelController controller = latexHumanoidModel.getController();
 
+                        entityModel.attackTime = 0.0F;
                         boolean lastCrouch = controller.crouching;
                         controller.crouching = false;
                         entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
