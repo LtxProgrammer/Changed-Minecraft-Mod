@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LatexHumanoidModelController {
     public final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;
     @Nullable
-    public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2;
-    public final boolean hasTail, hasWings, hasArms2, hasLegs2;
+    public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
+    public final boolean hasTail, hasWings, hasArms2, hasLegs2, hasLegs;
     public final EntityModel<?> entityModel;
     public final float hipOffset;
     public final float forewardOffset;
@@ -35,7 +35,8 @@ public class LatexHumanoidModelController {
     public float swimAmount;
 
     public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, float legLength, float armLength, float torsoWidth, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
-                                        @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2) {
+                                        @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2,
+                                        @Nullable ModelPart abdomen, @Nullable ModelPart lowerAbdomen) {
         this.entityModel = entityModel;
         this.hipOffset = hipOffset;
         this.forewardOffset = forewardOffset;
@@ -61,6 +62,9 @@ public class LatexHumanoidModelController {
         LeftLeg2 = rightLeg2;
         RightLeg2 = leftLeg2;
         hasLegs2 = LowerTorso != null && LeftLeg2 != null && RightLeg2 != null;
+        Abdomen = abdomen;
+        LowerAbdomen = lowerAbdomen;
+        hasLegs = Abdomen == null && LowerAbdomen == null;
     }
 
     public static List<ModelPart.Cube> findLargestCube(ModelPart part) {
@@ -81,7 +85,7 @@ public class LatexHumanoidModelController {
 
     public static class Builder {
         private final ModelPart Head, Torso, Tail, LeftArm, RightArm, LeftLeg, RightLeg;
-        private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2;
+        private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
         private final EntityModel<?> entityModel;
         private float hipOffset = -2.0F;
         private float forewardOffset = 0.0F;
@@ -145,9 +149,15 @@ public class LatexHumanoidModelController {
             this.RightLeg2 = rightLeg2; this.LeftLeg2 = leftLeg2; return this;
         }
 
+        public Builder noLegs(ModelPart abdomen, ModelPart lowerAbdomen) {
+            this.Abdomen = abdomen;
+            this.LowerAbdomen = lowerAbdomen;
+            return this;
+        }
+
         public LatexHumanoidModelController build() {
             return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, legLength, armLength, torsoWidth, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
-                    LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2);
+                    LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen);
         }
     }
 
@@ -223,6 +233,17 @@ public class LatexHumanoidModelController {
             this.Tail.xRot = 0.0F;
             this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.18F : 0.125F) * limbSwingAmount / f;
             this.Tail.zRot = 0.0F;
+        }
+        if (!this.hasLegs) {
+            this.Abdomen.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
+            this.Abdomen.xRot = (float) Math.toRadians(-12.5);
+            this.Abdomen.zRot = 0.0F;
+            this.LowerAbdomen.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
+            this.LowerAbdomen.xRot = (float) Math.toRadians(50);
+            this.LowerAbdomen.zRot = 0.0F;
+            this.Tail.xRot = (float) Math.toRadians(40);
+            this.Tail.zRot = 0.0F;
+            this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
         }
 
         if (this.RightWing != null) { this.RightWing.zRot = 0.0F; }
@@ -304,6 +325,11 @@ public class LatexHumanoidModelController {
                 this.LeftArm2.y = this.LeftArm.y - 4.0F;
                 this.LeftArm2.x = 5.0F + torsoWidth;
             }
+
+            if (!this.hasLegs) {
+                this.Abdomen.y = 12.2F + hipOffset;
+                this.Abdomen.z = 4.0F + forewardOffset;
+            }
         } else {
             this.Torso.xRot = 0.0F;
             this.RightLeg.z = 0.1F + forewardOffset;
@@ -326,6 +352,11 @@ public class LatexHumanoidModelController {
                 this.LeftArm2.y = this.LeftArm.y - 4.0F;
                 this.LeftArm2.x = 5.0F + torsoWidth;
             }
+
+            if (!this.hasLegs) {
+                this.Abdomen.y = 12.0F + hipOffset;
+                this.Abdomen.z = 0.1F + forewardOffset;
+            }
         }
 
         if (this.rightArmPose != HumanoidModel.ArmPose.SPYGLASS) {
@@ -339,7 +370,7 @@ public class LatexHumanoidModelController {
         if (entity.isFallFlying()) {
             float f1 = (float)entity.getFallFlyingTicks();
             float f2 = Mth.clamp(f1 * f1 / 100.0F, 0.0F, 1.0F);
-            if (this.hasTail)
+            if (this.hasTail && this.hasLegs)
                 this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, -1.0f);
 
             if (this.RightWing != null) {
@@ -348,6 +379,12 @@ public class LatexHumanoidModelController {
 
             if (this.LeftWing != null) {
                 this.LeftWing.zRot = Mth.lerp(f2, this.LeftWing.zRot, 0.8f);
+            }
+
+            if (!this.hasLegs) {
+                this.Abdomen.xRot = Mth.lerp(f2, this.Abdomen.xRot, 0.0f);
+                this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
+                this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
             }
         }
 
@@ -388,11 +425,25 @@ public class LatexHumanoidModelController {
             this.LeftLeg.xRot = Mth.lerp(this.swimAmount, this.LeftLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
             this.RightLeg.xRot = Mth.lerp(this.swimAmount, this.RightLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
 
-            if (this.hasTail) {
+            if (this.hasTail && this.hasLegs) {
                 this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -1.1f);//78f);
                 float oldTailzRot = this.Tail.zRot;
                 this.Tail.zRot = Mth.lerp(this.swimAmount, 0.0F, this.Tail.yRot);
                 this.Tail.yRot = Mth.lerp(this.swimAmount, oldTailzRot, 0.0F);
+
+                if (swimTail) {
+                    this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
+                    this.LeftArm.xRot = Mth.lerp(this.swimAmount, this.LeftArm.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
+                    this.RightArm.xRot = Mth.lerp(this.swimAmount, this.RightArm.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
+                }
+            }
+
+            else if (!this.hasLegs) {
+                this.Abdomen.xRot = Mth.lerp(f2, this.Abdomen.xRot, 0.0f);
+                this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F));
+                this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
+                this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.05F * Mth.cos(limbSwing * 0.33333334F));
+                this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
 
                 if (swimTail) {
                     this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
