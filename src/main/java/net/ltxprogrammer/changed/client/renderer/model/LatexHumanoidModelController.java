@@ -120,6 +120,10 @@ public class LatexHumanoidModelController {
             this.hipOffset = f; return this;
         }
 
+        public Builder legLengthOffset(float f) {
+            this.legLength = f; return this;
+        }
+
         public Builder forewardOffset(float f) {
             this.forewardOffset = f; return this;
         }
