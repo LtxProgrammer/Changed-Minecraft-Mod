@@ -235,15 +235,15 @@ public class LatexHumanoidModelController {
             this.Tail.zRot = 0.0F;
         }
         if (!this.hasLegs) {
-            this.Abdomen.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
+            this.Abdomen.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
             this.Abdomen.xRot = (float) Math.toRadians(-12.5);
             this.Abdomen.zRot = 0.0F;
-            this.LowerAbdomen.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
+            this.LowerAbdomen.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
             this.LowerAbdomen.xRot = (float) Math.toRadians(50);
             this.LowerAbdomen.zRot = 0.0F;
             this.Tail.xRot = (float) Math.toRadians(40);
             this.Tail.zRot = 0.0F;
-            this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.0F : 0.125F) * limbSwingAmount / f;
+            this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
         }
 
         if (this.RightWing != null) { this.RightWing.zRot = 0.0F; }
@@ -440,13 +440,16 @@ public class LatexHumanoidModelController {
 
             else if (!this.hasLegs) {
                 this.Abdomen.xRot = Mth.lerp(f2, this.Abdomen.xRot, 0.0f);
-                this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F));
+                this.Abdomen.yRot = Mth.lerp(f2, this.Abdomen.yRot, 0.0f);
+                this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F));
                 this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
-                this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.05F * Mth.cos(limbSwing * 0.33333334F));
+                this.LowerAbdomen.yRot = Mth.lerp(f2, this.LowerAbdomen.yRot, 0.0f);
+                this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 4.0F)));
                 this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
+                this.Tail.yRot = Mth.lerp(f2, this.Tail.yRot, 0.0f);
+                this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 2.0F)));
 
                 if (swimTail) {
-                    this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
                     this.LeftArm.xRot = Mth.lerp(this.swimAmount, this.LeftArm.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
                     this.RightArm.xRot = Mth.lerp(this.swimAmount, this.RightArm.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
                 }
