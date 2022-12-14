@@ -26,7 +26,8 @@ public class custom_model<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 10.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-		PartDefinition TailFin_r1 = Abdomen.addOrReplaceChild("TailFin_r1", CubeListBuilder.create().texOffs(29, 54).addBox(-0.5F, 2.125F, -2.7429F, 1.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.1297F, 0.7854F, 0.0F, 0.0F));
+		PartDefinition TailFin_r1 = Abdomen.addOrReplaceChild("TailFin_r1", CubeListBuilder.create().texOffs(29, 54).addBox(-1.0F, 2.125F, -2.7429F, 1.0F, 8.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(29, 54).addBox(0.0F, 2.125F, -2.7429F, 1.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.1297F, 0.7854F, 0.0F, 0.0F));
 
 		PartDefinition Base_r1 = Abdomen.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(24, 0).addBox(-4.5F, 0.6799F, -2.1097F, 9.0F, 2.0F, 5.0F, new CubeDeformation(0.25F))
 		.texOffs(0, 16).addBox(-5.0F, 2.6799F, -2.8597F, 10.0F, 6.0F, 6.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.6297F, 0.0F, 0.0F, 0.0F));
@@ -66,8 +67,10 @@ public class custom_model<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition Fins = Head.addOrReplaceChild("Fins", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -7.5F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
-		PartDefinition Head_r2 = Fins.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -7.0F, 0.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
-		.texOffs(12, 41).addBox(0.0F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 2.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
+		PartDefinition Head_r2 = Fins.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(0, 0).addBox(0.5F, -7.0F, 0.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(12, 41).addBox(-0.5F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 0).addBox(-0.5F, -7.0F, 0.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+		.texOffs(12, 41).addBox(0.5F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 2.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
 
 		PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 21).addBox(-2.0F, -33.0F, 3.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
 		.texOffs(50, 11).addBox(-4.0F, -32.5F, 4.0F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))

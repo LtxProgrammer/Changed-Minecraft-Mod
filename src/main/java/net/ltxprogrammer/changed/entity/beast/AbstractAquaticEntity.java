@@ -43,12 +43,6 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
     @Override
     public int getTicksRequiredToFreeze() { return 100; }
 
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.8);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.15);
-    }
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
