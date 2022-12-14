@@ -5,15 +5,12 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:salmon"
+      "item": "minecraft:water_bucket"
     },
     {
       "item": "minecraft:prismarine_crystals"
-    },
-    {
-      "item": "minecraft:prismarine_shard"
     }
   ],
   "gendered": true,
-  "form": "changed:form_latex_shark"
+  "form": "changed:form_latex_manta_ray"
 }
