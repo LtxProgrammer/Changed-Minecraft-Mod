@@ -1,0 +1,15 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:honey_block"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "form": "changed:form_latex_translucent_lizard"
+}

@@ -14,6 +14,6 @@ public class LightLatexWolfMaleRenderer extends LatexHumanoidRenderer<LightLatex
 
     @Override
     public ResourceLocation getTextureLocation(LightLatexWolfMale p_114482_) {
-        return new ResourceLocation("changed:textures/light_latex_wolf.png");
+        return new ResourceLocation("changed:textures/light_latex_wolf_male.png");
     }
 }
