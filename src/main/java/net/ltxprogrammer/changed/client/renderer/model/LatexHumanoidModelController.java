@@ -101,7 +101,7 @@ public class LatexHumanoidModelController {
             this.entityModel = model;
 
             if (leftLeg != null)
-                this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f) + (hipOffset + 2.0f);
+                this.legLength = (leftLeg.y - 10.0f) * (4.0f / 3.0f) - (hipOffset + 2.0f);
             if (leftArm != null)
                 this.torsoWidth = Math.max(leftArm.x - 5.0f, 0.0f);
         }
@@ -115,6 +115,8 @@ public class LatexHumanoidModelController {
         }
 
         public Builder hipOffset(float f) {
+            if (LeftLeg != null)
+                this.legLength = (LeftLeg.y - 10.0f) * (4.0f / 3.0f) - (f + 2.0f);
             this.hipOffset = f; return this;
         }
 
