@@ -24,6 +24,9 @@
   "item.changed.syringe": "Шприц",
   "item.changed.white_latex_goo": "Белая Латексная Субстанция",
   "item.changed.white_latex_bucket": "Ведро Белого Латекса",
+  
+  "death.attack.transfur.player": "%1$s был трансфуррирован %2$s",
+  "death.attack.white_latex": "%1$s был растворен в белом латексе",
 
   "item.changed.latex_dance_record": "Музыкальная Пластина 'Латексный танец'",
   "item.changed.latex_dance_record.desc": "За Авторством LtxProgrammer",
@@ -110,6 +113,7 @@
   "entity.changed.milk_pudding": "Молочный Пудинг",
   "entity.changed.latex_beifeng": "Латексный Бейфенг",
   "entity.changed.latex_blue_dragon": "Латексный Синий Дракон",
+  "entity.changed.latex_crocodile": "Латексный Крокодил",
   "entity.changed.latex_crystal_wolf": "Кристалльный Волк",
   "entity.changed.latex_deer": "Латексный Олень",
   "entity.changed.latex_hypno_cat": "Гипно Кот",
@@ -126,6 +130,7 @@
   "entity.changed.latex_squid_dog": "Сквид Дог",
   "entity.changed.latex_tiger_shark": "Латексная Тигровая Акула",
   "entity.changed.latex_traffic_cone_dragon": "Латексный Дракон-Дорожный Конус",
+  "entity.changed.latex_translucent_lizard": "Латексная Полупрозрачная Рептилия",
   "entity.changed.latex_watermelon_cat_female": "Арбузная Кошка",
   "entity.changed.latex_watermelon_cat_male": "Арбузный Кот",
   "entity.changed.latex_yuin": "Латексный Юин",
@@ -144,6 +149,7 @@
   "item.changed.milk_pudding_spawn_egg": "Яицо Призыва Молочный Пудинг",
   "item.changed.latex_beifeng_spawn_egg": "Яицо Призыва Латексный Бейфенг",
   "item.changed.latex_blue_dragon_spawn_egg": "Яицо Призыва Латексный Синий Дракон",
+   "item.changed.latex_crocodile_spawn_egg": "Яицо Призыва Латексный Крокодил",
   "item.changed.latex_crystal_wolf_spawn_egg": "Яицо Призыва Кристалльный Волк",
   "item.changed.latex_deer_spawn_egg": "Яицо Призыва Латексный Олень",
   "item.changed.latex_hypno_cat_spawn_egg": "Яицо Призыва Гипно Кот",
@@ -160,6 +166,7 @@
   "item.changed.latex_silver_fox_spawn_egg": "Яицо Призыва Серебряный Лис",
   "item.changed.latex_tiger_shark_spawn_egg": "Яицо Призыва Латексная Тигровая Акула",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Яицо Призыва Латексный Дракон-Дорожный Конус",
+  "item.changed.latex_translucent_lizard_spawn_egg": "Яицо Призыва Латексная Полупрозрачная Рептилия",
   "item.changed.latex_watermelon_cat_female_spawn_egg": "Яицо Призыва Арбузная Кошка",
   "item.changed.latex_watermelon_cat_male_spawn_egg": "Яицо Призыва Арбузный Кот",
   "item.changed.latex_yuin_spawn_egg": "Яицо Призыва Латексный Юин",
@@ -201,7 +208,7 @@
   "changed.floppy_disk.title.latex_squid_dog": "Собака... Кальмар?",
   "changed.floppy_disk.content.latex_squid_dog": "Не только дышащие под водой, также имеющие дополнительную пару рук позволяющие держать больше вещей, Сквид доги",
 
-  "changed.floppy_disk.title.white_latex_creature": "Фигуристая слизь",
+  "changed.floppy_disk.title.white_latex_creature": "Изменчивая субстанция",
   "changed.floppy_disk.content.white_latex_creature": "Этот эксперимент был наверное самым странным. Их генетическое строение позволяло им как бы растворятся и плавать в таком же материале что и они сами. Нужно большее кол-во экспериментов что бы изучить это точнее.",
 
   "changed.floppy_disk.title.special_latex": "Уникальные варианты",
@@ -229,7 +236,7 @@
   "changed:advancements.main.white_latex_fuse.description": "Слейтесь воедино в более совершенную форму белого латекса",
 
   "changed:advancements.main.transfur_aerial.title": "Уроки полета",
-  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс"
+  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс",
   
   "changed:advancements.main.transfur_mask.title": "Отрекая человечность",
   "changed:advancements.main.transfur_mask.description": "Получите и наденьте маску из тёмного латекса."
