@@ -79,7 +79,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                         entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     }
 
-                    else if (ProcessTransfur.getPlayerLatexVariant(event.player).getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                    else if (ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.getPlayerLatexVariant(event.player).getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                         event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
 
                     else if (!ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.progressPlayerTransfur(event.player, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId()))

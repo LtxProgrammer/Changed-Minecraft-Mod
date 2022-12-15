@@ -83,7 +83,7 @@ public class LatexHumanoidModelController {
         list.sort((cubeA, cubeB) -> {
             float massA = (cubeA.maxX - cubeA.minX) * (cubeA.maxY - cubeA.minY) * (cubeA.maxZ - cubeA.minZ);
             float massB = (cubeB.maxX - cubeB.minX) * (cubeB.maxY - cubeB.minY) * (cubeB.maxZ - cubeB.minZ);
-            return Float.compare(massA, massB);
+            return Float.compare(massB, massA);
         });
 
         return list;
@@ -259,11 +259,11 @@ public class LatexHumanoidModelController {
         if (!this.hasLegs) { // TODO better slither
             float slitherAmount = Math.min(0.5F, limbSwingAmount);
             this.Abdomen.xRot = (float) Math.toRadians(-12.5);
-            this.Abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 1.2F * slitherAmount;
-            this.Abdomen.zRot = Mth.cos(limbSwing * 0.33333334F) * 1.0F * slitherAmount;
+            this.Abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 0.6F * slitherAmount;
+            this.Abdomen.zRot = Mth.cos(limbSwing * 0.33333334F) * 0.6F * slitherAmount;
             this.LowerAbdomen.xRot = (float) Math.toRadians(50);
-            this.LowerAbdomen.yRot = 0.0F;
-            this.LowerAbdomen.zRot = 0.0F;
+            this.LowerAbdomen.yRot = this.Abdomen.yRot;
+            this.LowerAbdomen.zRot = this.Abdomen.zRot;
             this.Tail.xRot = (float) Math.toRadians(40);
             this.Tail.yRot = 0.0F;
             this.Tail.zRot = 0.0F;
