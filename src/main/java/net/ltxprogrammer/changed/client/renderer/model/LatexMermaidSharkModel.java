@@ -62,7 +62,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
 
         PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 9.0F, -1.0F, 0.0F, 0.0F, 0.0F));
 
-        PartDefinition Base_r4 = LowerAbdomen.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(47, 0).addBox(-4.5F, -0.6616F, -2.0281F, 9.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition Base_r4 = LowerAbdomen.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(27, 10).addBox(-4.5F, -0.6616F, -3.0281F, 9.0F, 1.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(27, 10).addBox(-4.5F, 0.3384F, -3.0281F, 9.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0025F, 1.0529F, 0.0F, 0.0F, 0.0F));
 
         PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F));
