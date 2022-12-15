@@ -83,6 +83,8 @@ public class LatexVariant<T extends LatexEntity> {
             .buildGendered(Changed.modResource("form_light_latex_wolf")));
     public static final LatexVariant<LightLatexKnight> LIGHT_LATEX_KNIGHT = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_KNIGHT).absorbing()
             .build(Changed.modResource("form_light_latex_knight")));
+    public static final LatexVariant<LatexBlueWolf> LATEX_BLUE_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.female(), ChangedEntities.LATEX_BLUE_WOLF)
+            .build(Changed.modResource("form_latex_blue_wolf")));
     public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
             .fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
