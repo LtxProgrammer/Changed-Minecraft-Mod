@@ -79,5 +79,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
                 }
             }
         }
+
+        if (variant != null && variant.swimSpeed >= 2.0F && player.isUnderWater())
+            player.setSprinting(true);
     }
 }
