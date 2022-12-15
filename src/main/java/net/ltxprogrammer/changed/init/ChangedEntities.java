@@ -180,7 +180,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexBlueWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexCrocodile>> LATEX_CROCODILE = register("latex_crocodile", 0x216d50, 0x43b058,
-            EntityType.Builder.of(LatexCrocodile::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.625F),
+            EntityType.Builder.of(LatexCrocodile::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.5F),
             ChangedEntities::swampSpawning);
     public static final RegistryObject<EntityType<LatexHypnoCat>> LATEX_HYPNO_CAT = register("latex_hypno_cat", 0x52596D, 0xD7FF46,
             EntityType.Builder.of(LatexHypnoCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
