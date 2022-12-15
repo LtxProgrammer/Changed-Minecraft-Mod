@@ -21,9 +21,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class LatexHumanoidModelController {
     public final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;
     @Nullable
-    public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
+    public final ModelPart Tail, LeftWing, RightWing, LeftArm2, RightArm2, LeftArm3, RightArm3, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
     public final List<ModelPart> TailJoints;
-    public final boolean hasTail, hasWings, hasArms2, hasLegs2, hasLegs;
+    public final boolean hasTail, hasWings, hasArms2, hasArms3, hasLegs2, hasLegs;
     public final EntityModel<?> entityModel;
     public final float hipOffset;
     public final float forewardOffset;
@@ -37,7 +37,7 @@ public class LatexHumanoidModelController {
     public float swimAmount;
 
     public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, float legLength, float armLength, float torsoWidth, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
-                                        @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2,
+                                        @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart rightArm3, @Nullable ModelPart leftArm3, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2,
                                         @Nullable ModelPart abdomen, @Nullable ModelPart lowerAbdomen, @Nullable List<ModelPart> tailJoints) {
         this.entityModel = entityModel;
         this.hipOffset = hipOffset;
@@ -60,6 +60,9 @@ public class LatexHumanoidModelController {
         LeftArm2 = rightArm2;
         RightArm2 = leftArm2;
         hasArms2 = LeftArm2 != null && RightArm2 != null;
+        LeftArm3 = rightArm3;
+        RightArm3 = leftArm3;
+        hasArms3 = LeftArm3 != null && RightArm3 != null;
         LowerTorso = lowerTorso;
         LeftLeg2 = rightLeg2;
         RightLeg2 = leftLeg2;
@@ -88,7 +91,7 @@ public class LatexHumanoidModelController {
 
     public static class Builder {
         private final ModelPart Head, Torso, Tail, LeftArm, RightArm, LeftLeg, RightLeg;
-        private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
+        private ModelPart LeftWing, RightWing, LeftArm2, RightArm2, LeftArm3, RightArm3, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen;
         public List<ModelPart> TailJoints = new ArrayList<>();
         private final EntityModel<?> entityModel;
         private float hipOffset = -2.0F;
@@ -148,6 +151,10 @@ public class LatexHumanoidModelController {
             this.RightArm2 = rightArm2; this.LeftArm2 = leftArm2; return this;
         }
 
+        public Builder arms3(ModelPart rightArm3, ModelPart leftArm3) {
+            this.RightArm3 = rightArm3; this.LeftArm3 = leftArm3; return this;
+        }
+
         public Builder legs2(ModelPart lowerTorso, ModelPart rightLeg2, ModelPart leftLeg2) {
             this.LowerTorso = lowerTorso;
             this.RightLeg2 = rightLeg2; this.LeftLeg2 = leftLeg2; return this;
@@ -166,7 +173,7 @@ public class LatexHumanoidModelController {
 
         public LatexHumanoidModelController build() {
             return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, legLength, armLength, torsoWidth, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
-                    LeftWing, RightWing, LeftArm2, RightArm2, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen, TailJoints);
+                    LeftWing, RightWing, LeftArm2, RightArm2, LeftArm3, RightArm3, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen, TailJoints);
         }
     }
 
@@ -180,6 +187,12 @@ public class LatexHumanoidModelController {
             this.LeftArm2.x += -3F;
             this.RightArm2.z += -1F - forewardOffset;
             this.LeftArm2.z += -1F - forewardOffset;
+        }
+        if (this.hasArms3) {
+            this.RightArm3.x += 3F;
+            this.LeftArm3.x += -3F;
+            this.RightArm3.z += -1F - forewardOffset;
+            this.LeftArm3.z += -1F - forewardOffset;
         }
     }
 
@@ -243,23 +256,24 @@ public class LatexHumanoidModelController {
             this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.18F : 0.125F) * limbSwingAmount / f;
             this.Tail.zRot = 0.0F;
         }
-        if (!this.hasLegs) {
-            this.Abdomen.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
+        if (!this.hasLegs) { // TODO better slither
+            float slitherAmount = Math.min(0.5F, limbSwingAmount);
             this.Abdomen.xRot = (float) Math.toRadians(-12.5);
-            this.Abdomen.zRot = 0.0F;
-            this.LowerAbdomen.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
+            this.Abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 1.2F * slitherAmount;
+            this.Abdomen.zRot = Mth.cos(limbSwing * 0.33333334F) * 1.0F * slitherAmount;
             this.LowerAbdomen.xRot = (float) Math.toRadians(50);
+            this.LowerAbdomen.yRot = 0.0F;
             this.LowerAbdomen.zRot = 0.0F;
             this.Tail.xRot = (float) Math.toRadians(40);
+            this.Tail.yRot = 0.0F;
             this.Tail.zRot = 0.0F;
-            this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
 
             float offset = 0.0F;
             for (ModelPart joint : this.TailJoints) {
-                offset += 1.0F;
                 joint.xRot = 0.0F;
-                joint.zRot = 0.0F;
-                joint.yRot = Mth.cos(limbSwing * 0.6662F - (((float)Math.PI / 3.0F) * offset)) * 0.125F * limbSwingAmount / f;
+                joint.zRot = Mth.cos((limbSwing * 0.33333334F) - (((float)Math.PI / 2.0F) * offset)) * 0.3F * slitherAmount;
+                joint.yRot = 0.0F;
+                offset += 1.0F;
             }
         }
 
@@ -288,7 +302,15 @@ public class LatexHumanoidModelController {
         }
 
         if (entity.isSleeping()) {
-            if (this.hasTail)
+            if (!this.hasLegs) {
+                this.Abdomen.xRot = 0.0F;
+                this.LowerAbdomen.xRot = 0.0F;
+                this.Tail.xRot = 0.0F;
+                for (ModelPart joint : this.TailJoints) {
+                    joint.zRot = 0.0F;
+                }
+            }
+            else if (this.hasTail)
                 this.Tail.xRot = -1.4137167F;
         }
 
@@ -334,14 +356,6 @@ public class LatexHumanoidModelController {
                 this.RightLeg2.y = 12.2F + hipOffset;
                 this.LeftLeg2.y = 12.2F + hipOffset;
             }
-            if (this.hasArms2) {
-                this.RightArm2.z = 0.0F;
-                this.RightArm2.y = this.RightArm.y - 4.0F;
-                this.RightArm2.x = -5.0F - torsoWidth;
-                this.LeftArm2.z = 0.0F;
-                this.LeftArm2.y = this.LeftArm.y - 4.0F;
-                this.LeftArm2.x = 5.0F + torsoWidth;
-            }
 
             if (!this.hasLegs) {
                 this.Abdomen.y = 12.2F + hipOffset;
@@ -361,19 +375,28 @@ public class LatexHumanoidModelController {
                 this.RightLeg2.y = 12.0F + hipOffset;
                 this.LeftLeg2.y = 12.0F + hipOffset;
             }
-            if (this.hasArms2) {
-                this.RightArm2.z = 0.0F;
-                this.RightArm2.y = this.RightArm.y - 4.0F;
-                this.RightArm2.x = -5.0F - torsoWidth;
-                this.LeftArm2.z = 0.0F;
-                this.LeftArm2.y = this.LeftArm.y - 4.0F;
-                this.LeftArm2.x = 5.0F + torsoWidth;
-            }
 
             if (!this.hasLegs) {
                 this.Abdomen.y = 12.0F + hipOffset;
                 this.Abdomen.z = 0.1F + forewardOffset;
             }
+        }
+
+        if (this.hasArms2) {
+            this.RightArm2.z = 0.0F;
+            this.RightArm2.y = this.RightArm.y - 4.0F;
+            this.RightArm2.x = -5.0F - torsoWidth;
+            this.LeftArm2.z = 0.0F;
+            this.LeftArm2.y = this.LeftArm.y - 4.0F;
+            this.LeftArm2.x = 5.0F + torsoWidth;
+        }
+        if (this.hasArms3) {
+            this.RightArm3.z = 0.0F;
+            this.RightArm3.y = this.RightArm.y + 4.0F;
+            this.RightArm3.x = -5.0F - torsoWidth;
+            this.LeftArm3.z = 0.0F;
+            this.LeftArm3.y = this.LeftArm.y + 4.0F;
+            this.LeftArm3.x = 5.0F + torsoWidth;
         }
 
         if (this.rightArmPose != HumanoidModel.ArmPose.SPYGLASS) {
@@ -488,6 +511,15 @@ public class LatexHumanoidModelController {
             this.LeftArm2.xRot = this.LeftArm.xRot * 0.88F;
             this.LeftArm2.yRot = this.LeftArm.yRot * 0.88F;
             this.LeftArm2.zRot = this.LeftArm.zRot * 0.88F;
+        }
+
+        if (this.hasArms3) {
+            this.RightArm3.xRot = this.RightArm.xRot * 0.88F;
+            this.RightArm3.yRot = this.RightArm.yRot * 0.88F;
+            this.RightArm3.zRot = this.RightArm.zRot * 0.88F;
+            this.LeftArm3.xRot = this.LeftArm.xRot * 0.88F;
+            this.LeftArm3.yRot = this.LeftArm.yRot * 0.88F;
+            this.LeftArm3.zRot = this.LeftArm.zRot * 0.88F;
         }
     }
 
