@@ -1,7 +1,11 @@
 package net.ltxprogrammer.changed.mixin;
 
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,6 +32,14 @@ public abstract class GameRendererMixin {
                     return;
                 }
             }
+        }
+    }
+
+    @Inject(method = "getDarkenWorldAmount", at = @At("RETURN"), cancellable = true)
+    public void getDarkenWorldAmount(float lerp, CallbackInfoReturnable<Float> callback) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).getLatexType() == LatexType.DARK_LATEX) {
+            callback.setReturnValue(callback.getReturnValue() + 1.2F);
         }
     }
 }

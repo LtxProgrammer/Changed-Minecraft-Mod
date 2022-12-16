@@ -10,6 +10,8 @@ import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Pose;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,11 +27,16 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         super(p_108548_, p_108549_);
     }
 
-    @Inject(method = "getWaterVision", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)
     private void getWaterVision(CallbackInfoReturnable<Float> cir) {
         if (ProcessTransfur.isPlayerLatex(this) && ProcessTransfur.getPlayerLatexVariant(this).getBreatheMode().canBreatheWater()) {
             if (this.isEyeInFluid(FluidTags.WATER)) {
-                cir.setReturnValue(4.0F);
+                for (var level : Thread.currentThread().getStackTrace()) {
+                    if (level.toString().contains("LightTexture")) // Light texture breaks when returning > 1.0F
+                        return;
+                }
+
+                cir.setReturnValue(cir.getReturnValue() * 4.0F);
                 cir.cancel();
             }
         }
