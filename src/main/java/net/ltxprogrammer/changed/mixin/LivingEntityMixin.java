@@ -54,6 +54,8 @@ public abstract class LivingEntityMixin extends Entity {
         if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             if (ProcessTransfur.getPlayerLatexVariant(player).nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(true);
+            if (ProcessTransfur.getPlayerLatexVariant(player).breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+                callback.setReturnValue(true);
         }
     }
 
@@ -62,6 +64,8 @@ public abstract class LivingEntityMixin extends Entity {
         if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             if (ProcessTransfur.getPlayerLatexVariant(player).nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
+            if (ProcessTransfur.getPlayerLatexVariant(player).breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+                callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
         }
     }
 }
