@@ -112,7 +112,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
             .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
-    public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
+    public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_WATERMELON_CAT)
             .build(Changed.modResource("form_latex_watermelon_cat")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
