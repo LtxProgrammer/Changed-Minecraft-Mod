@@ -30,7 +30,6 @@
     "CameraMixin",
     "ClientRecipeBookMixin",
     "GameRendererMixin",
-    "ClientLevelMixin",
     "LocalPlayerMixin",
     "ModelBakeryMixin",
     "PlayerRendererMixin",
