@@ -1,0 +1,15 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:cobweb"
+    }
+  ],
+  "form": "changed:form_latex_stiger"
+}
