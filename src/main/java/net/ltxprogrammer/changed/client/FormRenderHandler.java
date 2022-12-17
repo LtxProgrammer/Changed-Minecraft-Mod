@@ -90,9 +90,12 @@ public class FormRenderHandler {
                     entityModel.attackTime = 0.0F;
                     boolean lastCrouch = controller.crouching;
                     controller.crouching = false;
+                    float lastSwim = controller.swimAmount;
+                    controller.swimAmount = 0.0F;
                     entityModel.setupAnim(replacementInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                     latexHumanoidModel.setupHand();
                     controller.crouching = lastCrouch;
+                    controller.swimAmount = lastSwim;
 
                     handPart = latexHumanoidModel.getArm(handSide);
                     stackCorrector = latexHumanoidModel.getPlacementCorrectors(handSide);
@@ -105,9 +108,12 @@ public class FormRenderHandler {
                     entityModel.attackTime = 0.0F;
                     boolean lastCrouch = controller.crouching;
                     controller.crouching = false;
+                    float lastSwim = controller.swimAmount;
+                    controller.swimAmount = 0.0F;
                     entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                     latexHumanoidModel.setupHand();
                     controller.crouching = lastCrouch;
+                    controller.swimAmount = lastSwim;
 
                     handPart = latexHumanoidModel.getArm(handSide);
                     stackCorrector = latexHumanoidModel.getPlacementCorrectors(handSide);
@@ -128,9 +134,12 @@ public class FormRenderHandler {
                         entityModel.attackTime = 0.0F;
                         boolean lastCrouch = controller.crouching;
                         controller.crouching = false;
+                        float lastSwim = controller.swimAmount;
+                        controller.swimAmount = 0.0F;
                         entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                         latexHumanoidModel.setupHand();
                         controller.crouching = lastCrouch;
+                        controller.swimAmount = lastSwim;
                         renderModelPartWithTexture(gelLayer.getModel().getArm(handSide), stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
                     }
                 }

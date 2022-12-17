@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.LatexWatermelonCatFemale;
+import net.ltxprogrammer.changed.entity.beast.LatexWatermelonCat;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -11,9 +11,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class LatexWatermelonCatFemaleModel extends LatexHumanoidModel<LatexWatermelonCatFemale> implements LatexHumanoidModelInterface {
+public class LatexWatermelonCatModel extends LatexHumanoidModel<LatexWatermelonCat> implements LatexHumanoidModelInterface {
         // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-        public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_watermelon_cat_female"), "main");
+        public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_watermelon_cat"), "main");
         private final ModelPart RightLeg;
         private final ModelPart LeftLeg;
         private final ModelPart RightArm;
@@ -23,7 +23,7 @@ public class LatexWatermelonCatFemaleModel extends LatexHumanoidModel<LatexWater
         private final ModelPart Tail;
         private final LatexHumanoidModelController controller;
 
-        public LatexWatermelonCatFemaleModel(ModelPart root) {
+        public LatexWatermelonCatModel(ModelPart root) {
             super(root);
             this.RightLeg = root.getChild("RightLeg");
             this.LeftLeg = root.getChild("LeftLeg");
@@ -128,7 +128,7 @@ public class LatexWatermelonCatFemaleModel extends LatexHumanoidModel<LatexWater
         }
 
         @Override
-        public void prepareMobModel(LatexWatermelonCatFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+        public void prepareMobModel(LatexWatermelonCat p_102861_, float p_102862_, float p_102863_, float p_102864_) {
             this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
         }
 
@@ -137,7 +137,7 @@ public class LatexWatermelonCatFemaleModel extends LatexHumanoidModel<LatexWater
         }
 
         @Override
-        public void setupAnim(@NotNull LatexWatermelonCatFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void setupAnim(@NotNull LatexWatermelonCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
             controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
 

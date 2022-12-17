@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -28,6 +29,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
     public PlayerRendererMixin(EntityRendererProvider.Context p_174289_, PlayerModel<AbstractClientPlayer> p_174290_, float p_174291_) {
         super(p_174289_, p_174290_, p_174291_);
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void PlayerRenderer(EntityRendererProvider.Context context, boolean slim, CallbackInfo callback) {
+        this.addLayer(new TransfurProgressLayer(this, context.getModelSet(), slim));
     }
 
     @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
