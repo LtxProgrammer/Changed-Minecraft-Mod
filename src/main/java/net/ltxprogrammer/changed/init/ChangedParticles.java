@@ -31,6 +31,14 @@ public class ChangedParticles {
             return color3;
         }
 
+        public static Color3 fromInt(int num) {
+            return new Color3(
+                    ((num & 0xff0000) >> 16) / 255f,
+                    ((num & 0x00ff00) >> 8) / 255f,
+                    ((num & 0x0000ff) >> 0) / 255f
+            );
+        }
+
         @Nullable
         private static Color3 parseHex(String tag) {
             if (tag.length() > 0) {
@@ -38,13 +46,7 @@ public class ChangedParticles {
                     tag = tag.substring(1);
 
                 try {
-                    int num = Integer.parseInt(tag, 16);
-
-                    return new Color3(
-                            ((num & 0xff0000) >> 16) / 255f,
-                            ((num & 0x00ff00) >> 8) / 255f,
-                            ((num & 0x0000ff) >> 0) / 255f
-                    );
+                    return fromInt(Integer.parseInt(tag, 16));
                 } catch (Exception ignored) {}
             }
 

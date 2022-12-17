@@ -1,9 +1,14 @@
 package net.ltxprogrammer.changed.init;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
 import net.ltxprogrammer.changed.data.DelayLoadedModel;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
