@@ -178,7 +178,7 @@ public class ChangedEntities {
             ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexBlueWolf>> LATEX_BLUE_WOLF = register("latex_blue_wolf", 0x8ad6e7, 0x7395c0,
             EntityType.Builder.of(LatexBlueWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::taigaSpawning);
+            ChangedEntities::mountainSpawning);
     public static final RegistryObject<EntityType<LatexCrocodile>> LATEX_CROCODILE = register("latex_crocodile", 0x216d50, 0x43b058,
             EntityType.Builder.of(LatexCrocodile::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.5F),
             ChangedEntities::swampSpawning);
@@ -205,7 +205,7 @@ public class ChangedEntities {
             ChangedEntities::mountainSpawning);
     public static final RegistryObject<EntityType<LatexPurpleFox>> LATEX_PURPLE_FOX = register("latex_purple_fox", 0xcebbe8, 0xf1e3f1,
             EntityType.Builder.of(LatexPurpleFox::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::forestSpawning);
+            ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexRedDragon>> LATEX_RED_DRAGON = register("latex_red_dragon", 0xa54f58, 0xfcfa4a,
             EntityType.Builder.of(LatexRedDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mesaSpawning);
