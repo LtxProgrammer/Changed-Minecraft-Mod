@@ -25,9 +25,11 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_LEAF.get(), LatexLeafRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_FEMALE.get(), LatexMantaRayFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_MALE.get(), LatexMantaRayMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MIMIC_PLANT.get(), LatexMimicPlantRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MERMAID_SHARK.get(), LatexMermaidSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ORCA.get(), LatexOrcaRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_PINK_WYVERN.get(), LatexPinkWyvernRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_PURPLE_FOX.get(), LatexPurpleFoxRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_RED_DRAGON.get(), LatexRedDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_RED_PANDA.get(), LatexRedPandaRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SHARK_FEMALE.get(), LatexSharkFemaleRenderer::new);
@@ -40,8 +42,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_TIGER_SHARK.get(), LatexTigerSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON.get(), LatexTrafficConeDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_TRANSLUCENT_LIZARD.get(), LatexTranslucentLizardRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_WATERMELON_CAT_FEMALE.get(), LatexWatermelonCatFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_WATERMELON_CAT_MALE.get(), LatexWatermelonCatMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_WATERMELON_CAT_FEMALE.get(), LatexWatermelonCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_YUIN.get(), LatexYuinRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_CENTAUR.get(), LightLatexCentaurRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_KNIGHT.get(), LightLatexKnightRenderer::new);
