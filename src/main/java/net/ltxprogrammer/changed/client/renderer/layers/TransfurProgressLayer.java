@@ -32,8 +32,8 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
     }
 
     private ResourceLocation getProgressTexture(int ticks) {
-        int num = ticks / (ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER / 16);
-        return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min(num, 16), 1) + ".png");
+        int num = ticks / (ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER / 10);
+        return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min(num, 10), 1) + ".png");
     }
 
     private ChangedParticles.Color3 getProgressColor(ResourceLocation type) {

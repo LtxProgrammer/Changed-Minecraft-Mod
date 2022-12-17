@@ -34,12 +34,4 @@ public abstract class GameRendererMixin {
             }
         }
     }
-
-    @Inject(method = "getDarkenWorldAmount", at = @At("RETURN"), cancellable = true)
-    public void getDarkenWorldAmount(float lerp, CallbackInfoReturnable<Float> callback) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).getLatexType() == LatexType.DARK_LATEX) {
-            callback.setReturnValue(callback.getReturnValue() + 1.2F);
-        }
-    }
 }
