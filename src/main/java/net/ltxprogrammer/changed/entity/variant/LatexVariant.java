@@ -35,7 +35,6 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -100,17 +99,21 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_white_latex_wolf")));
     public static final LatexVariant<LatexSilverFox> LATEX_SILVER_FOX = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_SILVER_FOX)
             .build(Changed.modResource("form_latex_silver_fox")));
+    public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
+            .build(Changed.modResource("form_latex_purple_fox")));
     public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF)
             .build(Changed.modResource("form_latex_crystal_wolf")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .build(Changed.modResource("form_latex_traffic_cone_dragon")));
     public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)
             .build(Changed.modResource("form_latex_leaf")));
+    public static final LatexVariant<LatexMimicPlant> LATEX_MIMIC_PLANT = register(Builder.of(LATEX_LEAF, ChangedEntities.LATEX_MIMIC_PLANT)
+            .build(Changed.modResource("form_latex_mimic_plant")));
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
             .groundSpeed(1.1f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
-    public static final GenderedVariant<LatexWatermelonCatMale, LatexWatermelonCatFemale> LATEX_WATERMELON_CAT = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.LATEX_WATERMELON_CAT_MALE, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
-            .buildGendered(Changed.modResource("form_latex_watermelon_cat")));
+    public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.LATEX_WATERMELON_CAT_FEMALE)
+            .build(Changed.modResource("form_latex_watermelon_cat")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 

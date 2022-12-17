@@ -197,9 +197,15 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("latex_mermaid_shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexMermaidShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning);
+    public static final RegistryObject<EntityType<LatexMimicPlant>> LATEX_MIMIC_PLANT = register("latex_mimic_plant", 0x446d5d, 0x729c6a,
+            EntityType.Builder.of(LatexMimicPlant::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::jungleAndForestSpawning);
     public static final RegistryObject<EntityType<LatexPinkWyvern>> LATEX_PINK_WYVERN = register("latex_pink_wyvern", 0xd5b4be, 0xb76a6d,
             EntityType.Builder.of(LatexPinkWyvern::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mountainSpawning);
+    public static final RegistryObject<EntityType<LatexPurpleFox>> LATEX_PURPLE_FOX = register("latex_purple_fox", 0xcebbe8, 0xf1e3f1,
+            EntityType.Builder.of(LatexPurpleFox::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexRedDragon>> LATEX_RED_DRAGON = register("latex_red_dragon", 0xa54f58, 0xfcfa4a,
             EntityType.Builder.of(LatexRedDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mesaSpawning);
@@ -236,11 +242,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexOrca>> LATEX_ORCA = register("latex_orca", 0x393939, 0xFFFFFF,
             EntityType.Builder.of(LatexOrca::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexWatermelonCatMale>> LATEX_WATERMELON_CAT_MALE = register("latex_watermelon_cat_male", 0x545454, 0xC7FF5A,
-            EntityType.Builder.of(LatexWatermelonCatMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::jungleSpawning);
-    public static final RegistryObject<EntityType<LatexWatermelonCatFemale>> LATEX_WATERMELON_CAT_FEMALE = register("latex_watermelon_cat_female", 0x545454, 0xC7FF5A,
-            EntityType.Builder.of(LatexWatermelonCatFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+    public static final RegistryObject<EntityType<LatexWatermelonCat>> LATEX_WATERMELON_CAT_FEMALE = register("latex_watermelon_cat", 0x545454, 0xC7FF5A,
+            EntityType.Builder.of(LatexWatermelonCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleSpawning);
     public static final RegistryObject<EntityType<LatexYuin>> LATEX_YUIN = register("latex_yuin", 0xFFFFFF, 0x7442cc,
             EntityType.Builder.of(LatexYuin::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
