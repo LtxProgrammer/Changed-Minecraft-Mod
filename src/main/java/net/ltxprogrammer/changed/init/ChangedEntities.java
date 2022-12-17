@@ -242,7 +242,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexOrca>> LATEX_ORCA = register("latex_orca", 0x393939, 0xFFFFFF,
             EntityType.Builder.of(LatexOrca::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexWatermelonCat>> LATEX_WATERMELON_CAT_FEMALE = register("latex_watermelon_cat", 0x545454, 0xC7FF5A,
+    public static final RegistryObject<EntityType<LatexWatermelonCat>> LATEX_WATERMELON_CAT = register("latex_watermelon_cat", 0x545454, 0xC7FF5A,
             EntityType.Builder.of(LatexWatermelonCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleSpawning);
     public static final RegistryObject<EntityType<LatexYuin>> LATEX_YUIN = register("latex_yuin", 0xFFFFFF, 0x7442cc,
