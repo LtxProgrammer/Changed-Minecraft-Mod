@@ -112,7 +112,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offsetAndRotation(2.5F, -7.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
-        PartDefinition Base_r6 = LeftEar.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(58, 5).addBox(-0.3791F, -1.8F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, -0.2094F, 0.056F, -0.0059F));
+        PartDefinition Base_r6 = LeftEar.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(58, 5).addBox(-0.3791F, -1.77F, -2.9526F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, -0.2094F, 0.056F, -0.0059F));
 
         PartDefinition Base_r7 = LeftEar.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(56, 29).addBox(-1.7048F, -0.3091F, -1.3212F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, 3.0F, 0.0F, -1.1519F, 0.4605F, 0.4624F));
 
@@ -173,8 +173,6 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
-
-
 
 
     @Override
