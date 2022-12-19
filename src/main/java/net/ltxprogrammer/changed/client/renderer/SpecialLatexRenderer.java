@@ -45,11 +45,11 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
     protected boolean runIfValid(SpecialLatex entity, Consumer<SpecialLatexRenderer> rendererConsumer) {
         if (this.isDelegate) {
-            if (entity.getUnderlyingPlayer() == null) return false;
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getUnderlyingPlayer().getUUID());
+            if (entity.getAssignedUUID() == null) return false;
+            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
             if (form == null) return false;
 
-            rendererConsumer.accept(SPECIAL_RENDERERS.computeIfAbsent(entity.getUnderlyingPlayer().getUUID(),
+            rendererConsumer.accept(SPECIAL_RENDERERS.computeIfAbsent(entity.getAssignedUUID(),
                     uuid -> new SpecialLatexRenderer(this.context, form)));
             return false;
         }
@@ -61,11 +61,11 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
     protected <R> Optional<R> runIfValid(SpecialLatex entity, Function<SpecialLatexRenderer, R> rendererConsumer) {
         if (this.isDelegate) {
-            if (entity.getUnderlyingPlayer() == null) return Optional.ofNullable(null);
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getUnderlyingPlayer().getUUID());
+            if (entity.getAssignedUUID() == null) return Optional.ofNullable(null);
+            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
             if (form == null) return Optional.ofNullable(null);
 
-            return Optional.of(rendererConsumer.apply(SPECIAL_RENDERERS.computeIfAbsent(entity.getUnderlyingPlayer().getUUID(),
+            return Optional.of(rendererConsumer.apply(SPECIAL_RENDERERS.computeIfAbsent(entity.getAssignedUUID(),
                     uuid -> new SpecialLatexRenderer(this.context, form))));
         }
 

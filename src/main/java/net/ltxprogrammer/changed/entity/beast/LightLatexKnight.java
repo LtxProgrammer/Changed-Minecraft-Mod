@@ -32,9 +32,4 @@ public class LightLatexKnight extends AbstractLatexWolf {
     public LatexVariant<?> getTransfurVariant() {
         return LatexVariant.LIGHT_LATEX_CENTAUR;
     }
-
-    @Override
-    public LatexVariant<?> getSelfVariant() {
-        return LatexVariant.LIGHT_LATEX_KNIGHT;
-    }
 }

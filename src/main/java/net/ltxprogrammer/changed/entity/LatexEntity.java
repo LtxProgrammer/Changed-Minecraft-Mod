@@ -155,11 +155,11 @@ public abstract class LatexEntity extends Monster {
     }
 
     public LatexVariant<?> getTransfurVariant() {
-        return findLatexEntityVariant(this);
+        return getSelfVariant();
     }
 
     public LatexVariant<?> getSelfVariant() {
-        return getTransfurVariant();
+        return findLatexEntityVariant(this);
     }
 
     public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
