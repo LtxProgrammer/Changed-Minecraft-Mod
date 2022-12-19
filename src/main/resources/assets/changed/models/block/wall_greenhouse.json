@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/wall_greenhouse",
+    "up": "changed:blocks/wall_greenhouse",
+    "north": "changed:blocks/wall_greenhouse",
+    "east": "changed:blocks/wall_greenhouse",
+    "south": "changed:blocks/wall_greenhouse",
+    "west": "changed:blocks/wall_greenhouse",
+    "particle": "changed:blocks/wall_greenhouse"
+  }
+}

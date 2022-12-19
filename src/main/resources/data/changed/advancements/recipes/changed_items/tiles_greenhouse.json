@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:tiles_greenhouse"
+    ]
+  },
+  "criteria": {
+    "has_piston": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stripped_oak_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:tiles_greenhouse"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stripped_oak_log",
+      "has_the_recipe"
+    ]
+  ]
+}
