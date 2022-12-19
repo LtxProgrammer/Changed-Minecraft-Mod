@@ -31,12 +31,12 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
         this.playerModel = new PlayerModel<>(modelSet.bakeLayer(slim ? ChangedLayerDefinitions.LATEX_COAT_SLIM : ChangedLayerDefinitions.LATEX_COAT), slim);
     }
 
-    private ResourceLocation getProgressTexture(int ticks) {
+    public static ResourceLocation getProgressTexture(int ticks) {
         int num = ticks / (ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER / 10);
         return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min(num, 10), 1) + ".png");
     }
 
-    private ChangedParticles.Color3 getProgressColor(ResourceLocation type) {
+    public static ChangedParticles.Color3 getProgressColor(ResourceLocation type) {
         return ChangedParticles.Color3.fromInt(ChangedEntities.getEntityColorBack(LatexVariant.ALL_LATEX_FORMS.get(type).getEntityType().getRegistryName()));
     }
 

@@ -125,9 +125,9 @@ public class FormRenderHandler {
                 renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
                 for (var layer : latexRenderer.layers)  {
                     if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
-                        renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(emissiveBodyLayer.getEmissiveTexture())), 0xFFFFFF, 1F);
+                        renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), 15728640, 1F);
                     if (layer instanceof LatexGelLayer<?,?> gelLayer) {
-                        LatexHumanoidModel entityModel =gelLayer.getModel();
+                        LatexHumanoidModel entityModel = gelLayer.getModel();
                         var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
                         LatexHumanoidModelController controller = latexHumanoidModel.getController();
 
