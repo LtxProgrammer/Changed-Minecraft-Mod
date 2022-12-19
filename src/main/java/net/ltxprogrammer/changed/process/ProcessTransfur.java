@@ -82,7 +82,7 @@ public class ProcessTransfur {
     }
 
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
-        if (player.isCreative() || player.isSpectator())
+        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
             return false;
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
@@ -205,7 +205,7 @@ public class ProcessTransfur {
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
             if (variant != null)
-                variant.generateForm(player, player.level);
+                variant.generateForm(player, player.level).setUnderlyingPlayer(player);
             if (oldVariant != null)
                 oldVariant.unhookAll(player);
             if (!player.level.isClientSide)

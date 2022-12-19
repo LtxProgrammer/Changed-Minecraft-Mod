@@ -340,6 +340,9 @@ public class LatexVariant<T extends LatexEntity> {
         if (latexForm == null) {
             latexForm = createLatexEntity(level);
             latexForm.moveTo((player.getX()), (player.getY()), (player.getZ()), player.getYRot(), 0);
+            if (latexForm instanceof SpecialLatex specialLatex)
+                specialLatex.setSpecialLatexForm(UUID.fromString(
+                        formId.toString().substring(Changed.modResourceStr("special/form_").length())));
 
             latexForm.setCustomName(PatreonBenefits.getPlayerName(player));
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -356,6 +359,10 @@ public class LatexVariant<T extends LatexEntity> {
                 null);
         newEntity.moveTo((entity.getX()), (entity.getY()), (entity.getZ()), entity.getYRot(), 0);
         entity.level.addFreshEntity(newEntity);
+        if (newEntity instanceof SpecialLatex specialLatex) {
+            specialLatex.setSpecialLatexForm(UUID.fromString(
+                    formId.toString().substring(Changed.modResourceStr("special/form_").length())));
+        }
         if (entity instanceof Player) {
             entity.setLastHurtByMob(newEntity);
             entity.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
