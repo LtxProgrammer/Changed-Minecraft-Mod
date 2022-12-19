@@ -25,6 +25,12 @@ public class ChangedParticles {
     public record Color3(float red, float green, float blue) {
         public static final Map<String, Color3> NAMED_COLORS = new HashMap<>();
 
+        public int toInt() {
+            return (int)(red * 255f) << 16 |
+                    (int)(green * 255f) << 8 |
+                    (int)(blue * 255f) << 0;
+        }
+
         public static Color3 named(String name, float red, float green, float blue) {
             Color3 color3 = new Color3(red, green, blue);
             NAMED_COLORS.put(name, color3);

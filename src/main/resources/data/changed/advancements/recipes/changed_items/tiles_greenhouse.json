@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_piston": {
+    "has_stripped_oak_log": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [

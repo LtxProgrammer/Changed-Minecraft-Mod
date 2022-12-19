@@ -122,7 +122,9 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
 
     // Note: see BlockMixin.java and BlockBehaviourMixin.java for context
     public static void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, LatexType latexType) {
+        if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (!level.getGameRules().getBoolean(ChangedGameRules.RULE_LATEX_SPREAD)) return; // TODO adjust to spread like it covers (not underneath blocks)
+        if (random.nextInt(10) < 6) return;
 
         boolean spread = checkBlock(level, position.above());
         if (!spread && checkBlock(level, position.above().east()))

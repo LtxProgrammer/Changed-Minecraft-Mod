@@ -3,15 +3,19 @@ package net.ltxprogrammer.changed.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
+import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.scores.Objective;
@@ -42,6 +46,22 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             ci.cancel(); //cancel the call
         }
     }
+
+    @Inject(method = "renderHand", at = @At("RETURN"), cancellable = true)
+    private void renderHandEnd(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart armwear, CallbackInfo ci) {
+        if (!ProcessTransfur.isPlayerLatex(player)) {
+            var progress = ProcessTransfur.getPlayerTransfurProgress(player);
+            if (progress == null || progress.ticks() <= 0)
+                return;
+            var color = TransfurProgressLayer.getProgressColor(progress.type());
+
+            arm.xRot = 0.0F;
+            arm.render(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TransfurProgressLayer.getProgressTexture(progress.ticks()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
+            armwear.xRot = 0.0F;
+            armwear.render(stack, buffer.getBuffer(RenderType.entityTranslucent(TransfurProgressLayer.getProgressTexture(progress.ticks()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
+        }
+    }
+
     @Inject(method = "renderNameTag*", at = @At("HEAD"))
     private void renderNameTag(AbstractClientPlayer player, Component name, PoseStack pose, MultiBufferSource source, int p_114502_, CallbackInfo ci) {
         if (Minecraft.getInstance().player == player)
