@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TTT",
+    " S ",
+    "TTT"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stripped_oak_log"
+    },
+    "T": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "changed:wall_greenhouse"
+  }
+}
