@@ -13,16 +13,20 @@ import net.minecraft.world.level.Level;
 import java.util.UUID;
 
 public class SpecialLatex extends LatexEntity {
-    // Automatically set when attachedPlayer is set
+    private UUID assignedUUID = null;
     public PatreonBenefits.SpecialLatexForm specialLatexForm = null;
 
     public SpecialLatex(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
-    public void setUnderlyingPlayer(Player player) {
-        super.setUnderlyingPlayer(player);
-        this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(player.getUUID());
+    public void setSpecialLatexForm(UUID uuid) {
+        this.assignedUUID = uuid;
+        this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(uuid);
+    }
+
+    public UUID getAssignedUUID() {
+        return assignedUUID;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class SpecialLatex extends LatexEntity {
 
     @Override
     public LatexVariant<?> getTransfurVariant() {
-        return null;
+        return specialLatexForm.variant();
     }
 
     public static void init() {}

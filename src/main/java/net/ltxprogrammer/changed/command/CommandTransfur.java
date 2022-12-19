@@ -6,6 +6,8 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -14,10 +16,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.commands.arguments.UuidArgument;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,6 +46,15 @@ public class CommandTransfur {
         event.getDispatcher().register(Commands.literal("untransfur").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> untransfurPlayer(context.getSource(), EntityArgument.getPlayer(context, "player")))
+                ));
+        event.getDispatcher().register(Commands.literal("specialsyringe").requires(p -> p.hasPermission(3))
+                .then(Commands.argument("uuid", UuidArgument.uuid())
+                        .executes(context -> {
+                            ItemStack stack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
+                            Syringe.setUnpureVariant(stack, Changed.modResource("special/form_" + UuidArgument.getUuid(context, "uuid")));
+                            context.getSource().getPlayerOrException().addItem(stack);
+                            return Command.SINGLE_SUCCESS;
+                        })
                 ));
     }
 

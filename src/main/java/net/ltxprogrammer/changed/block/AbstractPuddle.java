@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AbstractPuddle extends ChangedBlock implements NonLatexCoverableBlock {
+public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatexCoverableBlock {
     protected final LatexVariant<?> variant;
 
     public AbstractPuddle(Properties properties, LatexVariant<?> variant) {

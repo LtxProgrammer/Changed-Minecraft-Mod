@@ -118,6 +118,8 @@ public class Syringe extends Item {
             tag.putUUID("owner", player.getUUID());
             if (ProcessTransfur.isPlayerLatex(player)) {
                 ResourceLocation form = ProcessTransfur.getPlayerLatexVariant(player).getFormId();
+                if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
+                    form = LatexVariant.SPECIAL_LATEX;
                 ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
                 tag.putBoolean("safe", true);
                 tag.putString("form", form.toString());
