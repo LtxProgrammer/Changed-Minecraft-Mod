@@ -1,7 +1,10 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -17,7 +20,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LatexTrafficCone extends AbstractCustomShapeBlock {
+public class LatexTrafficCone extends AbstractCustomShapeBlock implements WearableBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
     public LatexTrafficCone() {
@@ -58,5 +61,16 @@ public class LatexTrafficCone extends AbstractCustomShapeBlock {
 
     public BlockState updateShape(BlockState p_52796_, Direction p_52797_, BlockState p_52798_, LevelAccessor p_52799_, BlockPos p_52800_, BlockPos p_52801_) {
         return super.updateShape(p_52796_, p_52797_, p_52798_, p_52799_, p_52800_, p_52801_);
+    }
+
+    @Override
+    public EquipmentSlot getEquipmentSlot() {
+        return EquipmentSlot.HEAD;
+    }
+
+    @Override
+    public void wearTick(LivingEntity entity, ItemStack itemStack) {
+        if (ProcessTransfur.progressTransfur(entity, 2500, LatexVariant.LATEX_TRAFFIC_CONE_DRAGON.getFormId()))
+            itemStack.shrink(1);
     }
 }

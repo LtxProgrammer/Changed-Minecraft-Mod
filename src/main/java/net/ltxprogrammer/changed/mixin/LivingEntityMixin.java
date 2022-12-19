@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
+import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.effect.MobEffect;
@@ -7,8 +8,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -67,5 +71,11 @@ public abstract class LivingEntityMixin extends Entity {
             if (ProcessTransfur.getPlayerLatexVariant(player).breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
         }
+    }
+    @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
+    private static void getEquipmentSlotForItem(ItemStack stack, CallbackInfoReturnable<EquipmentSlot> callback) {
+        if (stack.getItem() instanceof BlockItem blockItem)
+            if (blockItem.getBlock() instanceof WearableBlock wearableBlock)
+                callback.setReturnValue(wearableBlock.getEquipmentSlot());
     }
 }
