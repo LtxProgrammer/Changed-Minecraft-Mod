@@ -80,6 +80,14 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
                 p_117126_.body.visible = true;
                 p_117126_.rightArm.visible = true;
                 p_117126_.leftArm.visible = true;
+                if (p_117126_.rightArm2 != null)
+                    p_117126_.rightArm2.visible = true;
+                if (p_117126_.leftArm2 != null)
+                    p_117126_.leftArm2.visible = true;
+                if (p_117126_.rightArm3 != null)
+                    p_117126_.rightArm3.visible = true;
+                if (p_117126_.leftArm3 != null)
+                    p_117126_.leftArm3.visible = true;
                 break;
             case LEGS:
                 p_117126_.body.visible = true;
