@@ -350,8 +350,8 @@ public class LatexHumanoidModelController {
             this.LeftLeg.y = 12.2F + hipOffset;
             this.Head.y = 4.2F + hipOffset + legLength;
             this.Torso.y = 3.2F + hipOffset + legLength;
-            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
-            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
+            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
+            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
             if (this.hasLegs2) {
                 this.RightLeg2.y = 12.2F + hipOffset;
                 this.LeftLeg2.y = 12.2F + hipOffset;
