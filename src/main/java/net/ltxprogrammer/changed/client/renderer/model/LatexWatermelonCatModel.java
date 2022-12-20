@@ -113,16 +113,16 @@ public class LatexWatermelonCatModel extends LatexHumanoidModel<LatexWatermelonC
             PartDefinition base_r3 = LeftEar.addOrReplaceChild("base_r3", CubeListBuilder.create().texOffs(64, 0).mirror().addBox(-1.3129F, -2.9943F, -0.7396F, 2.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.2129F, -1.0057F, -0.8604F, 0.2034F, -0.0581F, -0.0598F));
 
             PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(32, 0).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                    .texOffs(4, 38).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(0, 38).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(35, 22).addBox(-8.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(32, 21).addBox(-8.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F)), PartPose.offset(0.0F, 25.0F, 0.0F));
+                    .texOffs(4, 38).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(0, 38).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(35, 22).addBox(-8.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(32, 21).addBox(-8.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
             PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(24, 29).addBox(4.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                    .texOffs(0, 30).addBox(4.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(0, 28).addBox(7.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(0, 18).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F))
-                    .texOffs(0, 16).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.025F)), PartPose.offset(0.0F, 25.0F, 0.0F));
+                    .texOffs(0, 30).addBox(4.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(0, 28).addBox(7.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(0, 18).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F))
+                    .texOffs(0, 16).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.005F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
             return LayerDefinition.create(process(meshdefinition), 80, 80);
         }

@@ -113,7 +113,7 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
 
             PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(12, 50).addBox(-1.5088F, -2.0341F, -1.0F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.0F, -34.0F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
-            PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(48, 34).addBox(0.0088F, -2.0341F, -1.0F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.5F, -34.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
+            PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(48, 34).addBox(0.0088F, -2.0341F, -1.0F, 2.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.5F, -34.135F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
             PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(61, 37).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
                     .texOffs(65, 21).addBox(-4.0F, -26.75F, 2.0F, 8.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
