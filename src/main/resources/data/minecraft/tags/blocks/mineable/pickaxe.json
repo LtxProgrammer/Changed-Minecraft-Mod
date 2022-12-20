@@ -22,6 +22,7 @@
     "changed:tiles_white",
     "changed:tiles_white_stairs",
     "changed:tiles_white_connected",
+    "changed:vent_hatch",
     "changed:wall_caution",
     "changed:wall_lightred",
     "changed:wall_lightred_striped",
