@@ -22,12 +22,15 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements Nameable, EntityAccess, CommandSource, net.minecraftforge.common.extensions.IForgeEntity {
+    @Shadow public abstract Vec3 getEyePosition();
+
     protected EntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
@@ -109,6 +112,8 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
+            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
+                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
             callback.setReturnValue(vec.add(look.x() * z, 0.0f, look.z() * z));
         }
     }
@@ -118,6 +123,8 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
+            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
+                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
 
             double d0 = Mth.lerp(v, player.xo + look.x() * z, player.getX() + look.x() * z);
             double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
