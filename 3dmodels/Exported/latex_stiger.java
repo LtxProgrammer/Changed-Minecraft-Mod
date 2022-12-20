@@ -127,17 +127,17 @@ public class custom_model<T extends Entity> extends EntityModel<T> {
 		.texOffs(44, 2).addBox(-3.0F, 10.75F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(44, 0).addBox(-3.0F, 10.75F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.0F, 0.0F, -0.5F, 0.0F, 0.0F, 0.3491F));
 
-		PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(36, 36).addBox(-4.0F, -1.0F, -1.7F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-		.texOffs(36, 36).addBox(-1.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(32, 36).addBox(-4.0F, 10.75F, 1.3F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(12, 34).addBox(-4.0F, 10.75F, -0.2F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(32, 33).addBox(-4.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0F, 2.0F, -0.3F, 0.0F, 0.0F, 0.1745F));
+		PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(36, 36).addBox(-3.0F, -1.0F, -1.7F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(36, 36).addBox(0.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 36).addBox(-3.0F, 10.75F, 1.3F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(12, 34).addBox(-3.0F, 10.75F, -0.2F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 33).addBox(-3.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.0F, 2.0F, -0.3F, 0.0F, 0.0F, 0.1745F));
 
-		PartDefinition RightArm3 = partdefinition.addOrReplaceChild("RightArm3", CubeListBuilder.create().texOffs(32, 0).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-		.texOffs(32, 31).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(12, 32).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(28, 4).addBox(-8.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(20, 18).addBox(-8.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 29.0F, 0.5F));
+		PartDefinition RightArm3 = partdefinition.addOrReplaceChild("RightArm3", CubeListBuilder.create().texOffs(32, 0).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 31).addBox(0.0F, 10.75F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(12, 32).addBox(-3.0F, 10.75F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(28, 4).addBox(-3.0F, 10.75F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(20, 18).addBox(-3.0F, 10.75F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, 4.0F, 0.5F));
 
 		PartDefinition LeftArm2 = partdefinition.addOrReplaceChild("LeftArm2", CubeListBuilder.create().texOffs(16, 56).addBox(-1.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(44, 55).addBox(2.0F, 10.75F, 1.3F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
@@ -145,17 +145,17 @@ public class custom_model<T extends Entity> extends EntityModel<T> {
 		.texOffs(52, 43).addBox(2.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
 		.texOffs(48, 0).addBox(-1.0F, -1.0F, -1.7F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 0.0F, -0.8F, 0.0F, 0.0F, -0.3491F));
 
-		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 42).addBox(0.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(28, 42).addBox(3.0F, 10.75F, 1.3F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(16, 42).addBox(3.0F, 10.75F, -0.2F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(32, 40).addBox(3.0F, 10.75F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(0, 48).addBox(0.0F, -1.0F, -1.7F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, 2.0F, -0.3F, 0.0F, 0.0F, -0.1745F));
+		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 42).addBox(-0.9848F, 10.5764F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(28, 42).addBox(2.0152F, 10.5764F, 1.3F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(16, 42).addBox(2.0152F, 10.5764F, -0.2F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(32, 40).addBox(2.0152F, 10.5764F, -1.7F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(0, 48).addBox(-0.9848F, -1.1736F, -1.7F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 2.0F, -0.3F, 0.0F, 0.0F, -0.1745F));
 
-		PartDefinition LeftArm3 = partdefinition.addOrReplaceChild("LeftArm3", CubeListBuilder.create().texOffs(28, 40).addBox(4.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(16, 40).addBox(7.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(20, 37).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(16, 37).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-		.texOffs(16, 40).addBox(4.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 29.0F, 0.5F));
+		PartDefinition LeftArm3 = partdefinition.addOrReplaceChild("LeftArm3", CubeListBuilder.create().texOffs(28, 40).addBox(-1.0F, 10.75F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(16, 40).addBox(2.0F, 10.75F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(20, 37).addBox(2.0F, 10.75F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(16, 37).addBox(2.0F, 10.75F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+		.texOffs(16, 40).addBox(-1.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 4.0F, 0.5F));
 
 		return LayerDefinition.create(meshdefinition, 128, 128);
 	}

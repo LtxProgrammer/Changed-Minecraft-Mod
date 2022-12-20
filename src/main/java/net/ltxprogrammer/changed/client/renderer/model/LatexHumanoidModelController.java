@@ -350,8 +350,8 @@ public class LatexHumanoidModelController {
             this.LeftLeg.y = 12.2F + hipOffset;
             this.Head.y = 4.2F + hipOffset + legLength;
             this.Torso.y = 3.2F + hipOffset + legLength;
-            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
-            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
+            this.LeftArm.y = 5.2F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
+            this.RightArm.y = 5.2F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
             if (this.hasLegs2) {
                 this.RightLeg2.y = 12.2F + hipOffset;
                 this.LeftLeg2.y = 12.2F + hipOffset;
@@ -369,8 +369,8 @@ public class LatexHumanoidModelController {
             this.LeftLeg.y = 12.0F + hipOffset;
             this.Head.y = 0.0F + hipOffset + legLength;
             this.Torso.y = 0.0F + hipOffset + legLength;
-            this.LeftArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
-            this.RightArm.y = 2.0F + hipOffset + (hasArms2 ? 4.0F : 0.0F) + legLength;
+            this.LeftArm.y = 2.0F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
+            this.RightArm.y = 2.0F + hipOffset + (hasArms2 ? 2.0F : 0.0F) + legLength;
             if (this.hasLegs2) {
                 this.RightLeg2.y = 12.0F + hipOffset;
                 this.LeftLeg2.y = 12.0F + hipOffset;
@@ -384,18 +384,18 @@ public class LatexHumanoidModelController {
 
         if (this.hasArms2) {
             this.RightArm2.z = 0.0F;
-            this.RightArm2.y = this.RightArm.y - 4.0F;
+            this.RightArm2.y = this.RightArm.y - 2.0F;
             this.RightArm2.x = -5.0F - torsoWidth;
             this.LeftArm2.z = 0.0F;
-            this.LeftArm2.y = this.LeftArm.y - 4.0F;
+            this.LeftArm2.y = this.LeftArm.y - 2.0F;
             this.LeftArm2.x = 5.0F + torsoWidth;
         }
         if (this.hasArms3) {
             this.RightArm3.z = 0.0F;
-            this.RightArm3.y = this.RightArm.y + 4.0F;
+            this.RightArm3.y = this.RightArm.y + 2.0F;
             this.RightArm3.x = -5.0F - torsoWidth;
             this.LeftArm3.z = 0.0F;
-            this.LeftArm3.y = this.LeftArm.y + 4.0F;
+            this.LeftArm3.y = this.LeftArm.y + 2.0F;
             this.LeftArm3.x = 5.0F + torsoWidth;
         }
 
