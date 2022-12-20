@@ -225,7 +225,8 @@ public class PatreonBenefits {
                         );
 
                         ONLINE_TEXTURES.add(onlineResource);
-                        DynamicClient.lateRegisterOnlineTexture(onlineResource);
+
+                        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> DynamicClient.lateRegisterOnlineTexture(onlineResource));
 
                         ResourceLocation modelLocation = Changed.modResource("special/model_" + name);
                         DeferredModelLayerLocation layerLocation = new DeferredModelLayerLocation(modelLocation, "main");

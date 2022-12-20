@@ -29,6 +29,8 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
     public final ModelPart leftArm2;
     public final ModelPart rightArm2;
+    public final ModelPart leftArm3;
+    public final ModelPart rightArm3;
     public final ModelPart lowerTorso;
     public final ModelPart leftLeg2;
     public final ModelPart rightLeg2;
@@ -46,6 +48,8 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
 
         public ModelPart leftArm2 = null;
         public ModelPart rightArm2 = null;
+        public ModelPart leftArm3 = null;
+        public ModelPart rightArm3 = null;
         public ModelPart lowerTorso = null;
         public ModelPart leftLeg2 = null;
         public ModelPart rightLeg2 = null;
@@ -63,6 +67,12 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         public Builder arms2(ModelPart leftArm2, ModelPart rightArm2) {
             this.leftArm2 = leftArm2;
             this.rightArm2 = rightArm2;
+            return this;
+        }
+
+        public Builder arms3(ModelPart leftArm3, ModelPart rightArm3) {
+            this.leftArm3 = leftArm3;
+            this.rightArm3 = rightArm3;
             return this;
         }
 
@@ -88,6 +98,8 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         this.lowerTorso = builder.lowerTorso;
         this.leftArm2 = builder.leftArm2;
         this.rightArm2 = builder.rightArm2;
+        this.leftArm3 = builder.leftArm3;
+        this.rightArm3 = builder.rightArm3;
 
         var controllerBuilder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
         if (consumer != null)
@@ -112,6 +124,10 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
             leftArm2.visible = b;
         if (rightArm2 != null)
             rightArm2.visible = b;
+        if (leftArm3 != null)
+            leftArm3.visible = b;
+        if (rightArm3 != null)
+            rightArm3.visible = b;
     }
 
     public void translateToHand(HumanoidArm arm, PoseStack stack) {
@@ -172,5 +188,9 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
             rightArm2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftArm2 != null)
             leftArm2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (rightArm3 != null)
+            rightArm3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (leftArm3 != null)
+            leftArm3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
