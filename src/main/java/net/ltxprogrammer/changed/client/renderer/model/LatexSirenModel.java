@@ -160,7 +160,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
 
         PartDefinition LeftArm_r1 = LeftArm.addOrReplaceChild("LeftArm_r1", CubeListBuilder.create().texOffs(40, 47).addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-        return LayerDefinition.create(process(meshdefinition), 128, 128);
+        return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
     @Override
