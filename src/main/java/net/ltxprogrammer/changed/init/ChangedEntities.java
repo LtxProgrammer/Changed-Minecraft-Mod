@@ -197,6 +197,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("latex_mermaid_shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexMermaidShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
+    public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = register("latex_siren", 0x969696, 0xFFFFFF,
+            EntityType.Builder.of(LatexSiren::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<LatexMimicPlant>> LATEX_MIMIC_PLANT = register("latex_mimic_plant", 0x446d5d, 0x729c6a,
             EntityType.Builder.of(LatexMimicPlant::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleAndForestSpawning);

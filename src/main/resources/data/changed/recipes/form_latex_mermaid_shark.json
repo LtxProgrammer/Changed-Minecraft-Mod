@@ -14,5 +14,7 @@
       "item": "minecraft:prismarine_shard"
     }
   ],
+  "gendered": true,
   "form": "changed:form_latex_mermaid_shark"
+}
 }
