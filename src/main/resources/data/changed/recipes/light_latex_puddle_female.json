@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " W ",
+    "WBW"
+  ],
+  "key": {
+    "W": {
+      "item": "changed:white_latex_goo"
+    },
+    "B": {
+      "item": "changed:latex_base"
+    }
+  },
+  "result": {
+    "item": "changed:light_latex_puddle_female"
+  }
+}

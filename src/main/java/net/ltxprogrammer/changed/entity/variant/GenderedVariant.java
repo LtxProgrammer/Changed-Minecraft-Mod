@@ -4,10 +4,13 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.GenderedLatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
+import net.ltxprogrammer.changed.entity.beast.LatexSharkMale;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
@@ -47,6 +50,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             this.maleBuilder = maleBuilder;
             this.femaleBuilder = femaleBuilder;
         }
+
 
         public Builder<M, F> faction(LatexType type) {
             this.maleBuilder.type = type; this.femaleBuilder.type = type; return this;
@@ -140,7 +144,9 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
         public Builder<M, F> ability(Consumer<Player> ability) {
             this.maleBuilder.ability(ability); this.femaleBuilder.ability(ability); return this;
         }
-
+        public Builder<M, F> noLegs() {
+            this.maleBuilder.noLegs(); this.femaleBuilder.noLegs(); return this;
+        }
         public Builder<M, F> extraHands() {
             this.maleBuilder.extraHands(); this.femaleBuilder.extraHands(); return this;
         }
