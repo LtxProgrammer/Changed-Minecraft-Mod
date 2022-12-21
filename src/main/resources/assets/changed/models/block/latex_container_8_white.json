@@ -1,0 +1,6 @@
+{
+  "parent": "changed:custom/latex_container_8",
+  "textures": {
+    "1": "changed:blocks/white_latex_fill"
+  }
+}

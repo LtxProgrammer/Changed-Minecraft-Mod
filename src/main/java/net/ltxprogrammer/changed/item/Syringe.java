@@ -82,8 +82,11 @@ public class Syringe extends Item {
     }
 
     public static String getVariantDescriptionId(ItemStack stack) {
-        return "entity." + TagUtil.getResourceLocation(stack.getTag(), "form").toString().replace("form_", "")
-                .replace(':', '.').replace('/', '_');
+        LatexVariant<?> variant = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(stack.getTag(), "form"));
+        if (variant == null)
+            return "entity." + TagUtil.getResourceLocation(stack.getTag(), "form").toString().replace("form_", "")
+                    .replace(':', '.').replace('/', '_');
+        return variant.getEntityType().getDescriptionId();
     }
 
     public static LatexVariant<?> getVariant(ItemStack p_43364_) {
