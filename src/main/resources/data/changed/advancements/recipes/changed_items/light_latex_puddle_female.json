@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:light_latex_puddle_female"
+    ]
+  },
+  "criteria": {
+    "has_white_latex_goo": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:white_latex_goo"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:light_latex_puddle_female"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_white_latex_goo",
+      "has_the_recipe"
+    ]
+  ]
+}

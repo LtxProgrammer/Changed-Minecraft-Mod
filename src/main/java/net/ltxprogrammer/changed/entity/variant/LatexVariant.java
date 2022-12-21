@@ -123,11 +123,12 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
-    public static final LatexVariant<LatexMermaidShark> LATEX_MERMAID_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_MERMAID_SHARK).groundSpeed(0.35f).swimSpeed(2.4f).additionalHealth(8).noLegs()
-            .build(Changed.modResource("form_latex_mermaid_shark")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
-            .split(Builder::ignored, female -> female.groundSpeed(0.35F).swimSpeed(2.4F).absorbing().additionalHealth(8).noLegs())
+            .split(Builder::ignored, female -> female.groundSpeed(0.33F).swimSpeed(2.55F).absorbing().additionalHealth(8).noLegs())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
+    public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
+            .groundSpeed(0.33F).swimSpeed(2.55F).absorbing().additionalHealth(8).noLegs()
+            .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
             .build(Changed.modResource("form_latex_squid_dog")));
