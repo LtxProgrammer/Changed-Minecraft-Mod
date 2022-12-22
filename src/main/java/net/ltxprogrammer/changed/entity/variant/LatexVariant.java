@@ -135,6 +135,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_crocodile")));
+    public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.85f).swimSpeed(0.96f)
+            .build(Changed.modResource("form_latex_raccoon")));
 
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide()
             .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
