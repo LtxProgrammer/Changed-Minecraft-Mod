@@ -173,6 +173,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexBeifeng>> LATEX_BEIFENG = register("latex_beifeng", 0x51659D, 0xFFE852,
             EntityType.Builder.of(LatexBeifeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::undergroundSpawning);
+    public static final RegistryObject<EntityType<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("latex_benign_wolf", 0x282828, 0x292929,
+            EntityType.Builder.of(LatexBenignWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::noSpawning);
     public static final RegistryObject<EntityType<LatexBlueDragon>> LATEX_BLUE_DRAGON = register("latex_blue_dragon", 0xCDFEFF, 0x5c72ab,
             EntityType.Builder.of(LatexBlueDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);

@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -31,7 +32,8 @@ public class VariantBlindnessOverlay {
             var variant = ProcessTransfur.getPlayerLatexVariant(player);
             if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
                 return;
-
+            if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && darkLatex.isMaskless())
+                return;
             float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
 
             RenderSystem.disableDepthTest();

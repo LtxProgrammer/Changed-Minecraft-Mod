@@ -124,10 +124,10 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
-            .split(Builder::ignored, female -> female.groundSpeed(0.33F).swimSpeed(2.55F).absorbing().additionalHealth(8).noLegs())
+            .split(Builder::ignored, female -> female.groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
-            .groundSpeed(0.33F).swimSpeed(2.55F).absorbing().additionalHealth(8).noLegs()
+            .groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
@@ -135,9 +135,10 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_crocodile")));
-    public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.85f).swimSpeed(0.96f)
+    public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.9f).swimSpeed(0.96f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-
+    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.25f).swimSpeed(0.15f).noVision().cannotWalk()
+            .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide()
             .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
@@ -247,7 +248,7 @@ public class LatexVariant<T extends LatexEntity> {
         return formId.toString();
     }
 
-    // Varient properties
+    // Variant properties
     public final ResourceLocation formId;
     public final Supplier<EntityType<T>> ctor;
     public final LatexType type;
@@ -262,6 +263,8 @@ public class LatexVariant<T extends LatexEntity> {
     public final boolean reducedFall;
     public final boolean canClimb;
     public final boolean nightVision;
+    public final boolean noVision;
+    public final boolean cannotWalk;
     public final boolean hasLegs;
     public final List<Class<? extends PathfinderMob>> scares;
     public final TransfurMode transfurMode;
@@ -285,7 +288,7 @@ public class LatexVariant<T extends LatexEntity> {
     public LatexVariant(ResourceLocation formId, Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
                         boolean reducedFall, boolean canClimb,
-                        boolean nightVision, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
                         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability, float cameraZOffset) {
         this.formId = formId;
@@ -296,6 +299,8 @@ public class LatexVariant<T extends LatexEntity> {
         this.jumpStrength = jumpStrength;
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
+        this.noVision = noVision;
+        this.cannotWalk = cannotWalk;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
@@ -324,7 +329,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                reducedFall, canClimb, nightVision, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
+                reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -732,6 +737,8 @@ public class LatexVariant<T extends LatexEntity> {
         int additionalHealth = 4;
         boolean weakLungs = false;
         boolean reducedFall = false;
+        boolean noVision = false;
+        boolean cannotWalk = false;
         boolean canClimb = false;
         boolean nightVision = false;
         boolean hasLegs = true;
@@ -756,7 +763,7 @@ public class LatexVariant<T extends LatexEntity> {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed).swimSpeed(variant.swimSpeed)
                     .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .ability(variant.ability).reducedFall(variant.reducedFall).canClimb(variant.canClimb).nightVision(variant.nightVision).hasLegs(variant.hasLegs).scares(variant.scares)
-                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset);
+                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).cannotWalk(variant.cannotWalk);
         }
 
         public static <T extends LatexEntity> Builder<T> of(GenderedVariant<?, ?> variant, Supplier<EntityType<T>> entityType) {
@@ -793,6 +800,18 @@ public class LatexVariant<T extends LatexEntity> {
 
         public Builder<T> reducedFall() {
             this.reducedFall = true; return this;
+        }
+        public Builder<T> noVision() {
+            this.noVision = true; return this;
+        }
+        public Builder<T> noVision(boolean v) {
+            this.noVision = v; return this;
+        }
+        public Builder<T> cannotWalk() {
+            this.cannotWalk = true; return this;
+        }
+        public Builder<T> cannotWalk(boolean v) {
+            this.cannotWalk = v; return this;
         }
 
         public Builder<T> reducedFall(boolean v) {
@@ -871,6 +890,7 @@ public class LatexVariant<T extends LatexEntity> {
             this.nightVision = v; return this;
         }
 
+
         public Builder<T> transfurMode(TransfurMode mode) {
             this.transfurMode = mode; return this;
         }
@@ -899,7 +919,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
+                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
         }
     }
 
@@ -1027,6 +1047,8 @@ public class LatexVariant<T extends LatexEntity> {
                 GsonHelper.getAsInt(root, "extraJumpCharges", 0),
                 GsonHelper.getAsInt(root, "additionalHealth", 4),
                 GsonHelper.getAsBoolean(root, "reducedFall", false),
+                GsonHelper.getAsBoolean(root, "noVision", false),
+                GsonHelper.getAsBoolean(root, "cannotWalk", false),
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 GsonHelper.getAsBoolean(root, "nightVision", false),
                 GsonHelper.getAsBoolean(root, "hasLegs", true),

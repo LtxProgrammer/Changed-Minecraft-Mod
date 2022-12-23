@@ -60,6 +60,10 @@ public abstract class LivingEntityMixin extends Entity {
                 callback.setReturnValue(true);
             if (ProcessTransfur.getPlayerLatexVariant(player).breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
                 callback.setReturnValue(true);
+            if (ProcessTransfur.getPlayerLatexVariant(player).noVision && effect.equals(MobEffects.BLINDNESS))
+                callback.setReturnValue(true);
+            if (ProcessTransfur.getPlayerLatexVariant(player).cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
+                callback.setReturnValue(true);
         }
     }
 
@@ -70,6 +74,10 @@ public abstract class LivingEntityMixin extends Entity {
                 callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
             if (ProcessTransfur.getPlayerLatexVariant(player).breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
+            if (ProcessTransfur.getPlayerLatexVariant(player).noVision && effect.equals(MobEffects.BLINDNESS))
+                callback.setReturnValue(new MobEffectInstance(MobEffects.BLINDNESS, 300, 1, false, false));
+            if (ProcessTransfur.getPlayerLatexVariant(player).cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
+                callback.setReturnValue(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 300, 5, false, false));
         }
     }
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)

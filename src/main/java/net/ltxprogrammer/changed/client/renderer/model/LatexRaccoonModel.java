@@ -132,7 +132,7 @@ public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implemen
                 .texOffs(40, 48).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 47).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
 
 
