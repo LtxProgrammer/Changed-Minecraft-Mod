@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.GenderedLatexEntity;
+import net.ltxprogrammer.changed.entity.GenderedEntity;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractAquaticGenderedEntity extends GenderedLatexEntity implements AquaticEntity {
+public abstract class AbstractAquaticGenderedEntity extends LatexEntity implements AquaticEntity, GenderedEntity {
     protected final WaterBoundPathNavigation waterNavigation;
     protected final GroundPathNavigation groundNavigation;
 

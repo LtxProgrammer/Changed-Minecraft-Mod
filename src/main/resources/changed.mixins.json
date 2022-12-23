@@ -29,6 +29,7 @@
     "BlockColorsMixin",
     "CameraMixin",
     "ClientRecipeBookMixin",
+    "CustomHeadLayerMixin",
     "GameRendererMixin",
     "LocalPlayerMixin",
     "ModelBakeryMixin",

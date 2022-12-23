@@ -1,16 +1,10 @@
 package net.ltxprogrammer.changed.entity.variant;
 
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.GenderedLatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
-import net.ltxprogrammer.changed.entity.beast.LatexSharkMale;
+import net.ltxprogrammer.changed.entity.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
@@ -18,12 +12,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLatexEntity> extends LatexVariant<GenderedLatexEntity> {
+public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> extends LatexVariant<LatexEntity> {
     final LatexVariant<M> male;
     final LatexVariant<F> female;
 
     @Override
-    public LatexVariant<GenderedLatexEntity> clone() {
+    public LatexVariant<LatexEntity> clone() {
         throw new NotImplementedException();
     }
 
@@ -41,7 +35,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
         this.female = female;
     }
 
-    public static class Builder<M extends GenderedLatexEntity, F extends GenderedLatexEntity> extends LatexVariant.Builder<GenderedLatexEntity> {
+    public static class Builder<M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> extends LatexVariant.Builder<LatexEntity> {
         private final LatexVariant.Builder<M> maleBuilder;
         private final LatexVariant.Builder<F> femaleBuilder;
 
@@ -182,15 +176,15 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
             return this;
         }
 
-        public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> Builder<M, F> of(Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
             return new Builder<>(LatexVariant.Builder.of(entityTypeMale), LatexVariant.Builder.of(entityTypeFemale));
         }
 
-        public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> Builder<M, F> of(LatexVariant<?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(LatexVariant<?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
             return new Builder<>(LatexVariant.Builder.of(variant, entityTypeMale), LatexVariant.Builder.of(variant, entityTypeFemale));
         }
 
-        public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> Builder<M, F> of(GenderedVariant<?, ?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(GenderedVariant<?, ?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
             return new Builder<>(LatexVariant.Builder.of(variant.male(), entityTypeMale), LatexVariant.Builder.of(variant.female(), entityTypeFemale));
         }
 
