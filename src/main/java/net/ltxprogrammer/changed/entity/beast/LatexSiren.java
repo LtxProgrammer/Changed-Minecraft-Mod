@@ -5,7 +5,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class LatexSiren extends AbstractLatexShark {
+public class LatexSiren extends AbstractGenderedLatexShark {
     public LatexSiren(EntityType<? extends LatexSiren> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

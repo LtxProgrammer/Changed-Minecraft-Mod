@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.GenderedLatexEntity;
+import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -117,16 +117,18 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 
-    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().split(Builder::ignored, Builder::absorbing)
+    public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills()
+            .build(Changed.modResource("form_latex_shark")));
+    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSION = register(GenderedVariant.Builder.of(LATEX_SHARK, ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, LATEX_SHARK)
             .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10)
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10)
             .build(Changed.modResource("form_latex_tiger_shark")));
-    public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK.male(), ChangedEntities.LATEX_ORCA)
+    public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_ORCA)
             .build(Changed.modResource("form_latex_orca")));
-    public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
+    public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
             .split(Builder::ignored, female -> female.groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
-    public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK.male(), ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
+    public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
             .groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
@@ -933,7 +935,7 @@ public class LatexVariant<T extends LatexEntity> {
         return variant;
     }
 
-    public static <M extends GenderedLatexEntity, F extends GenderedLatexEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
+    public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
         ALL_LATEX_FORMS.put(variant.male.formId, variant.male);
         ALL_LATEX_FORMS.put(variant.female.formId, variant.female);
         PUBLIC_LATEX_FORMS.put(variant.male.formId, variant.male);
