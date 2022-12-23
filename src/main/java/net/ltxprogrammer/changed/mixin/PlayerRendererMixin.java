@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -38,6 +39,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     @Inject(method = "<init>", at = @At("RETURN"))
     public void PlayerRenderer(EntityRendererProvider.Context context, boolean slim, CallbackInfo callback) {
         this.addLayer(new TransfurProgressLayer(this, context.getModelSet(), slim));
+        this.addLayer(new DarkLatexMaskLayer(this, context.getModelSet()));
     }
 
     @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
