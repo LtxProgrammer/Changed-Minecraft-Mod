@@ -36,7 +36,7 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, true, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty(), null, 0.0F);
+        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, false, false, true, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty(), null, 0.0F);
         this.male = male;
         this.female = female;
     }
@@ -95,6 +95,20 @@ public class GenderedVariant<M extends GenderedLatexEntity, F extends GenderedLa
 
         public Builder<M, F> nightVision(boolean v) {
             this.maleBuilder.nightVision = v; this.femaleBuilder.nightVision = v; return this;
+        }
+        public Builder<M, F> cannotWalk() {
+            this.maleBuilder.cannotWalk = true; this.femaleBuilder.cannotWalk = true; return this;
+        }
+
+        public Builder<M, F> cannotWalk(boolean v) {
+            this.maleBuilder.cannotWalk = v; this.femaleBuilder.cannotWalk = v; return this;
+        }
+        public Builder<M, F> noVision() {
+            this.maleBuilder.noVision = true; this.femaleBuilder.noVision = true; return this;
+        }
+
+        public Builder<M, F> noVision(boolean v) {
+            this.maleBuilder.noVision = v; this.femaleBuilder.noVision = v; return this;
         }
 
         public Builder<M, F> canClimb(boolean v) {
