@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.block.WhiteLatexBlock;
 import net.ltxprogrammer.changed.command.CommandTransfur;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.OrganicLatex;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
@@ -315,19 +316,35 @@ public class ProcessTransfur {
         }
     }
 
+    private static void actuallyHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_) {
+        if (!entity.isInvulnerableTo(p_108729_)) {
+            entity.setHealth(entity.getHealth() - p_108730_);
+        }
+    }
+
+    private static boolean isOrganicLatex(LivingEntity entity) {
+        return entity instanceof OrganicLatex || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getLatexEntity() instanceof OrganicLatex);
+    }
+
     @SubscribeEvent
     public static void onLivingAttacked(LivingAttackEvent event) {
         if (event.getSource() == ChangedDamageSources.TRANSFUR)
             return;
         if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            if (isOrganicLatex(event.getEntityLiving()))
+                return;
             event.setCanceled(true);
             return;
         }
         if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            event.getEntityLiving().hurt(DamageSource.GENERIC, 1.5f);
+            if (isOrganicLatex(event.getEntityLiving()))
+                return;
+            actuallyHurt(event.getEntityLiving(), event.getSource(), 1.5F);
             return;
         }
         if (!(event.getSource().getEntity() instanceof LivingEntity sourceEntity))
+            return;
+        if (isOrganicLatex(sourceEntity))
             return;
         if (event.getSource().isProjectile())
             return;
@@ -383,8 +400,8 @@ public class ProcessTransfur {
             return;
 
         float damageAdjustment = sourceEntity instanceof Player && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR) ? 4.0f : 1.0f;
-        /*if (damageAdjustment > 1.0f)
-            event.getEntityLiving().actuallyHurt(ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));*/
+        if (damageAdjustment > 1.0f)
+            actuallyHurt(event.getEntityLiving(), ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
 
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntityLiving().getPersistentData().contains(LatexVariant.NBT_PLAYER_ID)) {
