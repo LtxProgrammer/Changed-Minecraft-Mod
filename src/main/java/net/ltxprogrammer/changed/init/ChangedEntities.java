@@ -144,7 +144,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LightLatexKnightFusion>> LIGHT_LATEX_KNIGHT_FUSION = register("light_latex_knight_fusion", 0xFFFFFF, 0x0072ff,
             EntityType.Builder.of(LightLatexKnightFusion::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<LatexCrystalWolf>> LATEX_CRYSTAL_WOLF = register("latex_crystal_wolf", 0x393939, 0xFF014E,
+    public static final RegistryObject<EntityType<LatexCrystalWolf>> LATEX_CRYSTAL_WOLF = registerReducedSpawn("latex_crystal_wolf", 0x393939, 0xFF014E,
             EntityType.Builder.of(LatexCrystalWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xCFBC9B, 0xF4E5BE,
@@ -153,7 +153,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexSilverFox>> LATEX_SILVER_FOX = register("latex_silver_fox", 0x959CA5, 0x272727,
             EntityType.Builder.of(LatexSilverFox::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = register("aerosol_latex_wolf", 0x5D4743, 0xFFFFFF,
+    public static final RegistryObject<EntityType<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = registerReducedSpawn("aerosol_latex_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(AerosolLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = register("dark_latex_dragon", 0x393939, 0x909090,
@@ -170,7 +170,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mountainSpawning);
-    public static final RegistryObject<EntityType<LatexBeifeng>> LATEX_BEIFENG = register("latex_beifeng", 0x51659D, 0xFFE852,
+    public static final RegistryObject<EntityType<LatexBeifeng>> LATEX_BEIFENG = registerReducedSpawn("latex_beifeng", 0x51659D, 0xFFE852,
             EntityType.Builder.of(LatexBeifeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::undergroundSpawning);
     public static final RegistryObject<EntityType<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("latex_benign_wolf", 0x282828, 0x292929,
@@ -303,6 +303,15 @@ public class ChangedEntities {
         return register(name, eggBack, eggHighlight, builder, category, SpawnPlacements.Type.ON_GROUND);
     }
 
+    public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerReducedSpawn(
+            String name,
+            int eggBack,
+            int eggHighlight,
+            EntityType.Builder<T> builder,
+            Predicate<Biome.BiomeCategory> category) {
+        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, SpawnPlacements.Type.ON_GROUND);
+    }
+
     public static <T extends LatexEntity> RegistryObject<EntityType<T>> register(
             String name,
             int eggBack,
@@ -311,6 +320,16 @@ public class ChangedEntities {
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
         return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+    }
+
+    public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerReducedSpawn(
+            String name,
+            int eggBack,
+            int eggHighlight,
+            EntityType.Builder<T> builder,
+            Predicate<Biome.BiomeCategory> category,
+            SpawnPlacements.Type spawnType) {
+        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
     }
 
     public static <T extends LatexEntity> RegistryObject<EntityType<T>> register(
@@ -332,6 +351,29 @@ public class ChangedEntities {
         SPAWNING_ENTITY.add((event, spawner) -> {
             if (category.test(event.getCategory()))
                 spawner.add(new MobSpawnSettings.SpawnerData(entityType.get(), 12, 1, 3));
+        });
+        return entityType;
+    }
+
+    public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerReducedSpawn(
+            String name,
+            int eggBack,
+            int eggHighlight,
+            EntityType.Builder<T> builder,
+            Predicate<Biome.BiomeCategory> category,
+            SpawnPlacements.Type spawnType,
+            Supplier<AttributeSupplier.Builder> attributes) {
+        ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
+        String regName = Changed.modResource(name).toString();
+        RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
+        INIT_FUNC_REGISTRY.add(LatexEntity.getInit(entityType, spawnType));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, attributes));
+        RegistryObject<Item> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, eggBack, eggHighlight,
+                new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ENTITIES)));
+        SPAWN_EGGS.add(() -> (ForgeSpawnEggItem) spawnEggItem.get());
+        SPAWNING_ENTITY.add((event, spawner) -> {
+            if (category.test(event.getCategory()))
+                spawner.add(new MobSpawnSettings.SpawnerData(entityType.get(), 4, 1, 1));
         });
         return entityType;
     }

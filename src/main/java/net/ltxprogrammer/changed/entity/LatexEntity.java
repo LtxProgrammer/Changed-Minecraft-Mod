@@ -221,8 +221,10 @@ public abstract class LatexEntity extends Monster {
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
+        if (!(this instanceof OrganicLatex)) {
+            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
+        }
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
@@ -243,6 +245,9 @@ public abstract class LatexEntity extends Monster {
     public abstract ChangedParticles.Color3 getDripColor();
 
     public void visualTick(Level level) {
+        if (this instanceof OrganicLatex)
+            return;
+
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             if (level instanceof ClientLevel clientLevel) {
                 if (level.random.nextInt(25) == 0) {
