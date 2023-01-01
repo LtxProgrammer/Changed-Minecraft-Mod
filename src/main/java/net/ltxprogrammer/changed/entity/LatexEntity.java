@@ -235,6 +235,12 @@ public abstract class LatexEntity extends Monster {
         super.tick();
         visualTick(this.level);
         effectTick(this.level, this);
+
+        var variant = getSelfVariant();
+        if (variant == null) return;
+
+        if (this.vehicle != null && (variant.rideable() || !variant.hasLegs))
+            this.stopRiding();
     }
 
     @Override
