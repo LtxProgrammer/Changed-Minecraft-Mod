@@ -17,6 +17,7 @@
     "LivingEntityMixin",
     "MobMixin",
     "PlayerMixin",
+    "PowderSnowBlockMixin",
     "ServerPlayerMixin",
     "ShovelItemMixin",
     "SimpleBlockFeatureMixin",
