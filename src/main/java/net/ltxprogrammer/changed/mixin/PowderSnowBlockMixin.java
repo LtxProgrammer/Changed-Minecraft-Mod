@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PowderSnowBlock.class)
-public class PowderSnowBlockMixin {
+public abstract class PowderSnowBlockMixin {
     @Inject(method = "canEntityWalkOnPowderSnow", at = @At("HEAD"), cancellable = true)
     private static void canEntityWalkOnPowderSnow(Entity p_154256_, CallbackInfoReturnable<Boolean> callback) {
         if (p_154256_ instanceof PowderSnowWalkable) {
