@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -21,6 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleMenuProvider;
@@ -91,7 +93,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_light_latex_knight_fusion")));
     public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
-    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF)
+    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3)
             .build(Changed.modResource("form_aerosol_latex_wolf")));
     public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
@@ -101,7 +103,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_silver_fox")));
     public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
             .build(Changed.modResource("form_latex_purple_fox")));
-    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF)
+    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3)
             .build(Changed.modResource("form_latex_crystal_wolf")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .build(Changed.modResource("form_latex_traffic_cone_dragon")));
@@ -146,7 +148,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
             .build(Changed.modResource("form_dark_latex_yufeng")));
 
-    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f)
+    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3)
             .build(Changed.modResource("form_latex_beifeng")));
     public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_blue_dragon")));
@@ -160,7 +162,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_deer")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_RED_PANDA)
             .build(Changed.modResource("form_latex_red_panda")));
-    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD)
+    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON)
             .build(Changed.modResource("form_latex_translucent_lizard")));
 
     public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision()
@@ -274,6 +276,7 @@ public class LatexVariant<T extends LatexEntity> {
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
     public final Consumer<Player> ability;
     public final float cameraZOffset;
+    public final SoundEvent sound;
 
     private boolean dead;
     public int ticksBreathingUnderwater;
@@ -292,7 +295,7 @@ public class LatexVariant<T extends LatexEntity> {
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability, float cameraZOffset) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability, float cameraZOffset, SoundEvent sound) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -319,6 +322,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
         attributeModifierAdditionalHealth = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d8"), "changed:trait_additional_health", additionalHealth, AttributeModifier.Operation.ADDITION);
+        this.sound = sound;
     }
 
     public LatexEntity getLatexEntity() {
@@ -331,7 +335,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
+                reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset, sound);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -571,6 +575,7 @@ public class LatexVariant<T extends LatexEntity> {
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
             player.getAttribute(Attributes.MAX_HEALTH).removePermanentModifier(attributeModifierAdditionalHealth.getId());
+        player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         player.maxUpStep = 0.6F;
         player.refreshDimensions();
     }
@@ -750,6 +755,7 @@ public class LatexVariant<T extends LatexEntity> {
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
         Consumer<Player> ability = null;
         float cameraZOffset = 0.0F;
+        SoundEvent sound = ChangedSounds.POISON;
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
@@ -919,9 +925,13 @@ public class LatexVariant<T extends LatexEntity> {
             this.cameraZOffset = v; return this;
         }
 
+        public Builder<T> sound(SoundEvent event) {
+            this.sound = event; return this;
+        }
+
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset);
+                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset, sound);
         }
     }
 
@@ -1061,6 +1071,7 @@ public class LatexVariant<T extends LatexEntity> {
                 )),
                 mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
                 ABILITY_REGISTRY.getOrDefault(ResourceLocation.tryParse(GsonHelper.getAsString(root, "ability", "none")), null),
-                GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F));
+                GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
+                Registry.SOUND_EVENT.get(ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))));
     }
 }

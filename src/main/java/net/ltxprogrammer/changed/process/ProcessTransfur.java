@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.process;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.WhiteLatexBlock;
-import net.ltxprogrammer.changed.command.CommandTransfur;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.OrganicLatex;
@@ -15,34 +14,24 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.profiling.jfr.event.WorldLoadFinishedEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.monster.piglin.Piglin;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
@@ -272,7 +261,7 @@ public class ProcessTransfur {
                     LatexEntity newEntity = source.transfur.replaceEntity(target);
                     source.entity.discard();
                 }
-                ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
+                ChangedSounds.broadcastSound(source.entity, source.transfur.sound, 1.0f, 1.0f);
             }
 
             else {
@@ -296,7 +285,7 @@ public class ProcessTransfur {
                 LatexEntity newEntity = fuseVariant.replaceEntity(target);
                 source.entity.discard();
             }
-            ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(source.entity, fuseVariant.sound, 1.0f, 1.0f);
         }
 
         event.setCanceled(true);
@@ -316,14 +305,26 @@ public class ProcessTransfur {
         }
     }
 
-    private static void actuallyHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_) {
-        if (!entity.isInvulnerableTo(p_108729_)) {
-            entity.setHealth(entity.getHealth() - p_108730_);
+    private static void bonusHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_, boolean overrideImmunity) {
+        if (!entity.isInvulnerableTo(p_108729_) || overrideImmunity) {
+            boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
+
+            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity)
+                entity.setHealth(entity.getHealth() - p_108730_);
         }
     }
 
     private static boolean isOrganicLatex(LivingEntity entity) {
         return entity instanceof OrganicLatex || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getLatexEntity() instanceof OrganicLatex);
+    }
+
+    @SubscribeEvent
+    public static void onLivingDamaged(LivingDamageEvent event) {
+        if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            if (isOrganicLatex(event.getEntityLiving()))
+                return;
+            event.setAmount(event.getAmount() * 2.0F);
+        }
     }
 
     @SubscribeEvent
@@ -334,12 +335,6 @@ public class ProcessTransfur {
             if (isOrganicLatex(event.getEntityLiving()))
                 return;
             event.setCanceled(true);
-            return;
-        }
-        if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            if (isOrganicLatex(event.getEntityLiving()))
-                return;
-            actuallyHurt(event.getEntityLiving(), event.getSource(), 1.5F);
             return;
         }
         if (!(event.getSource().getEntity() instanceof LivingEntity sourceEntity))
@@ -401,7 +396,7 @@ public class ProcessTransfur {
 
         float damageAdjustment = sourceEntity instanceof Player && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR) ? 4.0f : 1.0f;
         if (damageAdjustment > 1.0f)
-            actuallyHurt(event.getEntityLiving(), ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
+            bonusHurt(event.getEntityLiving(), ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f), false);
 
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntityLiving().getPersistentData().contains(LatexVariant.NBT_PLAYER_ID)) {
@@ -518,7 +513,7 @@ public class ProcessTransfur {
         if (variant == null)
             return;
         if (!LatexType.hasLatexType(entity)) {
-            ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             LatexType.setEntityLatexType(entity, variant.getLatexType());
             if (keepConscious && entity instanceof ServerPlayer player) {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(player, variant);
@@ -562,7 +557,7 @@ public class ProcessTransfur {
                 return;
 
             LatexVariant<?> fusion = possible.get(level.random.nextInt(possible.size()));
-            ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(entity, fusion.sound, 1.0f, 1.0f);
 
             if (entity instanceof ServerPlayer player) {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(player, fusion);
