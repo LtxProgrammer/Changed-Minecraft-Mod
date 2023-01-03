@@ -105,6 +105,10 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_purple_fox")));
     public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3)
             .build(Changed.modResource("form_latex_crystal_wolf")));
+    public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_SNIPER_DOG).sound(ChangedSounds.SOUND3)
+            .build(Changed.modResource("form_latex_sniper_dog")));
+    public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC).sound(ChangedSounds.SOUND3)
+            .build(Changed.modResource("form_light_latex_wolf_organic")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .build(Changed.modResource("form_latex_traffic_cone_dragon")));
     public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)

@@ -135,6 +135,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LightLatexWolfMale>> LIGHT_LATEX_WOLF_MALE = register("light_latex_wolf_male", 0xFFFFFF, 0xFF927F,
             EntityType.Builder.of(LightLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<LightLatexWolfOrganic>> LIGHT_LATEX_WOLF_ORGANIC = registerReducedSpawn("light_latex_wolf_organic", 0xFFFFFF, 0xFAE9E4,
+            EntityType.Builder.of(LightLatexWolfOrganic::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LightLatexKnight>> LIGHT_LATEX_KNIGHT = register("light_latex_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(LightLatexKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
@@ -230,6 +233,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexSharkFemale>> LATEX_SHARK_FEMALE = register("latex_shark_female", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexSharkFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.45F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
+    public static final RegistryObject<EntityType<LatexSniperDog>> LATEX_SNIPER_DOG = registerReducedSpawn("latex_sniper_dog", 0xEF8F44, 0x894633,
+            EntityType.Builder.of(LatexSniperDog::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LatexSnowLeopardMale>> LATEX_SNOW_LEOPARD_MALE = register("latex_snow_leopard_male", 0x9C9C9C, 0x272727,
             EntityType.Builder.of(LatexSnowLeopardMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);
