@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSirenModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel;
@@ -16,6 +17,6 @@ public class LatexSirenRenderer extends LatexHumanoidRenderer<LatexSiren, LatexS
 
     @Override
     public ResourceLocation getTextureLocation(LatexSiren p_114482_) {
-        return new ResourceLocation("changed:textures/latex_siren.png");
+        return Changed.modResource("textures/latex_siren.png");
     }
 }

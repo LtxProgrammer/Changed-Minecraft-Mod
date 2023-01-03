@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexTranslucentLizardModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
@@ -16,6 +17,6 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
 
     @Override
     public ResourceLocation getTextureLocation(LatexTranslucentLizard p_114482_) {
-        return new ResourceLocation("changed:textures/latex_translucent_lizard.png");
+        return Changed.modResource("textures/latex_translucent_lizard.png");
     }
 }

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBeifengModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBlueDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
@@ -17,6 +18,6 @@ public class LatexBlueDragonRenderer extends LatexHumanoidRenderer<LatexBlueDrag
 
     @Override
     public ResourceLocation getTextureLocation(LatexBlueDragon p_114482_) {
-        return new ResourceLocation("changed:textures/latex_blue_dragon.png");
+        return Changed.modResource("textures/latex_blue_dragon.png");
     }
 }

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexWatermelonCatModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.LatexWatermelonCat;
@@ -14,6 +15,6 @@ public class LatexWatermelonCatRenderer extends LatexHumanoidRenderer<LatexWater
 
     @Override
     public ResourceLocation getTextureLocation(LatexWatermelonCat p_114482_) {
-        return new ResourceLocation("changed:textures/latex_watermelon_cat.png");
+        return Changed.modResource("textures/latex_watermelon_cat.png");
     }
 }

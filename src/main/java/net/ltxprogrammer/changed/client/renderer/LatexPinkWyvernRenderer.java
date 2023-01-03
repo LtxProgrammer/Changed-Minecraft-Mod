@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBlueDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexPinkWyvernModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
@@ -16,6 +17,6 @@ public class LatexPinkWyvernRenderer extends LatexHumanoidRenderer<LatexPinkWyve
 
     @Override
     public ResourceLocation getTextureLocation(LatexPinkWyvern p_114482_) {
-        return new ResourceLocation("changed:textures/latex_pink_wyvern.png");
+        return Changed.modResource("textures/latex_pink_wyvern.png");
     }
 }

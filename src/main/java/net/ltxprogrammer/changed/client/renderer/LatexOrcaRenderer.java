@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexOrcaModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
 import net.ltxprogrammer.changed.entity.beast.LatexOrca;
@@ -14,6 +15,6 @@ public class LatexOrcaRenderer extends LatexHumanoidRenderer<LatexOrca, LatexOrc
 
     @Override
     public ResourceLocation getTextureLocation(LatexOrca p_114482_) {
-        return new ResourceLocation("changed:textures/latex_orca.png");
+        return Changed.modResource("textures/latex_orca.png");
     }
 }

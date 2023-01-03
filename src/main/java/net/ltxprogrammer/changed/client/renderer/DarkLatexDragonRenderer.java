@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexDragon;
@@ -14,6 +15,6 @@ public class DarkLatexDragonRenderer extends LatexHumanoidRenderer<DarkLatexDrag
 
     @Override
     public ResourceLocation getTextureLocation(DarkLatexDragon p_114482_) {
-        return new ResourceLocation("changed:textures/dark_latex_dragon.png");
+        return Changed.modResource("textures/dark_latex_dragon.png");
     }
 }
