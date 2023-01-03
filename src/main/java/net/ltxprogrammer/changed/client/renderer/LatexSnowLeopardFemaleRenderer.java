@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSnowLeopardFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSnowLeopardModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardFemale;
@@ -14,6 +15,6 @@ public class LatexSnowLeopardFemaleRenderer extends LatexHumanoidRenderer<LatexS
 
     @Override
     public ResourceLocation getTextureLocation(LatexSnowLeopardFemale p_114482_) {
-        return new ResourceLocation("changed:textures/latex_snow_leopard_female.png");
+        return Changed.modResource("textures/latex_snow_leopard_female.png");
     }
 }

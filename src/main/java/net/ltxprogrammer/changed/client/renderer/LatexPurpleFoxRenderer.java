@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexPurpleFoxModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSilverFoxModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -16,6 +17,6 @@ public class LatexPurpleFoxRenderer extends LatexHumanoidRenderer<LatexPurpleFox
 
     @Override
     public ResourceLocation getTextureLocation(LatexPurpleFox p_114482_) {
-        return new ResourceLocation("changed:textures/latex_purple_fox.png");
+        return Changed.modResource("textures/latex_purple_fox.png");
     }
 }

@@ -75,7 +75,7 @@ public class AerosolLatexWolfRenderer extends LatexHumanoidRenderer<AerosolLatex
 
     @Override
     public ResourceLocation getTextureLocation(AerosolLatexWolf p_114482_) {
-        return new ResourceLocation("changed:textures/aerosol_latex_wolf.png");
+        return Changed.modResource("textures/aerosol_latex_wolf.png");
     }
 }
 ```
@@ -89,7 +89,7 @@ public class MyNewEntityRenderer extends LatexHumanoidRenderer<MyNewEntity, MyNe
 
     @Override
     public ResourceLocation getTextureLocation(MyNewEntity p_114482_) {
-        return new ResourceLocation("changed:textures/my_new_entity.png");
+        return Changed.modResource("textures/my_new_entity.png");
     }
 }
 ```

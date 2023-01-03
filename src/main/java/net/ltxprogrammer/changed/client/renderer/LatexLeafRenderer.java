@@ -18,6 +18,6 @@ public class LatexLeafRenderer extends LatexHumanoidRenderer<LatexLeaf, LatexLea
 
     @Override
     public ResourceLocation getTextureLocation(LatexLeaf p_114482_) {
-        return new ResourceLocation("changed:textures/latex_leaf.png");
+        return Changed.modResource("textures/latex_leaf.png");
     }
 }

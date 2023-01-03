@@ -20,6 +20,6 @@ public class LightLatexCentaurRenderer extends LatexHumanoidRenderer<LightLatexC
 
     @Override
     public ResourceLocation getTextureLocation(LightLatexCentaur p_114482_) {
-        return new ResourceLocation("changed:textures/light_latex_centaur.png");
+        return Changed.modResource("textures/light_latex_centaur.png");
     }
 }
