@@ -39,7 +39,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     @Inject(method = "<init>", at = @At("RETURN"))
     public void PlayerRenderer(EntityRendererProvider.Context context, boolean slim, CallbackInfo callback) {
         this.addLayer(new TransfurProgressLayer(this, context.getModelSet(), slim));
-        this.addLayer(new DarkLatexMaskLayer(this, context.getModelSet()));
+        this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
     }
 
     @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)

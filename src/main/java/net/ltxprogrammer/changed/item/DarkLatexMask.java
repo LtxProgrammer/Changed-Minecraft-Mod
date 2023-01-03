@@ -39,4 +39,14 @@ public class DarkLatexMask extends Item implements WearableItem {
     public boolean customWearRenderer() {
         return true;
     }
+
+    @Override
+    public boolean allowedToKeepWearing(LivingEntity entity) {
+        if (entity instanceof LatexEntity)
+            return false;
+        else if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+            return false;
+        else
+            return true;
+    }
 }
