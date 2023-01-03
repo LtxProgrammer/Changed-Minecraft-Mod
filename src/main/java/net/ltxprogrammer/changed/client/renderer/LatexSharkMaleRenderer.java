@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSharkMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBuffSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
@@ -16,6 +17,6 @@ public class LatexSharkMaleRenderer extends LatexHumanoidRenderer<LatexSharkMale
 
     @Override
     public ResourceLocation getTextureLocation(LatexSharkMale p_114482_) {
-        return new ResourceLocation("changed:textures/latex_shark_male.png");
+        return Changed.modResource("textures/latex_shark_male.png");
     }
 }

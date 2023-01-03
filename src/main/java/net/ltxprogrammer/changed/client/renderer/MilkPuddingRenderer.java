@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.MilkPuddingModel;
 import net.ltxprogrammer.changed.entity.beast.MilkPudding;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -13,6 +14,6 @@ public class MilkPuddingRenderer extends MobRenderer<MilkPudding, MilkPuddingMod
 
     @Override
     public ResourceLocation getTextureLocation(MilkPudding p_114482_) {
-        return new ResourceLocation("changed:textures/milk_pudding.png");
+        return Changed.modResource("textures/milk_pudding.png");
     }
 }

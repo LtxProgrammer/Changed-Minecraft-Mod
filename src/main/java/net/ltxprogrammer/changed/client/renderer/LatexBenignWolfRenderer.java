@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBenignWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.WhiteLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -16,6 +17,6 @@ public class LatexBenignWolfRenderer extends LatexHumanoidRenderer<LatexBenignWo
 
     @Override
     public ResourceLocation getTextureLocation(LatexBenignWolf p_114482_) {
-        return new ResourceLocation("changed:textures/latex_benign_wolf.png");
+        return Changed.modResource("textures/latex_benign_wolf.png");
     }
 }

@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
@@ -17,6 +18,6 @@ public class LatexMantaRayMaleRenderer extends LatexHumanoidRenderer<LatexMantaR
 
     @Override
     public ResourceLocation getTextureLocation(LatexMantaRayMale p_114482_) {
-        return new ResourceLocation("changed:textures/latex_manta_ray_male.png");
+        return Changed.modResource("textures/latex_manta_ray_male.png");
     }
 }

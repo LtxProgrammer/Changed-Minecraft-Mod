@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexRedPandaModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSnowLeopardMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSnowLeopardModel;
@@ -16,6 +17,6 @@ public class LatexRedPandaRenderer extends LatexHumanoidRenderer<LatexRedPanda, 
 
     @Override
     public ResourceLocation getTextureLocation(LatexRedPanda p_114482_) {
-        return new ResourceLocation("changed:textures/latex_red_panda.png");
+        return Changed.modResource("textures/latex_red_panda.png");
     }
 }

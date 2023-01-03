@@ -17,6 +17,6 @@ public class LatexHypnoCatRenderer extends LatexHumanoidRenderer<LatexHypnoCat, 
 
     @Override
     public ResourceLocation getTextureLocation(LatexHypnoCat p_114482_) {
-        return new ResourceLocation("changed:textures/latex_hypno_cat.png");
+        return Changed.modResource("textures/latex_hypno_cat.png");
     }
 }

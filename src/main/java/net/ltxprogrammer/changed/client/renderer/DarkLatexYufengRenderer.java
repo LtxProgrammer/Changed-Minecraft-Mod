@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexYufengModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexDragonModel;
@@ -15,6 +16,6 @@ public class DarkLatexYufengRenderer extends LatexHumanoidRenderer<DarkLatexYufe
 
     @Override
     public ResourceLocation getTextureLocation(DarkLatexYufeng p_114482_) {
-        return new ResourceLocation("changed:textures/dark_latex_yufeng.png");
+        return Changed.modResource("textures/dark_latex_yufeng.png");
     }
 }

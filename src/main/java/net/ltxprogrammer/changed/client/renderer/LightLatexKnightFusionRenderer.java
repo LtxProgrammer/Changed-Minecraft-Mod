@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexKnightFusionModel;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -17,6 +18,6 @@ public class LightLatexKnightFusionRenderer extends LatexHumanoidRenderer<LightL
 
     @Override
     public ResourceLocation getTextureLocation(LightLatexKnightFusion p_114482_) {
-        return new ResourceLocation("changed:textures/light_latex_knight_fusion.png");
+        return Changed.modResource("textures/light_latex_knight_fusion.png");
     }
 }

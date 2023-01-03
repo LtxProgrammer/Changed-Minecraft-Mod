@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMimicPlantModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSilverFoxModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -17,6 +18,6 @@ public class LatexMimicPlantRenderer extends LatexHumanoidRenderer<LatexMimicPla
 
     @Override
     public ResourceLocation getTextureLocation(LatexMimicPlant p_114482_) {
-        return new ResourceLocation("changed:textures/latex_mimic_plant.png");
+        return Changed.modResource("textures/latex_mimic_plant.png");
     }
 }

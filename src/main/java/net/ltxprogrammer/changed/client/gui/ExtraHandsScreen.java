@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -19,7 +20,7 @@ public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
         this.imageHeight = 92;
     }
 
-    private static final ResourceLocation texture = new ResourceLocation("changed:textures/gui/extra_hands.png");
+    private static final ResourceLocation texture = Changed.modResource("textures/gui/extra_hands.png");
 
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
