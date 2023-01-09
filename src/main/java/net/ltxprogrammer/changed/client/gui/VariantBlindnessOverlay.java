@@ -43,6 +43,7 @@ public class VariantBlindnessOverlay {
             RenderSystem.setShaderTexture(0, TEXTURE);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.setShaderColor(1, 1, 1, 1);
             int i1 = event.getWindow().getScreenWidth();
             int j1 = event.getWindow().getScreenHeight();
             Tesselator tesselator = Tesselator.getInstance();
