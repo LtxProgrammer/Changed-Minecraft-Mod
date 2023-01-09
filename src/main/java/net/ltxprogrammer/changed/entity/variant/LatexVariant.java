@@ -731,8 +731,28 @@ public class LatexVariant<T extends LatexEntity> {
         }*/
     }
 
-    protected void multiplyMotion(Player player, float mul) {
-        player.setDeltaMovement(player.getDeltaMovement().multiply(mul, mul, mul));
+    protected double lerp(double a, double b, double x) {
+        return a * (1 - x) + b * x;
+    }
+
+    protected double clamp(double min, double max, double x) {
+        return Math.max(Math.min(x, max), min);
+    }
+
+    protected void multiplyMotion(Player player, double mul) {
+        var dP = player.getDeltaMovement();
+
+        if (mul > 1f) {
+            if (player.isOnGround()) {
+                float friction = player.getLevel().getBlockState(player.blockPosition().below())
+                        .getFriction(player.getLevel(), player.blockPosition(), player);
+                double mdP = dP.length();
+                mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
+                mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+            }
+        }
+
+        player.setDeltaMovement(dP.multiply(mul, mul, mul));
     }
 
     public static class Builder<T extends LatexEntity> {
