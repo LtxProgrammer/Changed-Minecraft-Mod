@@ -78,7 +78,7 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
                 .texOffs(20, 17).addBox(-1.5F, -27.0F, -5.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(36, 17).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(36, 17).addBox(-4.0F, -34.5F, -3.75F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
                 .texOffs(60, 9).addBox(2.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(16, 33).addBox(2.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
                 .texOffs(56, 7).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
@@ -92,7 +92,7 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
                 .texOffs(28, 47).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         PartDefinition LeftEar = Hair.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(0, 4).addBox(-1.0F, -8.5F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(23, 54).addBox(-1.0F, -9.1F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(23, 54).addBox(-1.0F, -9.01F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
                 .texOffs(40, 23).addBox(-1.0F, -9.6F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(28, 33).addBox(-1.0F, -10.4F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(0.65F, -27.25F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
@@ -138,7 +138,6 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
 
         return LayerDefinition.create(process(meshdefinition), 128, 128);
     }
-
 
     @Override
     public void prepareMobModel(LatexBenignWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
