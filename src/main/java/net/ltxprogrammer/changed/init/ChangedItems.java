@@ -31,6 +31,7 @@ public class ChangedItems {
     public static final RegistryObject<Item> LATEX_SYRINGE = register("latex_syringe", () -> new Syringe.LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
     public static final RegistryObject<Item> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment", AbstractLatexItem::new);
+    public static final RegistryObject<Item> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<Item> WHITE_LATEX_GOO = register("white_latex_goo", AbstractLatexGoo::new);
     public static final RegistryObject<Item> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
