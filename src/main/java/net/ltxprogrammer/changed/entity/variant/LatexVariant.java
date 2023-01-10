@@ -123,7 +123,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 
-    public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills()
+    public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().absorbing()
             .build(Changed.modResource("form_latex_shark")));
     public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSION = register(GenderedVariant.Builder.of(LATEX_SHARK, ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.9f).swimSpeed(1.5f).stepSize(0.7f).additionalHealth(8).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, LATEX_SHARK)
             .buildGendered(Changed.modResource("form_latex_shark")));
