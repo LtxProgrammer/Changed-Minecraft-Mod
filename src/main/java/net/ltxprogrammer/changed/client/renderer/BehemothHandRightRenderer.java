@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BehemothHandRightRenderer extends MobRenderer<BehemothHandRight, BehemothHandRightModel> {
     public BehemothHandRightRenderer(EntityRendererProvider.Context context) {
-        super(context, new BehemothHandRightModel(context.bakeLayer(BehemothHandRightModel.LAYER_LOCATION)), 0.5f);
+        super(context, new BehemothHandRightModel(context.bakeLayer(BehemothHandRightModel.LAYER_LOCATION)), 1.5f);
     }
 
     @Override

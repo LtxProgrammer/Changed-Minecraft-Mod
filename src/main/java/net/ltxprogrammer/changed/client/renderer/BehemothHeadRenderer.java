@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BehemothHeadRenderer extends MobRenderer<BehemothHead, BehemothHeadModel> {
     public BehemothHeadRenderer(EntityRendererProvider.Context context) {
-        super(context, new BehemothHeadModel(context.bakeLayer(BehemothHeadModel.LAYER_LOCATION)), 0.5f);
+        super(context, new BehemothHeadModel(context.bakeLayer(BehemothHeadModel.LAYER_LOCATION)), 3.0f);
     }
 
     @Override
