@@ -85,7 +85,7 @@ public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolf
                 .texOffs(0, 16).addBox(0.5F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(-3.1F, -7.35F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(24, 4).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(64, 15).addBox(-1.0F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(64, 15).addBox(-1.0F, -1.574F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
                 .texOffs(44, 46).addBox(-1.0F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(0, 18).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.6F, -7.5F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
