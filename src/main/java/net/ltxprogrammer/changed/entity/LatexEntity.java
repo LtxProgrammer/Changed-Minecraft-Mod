@@ -165,7 +165,7 @@ public abstract class LatexEntity extends Monster {
     public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.setAttributes(getAttributes());
-        this.setHealth((float) getLatexMaxHealth());
+        this.setHealth((float)this.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue());
         if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
     }
