@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.*;
+import net.ltxprogrammer.changed.entity.beast.boss.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
@@ -278,6 +279,13 @@ public class ChangedEntities {
 
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX = registerNoEgg("special_latex",
             EntityType.Builder.of(SpecialLatex::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F));
+
+    public static final RegistryObject<EntityType<BehemothHead>> BEHEMOTH_HEAD = registerNoEgg("behemoth_head",
+            EntityType.Builder.of(BehemothHead::new, MobCategory.MONSTER).sized(3.0f, 3.0f));
+    public static final RegistryObject<EntityType<BehemothHandLeft>> BEHEMOTH_HAND_LEFT = registerNoEgg("behemoth_hand_left",
+            EntityType.Builder.of(BehemothHandLeft::new, MobCategory.MONSTER).sized(2.0f, 2.0f));
+    public static final RegistryObject<EntityType<BehemothHandRight>> BEHEMOTH_HAND_RIGHT = registerNoEgg("behemoth_hand_right",
+            EntityType.Builder.of(BehemothHandRight::new, MobCategory.MONSTER).sized(2.0f, 2.0f));
 
     public static class Category {
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends DarkLatexEntity>>> DARK_LATEX = ImmutableList.of(
