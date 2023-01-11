@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBeifengModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexDragonModel;
 import net.ltxprogrammer.changed.entity.beast.LatexBeifeng;
@@ -14,6 +15,6 @@ public class LatexBeifengRenderer extends LatexHumanoidRenderer<LatexBeifeng, La
 
     @Override
     public ResourceLocation getTextureLocation(LatexBeifeng p_114482_) {
-        return new ResourceLocation("changed:textures/latex_beifeng.png");
+        return Changed.modResource("textures/latex_beifeng.png");
     }
 }

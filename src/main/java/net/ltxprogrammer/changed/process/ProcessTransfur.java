@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.process;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.WhiteLatexBlock;
-import net.ltxprogrammer.changed.command.CommandTransfur;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.OrganicLatex;
@@ -15,34 +14,25 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.profiling.jfr.event.WorldLoadFinishedEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.monster.piglin.Piglin;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
@@ -246,79 +236,12 @@ public class ProcessTransfur {
         }
     }
 
-    static void nonLatexedEntityKillingBlowByLatexEntity(LivingAttackEvent event, LivingEntity target, LatexedEntity source) {
-        boolean flag = false;
-        List<LatexVariant<?>> mobFusion = new ArrayList<>();
-        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(source.transfur, event.getEntityLiving().getClass())) {
-                mobFusion.add(checkVariant);
-            }
-        }
-        if (mobFusion.isEmpty()) {
-            if (source.entity instanceof LatexEntity latexEntity)
-                flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+    private static void bonusHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_, boolean overrideImmunity) {
+        if (!entity.isInvulnerableTo(p_108729_) || overrideImmunity) {
+            boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
 
-            if (source.variant == null || source.variant.transfurMode() == TransfurMode.ABSORPTION || flag) {
-                source.entity.heal(14f);
-                if (source.entity instanceof Player player) {
-                    player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() + 10);
-                    source.entity.setPos(target.position());
-                    target.discard();
-
-                    if (source.variant == null || !source.transfur.getFormId().equals(source.variant.getFormId()))
-                        ProcessTransfur.setPlayerLatexVariant(player, source.transfur.clone());
-                }
-                else {
-                    LatexEntity newEntity = source.transfur.replaceEntity(target);
-                    source.entity.discard();
-                }
-                ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
-            }
-
-            else {
-                source.entity.heal(4f);
-                transfur(target, target.level, source.transfur, false);
-            }
-        }
-
-        else {
-            LatexVariant<?> fuseVariant = mobFusion.get(target.getRandom().nextInt(mobFusion.size()));
-            source.entity.heal(14f);
-            if (source.entity instanceof Player player) {
-                player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() + 10);
-                source.entity.setPos(target.position());
-                target.discard();
-
-                if (source.variant == null || !fuseVariant.getFormId().equals(source.variant.getFormId()))
-                    ProcessTransfur.setPlayerLatexVariant(player, fuseVariant.clone());
-            }
-            else {
-                LatexEntity newEntity = fuseVariant.replaceEntity(target);
-                source.entity.discard();
-            }
-            ChangedSounds.broadcastSound(source.entity, ChangedSounds.POISON, 1.0f, 1.0f);
-        }
-
-        event.setCanceled(true);
-    }
-
-    static void nonLatexedPlayerAttackedByLatexedEntity(LivingAttackEvent event, Player target, LatexedEntity source) {
-        event.setCanceled(true);
-        target.hurt(ChangedDamageSources.TRANSFUR, 0.25f);
-        target.heal(0.25f);
-        boolean flag = false;
-        if (source.entity instanceof LatexEntity latexEntity)
-            flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
-
-        if (source.transfur != null && progressPlayerTransfur(target, target.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE), source.transfur.getFormId()) && (source.transfur.transfurMode() == TransfurMode.ABSORPTION || flag)) {
-            if (!source.isPlayer)
-                source.entity.remove(Entity.RemovalReason.DISCARDED);
-        }
-    }
-
-    private static void actuallyHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_) {
-        if (!entity.isInvulnerableTo(p_108729_)) {
-            entity.setHealth(entity.getHealth() - p_108730_);
+            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity)
+                entity.setHealth(entity.getHealth() - p_108730_);
         }
     }
 
@@ -327,44 +250,26 @@ public class ProcessTransfur {
     }
 
     @SubscribeEvent
-    public static void onLivingAttacked(LivingAttackEvent event) {
-        if (event.getSource() == ChangedDamageSources.TRANSFUR)
-            return;
-        if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            if (isOrganicLatex(event.getEntityLiving()))
-                return;
-            event.setCanceled(true);
-            return;
-        }
+    public static void onLivingDamaged(LivingDamageEvent event) {
         if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
             if (isOrganicLatex(event.getEntityLiving()))
                 return;
-            actuallyHurt(event.getEntityLiving(), event.getSource(), 1.5F);
-            return;
+            event.setAmount(event.getAmount() * 2.0F);
         }
-        if (!(event.getSource().getEntity() instanceof LivingEntity sourceEntity))
-            return;
-        if (isOrganicLatex(sourceEntity))
-            return;
-        if (event.getSource().isProjectile())
-            return;
-        if (event.getEntityLiving().isDamageSourceBlocked(event.getSource()))
-            return;
+    }
 
-        if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
-            event.setCanceled(true);
-            return;
-        }
+    protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
+        LivingEntity entity = event.getEntityLiving();
 
-        LatexVariant<?> sourceVariant = LatexVariant.getEntityVariant(sourceEntity);
+        // First, check for fusion
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(event.getEntityLiving());
         for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(sourceVariant, playerVariant)) {
+            if (checkVariant.isFusionOf(source.variant, playerVariant)) {
                 event.setCanceled(true);
-                transfur(event.getEntityLiving(), sourceEntity.level, sourceVariant, true);
-                if (sourceEntity instanceof Player) {
+                transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
+                if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
-                        pvpLoser.setLastHurtByMob(sourceEntity);
+                        pvpLoser.setLastHurtByMob(source.entity);
                         pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
                     }
                     else
@@ -372,50 +277,87 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    sourceEntity.discard();
+                    source.entity.discard();
                 }
 
                 return;
             }
         }
 
+        // Check for faction immunity
         LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
-        LatexType factionS = LatexType.getEntityFactionLatexType(event.getSource().getEntity());
+        LatexType factionS = LatexType.getEntityFactionLatexType(source.entity);
         if (factionD == factionS && factionS != null) {
             event.setCanceled(true);
             return;
         }
 
-        boolean mobFusion = false;
-        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(sourceVariant, event.getEntityLiving().getClass())) {
-                mobFusion = true;
-                break;
-            }
+        // Check if attacked entity is already latexed
+        if (LatexedEntity.isLatexed(event.getEntityLiving()))
+            return;
+        // Check if attacked entity is not humanoid
+        if (!event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+            bonusHurt(entity, ChangedDamageSources.TRANSFUR, 2.0f, false);
+            return;
         }
-        if (!event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !mobFusion)
-            return;
 
-        if ((LatexVariant.getEntityVariant(event.getEntityLiving()) != null) == (LatexVariant.getEntityTransfur(sourceEntity) != null))
-            return;
+        event.setCanceled(true);
+        double d1 = source.entity.getX() - entity.getX();
 
-        float damageAdjustment = sourceEntity instanceof Player && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR) ? 4.0f : 1.0f;
-        if (damageAdjustment > 1.0f)
-            actuallyHurt(event.getEntityLiving(), ChangedDamageSources.TRANSFUR, event.getAmount() * (damageAdjustment - 1.0f));
+        double d0;
+        for(d0 = source.entity.getZ() - entity.getZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
+            d1 = (Math.random() - Math.random()) * 0.01D;
+        }
 
+        entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
+        entity.knockback((double)0.4F, d1, d0);
+
+        entity.hurt(ChangedDamageSources.TRANSFUR, 0.0F);
+        boolean flag = false;
+        if (source.entity instanceof LatexEntity latexEntity)
+            flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+
+        if (source.transfur != null && progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                source.transfur.getFormId()) && (source.transfur.transfurMode() == TransfurMode.ABSORPTION || flag)) {
+            if (!source.isPlayer)
+                source.entity.discard();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingAttacked(LivingAttackEvent event) {
         //The entity getting hurt is a morph. Cancel the event.
         if(event.getEntityLiving().getPersistentData().contains(LatexVariant.NBT_PLAYER_ID)) {
             event.setCanceled(true);
+            return;
+        }
+        if (event.getSource() == ChangedDamageSources.TRANSFUR)
+            return;
+        if (event.getSource().isProjectile())
+            return;
+        if (event.getEntityLiving().isDamageSourceBlocked(event.getSource()))
+            return;
+        if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            if (isOrganicLatex(event.getEntityLiving()))
+                return;
+            event.setCanceled(true);
+            return;
         }
 
-        else if (event.getEntityLiving() instanceof Player player && !isPlayerLatex(player) && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR)) {
-            nonLatexedPlayerAttackedByLatexedEntity(event, player, new LatexedEntity(sourceEntity));
+        if (!(event.getSource().getEntity() instanceof LivingEntity sourceEntity))
+            return;
+        if (!LatexedEntity.isLatexed(sourceEntity))
+            return;
+        if (isOrganicLatex(sourceEntity))
+            return;
+        if (sourceEntity.hasPassenger(event.getEntityLiving()) || event.getEntityLiving().hasPassenger(sourceEntity)) {
+            event.setCanceled(true);
+            return;
         }
+        if (!sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR))
+            return;
 
-        else if (event.getEntityLiving().getHealth() - (event.getAmount() * damageAdjustment) <= 0.0F && LatexedEntity.isLatexed(sourceEntity) && !LatexedEntity.isLatexed(event.getEntityLiving())
-                && sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR)) {
-            nonLatexedEntityKillingBlowByLatexEntity(event, event.getEntityLiving(), new LatexedEntity(sourceEntity));
-        }
+        onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));
     }
 
     @SubscribeEvent
@@ -518,7 +460,7 @@ public class ProcessTransfur {
         if (variant == null)
             return;
         if (!LatexType.hasLatexType(entity)) {
-            ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             LatexType.setEntityLatexType(entity, variant.getLatexType());
             if (keepConscious && entity instanceof ServerPlayer player) {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(player, variant);
@@ -562,7 +504,7 @@ public class ProcessTransfur {
                 return;
 
             LatexVariant<?> fusion = possible.get(level.random.nextInt(possible.size()));
-            ChangedSounds.broadcastSound(entity, ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(entity, fusion.sound, 1.0f, 1.0f);
 
             if (entity instanceof ServerPlayer player) {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(player, fusion);

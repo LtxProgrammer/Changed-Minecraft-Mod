@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSquidDogModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -16,6 +17,6 @@ public class LatexSquidDogRenderer extends LatexHumanoidRenderer<LatexSquidDog, 
 
     @Override
     public ResourceLocation getTextureLocation(LatexSquidDog p_114482_) {
-        return new ResourceLocation("changed:textures/latex_squid_dog.png");
+        return Changed.modResource("textures/latex_squid_dog.png");
     }
 }

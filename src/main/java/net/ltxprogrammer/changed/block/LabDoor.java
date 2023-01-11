@@ -17,6 +17,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -114,16 +115,16 @@ public class LabDoor extends AbstractCustomShapeBlock {
 
         switch (p_52776_.getValue(FACING)) {
             case NORTH -> {
-                return p_52778_.offset(x, y, 0);
-            }
-            case EAST -> {
-                return p_52778_.offset(0, y, x);
-            }
-            case SOUTH -> {
                 return p_52778_.offset(-x, y, 0);
             }
-            case WEST -> {
+            case EAST -> {
                 return p_52778_.offset(0, y, -x);
+            }
+            case SOUTH -> {
+                return p_52778_.offset(x, y, 0);
+            }
+            case WEST -> {
+                return p_52778_.offset(0, y, x);
             }
         }
 
@@ -311,5 +312,36 @@ public class LabDoor extends AbstractCustomShapeBlock {
             p_153167_.setBlock(p_153169_, p_153168_.setValue(OPEN, Boolean.valueOf(p_153170_)), 10);
             this.playSound(p_153167_, p_153169_, p_153170_);
         }
+    }
+
+    protected void preventCreativeDropFromBottomPart(Level p_52904_, BlockPos p_52905_, BlockState p_52906_, Player p_52907_) {
+        int section = p_52906_.getValue(SECTION);
+        if (section != 0) {
+            BlockPos blockpos = getBlockPos(p_52906_, p_52905_, 0);
+            BlockState blockstate = p_52904_.getBlockState(blockpos);
+            if (blockstate.is(p_52906_.getBlock()) && blockstate.getValue(SECTION) == 0) {
+                BlockState blockstate1 = blockstate.hasProperty(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+                p_52904_.setBlock(blockpos, blockstate1, 35);
+                p_52904_.levelEvent(p_52907_, 2001, blockpos, Block.getId(blockstate));
+            }
+        }
+
+    }
+
+    public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
+        if (!p_52878_.isClientSide) {
+            if (p_52881_.isCreative()) {
+                preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
+            } else if (p_52880_.getValue(SECTION) != 0) {
+                dropResources(p_52880_, p_52878_, p_52879_, (BlockEntity)null, p_52881_, p_52881_.getMainHandItem());
+            }
+        }
+
+        super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
+    }
+
+    public void destroy(LevelAccessor p_49860_, BlockPos p_49861_, BlockState p_49862_) {
+        if (p_49862_.getValue(SECTION) != 0)
+            p_49860_.destroyBlock(getBlockPos(p_49862_, p_49861_, 0), true);
     }
 }

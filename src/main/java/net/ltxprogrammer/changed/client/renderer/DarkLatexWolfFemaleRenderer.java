@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfFemale;
@@ -14,6 +15,6 @@ public class DarkLatexWolfFemaleRenderer extends LatexHumanoidRenderer<DarkLatex
 
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexWolfFemale p_114482_) {
-		return new ResourceLocation("changed:textures/dark_latex_wolf_female.png");
+		return Changed.modResource("textures/dark_latex_wolf_female.png");
 	}
 }

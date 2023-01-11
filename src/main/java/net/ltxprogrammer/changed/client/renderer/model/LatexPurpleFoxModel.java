@@ -104,7 +104,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
 
         PartDefinition LeftEar2 = Hair.addOrReplaceChild("LeftEar2", CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, -0.7F, -1.4F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(0, 64).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(40, 65).addBox(-1.0F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(40, 65).addBox(-1.0F, -1.5F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
                 .texOffs(25, 66).addBox(-1.0F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(36, 65).addBox(-0.999F, -2.9F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.8F, -35.2F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
@@ -141,7 +141,6 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
-
 
     @Override
     public void prepareMobModel(LatexPurpleFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {

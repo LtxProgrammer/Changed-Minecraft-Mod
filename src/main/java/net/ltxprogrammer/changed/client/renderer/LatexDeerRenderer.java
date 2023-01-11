@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexDeerModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexYuinModel;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfMaleModel;
@@ -19,6 +20,6 @@ public class LatexDeerRenderer extends LatexHumanoidRenderer<LatexDeer, LatexDee
 
     @Override
     public ResourceLocation getTextureLocation(LatexDeer p_114482_) {
-        return new ResourceLocation("changed:textures/latex_deer.png");
+        return Changed.modResource("textures/latex_deer.png");
     }
 }

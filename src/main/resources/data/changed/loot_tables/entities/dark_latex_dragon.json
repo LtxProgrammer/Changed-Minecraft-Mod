@@ -26,7 +26,7 @@
               }
             }
           ],
-          "name": "changed:dark_latex_goo"
+          "name": "changed:latex_base"
         }
       ]
     },
@@ -78,7 +78,7 @@
               }
             }
           ],
-          "name": "changed:dark_latex_crystal_fragment"
+          "name": "changed:dark_latex_dragon_crystal_fragment"
         }
       ]
     }

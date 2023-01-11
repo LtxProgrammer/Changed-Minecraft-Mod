@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.WhiteLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolf;
@@ -14,6 +15,6 @@ public class WhiteLatexWolfRenderer extends LatexHumanoidRenderer<WhiteLatexWolf
 
 	@Override
 	public ResourceLocation getTextureLocation(WhiteLatexWolf p_114482_) {
-		return new ResourceLocation("changed:textures/white_latex_creature.png");
+		return Changed.modResource("textures/white_latex_creature.png");
 	}
 }
