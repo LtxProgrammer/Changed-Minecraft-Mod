@@ -30,13 +30,14 @@ public class LatexHumanoidModelController {
     public final float legLength;
     public final float armLength;
     public final float torsoWidth;
+    public final float torsoLength;
     public final boolean swimTail;
     public HumanoidModel.ArmPose leftArmPose = HumanoidModel.ArmPose.EMPTY;
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount;
 
-    public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, float legLength, float armLength, float torsoWidth, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
+    public LatexHumanoidModelController(EntityModel entityModel, float hipOffset, float forewardOffset, float legLength, float armLength, float torsoWidth, float torsoLength, boolean swimTail, ModelPart head, ModelPart torso, @Nullable ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg,
                                         @Nullable ModelPart rightWing, @Nullable ModelPart leftWing, @Nullable ModelPart rightArm2, @Nullable ModelPart leftArm2, @Nullable ModelPart rightArm3, @Nullable ModelPart leftArm3, @Nullable ModelPart lowerTorso, @Nullable ModelPart rightLeg2, @Nullable ModelPart leftLeg2,
                                         @Nullable ModelPart abdomen, @Nullable ModelPart lowerAbdomen, @Nullable List<ModelPart> tailJoints) {
         this.entityModel = entityModel;
@@ -45,6 +46,7 @@ public class LatexHumanoidModelController {
         this.legLength = legLength;
         this.armLength = armLength;
         this.torsoWidth = torsoWidth;
+        this.torsoLength = torsoLength;
         this.swimTail = swimTail;
         Head = head;
         Torso = torso;
@@ -99,6 +101,7 @@ public class LatexHumanoidModelController {
         private float legLength = 0.0F;
         private float armLength = 0.5F;
         private float torsoWidth = 0.0F;
+        private float torsoLength = 0.0F;
         private boolean swimTail = false;
 
         public Builder(EntityModel model, ModelPart head, ModelPart torso, ModelPart tail, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
@@ -143,6 +146,10 @@ public class LatexHumanoidModelController {
             this.armLength = f; return this;
         }
 
+        public Builder torsoLengthOffset(float f) {
+            this.torsoLength = f; return this;
+        }
+
         public Builder wings(ModelPart rightWing, ModelPart leftWing) {
             this.RightWing = rightWing; this.LeftWing = leftWing; return this;
         }
@@ -172,7 +179,7 @@ public class LatexHumanoidModelController {
         }
 
         public LatexHumanoidModelController build() {
-            return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, legLength, armLength, torsoWidth, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
+            return new LatexHumanoidModelController(entityModel, hipOffset, forewardOffset, legLength, armLength, torsoWidth, torsoLength, swimTail, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg,
                     LeftWing, RightWing, LeftArm2, RightArm2, LeftArm3, RightArm3, LowerTorso, LeftLeg2, RightLeg2, Abdomen, LowerAbdomen, TailJoints);
         }
     }
@@ -343,8 +350,8 @@ public class LatexHumanoidModelController {
                 this.Torso.xRot = 0.5F;
                 this.RightArm.xRot += 0.4F;
                 this.LeftArm.xRot += 0.4F;
-                this.RightLeg.z = 4.0F + forewardOffset;
-                this.LeftLeg.z = 4.0F + forewardOffset;
+                this.RightLeg.z = 4.0F + forewardOffset + (torsoLength / 1.83048772171f);
+                this.LeftLeg.z = 4.0F + forewardOffset + (torsoLength / 1.83048772171f);
             }
             this.RightLeg.y = 12.2F + hipOffset;
             this.LeftLeg.y = 12.2F + hipOffset;
