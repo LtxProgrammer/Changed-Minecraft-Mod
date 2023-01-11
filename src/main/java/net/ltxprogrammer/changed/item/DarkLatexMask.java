@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,6 +46,8 @@ public class DarkLatexMask extends Item implements WearableItem {
         if (entity instanceof LatexEntity)
             return false;
         else if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+            return false;
+        else if (entity instanceof AgeableMob ageableMob && ageableMob.isBaby())
             return false;
         else
             return true;
