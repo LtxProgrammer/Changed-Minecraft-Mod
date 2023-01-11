@@ -119,6 +119,9 @@
   "entity.changed.special": "Spesiell lateks",
   "entity.changed.aerosol_latex_wolf": "Gass lateks ulv",
 
+  "entity.changed.behemoth_head": "Kjempehode",
+  "entity.changed.behemoth_hand_left": "Venstre behemoth hånd",
+  "entity.changed.behemoth_hand_right": "Høyre behemoth hånd",
   "entity.changed.dark_latex_wolf_female": "Kvinnelig mørk lateks ulv",
   "entity.changed.dark_latex_wolf_male": "Mannlig mørk lateks ulv",
   "entity.changed.dark_latex_dragon": "Mørk lateks drage",

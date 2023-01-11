@@ -20,6 +20,19 @@ public abstract class BehemothHand extends Behemoth {
         return this;
     }
 
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        head = null;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (tickCount > 10 && (head == null || head.isDeadOrDying()))
+            this.discard();
+    }
+
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(100.0);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(24.0);
@@ -63,6 +76,7 @@ public abstract class BehemothHand extends Behemoth {
             ChangedSounds.broadcastSound(hand, ChangedSounds.POISON, 1.0f, 1.0f);
             hand.setInvisible(true);
             hand.setInvulnerable(true);
+            hand.noPhysics = true;
             ticksLeft = RETURN_LENGTH;
 
             if (hand.head != null) {
@@ -85,6 +99,12 @@ public abstract class BehemothHand extends Behemoth {
             ChangedSounds.broadcastSound(hand, ChangedSounds.POISON, 1.0f, 1.0f);
             hand.setInvisible(false);
             hand.setInvulnerable(false);
+            hand.noPhysics = false;
+            hand.fallDistance = 0.0f;
+
+            if (hand.head != null) {
+                hand.moveTo(hand.head.position().add(0.0, 1.2, 0.0));
+            }
         }
     }
 }
