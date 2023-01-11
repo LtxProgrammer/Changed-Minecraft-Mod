@@ -13,12 +13,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -39,8 +41,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.DistExecutor;
@@ -228,6 +233,8 @@ public abstract class LatexEntity extends Monster {
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
+        if (this instanceof PowderSnowWalkable)
+            this.goalSelector.addGoal(5, new LatexClimbOnTopOfPowderSnowGoal(this, this.level));
     }
 
     @Override
@@ -290,4 +297,27 @@ public abstract class LatexEntity extends Monster {
     public double getLatexLandSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.groundSpeed, 1.0); }
 
     public double getLatexSwimSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.swimSpeed, 1.0); }
+
+    public static class LatexClimbOnTopOfPowderSnowGoal extends ClimbOnTopOfPowderSnowGoal {
+        protected final LatexEntity latex;
+        protected final Level level;
+
+        public LatexClimbOnTopOfPowderSnowGoal(LatexEntity p_204055_, Level p_204056_) {
+            super(p_204055_, p_204056_);
+            latex = p_204055_;
+            level = p_204056_;
+        }
+
+        @Override
+        public boolean canUse() {
+            boolean flag = this.latex.wasInPowderSnow || this.latex.isInPowderSnow;
+            if (flag && this.latex instanceof PowderSnowWalkable) {
+                BlockPos blockpos = this.latex.blockPosition().above();
+                BlockState blockstate = this.level.getBlockState(blockpos);
+                return blockstate.is(Blocks.POWDER_SNOW) || blockstate.getCollisionShape(this.level, blockpos) == Shapes.empty();
+            } else {
+                return super.canUse();
+            }
+        }
+    }
 }
