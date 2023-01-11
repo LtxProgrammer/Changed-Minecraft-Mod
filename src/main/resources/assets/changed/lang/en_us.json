@@ -119,6 +119,9 @@
   "entity.changed.special": "Special Latex",
   "entity.changed.aerosol_latex_wolf": "Gas Latex Wolf",
 
+  "entity.changed.behemoth_head": "Behemoth Head",
+  "entity.changed.behemoth_hand_left": "Left Behemoth Hand",
+  "entity.changed.behemoth_hand_right": "Right Behemoth Hand",
   "entity.changed.dark_latex_wolf_female": "Female Dark Latex Wolf",
   "entity.changed.dark_latex_wolf_male": "Male Dark Latex Wolf",
   "entity.changed.dark_latex_dragon": "Dark Latex Dragon",
