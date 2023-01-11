@@ -29,6 +29,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -277,6 +278,7 @@ public class PatreonBenefits {
 
                         LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
+                        Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
                 });
@@ -367,6 +369,7 @@ public class PatreonBenefits {
 
                 LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
+                Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
         });
@@ -418,5 +421,14 @@ public class PatreonBenefits {
         }
 
         return name;
+    }
+
+    @Mod.EventBusSubscriber
+    public static class EventHandler {
+        @SubscribeEvent
+        public static void onRenderNameplateEvent(RenderNameplateEvent event) {
+            if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
+                event.setContent(PatreonBenefits.getPlayerName(player));
+        }
     }
 }

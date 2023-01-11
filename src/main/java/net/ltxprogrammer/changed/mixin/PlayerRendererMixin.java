@@ -63,42 +63,4 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             armwear.render(stack, buffer.getBuffer(RenderType.entityTranslucent(TransfurProgressLayer.getProgressTexture(progress.ticks()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
         }
     }
-
-    @Inject(method = "renderNameTag*", at = @At("HEAD"))
-    private void renderNameTag(AbstractClientPlayer player, Component name, PoseStack pose, MultiBufferSource source, int p_114502_, CallbackInfo ci) {
-        if (Minecraft.getInstance().player == player)
-            return;
-
-        double d0 = this.entityRenderDispatcher.distanceToSqr(player);
-        pose.pushPose();
-        if (d0 < 100.0D) {
-            Scoreboard scoreboard = player.getScoreboard();
-            Objective objective = scoreboard.getDisplayObjective(2);
-            if (objective != null) {
-                Score score = scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), objective);
-                super.renderNameTag(player, (new TextComponent(Integer.toString(score.getScore()))).append(" ").append(objective.getDisplayName()), pose, source, p_114502_);
-                pose.translate(0.0D, (double)(9.0F * 1.15F * 0.025F), 0.0D);
-            }
-        }
-
-        super.renderNameTag(player, PatreonBenefits.getPlayerName(player), pose, source, p_114502_);
-
-        /*float f = player.getBbHeight() + 0.5F;
-        pose.translate(0.0D, (double)f, 0.0D);
-        pose.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        pose.scale(-0.025F, -0.025F, 0.025F);
-        Matrix4f matrix4f = pose.last().pose();
-        float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-        int j = (int)(f1 * 255.0F) << 24;
-        float f2 = (float)(-font.width(p_114499_) / 2);
-
-        switch (PatreonBenefits.getPlayerTier(player)) {
-            case LEVEL1 -> {
-                Font font = this.getFont();
-                font.drawInBatch("Tier 1 Supporter", )
-            }
-        }*/
-
-        pose.popPose();
-    }
 }

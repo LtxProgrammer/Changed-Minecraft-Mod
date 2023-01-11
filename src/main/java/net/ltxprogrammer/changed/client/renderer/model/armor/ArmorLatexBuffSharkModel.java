@@ -22,7 +22,7 @@ public class ArmorLatexBuffSharkModel<T extends LatexEntity> extends LatexHumano
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm")), builder -> builder.hipOffset(-5.0f).legLengthOffset(-4.0f).tailAidsInSwim());
+                modelPart.getChild("RightArm")), builder -> builder.hipOffset(-5.0f).legLengthOffset(-4.0f).torsoLengthOffset(6.0f).tailAidsInSwim());
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
