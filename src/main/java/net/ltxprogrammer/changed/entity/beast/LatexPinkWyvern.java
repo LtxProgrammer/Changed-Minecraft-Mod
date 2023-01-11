@@ -2,13 +2,14 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class LatexPinkWyvern extends LatexEntity {
+public class LatexPinkWyvern extends LatexEntity implements PowderSnowWalkable{
     public LatexPinkWyvern(EntityType<? extends LatexPinkWyvern> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

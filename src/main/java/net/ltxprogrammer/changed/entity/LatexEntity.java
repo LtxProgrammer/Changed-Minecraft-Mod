@@ -172,7 +172,7 @@ public abstract class LatexEntity extends Monster {
 
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getLatexMaxHealth());
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(24.0);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(35.0);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getLatexLandSpeed());
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getLatexSwimSpeed());
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
