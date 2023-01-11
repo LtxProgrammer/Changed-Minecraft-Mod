@@ -278,6 +278,7 @@ public class PatreonBenefits {
 
                         LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
+                        Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
                 });
@@ -368,6 +369,7 @@ public class PatreonBenefits {
 
                 LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
+                Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
         });
