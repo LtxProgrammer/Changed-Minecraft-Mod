@@ -26,6 +26,11 @@ public class BehemothHead extends Behemoth {
         attributes.getInstance(Attributes.ARMOR).setBaseValue(2.0);
     }
 
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
     public void onAddedToWorld() {
         super.onAddedToWorld();
         var leftHand = ChangedEntities.BEHEMOTH_HAND_LEFT.get().create(level).setHead(this);
