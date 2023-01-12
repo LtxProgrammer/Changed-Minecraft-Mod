@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
 
@@ -259,32 +258,21 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         return customSlots;
     }
 
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        if (event.phase == TickEvent.Phase.END && player.containerMenu instanceof CentaurSaddleMenu menu) {
-            CompoundTag old = player.getPersistentData().copy();
-            CompoundTag tag = player.getPersistentData();
-            if (!menu.internal.getStackInSlot(0).isEmpty())
-                tag.put(SADDLE_LOCATION, menu.internal.getStackInSlot(0).serializeNBT());
-            else {
-                tag.remove(SADDLE_LOCATION);
-                player.ejectPassengers();
-            }
-
-            if (!old.equals(tag)) {
-                if (player.level.isClientSide)
-                    Changed.PACKET_HANDLER.sendToServer(SyncTransfurPacket.Builder.of(player));
-                else
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-            }
+    public void tick(Player player) {
+        CompoundTag old = player.getPersistentData().copy();
+        CompoundTag tag = player.getPersistentData();
+        if (!internal.getStackInSlot(0).isEmpty())
+            tag.put(SADDLE_LOCATION, internal.getStackInSlot(0).serializeNBT());
+        else {
+            tag.remove(SADDLE_LOCATION);
+            player.ejectPassengers();
         }
 
-        if (player.isDeadOrDying()/* && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)*/) {
-            CompoundTag tag = player.getPersistentData();
-            if (tag.contains(SADDLE_LOCATION))
-                player.drop(ItemStack.of(tag.getCompound(SADDLE_LOCATION)), true);
-            tag.remove(SADDLE_LOCATION);
+        if (!old.equals(tag)) {
+            if (player.level.isClientSide)
+                Changed.PACKET_HANDLER.sendToServer(SyncTransfurPacket.Builder.of(player));
+            else
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
         }
     }
 }
