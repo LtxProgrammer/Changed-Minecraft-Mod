@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WallBlock;

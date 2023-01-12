@@ -4,8 +4,6 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;

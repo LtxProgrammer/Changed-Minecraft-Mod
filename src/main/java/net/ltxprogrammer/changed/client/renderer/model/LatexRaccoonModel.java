@@ -6,7 +6,6 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.ltxprogrammer.changed.entity.beast.LatexRaccoon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;

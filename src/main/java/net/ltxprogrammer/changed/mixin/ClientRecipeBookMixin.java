@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import net.ltxprogrammer.changed.client.RecipeCategories;
-import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.stats.RecipeBook;

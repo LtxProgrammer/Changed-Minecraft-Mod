@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.network.packet;
 
-import jdk.jshell.execution.Util;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.client.Minecraft;

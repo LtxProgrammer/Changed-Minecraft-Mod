@@ -1,11 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexLeafModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexTrafficConeDragonModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
-import net.ltxprogrammer.changed.entity.beast.LatexHypnoCat;
 import net.ltxprogrammer.changed.entity.beast.LatexLeaf;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

@@ -1,14 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
-import com.mojang.math.Vector3f;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;

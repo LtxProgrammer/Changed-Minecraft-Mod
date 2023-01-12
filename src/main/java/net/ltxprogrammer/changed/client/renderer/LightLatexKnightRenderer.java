@@ -2,11 +2,8 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexKnightModel;
-import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfMaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLightLatexKnightModel;
 import net.ltxprogrammer.changed.entity.beast.LightLatexKnight;
-import net.ltxprogrammer.changed.entity.beast.LightLatexWolfMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

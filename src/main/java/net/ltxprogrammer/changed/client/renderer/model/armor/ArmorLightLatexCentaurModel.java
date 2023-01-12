@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
-import net.ltxprogrammer.changed.entity.beast.LightLatexKnightFusion;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,8 +9,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-
-import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel.process;
 
 public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<LightLatexCentaur> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();

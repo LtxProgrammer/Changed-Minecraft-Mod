@@ -17,7 +17,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

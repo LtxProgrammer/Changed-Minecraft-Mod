@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.block;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
-import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 

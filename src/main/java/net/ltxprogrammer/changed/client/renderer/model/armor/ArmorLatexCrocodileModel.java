@@ -10,8 +10,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel.process;
-
 public class ArmorLatexCrocodileModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_crocodile")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_crocodile")).get();

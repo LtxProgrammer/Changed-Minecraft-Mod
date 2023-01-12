@@ -7,11 +7,8 @@ import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 public class ExtraHandsScreen extends AbstractContainerScreen<ExtraHandsMenu> {
     public ExtraHandsScreen(ExtraHandsMenu container, Inventory inventory, Component text) {

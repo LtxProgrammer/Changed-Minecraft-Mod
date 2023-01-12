@@ -3,15 +3,12 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.StuckInBodyLayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Arrow;
 
 public class LatexArrowLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends LatexStuckInBodyLayer<T, M> {
