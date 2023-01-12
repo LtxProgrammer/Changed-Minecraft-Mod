@@ -6,12 +6,14 @@ import net.ltxprogrammer.changed.data.Listener;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -62,5 +64,12 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRenderNameplateEvent(RenderNameplateEvent event) {
+        if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
+            event.setContent(PatreonBenefits.getPlayerName(player));
     }
 }
