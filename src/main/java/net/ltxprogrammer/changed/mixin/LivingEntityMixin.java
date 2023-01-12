@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.item.WearableItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

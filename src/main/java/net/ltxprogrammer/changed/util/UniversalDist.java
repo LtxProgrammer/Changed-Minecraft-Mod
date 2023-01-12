@@ -6,8 +6,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class UniversalDist {
     public static class ClientDist {
         public static Level getLevel() {

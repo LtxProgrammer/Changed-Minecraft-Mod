@@ -23,8 +23,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.HashMap;
-
 public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implements RecipeUpdateListener {
     public static class Switch extends AbstractButton {
         private static final int TEXT_COLOR = 14737632;

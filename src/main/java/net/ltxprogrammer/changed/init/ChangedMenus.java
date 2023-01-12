@@ -1,10 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
-import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
-import net.ltxprogrammer.changed.world.inventory.InfuserMenu;
-import net.ltxprogrammer.changed.world.inventory.PurifierMenu;
+import net.ltxprogrammer.changed.world.inventory.*;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.event.RegistryEvent;

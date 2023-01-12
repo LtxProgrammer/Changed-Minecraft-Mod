@@ -3,14 +3,12 @@ package net.ltxprogrammer.changed.network.packet;
 import net.ltxprogrammer.changed.client.gui.InfuserScreen;
 import net.ltxprogrammer.changed.world.inventory.GuiStateProvider;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.function.Supplier;
-import java.util.logging.Level;
 
 public class SyncSwitchPacket implements ChangedPacket {
     private final int containerId;

@@ -1,10 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSirenModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel;
-import net.ltxprogrammer.changed.entity.beast.LatexMantaRayFemale;
 import net.ltxprogrammer.changed.entity.beast.LatexSiren;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

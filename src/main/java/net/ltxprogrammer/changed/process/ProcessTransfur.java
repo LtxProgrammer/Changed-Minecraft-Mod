@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +39,8 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 
@@ -284,14 +284,6 @@ public class ProcessTransfur {
             }
         }
 
-        // Check for faction immunity
-        LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
-        LatexType factionS = LatexType.getEntityFactionLatexType(source.entity);
-        if (factionD == factionS && factionS != null) {
-            event.setCanceled(true);
-            return;
-        }
-
         // Check if attacked entity is already latexed
         if (LatexedEntity.isLatexed(event.getEntityLiving()))
             return;
@@ -354,6 +346,14 @@ public class ProcessTransfur {
             event.setCanceled(true);
             return;
         }
+        // Check for faction immunity
+        LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
+        LatexType factionS = LatexType.getEntityFactionLatexType(sourceEntity);
+        if (factionD == factionS && factionS != null) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (!sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR))
             return;
 
@@ -403,8 +403,10 @@ public class ProcessTransfur {
             if (variant != null && !variant.isDead()) {
                 try {
                     variant.tick(event.player);
-                    variant.getLatexEntity().visualTick(event.player.level);
-                    variant.getLatexEntity().effectTick(event.player.level, event.player);
+                    if (!event.player.isSpectator()) {
+                        variant.getLatexEntity().visualTick(event.player.level);
+                        variant.getLatexEntity().effectTick(event.player.level, event.player);
+                    }
                 } catch (Exception x) {
                     x.printStackTrace();
                 }

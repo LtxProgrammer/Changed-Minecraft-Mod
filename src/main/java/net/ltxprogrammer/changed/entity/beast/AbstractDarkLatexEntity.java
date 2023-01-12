@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implements DarkLatexEntity {

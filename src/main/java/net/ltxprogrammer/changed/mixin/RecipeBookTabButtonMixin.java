@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.client.RecipeCategories;
-import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.gui.components.StateSwitchingButton;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookTabButton;

@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.BedsideIVRack;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BedsideIVRackBlockEntity extends BlockEntity implements Container, StackedContentsCompatible {
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);

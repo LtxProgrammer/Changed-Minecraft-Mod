@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.calculateSkyColor;

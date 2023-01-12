@@ -1,11 +1,9 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.LatexSharkMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
 import net.ltxprogrammer.changed.entity.beast.LatexShark;
-import net.ltxprogrammer.changed.entity.beast.LatexSharkMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

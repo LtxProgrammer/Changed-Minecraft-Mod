@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.data;
 
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

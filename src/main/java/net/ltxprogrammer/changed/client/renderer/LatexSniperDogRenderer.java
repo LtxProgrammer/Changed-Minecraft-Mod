@@ -1,10 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.LatexCrystalWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSniperDogModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
-import net.ltxprogrammer.changed.entity.beast.LatexCrystalWolf;
 import net.ltxprogrammer.changed.entity.beast.LatexSniperDog;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
