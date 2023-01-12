@@ -403,8 +403,10 @@ public class ProcessTransfur {
             if (variant != null && !variant.isDead()) {
                 try {
                     variant.tick(event.player);
-                    variant.getLatexEntity().visualTick(event.player.level);
-                    variant.getLatexEntity().effectTick(event.player.level, event.player);
+                    if (!event.player.isSpectator()) {
+                        variant.getLatexEntity().visualTick(event.player.level);
+                        variant.getLatexEntity().effectTick(event.player.level, event.player);
+                    }
                 } catch (Exception x) {
                     x.printStackTrace();
                 }
