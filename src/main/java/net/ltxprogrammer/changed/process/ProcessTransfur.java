@@ -92,6 +92,45 @@ public class ProcessTransfur {
         }
     }
 
+    public static boolean willTransfur(LivingEntity entity, int amount) {
+        if (entity instanceof Player player) {
+            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
+                return false;
+            boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
+
+            if (player.invulnerableTime > 10 && !justHit) {
+                return getPlayerTransfurProgress(player).ticks >= TRANSFUR_PROGRESSION_TAKEOVER;
+            }
+
+            else {
+                player.invulnerableTime = 20;
+                player.hurtDuration = 10;
+                player.hurtTime = player.hurtDuration;
+
+                int next = getPlayerTransfurProgress(player).ticks + amount;
+                return next >= TRANSFUR_PROGRESSION_TAKEOVER;
+            }
+        }
+        else {
+            float damage = amount / 1200.0f;
+            float health = entity.getHealth();
+
+            if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+                if (health <= damage && health > 0.0F) {
+                    return true;
+                }
+
+                else {
+                    return false;
+                }
+            }
+
+            else {
+                return health <= damage && health > 0.0F;
+            }
+        }
+    }
+
     public static boolean progressTransfur(LivingEntity entity, int amount, ResourceLocation type) {
         if (entity instanceof Player player)
             return progressPlayerTransfur(player, amount, type);
@@ -259,6 +298,9 @@ public class ProcessTransfur {
     }
 
     protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
+        if (source.transfur == null)
+            return;
+
         LivingEntity entity = event.getEntityLiving();
 
         // First, check for fusion
@@ -305,14 +347,46 @@ public class ProcessTransfur {
         entity.knockback((double)0.4F, d1, d0);
 
         entity.hurt(ChangedDamageSources.TRANSFUR, 0.0F);
-        boolean flag = false;
+        boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
-            flag = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+            doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+        if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
+            doesAbsorption = true;
 
-        if (source.transfur != null && progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
-                source.transfur.getFormId()) && (source.transfur.transfurMode() == TransfurMode.ABSORPTION || flag)) {
-            if (!source.isPlayer)
+        if (!doesAbsorption) // Replication
+            progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                    source.transfur.getFormId());
+
+        else { // Absorption
+            if (!willTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE))) {
+                if (progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                        source.transfur.getFormId()))
+                    throw new RuntimeException("You got your function wrong dev! get gud!");
+                return;
+            }
+
+            // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
+            if (!source.isPlayer && event.getEntityLiving() instanceof Player &&
+                    progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                    source.transfur.getFormId())) {
                 source.entity.discard();
+                return;
+            }
+
+            source.entity.heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+            var pos = event.getEntityLiving().position();
+            source.entity.teleportTo(pos.x, pos.y, pos.z);
+            source.entity.setYRot(event.getEntityLiving().getYRot());
+            source.entity.setXRot(event.getEntityLiving().getXRot());
+
+            // Should be one-hit absorption here
+            if (event.getEntityLiving() instanceof Player loserPlayer) {
+                bonusHurt(loserPlayer, ChangedDamageSources.TRANSFUR, 9999999999.0f, true);
+            }
+
+            else {
+                event.getEntityLiving().discard();
+            }
         }
     }
 
