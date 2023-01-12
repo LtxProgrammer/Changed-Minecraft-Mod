@@ -284,14 +284,6 @@ public class ProcessTransfur {
             }
         }
 
-        // Check for faction immunity
-        LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
-        LatexType factionS = LatexType.getEntityFactionLatexType(source.entity);
-        if (factionD == factionS && factionS != null) {
-            event.setCanceled(true);
-            return;
-        }
-
         // Check if attacked entity is already latexed
         if (LatexedEntity.isLatexed(event.getEntityLiving()))
             return;
@@ -354,6 +346,14 @@ public class ProcessTransfur {
             event.setCanceled(true);
             return;
         }
+        // Check for faction immunity
+        LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
+        LatexType factionS = LatexType.getEntityFactionLatexType(sourceEntity);
+        if (factionD == factionS && factionS != null) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (!sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR))
             return;
 
