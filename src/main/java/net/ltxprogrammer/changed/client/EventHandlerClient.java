@@ -67,9 +67,13 @@ public class EventHandlerClient {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void onRenderNameplateEvent(RenderNameplateEvent event) {
-        if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
-            event.setContent(PatreonBenefits.getPlayerName(player));
+    @Mod.EventBusSubscriber(value = Dist.CLIENT)
+    public static class ForgeEventHandler {
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public static void onRenderNameplateEvent(RenderNameplateEvent event) {
+            if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
+                event.setContent(PatreonBenefits.getPlayerName(player));
+        }
     }
 }
