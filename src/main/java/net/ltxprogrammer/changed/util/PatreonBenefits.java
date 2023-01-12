@@ -413,13 +413,4 @@ public class PatreonBenefits {
 
         return name;
     }
-
-    @Mod.EventBusSubscriber
-    public static class EventHandler {
-        @SubscribeEvent
-        public static void onRenderNameplateEvent(RenderNameplateEvent event) {
-            if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
-                event.setContent(PatreonBenefits.getPlayerName(player));
-        }
-    }
 }
