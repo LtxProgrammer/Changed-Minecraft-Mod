@@ -1,12 +1,8 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.PowderSnowBlock;
 import org.spongepowered.asm.mixin.Mixin;

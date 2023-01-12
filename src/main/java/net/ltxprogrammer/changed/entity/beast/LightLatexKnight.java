@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;

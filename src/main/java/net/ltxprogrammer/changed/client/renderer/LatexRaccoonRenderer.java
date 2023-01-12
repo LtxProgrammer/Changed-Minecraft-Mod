@@ -2,10 +2,8 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexRaccoonModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexSnowLeopardMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSnowLeopardModel;
 import net.ltxprogrammer.changed.entity.beast.LatexRaccoon;
-import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

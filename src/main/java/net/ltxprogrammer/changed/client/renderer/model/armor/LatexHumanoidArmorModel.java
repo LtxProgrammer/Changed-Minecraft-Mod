@@ -4,15 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController;
-import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 

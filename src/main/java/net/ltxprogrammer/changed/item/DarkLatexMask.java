@@ -2,23 +2,14 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class DarkLatexMask extends Item implements WearableItem {
     public DarkLatexMask() {

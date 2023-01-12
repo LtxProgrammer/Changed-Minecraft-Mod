@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractDarkLatexWolf extends LatexEntity implements DarkLatexEntity, GenderedEntity {

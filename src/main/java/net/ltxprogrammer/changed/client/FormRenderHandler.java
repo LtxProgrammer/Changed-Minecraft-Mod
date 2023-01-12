@@ -26,9 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @OnlyIn(Dist.CLIENT)
 public class FormRenderHandler {
     public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {

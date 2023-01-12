@@ -2,11 +2,8 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexCentaurModel;
-import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfMaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLightLatexCentaurModel;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
-import net.ltxprogrammer.changed.entity.beast.LightLatexKnight;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;

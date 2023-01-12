@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.mixin;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;

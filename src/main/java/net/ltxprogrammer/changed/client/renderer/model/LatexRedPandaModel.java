@@ -4,13 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.beast.LatexRedPanda;
-import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
-import org.jetbrains.annotations.NotNull;
 
 public class LatexRedPandaModel extends LatexHumanoidModel<LatexRedPanda> implements LatexHumanoidModelInterface {
         // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor

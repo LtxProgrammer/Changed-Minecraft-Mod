@@ -7,16 +7,13 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.StuckInBodyLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
 public class LatexBeeStingerLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends LatexStuckInBodyLayer<T, M> {
     private static final ResourceLocation BEE_STINGER_LOCATION = new ResourceLocation("textures/entity/bee/bee_stinger.png");

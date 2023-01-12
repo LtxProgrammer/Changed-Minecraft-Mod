@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class LatexHumanoidModelController {
     public final ModelPart Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg;

@@ -1,21 +1,10 @@
 package net.ltxprogrammer.changed.network.packet;
 
-import jdk.jshell.execution.Util;
-import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
-import oshi.util.tuples.Pair;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;

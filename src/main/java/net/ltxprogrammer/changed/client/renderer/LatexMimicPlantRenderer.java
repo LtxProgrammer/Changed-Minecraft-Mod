@@ -2,11 +2,8 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMimicPlantModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexSilverFoxModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorNoTailModel;
 import net.ltxprogrammer.changed.entity.beast.LatexMimicPlant;
-import net.ltxprogrammer.changed.entity.beast.LatexPurpleFox;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

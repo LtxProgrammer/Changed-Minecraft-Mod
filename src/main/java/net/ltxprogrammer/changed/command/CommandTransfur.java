@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.item.Syringe;
-import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSourceStack;

@@ -1,19 +1,15 @@
 package net.ltxprogrammer.changed.data;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

@@ -2,9 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
-import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
-import it.unimi.dsi.fastutil.ints.Int2BooleanMaps;
-import it.unimi.dsi.fastutil.ints.Int2BooleanSortedMaps;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.LatexType;
@@ -12,8 +9,6 @@ import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.MultiVariant;
 import net.minecraft.client.renderer.block.model.Variant;
-import net.minecraft.client.renderer.block.model.multipart.AndCondition;
-import net.minecraft.client.renderer.block.model.multipart.KeyValueCondition;
 import net.minecraft.client.renderer.block.model.multipart.MultiPart;
 import net.minecraft.client.renderer.block.model.multipart.Selector;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -31,7 +26,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 

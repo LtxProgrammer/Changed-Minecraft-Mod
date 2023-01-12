@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.network.VariantAbilityKeybind;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Option;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +14,6 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
