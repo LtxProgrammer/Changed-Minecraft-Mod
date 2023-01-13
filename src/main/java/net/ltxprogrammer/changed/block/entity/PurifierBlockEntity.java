@@ -36,7 +36,7 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
 
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     int purifyProgress;
-    public static final int PURIFY_PROGRESS_TOTAL = 8 * 60 * 20; // 8 minutes to purify
+    public static final int PURIFY_PROGRESS_TOTAL = 2 * 60 * 20; // 2 minutes to purify
     protected final ContainerData dataAccess = new ContainerData() {
         public int get(int p_58431_) {
             return PurifierBlockEntity.this.purifyProgress;
