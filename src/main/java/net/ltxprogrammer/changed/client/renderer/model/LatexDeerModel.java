@@ -51,9 +51,9 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
                 .texOffs(24, 46).addBox(-1.11F, -1.1F, -0.17F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
                 .texOffs(52, 6).addBox(-3.89F, -1.1F, -0.17F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(2.0F, 13.0F, -3.25F, -0.8727F, 0.0F, 0.0F));
 
-        PartDefinition Toe_r2 = RightLeg.addOrReplaceChild("Toe_r2", CubeListBuilder.create().texOffs(39, 47).addBox(-1.11F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(4, 48).addBox(-2.5F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(8, 48).addBox(-3.89F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(2.0F, 16.0F, -1.75F, 0.0F, 0.0F, 0.0F));
+        PartDefinition Toe_r2 = RightLeg.addOrReplaceChild("Toe_r2", CubeListBuilder.create().texOffs(39, 47).addBox(-1.11F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0995F))
+                .texOffs(4, 48).addBox(-2.5F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0995F))
+                .texOffs(8, 48).addBox(-3.89F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0995F)), PartPose.offsetAndRotation(2.0F, 16.0F, -1.75F, 0.0F, 0.0F, 0.0F));
 
         PartDefinition RightLowerLeg_r1 = RightLeg.addOrReplaceChild("RightLowerLeg_r1", CubeListBuilder.create().texOffs(42, 47).addBox(-2.0F, -7.5F, -1.0F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 14.25F, -1.25F, -0.5236F, 0.0F, 0.0F));
 
@@ -67,9 +67,9 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
                 .texOffs(55, 7).addBox(-1.11F, -1.1F, -0.17F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
                 .texOffs(22, 56).addBox(-3.89F, -1.1F, -0.17F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(2.0F, 13.0F, -3.25F, -0.8727F, 0.0F, 0.0F));
 
-        PartDefinition Toe_r4 = LeftLeg.addOrReplaceChild("Toe_r4", CubeListBuilder.create().texOffs(0, 56).addBox(-1.11F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(7, 56).addBox(-2.5F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(11, 56).addBox(-3.89F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(2.0F, 16.0F, -1.75F, 0.0F, 0.0F, 0.0F));
+        PartDefinition Toe_r4 = LeftLeg.addOrReplaceChild("Toe_r4", CubeListBuilder.create().texOffs(0, 56).addBox(-1.11F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0995F))
+                .texOffs(7, 56).addBox(-2.5F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0995F))
+                .texOffs(11, 56).addBox(-3.89F, -3.1F, -1.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.095F)), PartPose.offsetAndRotation(2.0F, 16.0F, -1.75F, 0.0F, 0.0F, 0.0F));
 
         PartDefinition LeftLowerLeg_r1 = LeftLeg.addOrReplaceChild("LeftLowerLeg_r1", CubeListBuilder.create().texOffs(28, 47).addBox(-2.0F, -7.5F, -1.0F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 14.25F, -1.25F, -0.5236F, 0.0F, 0.0F));
 
@@ -97,19 +97,19 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 19).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offsetAndRotation(13.25F, -7.0F, -1.0F, 0.0F, 0.0F, -0.48F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offsetAndRotation(16.25F, -9.0F, -1.0F, 0.0F, 0.0F, -0.6109F));
 
         PartDefinition cube_r1 = RightEar.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(53, 46).addBox(7.5F, -28.25F, -0.75F, 4.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(16, 36).addBox(8.5F, -28.25F, 1.5F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(16, 36).addBox(8.5F, -28.25F, 1.7F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(28, 38).addBox(6.75F, -28.25F, -0.25F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(20, 17).addBox(8.5F, -28.25F, -1.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.5236F));
+                .texOffs(20, 17).addBox(8.5F, -28.25F, -1.2F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.5236F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offsetAndRotation(-13.25F, -7.0F, -1.0F, 0.0F, 0.0F, 0.48F));
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offsetAndRotation(-16.25F, -9.0F, -1.0F, 0.0F, 0.0F, 0.6109F));
 
         PartDefinition cube_r2 = LeftEar.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(56, 13).addBox(-11.5F, -28.25F, -0.75F, 4.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(36, 19).addBox(-11.5F, -28.25F, -1.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(36, 19).addBox(-11.5F, -28.25F, -1.2F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(34, 36).addBox(-7.75F, -28.25F, -0.25F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(28, 36).addBox(-11.5F, -28.25F, 1.5F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.5236F));
+                .texOffs(28, 36).addBox(-11.5F, -28.25F, 1.7F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.5236F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -34.9F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 0).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
