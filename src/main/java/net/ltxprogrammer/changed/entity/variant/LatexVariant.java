@@ -5,15 +5,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.*;
-import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
-import net.ltxprogrammer.changed.init.ChangedDamageSources;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -214,9 +212,14 @@ public class LatexVariant<T extends LatexEntity> {
         return false;
     }
 
-    public void activateAbility(Player player) {
-        if (ability != null)
-            ability.accept(player);
+    public void activateAbility(Player player, ResourceLocation name) {
+        if (abilities.containsKey(name)) {
+            var ability = abilities.get(name);
+            if (ability.canUse(player, this)) {
+                activeAbilities.put(name, abilities.get(name));
+                ability.startUsing(player, this);
+            }
+        }
     }
 
     public float swimMultiplier() {
@@ -279,7 +282,8 @@ public class LatexVariant<T extends LatexEntity> {
     public final TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
-    public final Consumer<Player> ability;
+    public final Map<ResourceLocation, AbstractAbility> abilities;
+    private final Map<ResourceLocation, AbstractAbility> activeAbilities = new HashMap<>();
     public final float cameraZOffset;
     public final SoundEvent sound;
 
@@ -300,7 +304,7 @@ public class LatexVariant<T extends LatexEntity> {
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Consumer<Player> ability, float cameraZOffset, SoundEvent sound) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Map<ResourceLocation, AbstractAbility> abilities, float cameraZOffset, SoundEvent sound) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -316,7 +320,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.additionalHealth = additionalHealth;
         this.nightVision = nightVision;
         this.hasLegs = hasLegs;
-        this.ability = ability;
+        this.abilities = abilities;
         this.reducedFall = reducedFall;
         this.canClimb = canClimb;
         this.scares = scares;
@@ -340,7 +344,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public LatexVariant<T> clone() {
         return new LatexVariant<>(formId, ctor, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset, sound);
+                reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
     }
 
     private LatexEntity createLatexEntity(Level level) {
@@ -396,7 +400,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.ability == ABILITY_RIDE; }
+    public boolean rideable() { return this.abilities == ABILITY_RIDE; }
 
     public int getJumpCharges() { return jumpCharges; }
     public void decJumpCharges() { jumpCharges -= 1; }
@@ -572,10 +576,27 @@ public class LatexVariant<T extends LatexEntity> {
         // Step size
         player.maxUpStep = stepSize;
 
+        List<ResourceLocation> toRemove = new ArrayList<>();
+        activeAbilities.forEach((name, ability) -> {
+            if (!ability.canKeepUsing(player, this)) {
+                ability.stopUsing(player, this);
+                toRemove.add(name);
+                return;
+            }
+
+            ability.tick(player, this);
+        });
+        toRemove.forEach(activeAbilities::remove);
+
         sync(player);
     }
 
     public void unhookAll(Player player) {
+        activeAbilities.forEach((name, ability) -> {
+            ability.stopUsing(player, this);
+            ability.onRemove(player, this);
+        });
+        activeAbilities.clear();
         if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
@@ -778,12 +799,13 @@ public class LatexVariant<T extends LatexEntity> {
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
-        Consumer<Player> ability = null;
+        Map<ResourceLocation, AbstractAbility> abilities = new HashMap<>();
         float cameraZOffset = 0.0F;
         SoundEvent sound = ChangedSounds.POISON;
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
+            // vvv-- Add universal abilities here --vvv
         }
 
         private void ignored() {}
@@ -795,7 +817,7 @@ public class LatexVariant<T extends LatexEntity> {
         public static <T extends LatexEntity> Builder<T> of(LatexVariant<?> variant, Supplier<EntityType<T>> entityType) {
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed).swimSpeed(variant.swimSpeed)
                     .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
-                    .ability(variant.ability).reducedFall(variant.reducedFall).canClimb(variant.canClimb).nightVision(variant.nightVision).hasLegs(variant.hasLegs).scares(variant.scares)
+                    .abilities(variant.abilities).reducedFall(variant.reducedFall).canClimb(variant.canClimb).nightVision(variant.nightVision).hasLegs(variant.hasLegs).scares(variant.scares)
                     .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).cannotWalk(variant.cannotWalk);
         }
 
@@ -899,20 +921,30 @@ public class LatexVariant<T extends LatexEntity> {
             this.additionalHealth = value; return this;
         }
         
-        public Builder<T> ability(Consumer<Player> ability) {
-            this.ability = ability; return this;
+        public Builder<T> addAbility(AbstractAbility ability) {
+            if (ability != null)
+                this.abilities.put(ability.getId(), ability);
+            return this;
+        }
+        
+        public Builder<T> abilities(Map<ResourceLocation, AbstractAbility> abilities) {
+            this.abilities = new HashMap<>(abilities); return this;
         }
 
         public Builder<T> extraHands() {
-            return ability(ABILITY_EXTRA_HANDS);
+            return addAbility(ChangedAbilities.EXTRA_HANDS);
         }
 
         public Builder<T> rideable() {
-            return ability(ABILITY_RIDE);
+            return addAbility(ChangedAbilities.ACCESS_SADDLE);
         }
 
         public Builder<T> absorbing() {
             return transfurMode(TransfurMode.ABSORPTION);
+        }
+        
+        public Builder<T> replicating() {
+            return transfurMode(TransfurMode.REPLICATION);
         }
 
         public Builder<T> nightVision() {
@@ -956,7 +988,7 @@ public class LatexVariant<T extends LatexEntity> {
 
         public LatexVariant<T> build(ResourceLocation formId) {
             return new LatexVariant<>(formId, entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, ability, cameraZOffset, sound);
+                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
         }
     }
 
@@ -1070,6 +1102,12 @@ public class LatexVariant<T extends LatexEntity> {
                 mobFusionMob.compareAndSet(null, (Class<? extends LivingEntity>)Class.forName(element.getAsString()));
             } catch (ClassNotFoundException ignored) {}
         });
+        
+        Map<ResourceLocation, AbstractAbility> abilities = new HashMap<>();
+        GsonHelper.getAsJsonArray(root, "abilities", new JsonArray()).forEach(element -> {
+            ResourceLocation location = ResourceLocation.tryParse(element.getAsString());
+            abilities.put(location, ChangedAbilities.getAbility(location));
+        });
 
         return new LatexVariant<>(
                 id,
@@ -1095,7 +1133,7 @@ public class LatexVariant<T extends LatexEntity> {
                         fusionOf.get(0), fusionOf.get(1)
                 )),
                 mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
-                ABILITY_REGISTRY.getOrDefault(ResourceLocation.tryParse(GsonHelper.getAsString(root, "ability", "none")), null),
+                abilities,
                 GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
                 Registry.SOUND_EVENT.get(ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))));
     }

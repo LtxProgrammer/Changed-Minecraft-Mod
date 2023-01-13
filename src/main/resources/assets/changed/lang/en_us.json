@@ -2,7 +2,10 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Items",
   "itemGroup.tab_changed_entities": "Changed Entities",
-  
+
+  "ability.changed.access_saddle": "Access Saddle",
+  "ability.changed.extra_hands": "Extra Hands",
+
   "subtitles.sound3": "Organic Transfur",
   "subtitles.poison": "Transfur",
   "subtitles.open3": "Lab Door Opens",

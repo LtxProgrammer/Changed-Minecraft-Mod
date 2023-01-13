@@ -17,6 +17,7 @@ public class ChangedScreens {
             MenuScreens.register(ChangedMenus.CENTAUR_SADDLE, CentaurSaddleScreen::new);
             MenuScreens.register(ChangedMenus.INFUSER, InfuserScreen::new);
             MenuScreens.register(ChangedMenus.PURIFIER, PurifierScreen::new);
+            MenuScreens.register(ChangedMenus.ABILITY_RADIAL, AbilityRadialScreen::new);
         });
     }
 }
