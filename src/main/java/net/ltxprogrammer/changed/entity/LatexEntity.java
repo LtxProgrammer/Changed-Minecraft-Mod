@@ -190,29 +190,29 @@ public abstract class LatexEntity extends Monster {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    protected final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
-        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(getSelfVariant(), livingEntity.getClass()))
-                return true;
-        }
-        if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
-            return false;
-        if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
-            return true;
-        LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
-        if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
-            return false;
-        for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(getSelfVariant(), playerVariant))
-                return true;
-        }
-
-        return false;
-    };
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
+
+        final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
+            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
+                if (checkVariant.isFusionOf(getSelfVariant(), livingEntity.getClass()))
+                    return true;
+            }
+            if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
+                return false;
+            if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
+                return true;
+            LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
+            if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
+                return false;
+            for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
+                if (checkVariant.isFusionOf(getSelfVariant(), playerVariant))
+                    return true;
+            }
+
+            return false;
+        };
 
         final LatexEntity self = this;
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
