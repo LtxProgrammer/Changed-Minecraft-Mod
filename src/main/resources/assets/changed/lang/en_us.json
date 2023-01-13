@@ -45,6 +45,7 @@
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexSpread": "Let Latex Spread Naturally",
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
+  "gamerule.changed:npcWantFusePlayer": "Latex NPC Want to Fuse With Player",
 
   "key.changed.variant_ability": "Active Variant Ability",
   "key.changed.extra_jump": "Extra Jump",
