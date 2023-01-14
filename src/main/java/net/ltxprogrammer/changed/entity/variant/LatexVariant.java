@@ -63,18 +63,6 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
 
-    private static final Map<ResourceLocation, Consumer<Player>> ABILITY_REGISTRY = new HashMap<>();
-    public static final Consumer<Player> ABILITY_EXTRA_HANDS = registerAbility(Changed.modResource("extra_hands"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-            new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE)));
-    public static final Consumer<Player> ABILITY_RIDE = registerAbility(Changed.modResource("ride"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE)));
-
-    public static Consumer<Player> registerAbility(ResourceLocation name, Consumer<Player> ability) {
-        if (ABILITY_REGISTRY.containsKey(name))
-            Changed.LOGGER.error("Duplicate ability name");
-        return ABILITY_REGISTRY.computeIfAbsent(name, _a -> ability);
-    }
-
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
@@ -279,7 +267,7 @@ public class LatexVariant<T extends LatexEntity> {
     public final boolean cannotWalk;
     public final boolean hasLegs;
     public final List<Class<? extends PathfinderMob>> scares;
-    public final TransfurMode transfurMode;
+    public TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
     public final Map<ResourceLocation, AbstractAbility> abilities;
@@ -400,7 +388,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.abilities == ABILITY_RIDE; }
+    public boolean rideable() { return this.abilities.containsKey(ChangedAbilities.ACCESS_SADDLE.getId()); }
 
     public int getJumpCharges() { return jumpCharges; }
     public void decJumpCharges() { jumpCharges -= 1; }
@@ -806,6 +794,7 @@ public class LatexVariant<T extends LatexEntity> {
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
+            abilities.put(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId(), ChangedAbilities.SWITCH_TRANSFUR_MODE);
         }
 
         private void ignored() {}
@@ -1044,15 +1033,6 @@ public class LatexVariant<T extends LatexEntity> {
             return ProcessTransfur.getPlayerLatexVariant(player);
         else if (entity instanceof LatexEntity latexEntity)
             return latexEntity.getSelfVariant();
-        return null;
-    }
-
-    public static ResourceLocation getLatexFormId(LatexVariant<?> variant) {
-        for (var entry : ALL_LATEX_FORMS.entrySet()) {
-            if (variant.ctor.equals(entry.getValue().ctor)) {
-                return entry.getKey();
-            }
-        }
         return null;
     }
 

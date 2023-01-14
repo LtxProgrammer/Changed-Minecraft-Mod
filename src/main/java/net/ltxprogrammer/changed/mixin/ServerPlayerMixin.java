@@ -49,6 +49,16 @@ public abstract class ServerPlayerMixin extends Player {
         if (tag.contains("LatexVariant")) {
             ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
         }
+
+        LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(this);
+        if (variant != null && tag.contains("LatexAbilities")) {
+            CompoundTag tagAbilities = tag.getCompound("LatexAbilities");
+            tagAbilities.getAllKeys().forEach(key -> {
+                ResourceLocation name = ResourceLocation.tryParse(key);
+                if (variant.abilities.containsKey(name))
+                    variant.abilities.get(name).readData(tagAbilities.getCompound(key), this, variant);
+            });
+        }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
@@ -56,8 +66,17 @@ public abstract class ServerPlayerMixin extends Player {
         tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).ticks());
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
         LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);
-        if (latexVariant != null)
+        if (latexVariant != null) {
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
+            CompoundTag tagAbilities = new CompoundTag();
+            latexVariant.abilities.forEach((name, ability) -> {
+                CompoundTag tagAbility = new CompoundTag();
+                ability.saveData(tagAbility, this, latexVariant);
+                if (!tagAbility.isEmpty())
+                    tagAbilities.put(name.toString(), tagAbility);
+            });
+            tag.put("LatexAbilities", tagAbilities);
+        }
     }
 
     @Inject(method = "stopRiding", at = @At("HEAD"))

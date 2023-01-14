@@ -95,11 +95,10 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
         this.renderBackground(ms);
         this.renderBg(ms, partialTicks, mouseX, mouseY);
 
-        RenderSystem.setShaderColor(secondaryColor.red(), secondaryColor.green(), secondaryColor.blue(), 1);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         var hoveredAbility = getAbilityAt(mouseX, mouseY);
         if (hoveredAbility != null)
             this.renderTooltip(ms, List.of(abilities.get(hoveredAbility).getDisplayName()), Optional.empty(), mouseX, mouseY);
-        RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
     @Override
