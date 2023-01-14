@@ -6,7 +6,8 @@
         "name": "changed:blow1",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.blow1"
   },
   "bow2": {
     "category": "neutral",
@@ -15,7 +16,8 @@
         "name": "changed:bow2",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.bow2"
   },
   "close1": {
     "category": "block",
@@ -24,7 +26,8 @@
         "name": "changed:close1",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.close1"
   },
   "close3": {
     "category": "block",
@@ -33,7 +36,8 @@
         "name": "changed:close3",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.close3"
   },
   "evasion": {
     "category": "block",
@@ -42,7 +46,8 @@
         "name": "changed:evasion",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.evasion"
   },
   "key": {
     "category": "neutral",
@@ -51,7 +56,8 @@
         "name": "changed:key",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.key"
   },
   "open1": {
     "category": "block",
@@ -60,7 +66,8 @@
         "name": "changed:open1",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.open1"
   },
   "open3": {
     "category": "block",
@@ -69,7 +76,8 @@
         "name": "changed:open3",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.open3"
   },
   "poison": {
     "category": "neutral",
@@ -78,7 +86,8 @@
         "name": "changed:poison",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.poison"
   },
   "save": {
     "category": "neutral",
@@ -87,7 +96,8 @@
         "name": "changed:save",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.save"
   },
   "sound3": {
     "category": "neutral",
@@ -96,7 +106,8 @@
         "name": "changed:sound3",
         "stream": false
       }
-    ]
+    ],
+    "subtitle": "subtitles.changed.sound3"
   },
   "latex_dance": {
     "category": "music",

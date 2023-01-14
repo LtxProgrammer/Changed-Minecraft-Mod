@@ -3,11 +3,11 @@
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
 
-  "subtitles.sound3": "Organisk transpels",
-  "subtitles.poison": "Transpels",
-  "subtitles.open3": "Laboratoriedøren åpnes",
-  "subtitles.close3": "Laboratoriedøren lukkes",
-  "subtitles.bow2": "Boksen åpnes",
+  "subtitles.changed.sound3": "Organisk transpels",
+  "subtitles.changed.poison": "Transpels",
+  "subtitles.changed.open3": "Laboratoriedøren åpnes",
+  "subtitles.changed.close3": "Laboratoriedøren lukkes",
+  "subtitles.changed.bow2": "Boksen åpnes",
   
   "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
   "item.changed.blood_syringe": "Blodsprøyte",
