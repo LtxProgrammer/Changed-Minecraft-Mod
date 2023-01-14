@@ -350,13 +350,16 @@ public class ProcessTransfur {
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
             doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
-        if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
+        if (source.variant != null)
+            doesAbsorption = source.variant.transfurMode() == TransfurMode.ABSORPTION;
+        else if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
             doesAbsorption = true;
 
-        if (!doesAbsorption) // Replication
+        if (!doesAbsorption) { // Replication
             if (progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
                     source.transfur.getFormId()))
                 source.entity.heal(8f);
+        }
 
         else { // Absorption
             if (!willTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE))) {
@@ -374,6 +377,18 @@ public class ProcessTransfur {
                 return;
             }
 
+            if (source.variant != source.transfur) {
+                if (source.entity instanceof Player sourcePlayer) {
+                    getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
+                    setPlayerLatexVariant(sourcePlayer, source.transfur);
+                }
+
+                else {
+                    source.entity.discard();
+                    source = new LatexedEntity(source.transfur.getEntityType().create(source.entity.level));
+                }
+            }
+
             source.entity.heal(14.0f); // Heal 7 hearts, and teleport to old entity location
             var pos = event.getEntityLiving().position();
             source.entity.teleportTo(pos.x, pos.y, pos.z);
@@ -388,6 +403,8 @@ public class ProcessTransfur {
             else {
                 event.getEntityLiving().discard();
             }
+
+            ChangedSounds.broadcastSound(source.entity, source.transfur.sound, 1.0F, 1.0F);
         }
     }
 

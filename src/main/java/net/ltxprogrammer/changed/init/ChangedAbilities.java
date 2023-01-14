@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
-import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AccessSaddleAbility;
-import net.ltxprogrammer.changed.ability.ExtraHandsAbility;
+import net.ltxprogrammer.changed.ability.*;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -13,8 +11,12 @@ public class ChangedAbilities {
 
     public static ExtraHandsAbility EXTRA_HANDS = register(new ExtraHandsAbility());
     public static AccessSaddleAbility ACCESS_SADDLE = register(new AccessSaddleAbility());
+    public static SwitchTransfurModeAbility SWITCH_TRANSFUR_MODE = register(new SwitchTransfurModeAbility());
+    public static CreateCobwebAbility CREATE_COBWEB = register(new CreateCobwebAbility());
 
     public static <T extends AbstractAbility> T register(T ability) {
+        if (REGISTRY.containsKey(ability.getId()))
+            throw new RuntimeException("Duplicate ability id");
         REGISTRY.put(ability.getId(), ability);
         return ability;
     }

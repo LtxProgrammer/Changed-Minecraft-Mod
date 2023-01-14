@@ -63,18 +63,6 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
 
-    private static final Map<ResourceLocation, Consumer<Player>> ABILITY_REGISTRY = new HashMap<>();
-    public static final Consumer<Player> ABILITY_EXTRA_HANDS = registerAbility(Changed.modResource("extra_hands"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-            new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE)));
-    public static final Consumer<Player> ABILITY_RIDE = registerAbility(Changed.modResource("ride"), player -> player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-            new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE)));
-
-    public static Consumer<Player> registerAbility(ResourceLocation name, Consumer<Player> ability) {
-        if (ABILITY_REGISTRY.containsKey(name))
-            Changed.LOGGER.error("Duplicate ability name");
-        return ABILITY_REGISTRY.computeIfAbsent(name, _a -> ability);
-    }
-
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
@@ -92,7 +80,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_light_latex_knight_fusion")));
     public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
-    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3)
+    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_aerosol_latex_wolf")));
     public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
@@ -102,11 +90,11 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_silver_fox")));
     public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
             .build(Changed.modResource("form_latex_purple_fox")));
-    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3)
+    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_latex_crystal_wolf")));
-    public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_SNIPER_DOG).sound(ChangedSounds.SOUND3)
+    public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_SNIPER_DOG).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_latex_sniper_dog")));
-    public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC).sound(ChangedSounds.SOUND3)
+    public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_light_latex_wolf_organic")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .build(Changed.modResource("form_latex_traffic_cone_dragon")));
@@ -151,7 +139,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
             .build(Changed.modResource("form_dark_latex_yufeng")));
 
-    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3)
+    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_latex_beifeng")));
     public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_blue_dragon")));
@@ -165,10 +153,10 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_deer")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.LATEX_RED_PANDA)
             .build(Changed.modResource("form_latex_red_panda")));
-    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON)
+    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON.getLocation())
             .build(Changed.modResource("form_latex_translucent_lizard")));
 
-    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision()
+    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
             .build(Changed.modResource("form_latex_stiger")));
     public ResourceLocation getFormId() {
         return formId;
@@ -279,13 +267,13 @@ public class LatexVariant<T extends LatexEntity> {
     public final boolean cannotWalk;
     public final boolean hasLegs;
     public final List<Class<? extends PathfinderMob>> scares;
-    public final TransfurMode transfurMode;
+    public TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
     public final Map<ResourceLocation, AbstractAbility> abilities;
     private final Map<ResourceLocation, AbstractAbility> activeAbilities = new HashMap<>();
     public final float cameraZOffset;
-    public final SoundEvent sound;
+    public final ResourceLocation sound;
 
     private boolean dead;
     public int ticksBreathingUnderwater;
@@ -304,7 +292,7 @@ public class LatexVariant<T extends LatexEntity> {
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Map<ResourceLocation, AbstractAbility> abilities, float cameraZOffset, SoundEvent sound) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Map<ResourceLocation, AbstractAbility> abilities, float cameraZOffset, ResourceLocation sound) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -400,7 +388,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.abilities == ABILITY_RIDE; }
+    public boolean rideable() { return this.abilities.containsKey(ChangedAbilities.ACCESS_SADDLE.getId()); }
 
     public int getJumpCharges() { return jumpCharges; }
     public void decJumpCharges() { jumpCharges -= 1; }
@@ -801,11 +789,12 @@ public class LatexVariant<T extends LatexEntity> {
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
         Map<ResourceLocation, AbstractAbility> abilities = new HashMap<>();
         float cameraZOffset = 0.0F;
-        SoundEvent sound = ChangedSounds.POISON;
+        ResourceLocation sound = ChangedSounds.POISON.getLocation();
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
+            abilities.put(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId(), ChangedAbilities.SWITCH_TRANSFUR_MODE);
         }
 
         private void ignored() {}
@@ -982,7 +971,7 @@ public class LatexVariant<T extends LatexEntity> {
             this.cameraZOffset = v; return this;
         }
 
-        public Builder<T> sound(SoundEvent event) {
+        public Builder<T> sound(ResourceLocation event) {
             this.sound = event; return this;
         }
 
@@ -1044,15 +1033,6 @@ public class LatexVariant<T extends LatexEntity> {
             return ProcessTransfur.getPlayerLatexVariant(player);
         else if (entity instanceof LatexEntity latexEntity)
             return latexEntity.getSelfVariant();
-        return null;
-    }
-
-    public static ResourceLocation getLatexFormId(LatexVariant<?> variant) {
-        for (var entry : ALL_LATEX_FORMS.entrySet()) {
-            if (variant.ctor.equals(entry.getValue().ctor)) {
-                return entry.getKey();
-            }
-        }
         return null;
     }
 
@@ -1135,6 +1115,6 @@ public class LatexVariant<T extends LatexEntity> {
                 mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
                 abilities,
                 GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
-                Registry.SOUND_EVENT.get(ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))));
+                ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString())));
     }
 }

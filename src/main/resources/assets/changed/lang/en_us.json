@@ -5,12 +5,14 @@
 
   "ability.changed.access_saddle": "Access Saddle",
   "ability.changed.extra_hands": "Extra Hands",
+  "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
+  "ability.changed.create_cobweb": "Create Cobweb",
 
-  "subtitles.sound3": "Organic Transfur",
-  "subtitles.poison": "Transfur",
-  "subtitles.open3": "Lab Door Opens",
-  "subtitles.close3": "Lab Door Closes",
-  "subtitles.bow2": "Box Opens",
+  "subtitles.changed.sound3": "Organic Transfur",
+  "subtitles.changed.poison": "Transfur",
+  "subtitles.changed.open3": "Lab Door Opens",
+  "subtitles.changed.close3": "Lab Door Closes",
+  "subtitles.changed.bow2": "Box Opens",
   
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.blood_syringe": "Blood Syringe",

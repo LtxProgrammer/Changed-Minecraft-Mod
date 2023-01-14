@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedSounds {
     public static Map<ResourceLocation, SoundEvent> REGISTRY = new HashMap<>();
+    private static IForgeRegistry<SoundEvent> MINECRAFT_REGISTRY;
 
     public static final SoundEvent BLOW1 = register("blow1");
     public static final SoundEvent BOW2 = register("bow2");
@@ -44,6 +46,7 @@ public class ChangedSounds {
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
         for (Map.Entry<ResourceLocation, SoundEvent> sound : REGISTRY.entrySet())
             event.getRegistry().register(sound.getValue().setRegistryName(sound.getKey()));
+        MINECRAFT_REGISTRY = event.getRegistry();
     }
 
     public static void broadcastSound(MinecraftServer server, SoundEvent event, SoundSource source, double x, double y, double z, float volume, float pitch) {
@@ -51,6 +54,19 @@ public class ChangedSounds {
     }
 
     public static void broadcastSound(Entity entity, SoundEvent event, float volume, float pitch) {
+        if (!entity.level.isClientSide)
+            broadcastSound(entity.level.getServer(), event, SoundSource.NEUTRAL, entity.getX(), entity.getY(), entity.getZ(), volume, pitch);
+    }
+
+    public static void broadcastSound(MinecraftServer server, ResourceLocation name, SoundSource source, double x, double y, double z, float volume, float pitch) {
+        var event = MINECRAFT_REGISTRY.getValue(name);
+        if (event != null)
+            server.getPlayerList().broadcastAll(new ClientboundSoundPacket(event, source, x, y, z, volume, pitch));
+        else
+            Changed.LOGGER.warn("Cannot play sound event " + name);
+    }
+
+    public static void broadcastSound(Entity entity, ResourceLocation event, float volume, float pitch) {
         if (!entity.level.isClientSide)
             broadcastSound(entity.level.getServer(), event, SoundSource.NEUTRAL, entity.getX(), entity.getY(), entity.getZ(), volume, pitch);
     }
