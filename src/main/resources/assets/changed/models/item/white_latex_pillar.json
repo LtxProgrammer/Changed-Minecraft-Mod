@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/white_latex_pillar",
+  "parent": "changed:block/white_latex_pillar_inventory",
   "display": {
     "thirdperson": {
       "rotation": [

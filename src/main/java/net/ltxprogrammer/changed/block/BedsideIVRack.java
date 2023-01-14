@@ -45,7 +45,7 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_BASE, SHAPE_STEM, SHAPE_TOP);
 
     public BedsideIVRack() {
-        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(3.0F, 18.0F));
+        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(3.0F, 18.0F).isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(FULL, false));
     }
 
