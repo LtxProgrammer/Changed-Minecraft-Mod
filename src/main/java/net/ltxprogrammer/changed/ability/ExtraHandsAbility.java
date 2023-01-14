@@ -31,7 +31,7 @@ public class ExtraHandsAbility extends AbstractAbility {
     @Override
     public void startUsing(Player player, LatexVariant<?> variant) {
         player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE));
+                new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE));
     }
 
     @Override
