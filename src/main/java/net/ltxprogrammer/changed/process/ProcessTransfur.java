@@ -354,8 +354,9 @@ public class ProcessTransfur {
             doesAbsorption = true;
 
         if (!doesAbsorption) // Replication
-            progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
-                    source.transfur.getFormId());
+            if (progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                    source.transfur.getFormId()))
+                source.entity.heal(8f);
 
         else { // Absorption
             if (!willTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE))) {
