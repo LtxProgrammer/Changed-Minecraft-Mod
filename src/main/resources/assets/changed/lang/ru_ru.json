@@ -3,11 +3,11 @@
   "itemGroup.tab_changed_items": "Предметы Changed",
   "itemGroup.tab_changed_entities": "Сущности Changed",
   
-  "subtitles.sound3": "Кто-то Трансфурмирован Органически",
-  "subtitles.poison": "Кто-то Трансфурмирован",
-  "subtitles.open3": "Лабораторная Дверь Открылась",
-  "subtitles.close3": "Лабораторная Дверь Закрылась",
-  "subtitles.bow2": "Коробка Открылась",
+  "subtitles.changed.sound3": "Кто-то Трансфурмирован Органически",
+  "subtitles.changed.poison": "Кто-то Трансфурмирован",
+  "subtitles.changed.open3": "Лабораторная Дверь Открылась",
+  "subtitles.changed.close3": "Лабораторная Дверь Закрылась",
+  "subtitles.changed.bow2": "Коробка Открылась",
   
   "item.changed.aerosol_latex_bucket": "Ведро Аэрозольного Латекса",
   "item.changed.blood_syringe": "Шприц С Образцом Крови",
