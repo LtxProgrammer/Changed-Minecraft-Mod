@@ -374,6 +374,18 @@ public class ProcessTransfur {
                 return;
             }
 
+            if (source.variant != source.transfur) {
+                if (source.entity instanceof Player sourcePlayer) {
+                    getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
+                    setPlayerLatexVariant(sourcePlayer, source.transfur);
+                }
+
+                else {
+                    source.entity.discard();
+                    source = new LatexedEntity(source.transfur.getEntityType().create(source.entity.level));
+                }
+            }
+
             source.entity.heal(14.0f); // Heal 7 hearts, and teleport to old entity location
             var pos = event.getEntityLiving().position();
             source.entity.teleportTo(pos.x, pos.y, pos.z);
