@@ -63,14 +63,19 @@ public abstract class Behemoth extends LatexEntity {
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
     }
 
-    public void startSeenByPlayer(ServerPlayer p_31483_) {
-        super.startSeenByPlayer(p_31483_);
-        this.bossEvent.addPlayer(p_31483_);
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.bossEvent.addPlayer(player);
     }
 
-    public void stopSeenByPlayer(ServerPlayer p_31488_) {
-        super.stopSeenByPlayer(p_31488_);
-        this.bossEvent.removePlayer(p_31488_);
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
     }
 
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        this.bossEvent.removeAllPlayers();
+    }
 }

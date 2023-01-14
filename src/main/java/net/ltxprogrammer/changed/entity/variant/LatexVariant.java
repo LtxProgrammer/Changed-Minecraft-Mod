@@ -156,7 +156,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON.getLocation())
             .build(Changed.modResource("form_latex_translucent_lizard")));
 
-    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision()
+    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
             .build(Changed.modResource("form_latex_stiger")));
     public ResourceLocation getFormId() {
         return formId;
