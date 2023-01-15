@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 public class ChangedTags {
     public static class EntityTypes {
         public static final TagKey<EntityType<?>> HUMANOIDS = create(Changed.modResourceStr("humanoids"));
+        public static final TagKey<EntityType<?>> ORGANIC_LATEX = create(Changed.modResourceStr("organic_latex"));
 
         private static TagKey<EntityType<?>> create(String p_203849_) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(p_203849_));

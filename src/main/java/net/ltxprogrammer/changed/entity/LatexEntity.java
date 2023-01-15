@@ -229,7 +229,7 @@ public abstract class LatexEntity extends Monster {
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
-        if (!(this instanceof OrganicLatex)) {
+        if (!(this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))) {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         }
@@ -261,7 +261,7 @@ public abstract class LatexEntity extends Monster {
     public abstract ChangedParticles.Color3 getDripColor();
 
     public void visualTick(Level level) {
-        if (this instanceof OrganicLatex)
+        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
