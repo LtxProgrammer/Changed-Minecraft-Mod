@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
@@ -201,11 +202,11 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public void activateAbility(Player player, ResourceLocation name) {
-        if (abilities.containsKey(name)) {
-            var ability = abilities.get(name);
-            if (ability.canUse(player, this)) {
-                activeAbilities.put(name, abilities.get(name));
-                ability.startUsing(player, this);
+        if (abilities.contains(name)) {
+            var ability = abilityInstances.get(name);
+            if (ability.canUse()) {
+                activeAbilities.put(name, abilityInstances.get(name));
+                ability.startUsing();
             }
         }
     }
@@ -270,8 +271,9 @@ public class LatexVariant<T extends LatexEntity> {
     public TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
-    public final Map<ResourceLocation, AbstractAbility> abilities;
-    private final Map<ResourceLocation, AbstractAbility> activeAbilities = new HashMap<>();
+    public final ImmutableList<ResourceLocation> abilities;
+    public final Map<ResourceLocation, AbstractAbilityInstance> abilityInstances = new HashMap<>();
+    private final Map<ResourceLocation, AbstractAbilityInstance> activeAbilities = new HashMap<>();
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
@@ -292,7 +294,7 @@ public class LatexVariant<T extends LatexEntity> {
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, Map<ResourceLocation, AbstractAbility> abilities, float cameraZOffset, ResourceLocation sound) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<ResourceLocation> abilities, float cameraZOffset, ResourceLocation sound) {
         this.formId = formId;
         this.ctor = ctor;
         this.type = type;
@@ -308,7 +310,7 @@ public class LatexVariant<T extends LatexEntity> {
         this.additionalHealth = additionalHealth;
         this.nightVision = nightVision;
         this.hasLegs = hasLegs;
-        this.abilities = abilities;
+        this.abilities = ImmutableList.<ResourceLocation>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
         this.canClimb = canClimb;
         this.scares = scares;
@@ -360,6 +362,8 @@ public class LatexVariant<T extends LatexEntity> {
                 if (player == Minecraft.getInstance().player)
                     latexForm.setCustomNameVisible(false);
             });
+
+            abilities.forEach(name -> abilityInstances.put(name, ChangedAbilities.getAbility(name).makeInstance(player, this)));
         }
         return latexForm;
     }
@@ -388,7 +392,7 @@ public class LatexVariant<T extends LatexEntity> {
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.abilities.containsKey(ChangedAbilities.ACCESS_SADDLE.getId()); }
+    public boolean rideable() { return this.abilities.contains(ChangedAbilities.ACCESS_SADDLE.getId()); }
 
     public int getJumpCharges() { return jumpCharges; }
     public void decJumpCharges() { jumpCharges -= 1; }
@@ -566,13 +570,13 @@ public class LatexVariant<T extends LatexEntity> {
 
         List<ResourceLocation> toRemove = new ArrayList<>();
         activeAbilities.forEach((name, ability) -> {
-            if (!ability.canKeepUsing(player, this)) {
-                ability.stopUsing(player, this);
+            if (!ability.canKeepUsing()) {
+                ability.stopUsing();
                 toRemove.add(name);
                 return;
             }
 
-            ability.tick(player, this);
+            ability.tick();
         });
         toRemove.forEach(activeAbilities::remove);
 
@@ -581,8 +585,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public void unhookAll(Player player) {
         activeAbilities.forEach((name, ability) -> {
-            ability.stopUsing(player, this);
-            ability.onRemove(player, this);
+            ability.stopUsing();
+            ability.onRemove();
         });
         activeAbilities.clear();
         if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
@@ -787,14 +791,14 @@ public class LatexVariant<T extends LatexEntity> {
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
-        Map<ResourceLocation, AbstractAbility> abilities = new HashMap<>();
+        List<ResourceLocation> abilities = new ArrayList<>();
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.POISON.getLocation();
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
-            abilities.put(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId(), ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId());
         }
 
         private void ignored() {}
@@ -910,14 +914,14 @@ public class LatexVariant<T extends LatexEntity> {
             this.additionalHealth = value; return this;
         }
         
-        public Builder<T> addAbility(AbstractAbility ability) {
+        public Builder<T> addAbility(AbstractAbility<?> ability) {
             if (ability != null)
-                this.abilities.put(ability.getId(), ability);
+                this.abilities.add(ability.getId());
             return this;
         }
         
-        public Builder<T> abilities(Map<ResourceLocation, AbstractAbility> abilities) {
-            this.abilities = new HashMap<>(abilities); return this;
+        public Builder<T> abilities(List<ResourceLocation> abilities) {
+            this.abilities = new ArrayList<>(abilities); return this;
         }
 
         public Builder<T> extraHands() {
@@ -1082,11 +1086,11 @@ public class LatexVariant<T extends LatexEntity> {
                 mobFusionMob.compareAndSet(null, (Class<? extends LivingEntity>)Class.forName(element.getAsString()));
             } catch (ClassNotFoundException ignored) {}
         });
-        
-        Map<ResourceLocation, AbstractAbility> abilities = new HashMap<>();
+
+        List<ResourceLocation> abilities = new ArrayList<>();
         GsonHelper.getAsJsonArray(root, "abilities", new JsonArray()).forEach(element -> {
             ResourceLocation location = ResourceLocation.tryParse(element.getAsString());
-            abilities.put(location, ChangedAbilities.getAbility(location));
+            abilities.add(location);
         });
 
         return new LatexVariant<>(

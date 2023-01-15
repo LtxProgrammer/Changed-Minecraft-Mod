@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 
 import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.SADDLE_LOCATION;
 
-public class ExtraHandsAbility extends AbstractAbility {
+public class ExtraHandsAbility extends SimpleAbility {
     @Override
     public ResourceLocation getId() {
         return Changed.modResource("extra_hands");

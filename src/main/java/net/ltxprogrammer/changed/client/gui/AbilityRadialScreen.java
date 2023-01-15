@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.item.FloppyDisk;
@@ -37,8 +38,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
 
     public final AbilityRadialMenu menu;
     public final LatexVariant<?> variant;
-    public final Map<ResourceLocation, AbstractAbility> abilities;
-    private final List<ResourceLocation> order;
+    public final List<ResourceLocation> abilities;
     private int tickCount = 0;
     private final ChangedParticles.Color3 primaryColor;
     private final ChangedParticles.Color3 secondaryColor;
@@ -50,8 +50,6 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
         this.menu = menu;
         this.variant = menu.variant;
         this.abilities = menu.variant.abilities;
-        this.order = new ArrayList<>();
-        abilities.forEach(((location, abstractAbility) -> order.add(location)));
 
         var colors = getColors(variant);
         this.primaryColor = colors.getA();
@@ -73,7 +71,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
 
     @Nullable
     public ResourceLocation getAbilityAt(int mouseX, int mouseY) {
-        for (int sect = 0; sect < 8 && sect < order.size() && sect <= tickCount; sect++) {
+        for (int sect = 0; sect < 8 && sect < abilities.size() && sect <= tickCount; sect++) {
             double dbl = (sect + 0.5) / 8.0;
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
@@ -84,7 +82,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
             int maxY = minY + 48;
             if (mouseX >= minX && mouseX <= maxX &&
                 mouseY >= minY && mouseY <= maxY)
-                return order.get(sect);
+                return abilities.get(sect);
         }
 
         return null;
@@ -98,7 +96,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
         RenderSystem.setShaderColor(1, 1, 1, 1);
         var hoveredAbility = getAbilityAt(mouseX, mouseY);
         if (hoveredAbility != null)
-            this.renderTooltip(ms, List.of(abilities.get(hoveredAbility).getDisplayName()), Optional.empty(), mouseX, mouseY);
+            this.renderTooltip(ms, List.of(ChangedAbilities.getAbility(hoveredAbility).getDisplayName()), Optional.empty(), mouseX, mouseY);
     }
 
     @Override
@@ -117,12 +115,12 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
             this.blit(ms, x - 32 + this.leftPos, y - 32 + this.topPos, 0, 0, 64, 64, 64, 64);
         }
 
-        for (int sect = 0; sect < 8 && sect < order.size() && sect <= tickCount; sect++) {
+        for (int sect = 0; sect < 8 && sect < abilities.size() && sect <= tickCount; sect++) {
             double dbl = (sect + 0.5) / 8.0;
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
-            RenderSystem.setShaderTexture(0, getAbilityTexture(order.get(sect)));
+            RenderSystem.setShaderTexture(0, getAbilityTexture(abilities.get(sect)));
             RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
             this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
             RenderSystem.setShaderColor(secondaryColor.red(), secondaryColor.green(), secondaryColor.blue(), 1);
@@ -156,18 +154,18 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
         }
 
         if (key == GLFW.GLFW_KEY_0) { // Due to keyboard positioning, 0 will be treated as 10
-            if (10 < order.size()) {
+            if (10 < abilities.size()) {
                 this.minecraft.player.closeContainer();
-                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(order.get(10)));
+                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(abilities.get(10)));
                 return true;
             }
         }
 
         if (key >= GLFW.GLFW_KEY_1 && key <= GLFW.GLFW_KEY_9) {
             int idx = key - GLFW.GLFW_KEY_1;
-            if (idx < order.size()) {
+            if (idx < abilities.size()) {
                 this.minecraft.player.closeContainer();
-                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(order.get(idx)));
+                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(abilities.get(idx)));
                 return true;
             }
         }

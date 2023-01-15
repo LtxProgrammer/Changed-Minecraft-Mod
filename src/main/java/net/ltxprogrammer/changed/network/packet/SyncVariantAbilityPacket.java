@@ -51,8 +51,8 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
             if (sender != null && ProcessTransfur.isPlayerLatex(sender)) {
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, sender.getUUID()));
                 LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(sender);
-                if (variant.abilities.containsKey(id))
-                    variant.abilities.get(id).readData(data, sender, variant);
+                if (variant.abilityInstances.containsKey(id))
+                    variant.abilityInstances.get(id).readData(data);
             }
             context.setPacketHandled(true);
         }
@@ -61,8 +61,8 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
             Player affectedPlayer = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
             if (affectedPlayer != null && ProcessTransfur.isPlayerLatex(affectedPlayer)) {
                 LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(affectedPlayer);
-                if (variant.abilities.containsKey(id))
-                    variant.abilities.get(id).readData(data, affectedPlayer, variant);
+                if (variant.abilityInstances.containsKey(id))
+                    variant.abilityInstances.get(id).readData(data);
             }
         }
     }
