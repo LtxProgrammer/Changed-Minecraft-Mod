@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 public abstract class AbstractAbilityInstance {
@@ -28,4 +29,8 @@ public abstract class AbstractAbilityInstance {
     // A unique tag for the ability is provided when saving/reading data. If no data is saved to the tag, then readData does not run
     public void saveData(CompoundTag tag) {}
     public void readData(CompoundTag tag) {}
+
+    public final ResourceLocation getTexture() {
+        return ability.getTexture(player, variant);
+    }
 }

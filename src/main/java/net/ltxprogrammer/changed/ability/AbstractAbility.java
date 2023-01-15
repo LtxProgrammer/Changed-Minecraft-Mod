@@ -42,6 +42,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public void saveData(CompoundTag tag, Player player, LatexVariant<?> variant) {}
     public void readData(CompoundTag tag, Player player, LatexVariant<?> variant) {}
 
+    public ResourceLocation getTexture(Player player, LatexVariant<?> variant) {
+        return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + getId().getPath() + ".png");
+    }
+
     // Broadcast changes to clients
     protected void setDirty(Player player, LatexVariant<?> variant) {
         CompoundTag data = new CompoundTag();
