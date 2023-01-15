@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.WhiteLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.OrganicLatex;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
@@ -43,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
-
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class ProcessTransfur {
@@ -285,7 +283,7 @@ public class ProcessTransfur {
     }
 
     private static boolean isOrganicLatex(LivingEntity entity) {
-        return entity instanceof OrganicLatex || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getLatexEntity() instanceof OrganicLatex);
+        return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX));
     }
 
     @SubscribeEvent
