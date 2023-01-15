@@ -28,6 +28,7 @@ public class ChangedItems {
     public static final RegistryObject<Item> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> BLOOD_SYRINGE = register("blood_syringe", () -> new Syringe.BloodSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment", AbstractLatexItem::new);
+    public static final RegistryObject<Item> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
     public static final RegistryObject<Item> LATEX_SYRINGE = register("latex_syringe", () -> new Syringe.LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
     public static final RegistryObject<Item> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment", AbstractLatexItem::new);
