@@ -109,6 +109,16 @@
     ],
     "subtitle": "subtitles.changed.sound3"
   },
+  "siren": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:siren",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.siren"
+  },
   "latex_dance": {
     "category": "music",
     "sounds": [

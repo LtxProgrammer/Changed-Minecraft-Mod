@@ -31,6 +31,7 @@ public class ChangedSounds {
     public static final SoundEvent POISON = register("poison");
     public static final SoundEvent SAVE = register("save");
     public static final SoundEvent SOUND3 = register("sound3");
+    public static final SoundEvent SIREN = register("siren");
 
     public static final SoundEvent LATEX_DANCE = register("latex_dance");
     public static final SoundEvent OWO = register("owo");
