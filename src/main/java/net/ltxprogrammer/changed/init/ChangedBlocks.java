@@ -59,7 +59,7 @@ public class ChangedBlocks {
             .add(ChangedEntities.DARK_LATEX_WOLF_MALE::get)
             .add(ChangedEntities.DARK_LATEX_WOLF_FEMALE::get)
             .add(ChangedEntities.DARK_LATEX_DRAGON::get)
-            .add(ChangedEntities.DARK_LATEX_YUFENG::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST).noOcclusion().noCollission().dynamicShape().strength(3.0F, 18.0F)), AbstractLatexCrystal::cutoutRenderer);
+            .add(ChangedEntities.DARK_LATEX_YUFENG::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST_CLUSTER).noOcclusion().noCollission().dynamicShape().strength(3.0F, 18.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
     public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<Block> LATEX_BEIFENG_CRYSTAL_SMALL = register("latex_beifeng_crystal_small", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
@@ -106,6 +106,8 @@ public class ChangedBlocks {
 
     public static final RegistryObject<Block> DARK_LATEX_BLOCK = register("dark_latex_block", () -> new DarkLatexBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_BLACK).sound(SoundType.SLIME_BLOCK).strength(1.0F, 6.0F)));
     public static final RegistryObject<Block> DARK_LATEX_ICE = register("dark_latex_ice", () -> new AbstractLatexIceBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_BLACK).friction(0.98F).sound(SoundType.GLASS).strength(1.0F, 0.2F)));
+    public static final RegistryObject<Block> LATEX_WOLF_CRYSTAL_BLOCK = register("latex_wolf_crystal_block", () -> new LatexWolfCrystalBlock(
+            BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_RED).friction(0.98F).sound(SoundType.AMETHYST).strength(1.0F, 0.2F)));
     public static final RegistryObject<Block> WHITE_LATEX_BLOCK = register("white_latex_block", () -> new WhiteLatexBlock(BlockBehaviour.Properties.copy(DARK_LATEX_BLOCK.get()).color(MaterialColor.WOOL).noOcclusion()
             .isViewBlocking(Blocks::never).isSuffocating(Blocks::never)));
     public static final RegistryObject<Block> ORANGE_TREE_SAPLING = register("orange_tree_sapling", () -> new SaplingBlock(new AbstractTreeGrower() {
