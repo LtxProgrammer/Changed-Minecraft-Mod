@@ -116,10 +116,18 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
+            boolean enabled = false;
+            if (menu.variant.abilityInstances.containsKey(abilities.get(sect))) {
+                enabled = menu.variant.abilityInstances.get(abilities.get(sect)).canUse();
+            }
+
             RenderSystem.setShaderTexture(0, ChangedAbilities.getAbility(abilities.get(sect)).getTexture(menu.player, menu.variant));
             RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
             this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
-            RenderSystem.setShaderColor(secondaryColor.red(), secondaryColor.green(), secondaryColor.blue(), 1);
+            float minRed = Math.max(secondaryColor.red(), 0.125f);
+            float minGreen = Math.max(secondaryColor.green(), 0.125f);
+            float minBlue = Math.max(secondaryColor.blue(), 0.125f);
+            RenderSystem.setShaderColor(minRed, minGreen, minBlue, enabled ? 1 : 0.5f);
             this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
         }
 

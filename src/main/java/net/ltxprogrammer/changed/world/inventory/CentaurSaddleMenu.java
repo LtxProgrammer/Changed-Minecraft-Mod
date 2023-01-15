@@ -36,6 +36,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
 
     public final static HashMap<String, Object> guistate = new HashMap<>();
     public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
+    public final static String CHEST_LOCATION = Changed.modResourceStr("chest");
 
     public final Level world;
     public final Player entity;
@@ -94,10 +95,17 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             }
         }
 
-        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 83, 14) {
+        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 74, 14) {
             @Override
             public boolean mayPlace(@Nonnull ItemStack stack) {
                 return stack.is(Items.SADDLE);
+            }
+        }));
+
+        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 0, 92, 14) {
+            @Override
+            public boolean mayPlace(@Nonnull ItemStack stack) {
+                return stack.is(Items.CHEST);
             }
         }));
 
@@ -112,6 +120,8 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         CompoundTag tag = entity.getPersistentData();
         if (tag.contains(SADDLE_LOCATION))
             internal.insertItem(0, ItemStack.of(tag.getCompound(SADDLE_LOCATION)), false);
+        if (tag.contains(CHEST_LOCATION))
+            internal.insertItem(1, ItemStack.of(tag.getCompound(CHEST_LOCATION)), false);
     }
 
     @Override
@@ -265,6 +275,12 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             tag.put(SADDLE_LOCATION, internal.getStackInSlot(0).serializeNBT());
         else {
             tag.remove(SADDLE_LOCATION);
+            player.ejectPassengers();
+        }
+        if (!internal.getStackInSlot(1).isEmpty())
+            tag.put(CHEST_LOCATION, internal.getStackInSlot(1).serializeNBT());
+        else {
+            tag.remove(CHEST_LOCATION);
             player.ejectPassengers();
         }
 

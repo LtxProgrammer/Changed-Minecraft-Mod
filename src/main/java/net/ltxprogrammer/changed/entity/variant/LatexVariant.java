@@ -929,7 +929,7 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         public Builder<T> rideable() {
-            return addAbility(ChangedAbilities.ACCESS_SADDLE);
+            return addAbility(ChangedAbilities.ACCESS_SADDLE).addAbility(ChangedAbilities.ACCESS_CHEST);
         }
 
         public Builder<T> absorbing() {
