@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-public class SwitchTransfurModeAbility extends AbstractAbility {
+public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
     public ResourceLocation getId() {
         return Changed.modResource("switch_transfur_mode");

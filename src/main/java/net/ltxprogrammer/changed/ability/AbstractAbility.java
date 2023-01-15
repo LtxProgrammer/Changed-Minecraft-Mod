@@ -9,7 +9,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 
-public abstract class AbstractAbility {
+import org.apache.commons.lang3.function.TriFunction;
+
+public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> {
+    private final TriFunction<AbstractAbility<Instance>, Player, LatexVariant<?>, Instance> ctor;
+
+    public AbstractAbility(TriFunction<AbstractAbility<Instance>, Player, LatexVariant<?>, Instance> ctor) {
+        this.ctor = ctor;
+    }
+
+    public Instance makeInstance(Player player, LatexVariant<?> variant) {
+        return ctor.apply(this, player, variant);
+    }
+
     public TranslatableComponent getDisplayName() {
         return new TranslatableComponent("ability." + getId().toString().replace(':', '.'));
     }

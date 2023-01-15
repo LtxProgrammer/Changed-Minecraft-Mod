@@ -14,14 +14,14 @@ public class ChangedAbilities {
     public static SwitchTransfurModeAbility SWITCH_TRANSFUR_MODE = register(new SwitchTransfurModeAbility());
     public static CreateCobwebAbility CREATE_COBWEB = register(new CreateCobwebAbility());
 
-    public static <T extends AbstractAbility> T register(T ability) {
+    public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
             throw new RuntimeException("Duplicate ability id");
         REGISTRY.put(ability.getId(), ability);
         return ability;
     }
 
-    public static AbstractAbility getAbility(ResourceLocation location) {
+    public static AbstractAbility<?> getAbility(ResourceLocation location) {
         return REGISTRY.get(location);
     }
 }
