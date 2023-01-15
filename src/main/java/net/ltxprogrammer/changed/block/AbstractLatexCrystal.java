@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -59,12 +60,12 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
 
     @Override
     protected boolean mayPlaceOn(BlockState p_51042_, BlockGetter p_51043_, BlockPos p_51044_) {
-        return p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == LatexType.DARK_LATEX;
+        return p_51042_.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == LatexType.DARK_LATEX;
     }
 
-    public boolean canSurvive(BlockState p_52887_, LevelReader p_52888_, BlockPos p_52889_) {
+    public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
         BlockState blockStateOn = p_52888_.getBlockState(p_52889_.below());
-        return blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
+        return blockState.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
     }
 
     private LatexType getLatexed(BlockState p_51042_) {
