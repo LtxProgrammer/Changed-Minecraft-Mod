@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
-    public static final CubeDeformation NO_DEFORMATION = new CubeDeformation(0.0F);
+    public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
     public static final CubeDeformation TEXTURE_DEFORMATION = new CubeDeformation(-0.01F);
 
     protected final ModelPart rootModelPart;
