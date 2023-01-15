@@ -13,6 +13,7 @@ public class ChangedAbilities {
     public static AccessSaddleAbility ACCESS_SADDLE = register(new AccessSaddleAbility());
     public static SwitchTransfurModeAbility SWITCH_TRANSFUR_MODE = register(new SwitchTransfurModeAbility());
     public static CreateCobwebAbility CREATE_COBWEB = register(new CreateCobwebAbility());
+    public static CreateInkballAbility CREATE_INKBALL = register(new CreateInkballAbility());
     public static SwitchHandsAbility SWITCH_HANDS = register(new SwitchHandsAbility());
     public static AccessChestAbility ACCESS_CHEST = register(new AccessChestAbility());
 

@@ -126,7 +126,7 @@ public class LatexVariant<T extends LatexEntity> {
             .groundSpeed(0.3F).swimSpeed(2.58F) .split(Builder::ignored, female ->female.absorbing()).additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
-    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands()
+    public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL)
             .build(Changed.modResource("form_latex_squid_dog")));
 
     public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
