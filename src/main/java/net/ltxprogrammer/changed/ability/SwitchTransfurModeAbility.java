@@ -49,4 +49,10 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
     @Override
     public void stopUsing(Player player, LatexVariant<?> variant) {}
+
+    @Override
+    public ResourceLocation getTexture(Player player, LatexVariant<?> variant) {
+        return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + getId().getPath() + "_" +
+                variant.transfurMode.toString().toLowerCase() + ".png");
+    }
 }
