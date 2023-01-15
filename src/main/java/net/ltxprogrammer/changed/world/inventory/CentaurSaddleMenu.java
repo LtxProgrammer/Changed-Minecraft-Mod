@@ -94,7 +94,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             }
         }
 
-        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 82, 14) {
+        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 83, 14) {
             @Override
             public boolean mayPlace(@Nonnull ItemStack stack) {
                 return stack.is(Items.SADDLE);
