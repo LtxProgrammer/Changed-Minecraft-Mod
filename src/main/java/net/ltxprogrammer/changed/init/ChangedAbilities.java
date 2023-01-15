@@ -13,6 +13,7 @@ public class ChangedAbilities {
     public static AccessSaddleAbility ACCESS_SADDLE = register(new AccessSaddleAbility());
     public static SwitchTransfurModeAbility SWITCH_TRANSFUR_MODE = register(new SwitchTransfurModeAbility());
     public static CreateCobwebAbility CREATE_COBWEB = register(new CreateCobwebAbility());
+    public static SwitchHandsAbility SWITCH_HANDS = register(new SwitchHandsAbility());
 
     public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
