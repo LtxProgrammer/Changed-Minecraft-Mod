@@ -61,11 +61,11 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition legspikes2 = RightLeg.addOrReplaceChild("legspikes2", CubeListBuilder.create(), PartPose.offset(2.5F, 1.0F, 0.0F));
 
-        PartDefinition cube_r1 = legspikes2.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, -2.6F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.1F, 7.0F, 0.5F, -0.3491F, -0.0873F, -0.3491F));
+        PartDefinition cube_r1 = legspikes2.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, -2.6F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.1F, 7.0F, 0.5F, -0.3491F, -0.0873F, -0.3491F));
 
-        PartDefinition cube_r2 = legspikes2.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(74, 44).addBox(-0.975F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.125F, 3.4F, -1.3F, -0.3491F, 0.1745F, -0.3491F));
+        PartDefinition cube_r2 = legspikes2.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(74, 44).addBox(-0.975F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.125F, 3.4F, -1.3F, -0.3491F, 0.1745F, -0.3491F));
 
-        PartDefinition cube_r3 = legspikes2.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(53, 74).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.2F, 4.4F, -2.3F, 0.0F, 0.0F, -0.1309F));
+        PartDefinition cube_r3 = legspikes2.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(53, 74).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.2F, 4.4F, -2.3F, 0.0F, 0.0F, -0.1309F));
 
         PartDefinition cube_r4 = legspikes2.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(15, 30).addBox(-1.0F, -3.1F, -1.5F, 4.0F, 3.0F, 2.0F, new CubeDeformation(-0.175F)), PartPose.offsetAndRotation(-4.4F, 5.0F, -2.0F, 0.1745F, 0.0F, 0.2182F));
 
@@ -73,7 +73,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition cube_r5 = bone3.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(9, 55).addBox(-0.7F, -1.5F, -0.7F, 2.0F, 2.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.5F, 6.9F, 4.0F, 0.2618F, 0.0F, 0.0F));
 
-        PartDefinition cube_r6 = bone3.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(20, 35).addBox(-1.6F, -0.8F, -0.2F, 3.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 6.9F, 4.0F, -0.2182F, 0.0F, 0.0F));
+        PartDefinition cube_r6 = bone3.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(20, 35).addBox(-1.6F, -0.8F, -0.2F, 3.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 6.9F, 4.0F, -0.2182F, 0.0F, 0.0F));
 
         PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create().texOffs(32, 20).addBox(-1.6F, 15.0F, -2.75F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.049F)), PartPose.offset(2.5F, 7.0F, 0.0F));
 
@@ -93,11 +93,11 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition legspikes = LeftLeg.addOrReplaceChild("legspikes", CubeListBuilder.create(), PartPose.offset(-2.5F, 1.0F, 0.0F));
 
-        PartDefinition cube_r7 = legspikes.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(42, 54).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, 7.0F, 0.5F, -0.3491F, 0.0873F, 0.3491F));
+        PartDefinition cube_r7 = legspikes.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(42, 54).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, 7.0F, 0.5F, -0.3491F, 0.0873F, 0.3491F));
 
-        PartDefinition cube_r8 = legspikes.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(47, 74).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.1F, 3.4F, -1.3F, -0.3491F, -0.1745F, 0.3491F));
+        PartDefinition cube_r8 = legspikes.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(47, 74).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.1F, 3.4F, -1.3F, -0.3491F, -0.1745F, 0.3491F));
 
-        PartDefinition cube_r9 = legspikes.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(59, 74).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.2F, 4.4F, -2.3F, 0.0F, 0.0F, 0.1309F));
+        PartDefinition cube_r9 = legspikes.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(59, 74).addBox(0.0F, -3.0F, -1.0F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.2F, 4.4F, -2.3F, 0.0F, 0.0F, 0.1309F));
 
         PartDefinition cube_r10 = legspikes.addOrReplaceChild("cube_r10", CubeListBuilder.create().texOffs(62, 64).addBox(-3.0F, -3.0F, -1.0F, 4.0F, 3.0F, 2.0F, new CubeDeformation(-0.175F)), PartPose.offsetAndRotation(4.4F, 5.0F, -2.5F, 0.1745F, 0.0F, -0.2182F));
 
@@ -105,25 +105,25 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition cube_r11 = bone2.addOrReplaceChild("cube_r11", CubeListBuilder.create().texOffs(57, 41).addBox(-1.5F, -1.5F, -0.7F, 2.0F, 2.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.4F, 6.9F, 4.0F, 0.2618F, 0.0F, 0.0F));
 
-        PartDefinition cube_r12 = bone2.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(12, 43).addBox(-1.6F, -0.8F, -0.2F, 3.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.4F, 6.9F, 4.0F, -0.2182F, 0.0F, 0.0F));
+        PartDefinition cube_r12 = bone2.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(12, 43).addBox(-1.6F, -0.8F, -0.2F, 3.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.4F, 6.9F, 4.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(64, 19).addBox(-2.0F, -3.0F, -6.5F, 4.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(71, 41).addBox(-1.5F, -1.0F, -5.3F, 3.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(64, 19).addBox(-2.0F, -3.0F, -6.5F, 4.0F, 2.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(71, 41).addBox(-1.5F, -1.0F, -5.3F, 3.0F, 1.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -10.0F, 0.0F));
 
-        PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(73, 55).addBox(0.225F, -1.0F, -1.55F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.5F, -2.0F, -5.0F, 0.0F, -0.1789F, 0.0F));
+        PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(73, 55).addBox(0.225F, -1.0F, -1.55F, 1.0F, 2.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, -2.0F, -5.0F, 0.0F, -0.1789F, 0.0F));
 
-        PartDefinition Snout_r2 = Head.addOrReplaceChild("Snout_r2", CubeListBuilder.create().texOffs(73, 61).addBox(-1.225F, -1.0F, -1.55F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.5F, -2.0F, -5.0F, 0.0F, 0.1789F, 0.0F));
+        PartDefinition Snout_r2 = Head.addOrReplaceChild("Snout_r2", CubeListBuilder.create().texOffs(73, 61).addBox(-1.225F, -1.0F, -1.55F, 1.0F, 2.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.5F, -2.0F, -5.0F, 0.0F, 0.1789F, 0.0F));
 
-        PartDefinition Snout_r3 = Head.addOrReplaceChild("Snout_r3", CubeListBuilder.create().texOffs(64, 19).addBox(-1.0F, -0.5F, -0.5F, 2.0F, 1.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -2.2F, -5.5F, 0.48F, 0.0F, 0.0F));
+        PartDefinition Snout_r3 = Head.addOrReplaceChild("Snout_r3", CubeListBuilder.create().texOffs(64, 19).addBox(-1.0F, -0.5F, -0.5F, 2.0F, 1.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -2.2F, -5.5F, 0.48F, 0.0F, 0.0F));
 
-        PartDefinition Fin = Head.addOrReplaceChild("Fin", CubeListBuilder.create().texOffs(32, 38).addBox(-1.0F, -1.9F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.5F, 1.0F, 0.4F));
+        PartDefinition Fin = Head.addOrReplaceChild("Fin", CubeListBuilder.create().texOffs(32, 38).addBox(-1.0F, -1.9F, -1.0F, 2.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(-0.5F, 1.0F, 0.4F));
 
         PartDefinition cube_r13 = Fin.addOrReplaceChild("cube_r13", CubeListBuilder.create().texOffs(7, 71).addBox(-2.3F, -4.3F, -0.9F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.225F)), PartPose.offsetAndRotation(2.3F, -6.9F, 0.0F, 0.3054F, 0.0F, 0.0F));
 
         PartDefinition cube_r14 = Fin.addOrReplaceChild("cube_r14", CubeListBuilder.create().texOffs(32, 64).addBox(-2.3F, -4.425F, -3.5F, 1.0F, 3.0F, 4.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.3F, -6.9F, 0.0F, 0.5236F, 0.0F, 0.0F));
 
-        PartDefinition cube_r15 = Fin.addOrReplaceChild("cube_r15", CubeListBuilder.create().texOffs(64, 7).addBox(-2.3F, -1.6F, 5.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.3F, -6.9F, 0.0F, -0.9599F, 0.0F, 0.0F));
+        PartDefinition cube_r15 = Fin.addOrReplaceChild("cube_r15", CubeListBuilder.create().texOffs(64, 7).addBox(-2.3F, -1.6F, 5.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.3F, -6.9F, 0.0F, -0.9599F, 0.0F, 0.0F));
 
         PartDefinition cube_r16 = Fin.addOrReplaceChild("cube_r16", CubeListBuilder.create().texOffs(52, 41).addBox(-2.3F, -2.6F, 3.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.3F, -6.9F, 0.0F, -0.7418F, 0.0F, 0.0F));
 
@@ -149,17 +149,17 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition facespikes = Head.addOrReplaceChild("facespikes", CubeListBuilder.create(), PartPose.offsetAndRotation(4.0F, -1.0F, -1.0F, -0.6981F, 0.0F, 0.0F));
 
-        PartDefinition cube_r23 = facespikes.addOrReplaceChild("cube_r23", CubeListBuilder.create().texOffs(23, 71).addBox(-1.4F, -1.5F, -1.2F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.3F, -0.2F, 0.3F, -0.5236F, 0.0F, 0.5236F));
+        PartDefinition cube_r23 = facespikes.addOrReplaceChild("cube_r23", CubeListBuilder.create().texOffs(23, 71).addBox(-1.4F, -1.5F, -1.2F, 2.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.3F, -0.2F, 0.3F, -0.5236F, 0.0F, 0.5236F));
 
-        PartDefinition cube_r24 = facespikes.addOrReplaceChild("cube_r24", CubeListBuilder.create().texOffs(16, 50).addBox(-0.8F, -1.0F, -0.1F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.2F, 0.3F, -1.4F, -0.5236F, 0.0F, 0.5236F));
+        PartDefinition cube_r24 = facespikes.addOrReplaceChild("cube_r24", CubeListBuilder.create().texOffs(16, 50).addBox(-0.8F, -1.0F, -0.1F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.2F, 0.3F, -1.4F, -0.5236F, 0.0F, 0.5236F));
 
         PartDefinition facespikes2 = Head.addOrReplaceChild("facespikes2", CubeListBuilder.create(), PartPose.offsetAndRotation(-4.0F, -1.0F, -1.0F, -0.6981F, 0.0F, 0.0F));
 
-        PartDefinition cube_r25 = facespikes2.addOrReplaceChild("cube_r25", CubeListBuilder.create().texOffs(15, 71).addBox(-0.3F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.2F, -0.3F, 0.3F, -0.5236F, 0.0F, -0.5236F));
+        PartDefinition cube_r25 = facespikes2.addOrReplaceChild("cube_r25", CubeListBuilder.create().texOffs(15, 71).addBox(-0.3F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.2F, -0.3F, 0.3F, -0.5236F, 0.0F, -0.5236F));
 
-        PartDefinition cube_r26 = facespikes2.addOrReplaceChild("cube_r26", CubeListBuilder.create().texOffs(48, 38).addBox(-0.7F, -1.0F, -0.1F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.3F, 0.2F, -1.4F, -0.5236F, 0.0F, -0.5236F));
+        PartDefinition cube_r26 = facespikes2.addOrReplaceChild("cube_r26", CubeListBuilder.create().texOffs(48, 38).addBox(-0.7F, -1.0F, -0.1F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.3F, 0.2F, -1.4F, -0.5236F, 0.0F, -0.5236F));
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 8.0F, 6.0F, new CubeDeformation(0.0F))
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 8.0F, 6.0F, CubeDeformation.NONE)
                 .texOffs(28, 26).addBox(-4.0F, 6.0F, -1.6F, 8.0F, 8.0F, 4.0F, new CubeDeformation(0.45F))
                 .texOffs(16, 64).addBox(0.4F, 11.7F, -2.2F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.35F))
                 .texOffs(46, 62).addBox(-2.4F, 11.7F, -2.2F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.35F))
@@ -169,7 +169,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
                 .texOffs(68, 24).addBox(-3.3F, 6.4F, -3.2F, 3.0F, 2.0F, 2.0F, new CubeDeformation(0.1F))
                 .texOffs(52, 11).addBox(0.8F, 1.2F, -3.1F, 4.0F, 4.0F, 1.0F, new CubeDeformation(0.625F))
                 .texOffs(61, 69).addBox(-4.8F, 1.2F, -3.1F, 4.0F, 4.0F, 1.0F, new CubeDeformation(0.625F))
-                .texOffs(27, 11).addBox(-5.0F, 14.0F, -2.1F, 10.0F, 4.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, 0.0F));
+                .texOffs(27, 11).addBox(-5.0F, 14.0F, -2.1F, 10.0F, 4.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -10.0F, 0.0F));
 
         PartDefinition Spikes = Torso.addOrReplaceChild("Spikes", CubeListBuilder.create().texOffs(24, 4).addBox(-1.0F, 0.0F, -8.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, 5.4F, 3.8F, -0.1745F, 0.0F, 0.0F));
 
@@ -191,13 +191,13 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(73, 49).addBox(-1.1F, 15.4F, -6.5F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.1F, 2.0F, 6.5F, 1.6581F, 0.0F, 0.0F));
 
-        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(64, 51).addBox(-1.6F, 13.0F, -5.8F, 3.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.1F, 2.0F, 6.5F, 1.5708F, 0.0F, 0.0F));
+        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(64, 51).addBox(-1.6F, 13.0F, -5.8F, 3.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.1F, 2.0F, 6.5F, 1.5708F, 0.0F, 0.0F));
 
         PartDefinition Base_r3 = Tail.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(0, 55).addBox(-1.6F, 6.5F, -4.6F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.1F, 2.0F, 6.5F, 1.4835F, 0.0F, 0.0F));
 
-        PartDefinition Base_r4 = Tail.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(32, 0).addBox(-2.0F, 0.7F, -3.4F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.0F, 6.5F, 1.2654F, 0.0F, 0.0F));
+        PartDefinition Base_r4 = Tail.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(32, 0).addBox(-2.0F, 0.7F, -3.4F, 4.0F, 7.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 2.0F, 6.5F, 1.2654F, 0.0F, 0.0F));
 
-        PartDefinition Base_r5 = Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(0, 30).addBox(-2.5F, 0.0F, -2.0F, 5.0F, 8.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.5F, 1.0036F, 0.0F, 0.0F));
+        PartDefinition Base_r5 = Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(0, 30).addBox(-2.5F, 0.0F, -2.0F, 5.0F, 8.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.5F, 1.0036F, 0.0F, 0.0F));
 
         PartDefinition Fin3 = Tail.addOrReplaceChild("Fin3", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 5.5F));
 
@@ -215,7 +215,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
         PartDefinition cube_r39 = Fin3.addOrReplaceChild("cube_r39", CubeListBuilder.create().texOffs(20, 64).addBox(-1.0F, 1.225F, 0.225F, 2.0F, 3.0F, 4.0F, new CubeDeformation(-0.05F)), PartPose.offsetAndRotation(0.0F, -1.0F, -0.5F, 0.0873F, 0.0F, 0.0F));
 
-        PartDefinition cube_r40 = Fin3.addOrReplaceChild("cube_r40", CubeListBuilder.create().texOffs(57, 11).addBox(-1.0F, -0.9F, -3.025F, 2.0F, 3.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, -0.5F, -0.1309F, 0.0F, 0.0F));
+        PartDefinition cube_r40 = Fin3.addOrReplaceChild("cube_r40", CubeListBuilder.create().texOffs(57, 11).addBox(-1.0F, -0.9F, -3.025F, 2.0F, 3.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -1.0F, -0.5F, -0.1309F, 0.0F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create(), PartPose.offset(-6.0F, -9.0F, 0.0F));
 
