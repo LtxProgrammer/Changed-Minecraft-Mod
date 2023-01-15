@@ -3,6 +3,11 @@
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
 
+  "ability.changed.access_saddle": "Tilgang Sal",
+  "ability.changed.extra_hands": "Ekstra Hender",
+  "ability.changed.switch_transfur_mode": "Endre Transpelsmodus",
+  "ability.changed.create_cobweb": "Lage Spindelvev",
+
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
   "subtitles.changed.open3": "Laboratoriedøren åpnes",
@@ -57,8 +62,8 @@
 
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   
-  "block.changed.aerosol_latex": "Aerosol Lateks",
-  "block.changed.bedside_iv_rack": "IV Rack",
+  "block.changed.aerosol_latex": "Aerosol lateks",
+  "block.changed.bedside_iv_rack": "IV rack",
   "block.changed.book_stack": "Bokstabel",
   "block.changed.computer": "Datamaskin",
   "block.changed.clipboard": "Utklippstavle",
@@ -71,6 +76,7 @@
   "block.changed.iron_crate": "Jernkasse",
   "block.changed.latex_beifeng_crystal": "Lateks beifeng krystall",
   "block.changed.latex_wolf_crystal": "Lateks ulv krystall",
+  "block.changed.latex_wolf_crystal_block": "Lataks ulv krystallblokk",
   "block.changed.latex_beifeng_crystal_small": "Liten lateks beifeng krystall",
   "block.changed.latex_wolf_crystal_small": "Liten lateks ulvekrystall",
   "block.changed.latex_crystal": "Lateks krystall",

@@ -2,12 +2,13 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.OrganicLatex;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity {
+public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, OrganicLatex {
     public DarkLatexDragon(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
