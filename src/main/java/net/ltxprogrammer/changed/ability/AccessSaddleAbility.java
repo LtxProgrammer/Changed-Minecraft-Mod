@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 
+import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.CHEST_LOCATION;
 import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.SADDLE_LOCATION;
 
 public class AccessSaddleAbility extends SimpleAbility {
@@ -22,7 +23,7 @@ public class AccessSaddleAbility extends SimpleAbility {
 
     @Override
     public boolean canUse(Player player, LatexVariant<?> variant) {
-        return player.containerMenu == player.inventoryMenu;
+        return true;
     }
 
     @Override
@@ -52,5 +53,8 @@ public class AccessSaddleAbility extends SimpleAbility {
         if (tag.contains(SADDLE_LOCATION))
             player.drop(ItemStack.of(tag.getCompound(SADDLE_LOCATION)), true);
         tag.remove(SADDLE_LOCATION);
+        if (tag.contains(CHEST_LOCATION))
+            player.drop(ItemStack.of(tag.getCompound(CHEST_LOCATION)), true);
+        tag.remove(CHEST_LOCATION);
     }
 }

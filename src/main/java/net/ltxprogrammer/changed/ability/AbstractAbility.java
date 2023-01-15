@@ -28,12 +28,12 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
     public abstract ResourceLocation getId();
 
-    public abstract boolean canUse(Player player, LatexVariant<?> variant);
-    public abstract boolean canKeepUsing(Player player, LatexVariant<?> variant);
+    public boolean canUse(Player player, LatexVariant<?> variant) { return false; }
+    public boolean canKeepUsing(Player player, LatexVariant<?> variant) { return false; }
 
-    public abstract void startUsing(Player player, LatexVariant<?> variant);
-    public abstract void tick(Player player, LatexVariant<?> variant);
-    public abstract void stopUsing(Player player, LatexVariant<?> variant);
+    public void startUsing(Player player, LatexVariant<?> variant) {}
+    public void tick(Player player, LatexVariant<?> variant) {}
+    public void stopUsing(Player player, LatexVariant<?> variant) {}
 
     // Called when the player loses the variant (death or untransfur)
     public void onRemove(Player player, LatexVariant<?> variant) {}

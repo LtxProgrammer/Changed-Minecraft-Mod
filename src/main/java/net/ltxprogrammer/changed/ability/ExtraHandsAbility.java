@@ -20,7 +20,7 @@ public class ExtraHandsAbility extends SimpleAbility {
 
     @Override
     public boolean canUse(Player player, LatexVariant<?> variant) {
-        return player.containerMenu == player.inventoryMenu;
+        return true;
     }
 
     @Override
