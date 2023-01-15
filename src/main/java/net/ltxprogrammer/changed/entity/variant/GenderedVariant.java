@@ -9,6 +9,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
                 false, false, false, false, false,
                 true, null, TransfurMode.REPLICATION, Optional.empty(),
-                Optional.empty(), new HashMap<>(), 0.0F, ChangedSounds.POISON.getLocation());
+                Optional.empty(), new ArrayList<>(), 0.0F, ChangedSounds.POISON.getLocation());
         this.male = male;
         this.female = female;
     }
@@ -157,7 +158,7 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.additionalHealth = value; this.femaleBuilder.additionalHealth = value; return this;
         }
 
-        public Builder<M, F> addAbility(AbstractAbility ability) {
+        public Builder<M, F> addAbility(AbstractAbility<?> ability) {
             this.maleBuilder.addAbility(ability); this.femaleBuilder.addAbility(ability); return this;
         }
         public Builder<M, F> noLegs() {

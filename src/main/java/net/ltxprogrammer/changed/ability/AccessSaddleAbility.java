@@ -14,7 +14,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.SADDLE_LOCATION;
 
-public class AccessSaddleAbility extends AbstractAbility {
+public class AccessSaddleAbility extends SimpleAbility {
     @Override
     public ResourceLocation getId() {
         return Changed.modResource("access_saddle");

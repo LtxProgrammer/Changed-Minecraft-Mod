@@ -55,8 +55,8 @@ public abstract class ServerPlayerMixin extends Player {
             CompoundTag tagAbilities = tag.getCompound("LatexAbilities");
             tagAbilities.getAllKeys().forEach(key -> {
                 ResourceLocation name = ResourceLocation.tryParse(key);
-                if (variant.abilities.containsKey(name))
-                    variant.abilities.get(name).readData(tagAbilities.getCompound(key), this, variant);
+                if (variant.abilityInstances.containsKey(name))
+                    variant.abilityInstances.get(name).readData(tagAbilities.getCompound(key));
             });
         }
     }
@@ -69,9 +69,9 @@ public abstract class ServerPlayerMixin extends Player {
         if (latexVariant != null) {
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
             CompoundTag tagAbilities = new CompoundTag();
-            latexVariant.abilities.forEach((name, ability) -> {
+            latexVariant.abilityInstances.forEach((name, ability) -> {
                 CompoundTag tagAbility = new CompoundTag();
-                ability.saveData(tagAbility, this, latexVariant);
+                ability.saveData(tagAbility);
                 if (!tagAbility.isEmpty())
                     tagAbilities.put(name.toString(), tagAbility);
             });
