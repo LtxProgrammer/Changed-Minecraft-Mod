@@ -41,11 +41,11 @@ public class SimpleAbilityInstance extends AbstractAbilityInstance {
 
     @Override
     public void saveData(CompoundTag tag) {
-        ability.onRemove(player, variant);
+        ability.saveData(tag, player, variant);
     }
 
     @Override
     public void readData(CompoundTag tag) {
-        ability.onRemove(player, variant);
+        ability.readData(tag, player, variant);
     }
 }

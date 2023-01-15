@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_glass_bottle": {
+    "has_latex_wolf_crystal_fragment": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [

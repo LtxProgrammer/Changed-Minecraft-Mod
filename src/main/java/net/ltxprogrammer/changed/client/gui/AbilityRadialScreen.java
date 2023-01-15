@@ -63,10 +63,6 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
                 ChangedParticles.Color3.fromInt(ints.getB()));
     }
 
-    public ResourceLocation getAbilityTexture(ResourceLocation ability) {
-        return new ResourceLocation(ability.getNamespace(), "textures/abilities/" + ability.getPath() + ".png");
-    }
-
     private static final double RADIAL_DISTANCE = 90.0;
 
     @Nullable
@@ -120,7 +116,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
-            RenderSystem.setShaderTexture(0, getAbilityTexture(abilities.get(sect)));
+            RenderSystem.setShaderTexture(0, ChangedAbilities.getAbility(abilities.get(sect)).getTexture(menu.player, menu.variant));
             RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
             this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
             RenderSystem.setShaderColor(secondaryColor.red(), secondaryColor.green(), secondaryColor.blue(), 1);
