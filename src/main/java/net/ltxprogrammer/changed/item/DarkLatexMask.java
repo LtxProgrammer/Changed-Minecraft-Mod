@@ -20,9 +20,16 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DarkLatexMask extends Item implements WearableItem {
+    public static final List<ResourceLocation> MASKED_LATEXES = new ArrayList<>(List.of(
+            LatexVariant.DARK_LATEX_WOLF.male().getFormId(),
+            LatexVariant.DARK_LATEX_WOLF.female().getFormId(),
+            LatexVariant.DARK_LATEX_YUFENG.getFormId()
+    ));
+
     public DarkLatexMask() {
         super(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
@@ -34,9 +41,9 @@ public class DarkLatexMask extends Item implements WearableItem {
 
     public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
         if (this.allowdedIn(p_43356_)) {
-            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_WOLF.male().getFormId()));
-            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_WOLF.female().getFormId()));
-            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_YUFENG.getFormId()));
+            for (var variant : MASKED_LATEXES) {
+                p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
+            }
         }
     }
 
