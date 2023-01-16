@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class LatexInkball extends ThrowableItemProjectile {
     public LatexInkball(EntityType<? extends LatexInkball> entityType, Level level) {
@@ -58,6 +59,15 @@ public class LatexInkball extends ThrowableItemProjectile {
         if (!(hitResult.getEntity() instanceof LivingEntity livingEntity))
             return;
 
-        ProcessTransfur.progressTransfur(livingEntity, 4000, LatexVariant.LATEX_SQUID_DOG.getFormId());
+        ProcessTransfur.progressTransfur(livingEntity, 6000, LatexVariant.LATEX_SQUID_DOG.getFormId());
+    }
+
+    protected void onHit(HitResult hitResult) {
+        super.onHit(hitResult);
+        if (!this.level.isClientSide) {
+            this.level.broadcastEntityEvent(this, (byte)3);
+            this.discard();
+        }
+
     }
 }
