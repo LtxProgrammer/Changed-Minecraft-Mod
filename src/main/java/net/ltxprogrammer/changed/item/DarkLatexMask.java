@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -28,6 +30,14 @@ public class DarkLatexMask extends Item implements WearableItem {
     @Override
     public EquipmentSlot getEquipmentSlot(ItemStack stack) {
         return EquipmentSlot.HEAD;
+    }
+
+    public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
+        if (this.allowdedIn(p_43356_)) {
+            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_WOLF.male().getFormId()));
+            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_WOLF.female().getFormId()));
+            p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), LatexVariant.DARK_LATEX_YUFENG.getFormId()));
+        }
     }
 
     @Override
