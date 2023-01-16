@@ -7,6 +7,9 @@
   "ability.changed.extra_hands": "Ekstra Hender",
   "ability.changed.switch_transfur_mode": "Endre Transpelsmodus",
   "ability.changed.create_cobweb": "Lage Spindelvev",
+  "ability.changed.create_inkball": "Lage Blekkball",
+  "ability.changed.access_chest": "Tilgang Kiste",
+  "ability.changed.switch_hands": "Bytte Hender",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
