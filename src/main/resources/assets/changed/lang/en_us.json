@@ -7,6 +7,9 @@
   "ability.changed.extra_hands": "Extra Hands",
   "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
   "ability.changed.create_cobweb": "Create Cobweb",
+  "ability.changed.create_inkball": "Create Inkball",
+  "ability.changed.access_chest": "Access Chest",
+  "ability.changed.switch_hands": "Switch Hands",
 
   "subtitles.changed.sound3": "Organic Transfur",
   "subtitles.changed.poison": "Transfur",
@@ -24,6 +27,7 @@
   "item.changed.floppy_disk": "Floppy Disk",
   "item.changed.latex_base": "Latex Base",
   "item.changed.latex_beifeng_crystal_fragment": "Latex Beifeng Crystal Fragment",
+  "item.changed.latex_inkball": "Latex Inkball",
   "item.changed.latex_syringe": "Latex Syringe",
   "item.changed.latex_wolf_crystal_fragment": "Latex Wolf Crystal Fragment",
   "item.changed.latex_tipped_arrow": "Latex Tipped Arrow",
