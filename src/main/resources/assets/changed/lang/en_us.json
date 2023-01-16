@@ -59,6 +59,7 @@
   "container.changed.extra_hands": "Extra Hands Menu",
   "container.changed.infuser": "Infuser Menu",
   "container.changed.purifier": "Purifier Menu",
+  "container.changed.access_chest": "Chest Inventory",
 
   "text.changed.game_saved": "Game has been saved.",
   "text.changed.game_saved_fail": "Cannot save game.",

@@ -65,10 +65,14 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
 
     private static final double RADIAL_DISTANCE = 90.0;
 
+    private static double calcOffset(int section) {
+        return section % 2 == 0 ? 0.075 : -0.075;
+    }
+
     @Nullable
     public ResourceLocation getAbilityAt(int mouseX, int mouseY) {
         for (int sect = 0; sect < 8 && sect < abilities.size() && sect <= tickCount; sect++) {
-            double dbl = (sect + 0.5) / 8.0;
+            double dbl = (sect + 0.5 + calcOffset(sect)) / 8.0;
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
@@ -101,18 +105,23 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
         RenderSystem.defaultBlendFunc();
 
         // Render radial bg
-        RenderSystem.setShaderColor(primaryColor.red(), primaryColor.green(), primaryColor.blue(), 1);
         for (int sect = 0; sect < 8 && sect <= tickCount; sect++) {
-            double dbl = (sect + 0.5 + (sect % 2 == 0 ? 0.075 : -0.075)) / 8.0;
+            double dbl = (sect + 0.5 + calcOffset(sect)) / 8.0;
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
+            boolean enabled = false;
+            if (sect < abilities.size() && menu.variant.abilityInstances.containsKey(abilities.get(sect))) {
+                enabled = menu.variant.abilityInstances.get(abilities.get(sect)).canUse();
+            }
+
+            RenderSystem.setShaderColor(primaryColor.red(), primaryColor.green(), primaryColor.blue(), enabled ? 1 : 0.5f);
             RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/radial/" + sect + ".png"));
             this.blit(ms, x - 32 + this.leftPos, y - 32 + this.topPos, 0, 0, 64, 64, 64, 64);
         }
 
         for (int sect = 0; sect < 8 && sect < abilities.size() && sect <= tickCount; sect++) {
-            double dbl = (sect + 0.5) / 8.0;
+            double dbl = (sect + 0.5 + calcOffset(sect)) / 8.0;
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
@@ -140,7 +149,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
     @Override
     public boolean mouseClicked(double p_97748_, double p_97749_, int p_97750_) {
         var ability = getAbilityAt((int)p_97748_, (int)p_97749_);
-        if (ability != null) {
+        if (ability != null && menu.variant.abilityInstances.get(ability).canUse()) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.minecraft.player.closeContainer();
             Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(ability));
