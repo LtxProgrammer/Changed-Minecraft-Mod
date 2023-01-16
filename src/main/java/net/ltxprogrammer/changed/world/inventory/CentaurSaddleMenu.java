@@ -17,9 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -39,7 +36,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     public final static String CHEST_LOCATION = Changed.modResourceStr("chest");
 
     public final Level world;
-    public final Player entity;
+    public final Player player;
     public int x, y, z;
 
     private IItemHandler internal;
@@ -51,7 +48,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     public CentaurSaddleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         super(ChangedMenus.CENTAUR_SADDLE, id);
 
-        this.entity = inv.player;
+        this.player = inv.player;
         this.world = inv.player.level;
 
         this.internal = new ItemStackHandler(2);
@@ -69,9 +66,9 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 byte hand = extraData.readByte();
                 ItemStack itemstack;
                 if (hand == 0)
-                    itemstack = this.entity.getMainHandItem();
+                    itemstack = this.player.getMainHandItem();
                 else
-                    itemstack = this.entity.getOffhandItem();
+                    itemstack = this.player.getOffhandItem();
                 itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
                     this.internal = capability;
                     this.bound = true;
@@ -102,7 +99,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             }
         }));
 
-        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 0, 92, 14) {
+        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 92, 14) {
             @Override
             public boolean mayPlace(@Nonnull ItemStack stack) {
                 return stack.is(Items.CHEST);
@@ -117,7 +114,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             this.addSlot(new Slot(inv, si, 3 + 8 + si * 18, -43 + 142));
 
 
-        CompoundTag tag = entity.getPersistentData();
+        CompoundTag tag = player.getPersistentData();
         if (tag.contains(SADDLE_LOCATION))
             internal.insertItem(0, ItemStack.of(tag.getCompound(SADDLE_LOCATION)), false);
         if (tag.contains(CHEST_LOCATION))
@@ -172,14 +169,14 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     }
 
     @Override
-    protected boolean moveItemStackTo(ItemStack p_38904_, int p_38905_, int p_38906_, boolean p_38907_) {
+    protected boolean moveItemStackTo(ItemStack item, int p_38905_, int p_38906_, boolean p_38907_) {
         boolean flag = false;
         int i = p_38905_;
         if (p_38907_) {
             i = p_38906_ - 1;
         }
-        if (p_38904_.isStackable()) {
-            while (!p_38904_.isEmpty()) {
+        if (item.isStackable()) {
+            while (!item.isEmpty()) {
                 if (p_38907_) {
                     if (i < p_38905_) {
                         break;
@@ -189,16 +186,16 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
                 Slot slot = this.slots.get(i);
                 ItemStack itemstack = slot.getItem();
-                if (slot.mayPlace(itemstack) && !itemstack.isEmpty() && ItemStack.isSameItemSameTags(p_38904_, itemstack)) {
-                    int j = itemstack.getCount() + p_38904_.getCount();
-                    int maxSize = Math.min(slot.getMaxStackSize(), p_38904_.getMaxStackSize());
+                if (slot.mayPlace(itemstack) && !itemstack.isEmpty() && ItemStack.isSameItemSameTags(item, itemstack)) {
+                    int j = itemstack.getCount() + item.getCount();
+                    int maxSize = Math.min(slot.getMaxStackSize(), item.getMaxStackSize());
                     if (j <= maxSize) {
-                        p_38904_.setCount(0);
+                        item.setCount(0);
                         itemstack.setCount(j);
                         slot.set(itemstack);
                         flag = true;
                     } else if (itemstack.getCount() < maxSize) {
-                        p_38904_.shrink(maxSize - itemstack.getCount());
+                        item.shrink(maxSize - itemstack.getCount());
                         itemstack.setCount(maxSize);
                         slot.set(itemstack);
                         flag = true;
@@ -211,7 +208,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
             }
         }
-        if (!p_38904_.isEmpty()) {
+        if (!item.isEmpty()) {
             if (p_38907_) {
                 i = p_38906_ - 1;
             } else {
@@ -227,11 +224,11 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
                 Slot slot1 = this.slots.get(i);
                 ItemStack itemstack1 = slot1.getItem();
-                if (itemstack1.isEmpty() && slot1.mayPlace(p_38904_)) {
-                    if (p_38904_.getCount() > slot1.getMaxStackSize()) {
-                        slot1.set(p_38904_.split(slot1.getMaxStackSize()));
+                if (itemstack1.isEmpty() && slot1.mayPlace(item)) {
+                    if (item.getCount() > slot1.getMaxStackSize()) {
+                        slot1.set(item.split(slot1.getMaxStackSize()));
                     } else {
-                        slot1.set(p_38904_.split(p_38904_.getCount()));
+                        slot1.set(item.split(item.getCount()));
                     }
                     slot1.setChanged();
                     flag = true;
@@ -281,7 +278,6 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             tag.put(CHEST_LOCATION, internal.getStackInSlot(1).serializeNBT());
         else {
             tag.remove(CHEST_LOCATION);
-            player.ejectPassengers();
         }
 
         if (!old.equals(tag)) {
