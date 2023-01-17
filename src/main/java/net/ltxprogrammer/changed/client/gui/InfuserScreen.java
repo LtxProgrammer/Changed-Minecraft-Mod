@@ -119,7 +119,7 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
         this.setInitialFocus(this.recipeBookComponent);
         this.titleLabelX = 29;
 
-        maleFemaleSwitch = new Switch(this, Changed.modResource("male_female_switch"), this.leftPos + 131, this.topPos + 51, 20, 10, TextComponent.EMPTY, false,
+        maleFemaleSwitch = new Switch(this, Changed.modResource("male_female_switch"), this.leftPos + 131, this.topPos + 61, 20, 10, TextComponent.EMPTY, false,
                 Changed.modResource("textures/gui/gender_switch_male.png"), Changed.modResource("textures/gui/gender_switch_female.png"));
         this.addRenderableWidget(maleFemaleSwitch);
     }

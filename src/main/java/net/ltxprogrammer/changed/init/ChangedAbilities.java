@@ -16,6 +16,7 @@ public class ChangedAbilities {
     public static CreateInkballAbility CREATE_INKBALL = register(new CreateInkballAbility());
     public static SwitchHandsAbility SWITCH_HANDS = register(new SwitchHandsAbility());
     public static AccessChestAbility ACCESS_CHEST = register(new AccessChestAbility());
+    public static SwitchGenderAbility SWITCH_GENDER = register(new SwitchGenderAbility());
 
     public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
