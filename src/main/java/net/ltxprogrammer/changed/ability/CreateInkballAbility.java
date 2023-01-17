@@ -16,7 +16,7 @@ public class CreateInkballAbility extends SimpleAbility {
 
     @Override
     public boolean canUse(Player player, LatexVariant<?> variant) {
-        return true;
+        return player.getFoodData().getFoodLevel() > 6.0f || player.isCreative();
     }
 
     @Override
