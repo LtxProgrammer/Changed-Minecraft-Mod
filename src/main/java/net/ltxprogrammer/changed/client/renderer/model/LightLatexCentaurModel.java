@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface {
+public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface, TorsoSupplier {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_centaur"), "main");
     private final ModelPart RightLeg;
@@ -208,5 +208,10 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
     @Override
     public LatexHumanoidModelController getController() {
         return controller;
+    }
+
+    @Override
+    public ModelPart getTorso() {
+        return LowerTorso;
     }
 }
