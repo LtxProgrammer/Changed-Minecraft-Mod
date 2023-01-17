@@ -20,6 +20,7 @@ import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -220,6 +221,26 @@ public class LatexVariant<T extends LatexEntity> {
 
     public float landMultiplier() {
         return groundSpeed;
+    }
+
+    public CompoundTag saveAbilities() {
+        CompoundTag tagAbilities = new CompoundTag();
+        abilityInstances.forEach((name, ability) -> {
+            CompoundTag tagAbility = new CompoundTag();
+            ability.saveData(tagAbility);
+            if (!tagAbility.isEmpty())
+                tagAbilities.put(name.toString(), tagAbility);
+        });
+        return tagAbilities;
+    }
+
+    public void loadAbilities(CompoundTag tagAbilities) {
+        abilityInstances.forEach((name, instance) -> {
+            if (!tagAbilities.contains(name.toString()))
+                return;
+            CompoundTag abilityTag = tagAbilities.getCompound(name.toString());
+            instance.readData(abilityTag);
+        });
     }
 
     public enum BreatheMode {
