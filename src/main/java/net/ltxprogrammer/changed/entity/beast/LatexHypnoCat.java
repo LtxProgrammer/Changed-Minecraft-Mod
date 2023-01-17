@@ -33,7 +33,7 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
 
     @Override
     public String getEffectName() {
-        return "hypnotize";
+        return "hypnosis";
     }
 
     public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {

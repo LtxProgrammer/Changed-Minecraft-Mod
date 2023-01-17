@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +19,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.CHEST_LOCATION;
-
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
     final NonNullList<ItemStack> itemStacks = NonNullList.withSize(2 * 9, ItemStack.EMPTY);
 
@@ -28,14 +28,14 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
 
     @Override
     public boolean canUse() {
-        return player.getPersistentData().contains(CHEST_LOCATION);
+        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE).chest.isEmpty();
     }
 
     @Override
     public boolean canKeepUsing() {
         if (!ProcessTransfur.isPlayerLatex(player))
             return false;
-        return player.getPersistentData().contains(CHEST_LOCATION);
+        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE).chest.isEmpty();
     }
 
     @Override
@@ -44,14 +44,10 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     }
 
     @Override
-    public void tick() {
-
-    }
+    public void tick() {}
 
     @Override
-    public void stopUsing() {
-
-    }
+    public void stopUsing() {}
 
     @Override
     public void saveData(CompoundTag tag) {
@@ -68,6 +64,11 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     @Override
     public void onRemove() {
         super.onRemove();
+        if (player.isDeadOrDying() && player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
+            clearContent();
+            return;
+        }
+
         itemStacks.forEach(itemStack -> {
             player.drop(itemStack, true);
         });
