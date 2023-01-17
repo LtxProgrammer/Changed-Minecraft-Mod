@@ -70,8 +70,14 @@ public class Syringe extends Item {
 
     public static ItemStack setUnpureVariant(ItemStack itemStack, ResourceLocation variant) {
         CompoundTag tag = itemStack.getOrCreateTag();
-        TagUtil.putResourceLocation(tag, "form", variant);
+        setVariant(itemStack, variant);
         tag.putBoolean("safe", false);
+        return itemStack;
+    }
+
+    public static ItemStack setVariant(ItemStack itemStack, ResourceLocation variant) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        TagUtil.putResourceLocation(tag, "form", variant);
         return itemStack;
     }
 
