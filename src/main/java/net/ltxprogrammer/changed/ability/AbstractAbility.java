@@ -47,7 +47,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     // Broadcast changes to clients
-    protected void setDirty(Player player, LatexVariant<?> variant) {
+    public final void setDirty(Player player, LatexVariant<?> variant) {
         CompoundTag data = new CompoundTag();
         saveData(data, player, variant);
 
@@ -55,5 +55,15 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(getId(), data));
         else
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(getId(), data, player.getUUID()));
+    }
+
+    public final void setDirty(AccessSaddleAbilityInstance instance) {
+        CompoundTag data = new CompoundTag();
+        instance.saveData(data);
+
+        if (instance.player.level.isClientSide)
+            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(getId(), data));
+        else
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(getId(), data, instance.player.getUUID()));
     }
 }

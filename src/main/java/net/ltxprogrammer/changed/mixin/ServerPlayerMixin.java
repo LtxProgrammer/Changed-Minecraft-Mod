@@ -36,8 +36,25 @@ public abstract class ServerPlayerMixin extends Player {
     @Inject(method = "restoreFrom", at = @At("HEAD"))
     public void restoreFrom(ServerPlayer player, boolean restore, CallbackInfo callbackInfo) {
         ServerPlayer self = (ServerPlayer)(Object)this;
-        if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player))
-            ProcessTransfur.setPlayerLatexVariant(self, ProcessTransfur.getPlayerLatexVariant(player).clone());
+        if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player)) {
+            LatexVariant<?> oldVariant = ProcessTransfur.getPlayerLatexVariant(player);
+            CompoundTag tag = new CompoundTag();
+            oldVariant.abilityInstances.forEach((name, instance) -> {
+                CompoundTag abilityTag = new CompoundTag();
+                instance.saveData(abilityTag);
+                if (!abilityTag.isEmpty())
+                    tag.put(name.toString(), abilityTag);
+            });
+
+            ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone());
+            LatexVariant<?> newVariant = ProcessTransfur.getPlayerLatexVariant(player);
+            newVariant.abilityInstances.forEach((name, instance) -> {
+                if (!tag.contains(name.toString()))
+                    return;
+                CompoundTag abilityTag = tag.getCompound(name.toString());
+                instance.readData(abilityTag);
+            });
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))

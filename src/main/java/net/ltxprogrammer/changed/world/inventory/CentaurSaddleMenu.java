@@ -1,8 +1,11 @@
 package net.ltxprogrammer.changed.world.inventory;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AccessSaddleAbilityInstance;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,8 +35,6 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
 
     public final static HashMap<String, Object> guistate = new HashMap<>();
-    public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
-    public final static String CHEST_LOCATION = Changed.modResourceStr("chest");
 
     public final Level world;
     public final Player player;
@@ -50,6 +51,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
 
         this.player = inv.player;
         this.world = inv.player.level;
+        var variant = ProcessTransfur.getPlayerLatexVariant(player);
 
         this.internal = new ItemStackHandler(2);
 
@@ -113,12 +115,16 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         for (int si = 0; si < 9; ++si)
             this.addSlot(new Slot(inv, si, 3 + 8 + si * 18, -43 + 142));
 
+        if (variant == null)
+            return;
+        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        if (ability == null)
+            return;
 
-        CompoundTag tag = player.getPersistentData();
-        if (tag.contains(SADDLE_LOCATION))
-            internal.insertItem(0, ItemStack.of(tag.getCompound(SADDLE_LOCATION)), false);
-        if (tag.contains(CHEST_LOCATION))
-            internal.insertItem(1, ItemStack.of(tag.getCompound(CHEST_LOCATION)), false);
+        if (ability.saddle != null)
+            internal.insertItem(0, ability.saddle, false);
+        if (ability.chest != null)
+            internal.insertItem(1, ability.chest, false);
     }
 
     @Override
@@ -265,26 +271,18 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         return customSlots;
     }
 
-    public void tick(Player player) {
-        CompoundTag old = player.getPersistentData().copy();
-        CompoundTag tag = player.getPersistentData();
-        if (!internal.getStackInSlot(0).isEmpty())
-            tag.put(SADDLE_LOCATION, internal.getStackInSlot(0).serializeNBT());
-        else {
-            tag.remove(SADDLE_LOCATION);
-            player.ejectPassengers();
-        }
-        if (!internal.getStackInSlot(1).isEmpty())
-            tag.put(CHEST_LOCATION, internal.getStackInSlot(1).serializeNBT());
-        else {
-            tag.remove(CHEST_LOCATION);
-        }
+    public boolean tick(AccessSaddleAbilityInstance abilityInstance) {
+        boolean dirty = false;
+        if (!abilityInstance.saddle.equals(internal.getStackInSlot(0)))
+            dirty = true;
+        if (!dirty && !abilityInstance.chest.equals(internal.getStackInSlot(1)))
+            dirty = true;
+        abilityInstance.saddle = internal.getStackInSlot(0);
+        abilityInstance.chest = internal.getStackInSlot(1);
 
-        if (!old.equals(tag)) {
-            if (player.level.isClientSide)
-                Changed.PACKET_HANDLER.sendToServer(SyncTransfurPacket.Builder.of(player));
-            else
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-        }
+        if (abilityInstance.saddle.isEmpty())
+            player.ejectPassengers();
+
+        return dirty;
     }
 }
