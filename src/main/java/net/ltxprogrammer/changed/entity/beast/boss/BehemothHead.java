@@ -1,16 +1,24 @@
 package net.ltxprogrammer.changed.entity.beast.boss;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.UUID;
+
 public class BehemothHead extends Behemoth {
-    private BehemothHandLeft leftHand;
-    private BehemothHandRight rightHand;
+    public BehemothHandLeft leftHand;
+    public BehemothHandRight rightHand;
+
+    // If the UUID is null, create hand, if the UUID is equal the head UUID, don't find hand, else find hand
+    private UUID loadedLeftHand = null;
+    private UUID loadedRightHand = null;
 
     public BehemothHead(EntityType<? extends BehemothHead> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
@@ -38,26 +46,48 @@ public class BehemothHead extends Behemoth {
     public void tick() {
         super.tick();
         this.setDeltaMovement(this.getDeltaMovement().multiply(0, 1, 0));
-    }
 
-    private void addHands() {
+        if (tickCount > 8)
+            return;
+
+        AABB checkBB = new AABB(this.blockPosition()).inflate(16);
         if (leftHand == null) {
-            leftHand = ChangedEntities.BEHEMOTH_HAND_LEFT.get().create(level);
-            leftHand.moveTo(this.position());
-            leftHand.setHead(this);
-            level.addFreshEntity(leftHand);
+            if (loadedLeftHand == null) {
+                leftHand = ChangedEntities.BEHEMOTH_HAND_LEFT.get().create(level);
+                leftHand.moveTo(this.position());
+                leftHand.setHead(this);
+                level.addFreshEntity(leftHand);
+                loadedLeftHand = this.getUUID();
+            }
+
+            else if (!loadedLeftHand.equals(this.getUUID())) {
+                var list = level.getEntitiesOfClass(BehemothHandLeft.class, checkBB,
+                        foundEntity -> foundEntity.handUUID.equals(loadedLeftHand));
+                if (!list.isEmpty()) {
+                    leftHand = list.get(0);
+                    leftHand.setHead(this);
+                }
+            }
         }
 
         if (rightHand == null) {
-            rightHand = ChangedEntities.BEHEMOTH_HAND_RIGHT.get().create(level);
-            rightHand.moveTo(this.position());
-            rightHand.setHead(this);
-            level.addFreshEntity(rightHand);
+            if (loadedRightHand == null) {
+                rightHand = ChangedEntities.BEHEMOTH_HAND_RIGHT.get().create(level);
+                rightHand.moveTo(this.position());
+                rightHand.setHead(this);
+                level.addFreshEntity(rightHand);
+                loadedRightHand = this.getUUID();
+            }
+
+            else if (!loadedRightHand.equals(this.getUUID())) {
+                var list = level.getEntitiesOfClass(BehemothHandRight.class, checkBB,
+                        foundEntity -> foundEntity.handUUID.equals(loadedRightHand));
+                if (!list.isEmpty()) {
+                    rightHand = list.get(0);
+                    rightHand.setHead(this);
+                }
+            }
         }
-    }
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
-        addHands();
     }
 
     @Override
@@ -71,36 +101,28 @@ public class BehemothHead extends Behemoth {
         rightHand = null;
     }
 
-    private static final String LEFT_HAND_HEALTH = "leftHandHealth";
-    private static final String RIGHT_HAND_HEALTH = "rightHandHealth";
+    private static final String LEFT_HAND_ID = Changed.modResourceStr("leftHandUUID");
+    private static final String RIGHT_HAND_ID = Changed.modResourceStr("rightHandUUID");
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (leftHand != null)
-            tag.putFloat(LEFT_HAND_HEALTH, leftHand.getHealth());
+            tag.putUUID(LEFT_HAND_ID, leftHand.handUUID);
+        else
+            tag.putUUID(LEFT_HAND_ID, this.getUUID());
         if (rightHand != null)
-            tag.putFloat(RIGHT_HAND_HEALTH, rightHand.getHealth());
+            tag.putUUID(RIGHT_HAND_ID, rightHand.handUUID);
+        else
+            tag.putUUID(RIGHT_HAND_ID, this.getUUID());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        addHands();
-        if (leftHand != null) {
-            if (tag.contains(LEFT_HAND_HEALTH))
-                leftHand.setHealth(tag.getFloat(LEFT_HAND_HEALTH));
-            else {
-                leftHand.discard();
-                leftHand = null;
-            }
-        }
-        if (rightHand != null) {
-            if (tag.contains(RIGHT_HAND_HEALTH))
-                rightHand.setHealth(tag.getFloat(RIGHT_HAND_HEALTH));
-            else {
-                rightHand.discard();
-                rightHand = null;
-            }
-        }
+
+        if (tag.contains(LEFT_HAND_ID))
+            loadedLeftHand = tag.getUUID(LEFT_HAND_ID);
+        if (tag.contains(RIGHT_HAND_ID))
+            loadedRightHand = tag.getUUID(RIGHT_HAND_ID);
     }
 }

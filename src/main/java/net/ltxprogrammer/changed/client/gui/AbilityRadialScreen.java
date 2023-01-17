@@ -66,7 +66,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
     private static final double RADIAL_DISTANCE = 90.0;
 
     private static double calcOffset(int section) {
-        return section % 2 == 0 ? 0.075 : -0.075;
+        return section % 2 == 0 ? 0.04 : -0.04;
     }
 
     @Nullable
