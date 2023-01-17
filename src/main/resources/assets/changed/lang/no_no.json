@@ -10,6 +10,8 @@
   "ability.changed.create_inkball": "Lage Blekkball",
   "ability.changed.access_chest": "Tilgang Kiste",
   "ability.changed.switch_hands": "Bytte Hender",
+  "ability.changed.switch_gender": "Endre Kjønn",
+  "ability.changed.use_variant_ability": "Bruke Variant Evne",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -27,6 +29,7 @@
   "item.changed.floppy_disk": "Diskett",
   "item.changed.latex_base": "Lateks base",
   "item.changed.latex_beifeng_crystal_fragment": "Lateks beifeng krystallfragment",
+  "item.changed.latex_inkball": "Lateks blekkball",
   "item.changed.latex_syringe": "Lateksprøyte",
   "item.changed.latex_wolf_crystal_fragment": "Lateks ulv krystallfragment",
   "item.changed.latex_tipped_arrow": "Latekspil",
