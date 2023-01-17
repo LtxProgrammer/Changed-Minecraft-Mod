@@ -17,6 +17,7 @@ public class ChangedAbilities {
     public static SwitchHandsAbility SWITCH_HANDS = register(new SwitchHandsAbility());
     public static AccessChestAbility ACCESS_CHEST = register(new AccessChestAbility());
     public static SwitchGenderAbility SWITCH_GENDER = register(new SwitchGenderAbility());
+    public static UseVariantEffectAbility USE_VARIANT_EFFECT = register(new UseVariantEffectAbility());
 
     public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
