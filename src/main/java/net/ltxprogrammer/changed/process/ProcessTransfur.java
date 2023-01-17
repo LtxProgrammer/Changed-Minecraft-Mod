@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -232,8 +233,13 @@ public class ProcessTransfur {
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
-            if (variant != null)
+            if (variant != null) {
                 variant.generateForm(player, player.level).setUnderlyingPlayer(player);
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
+            }
+            else {
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
+            }
             if (oldVariant != null)
                 oldVariant.unhookAll(player);
             if (!player.level.isClientSide)
