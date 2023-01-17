@@ -377,8 +377,10 @@ public class ProcessTransfur {
 
             if (source.variant != source.transfur) {
                 if (source.entity instanceof Player sourcePlayer) {
+                    float beforeHealth = sourcePlayer.getHealth();
                     getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
                     setPlayerLatexVariant(sourcePlayer, source.transfur);
+                    sourcePlayer.setHealth(beforeHealth);
                 }
 
                 else {
@@ -495,7 +497,6 @@ public class ProcessTransfur {
                     variant.tick(event.player);
                     if (!event.player.isSpectator()) {
                         variant.getLatexEntity().visualTick(event.player.level);
-                        variant.getLatexEntity().effectTick(event.player.level, event.player);
                     }
                 } catch (Exception x) {
                     x.printStackTrace();

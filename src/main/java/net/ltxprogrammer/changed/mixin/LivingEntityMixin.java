@@ -86,4 +86,10 @@ public abstract class LivingEntityMixin extends Entity {
             if (blockItem.getBlock() instanceof WearableBlock wearableBlock)
                 callback.setReturnValue(wearableBlock.getEquipmentSlot());
     }
+
+    @Inject(method = "getMaxHealth", at = @At("RETURN"), cancellable = true)
+    private void getMaxHealth(CallbackInfoReturnable<Float> callback) {
+        if ((Entity)this instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+            callback.setReturnValue(callback.getReturnValue() + ProcessTransfur.getPlayerLatexVariant(player).additionalHealth);
+    }
 }

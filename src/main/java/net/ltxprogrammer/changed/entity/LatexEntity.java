@@ -244,7 +244,8 @@ public abstract class LatexEntity extends Monster {
     public void tick() {
         super.tick();
         visualTick(this.level);
-        effectTick(this.level, this);
+        if (this instanceof UniqueEffect unique)
+            unique.effectTick(this.level, this);
 
         var variant = getSelfVariant();
         if (variant == null) return;
@@ -280,8 +281,6 @@ public abstract class LatexEntity extends Monster {
             }
         });
     }
-
-    public void effectTick(Level level, LivingEntity self) {}
 
     public double getPassengersRidingOffset() {
         return this.isCrouching() ? -0.4 : 0.0;
