@@ -114,7 +114,7 @@
     "sounds": [
       {
         "name": "changed:siren",
-        "stream": false
+        "stream": true
       }
     ],
     "subtitle": "subtitles.changed.siren"

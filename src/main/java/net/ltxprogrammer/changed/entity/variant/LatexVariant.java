@@ -88,8 +88,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_aerosol_latex_wolf")));
-    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
-            .faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
+    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LATEX_SILVER_FOX, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
+            .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
     public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.WHITE_LATEX_WOLF).faction(LatexType.WHITE_LATEX)
             .build(Changed.modResource("form_white_latex_wolf")));
     public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
@@ -111,7 +111,7 @@ public class LatexVariant<T extends LatexEntity> {
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
     public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_WATERMELON_CAT)
             .build(Changed.modResource("form_latex_watermelon_cat")));
-    public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT)
+    public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT).addAbility(ChangedAbilities.USE_VARIANT_EFFECT)
             .build(Changed.modResource("form_latex_hypno_cat")));
 
     public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().absorbing()
@@ -126,7 +126,7 @@ public class LatexVariant<T extends LatexEntity> {
             .split(Builder::ignored, female -> female.groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
-            .groundSpeed(0.3F).swimSpeed(2.58F).split(male -> male.replicating(), female -> female.absorbing()).additionalHealth(8).noLegs().cannotWalk()
+            .groundSpeed(0.3F).swimSpeed(2.58F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL)
@@ -411,14 +411,10 @@ public class LatexVariant<T extends LatexEntity> {
 
         //latexForm.getDataManager().setClean(); //we don't want to flood the client with packets for an entity it can't find.
     }
-
     public void tick(Player player) {
-        player.refreshDimensions();
-        if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
-            player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(attributeModifierAdditionalHealth);
-
         if (player == null) return;
 
+        player.refreshDimensions();
         if (player.isOnGround())
             jumpCharges = extraJumpCharges;
 
@@ -594,8 +590,6 @@ public class LatexVariant<T extends LatexEntity> {
         activeAbilities.clear();
         if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
-        if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(attributeModifierAdditionalHealth))
-            player.getAttribute(Attributes.MAX_HEALTH).removePermanentModifier(attributeModifierAdditionalHealth.getId());
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         player.maxUpStep = 0.6F;
         player.refreshDimensions();
