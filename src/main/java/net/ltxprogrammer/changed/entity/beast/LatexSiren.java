@@ -47,16 +47,17 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
             return;
 
         if (lastSingTick < self.tickCount) {
-            self.playSound(ChangedSounds.SIREN, 1, 1);
+            this.playSound(ChangedSounds.SIREN, 1, 1);
             lastSingTick = self.tickCount + (8 * 20) + 10;
         }
 
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, self,
-                new AABB(self.blockPosition()).inflate(5)).forEach(livingEntity -> { // TODO
+                new AABB(self.blockPosition()).inflate(8)).forEach(livingEntity -> {
             if (LatexVariant.getEntityVariant(livingEntity) != null)
                 return;
 
-            LatexHypnoCat.tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(), 0.2);
+            LatexHypnoCat.tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(), 0.1);
+            // TODO mode entity randomly
         });
     }
 }
