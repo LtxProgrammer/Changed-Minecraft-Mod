@@ -66,7 +66,7 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
     private static final double RADIAL_DISTANCE = 90.0;
 
     private static double calcOffset(int section) {
-        return section % 2 == 0 ? 0.075 : -0.075;
+        return section % 2 == 0 ? 0.04 : -0.04;
     }
 
     @Nullable
@@ -131,8 +131,10 @@ public class AbilityRadialScreen extends AbstractContainerScreen<AbilityRadialMe
             }
 
             RenderSystem.setShaderTexture(0, ChangedAbilities.getAbility(abilities.get(sect)).getTexture(menu.player, menu.variant));
-            RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
-            this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
+            if (enabled) {
+                RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
+                this.blit(ms, x - 24 + this.leftPos, y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
+            }
             float minRed = Math.max(secondaryColor.red(), 0.125f);
             float minGreen = Math.max(secondaryColor.green(), 0.125f);
             float minBlue = Math.max(secondaryColor.blue(), 0.125f);

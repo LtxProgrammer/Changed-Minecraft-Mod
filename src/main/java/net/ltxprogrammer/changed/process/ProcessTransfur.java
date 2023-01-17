@@ -306,17 +306,20 @@ public class ProcessTransfur {
         for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
             if (checkVariant.isFusionOf(source.variant, playerVariant)) {
                 event.setCanceled(true);
-                transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
+                        transfur(source.entity, source.entity.level, playerVariant, true);
                         pvpLoser.setLastHurtByMob(source.entity);
                         pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
                     }
-                    else
+                    else {
+                        transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
+                    }
                 }
 
                 else {
+                    transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                     source.entity.discard();
                 }
 
