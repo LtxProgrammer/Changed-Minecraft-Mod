@@ -13,11 +13,12 @@
   "ability.changed.switch_gender": "Switch Gender",
   "ability.changed.use_variant_ability": "Use Variant Ability",
 
-  "subtitles.changed.sound3": "Organic Transfur",
+  "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
-  "subtitles.changed.open3": "Lab Door Opens",
-  "subtitles.changed.close3": "Lab Door Closes",
-  "subtitles.changed.bow2": "Box Opens",
+  "subtitles.changed.open3": "Lab door opens",
+  "subtitles.changed.close3": "Lab door closes",
+  "subtitles.changed.bow2": "Box opens",
+  "subtitles.changed.siren": "Siren sings",
   
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.blood_syringe": "Blood Syringe",
