@@ -280,6 +280,14 @@ public class LatexVariant<T extends LatexEntity> {
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
+    public <T extends AbstractAbilityInstance> T getAbilityInstance(AbstractAbility<T> ability) {
+        try {
+            return (T) abilityInstances.get(ability.getId());
+        } catch (Exception unused) {
+            return null;
+        }
+    }
+
     private boolean dead;
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
@@ -585,9 +593,11 @@ public class LatexVariant<T extends LatexEntity> {
     public void unhookAll(Player player) {
         activeAbilities.forEach((name, ability) -> {
             ability.stopUsing();
-            ability.onRemove();
         });
         activeAbilities.clear();
+        abilityInstances.forEach((name, ability) -> {
+            ability.onRemove();
+        });
         if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));

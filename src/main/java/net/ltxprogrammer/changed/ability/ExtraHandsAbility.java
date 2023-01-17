@@ -10,8 +10,6 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.SADDLE_LOCATION;
-
 public class ExtraHandsAbility extends SimpleAbility {
     @Override
     public ResourceLocation getId() {
