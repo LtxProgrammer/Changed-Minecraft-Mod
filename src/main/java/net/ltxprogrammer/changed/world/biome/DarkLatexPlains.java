@@ -27,6 +27,8 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.calculateSkyColor;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.grassPatch;
 
+import static terrablender.api.ParameterUtils.*;
+
 public class DarkLatexPlains implements ChangedBiomeInterface {
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_CRYSTAL =
             FeatureUtils.register(Changed.modResourceStr("patch_crystal"), Feature.RANDOM_PATCH,
@@ -146,5 +148,17 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
     @Override
     public Climate.ParameterPoint climate() {
         return PARAMETER_POINT;
+    }
+
+    @Override
+    public List<Climate.ParameterPoint> getPoints() {
+        return new ParameterPointListBuilder()
+                .temperature(Temperature.NEUTRAL, Temperature.WARM)
+                .humidity(Humidity.ARID, Humidity.DRY, Humidity.NEUTRAL, Humidity.WET, Humidity.HUMID)
+                .continentalness(Continentalness.span(Continentalness.MID_INLAND, Continentalness.FAR_INLAND))
+                .erosion(Erosion.EROSION_0, Erosion.EROSION_1)
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.HIGH_SLICE_VARIANT_ASCENDING, Weirdness.PEAK_VARIANT, Weirdness.HIGH_SLICE_VARIANT_DESCENDING)
+                .build();
     }
 }
