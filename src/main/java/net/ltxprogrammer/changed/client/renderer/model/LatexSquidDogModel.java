@@ -286,7 +286,7 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
 
     public PoseStack getPlacementCorrectors(HumanoidArm arm) {
         PoseStack corrector = new PoseStack();
-        corrector.translate(0.0f, -4.0f / 16.0f, 0.0f);
+        corrector.translate(0.0f, 2.5f / 18.0f, 0.0f);
         return corrector;
     }
 
