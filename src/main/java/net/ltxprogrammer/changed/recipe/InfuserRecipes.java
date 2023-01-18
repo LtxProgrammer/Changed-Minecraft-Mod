@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeSerializers;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
+import net.ltxprogrammer.changed.util.MapUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +23,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,6 +31,11 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class InfuserRecipes {
     public static class InfuserRecipe implements Recipe<SimpleContainer> {
@@ -41,11 +48,45 @@ public class InfuserRecipes {
         final NonNullList<Ingredient> ingredients;
         private final boolean isSimple;
 
+        public static final Map<? extends Item, Function<ItemStack, ItemStack>> INFUSER_BASE_CONVERSION =
+                new MapUtil.HashBuilder<Item, Function<ItemStack, ItemStack>>()
+                .put(Items.ARROW, stack -> new ItemStack(ChangedItems.LATEX_TIPPED_ARROW.get(), Math.min(stack.getCount(), 16)))
+                .put(ChangedItems.BLOOD_SYRINGE.get(), stack -> new ItemStack(ChangedItems.LATEX_SYRINGE.get()))
+                .finish();
+
         public static ItemStack getBaseFor(ItemStack stack) {
-            if (stack.is(Items.ARROW))
-                return new ItemStack(ChangedItems.LATEX_TIPPED_ARROW.get(), Math.min(stack.getCount(), 16));
+            var func = INFUSER_BASE_CONVERSION.get(stack.getItem());
+            if (func != null)
+                return func.apply(stack);
             else
-                return new ItemStack(ChangedItems.LATEX_SYRINGE.get(), 1);
+                return ItemStack.EMPTY;
+        }
+
+        public static List<ItemStack> getAllowedInputs() {
+            List<ItemStack> list = new ArrayList<>();
+            INFUSER_BASE_CONVERSION.keySet().forEach(key -> {
+                list.add(new ItemStack(key));
+            });
+            return list;
+        }
+
+        public List<ItemStack> getPossibleResults() {
+            List<ItemStack> list = new ArrayList<>();
+            getAllowedInputs().forEach(baseItem -> {
+                baseItem.setCount(baseItem.getMaxStackSize());
+                var newItem = INFUSER_BASE_CONVERSION.get(baseItem.getItem()).apply(baseItem);
+
+                if (gendered) {
+                    for (Gender gender : Gender.values()) {
+                        list.add(processItem(newItem.copy(), gender));
+                    }
+                }
+
+                else {
+                    list.add(processItem(newItem, Gender.MALE));
+                }
+            });
+            return list;
         }
 
         public InfuserRecipe(ResourceLocation id, String group, boolean gendered, ResourceLocation form, NonNullList<Ingredient> ingredients) {
