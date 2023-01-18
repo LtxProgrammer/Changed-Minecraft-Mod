@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -48,6 +49,10 @@ public class ChangedSounds {
         for (Map.Entry<ResourceLocation, SoundEvent> sound : REGISTRY.entrySet())
             event.getRegistry().register(sound.getValue().setRegistryName(sound.getKey()));
         MINECRAFT_REGISTRY = event.getRegistry();
+    }
+
+    public static void broadcastSound(MinecraftServer server, SoundEvent event, BlockPos blockPos, float volume, float pitch) {
+        server.getPlayerList().broadcastAll(new ClientboundSoundPacket(event, SoundSource.BLOCKS, blockPos.getX(), blockPos.getY(), blockPos.getZ(), volume, pitch));
     }
 
     public static void broadcastSound(MinecraftServer server, SoundEvent event, SoundSource source, double x, double y, double z, float volume, float pitch) {
