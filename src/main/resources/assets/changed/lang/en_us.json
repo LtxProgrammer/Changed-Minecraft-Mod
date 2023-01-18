@@ -19,7 +19,8 @@
   "subtitles.changed.close3": "Lab door closes",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.siren": "Siren sings",
-  
+  "subtitles.changed.save": "Retinal scanner beeps",
+
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Fragment",
@@ -54,7 +55,7 @@
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexSpread": "Let Latex Spread Naturally",
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
-  "gamerule.changed:npcWantFusePlayer": "Latex NPC Want to Fuse With Player",
+  "gamerule.changed:npcWantFusePlayer": "Latex NPCs Want to Fuse With Player",
 
   "key.changed.variant_ability": "Active Variant Ability",
   "key.changed.extra_jump": "Extra Jump",
@@ -70,7 +71,7 @@
   "text.changed.game_loaded_fail": "Cannot load game.",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
-  
+
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.book_stack": "Book Stack",
@@ -183,7 +184,7 @@
   "entity.changed.light_latex_wolf_male": "Male Light Latex Wolf",
   "entity.changed.light_latex_wolf_organic": "Organic Light Latex Wolf",
   "entity.changed.white_latex_wolf": "White Latex Wolf",
-  
+
   "item.changed.aerosol_latex_wolf_spawn_egg": "Gas Latex Wolf Spawn Egg",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Female Dark Latex Wolf Spawn Egg",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Male Dark Latex Wolf Spawn Egg",
@@ -240,9 +241,9 @@
   "changed.error.corrupted_disk": "ERR: Corrupted Disk",
 
   "changed.floppy_disk.title.light_latex_wolf": "Trying to Save the World",
-  "changed.floppy_disk.content.light_latex_wolf": "In our attempts to cure the outbreak, we realized only animals seem to be treatable. So we tried making humans more like animals. We finally made progress upon the creation of the Latex Base, a material changes DNA on the fly. We CAN end the outbreak.",
+  "changed.floppy_disk.content.light_latex_wolf": "In our attempts to cure the outbreak, we realized only animals seem to be treatable. So we tried making humans more like animals. We finally made progress upon the creation of the Latex Base, a material that changes DNA on the fly. We CAN end the outbreak.",
   "changed.floppy_disk.title.aerosol_latex_wolf": "Brown Wolves",
-  "changed.floppy_disk.content.aerosol_latex_wolf": "After long restless nights, I finally made my contribution to the database. I found the blanks latex wolves to be boring, so I mixed some Brown Dye, and created, well, something not as bland.",
+  "changed.floppy_disk.content.aerosol_latex_wolf": "After long restless nights, I finally made my contribution to the database. I found the light latex wolves to be boring, so I mixed in some Brown Dye, and created, well, something not as bland.",
 
   "changed.floppy_disk.title.dark_latex_wolf": "Masked Mysteries",
   "changed.floppy_disk.content.dark_latex_wolf": "As noted previously, only animals can receive treatment for the outbreak. In our attempts to transfur humans, we've create a masked wolf-like creature by mixing Latex Base and Black Dye into a syringe. Further testing is advised.",
@@ -292,7 +293,7 @@
 
   "changed:advancements.main.transfur_aerial.title": "Flying Lessons",
   "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form",
-  
+
   "changed:advancements.main.transfur_mask.title": "Rejecting Humanity",
   "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask."
 }
