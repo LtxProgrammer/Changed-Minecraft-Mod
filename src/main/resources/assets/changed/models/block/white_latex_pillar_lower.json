@@ -1,5 +1,5 @@
 {
-  "parent": "changed:custom/white_latex_pillar",
+  "parent": "changed:custom/white_latex_pillar_lower",
   "textures": {
     "all": "changed:blocks/white_latex_pillar",
     "particle": "changed:blocks/white_latex_pillar",

@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.beast.AquaticEntity;
 import net.ltxprogrammer.changed.entity.beast.Pudding;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -24,6 +25,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -37,6 +40,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -133,11 +137,27 @@ public abstract class LatexEntity extends Monster {
         return 0.95F;
     }
 
+    public static boolean isDarkEnoughToSpawn(ServerLevelAccessor world, BlockPos pos, Random random) {
+        if (world.getBrightness(LightLayer.SKY, pos) > random.nextInt(50)) {
+            return false;
+        } else if (world.getBrightness(LightLayer.BLOCK, pos) > 0) {
+            return false;
+        } else {
+            int i = world.getLevel().isThundering() ? world.getMaxLocalRawBrightness(pos, 10) : world.getMaxLocalRawBrightness(pos);
+            return i <= random.nextInt(10);
+        }
+    }
+
+    public static <T extends LatexEntity> boolean checkLatexSpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+        if (world.getDifficulty() == Difficulty.PEACEFUL)
+            return false;
+        if (!isDarkEnoughToSpawn(world, pos, random))
+            return false;
+        return Mob.checkMobSpawnRules(entityType, world, reason, pos, random);
+    }
+
     public static <T extends LatexEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement) {
-        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                (entityType, world, reason, pos, random) ->
-                        (world.getDifficulty() != Difficulty.PEACEFUL &&
-                        Mob.checkMobSpawnRules(entityType, world, reason, pos, random)));
+        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LatexEntity::checkLatexSpawnRules);
     }
 
     public LatexVariant<?> getTransfurVariant() {
@@ -184,6 +204,8 @@ public abstract class LatexEntity extends Monster {
             if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
                 return true;
             LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
+            if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
+                return false;
             for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
                 if (checkVariant.isFusionOf(getSelfVariant(), playerVariant))
                     return true;
@@ -207,7 +229,7 @@ public abstract class LatexEntity extends Monster {
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
-        if (!(this instanceof OrganicLatex)) {
+        if (!(this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))) {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
         }
@@ -222,7 +244,8 @@ public abstract class LatexEntity extends Monster {
     public void tick() {
         super.tick();
         visualTick(this.level);
-        effectTick(this.level, this);
+        if (this instanceof UniqueEffect unique)
+            unique.effectTick(this.level, this);
 
         var variant = getSelfVariant();
         if (variant == null) return;
@@ -239,7 +262,7 @@ public abstract class LatexEntity extends Monster {
     public abstract ChangedParticles.Color3 getDripColor();
 
     public void visualTick(Level level) {
-        if (this instanceof OrganicLatex)
+        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -258,8 +281,6 @@ public abstract class LatexEntity extends Monster {
             }
         });
     }
-
-    public void effectTick(Level level, LivingEntity self) {}
 
     public double getPassengersRidingOffset() {
         return this.isCrouching() ? -0.4 : 0.0;

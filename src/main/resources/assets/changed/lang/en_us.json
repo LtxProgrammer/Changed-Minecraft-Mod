@@ -2,13 +2,25 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Items",
   "itemGroup.tab_changed_entities": "Changed Entities",
-  
-  "subtitles.sound3": "Organic Transfur",
-  "subtitles.poison": "Transfur",
-  "subtitles.open3": "Lab Door Opens",
-  "subtitles.close3": "Lab Door Closes",
-  "subtitles.bow2": "Box Opens",
-  
+
+  "ability.changed.access_saddle": "Access Saddle",
+  "ability.changed.extra_hands": "Extra Hands",
+  "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
+  "ability.changed.create_cobweb": "Create Cobweb",
+  "ability.changed.create_inkball": "Create Inkball",
+  "ability.changed.access_chest": "Access Chest",
+  "ability.changed.switch_hands": "Switch Hands",
+  "ability.changed.switch_gender": "Switch Gender",
+  "ability.changed.use_variant_ability": "Use Variant Ability",
+
+  "subtitles.changed.sound3": "Organic transfur",
+  "subtitles.changed.poison": "Transfur",
+  "subtitles.changed.open3": "Lab door opens",
+  "subtitles.changed.close3": "Lab door closes",
+  "subtitles.changed.bow2": "Box opens",
+  "subtitles.changed.siren": "Siren sings",
+  "subtitles.changed.save": "Retinal scanner beeps",
+
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Fragment",
@@ -19,6 +31,7 @@
   "item.changed.floppy_disk": "Floppy Disk",
   "item.changed.latex_base": "Latex Base",
   "item.changed.latex_beifeng_crystal_fragment": "Latex Beifeng Crystal Fragment",
+  "item.changed.latex_inkball": "Latex Inkball",
   "item.changed.latex_syringe": "Latex Syringe",
   "item.changed.latex_wolf_crystal_fragment": "Latex Wolf Crystal Fragment",
   "item.changed.latex_tipped_arrow": "Latex Tipped Arrow",
@@ -42,6 +55,7 @@
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexSpread": "Let Latex Spread Naturally",
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
+  "gamerule.changed:npcWantFusePlayer": "Latex NPCs Want to Fuse With Player",
 
   "key.changed.variant_ability": "Active Variant Ability",
   "key.changed.extra_jump": "Extra Jump",
@@ -49,6 +63,7 @@
   "container.changed.extra_hands": "Extra Hands Menu",
   "container.changed.infuser": "Infuser Menu",
   "container.changed.purifier": "Purifier Menu",
+  "container.changed.access_chest": "Chest Inventory",
 
   "text.changed.game_saved": "Game has been saved.",
   "text.changed.game_saved_fail": "Cannot save game.",
@@ -56,7 +71,7 @@
   "text.changed.game_loaded_fail": "Cannot load game.",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
-  
+
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.book_stack": "Book Stack",
@@ -71,6 +86,7 @@
   "block.changed.iron_crate": "Iron Crate",
   "block.changed.latex_beifeng_crystal": "Latex Beifeng Crystal",
   "block.changed.latex_wolf_crystal": "Latex Wolf Crystal",
+  "block.changed.latex_wolf_crystal_block": "Latex Wolf Crystal Block",
   "block.changed.latex_beifeng_crystal_small": "Small Latex Beifeng Crystal",
   "block.changed.latex_wolf_crystal_small": "Small Latex Wolf Crystal",
   "block.changed.latex_crystal": "Latex Crystal",
@@ -168,7 +184,7 @@
   "entity.changed.light_latex_wolf_male": "Male Light Latex Wolf",
   "entity.changed.light_latex_wolf_organic": "Organic Light Latex Wolf",
   "entity.changed.white_latex_wolf": "White Latex Wolf",
-  
+
   "item.changed.aerosol_latex_wolf_spawn_egg": "Gas Latex Wolf Spawn Egg",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Female Dark Latex Wolf Spawn Egg",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Male Dark Latex Wolf Spawn Egg",
@@ -225,9 +241,9 @@
   "changed.error.corrupted_disk": "ERR: Corrupted Disk",
 
   "changed.floppy_disk.title.light_latex_wolf": "Trying to Save the World",
-  "changed.floppy_disk.content.light_latex_wolf": "In our attempts to cure the outbreak, we realized only animals seem to be treatable. So we tried making humans more like animals. We finally made progress upon the creation of the Latex Base, a material changes DNA on the fly. We CAN end the outbreak.",
+  "changed.floppy_disk.content.light_latex_wolf": "In our attempts to cure the outbreak, we realized only animals seem to be treatable. So we tried making humans more like animals. We finally made progress upon the creation of the Latex Base, a material that changes DNA on the fly. We CAN end the outbreak.",
   "changed.floppy_disk.title.aerosol_latex_wolf": "Brown Wolves",
-  "changed.floppy_disk.content.aerosol_latex_wolf": "After long restless nights, I finally made my contribution to the database. I found the blanks latex wolves to be boring, so I mixed some Brown Dye, and created, well, something not as bland.",
+  "changed.floppy_disk.content.aerosol_latex_wolf": "After long restless nights, I finally made my contribution to the database. I found the light latex wolves to be boring, so I mixed in some Brown Dye, and created, well, something not as bland.",
 
   "changed.floppy_disk.title.dark_latex_wolf": "Masked Mysteries",
   "changed.floppy_disk.content.dark_latex_wolf": "As noted previously, only animals can receive treatment for the outbreak. In our attempts to transfur humans, we've create a masked wolf-like creature by mixing Latex Base and Black Dye into a syringe. Further testing is advised.",
@@ -277,7 +293,7 @@
 
   "changed:advancements.main.transfur_aerial.title": "Flying Lessons",
   "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form",
-  
+
   "changed:advancements.main.transfur_mask.title": "Rejecting Humanity",
   "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask."
 }

@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
-import net.ltxprogrammer.changed.network.VariantAbilityKeybind;
+import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.ChatFormatting;
@@ -64,11 +64,11 @@ public class Changed {
         addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);
         addNetworkMessage(SyncTransfurProgressPacket.class, SyncTransfurProgressPacket::new);
         addNetworkMessage(QueryTransfurPacket.class, QueryTransfurPacket::new);
+        addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
+        addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);
-        addNetworkMessage(VariantAbilityKeybind.class, VariantAbilityKeybind::buffer, VariantAbilityKeybind::new,
-                VariantAbilityKeybind::handler);
 
         instance = this;
 

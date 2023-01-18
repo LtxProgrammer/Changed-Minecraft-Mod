@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.variant;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.resources.ResourceLocation;
@@ -8,6 +9,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.NotImplementedException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -31,7 +34,12 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null, LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f, BreatheMode.NORMAL, 0.7f, false, 0, 0, false, false, false, false, false, true, null, TransfurMode.REPLICATION, Optional.empty(), Optional.empty(), null, 0.0F, ChangedSounds.POISON);
+        super(base, null,
+                LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
+                BreatheMode.NORMAL, 0.7f, false, 0, 0,
+                false, false, false, false, false,
+                true, null, TransfurMode.REPLICATION, Optional.empty(),
+                Optional.empty(), new ArrayList<>(), 0.0F, ChangedSounds.POISON.getLocation());
         this.male = male;
         this.female = female;
     }
@@ -150,8 +158,8 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.additionalHealth = value; this.femaleBuilder.additionalHealth = value; return this;
         }
 
-        public Builder<M, F> ability(Consumer<Player> ability) {
-            this.maleBuilder.ability(ability); this.femaleBuilder.ability(ability); return this;
+        public Builder<M, F> addAbility(AbstractAbility<?> ability) {
+            this.maleBuilder.addAbility(ability); this.femaleBuilder.addAbility(ability); return this;
         }
         public Builder<M, F> noLegs() {
             this.maleBuilder.noLegs(); this.femaleBuilder.noLegs(); return this;

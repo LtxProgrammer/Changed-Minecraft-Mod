@@ -93,7 +93,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:dark_latex_mask"
+          "name": "changed:dark_latex_mask",
+          "functions": [
+            {
+              "function": "changed:set_variant",
+              "variant": "changed:form_dark_latex_wolf/male"
+            }
+          ]
         }
       ],
       "conditions": [
@@ -102,8 +108,8 @@
         },
         {
           "condition": "minecraft:random_chance_with_looting",
-          "chance": 0.025,
-          "looting_multiplier": 0.01
+          "chance": 0.075,
+          "looting_multiplier": 0.03
         }
       ]
     }

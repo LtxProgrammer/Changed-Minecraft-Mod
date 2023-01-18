@@ -14,6 +14,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedMenus {
     private static final List<MenuType<?>> REGISTRY = new ArrayList<>();
+    public static final MenuType<AbilityRadialMenu> ABILITY_RADIAL = register("ability_radial",
+            AbilityRadialMenu::new);
     public static final MenuType<ComputerMenu> COMPUTER = register("computer",
             ComputerMenu::new);
     public static final MenuType<ExtraHandsMenu> EXTRA_HANDS = register("extra_hands",

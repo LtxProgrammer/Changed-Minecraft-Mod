@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.extra_hands");
 
@@ -254,23 +253,9 @@ public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Ma
         return customSlots;
     }
 
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        if (event.phase == TickEvent.Phase.END && player.containerMenu instanceof ExtraHandsMenu menu) {
-            CompoundTag tag = player.getPersistentData();
-            tag.put("changed:extra_hands_rh", menu.internal.getStackInSlot(0).serializeNBT());
-            tag.put("changed:extra_hands_lh", menu.internal.getStackInSlot(1).serializeNBT());
-        }
-
-        if (player.isDeadOrDying()/* && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)*/) {
-            CompoundTag tag = player.getPersistentData();
-            if (tag.contains("changed:extra_hands_rh"))
-                player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_rh")), true);
-            if (tag.contains("changed:extra_hands_lh"))
-                player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_lh")), true);
-            tag.remove("changed:extra_hands_rh");
-            tag.remove("changed:extra_hands_lh");
-        }
+    public void tick(Player player) {
+        CompoundTag tag = player.getPersistentData();
+        tag.put("changed:extra_hands_rh", internal.getStackInSlot(0).serializeNBT());
+        tag.put("changed:extra_hands_lh", internal.getStackInSlot(1).serializeNBT());
     }
 }

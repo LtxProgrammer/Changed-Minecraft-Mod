@@ -68,7 +68,7 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
     @Override
     public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
         if (level.getBlockEntity(pos) instanceof CardboardBoxBlockEntity blockEntity)
-            if (!blockEntity.entity.is(entity))
+            if (blockEntity.entity == null || !blockEntity.entity.is(entity))
                 return super.canEntityDestroy(state, level, pos, entity);
         return false;
     }

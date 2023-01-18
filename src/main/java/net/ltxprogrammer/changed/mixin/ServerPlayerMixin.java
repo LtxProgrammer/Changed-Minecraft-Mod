@@ -36,8 +36,13 @@ public abstract class ServerPlayerMixin extends Player {
     @Inject(method = "restoreFrom", at = @At("HEAD"))
     public void restoreFrom(ServerPlayer player, boolean restore, CallbackInfo callbackInfo) {
         ServerPlayer self = (ServerPlayer)(Object)this;
-        if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player))
-            ProcessTransfur.setPlayerLatexVariant(self, ProcessTransfur.getPlayerLatexVariant(player).clone());
+        if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player)) {
+            LatexVariant<?> oldVariant = ProcessTransfur.getPlayerLatexVariant(player);
+            CompoundTag tag = oldVariant.saveAbilities();
+
+            ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone());
+            ProcessTransfur.getPlayerLatexVariant(player).loadAbilities(tag);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
@@ -49,6 +54,10 @@ public abstract class ServerPlayerMixin extends Player {
         if (tag.contains("LatexVariant")) {
             ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
         }
+
+        LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(this);
+        if (variant != null && tag.contains("LatexAbilities"))
+            variant.loadAbilities(tag.getCompound("LatexAbilities"));
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
@@ -56,8 +65,10 @@ public abstract class ServerPlayerMixin extends Player {
         tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).ticks());
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
         LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);
-        if (latexVariant != null)
+        if (latexVariant != null) {
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
+            tag.put("LatexAbilities", latexVariant.saveAbilities());
+        }
     }
 
     @Inject(method = "stopRiding", at = @At("HEAD"))

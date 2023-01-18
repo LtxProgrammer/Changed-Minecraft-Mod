@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.WhiteLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.OrganicLatex;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
@@ -19,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
-
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class ProcessTransfur {
@@ -234,8 +233,13 @@ public class ProcessTransfur {
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
-            if (variant != null)
+            if (variant != null) {
                 variant.generateForm(player, player.level).setUnderlyingPlayer(player);
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
+            }
+            else {
+                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
+            }
             if (oldVariant != null)
                 oldVariant.unhookAll(player);
             if (!player.level.isClientSide)
@@ -285,7 +289,7 @@ public class ProcessTransfur {
     }
 
     private static boolean isOrganicLatex(LivingEntity entity) {
-        return entity instanceof OrganicLatex || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getLatexEntity() instanceof OrganicLatex);
+        return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX));
     }
 
     @SubscribeEvent
@@ -308,17 +312,20 @@ public class ProcessTransfur {
         for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
             if (checkVariant.isFusionOf(source.variant, playerVariant)) {
                 event.setCanceled(true);
-                transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
+                        transfur(source.entity, source.entity.level, playerVariant, true);
                         pvpLoser.setLastHurtByMob(source.entity);
                         pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
                     }
-                    else
+                    else {
+                        transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
+                    }
                 }
 
                 else {
+                    transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                     source.entity.discard();
                 }
 
@@ -350,12 +357,16 @@ public class ProcessTransfur {
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
             doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
-        if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
+        if (source.variant != null)
+            doesAbsorption = source.variant.transfurMode() == TransfurMode.ABSORPTION;
+        else if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
             doesAbsorption = true;
 
-        if (!doesAbsorption) // Replication
-            progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
-                    source.transfur.getFormId());
+        if (!doesAbsorption) { // Replication
+            if (progressTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE),
+                    source.transfur.getFormId()))
+                source.entity.heal(8f);
+        }
 
         else { // Absorption
             if (!willTransfur(event.getEntityLiving(), source.entity.level.getGameRules().getInt(ChangedGameRules.RULE_TRANSFUR_TOLERANCE))) {
@@ -373,6 +384,20 @@ public class ProcessTransfur {
                 return;
             }
 
+            if (source.variant != source.transfur) {
+                if (source.entity instanceof Player sourcePlayer) {
+                    float beforeHealth = sourcePlayer.getHealth();
+                    getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
+                    setPlayerLatexVariant(sourcePlayer, source.transfur);
+                    sourcePlayer.setHealth(beforeHealth);
+                }
+
+                else {
+                    source.entity.discard();
+                    source = new LatexedEntity(source.transfur.getEntityType().create(source.entity.level));
+                }
+            }
+
             source.entity.heal(14.0f); // Heal 7 hearts, and teleport to old entity location
             var pos = event.getEntityLiving().position();
             source.entity.teleportTo(pos.x, pos.y, pos.z);
@@ -387,6 +412,8 @@ public class ProcessTransfur {
             else {
                 event.getEntityLiving().discard();
             }
+
+            ChangedSounds.broadcastSound(source.entity, source.transfur.sound, 1.0F, 1.0F);
         }
     }
 
@@ -479,7 +506,6 @@ public class ProcessTransfur {
                     variant.tick(event.player);
                     if (!event.player.isSpectator()) {
                         variant.getLatexEntity().visualTick(event.player.level);
-                        variant.getLatexEntity().effectTick(event.player.level, event.player);
                     }
                 } catch (Exception x) {
                     x.printStackTrace();

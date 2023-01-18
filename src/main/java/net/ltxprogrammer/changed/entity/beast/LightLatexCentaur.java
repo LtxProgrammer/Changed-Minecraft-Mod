@@ -3,8 +3,10 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -17,8 +19,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-
-import static net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu.SADDLE_LOCATION;
 
 public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     public LightLatexCentaur(EntityType<? extends LightLatexCentaur> p_19870_, Level p_19871_) {
@@ -45,6 +45,7 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
         return false;
     }
 
+    public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
     @Override
     public void equipSaddle(@Nullable SoundSource p_21748_) {
         getPersistentData().put(SADDLE_LOCATION, (new ItemStack(Items.SADDLE)).serializeNBT());
@@ -56,19 +57,27 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
 
     @Override
     public boolean isSaddled() {
+        if (getUnderlyingPlayer() != null && ProcessTransfur.isPlayerLatex(getUnderlyingPlayer())) {
+            var variant = ProcessTransfur.getPlayerLatexVariant(getUnderlyingPlayer());
+            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+            if (ability != null)
+                return ability.saddle != null && !ability.saddle.isEmpty();
+            else
+                return false;
+        }
         return getPersistentData().contains(SADDLE_LOCATION);
     }
 
-    protected void doPlayerRide(Player p_30634_) {
+    protected void doPlayerRide(Player player) {
         if (!this.level.isClientSide) {
-            p_30634_.setYRot(this.getYRot());
-            p_30634_.setXRot(this.getXRot());
+            player.setYRot(this.getYRot());
+            player.setXRot(this.getXRot());
             Player underlying = getUnderlyingPlayer();
             if (underlying == null)
-                p_30634_.startRiding(this);
+                player.startRiding(this);
             else {
-                p_30634_.startRiding(underlying);
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(p_30634_.getUUID(), underlying.getUUID()));
+                player.startRiding(underlying);
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(player.getUUID(), underlying.getUUID()));
             }
         }
     }

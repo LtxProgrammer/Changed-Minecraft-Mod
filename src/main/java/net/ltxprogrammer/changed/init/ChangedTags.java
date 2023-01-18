@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 public class ChangedTags {
     public static class EntityTypes {
         public static final TagKey<EntityType<?>> HUMANOIDS = create(Changed.modResourceStr("humanoids"));
+        public static final TagKey<EntityType<?>> ORGANIC_LATEX = create(Changed.modResourceStr("organic_latex"));
 
         private static TagKey<EntityType<?>> create(String p_203849_) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(p_203849_));
@@ -18,6 +19,7 @@ public class ChangedTags {
 
     public static class Blocks {
         public static final TagKey<Block> LATEX_NON_REPLACEABLE = create(Changed.modResourceStr("latex_non_replaceable"));
+        public static final TagKey<Block> GROWS_LATEX_CRYSTALS = create(Changed.modResourceStr("grows_latex_crystal"));
 
         private static TagKey<Block> create(String p_203849_) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(p_203849_));

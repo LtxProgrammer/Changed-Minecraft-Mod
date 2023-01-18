@@ -1,11 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.OrganicLatex;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEntity, OrganicLatex {
+public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEntity {
     public LatexCrystalWolf(EntityType<? extends AbstractLatexWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

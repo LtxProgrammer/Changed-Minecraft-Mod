@@ -1,14 +1,20 @@
 package net.ltxprogrammer.changed.entity.beast.boss;
 
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.UUID;
+
 public abstract class BehemothHand extends Behemoth {
+    public UUID handUUID = UUID.randomUUID();
+
     public BehemothHead head;
 
     public BehemothHand(EntityType<? extends BehemothHand> p_19870_, Level p_19871_) {
@@ -29,8 +35,23 @@ public abstract class BehemothHand extends Behemoth {
     @Override
     public void tick() {
         super.tick();
-        if (tickCount > 10 && (head == null || head.isDeadOrDying()))
-            this.discard();
+        if (tickCount > 10 && (head == null || head.isDeadOrDying())) {
+            if (head != null) {
+                this.discard();
+                return;
+            }
+
+            // Find head or discard
+            level.getEntitiesOfClass(BehemothHead.class, new AABB(blockPosition()).inflate(2.0)).forEach(foundHead -> {
+                if (head == null)
+                    head = foundHead;
+            });
+
+            if (head == null) {
+                this.discard();
+                return;
+            }
+        }
     }
 
     protected void setAttributes(AttributeMap attributes) {
@@ -47,6 +68,19 @@ public abstract class BehemothHand extends Behemoth {
         super.registerGoals();
 
         this.goalSelector.addGoal(0, new StayByHeadGoal(this));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putUUID("handUUID", handUUID);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("handUUID"))
+            handUUID = tag.getUUID("handUUID");
     }
 
     public static class StayByHeadGoal extends Goal {

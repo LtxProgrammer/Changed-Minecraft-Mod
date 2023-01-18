@@ -1,8 +1,11 @@
 package net.ltxprogrammer.changed.world.inventory;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AccessSaddleAbilityInstance;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,9 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,15 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber
 public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
     public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
 
     public final static HashMap<String, Object> guistate = new HashMap<>();
-    public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
 
     public final Level world;
-    public final Player entity;
+    public final Player player;
     public int x, y, z;
 
     private IItemHandler internal;
@@ -51,8 +49,9 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     public CentaurSaddleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         super(ChangedMenus.CENTAUR_SADDLE, id);
 
-        this.entity = inv.player;
+        this.player = inv.player;
         this.world = inv.player.level;
+        var variant = ProcessTransfur.getPlayerLatexVariant(player);
 
         this.internal = new ItemStackHandler(2);
 
@@ -69,9 +68,9 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 byte hand = extraData.readByte();
                 ItemStack itemstack;
                 if (hand == 0)
-                    itemstack = this.entity.getMainHandItem();
+                    itemstack = this.player.getMainHandItem();
                 else
-                    itemstack = this.entity.getOffhandItem();
+                    itemstack = this.player.getOffhandItem();
                 itemstack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(capability -> {
                     this.internal = capability;
                     this.bound = true;
@@ -95,10 +94,17 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
             }
         }
 
-        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 82, 14) {
+        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 74, 14) {
             @Override
             public boolean mayPlace(@Nonnull ItemStack stack) {
                 return stack.is(Items.SADDLE);
+            }
+        }));
+
+        this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 92, 14) {
+            @Override
+            public boolean mayPlace(@Nonnull ItemStack stack) {
+                return stack.is(Items.CHEST);
             }
         }));
 
@@ -109,10 +115,16 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         for (int si = 0; si < 9; ++si)
             this.addSlot(new Slot(inv, si, 3 + 8 + si * 18, -43 + 142));
 
+        if (variant == null)
+            return;
+        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        if (ability == null)
+            return;
 
-        CompoundTag tag = entity.getPersistentData();
-        if (tag.contains(SADDLE_LOCATION))
-            internal.insertItem(0, ItemStack.of(tag.getCompound(SADDLE_LOCATION)), false);
+        if (ability.saddle != null)
+            internal.insertItem(0, ability.saddle, false);
+        if (ability.chest != null)
+            internal.insertItem(1, ability.chest, false);
     }
 
     @Override
@@ -163,14 +175,14 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
     }
 
     @Override
-    protected boolean moveItemStackTo(ItemStack p_38904_, int p_38905_, int p_38906_, boolean p_38907_) {
+    protected boolean moveItemStackTo(ItemStack item, int p_38905_, int p_38906_, boolean p_38907_) {
         boolean flag = false;
         int i = p_38905_;
         if (p_38907_) {
             i = p_38906_ - 1;
         }
-        if (p_38904_.isStackable()) {
-            while (!p_38904_.isEmpty()) {
+        if (item.isStackable()) {
+            while (!item.isEmpty()) {
                 if (p_38907_) {
                     if (i < p_38905_) {
                         break;
@@ -180,16 +192,16 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
                 Slot slot = this.slots.get(i);
                 ItemStack itemstack = slot.getItem();
-                if (slot.mayPlace(itemstack) && !itemstack.isEmpty() && ItemStack.isSameItemSameTags(p_38904_, itemstack)) {
-                    int j = itemstack.getCount() + p_38904_.getCount();
-                    int maxSize = Math.min(slot.getMaxStackSize(), p_38904_.getMaxStackSize());
+                if (slot.mayPlace(itemstack) && !itemstack.isEmpty() && ItemStack.isSameItemSameTags(item, itemstack)) {
+                    int j = itemstack.getCount() + item.getCount();
+                    int maxSize = Math.min(slot.getMaxStackSize(), item.getMaxStackSize());
                     if (j <= maxSize) {
-                        p_38904_.setCount(0);
+                        item.setCount(0);
                         itemstack.setCount(j);
                         slot.set(itemstack);
                         flag = true;
                     } else if (itemstack.getCount() < maxSize) {
-                        p_38904_.shrink(maxSize - itemstack.getCount());
+                        item.shrink(maxSize - itemstack.getCount());
                         itemstack.setCount(maxSize);
                         slot.set(itemstack);
                         flag = true;
@@ -202,7 +214,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
             }
         }
-        if (!p_38904_.isEmpty()) {
+        if (!item.isEmpty()) {
             if (p_38907_) {
                 i = p_38906_ - 1;
             } else {
@@ -218,11 +230,11 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
                 }
                 Slot slot1 = this.slots.get(i);
                 ItemStack itemstack1 = slot1.getItem();
-                if (itemstack1.isEmpty() && slot1.mayPlace(p_38904_)) {
-                    if (p_38904_.getCount() > slot1.getMaxStackSize()) {
-                        slot1.set(p_38904_.split(slot1.getMaxStackSize()));
+                if (itemstack1.isEmpty() && slot1.mayPlace(item)) {
+                    if (item.getCount() > slot1.getMaxStackSize()) {
+                        slot1.set(item.split(slot1.getMaxStackSize()));
                     } else {
-                        slot1.set(p_38904_.split(p_38904_.getCount()));
+                        slot1.set(item.split(item.getCount()));
                     }
                     slot1.setChanged();
                     flag = true;
@@ -259,32 +271,18 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
         return customSlots;
     }
 
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        if (event.phase == TickEvent.Phase.END && player.containerMenu instanceof CentaurSaddleMenu menu) {
-            CompoundTag old = player.getPersistentData().copy();
-            CompoundTag tag = player.getPersistentData();
-            if (!menu.internal.getStackInSlot(0).isEmpty())
-                tag.put(SADDLE_LOCATION, menu.internal.getStackInSlot(0).serializeNBT());
-            else {
-                tag.remove(SADDLE_LOCATION);
-                player.ejectPassengers();
-            }
+    public boolean tick(AccessSaddleAbilityInstance abilityInstance) {
+        boolean dirty = false;
+        if (!abilityInstance.saddle.equals(internal.getStackInSlot(0)))
+            dirty = true;
+        if (!dirty && !abilityInstance.chest.equals(internal.getStackInSlot(1)))
+            dirty = true;
+        abilityInstance.saddle = internal.getStackInSlot(0);
+        abilityInstance.chest = internal.getStackInSlot(1);
 
-            if (!old.equals(tag)) {
-                if (player.level.isClientSide)
-                    Changed.PACKET_HANDLER.sendToServer(SyncTransfurPacket.Builder.of(player));
-                else
-                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-            }
-        }
+        if (abilityInstance.saddle.isEmpty())
+            player.ejectPassengers();
 
-        if (player.isDeadOrDying()/* && !player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)*/) {
-            CompoundTag tag = player.getPersistentData();
-            if (tag.contains(SADDLE_LOCATION))
-                player.drop(ItemStack.of(tag.getCompound(SADDLE_LOCATION)), true);
-            tag.remove(SADDLE_LOCATION);
-        }
+        return dirty;
     }
 }

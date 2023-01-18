@@ -16,7 +16,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -30,7 +33,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
     public static final VoxelShape SHAPE_OCC = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 32.0D, 16.0D);
 
     public WhiteLatexPillar(Properties properties) {
-        super(properties);
+        super(properties.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
@@ -60,6 +63,10 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
             case UPPER -> SHAPE_WHOLE.move(0.0, -1.0, 0.0);
             case LOWER -> SHAPE_WHOLE;
         };
+    }
+
+    public RenderShape getRenderShape(BlockState p_54559_) {
+        return RenderShape.MODEL;
     }
 
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
