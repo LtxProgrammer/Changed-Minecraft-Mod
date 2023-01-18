@@ -23,7 +23,7 @@ public abstract class DelayedItemStack {
         itemSupplierField = itemSupplierField1;
     }
 
-    public static ItemStack of(@NotNull Supplier<Item> itemSupplier) {
+    public static ItemStack of(@NotNull Supplier<? extends Item> itemSupplier) {
         ItemStack stack = new ItemStack((ItemLike)null);
         try {
             itemSupplierField.set(stack, itemSupplier);

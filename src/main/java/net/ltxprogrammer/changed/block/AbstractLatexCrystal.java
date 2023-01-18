@@ -34,15 +34,15 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
     private final LatexVariant<?> variant;
-    private final Supplier<Item> crystal;
+    private final Supplier<? extends Item> crystal;
 
-    public AbstractLatexCrystal(LatexVariant<?> variant, Supplier<Item> crystal, Properties p_53514_) {
+    public AbstractLatexCrystal(LatexVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
         super(p_53514_);
         this.variant = variant;
         this.crystal = crystal;
     }
 
-    public AbstractLatexCrystal(Supplier<Item> crystal, Properties properties) {
+    public AbstractLatexCrystal(Supplier<? extends Item> crystal, Properties properties) {
         super(properties);
         this.variant = null;
         this.crystal = crystal;
