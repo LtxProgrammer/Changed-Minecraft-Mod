@@ -33,9 +33,9 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     public static final EnumProperty<LatexType> COVERED = EnumProperty.create("covered_with", LatexType.class, LatexType.values());
 
     private final LatexType latexType;
-    private final Supplier<Item> goo;
+    private final Supplier<? extends Item> goo;
 
-    public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<Item> goo) {
+    public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<? extends Item> goo) {
         super(p_49795_.randomTicks().dynamicShape());
         this.latexType = latexType;
         this.goo = goo;
