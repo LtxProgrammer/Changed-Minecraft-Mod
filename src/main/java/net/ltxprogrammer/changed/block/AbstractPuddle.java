@@ -5,11 +5,15 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatexCoverableBlock {
+    public static final VoxelShape SHAPE_WHOLE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
     protected final LatexVariant<?> variant;
 
     public AbstractPuddle(Properties properties, LatexVariant<?> variant) {
@@ -27,5 +31,10 @@ public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatex
             if (ProcessTransfur.progressTransfur(entity, 6000, variant.getFormId()))
                 p_49315_.removeBlock(p_49316_, false);
         }
+    }
+
+    @Override
+    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
+        return SHAPE_WHOLE;
     }
 }
