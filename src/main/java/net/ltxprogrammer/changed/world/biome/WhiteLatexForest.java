@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
+import terrablender.api.ParameterUtils;
 
 import java.util.List;
 
@@ -97,5 +98,17 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
     @Override
     public Climate.ParameterPoint climate() {
         return PARAMETER_POINT;
+    }
+
+    @Override
+    public List<Climate.ParameterPoint> getPoints() {
+        return new ParameterUtils.ParameterPointListBuilder()
+                .temperature(ParameterUtils.Temperature.COOL)
+                .humidity(ParameterUtils.Humidity.ARID, ParameterUtils.Humidity.DRY, ParameterUtils.Humidity.NEUTRAL, ParameterUtils.Humidity.WET, ParameterUtils.Humidity.HUMID)
+                .continentalness(ParameterUtils.Continentalness.span(ParameterUtils.Continentalness.MID_INLAND, ParameterUtils.Continentalness.FAR_INLAND))
+                .erosion(ParameterUtils.Erosion.EROSION_0, ParameterUtils.Erosion.EROSION_1)
+                .depth(ParameterUtils.Depth.SURFACE, ParameterUtils.Depth.FLOOR)
+                .weirdness(ParameterUtils.Weirdness.HIGH_SLICE_VARIANT_ASCENDING, ParameterUtils.Weirdness.PEAK_VARIANT, ParameterUtils.Weirdness.HIGH_SLICE_VARIANT_DESCENDING)
+                .build();
     }
 }
