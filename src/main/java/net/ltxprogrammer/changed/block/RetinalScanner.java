@@ -2,9 +2,11 @@ package net.ltxprogrammer.changed.block;
 
 //import net.ltxprogrammer.changed.block.entity.RetinalScannerBlockEntity;
 
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -95,6 +97,7 @@ public class RetinalScanner extends AbstractCustomShapeBlock {
                 return InteractionResult.SUCCESS;
             } else if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.setRespawnPosition(level.dimension(), blockPos, player.getYRot(), false, true);
+                ChangedSounds.broadcastSound(level.getServer(), ChangedSounds.SAVE, blockPos, 1, 1);
                 return InteractionResult.SUCCESS;
             }
 
