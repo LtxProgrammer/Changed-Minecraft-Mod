@@ -30,6 +30,8 @@ public class SwitchHandsAbility extends SimpleAbility {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
 
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         CompoundTag tag = player.getPersistentData();
         if (tag.contains("changed:extra_hands_rh"))
             player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.of(tag.getCompound("changed:extra_hands_rh")));

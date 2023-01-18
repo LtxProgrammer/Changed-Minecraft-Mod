@@ -37,8 +37,8 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
     }
 
     public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {
-        float xRotO = livingEntity.getXRot();
-        float yRotO = livingEntity.getYRot();
+        float xRotO = livingEntity.xRotO;
+        float yRotO = livingEntity.yRotO;
         direction = livingEntity.getLookAngle().lerp(direction, strength);
         livingEntity.lookAt(EntityAnchorArgument.Anchor.EYES, livingEntity.getEyePosition().add(direction));
         livingEntity.xRotO = xRotO;
@@ -64,7 +64,7 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
             if (livingEntity.getLookAngle().dot(self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize()) < 0.85f)
                 return;
 
-            tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(),  0.1);
+            tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(),  0.4);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 2, false, false), self);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 2, false, false), self);
         });

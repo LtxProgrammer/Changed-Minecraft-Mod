@@ -38,22 +38,10 @@ public abstract class ServerPlayerMixin extends Player {
         ServerPlayer self = (ServerPlayer)(Object)this;
         if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player)) {
             LatexVariant<?> oldVariant = ProcessTransfur.getPlayerLatexVariant(player);
-            CompoundTag tag = new CompoundTag();
-            oldVariant.abilityInstances.forEach((name, instance) -> {
-                CompoundTag abilityTag = new CompoundTag();
-                instance.saveData(abilityTag);
-                if (!abilityTag.isEmpty())
-                    tag.put(name.toString(), abilityTag);
-            });
+            CompoundTag tag = oldVariant.saveAbilities();
 
             ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone());
-            LatexVariant<?> newVariant = ProcessTransfur.getPlayerLatexVariant(player);
-            newVariant.abilityInstances.forEach((name, instance) -> {
-                if (!tag.contains(name.toString()))
-                    return;
-                CompoundTag abilityTag = tag.getCompound(name.toString());
-                instance.readData(abilityTag);
-            });
+            ProcessTransfur.getPlayerLatexVariant(player).loadAbilities(tag);
         }
     }
 
@@ -68,14 +56,8 @@ public abstract class ServerPlayerMixin extends Player {
         }
 
         LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(this);
-        if (variant != null && tag.contains("LatexAbilities")) {
-            CompoundTag tagAbilities = tag.getCompound("LatexAbilities");
-            tagAbilities.getAllKeys().forEach(key -> {
-                ResourceLocation name = ResourceLocation.tryParse(key);
-                if (variant.abilityInstances.containsKey(name))
-                    variant.abilityInstances.get(name).readData(tagAbilities.getCompound(key));
-            });
-        }
+        if (variant != null && tag.contains("LatexAbilities"))
+            variant.loadAbilities(tag.getCompound("LatexAbilities"));
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
@@ -85,14 +67,7 @@ public abstract class ServerPlayerMixin extends Player {
         LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);
         if (latexVariant != null) {
             TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
-            CompoundTag tagAbilities = new CompoundTag();
-            latexVariant.abilityInstances.forEach((name, ability) -> {
-                CompoundTag tagAbility = new CompoundTag();
-                ability.saveData(tagAbility);
-                if (!tagAbility.isEmpty())
-                    tagAbilities.put(name.toString(), tagAbility);
-            });
-            tag.put("LatexAbilities", tagAbilities);
+            tag.put("LatexAbilities", latexVariant.saveAbilities());
         }
     }
 

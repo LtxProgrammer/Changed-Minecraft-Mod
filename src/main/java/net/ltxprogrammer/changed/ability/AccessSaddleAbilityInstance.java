@@ -65,7 +65,11 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
         if (player.isDeadOrDying() && player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
             return;
 
-        player.drop(saddle, true);
-        player.drop(chest, true);
+        if (saddle != null)
+            player.drop(saddle, true);
+        if (chest != null)
+            player.drop(chest, true);
+        saddle = null;
+        chest = null;
     }
 }
