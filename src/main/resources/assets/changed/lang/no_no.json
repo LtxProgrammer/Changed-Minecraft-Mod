@@ -48,7 +48,7 @@
   "death.attack.transfur.player": "%1$s ble transpelsert av %2$s",
   "death.attack.white_latex": "%1$s ble oppløst av hvit lateks",
 
-  "command.changed.error.not_latex_form": "Ogiltig latexform",
+  "command.changed.error.not_latex_form": "Ugyldig latexform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Alltid holde bevisst etter transpelsmasjon",
