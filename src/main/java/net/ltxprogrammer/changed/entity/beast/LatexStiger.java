@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class LatexStiger extends LatexEntity {
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Spider.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(LatexStiger.class, EntityDataSerializers.BYTE);
     public LatexStiger(EntityType<? extends LatexStiger> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

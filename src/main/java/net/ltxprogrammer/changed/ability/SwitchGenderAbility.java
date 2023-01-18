@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -24,24 +25,11 @@ public class SwitchGenderAbility extends SimpleAbility {
         super.startUsing(player, variant);
 
         float beforeHealth = player.getHealth();
-        if (variant.getFormId().getPath().contains("/male")) {
-            ResourceLocation newVariantId = new ResourceLocation(variant.getFormId().getNamespace(),
-                    variant.getFormId().getPath().replace("/male", "/female"));
-            if (LatexVariant.ALL_LATEX_FORMS.containsKey(newVariantId)) {
-                var newVariant = LatexVariant.ALL_LATEX_FORMS.get(newVariantId);
-                ProcessTransfur.setPlayerLatexVariant(player, newVariant);
-                ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
-            }
-        }
-
-        else if (variant.getFormId().getPath().contains("/female")) {
-            ResourceLocation newVariantId = new ResourceLocation(variant.getFormId().getNamespace(),
-                    variant.getFormId().getPath().replace("/female", "/male"));
-            if (LatexVariant.ALL_LATEX_FORMS.containsKey(newVariantId)) {
-                var newVariant = LatexVariant.ALL_LATEX_FORMS.get(newVariantId);
-                ProcessTransfur.setPlayerLatexVariant(player, newVariant);
-                ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
-            }
+        var newVariantId = Gender.switchGenderedForm(variant.getFormId());
+        if (!newVariantId.equals(variant.getFormId())) {
+            var newVariant = LatexVariant.ALL_LATEX_FORMS.get(newVariantId);
+            ProcessTransfur.setPlayerLatexVariant(player, newVariant);
+            ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
         }
         player.setHealth(beforeHealth);
     }

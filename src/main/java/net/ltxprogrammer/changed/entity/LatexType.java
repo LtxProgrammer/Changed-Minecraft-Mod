@@ -20,13 +20,13 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
     WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedBlocks.WHITE_LATEX_BLOCK);
 
     public final Supplier<? extends Item> goo;
-    public final Supplier<Block> block;
+    public final Supplier<? extends Block> block;
 
     LatexType() {
         this.goo = () -> null;
         this.block = () -> null;
     }
-    LatexType(Supplier<? extends Item> goo, Supplier<Block> block) {
+    LatexType(Supplier<? extends Item> goo, Supplier<? extends Block> block) {
         this.goo = goo;
         this.block = block;
     }
