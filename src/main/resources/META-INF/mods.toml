@@ -11,7 +11,7 @@ loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft versio
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="MIT License"
 # A URL to refer people to when problems occur with this mod
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+issueTrackerURL="https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -19,7 +19,7 @@ modId="changed" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version='0.9.1' #mandatory
+version="${file.jarVersion}" #mandatory
 # A display name for the mod
 displayName="Changed: Minecraft Mod" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -31,29 +31,29 @@ displayName="Changed: Minecraft Mod" #mandatory
 # A text field displayed in the mod UI
 credits='''Dragon Snow for the original game, alex_n_italy for the original mod, iChun for open sourcing their morph mod
 
-Artemka2009 and KoBOLTA for entity textures, and some models
-ÒwÓ#0256, Twix#5803, and KoBOLTA for some paintings, Alex_n_Italy for some models''' #optional
+bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803''' #optional
 # A text field displayed in the mod UI
 authors="LtxProgrammer" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''Nothing to be seen here.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.changed]] #optional
-# the modid of the dependency
-modId="forge" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-mandatory=true #mandatory
-# The version range of the dependency
-versionRange="[40.2.0,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-ordering="NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
-side="BOTH"
-# Here's another dependency
 [[dependencies.changed]]
-modId="minecraft"
-mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange="[1.18.2]"
-ordering="NONE"
-side="BOTH"
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[40.2.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.changed]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.changed]]
+    modId="terrablender"
+    mandatory=true
+    versionRange="[1.0.0.59,)"
+    ordering="NONE"
+    side="BOTH"
