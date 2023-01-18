@@ -3,10 +3,24 @@
   "itemGroup.tab_changed_items": "Changed物品",
   "itemGroup.tab_changed_entities": "Changed生物",
   
+  "ability.changed.access_saddle": "胶兽能力访问界面",
+  "ability.changed.extra_hands": "额外手部",
+  "ability.changed.switch_transfur_mode": "切换Transfur模式",
+  "ability.changed.create_cobweb": "生成蜘蛛网",
+  "ability.changed.create_inkball": "生成胶墨球",
+  "ability.changed.access_chest": "使用箱子",
+  "ability.changed.switch_hands": "切换手",
+  "ability.changed.switch_gender": "更改性别",
+  "ability.changed.use_variant_ability": "使用变种能力",
+
+  
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open3": "实验室门打开",
   "subtitles.changed.close3": "实验室门关闭",
   "subtitles.changed.bow2": "纸板箱打开",
+  "subtitles.changed.siren": "塞壬歌唱",
+  "subtitles.changed.save": "视网膜扫描器工作",
+  "subtitles.changed.sound3": "有机Transfur",
   
   "item.changed.aerosol_latex_bucket": "桶装气溶胶",
   "item.changed.blood_syringe": "注射器（血液）",
@@ -22,6 +36,7 @@
   "item.changed.syringe": "注射器",
   "item.changed.white_latex_goo": "白色胶液",
   "item.changed.white_latex_bucket": "桶装白色胶液",
+  "item.changed.latex_inkball": "胶墨球",
 
   "item.changed.latex_dance_record": "胶液舞唱片",
   "item.changed.latex_dance_record.desc": "By LtxProgrammer",
@@ -39,6 +54,7 @@
   "gamerule.changed:keepForm": "是否永久Transfur",
   "gamerule.changed:latexSpread": "是否让胶液自然蔓延",
   "gamerule.changed:transfurTolerance": "胶液生物Transfur伤害(Ticks)",
+  "gamerule.changed:npcWantFusePlayer": "是否允许胶液生物与玩家融合",
 
   "key.changed.variant_ability": "主动变化能力",
   "key.changed.extra_jump": "跳跃增强",
@@ -106,6 +122,7 @@
   "block.changed.tiles_library_tan": "棕褐色图书馆瓷砖",
   "block.changed.vent_hatch": "通风口",
   "block.changed.wall_greenhouse": "温室墙块",
+  "block.changed.latex_wolf_crystal_block": "胶液狼水晶方块",
 
   "biome.changed.dark_latex_plains": "黑胶平原",
   "biome.changed.white_latex_forest": "白胶森林",
