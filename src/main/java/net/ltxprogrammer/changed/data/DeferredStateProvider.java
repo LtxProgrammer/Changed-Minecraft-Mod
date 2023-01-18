@@ -21,9 +21,9 @@ public class DeferredStateProvider extends BlockStateProvider {
             (p_68804_) -> p_68804_.id).codec();
     private static final BlockStateProviderType<DeferredStateProvider> DEFERRED_STATE_PROVIDER = register(Changed.modResource("deferred_state_provider"), DeferredStateProvider.CODEC);
     private final ResourceLocation id;
-    private final Supplier<Block> state;
+    private final Supplier<? extends Block> state;
 
-    public DeferredStateProvider(ResourceLocation id, Supplier<Block> p_68801_) {
+    public DeferredStateProvider(ResourceLocation id, Supplier<? extends Block> p_68801_) {
         this.id = id;
         this.state = p_68801_;
     }
@@ -40,7 +40,7 @@ public class DeferredStateProvider extends BlockStateProvider {
         return new DeferredStateProvider(blockLocation, () -> Registry.BLOCK.get(blockLocation));
     }
 
-    public static BlockStateProvider of(RegistryObject<Block> blockSupplier) {
+    public static BlockStateProvider of(RegistryObject<? extends Block> blockSupplier) {
         return new DeferredStateProvider(blockSupplier.getId(), blockSupplier);
     }
 
