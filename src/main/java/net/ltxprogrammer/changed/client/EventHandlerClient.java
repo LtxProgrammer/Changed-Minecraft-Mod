@@ -27,6 +27,9 @@ public class EventHandlerClient {
     public static final Listener<ProcessTransfur.TransfurProgress> PROGRESS_LISTENER = SyncTransfurProgressPacket.SIGNAL.addListener(progress -> {
         var player = Minecraft.getInstance().player;
         Objects.requireNonNull(player);
+        var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
+        if (Math.abs(oldProgress.ticks() - progress.ticks()) < 20 && oldProgress.type().equals(progress.type())) // Prevent sync shudder
+            return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
 

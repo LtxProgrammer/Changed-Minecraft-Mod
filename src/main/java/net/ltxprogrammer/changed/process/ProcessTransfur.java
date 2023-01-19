@@ -58,8 +58,8 @@ public class ProcessTransfur {
             if (progress == null && oldProgress == null)
                 return;
             transfurProgressField.set(player, progress);
-            if (player instanceof ServerPlayer serverPlayer)
-                Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SyncTransfurProgressPacket(progress));
+            if (!player.level.isClientSide)
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncTransfurProgressPacket(progress));
         } catch (Exception ignored) {}
     }
 
@@ -168,7 +168,6 @@ public class ProcessTransfur {
         }
     }
 
-    private static long lastDayTime = 0;
     public static void tickPlayerTransfurProgress(Player player) {
         if (isPlayerLatex(player))
             return;
@@ -182,11 +181,10 @@ public class ProcessTransfur {
             }
         }
 
-        else {
-            if (lastDayTime > player.level.getDayTime())
-                lastDayTime = player.level.getDayTime() - 1;
-            setPlayerTransfurProgress(player, new TransfurProgress(progress.ticks > 0 ? (int) (progress.ticks - (player.level.getDayTime() - lastDayTime)) : 0, progress.type));
-            lastDayTime = player.level.getDayTime();
+        else if (progress.ticks > 0) {
+            int deltaTicks = Math.max(((player.tickCount - player.getLastHurtByMobTimestamp()) / 8) - 20, 0);
+            int nextTicks = Math.max(progress.ticks - deltaTicks, 0);
+            setPlayerTransfurProgress(player, new TransfurProgress(nextTicks, progress.type));
         }
     }
 
@@ -343,6 +341,7 @@ public class ProcessTransfur {
             return;
         }
 
+        event.getEntityLiving().setLastHurtByMob(source.entity);
         event.setCanceled(true);
         double d1 = source.entity.getX() - entity.getX();
 
