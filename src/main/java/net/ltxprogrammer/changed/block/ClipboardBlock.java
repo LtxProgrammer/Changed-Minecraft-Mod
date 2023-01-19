@@ -1,13 +1,11 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.block.properties.Direction8Step;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ClipboardBlock extends AbstractCustomShapeBlock {

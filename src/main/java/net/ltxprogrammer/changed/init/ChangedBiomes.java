@@ -1,44 +1,23 @@
 package net.ltxprogrammer.changed.init;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.biome.ChangedBiomeInterface;
 import net.ltxprogrammer.changed.world.biome.DarkLatexPlains;
 import net.ltxprogrammer.changed.world.biome.WhiteLatexForest;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.placement.CaveSurface;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -65,24 +44,5 @@ public class ChangedBiomes {
 
     public static RandomPatchConfiguration grassPatch(BlockStateProvider p_195203_, int p_195204_) {
         return FeatureUtils.simpleRandomPatchConfiguration(p_195204_, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(p_195203_)));
-    }
-
-    static record IsBlockCheck(Block block) implements SurfaceRules.ConditionSource {
-        static final Codec<IsBlockCheck> CODEC = RecordCodecBuilder.create((p_189753_) -> {
-            return p_189753_.group(Codec.STRING.fieldOf("block").forGetter((checker) -> checker.block.getRegistryName().toString())).apply(p_189753_, (string) -> new IsBlockCheck(Registry.BLOCK.get(new ResourceLocation(string))));
-        });
-
-        public Codec<? extends SurfaceRules.ConditionSource> codec() {
-            return CODEC;
-        }
-
-        public SurfaceRules.Condition apply(final SurfaceRules.Context p_189755_) {
-            return () -> p_189755_.chunk.getSection(p_189755_.chunk.getSectionIndex(p_189755_.blockY))
-                    .getBlockState(p_189755_.blockX & 15, p_189755_.blockY & 15, p_189755_.blockZ & 15).is(block);
-        }
-    }
-
-    public static SurfaceRules.ConditionSource isBlockCheck(Block block) {
-        return new IsBlockCheck(block);
     }
 }
