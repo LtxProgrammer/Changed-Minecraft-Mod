@@ -196,7 +196,7 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
 
     public PoseStack getPlacementCorrectors(HumanoidArm arm) {
         PoseStack corrector = new PoseStack();
-        corrector.translate(0.0f, -4.0f / 16.0f, 0.0f);
+        corrector.translate(0.0f, -6.0f / 17.5f, 0.075f);
         return corrector;
     }
 
