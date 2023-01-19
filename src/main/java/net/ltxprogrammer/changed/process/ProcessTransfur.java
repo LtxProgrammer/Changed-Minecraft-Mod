@@ -59,7 +59,7 @@ public class ProcessTransfur {
                 return;
             transfurProgressField.set(player, progress);
             if (!player.level.isClientSide)
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncTransfurProgressPacket(progress));
+                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncTransfurProgressPacket(player.getUUID(), progress));
         } catch (Exception ignored) {}
     }
 
