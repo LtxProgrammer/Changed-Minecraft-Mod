@@ -272,7 +272,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
     public PoseStack getPlacementCorrectors(HumanoidArm arm) {
         PoseStack corrector = new PoseStack();
-        corrector.translate(0.0f, 8.0f / 16.0f, 0.0f);
+        corrector.translate(0.0f, 6.0f / 18.0f, -0.1f);
         return corrector;
     }
 
