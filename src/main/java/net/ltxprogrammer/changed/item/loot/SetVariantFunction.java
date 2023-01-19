@@ -27,7 +27,7 @@ public class SetVariantFunction extends LootItemConditionalFunction {
     }
 
     public LootItemFunctionType getType() {
-        return ChangedLootItemFunctions.SET_COUNT;
+        return ChangedLootItemFunctions.SET_VARIANT;
     }
 
     public ItemStack run(ItemStack itemStack, LootContext context) {
