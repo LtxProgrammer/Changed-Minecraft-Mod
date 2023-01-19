@@ -23,13 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FloppyDisk extends Item {
+public class CompactDisc extends Item {
     public static final String TAG_TITLE = "title";
     public static final String TAG_AUTHOR = "author";
     public static final String TAG_DATA = "data";
     public static final String TAG_TRANSLATE = "translate";
 
-    public FloppyDisk() {
+    public CompactDisc() {
         super(new Item.Properties().stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
