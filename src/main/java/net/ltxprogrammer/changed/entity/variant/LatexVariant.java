@@ -16,21 +16,16 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
-import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
@@ -56,7 +51,6 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
@@ -70,6 +64,24 @@ public class LatexVariant<T extends LatexEntity> {
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> MOB_FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> SPECIAL_LATEX_FORMS = new HashMap<>();
+
+    public static List<LatexVariant<?>> getFusionCompatible(LatexVariant<?> source, LatexVariant<?> other) {
+        List<LatexVariant<?>> list = new ArrayList<>();
+        FUSION_LATEX_FORMS.forEach((name, variant) -> {
+            if (variant.isFusionOf(source, other))
+                list.add(variant);
+        });
+        return list;
+    }
+
+    public static List<LatexVariant<?>> getFusionCompatible(LatexVariant<?> source, Class<? extends LivingEntity> clazz) {
+        List<LatexVariant<?>> list = new ArrayList<>();
+        MOB_FUSION_LATEX_FORMS.forEach((name, variant) -> {
+            if (variant.isFusionOf(source, clazz))
+                list.add(variant);
+        });
+        return list;
+    }
     
     public static final LatexVariant<LatexSilverFox> LATEX_SILVER_FOX = register(Builder.of(ChangedEntities.LATEX_SILVER_FOX)
             .groundSpeed(1.075f).swimSpeed(0.85f).stepSize(0.7f)
@@ -85,7 +97,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
             .fusionOf(LATEX_SILVER_FOX, LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LATEX_SILVER_FOX, AbstractHorse.class)
+    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_aerosol_latex_wolf")));

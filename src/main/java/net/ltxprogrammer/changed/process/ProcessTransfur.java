@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
@@ -151,12 +150,8 @@ public class ProcessTransfur {
             }
 
             else {
-                List<LatexVariant<?>> mobFusion = new ArrayList<>();
-                for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-                    if (checkVariant.isFusionOf(latexVariant, entity.getClass())) {
-                        mobFusion.add(checkVariant);
-                    }
-                }
+                List<LatexVariant<?>> mobFusion = LatexVariant.getFusionCompatible(latexVariant, entity.getClass());
+
                 if (mobFusion.isEmpty())
                     return false;
 
@@ -309,22 +304,22 @@ public class ProcessTransfur {
 
         // First, check for fusion
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(event.getEntityLiving());
-        for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
-            if (checkVariant.isFusionOf(source.variant, playerVariant)) {
+        List<LatexVariant<?>> possibleMobFusions = List.of();
+        if (playerVariant != null) {
+            var possibleFusion = LatexVariant.getFusionCompatible(source.variant, playerVariant);
+            if (possibleFusion.size() > 0) {
+                LatexVariant<?> randomFusion = possibleFusion.get(source.entity.getRandom().nextInt(possibleFusion.size()));
                 event.setCanceled(true);
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
                         transfur(source.entity, source.entity.level, playerVariant, true);
                         pvpLoser.setLastHurtByMob(source.entity);
                         pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
-                    }
-                    else {
+                    } else {
                         transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
                     }
-                }
-
-                else {
+                } else {
                     transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                     source.entity.discard();
                 }
@@ -333,11 +328,17 @@ public class ProcessTransfur {
             }
         }
 
+        else {
+            LatexVariant<?> checkSource = source.variant != null ? source.variant : source.transfur;
+
+            possibleMobFusions = LatexVariant.getFusionCompatible(checkSource, event.getEntityLiving().getClass());
+        }
+
         // Check if attacked entity is already latexed
         if (LatexedEntity.isLatexed(event.getEntityLiving()))
             return;
         // Check if attacked entity is not humanoid
-        if (!event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+        if (possibleMobFusions.isEmpty() && !event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
             bonusHurt(entity, ChangedDamageSources.TRANSFUR, 2.0f, false);
             return;
         }
@@ -360,6 +361,8 @@ public class ProcessTransfur {
         if (source.variant != null)
             doesAbsorption = source.variant.transfurMode() == TransfurMode.ABSORPTION;
         else if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
+            doesAbsorption = true;
+        if (!possibleMobFusions.isEmpty())
             doesAbsorption = true;
 
         if (!doesAbsorption) { // Replication
@@ -384,7 +387,23 @@ public class ProcessTransfur {
                 return;
             }
 
-            if (source.variant != source.transfur) {
+            if (!possibleMobFusions.isEmpty()) {
+                LatexVariant<?> mobFusionVariant = possibleMobFusions.get(source.entity.getRandom().nextInt(possibleMobFusions.size()));
+                if (source.entity instanceof Player sourcePlayer) {
+                    float beforeHealth = sourcePlayer.getHealth();
+                    getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
+                    setPlayerLatexVariant(sourcePlayer, mobFusionVariant);
+                    sourcePlayer.setHealth(beforeHealth);
+                }
+
+                else {
+                    source.entity.discard();
+                    source = new LatexedEntity(mobFusionVariant.getEntityType().create(source.entity.level));
+                    source.entity.level.addFreshEntity(source.entity);
+                }
+            }
+
+            else if (source.variant != source.transfur) {
                 if (source.entity instanceof Player sourcePlayer) {
                     float beforeHealth = sourcePlayer.getHealth();
                     getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
@@ -395,6 +414,7 @@ public class ProcessTransfur {
                 else {
                     source.entity.discard();
                     source = new LatexedEntity(source.transfur.getEntityType().create(source.entity.level));
+                    source.entity.level.addFreshEntity(source.entity);
                 }
             }
 
@@ -596,11 +616,7 @@ public class ProcessTransfur {
 
         else {
             LatexVariant<?> current = LatexVariant.getEntityVariant(entity);
-            List<LatexVariant<?>> possible = new ArrayList<>();
-            for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
-                if (checkVariant.isFusionOf(current, variant))
-                    possible.add(checkVariant);
-            }
+            List<LatexVariant<?>> possible = LatexVariant.getFusionCompatible(current, variant);
 
             if (possible.isEmpty())
                 return;

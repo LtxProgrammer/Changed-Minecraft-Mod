@@ -42,7 +42,7 @@ public class ChangedItems {
 
     public static Item getByRegistry(ResourceLocation location) {
         for (RegistryObject<Item> registeredItem : REGISTRY.getEntries()) {
-            if (registeredItem.get().getRegistryName() == location) {
+            if (registeredItem.get().getRegistryName().equals(location)) {
                 return registeredItem.get();
             }
         }

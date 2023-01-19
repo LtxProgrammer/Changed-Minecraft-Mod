@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.extension.terrablender;
 
 import net.ltxprogrammer.changed.init.ChangedBiomes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 
 import java.util.ArrayList;

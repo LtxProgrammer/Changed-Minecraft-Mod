@@ -26,7 +26,6 @@ import java.util.List;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.calculateSkyColor;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.grassPatch;
-
 import static terrablender.api.ParameterUtils.*;
 
 public class DarkLatexPlains implements ChangedBiomeInterface {
