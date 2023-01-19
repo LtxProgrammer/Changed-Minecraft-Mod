@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.TorsoSupplier;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.EquipmentSlot;
 
 public class CentaurChestPackLayer<T extends LightLatexCentaur, M extends LatexHumanoidModel<T> & TorsoSupplier> extends RenderLayer<T, M> {
     private final CentaurChestPackModel chestPackModel;

@@ -39,7 +39,6 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;

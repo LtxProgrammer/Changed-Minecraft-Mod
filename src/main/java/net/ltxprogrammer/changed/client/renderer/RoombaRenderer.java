@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.client.renderer.model.RoombaModel;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
