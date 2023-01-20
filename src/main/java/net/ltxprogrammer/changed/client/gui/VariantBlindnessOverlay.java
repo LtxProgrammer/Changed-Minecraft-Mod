@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 public class VariantBlindnessOverlay {
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/misc/white.png");
     private static final float ALPHA = 0.5F;
+    private static float alphaO = 0.0F;
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(RenderGameOverlayEvent.Pre event) {
@@ -39,9 +41,10 @@ public class VariantBlindnessOverlay {
             float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
             float alpha;
             if (variant.getLatexType() == LatexType.DARK_LATEX)
-                alpha = darkness * ALPHA;
+                alpha = Mth.lerp(0.5F, alphaO, darkness * ALPHA);
             else
                 alpha = ALPHA;
+            alphaO = alpha;
 
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
