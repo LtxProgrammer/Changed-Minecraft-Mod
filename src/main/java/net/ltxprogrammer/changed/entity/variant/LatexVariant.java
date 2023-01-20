@@ -138,6 +138,8 @@ public class LatexVariant<T extends LatexEntity> {
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
             .split(Builder::ignored, female -> female.groundSpeed(0.3F).swimSpeed(2.58F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
+    public static final LatexVariant<LatexMedusaCat> LATEX_MEDUSA_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_MEDUSA_CAT)
+            .build(Changed.modResource("form_latex_medusa_cat")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
             .groundSpeed(0.3F).swimSpeed(2.58F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
