@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.item.FloppyDisk;
+import net.ltxprogrammer.changed.item.CompactDisc;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.util.TextUtil;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -24,7 +24,7 @@ public class ComputerScreen extends AbstractContainerScreen<ComputerMenu> {
 
     public final ComputerMenu container;
 
-    public static final String ERR_CORRUPTED_DISK = "changed.error.corrupted_disk";
+    public static final String ERR_CORRUPTED_DISK = "changed.error.corrupted_disc";
     public static final String TXT_WORKING = "menu.working";
     private int scroll = 0;
     private TextUtil.ScrollInfo scrollInfo;
@@ -85,10 +85,10 @@ public class ComputerScreen extends AbstractContainerScreen<ComputerMenu> {
         Language lang = Language.getInstance();
         ItemStack disk = container.getDisk();
         String fallbackText = disk.is(Items.AIR) ? TXT_WORKING : ERR_CORRUPTED_DISK;
-        this.font.draw(poseStack, lang.getOrDefault(TagUtil.getStringOrDefault(disk, FloppyDisk.TAG_TITLE, fallbackText)), 6, 7, -12829636);
+        this.font.draw(poseStack, lang.getOrDefault(TagUtil.getStringOrDefault(disk, CompactDisc.TAG_TITLE, fallbackText)), 6, 7, -12829636);
         //this.font.draw(poseStack, lang.getOrDefault(TagUtil.getStringOrDefault(disk, FloppyDisk.TAG_DATA, fallbackText)), 6, 20, -16711936);
         scrollInfo = TextUtil.drawScrollWrapped(this.font, poseStack,
-                lang.getOrDefault(TagUtil.getStringOrDefault(disk, FloppyDisk.TAG_DATA, fallbackText)),
+                lang.getOrDefault(TagUtil.getStringOrDefault(disk, CompactDisc.TAG_DATA, fallbackText)),
                 6, 20, -16711936, 164, 142, 0);
     }
 

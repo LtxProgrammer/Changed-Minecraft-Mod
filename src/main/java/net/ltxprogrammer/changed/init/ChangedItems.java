@@ -20,7 +20,7 @@ public class ChangedItems {
     public static final RegistryObject<AbstractLatexGoo> DARK_LATEX_GOO = register("dark_latex_goo", AbstractLatexGoo::new);
     public static final RegistryObject<DarkLatexMask> DARK_LATEX_MASK = register("dark_latex_mask", DarkLatexMask::new);
     public static final RegistryObject<Item> DARK_LATEX_BUCKET = register("dark_latex_bucket", AbstractLatexBucket.from(ChangedFluids.DARK_LATEX));
-    public static final RegistryObject<FloppyDisk> FLOPPY_DISK = register("floppy_disk", FloppyDisk::new);
+    public static final RegistryObject<CompactDisc> COMPACT_DISC = register("compact_disc", CompactDisc::new);
     public static final RegistryObject<Item> LATEX_BASE = register("latex_base", () -> new Item(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS)));
     public static final RegistryObject<LatexDanceRecord> LATEX_DANCE_RECORD = register("latex_dance_record", LatexDanceRecord::new);
     public static final RegistryObject<OwoRecord> OWO_RECORD = register("owo_record", OwoRecord::new);

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.recipe;
 
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.item.FloppyDisk;
+import net.ltxprogrammer.changed.item.CompactDisc;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,19 +12,19 @@ import java.util.function.Supplier;
 public class RecipeDisks {
     public static CompoundTag diskHelper(String title, String author, String data, boolean translate) {
         CompoundTag value = new CompoundTag();
-        value.putString(FloppyDisk.TAG_TITLE, title);
-        value.putString(FloppyDisk.TAG_AUTHOR, author);
-        value.putString(FloppyDisk.TAG_DATA, data);
-        value.putBoolean(FloppyDisk.TAG_TRANSLATE, translate);
+        value.putString(CompactDisc.TAG_TITLE, title);
+        value.putString(CompactDisc.TAG_AUTHOR, author);
+        value.putString(CompactDisc.TAG_DATA, data);
+        value.putBoolean(CompactDisc.TAG_TRANSLATE, translate);
         return value;
     }
 
     public static CompoundTag diskHelper(String disk, String author) {
-        return diskHelper("changed.floppy_disk.title." + disk, author, "changed.floppy_disk.content." + disk, true);
+        return diskHelper("changed.compact_disc.title." + disk, author, "changed.compact_disc.content." + disk, true);
     }
 
     public static ItemStack createDisk(String disk, String author) {
-        return new ItemStack(ChangedItems.FLOPPY_DISK.get(), 1, diskHelper(disk, author));
+        return new ItemStack(ChangedItems.COMPACT_DISC.get(), 1, diskHelper(disk, author));
     }
 
     public static Supplier<ItemStack> register(Supplier<ItemStack> supplier) {
