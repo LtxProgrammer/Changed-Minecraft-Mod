@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
+import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.data.Listener;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
@@ -19,14 +20,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EventHandlerClient {
     @OnlyIn(Dist.CLIENT)
-    public static final Listener<ProcessTransfur.TransfurProgress> PROGRESS_LISTENER = SyncTransfurProgressPacket.SIGNAL.addListener(progress -> {
-        var player = Minecraft.getInstance().player;
-        Objects.requireNonNull(player);
+    public static final BiListener<UUID, ProcessTransfur.TransfurProgress> PROGRESS_LISTENER = SyncTransfurProgressPacket.SIGNAL.addListener((uuid, progress) -> {
+        var player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
+        if (player == null)
+            return;
+        var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
+        if (Math.abs(oldProgress.ticks() - progress.ticks()) < 20 && oldProgress.type().equals(progress.type())) // Prevent sync shudder
+            return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
 
