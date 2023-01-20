@@ -25,6 +25,7 @@ public class SyncTransfurProgressPacket implements ChangedPacket {
     }
 
     public void write(FriendlyByteBuf buffer) {
+        buffer.writeUUID(uuid);
         buffer.writeInt(progress.ticks());
         buffer.writeResourceLocation(progress.type());
     }
