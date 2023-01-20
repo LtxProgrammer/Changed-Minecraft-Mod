@@ -36,6 +36,12 @@ public class VariantBlindnessOverlay {
             if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && darkLatex.isMaskless())
                 return;
             float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
+            float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
+            float alpha;
+            if (variant.getLatexType() == LatexType.DARK_LATEX)
+                alpha = darkness * ALPHA;
+            else
+                alpha = ALPHA;
 
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
@@ -50,10 +56,10 @@ public class VariantBlindnessOverlay {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder bufferbuilder = tesselator.getBuilder();
             bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color, color, color, ALPHA).endVertex();
+            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color, color, color, alpha).endVertex();
             tesselator.end();
             RenderSystem.depthMask(true);
             RenderSystem.defaultBlendFunc();
