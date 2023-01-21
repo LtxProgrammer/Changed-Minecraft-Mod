@@ -93,6 +93,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 event.player.refreshDimensions();
                 event.player.setSwimming(true);
                 event.player.heal(0.0625F);
+                event.player.resetFallDistance();
 
                 multiplyMotion(event.player, 1.05F);
                 if (form != null)
