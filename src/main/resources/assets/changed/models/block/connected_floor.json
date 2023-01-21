@@ -20,6 +20,7 @@
       "from": [ 8, 0, 0 ],
       "to": [ 16, 16, 8 ],
       "faces": {
+        "down":  { "uv": [ 8, 8, 16, 16 ], "texture": "#sides", "tintindex": 0, "cullface": "down" },
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#north_east", "tintindex": 0, "cullface": "up" },
         "north": { "uv": [ 0, 0, 8, 16 ], "texture": "#sides", "tintindex": 0, "cullface": "north" },
         "south": { "uv": [ 0, 0, 8, 16 ], "texture": "#sides", "tintindex": 0, "cullface": "south" },
