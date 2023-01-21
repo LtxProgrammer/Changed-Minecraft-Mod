@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/orange_lab_carpeting",
+  "parent": "changed:block/connected_floor",
   "textures": {
     "north_east": "changed:blocks/orange_lab_carpeting/ne0",
     "north_west": "changed:blocks/orange_lab_carpeting/nw0",
