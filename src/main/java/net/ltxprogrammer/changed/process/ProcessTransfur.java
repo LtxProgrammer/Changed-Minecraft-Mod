@@ -181,7 +181,7 @@ public class ProcessTransfur {
             }
         }
 
-        else if (progress.ticks > 0) {
+        else if (!player.level.isClientSide && progress.ticks > 0) {
             int deltaTicks = Math.max(((player.tickCount - player.getLastHurtByMobTimestamp()) / 8) - 20, 0);
             int nextTicks = Math.max(progress.ticks - deltaTicks, 0);
             setPlayerTransfurProgress(player, new TransfurProgress(nextTicks, progress.type));
