@@ -146,6 +146,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final LatexVariant<LatexSquidDog> LATEX_SQUID_DOG = register(Builder.of(ChangedEntities.LATEX_SQUID_DOG).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL)
             .build(Changed.modResource("form_latex_squid_dog")));
+    public static final LatexVariant<LatexSquirrel> LATEX_SQUIRREL = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_SQUIRREL)
+            .build(Changed.modResource("form_latex_squirrel")));
 
     public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_crocodile")));

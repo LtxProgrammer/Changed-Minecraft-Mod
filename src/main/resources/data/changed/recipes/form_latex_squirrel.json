@@ -1,0 +1,15 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:oak_sapling"
+    },
+    {
+      "item": "minecraft:pumpkin_seeds"
+    }
+  ],
+  "form": "changed:form_latex_squirrel"
+}

@@ -1,6 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
+    "NWN",
+    "NWN",
     "NWN"
   ],
   "key": {
@@ -12,6 +14,7 @@
     }
   },
   "result": {
-    "item": "changed:wall_vent"
+    "item": "changed:wall_vent",
+    "count": 3
   }
 }
