@@ -51,7 +51,7 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
 
-        PartDefinition secondarytailsegment_r1 = Tail.addOrReplaceChild("secondarytailsegment_r1", CubeListBuilder.create().texOffs(0, 20).mirror().addBox(-1.5F, -13.875F, -1.1F, 3.0F, 3.0F, 6.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition secondarytailsegment_r1 = Tail.addOrReplaceChild("secondarytailsegment_r1", CubeListBuilder.create().texOffs(0, 20).addBox(-1.5F, -13.875F, -1.1F, 3.0F, 3.0F, 6.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
 
         PartDefinition primarytailsegment_r1 = Tail.addOrReplaceChild("primarytailsegment_r1", CubeListBuilder.create().texOffs(0, 20).addBox(-2.0F, -14.15F, -6.1F, 4.0F, 4.0F, 4.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
