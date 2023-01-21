@@ -1,0 +1,10 @@
+{
+  "parent": "changed:block/tiles_grayblue_connected",
+  "textures": {
+    "north_east": "changed:blocks/tiles_grayblue/ne_y",
+    "north_west": "changed:blocks/tiles_grayblue/nw1",
+    "south_east": "changed:blocks/tiles_grayblue/se_y",
+    "south_west": "changed:blocks/tiles_grayblue/sw_c",
+    "sides": "changed:blocks/tiles_grayblue/side"
+  }
+}
