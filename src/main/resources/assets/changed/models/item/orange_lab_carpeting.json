@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/orange_lab_carpeting",
+  "parent": "changed:block/orange_lab_carpeting/0",
   "display": {
     "thirdperson": {
       "rotation": [
