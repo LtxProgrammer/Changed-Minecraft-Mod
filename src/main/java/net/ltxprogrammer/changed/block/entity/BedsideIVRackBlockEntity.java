@@ -80,7 +80,7 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
                                 ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                                 if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
                                     formLocation = Changed.modResource("special/form_" + player.getUUID());
-                                ProcessTransfur.transfur(player, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.LIGHT_LATEX_WOLF.male()), true);
+                                ProcessTransfur.transfur(player, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT), true);
                             } catch (NullPointerException ex) {
                             }
                             ivRack.items.get(0).shrink(1);

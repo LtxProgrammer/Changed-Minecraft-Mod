@@ -78,7 +78,7 @@ public class CommandTransfur {
         if (ProcessTransfur.isPlayerLatex(player)) {
             ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
             ProcessTransfur.setPlayerLatexVariant(player, null);
-            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.LIGHT_LATEX_WOLF.male().getFormId()));
+            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId()));
         }
         return Command.SINGLE_SUCCESS;
     }
