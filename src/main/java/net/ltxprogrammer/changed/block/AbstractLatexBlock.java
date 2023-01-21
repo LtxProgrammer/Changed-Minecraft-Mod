@@ -193,5 +193,8 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         super.randomTick(state, level, position, random);
 
         randomTick(state, level, position, random, latexType);
+        latexTick(state, level, position, random);
     }
+
+    public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {}
 }

@@ -17,9 +17,7 @@ public class DarkLatexBlock extends AbstractLatexBlock {
     }
 
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
-        super.randomTick(state, level, position, random);
-
+    public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         if (random.nextInt(200) > 0)
             return;
 
