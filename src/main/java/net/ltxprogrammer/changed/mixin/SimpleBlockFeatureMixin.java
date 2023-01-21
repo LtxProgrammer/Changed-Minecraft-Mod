@@ -17,12 +17,12 @@ public abstract class SimpleBlockFeatureMixin {
     public void place(FeaturePlaceContext<SimpleBlockConfiguration> context, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (callbackInfoReturnable.getReturnValue()) {
             BlockState blockState = context.config().toPlace().getState(context.random(), context.origin());
-            if (blockState.getBlock() instanceof DoubleBlockPlace) {
+            if (blockState.getBlock() instanceof DoubleBlockPlace doubleBlockPlace) {
                 if (!context.level().isEmptyBlock(context.origin().above())) {
                     callbackInfoReturnable.setReturnValue(false);
                 }
 
-                DoublePlantBlock.placeAt(context.level(), blockState, context.origin(), 2);
+                doubleBlockPlace.placeAt(context.level(), blockState, context.origin(), 2);
             }
         }
     }

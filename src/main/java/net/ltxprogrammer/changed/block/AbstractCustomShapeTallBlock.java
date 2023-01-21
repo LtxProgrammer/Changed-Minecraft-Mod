@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBlock {
+public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBlock implements DoubleBlockPlace {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     public AbstractCustomShapeTallBlock(Properties properties) {
@@ -64,10 +64,9 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
         }
     }
 
-    public static void placeAt(LevelAccessor p_153174_, BlockState p_153175_, BlockPos p_153176_, int p_153177_) {
-        BlockPos blockpos = p_153176_.above();
-        p_153174_.setBlock(p_153176_, p_153175_.setValue(HALF, DoubleBlockHalf.LOWER), p_153177_);
-        p_153174_.setBlock(blockpos, p_153175_.setValue(HALF, DoubleBlockHalf.UPPER), p_153177_);
+    public void placeAt(LevelAccessor level, BlockState blockState, BlockPos blockPos, int flag) {
+        level.setBlock(blockPos, blockState.setValue(HALF, DoubleBlockHalf.LOWER), flag);
+        level.setBlock(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), flag);
     }
 
     protected static void preventCreativeDropFromBottomPart(Level p_52904_, BlockPos p_52905_, BlockState p_52906_, Player p_52907_) {
