@@ -177,6 +177,9 @@ public class LatexVariant<T extends LatexEntity> {
 
     public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
             .build(Changed.modResource("form_latex_stiger")));
+
+    public static final LatexVariant<?> FALLBACK_VARIANT = LIGHT_LATEX_WOLF.male();
+
     public ResourceLocation getFormId() {
         return formId;
     }

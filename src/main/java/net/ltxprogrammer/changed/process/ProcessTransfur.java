@@ -52,7 +52,7 @@ public class ProcessTransfur {
 
     public static void setPlayerTransfurProgress(Player player, TransfurProgress progress) {
         try {
-            var oldProgress = (TransfurProgress)latexVariantField.get(player);
+            var oldProgress = (TransfurProgress)transfurProgressField.get(player);
             if (progress != null && oldProgress != null && progress.equals(oldProgress))
                 return;
             if (progress == null && oldProgress == null)
@@ -135,7 +135,7 @@ public class ProcessTransfur {
         else {
             float damage = amount / 1200.0f;
             float health = entity.getHealth();
-            LatexVariant<?> latexVariant = LatexVariant.ALL_LATEX_FORMS.getOrDefault(type, LatexVariant.LIGHT_LATEX_WOLF.male());
+            LatexVariant<?> latexVariant = LatexVariant.ALL_LATEX_FORMS.getOrDefault(type, LatexVariant.FALLBACK_VARIANT);
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
                 if (health <= damage && health > 0.0F) {
@@ -177,7 +177,7 @@ public class ProcessTransfur {
                 transfur(player, player.level, LatexVariant.ALL_LATEX_FORMS.get(progress.type), false);
             else {
                 var variant = PatreonBenefits.getPlayerSpecialVariant(player.getUUID());
-                transfur(player, player.level, variant == null ? LatexVariant.LIGHT_LATEX_WOLF.male() : variant, false);
+                transfur(player, player.level, variant == null ? LatexVariant.FALLBACK_VARIANT : variant, false);
             }
         }
 
