@@ -102,7 +102,7 @@ public class Syringe extends Item {
             }
         }
 
-        return LatexVariant.LIGHT_LATEX_WOLF.male();
+        return LatexVariant.FALLBACK_VARIANT;
     }
 
     @Override
@@ -231,12 +231,12 @@ public class Syringe extends Item {
                     ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                     if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
                         formLocation = Changed.modResource("special/form_" + entity.getUUID());
-                    ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.LIGHT_LATEX_WOLF.male()),
+                    ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT),
                             false);
                 }
 
                 else {
-                    ProcessTransfur.transfur(entity, level, LatexVariant.LIGHT_LATEX_WOLF.male(), player.isCreative());
+                    ProcessTransfur.transfur(entity, level, LatexVariant.FALLBACK_VARIANT, player.isCreative());
                 }
 
                 player.awardStat(Stats.ITEM_USED.get(this));
