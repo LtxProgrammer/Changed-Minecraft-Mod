@@ -4,35 +4,53 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.Nullable;
+
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements WhiteLatexTransportInterface {
     public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 30.0D, 14.0D);
     public static final VoxelShape SHAPE_OCC = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 32.0D, 16.0D);
+    public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
 
     public WhiteLatexPillar(Properties properties) {
-        super(properties.isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
+        super(properties.randomTicks().isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
@@ -49,30 +67,56 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
-    public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
-        return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP) &&
-                (p_52784_.getBlockState(p_52785_.below()).is(ChangedBlocks.WHITE_LATEX_BLOCK.get()) ||
-                        (p_52784_.getBlockState(p_52785_.below()).getProperties().contains(COVERED)) &&
-                                p_52784_.getBlockState(p_52785_.below()).getValue(COVERED) == LatexType.WHITE_LATEX);
+    public BlockState updateShape(BlockState p_52894_, Direction p_52895_, BlockState p_52896_, LevelAccessor p_52897_, BlockPos p_52898_, BlockPos p_52899_) {
+        DoubleBlockHalf doubleblockhalf = p_52894_.getValue(HALF);
+        if (p_52895_.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (p_52895_ == Direction.UP) || p_52896_.is(this) && p_52896_.getValue(HALF) != doubleblockhalf) {
+            return doubleblockhalf == DoubleBlockHalf.LOWER && p_52895_ == Direction.DOWN && !p_52894_.canSurvive(p_52897_, p_52898_) ? Blocks.AIR.defaultBlockState() : super.updateShape(p_52894_, p_52895_, p_52896_, p_52897_, p_52898_, p_52899_);
+        } else {
+            return Blocks.AIR.defaultBlockState();
+        }
+    }
+
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
+        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
+            return super.canSurvive(blockState, level, blockPos);
+        else {
+            BlockState belowState = level.getBlockState(blockPos.below());
+            if (belowState.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()) ||
+                    (belowState.getProperties().contains(COVERED) && belowState.getValue(COVERED) == LatexType.WHITE_LATEX))
+                return super.canSurvive(blockState, level, blockPos);
+            else
+                return false;
+        }
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
+        return Shapes.empty();
     }
 
     @Override
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
-        return switch (p_60547_.getValue(HALF)) {
-            case UPPER -> SHAPE_WHOLE.move(0.0, -1.0, 0.0);
-            case LOWER -> SHAPE_WHOLE;
-        };
+        if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
+            return SHAPE_WHOLE;
+        else
+            return SHAPE_WHOLE.move(0, -1, 0);
+
     }
 
-    public RenderShape getRenderShape(BlockState p_54559_) {
-        return RenderShape.MODEL;
+    @Override
+    public RenderShape getRenderShape(BlockState blockState) {
+        return blockState.getValue(EXTENDED) ? RenderShape.MODEL : RenderShape.INVISIBLE;
     }
 
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return Shapes.empty();
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(EXTENDED);
     }
 
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (!state.getValue(EXTENDED))
+            return;
+
         if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
                 if (ProcessTransfur.getPlayerLatexVariant(player).getLatexType() == LatexType.WHITE_LATEX) {
@@ -85,5 +129,24 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
             }
         }
         entity.makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
+    }
+
+    @Override
+    public void randomTick(BlockState blockState, ServerLevel level, BlockPos blockPos, Random random) {
+        super.randomTick(blockState, level, blockPos, random);
+        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
+            return;
+
+        boolean wantToAppear = WhiteLatexBlock.targetNearby(level, blockPos);
+        if (blockState.getValue(EXTENDED) != wantToAppear) {
+            ChangedSounds.broadcastSound(level.getServer(), ChangedSounds.POISON, blockPos, 1, 1);
+            level.setBlockAndUpdate(blockPos, blockState.setValue(EXTENDED, wantToAppear));
+            level.setBlockAndUpdate(blockPos.above(), level.getBlockState(blockPos.above()).setValue(EXTENDED, wantToAppear));
+        }
+    }
+
+    @Override
+    public boolean allowTransport(BlockState blockState) {
+        return blockState.getValue(EXTENDED);
     }
 }
