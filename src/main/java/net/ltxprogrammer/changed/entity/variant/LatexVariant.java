@@ -613,7 +613,10 @@ public class LatexVariant<T extends LatexEntity> {
         }
 
         // Step size
-        player.maxUpStep = stepSize;
+        if (player.isCrouching() && stepSize > 0.6f)
+            player.maxUpStep = 0.6f;
+        else
+            player.maxUpStep = stepSize;
 
         List<ResourceLocation> toRemove = new ArrayList<>();
         activeAbilities.forEach((name, ability) -> {
