@@ -55,6 +55,8 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
             if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
             AbstractLatexBlock.randomTick(state, level, position, random, state.getValue(COVERED));
+            if (state.getValue(COVERED).block.get() instanceof AbstractLatexBlock latexBlock)
+                latexBlock.latexTick(state, level, position, random);
             return;
         }
     }

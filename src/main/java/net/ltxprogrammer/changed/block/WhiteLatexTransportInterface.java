@@ -31,6 +31,10 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     }
     static final String TRANSPORT_TAG = Changed.modResourceStr("white_latex_transport");
 
+    default boolean allowTransport(BlockState blockState) {
+        return true;
+    }
+
     static void multiplyMotion(Player player, float mul) {
         player.setDeltaMovement(player.getDeltaMovement().multiply(mul, mul, mul));
     }
@@ -60,7 +64,9 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     @Mod.EventBusSubscriber
     class EventSubscriber {
         static boolean whiteLatex(BlockState blockState) {
-            return blockState.getBlock() instanceof WhiteLatexTransportInterface || (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
+            if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
+                return transportInterface.allowTransport(blockState);
+            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
         }
 
         @SubscribeEvent
