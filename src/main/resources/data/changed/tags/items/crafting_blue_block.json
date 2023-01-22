@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:blue_concrete",
+    "minecraft:light_blue_concrete",
+    "minecraft:white_concrete",
+    "minecraft:white_terracotta",
+	"changed:tiles_blue",
+	"changed:tiles_blue_small",
+	"changed:wall_blue_striped"
+  ]
+}

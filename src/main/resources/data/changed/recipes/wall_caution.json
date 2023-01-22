@@ -1,8 +1,20 @@
 {
-	"type": "minecraft:stonecutting",
-	"count": 1,
-	"ingredient": {
-		"tag": "changed:crafting_gray_block"
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"WWW",
+		"CCC",
+		"WWW"
+	],
+	"key": {
+		"W": {
+			"item": "changed:wall_white"
+		},
+		"C": {
+			"item": "changed:tiles_caution"
+		}
 	},
-	"result": "changed:wall_caution"
+	"result": {
+		"item": "changed:wall_caution",
+		"count": 6
+	}
 }

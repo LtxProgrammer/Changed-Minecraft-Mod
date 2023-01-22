@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:white_concrete",
+    "minecraft:white_terracotta",
 	"changed:tiles_white",
 	"changed:tiles_white_connected",
 	"changed:wall_white"
