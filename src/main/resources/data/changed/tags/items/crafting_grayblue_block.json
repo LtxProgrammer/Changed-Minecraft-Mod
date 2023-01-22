@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cyan_terracotta",
+    "minecraft:gray_concrete",
+    "changed:tiles_grayblue",
+    "changed:tiles_grayblue_bolted",
+    "changed:tiles_grayblue_connected"
+  ]
+}

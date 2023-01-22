@@ -1,7 +1,10 @@
 {
   "replace": false,
   "values": [
+    "minecraft:light_gray_concrete",
     "minecraft:gray_concrete",
+    "minecraft:white_concrete",
+    "minecraft:white_terracotta",
     "changed:tiles_gray",
     "changed:wall_gray",
     "changed:wall_gray_striped"
