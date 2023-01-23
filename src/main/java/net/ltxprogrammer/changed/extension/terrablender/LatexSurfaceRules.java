@@ -4,22 +4,19 @@ import net.ltxprogrammer.changed.init.ChangedBiomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LatexSurfaceRules {
     private static final SurfaceRules.RuleSource DIRT = SurfaceRules.state(Blocks.DIRT.defaultBlockState());
     private static final SurfaceRules.RuleSource GRASS_BLOCK = SurfaceRules.state(Blocks.GRASS_BLOCK.defaultBlockState());
 
     protected static SurfaceRules.RuleSource makeRules() {
-        List<SurfaceRules.RuleSource> list = new ArrayList<>();
+        AtomicReference<SurfaceRules.RuleSource> ret = new AtomicReference<>(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)));
         ChangedBiomes.DESCRIPTORS.forEach((key, biomeDesc) -> {
-            list.add(SurfaceRules.ifTrue(SurfaceRules.isBiome(key.getKey()), SurfaceRules.state(biomeDesc.groundBlock())));
+            ret.set(SurfaceRules.sequence(ret.get(), SurfaceRules.ifTrue(SurfaceRules.isBiome(key.getKey()), SurfaceRules.state(biomeDesc.groundBlock()))));
         });
 
-        list.add(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                        SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)));
-
-        return new SurfaceRules.SequenceRuleSource(list);
+        return ret.getAcquire();
     }
 }

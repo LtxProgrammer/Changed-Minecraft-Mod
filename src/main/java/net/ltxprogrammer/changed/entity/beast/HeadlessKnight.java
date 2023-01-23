@@ -58,7 +58,7 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
 
     @Override
     public LatexVariant<?> getSelfVariant() {
-        return LatexVariant.LIGHT_LATEX_CENTAUR;
+        return null;
     }
 
     @Override
