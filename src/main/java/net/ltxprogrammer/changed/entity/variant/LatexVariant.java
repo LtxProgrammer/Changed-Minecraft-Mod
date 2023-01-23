@@ -95,7 +95,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexBlueWolf> LATEX_BLUE_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_BLUE_WOLF).absorbing()
             .build(Changed.modResource("form_latex_blue_wolf")));
     public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
-            .fusionOf(LATEX_SILVER_FOX, LIGHT_LATEX_KNIGHT)
+            .fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
     public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.8f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall().fusionOf(LIGHT_LATEX_WOLF.male(), AbstractHorse.class)
             .build(Changed.modResource("form_light_latex_centaur")));
