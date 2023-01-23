@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:lab_door"
+    ]
+  },
+  "criteria": {
+    "has_iron_door": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_door"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:lab_door"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_door",
+      "has_the_recipe"
+    ]
+  ]
+}
