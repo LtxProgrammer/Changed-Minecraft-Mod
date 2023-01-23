@@ -404,7 +404,7 @@ public class ProcessTransfur {
                 }
             }
 
-            else if (source.variant != source.transfur) {
+            else if (source.variant == null || !source.variant.getFormId().equals(source.transfur.getFormId())) {
                 if (source.entity instanceof Player sourcePlayer) {
                     float beforeHealth = sourcePlayer.getHealth();
                     getPlayerLatexVariant(sourcePlayer).unhookAll(sourcePlayer);
