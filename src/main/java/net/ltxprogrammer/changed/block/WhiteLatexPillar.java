@@ -67,15 +67,6 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
-    public BlockState updateShape(BlockState p_52894_, Direction p_52895_, BlockState p_52896_, LevelAccessor p_52897_, BlockPos p_52898_, BlockPos p_52899_) {
-        DoubleBlockHalf doubleblockhalf = p_52894_.getValue(HALF);
-        if (p_52895_.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (p_52895_ == Direction.UP) || p_52896_.is(this) && p_52896_.getValue(HALF) != doubleblockhalf) {
-            return doubleblockhalf == DoubleBlockHalf.LOWER && p_52895_ == Direction.DOWN && !p_52894_.canSurvive(p_52897_, p_52898_) ? Blocks.AIR.defaultBlockState() : super.updateShape(p_52894_, p_52895_, p_52896_, p_52897_, p_52898_, p_52899_);
-        } else {
-            return Blocks.AIR.defaultBlockState();
-        }
-    }
-
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
         if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
             return super.canSurvive(blockState, level, blockPos);

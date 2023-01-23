@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -56,6 +57,15 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
         super.createBlockStateDefinition(p_52901_);
         p_52901_.add(HALF);
+    }
+
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockStateOther, LevelAccessor level, BlockPos p_52898_, BlockPos p_52899_) {
+        DoubleBlockHalf half = blockState.getValue(HALF);
+        if (direction.getAxis() != Direction.Axis.Y || half == DoubleBlockHalf.LOWER != (direction == Direction.UP) || blockStateOther.is(this) && blockStateOther.getValue(HALF) != half) {
+            return half == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !blockState.canSurvive(level, p_52898_) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockState, direction, blockStateOther, level, p_52898_, p_52899_);
+        } else {
+            return Blocks.AIR.defaultBlockState();
+        }
     }
 
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {

@@ -357,7 +357,7 @@ public class ProcessTransfur {
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
             doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
-        if (source.variant != null)
+        else if (source.variant != null)
             doesAbsorption = source.variant.transfurMode() == TransfurMode.ABSORPTION;
         else if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
             doesAbsorption = true;
