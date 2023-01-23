@@ -48,7 +48,7 @@ public class ChangedBlocks {
     public static final RegistryObject<ClipboardBlock> CLIPBOARD = register("clipboard", () -> new ClipboardBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.CANDLE).strength(0.2F, 3.0F)));
     public static final RegistryObject<Computer> COMPUTER = register("computer", () -> new Computer(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel((state) -> 8)));
     public static final RegistryObject<CardboardBox> CARDBOARD_BOX = register("cardboard_box", CardboardBox::new);
-    public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).strength(10.0F, 40.0F)));
+    public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).strength(7.0F, 40.0F)));
     public static final RegistryObject<DarkLatexFluid> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluid::new);
     public static final RegistryObject<LabDoor> LAB_DOOR = register("lab_door", () -> new LabDoor(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 18.0F)));
     public static final RegistryObject<LabLight> LAB_LIGHT = register("lab_light", () -> new LabLight(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel(
