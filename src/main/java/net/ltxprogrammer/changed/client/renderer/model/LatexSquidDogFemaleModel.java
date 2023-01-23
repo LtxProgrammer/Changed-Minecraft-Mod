@@ -3,15 +3,16 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.beast.LatexSquidDog;
+import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
+import net.ltxprogrammer.changed.entity.beast.LatexSquidDogMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implements LatexHumanoidModelInterface {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog"), "main");
+public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFemale> implements LatexHumanoidModelInterface {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_female"), "main");
     public final ModelPart Head;
     public final ModelPart Torso;
     public final ModelPart LeftArm;
@@ -22,7 +23,7 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
     public final ModelPart RightLeg;
     public final LatexHumanoidModelController controller;
 
-    public LatexSquidDogModel(ModelPart root) {
+    public LatexSquidDogFemaleModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("rightLeg");
         this.LeftLeg = root.getChild("leftLeg");
@@ -36,7 +37,6 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
     }
 
     public static LayerDefinition createBodyLayer() {
-
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -84,19 +84,21 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
                 .texOffs(46, 27).addBox(1.5088F, 7.8159F, -20.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
                 .texOffs(28, 79).addBox(1.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(1.75F, -20.0F, 20.0F, 0.0F, 0.0F, 0.1309F));
 
-        PartDefinition Hair = head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -23.25F, -23.5F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.4F))
-                .texOffs(20, 49).addBox(-4.0F, -23.0F, -23.25F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.2F))
-                .texOffs(72, 43).addBox(2.0F, -23.425F, -19.3F, 2.0F, 1.0F, 4.0F, new CubeDeformation(0.2F))
-                .texOffs(0, 42).addBox(2.75F, -22.25F, -23.1F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.401F))
-                .texOffs(24, 4).addBox(-3.5F, -21.45F, -24.35F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(12, 47).addBox(3.95F, -22.45F, -24.75F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(44, 33).addBox(-4.9F, -22.45F, -24.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(68, 7).addBox(2.75F, -19.0F, -20.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.4F))
-                .texOffs(68, 0).addBox(-4.7F, -19.0F, -20.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.4F))
-                .texOffs(40, 41).addBox(-4.7F, -22.25F, -23.1F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.401F))
-                .texOffs(68, 37).addBox(-4.0F, -23.5F, -20.2F, 2.0F, 1.0F, 5.0F, new CubeDeformation(0.1F))
-                .texOffs(26, 20).addBox(-4.0F, -22.55F, -24.6F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(0, 53).addBox(-4.0F, -22.25F, -16.1F, 8.0F, 6.0F, 1.0F, new CubeDeformation(0.4F)), PartPose.offset(0.0F, 14.0F, 20.0F));
+        PartDefinition Hair = head.addOrReplaceChild("Hair", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 0.0F));
+
+        PartDefinition Base_r1 = Hair.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(24, 26).addBox(-4.5F, -8.0F, -5.0F, 9.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(27, 22).addBox(-4.5F, -6.0F, -5.0F, 2.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(35, 36).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(19, 37).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(56, 55).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(17, 34).addBox(3.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(34, 34).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(28, 33).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(29, 33).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(28, 34).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(28, 33).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(10, 22).addBox(-4.0F, -0.75F, 2.0F, 8.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(1, 16).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -5.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(22, 22).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.3F))
                 .texOffs(0, 16).addBox(-4.5F, 0.4F, -2.0F, 9.0F, 6.0F, 4.0F, new CubeDeformation(0.3F))
@@ -105,7 +107,7 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
                 .texOffs(40, 17).addBox(-2.0F, 2.4F, -3.0F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.099F))
                 .texOffs(74, 72).addBox(-3.0F, 2.65F, 1.5F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
                 .texOffs(25, 71).addBox(-3.0F, 0.3F, -2.9F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(24, 6).addBox(-3.0F, 3.6F, -2.6F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(4, 21).addBox(-3.0F, 3.6F, -2.6F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
                 .texOffs(24, 0).addBox(-4.0F, 0.3F, -2.5F, 8.0F, 3.0F, 1.0F, new CubeDeformation(0.2F))
                 .texOffs(22, 17).addBox(-4.0F, 0.3F, 1.5F, 8.0F, 2.0F, 1.0F, new CubeDeformation(0.2F))
                 .texOffs(70, 63).addBox(-3.0F, 0.3F, 1.85F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offset(0.0F, -6.0F, 0.0F));
@@ -224,9 +226,16 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
 
         PartDefinition Tail = body.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 8.0F, 1.0F));
 
-        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(48, 68).addBox(-1.5F, 1.1914F, -1.7983F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.3F)), PartPose.offsetAndRotation(0.0F, 7.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(48, 68).addBox(-1.5F, 1.1914F, -1.7983F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.3F)), PartPose.offsetAndRotation(0.0F, 7.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
 
-        PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(56, 0).addBox(-1.5F, 0.5F, -1.0F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.3F)), PartPose.offsetAndRotation(0.0F, 5.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        PartDefinition Base_r3 = Tail.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(56, 0).addBox(-1.5F, 0.5F, -1.0F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.3F)), PartPose.offsetAndRotation(0.0F, 5.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+        PartDefinition Plantoids = body.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 0.0F));
+
+        PartDefinition Center_r1 = Plantoids.addOrReplaceChild("Center_r1", CubeListBuilder.create().texOffs(24, 40).addBox(-1.0F, -11.5F, -2.5F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.0F, 9.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
+        PartDefinition LeftPlantoid_r1 = Plantoids.addOrReplaceChild("LeftPlantoid_r1", CubeListBuilder.create().texOffs(9, 19).addBox(0.85F, -1.5F, -0.5F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.45F))
+                .texOffs(3, 19).addBox(-3.85F, -1.5F, -0.5F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.45F)), PartPose.offsetAndRotation(0.0F, -1.0F, -2.0F, -0.1047F, 0.0F, 0.0F));
 
         PartDefinition rightArm = partdefinition.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(32, 33).addBox(-3.0446F, -1.0427F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F))
                 .texOffs(54, 77).addBox(0.0554F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
@@ -275,12 +284,12 @@ public class LatexSquidDogModel extends LatexHumanoidModel<LatexSquidDog> implem
     }
 
     @Override
-    public void prepareMobModel(LatexSquidDog p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexSquidDogFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     @Override
-    public void setupAnim(LatexSquidDog entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
+    public void setupAnim(LatexSquidDogFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
     }
 

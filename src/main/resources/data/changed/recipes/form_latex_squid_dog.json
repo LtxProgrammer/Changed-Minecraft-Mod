@@ -17,5 +17,6 @@
       "item": "minecraft:ink_sac"
     }
   ],
+  "gendered": true,
   "form": "changed:form_latex_squid_dog"
 }
