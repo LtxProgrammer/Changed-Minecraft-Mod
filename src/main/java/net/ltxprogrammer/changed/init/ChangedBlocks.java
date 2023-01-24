@@ -47,6 +47,7 @@ public class ChangedBlocks {
     public static final RegistryObject<BookStack> BOOK_STACK = register("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F, 6.0F)));
     public static final RegistryObject<ClipboardBlock> CLIPBOARD = register("clipboard", () -> new ClipboardBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.CANDLE).strength(0.2F, 3.0F)));
     public static final RegistryObject<Computer> COMPUTER = register("computer", () -> new Computer(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel((state) -> 8)));
+    public static final RegistryObject<AbstractCanBlock> CANNED_PEACHES = register("canned_peaches", AbstractCanBlock::new);
     public static final RegistryObject<CardboardBox> CARDBOARD_BOX = register("cardboard_box", CardboardBox::new);
     public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).strength(7.0F, 40.0F)));
     public static final RegistryObject<DarkLatexFluid> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluid::new);
