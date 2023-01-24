@@ -1,13 +1,24 @@
 {
   "variants": {
-    "axis=x": {
+    "facing=east": {
       "model": "changed:block/laser_beam",
       "z": 90
     },
-    "axis=y": {
+    "facing=west": {
+      "model": "changed:block/laser_beam",
+      "z": 90
+    },
+    "facing=up": {
       "model": "changed:block/laser_beam"
     },
-    "axis=z": {
+    "facing=down": {
+      "model": "changed:block/laser_beam"
+    },
+    "facing=north": {
+      "model": "changed:block/laser_beam",
+      "x": 90
+    },
+    "facing=south": {
       "model": "changed:block/laser_beam",
       "x": 90
     }

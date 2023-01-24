@@ -20,6 +20,7 @@ public class ChangedTags {
     public static class Blocks {
         public static final TagKey<Block> LATEX_NON_REPLACEABLE = create(Changed.modResourceStr("latex_non_replaceable"));
         public static final TagKey<Block> GROWS_LATEX_CRYSTALS = create(Changed.modResourceStr("grows_latex_crystal"));
+        public static final TagKey<Block> LASER_TRANSLUCENT = create(Changed.modResourceStr("laser_translucent"));
 
         private static TagKey<Block> create(String p_203849_) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(p_203849_));
