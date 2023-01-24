@@ -77,12 +77,16 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
                 .texOffs(0, 6).addBox(-1.5F, -1.05F, -5.6F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offset(0.0F, -6.0F, 0.0F));
 
         PartDefinition RightEar = head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(59, 76).addBox(-4.5088F, 9.2159F, -20.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.2F))
+                .texOffs(37, 81).addBox(-3.5088F, 9.2159F, -19.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.15F))
+                .texOffs(59, 81).addBox(-2.5088F, 8.0159F, -19.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.15F))
                 .texOffs(46, 29).addBox(-3.5088F, 7.8159F, -20.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(32, 79).addBox(-2.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(-1.75F, -20.0F, 20.0F, 0.0F, 0.0F, -0.1309F));
+                .texOffs(32, 79).addBox(-2.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(-1.75F, -20.5F, 20.0F, 0.0F, 0.0F, -0.1309F));
 
         PartDefinition LeftEar = head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(64, 37).addBox(1.5088F, 9.2159F, -20.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.2F))
+                .texOffs(38, 87).addBox(1.5088F, 9.2159F, -19.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.15F))
+                .texOffs(64, 81).addBox(1.5088F, 8.0159F, -19.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.15F))
                 .texOffs(46, 27).addBox(1.5088F, 7.8159F, -20.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
-                .texOffs(28, 79).addBox(1.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(1.75F, -20.0F, 20.0F, 0.0F, 0.0F, 0.1309F));
+                .texOffs(28, 79).addBox(1.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(1.75F, -20.5F, 20.0F, 0.0F, 0.0F, 0.1309F));
 
         PartDefinition Hair = head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -23.25F, -23.5F, 4.0F, 1.0F, 8.0F, new CubeDeformation(0.4F))
                 .texOffs(20, 49).addBox(-4.0F, -23.0F, -23.25F, 8.0F, 1.0F, 3.0F, new CubeDeformation(0.2F))
