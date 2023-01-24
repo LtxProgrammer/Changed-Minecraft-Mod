@@ -17,11 +17,13 @@
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open3": "Lab door opens",
   "subtitles.changed.close3": "Lab door closes",
+  "subtitles.changed.equip3": "Pants rustle",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.siren": "Siren sings",
   "subtitles.changed.save": "Retinal scanner beeps",
 
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
+  "item.changed.benign_pants": "Latex Pants",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Fragment",
   "item.changed.dark_latex_dragon_crystal_fragment": "Dark Latex Dragon Crystal Fragment",
