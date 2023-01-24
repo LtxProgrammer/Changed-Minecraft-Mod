@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogFemaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSquidDogModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

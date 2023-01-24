@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
-import net.ltxprogrammer.changed.data.Listener;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -19,7 +18,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)

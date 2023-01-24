@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
@@ -69,6 +70,7 @@ public abstract class PlayerMixin extends LivingEntity {
     // ADDITIONAL DATA
     public LatexVariant<?> latexVariant = null;
     public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
+    public CameraUtil.TugData wantToLookAt;
 
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {

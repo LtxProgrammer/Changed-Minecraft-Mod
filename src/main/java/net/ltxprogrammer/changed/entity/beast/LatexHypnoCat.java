@@ -5,7 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect {
     public LatexHypnoCat(EntityType<? extends LatexHypnoCat> p_19870_, Level p_19871_) {
@@ -36,15 +35,6 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
         return "hypnosis";
     }
 
-    public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {
-        float xRotO = livingEntity.xRotO;
-        float yRotO = livingEntity.yRotO;
-        direction = livingEntity.getLookAngle().lerp(direction, strength);
-        livingEntity.lookAt(EntityAnchorArgument.Anchor.EYES, livingEntity.getEyePosition().add(direction));
-        livingEntity.xRotO = xRotO;
-        livingEntity.yRotO = yRotO;
-    }
-
     @Override
     public void effectTick(Level level, LivingEntity self) {
         level.getNearbyEntities(Mob.class, TargetingConditions.DEFAULT, self,
@@ -64,7 +54,7 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
             if (livingEntity.getLookAngle().dot(self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize()) < 0.85f)
                 return;
 
-            tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(),  0.4);
+            CameraUtil.tugEntityLookDirection(livingEntity, self,  0.4);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 2, false, false), self);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 2, false, false), self);
         });
