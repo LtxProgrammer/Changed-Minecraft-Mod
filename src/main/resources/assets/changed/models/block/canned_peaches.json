@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "blocks/canned_peaches",
-		"particle": "blocks/canned_peaches"
+		"0": "changed:blocks/canned_peaches",
+		"particle": "changed:blocks/canned_peaches"
 	},
 	"elements": [
 		{

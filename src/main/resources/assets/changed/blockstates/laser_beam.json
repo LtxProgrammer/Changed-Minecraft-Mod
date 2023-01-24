@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "changed:block/laser_beam",
+      "z": 90
+    },
+    "axis=y": {
+      "model": "changed:block/laser_beam"
+    },
+    "axis=z": {
+      "model": "changed:block/laser_beam",
+      "x": 90
+    }
+  }
+}

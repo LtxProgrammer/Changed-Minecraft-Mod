@@ -47,7 +47,7 @@ import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final int TRANSFUR_PROGRESSION_TAKEOVER = 24000;
+    public static final int TRANSFUR_PROGRESSION_TAKEOVER = 20000;
     public static record TransfurProgress(int ticks, ResourceLocation type) {}
 
     public static void setPlayerTransfurProgress(Player player, TransfurProgress progress) {
@@ -83,6 +83,7 @@ public class ProcessTransfur {
             player.invulnerableTime = 20;
             player.hurtDuration = 10;
             player.hurtTime = player.hurtDuration;
+            player.setLastHurtByMob(null);
 
             int next = getPlayerTransfurProgress(player).ticks + amount;
             setPlayerTransfurProgress(player, new TransfurProgress(next, type));
