@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.item.Syringe;
-import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -24,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber
 public class CommandTransfur {

@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -57,7 +58,7 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
             if (LatexVariant.getEntityVariant(livingEntity) != null)
                 return;
 
-            LatexHypnoCat.tugEntityLookDirection(livingEntity, self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize(), 0.4);
+            CameraUtil.tugEntityLookDirection(livingEntity, self, 0.4);
             if (!livingEntity.isOnGround())
                 return;
 

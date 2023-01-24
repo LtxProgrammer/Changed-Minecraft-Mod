@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.data.BiSignaler;
-import net.ltxprogrammer.changed.data.Signaler;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
