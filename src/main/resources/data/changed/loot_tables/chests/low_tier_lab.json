@@ -1,0 +1,75 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "changed:bedside_iv_rack"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "changed:infuser"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "changed:purifier"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.2
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "changed:latex_syringe",
+          "functions": [
+            {
+              "function": "changed:random_variant"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "changed:syringe",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 8,
+        "max": 12
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "changed:dark_latex_goo"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "changed:white_latex_goo"
+        }
+      ]
+    }
+  ]
+}
