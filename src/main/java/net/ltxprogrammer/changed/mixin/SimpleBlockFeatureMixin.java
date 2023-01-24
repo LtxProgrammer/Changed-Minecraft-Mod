@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.block.DoubleBlockPlace;
-import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.SimpleBlockFeature;
