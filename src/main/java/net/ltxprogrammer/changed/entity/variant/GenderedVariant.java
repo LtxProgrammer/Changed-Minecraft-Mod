@@ -11,6 +11,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -29,6 +30,10 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
 
     public LatexVariant<F> female() {
         return female;
+    }
+
+    public LatexVariant<?> randomGender(Random random) {
+        return random.nextBoolean() ? male : female;
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
