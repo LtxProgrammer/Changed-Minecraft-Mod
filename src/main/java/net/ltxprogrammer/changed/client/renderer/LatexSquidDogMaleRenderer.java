@@ -15,6 +15,6 @@ public class LatexSquidDogMaleRenderer extends LatexHumanoidRenderer<LatexSquidD
 
     @Override
     public ResourceLocation getTextureLocation(LatexSquidDogMale p_114482_) {
-        return Changed.modResource("textures/latex_squid_dog.png");
+        return Changed.modResource("textures/latex_squid_dog_male.png");
     }
 }
