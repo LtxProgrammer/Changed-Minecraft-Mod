@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:laser_emitter"
+    ]
+  },
+  "criteria": {
+    "has_amethyst_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:amethyst_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:laser_emitter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_amethyst_block",
+      "has_the_recipe"
+    ]
+  ]
+}
