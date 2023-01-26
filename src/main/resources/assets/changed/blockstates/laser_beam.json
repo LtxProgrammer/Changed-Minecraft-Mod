@@ -2,11 +2,13 @@
   "variants": {
     "facing=east": {
       "model": "changed:block/laser_beam",
-      "z": 90
+      "x": 90,
+      "y": 90
     },
     "facing=west": {
       "model": "changed:block/laser_beam",
-      "z": 90
+      "x": 90,
+      "y": 90
     },
     "facing=up": {
       "model": "changed:block/laser_beam"

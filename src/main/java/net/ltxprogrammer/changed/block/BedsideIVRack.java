@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.BedsideIVRackBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -45,7 +46,7 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_BASE, SHAPE_STEM, SHAPE_TOP);
 
     public BedsideIVRack() {
-        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(3.0F, 18.0F).isSuffocating(Blocks::never).isViewBlocking(Blocks::never));
+        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(3.0F, 18.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(FULL, false));
     }
 
