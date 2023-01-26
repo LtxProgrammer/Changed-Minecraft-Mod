@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "changed:block/laser_emitter",
+      "x": 180
+    },
+    "facing=down,powered=true": {
+      "model": "changed:block/laser_emitter_on",
+      "x": 180
+    },
+    "facing=east,powered=false": {
+      "model": "changed:block/laser_emitter_side",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "changed:block/laser_emitter_side_on",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "changed:block/laser_emitter_side"
+    },
+    "facing=north,powered=true": {
+      "model": "changed:block/laser_emitter_side_on"
+    },
+    "facing=south,powered=false": {
+      "model": "changed:block/laser_emitter_side",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "changed:block/laser_emitter_side_on",
+      "y": 180
+    },
+    "facing=up,powered=false": {
+      "model": "changed:block/laser_emitter",
+      "x": 0
+    },
+    "facing=up,powered=true": {
+      "model": "changed:block/laser_emitter_on",
+      "x": 0
+    },
+    "facing=west,powered=false": {
+      "model": "changed:block/laser_emitter_side",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "changed:block/laser_emitter_side_on",
+      "y": 270
+    }
+  }
+}

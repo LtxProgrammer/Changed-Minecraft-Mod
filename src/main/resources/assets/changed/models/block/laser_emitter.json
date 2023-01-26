@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/laser_bottom",
+    "up": "changed:blocks/laser_top",
+    "north": "changed:blocks/laser_side",
+    "east": "changed:blocks/laser_side_b",
+    "south": "changed:blocks/laser_side",
+    "west": "changed:blocks/laser_side_b",
+    "particle": "changed:blocks/laser_bottom"
+  }
+}
