@@ -493,6 +493,9 @@ public class LatexVariant<T extends LatexEntity> {
             final double nearRunSpeed = 0.6666D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : scares) {
+                if (entityClass.equals(AbstractVillager.class) && ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+                    continue;
+
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 3D, distance), Objects::nonNull);
                 for(var v : entitiesScared) {
                     //if the creature has no path, or the target path is < distance, make the creature run.
