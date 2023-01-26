@@ -3,18 +3,22 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -22,9 +26,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 public class LaserBeamBlock extends Block implements NonLatexCoverableBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
@@ -36,7 +42,7 @@ public class LaserBeamBlock extends Block implements NonLatexCoverableBlock {
     public LaserBeamBlock() {
         super(BlockBehaviour.Properties.of(Material.STRUCTURAL_AIR).strength(-1.0F, 3600000.0F).noDrops()
                 .isValidSpawn((p_61031_, p_61032_, p_61033_, p_61034_) -> false)
-                .lightLevel(blockState -> 4).emissiveRendering(Blocks::always));
+                .lightLevel(blockState -> 4).emissiveRendering(ChangedBlocks::always));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -91,6 +97,52 @@ public class LaserBeamBlock extends Block implements NonLatexCoverableBlock {
                 return false;
         }
         return super.canSurvive(blockState, level, blockPos);
+    }
+
+    @Override
+    public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
+        return ChangedSounds.Types.NONE;
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState blockState) {
+        return PushReaction.DESTROY;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
+        Direction facing = state.getValue(FACING);
+        if (facing.getOpposite() == direction) {
+            if (otherState.isAir())
+                return Blocks.AIR.defaultBlockState();
+            if (otherState.is(ChangedTags.Blocks.LASER_TRANSLUCENT))
+                return super.updateShape(state, direction, otherState, level, pos, otherPos);
+
+            int distance = state.getValue(DISTANCE);
+            BlockPos emitterPos = pos.relative(facing.getOpposite(), distance);
+            BlockPos nextPos = emitterPos.relative(facing, ++distance);
+            if (!level.getBlockState(nextPos).canSurvive(level, nextPos))
+                level.setBlock(nextPos, Blocks.AIR.defaultBlockState(), 3);
+
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        else if (facing == direction) {
+            int distance = state.getValue(DISTANCE);
+            BlockPos emitterPos = pos.relative(facing.getOpposite(), distance);
+            while (distance < LaserEmitterBlock.MAX_DISTANCE) {
+                BlockPos nextPos = emitterPos.relative(direction, ++distance);
+                BlockState nextState = level.getBlockState(nextPos);
+                if (!nextState.isAir() && !nextState.is(ChangedTags.Blocks.LASER_TRANSLUCENT))
+                    break;
+                if (!nextState.isAir() && nextState.is(ChangedTags.Blocks.LASER_TRANSLUCENT))
+                    continue;
+                level.setBlock(nextPos, state.setValue(LaserBeamBlock.DISTANCE, distance), 3);
+            }
+
+        }
+
+        return super.updateShape(state, direction, otherState, level, pos, otherPos);
     }
 
     @Override

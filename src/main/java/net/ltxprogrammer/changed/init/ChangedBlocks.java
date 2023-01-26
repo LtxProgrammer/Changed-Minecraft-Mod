@@ -40,6 +40,14 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedBlocks {
+    public static boolean always(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return true;
+    }
+
+    public static boolean never(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return false;
+    }
+    
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, Changed.MODID);
     public static final Map<RegistryObject<? extends Block>, Consumer<Block>> REGISTRY_CRL = new HashMap<>();
     public static final RegistryObject<AerosolLatex> AEROSOL_LATEX = registerNoItem("aerosol_latex", AerosolLatex::new);
@@ -117,7 +125,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LatexWolfCrystalBlock> LATEX_WOLF_CRYSTAL_BLOCK = register("latex_wolf_crystal_block", () -> new LatexWolfCrystalBlock(
             BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_RED).friction(0.98F).sound(SoundType.AMETHYST).strength(1.0F, 0.2F)));
     public static final RegistryObject<WhiteLatexBlock> WHITE_LATEX_BLOCK = register("white_latex_block", () -> new WhiteLatexBlock(BlockBehaviour.Properties.copy(DARK_LATEX_BLOCK.get()).color(MaterialColor.WOOL).noOcclusion()
-            .isViewBlocking(Blocks::never).isSuffocating(Blocks::never)));
+            .isViewBlocking(ChangedBlocks::never).isSuffocating(ChangedBlocks::never)));
     public static final RegistryObject<SaplingBlock> ORANGE_TREE_SAPLING = register("orange_tree_sapling", () -> new SaplingBlock(new AbstractTreeGrower() {
         @Override
         protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean p_204308_) {
@@ -125,7 +133,7 @@ public class ChangedBlocks {
         }
     }, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
-            BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(Blocks::never).isViewBlocking(Blocks::never)));
+            BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 
     private static Boolean ocelotOrParrot(BlockState p_50822_, BlockGetter p_50823_, BlockPos p_50824_, EntityType<?> p_50825_) {
         return p_50825_ == EntityType.OCELOT || p_50825_ == EntityType.PARROT;

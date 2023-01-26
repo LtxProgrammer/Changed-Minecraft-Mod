@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,6 +78,9 @@ public class LaserEmitterBlock extends DirectionalBlock {
                 level.setBlock(nextPos, ChangedBlocks.LASER_BEAM.get().defaultBlockState().setValue(FACING, direction)
                         .setValue(LaserBeamBlock.DISTANCE, distance), 3);
             }
+
+            if (level instanceof ServerLevel serverLevel)
+                ChangedSounds.broadcastSound(serverLevel.getServer(), ChangedSounds.SHOT1, blockPos, 1, 1);
         } else if (!shouldPower && blockState.getValue(POWERED)) {
             level.setBlock(blockPos, blockState.setValue(POWERED, Boolean.FALSE), 3);
             int distance = 0;
