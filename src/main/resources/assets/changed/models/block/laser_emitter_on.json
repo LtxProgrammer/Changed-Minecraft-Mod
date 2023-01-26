@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "down": "changed:blocks/laser_bottom",
-    "up": "changed:blocks/laser_top_powered",
-    "north": "changed:blocks/laser_side_powered",
-    "east": "changed:blocks/laser_side_b",
-    "south": "changed:blocks/laser_side_powered",
-    "west": "changed:blocks/laser_side_b",
+    "down": "changed:blocks/laser_side_b",
+    "up": "changed:blocks/laser_side_b",
+    "north": "changed:blocks/laser_top_powered",
+    "east": "changed:blocks/laser_side_powered",
+    "south": "changed:blocks/laser_bottom",
+    "west": "changed:blocks/laser_side_powered",
     "particle": "changed:blocks/laser_bottom"
   }
 }
