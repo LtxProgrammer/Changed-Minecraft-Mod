@@ -249,6 +249,12 @@ public class ProcessTransfur {
         return getPlayerLatexVariant(player) != null;
     }
 
+    // Checks if player is either not latex or is organic latex
+    public static boolean isPlayerOrganic(Player player) {
+        var variant = getPlayerLatexVariant(player);
+        return variant == null || variant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+    }
+
     @SubscribeEvent
     public static void onWorldUnload(WorldEvent.Unload event) {
         WhiteLatexBlock.whiteLatexNoCollideMap.clear();
