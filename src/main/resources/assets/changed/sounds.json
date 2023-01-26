@@ -139,6 +139,16 @@
     ],
     "subtitle": "subtitles.changed.sound3"
   },
+  "shot1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:shot1",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.shot1"
+  },
   "siren": {
     "category": "entity",
     "sounds": [
