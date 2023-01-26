@@ -19,9 +19,10 @@
   "subtitles.changed.close3": "Lab door closes",
   "subtitles.changed.equip3": "Pants rustle",
   "subtitles.changed.bow2": "Box opens",
-  "subtitles.changed.shot1": "Laser Activates",
+  "subtitles.changed.shot1": "Laser activates",
   "subtitles.changed.siren": "Siren sings",
   "subtitles.changed.save": "Retinal scanner beeps",
+
 
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.benign_pants": "Latex Pants",
