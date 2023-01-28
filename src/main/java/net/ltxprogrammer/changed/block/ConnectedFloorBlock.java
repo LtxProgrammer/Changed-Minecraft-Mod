@@ -236,12 +236,12 @@ public class ConnectedFloorBlock extends LabBlock {
                 .setValue(STATE, calculateState(level, blockPos, this.defaultBlockState()));
     }
 
-    public BlockState rotate(BlockState blockState, Rotation rotation) {
-        switch(rotation) {
+    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
+        switch(direction) {
             case NONE:
-                return blockState;
+                return state;
             default:
-                return blockState.setValue(STATE, calculateRotate(rotation, blockState.getValue(STATE)));
+                return state.setValue(STATE, calculateRotate(direction, state.getValue(STATE)));
         }
     }
 
