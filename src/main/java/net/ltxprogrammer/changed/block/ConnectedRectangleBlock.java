@@ -174,7 +174,7 @@ public class ConnectedRectangleBlock extends LabBlock {
                 .setValue(STATE, calculateState(level, blockPos, this.defaultBlockState()));
     }
 
-    public BlockState rotate(BlockState blockState, Rotation rotation) {
+    public BlockState rotate(BlockState blockState, LevelAccessor level, BlockPos blockPos, Rotation rotation) {
         switch(rotation) {
             case NONE:
                 return blockState;
