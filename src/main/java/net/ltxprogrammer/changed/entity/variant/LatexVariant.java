@@ -486,7 +486,6 @@ public class LatexVariant<T extends LatexEntity> {
             });
         }
 
-        // Repulse villagers
         if(!player.level.isClientSide) {
             final double distance = 8D;
             final double farRunSpeed = 0.5D;
@@ -496,7 +495,7 @@ public class LatexVariant<T extends LatexEntity> {
                 if (entityClass.equals(AbstractVillager.class) && ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
                     continue;
 
-                List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 3D, distance), Objects::nonNull);
+                List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), Objects::nonNull);
                 for(var v : entitiesScared) {
                     //if the creature has no path, or the target path is < distance, make the creature run.
                     if(v.getNavigation().getPath() == null || player.distanceToSqr(v.getNavigation().getTargetPos().getX(), v.getNavigation().getTargetPos().getY(), v.getNavigation().getTargetPos().getZ()) < distance * distance)
