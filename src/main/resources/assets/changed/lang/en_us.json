@@ -113,6 +113,7 @@
   "block.changed.tiles_blue_small": "Small Blue Tiles",
   "block.changed.tiles_caution": "Caution Tiles",
   "block.changed.tiles_grayblue": "Grayblue Tiles",
+  "block.changed.tiles_grayblue_bolted_connected": "Connected Bolted Grayblue Tiles",
   "block.changed.tiles_grayblue_bolted": "Bolted Grayblue Tiles",
   "block.changed.tiles_grayblue_connected": "Connected Grayblue Tiles",
   "block.changed.tiles_grayblue_stairs": "Grayblue Tile Stairs",
