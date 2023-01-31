@@ -35,6 +35,8 @@ import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractDoubleLatexCrystal.HALF;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
     private final LatexVariant<?> variant;
@@ -70,10 +72,6 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
     public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
         BlockState blockStateOn = p_52888_.getBlockState(p_52889_.below());
         return blockState.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
-    }
-
-    private LatexType getLatexed(BlockState p_51042_) {
-        return p_51042_.getProperties().contains(COVERED) ? p_51042_.getValue(COVERED) : LatexType.NEUTRAL;
     }
 
     @Override

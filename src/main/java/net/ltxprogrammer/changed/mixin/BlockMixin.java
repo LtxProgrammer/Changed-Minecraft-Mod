@@ -17,20 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 @Mixin(Block.class)
 public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net.minecraftforge.common.extensions.IForgeBlock {
     // TODO assimilate blocks into latex blocks more (render, behavior)
     private BlockMixin(Properties p_60452_) {
         super(p_60452_);
-    }
-
-    private boolean isLatexed(BlockState blockState) {
-        return getLatexed(blockState) != LatexType.NEUTRAL;
-    }
-
-    private LatexType getLatexed(BlockState blockState) {
-        return blockState.getProperties().contains(COVERED) ? blockState.getValue(COVERED) : LatexType.NEUTRAL;
     }
 
     @Inject(method = "getSoundType", at = @At("HEAD"), cancellable = true)

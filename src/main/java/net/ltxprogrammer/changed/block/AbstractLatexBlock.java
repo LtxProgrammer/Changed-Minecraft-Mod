@@ -35,6 +35,20 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     private final LatexType latexType;
     private final Supplier<? extends Item> goo;
 
+    public static boolean isLatexed(BlockState blockState) {
+        return getLatexed(blockState) != LatexType.NEUTRAL;
+    }
+
+    public static LatexType getLatexed(BlockState blockState) {
+        if (blockState.getProperties().contains(COVERED))
+            return blockState.getValue(COVERED);
+        for (var type : LatexType.values())
+            if (blockState.is(type.block.get()))
+                return type;
+        return LatexType.NEUTRAL;
+    }
+
+
     public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<? extends Item> goo) {
         super(p_49795_.randomTicks().dynamicShape());
         this.latexType = latexType;
