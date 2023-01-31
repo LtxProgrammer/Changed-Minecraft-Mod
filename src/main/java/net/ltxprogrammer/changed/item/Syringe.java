@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -17,16 +18,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -263,6 +269,41 @@ public class Syringe extends Item {
             if (stack.getTag() == null)
                 return Rarity.COMMON;
             return stack.getTag().contains("safe") ? (stack.getTag().getBoolean("safe") ? Rarity.RARE : Rarity.UNCOMMON) : Rarity.UNCOMMON;
+        }
+
+        // Cancel this event if your implementation consumes the action upon a block
+        public static class UsedOnBlock extends Event {
+            public final BlockPos blockPos;
+            public final BlockState blockState;
+            public final Level level;
+            public final Player player;
+
+            public final ItemStack syringe;
+            public final LatexVariant<?> syringeVariant;
+
+            public UsedOnBlock(BlockPos blockPos, BlockState blockState, Level level, Player player, ItemStack syringe, LatexVariant<?> syringeVariant) {
+                this.blockPos = blockPos;
+                this.blockState = blockState;
+                this.level = level;
+                this.player = player;
+                this.syringe = syringe;
+                this.syringeVariant = syringeVariant;
+            }
+        }
+
+        @Override
+        public InteractionResult useOn(UseOnContext context) {
+            var variant = Syringe.getVariant(context.getItemInHand());
+            BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
+            return MinecraftForge.EVENT_BUS.post(
+                    new UsedOnBlock(context.getClickedPos(),
+                            clickedState,
+                            context.getLevel(),
+                            context.getPlayer(),
+                            context.getItemInHand(),
+                            variant)) ?
+                    InteractionResult.sidedSuccess(context.getLevel().isClientSide) :
+                    super.useOn(context);
         }
     }
 }
