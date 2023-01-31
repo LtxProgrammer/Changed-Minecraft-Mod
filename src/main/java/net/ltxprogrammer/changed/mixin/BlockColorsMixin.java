@@ -14,17 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 @Mixin(BlockColors.class)
 public abstract class BlockColorsMixin {
-    private boolean isLatexed(BlockState blockState) {
-        return getLatexed(blockState) != LatexType.NEUTRAL;
-    }
-
-    private LatexType getLatexed(BlockState blockState) {
-        return blockState.getProperties().contains(COVERED) ? blockState.getValue(COVERED) : LatexType.NEUTRAL;
-    }
-
     @Inject(method = "getColor(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)I", at = @At("HEAD"), cancellable = true)
     public void getColor(BlockState p_92583_, Level p_92584_, BlockPos p_92585_, CallbackInfoReturnable<Integer> callbackInfoReturnable) {
         if (isLatexed(p_92583_)) {
