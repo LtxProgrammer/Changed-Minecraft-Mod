@@ -49,8 +49,9 @@
   "item.changed.owo_record": "ÒwÓ Music Disc",
   "item.changed.owo_record.desc": "By Artemka2009",
 
-  "death.attack.transfur.player": "%1$s was transfurred by %2$s",
-  "death.attack.white_latex": "%1$s was dissolved by white latex",
+  "death.attack.changed:transfur.player": "%1$s was transfurred by %2$s",
+  "death.attack.changed:white_latex": "%1$s was dissolved by white latex",
+  "death.attack.changed:pale": "%1$s was taken by Pale",
 
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
@@ -60,6 +61,7 @@
   "gamerule.changed:latexSpread": "Let Latex Spread Naturally",
   "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
   "gamerule.changed:npcWantFusePlayer": "Latex NPCs Want to Fuse With Player",
+  "gamerule.changed:doPale": "Is Pale Enabled",
 
   "key.changed.variant_ability": "Active Variant Ability",
   "key.changed.extra_jump": "Extra Jump",

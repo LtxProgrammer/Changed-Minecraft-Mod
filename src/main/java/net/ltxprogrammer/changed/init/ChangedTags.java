@@ -11,6 +11,8 @@ public class ChangedTags {
     public static class EntityTypes {
         public static final TagKey<EntityType<?>> HUMANOIDS = create(Changed.modResourceStr("humanoids"));
         public static final TagKey<EntityType<?>> ORGANIC_LATEX = create(Changed.modResourceStr("organic_latex"));
+        public static final TagKey<EntityType<?>> PALE_SMALL_EXPOSURE = create(Changed.modResourceStr("pale_small_exposure"));
+        public static final TagKey<EntityType<?>> PALE_LARGE_EXPOSURE = create(Changed.modResourceStr("pale_large_exposure"));
 
         private static TagKey<EntityType<?>> create(String p_203849_) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(p_203849_));
