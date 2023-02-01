@@ -40,53 +40,61 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class Syringe extends Item {
-    public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
-
-    public Syringe(Properties p_41383_) {
+public class LatexSyringe extends Item {
+    public LatexSyringe(Properties p_41383_) {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
-    public static ItemStack setUnpureVariant(ItemStack itemStack, ResourceLocation variant) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        setVariant(itemStack, variant);
-        tag.putBoolean("safe", false);
-        return itemStack;
-    }
+    @OnlyIn(Dist.CLIENT)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientInitializer {
+        @SubscribeEvent
+        public static void onItemColorsInit(ColorHandlerEvent.Item event) {
+            event.getItemColors().register((stack, layer) ->
+                            switch (layer) {
+                                case 0 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorBack(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                case 1 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorFront(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                default -> -1;
+                            },
+                    ChangedItems.LATEX_SYRINGE.get());
 
-    public static ItemStack setVariant(ItemStack itemStack, ResourceLocation variant) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        TagUtil.putResourceLocation(tag, "form", variant);
-        return itemStack;
-    }
-
-    public static void addVariantTooltip(ItemStack p_43556_, List<Component> p_43557_) {
-        if (p_43556_.getOrCreateTag().contains("form")) {
-            p_43557_.add(new TranslatableComponent(getVariantDescriptionId(p_43556_)));
+            event.getItemColors().register((stack, layer) ->
+                            switch (layer) {
+                                case 0 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorBack(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                case 1 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorFront(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                default -> -1;
+                            },
+                    ChangedItems.LATEX_TIPPED_ARROW.get());
         }
     }
 
-    public static String getVariantDescriptionId(ItemStack stack) {
-        LatexVariant<?> variant = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(stack.getTag(), "form"));
-        if (variant == null)
-            return "entity." + TagUtil.getResourceLocation(stack.getTag(), "form").toString().replace("form_", "")
-                    .replace(':', '.').replace('/', '_');
-        return variant.getEntityType().getDescriptionId();
-    }
-
-    public static LatexVariant<?> getVariant(ItemStack p_43364_) {
-        if (p_43364_.getTag() != null) {
-            if (p_43364_.getTag().contains("form")) {
-                return LatexVariant.PUBLIC_LATEX_FORMS.get(TagUtil.getResourceLocation(p_43364_.getTag(), "form"));
+    public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
+        if (this.allowdedIn(p_43356_)) {
+            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
+                p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
             }
         }
+    }
 
-        return LatexVariant.FALLBACK_VARIANT;
+    public void appendHoverText(ItemStack p_43359_, @Nullable Level p_43360_, List<Component> p_43361_, TooltipFlag p_43362_) {
+        Syringe.addVariantTooltip(p_43359_, p_43361_);
+    }
+
+    public int getUseDuration(@NotNull ItemStack p_43001_) {
+        return 48;
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, player, hand);
+    }
+
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
+        return UseAnim.DRINK;
     }
 
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
@@ -96,44 +104,44 @@ public class Syringe extends Item {
         }
 
         if (player != null) {
-            player.hurt(BLOODLOSS, 1.0f);
+            CompoundTag tag = stack.getTag();
+
+            if (tag != null && tag.contains("form")) {
+                ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
+                if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
+                    formLocation = Changed.modResource("special/form_" + entity.getUUID());
+                ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT),
+                        false);
+            }
+
+            else {
+                ProcessTransfur.transfur(entity, level, LatexVariant.FALLBACK_VARIANT, player.isCreative());
+            }
+
             player.awardStat(Stats.ITEM_USED.get(this));
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
 
-            CompoundTag tag = new CompoundTag();
-            tag.putUUID("owner", player.getUUID());
-            if (ProcessTransfur.isPlayerLatex(player)) {
-                ResourceLocation form = ProcessTransfur.getPlayerLatexVariant(player).getFormId();
-                if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
-                    form = LatexVariant.SPECIAL_LATEX;
-                ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
-                tag.putBoolean("safe", true);
-                tag.putString("form", form.toString());
-                nStack.setTag(tag);
-
-                player.getInventory().add(nStack);
-            }
-
-            else {
-                ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
-                nStack.setTag(tag);
-
-                player.getInventory().add(nStack);
-            }
+            stack = new ItemStack(ChangedItems.SYRINGE.get());
         }
 
         //entity.gameEvent(entity, GameEvent.DRINKING_FINISH, entity.eyeBlockPosition());
         return stack;
     }
 
-    public int getUseDuration(@NotNull ItemStack p_43001_) {
-        return 16;
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        if (stack.getTag() == null)
+            return false;
+        return stack.getTag().contains("form") && stack.getTag().contains("owner");
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
+    @Override
+    public @NotNull Rarity getRarity(ItemStack stack) {
+        if (stack.getTag() == null)
+            return Rarity.COMMON;
+        return stack.getTag().contains("safe") ? (stack.getTag().getBoolean("safe") ? Rarity.RARE : Rarity.UNCOMMON) : Rarity.UNCOMMON;
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -144,13 +152,15 @@ public class Syringe extends Item {
         public final Player player;
 
         public final ItemStack syringe;
+        public final LatexVariant<?> syringeVariant;
 
-        public UsedOnBlock(BlockPos blockPos, BlockState blockState, Level level, Player player, ItemStack syringe) {
+        public UsedOnBlock(BlockPos blockPos, BlockState blockState, Level level, Player player, ItemStack syringe, LatexVariant<?> syringeVariant) {
             this.blockPos = blockPos;
             this.blockState = blockState;
             this.level = level;
             this.player = player;
             this.syringe = syringe;
+            this.syringeVariant = syringeVariant;
         }
     }
 
@@ -161,12 +171,14 @@ public class Syringe extends Item {
         public final Player player;
 
         public final ItemStack syringe;
+        public final LatexVariant<?> syringeVariant;
 
-        public UsedOnEntity(LivingEntity entity, Level level, Player player, ItemStack syringe) {
+        public UsedOnEntity(LivingEntity entity, Level level, Player player, ItemStack syringe, LatexVariant<?> syringeVariant) {
             this.entity = entity;
             this.level = level;
             this.player = player;
             this.syringe = syringe;
+            this.syringeVariant = syringeVariant;
         }
     }
 
@@ -174,11 +186,12 @@ public class Syringe extends Item {
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
         return MinecraftForge.EVENT_BUS.post(
-                new BloodSyringe.UsedOnBlock(context.getClickedPos(),
+                new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
                         context.getPlayer(),
-                        context.getItemInHand())) ?
+                        context.getItemInHand(),
+                        Syringe.getVariant(context.getItemInHand()))) ?
                 InteractionResult.sidedSuccess(context.getLevel().isClientSide) :
                 super.useOn(context);
     }
@@ -186,10 +199,11 @@ public class Syringe extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity livingEntity, InteractionHand hand) {
         return MinecraftForge.EVENT_BUS.post(
-                new BloodSyringe.UsedOnEntity(livingEntity,
+                new UsedOnEntity(livingEntity,
                         player.level,
                         player,
-                        itemStack)) ?
+                        itemStack,
+                        Syringe.getVariant(itemStack))) ?
                 InteractionResult.sidedSuccess(player.level.isClientSide) :
                 super.interactLivingEntity(itemStack, player, livingEntity, hand);
     }
