@@ -6,6 +6,7 @@
   "ability.changed.access_saddle": "Access Saddle",
   "ability.changed.extra_hands": "Extra Hands",
   "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
+  "ability.changed.switch_transfur_mode.select": "Transfur mode is now: %s",
   "ability.changed.create_cobweb": "Create Cobweb",
   "ability.changed.create_inkball": "Create Inkball",
   "ability.changed.access_chest": "Access Chest",
@@ -75,6 +76,8 @@
   "text.changed.game_saved_fail": "Cannot save game.",
   "text.changed.game_loaded": "Game loaded.",
   "text.changed.game_loaded_fail": "Cannot load game.",
+  "text.changed.syringe.owner": "Owner: %s",
+  "text.changed.syringe.no_owner": "Cannot get player name",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
 

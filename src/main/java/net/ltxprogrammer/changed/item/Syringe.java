@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -8,11 +9,13 @@ import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -67,9 +70,19 @@ public class Syringe extends Item {
         return itemStack;
     }
 
-    public static void addVariantTooltip(ItemStack p_43556_, List<Component> p_43557_) {
-        if (p_43556_.getOrCreateTag().contains("form")) {
-            p_43557_.add(new TranslatableComponent(getVariantDescriptionId(p_43556_)));
+    public static void addOwnerTooltip(ItemStack stack, List<Component> builder) {
+        if (stack.getOrCreateTag().contains("owner")) {
+            Player player = UniversalDist.getLevel().getPlayerByUUID(stack.getOrCreateTag().getUUID("owner"));
+            if (player != null)
+                builder.add(new TranslatableComponent("text.changed.syringe.owner", player.getName()));
+            else
+                builder.add(new TranslatableComponent("text.changed.syringe.no_owner"));
+        }
+    }
+
+    public static void addVariantTooltip(ItemStack stack, List<Component> builder) {
+        if (stack.getOrCreateTag().contains("form")) {
+            builder.add(new TranslatableComponent(getVariantDescriptionId(stack)));
         }
     }
 
@@ -96,40 +109,48 @@ public class Syringe extends Item {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
+    public @NotNull ItemStack usedOnPlayer(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player, boolean ignoreMovement) {
+        if (!ignoreMovement && player.getDeltaMovement().lengthSqr() > 0.01f)
+            return stack;
+
+        player.hurt(BLOODLOSS, 1.0f);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+
+        CompoundTag tag = new CompoundTag();
+        tag.putUUID("owner", player.getUUID());
+        if (ProcessTransfur.isPlayerLatex(player)) {
+            ResourceLocation form = ProcessTransfur.getPlayerLatexVariant(player).getFormId();
+            if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
+                form = LatexVariant.SPECIAL_LATEX;
+            ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
+            tag.putBoolean("safe", true);
+            tag.putString("form", form.toString());
+            nStack.setTag(tag);
+
+            player.getInventory().add(nStack);
+        }
+
+        else {
+            ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
+            nStack.setTag(tag);
+
+            player.getInventory().add(nStack);
+        }
+
+        return stack;
+    }
+
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
 
-        if (player != null) {
-            player.hurt(BLOODLOSS, 1.0f);
-            player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-
-            CompoundTag tag = new CompoundTag();
-            tag.putUUID("owner", player.getUUID());
-            if (ProcessTransfur.isPlayerLatex(player)) {
-                ResourceLocation form = ProcessTransfur.getPlayerLatexVariant(player).getFormId();
-                if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
-                    form = LatexVariant.SPECIAL_LATEX;
-                ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
-                tag.putBoolean("safe", true);
-                tag.putString("form", form.toString());
-                nStack.setTag(tag);
-
-                player.getInventory().add(nStack);
-            }
-
-            else {
-                ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
-                nStack.setTag(tag);
-
-                player.getInventory().add(nStack);
-            }
-        }
+        if (player != null)
+            return usedOnPlayer(stack, level, player, false);
 
         //entity.gameEvent(entity, GameEvent.DRINKING_FINISH, entity.eyeBlockPosition());
         return stack;
@@ -181,7 +202,7 @@ public class Syringe extends Item {
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
         return MinecraftForge.EVENT_BUS.post(
-                new BloodSyringe.UsedOnBlock(context.getClickedPos(),
+                new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
                         context.getPlayer(),
@@ -192,8 +213,26 @@ public class Syringe extends Item {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity livingEntity, InteractionHand hand) {
+        if (livingEntity instanceof Player interactPlayer) {
+            usedOnPlayer(itemStack, interactPlayer.level, interactPlayer, false);
+            return InteractionResult.sidedSuccess(player.level.isClientSide);
+        }
+
+        else if (livingEntity instanceof LatexEntity latex) {
+            var variant = latex.getSelfVariant() != null ? latex.getSelfVariant() : latex.getTransfurVariant();
+            if (variant != null) {
+                CompoundTag tag = new CompoundTag();
+                ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
+                tag.putBoolean("safe", true);
+                tag.putString("form", variant.toString());
+                nStack.setTag(tag);
+
+                player.getInventory().add(nStack);
+                return InteractionResult.sidedSuccess(player.level.isClientSide);
+            }
+        }
         return MinecraftForge.EVENT_BUS.post(
-                new BloodSyringe.UsedOnEntity(livingEntity,
+                new UsedOnEntity(livingEntity,
                         player.level,
                         player,
                         itemStack)) ?
