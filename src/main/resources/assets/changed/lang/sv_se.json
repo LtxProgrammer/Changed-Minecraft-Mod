@@ -48,8 +48,9 @@
   "item.changed.owo_record": "ÒwÓ musikskiva",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
-  "death.attack.transfur.player": "%1$s förpälsvandlades av %2$s",
-  "death.attack.white_latex": "%1$s upplöst i vit latex",
+  "death.attack.changed:transfur.player": "%1$s förpälsvandlades av %2$s",
+  "death.attack.changed:white_latex": "%1$s upplöst i vit latex",
+  "death.attack.changed:pale": "%1$s togs av Pale",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
@@ -59,6 +60,7 @@
   "gamerule.changed:latexSpread": "Låt latex spridas naturligt",
   "gamerule.changed:transfurTolerance": "Latex enhet förpälsvandla skada (Tickar)",
   "gamerule.changed:npcWantFusePlayer": "Latex ISKer vill slå sig samman med spelaren",
+  "gamerule.changed:doPale": "Är Pale aktiverad",
 
   "key.changed.variant_ability": "Aktiv variantförmåga",
   "key.changed.extra_jump": "Extra hopp",
