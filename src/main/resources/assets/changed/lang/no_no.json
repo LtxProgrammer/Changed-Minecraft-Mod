@@ -48,8 +48,9 @@
   "item.changed.owo_record": "ÒwÓ musikkplate",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
-  "death.attack.transfur.player": "%1$s ble transpelsert av %2$s",
-  "death.attack.white_latex": "%1$s ble oppløst av hvit lateks",
+  "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
+  "death.attack.changed:white_latex": "%1$s ble oppløst av hvit lateks",
+  "death.attack.changed:pale": "%1$s ble tatt av Pale",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
@@ -59,6 +60,7 @@
   "gamerule.changed:latexSpread": "La Lateksen spre seg naturlig",
   "gamerule.changed:transfurTolerance": "Lateks enhet transpels skade (Tikker)",
   "gamerule.changed:npcWantFusePlayer": "Lateks ISKer ønsker å smelte sammen med spilleren",
+  "gamerule.changed:doPale": "Er Pale aktivert",
 
   "key.changed.variant_ability": "Aktiv variant evne",
   "key.changed.extra_jump": "Ekstra hopp",
