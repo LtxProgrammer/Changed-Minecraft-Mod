@@ -104,21 +104,6 @@ public class Changed {
         addNetworkMessage(messageType, T::write, ctor, T::handle);
     }
 
-    public static MinecraftServer currentServer = null;
-    public static void chatLogAll(String message) {
-        if (currentServer != null) {
-            currentServer.getPlayerList().broadcastMessage(new TextComponent(message), ChatType.SYSTEM, Util.NIL_UUID);
-        }
-    }
-
-    public static void chatLogLocal(String message) {
-        Minecraft.getInstance().player.sendMessage(new TextComponent(message).withStyle(ChatFormatting.WHITE), Util.NIL_UUID);
-    }
-
-    public static void chatLogLocalError(String message) {
-        Minecraft.getInstance().player.sendMessage(new TextComponent(message).withStyle(ChatFormatting.DARK_RED), Util.NIL_UUID);
-    }
-
     public static ResourceLocation modResource(String path) {
         return new ResourceLocation(MODID, path);
     }

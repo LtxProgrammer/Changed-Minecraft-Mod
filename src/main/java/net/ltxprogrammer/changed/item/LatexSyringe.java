@@ -75,12 +75,13 @@ public class LatexSyringe extends Item {
     public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
         if (this.allowdedIn(p_43356_)) {
             for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
-                p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
+                p_43357_.add(Syringe.setPureVariant(new ItemStack(this), variant));
             }
         }
     }
 
     public void appendHoverText(ItemStack p_43359_, @Nullable Level p_43360_, List<Component> p_43361_, TooltipFlag p_43362_) {
+        Syringe.addOwnerTooltip(p_43359_, p_43361_);
         Syringe.addVariantTooltip(p_43359_, p_43361_);
     }
 
