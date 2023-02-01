@@ -527,6 +527,7 @@ public class ProcessTransfur {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
+            Pale.tickPaleExposure(event.player);
             LatexVariant<?> variant = getPlayerLatexVariant(event.player);
 
             if (variant != null && !variant.isDead()) {
