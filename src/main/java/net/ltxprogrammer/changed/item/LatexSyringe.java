@@ -75,7 +75,7 @@ public class LatexSyringe extends Item {
     public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
         if (this.allowdedIn(p_43356_)) {
             for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
-                p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
+                p_43357_.add(Syringe.setPureVariant(new ItemStack(this), variant));
             }
         }
     }

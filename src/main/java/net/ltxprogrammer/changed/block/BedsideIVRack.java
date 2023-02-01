@@ -162,7 +162,7 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
         if (!state.getValue(FULL) && stack.is(ChangedItems.LATEX_SYRINGE.get())) {
             BlockPos other = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
             BlockEntity blockEntity = level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : other);
-            if (blockEntity instanceof BedsideIVRackBlockEntity bedsideIVRackBlockEntity && stack.getOrCreateTag().getBoolean("safe")) {
+            if (blockEntity instanceof BedsideIVRackBlockEntity bedsideIVRackBlockEntity) {
                 bedsideIVRackBlockEntity.items.set(0, stack);
                 player.setItemInHand(hand, new ItemStack(ChangedItems.SYRINGE.get()));
                 return InteractionResult.sidedSuccess(level.isClientSide);

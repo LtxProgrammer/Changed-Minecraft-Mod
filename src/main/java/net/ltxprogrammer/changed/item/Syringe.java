@@ -47,6 +47,13 @@ public class Syringe extends Item {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
+    public static ItemStack setPureVariant(ItemStack itemStack, ResourceLocation variant) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+        setVariant(itemStack, variant);
+        tag.putBoolean("safe", true);
+        return itemStack;
+    }
+
     public static ItemStack setUnpureVariant(ItemStack itemStack, ResourceLocation variant) {
         CompoundTag tag = itemStack.getOrCreateTag();
         setVariant(itemStack, variant);
