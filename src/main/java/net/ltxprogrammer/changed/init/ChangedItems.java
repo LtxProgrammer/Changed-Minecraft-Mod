@@ -27,10 +27,10 @@ public class ChangedItems {
     public static final RegistryObject<OwoRecord> OWO_RECORD = register("owo_record", OwoRecord::new);
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new Item((new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<Syringe.BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new Syringe.BloodSyringe(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<AbstractLatexItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
-    public static final RegistryObject<Syringe.LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new Syringe.LatexSyringe(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
     public static final RegistryObject<AbstractLatexItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<AbstractLatexItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment", AbstractLatexItem::new);
