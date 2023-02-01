@@ -268,13 +268,14 @@ public class PatreonBenefits {
 
                         LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
-                        Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                        UniversalDist.displayClientMessage(
+                                new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
                 });
             }
 
-            Changed.chatLogLocal("Updated Patreon Data.");
+            UniversalDist.displayClientMessage(new TextComponent("Updated Patreon Data."), false);
             return true;
         }
 
@@ -359,7 +360,8 @@ public class PatreonBenefits {
 
                 LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
-                Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                UniversalDist.displayClientMessage(
+                        new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
         });

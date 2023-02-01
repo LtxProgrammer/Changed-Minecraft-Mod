@@ -41,6 +41,10 @@ public class BloodSyringe extends Item {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
+    public void appendHoverText(ItemStack p_43359_, @Nullable Level p_43360_, List<Component> p_43361_, TooltipFlag p_43362_) {
+        Syringe.addOwnerTooltip(p_43359_, p_43361_);
+    }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, player, hand);

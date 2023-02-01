@@ -81,6 +81,7 @@ public class LatexSyringe extends Item {
     }
 
     public void appendHoverText(ItemStack p_43359_, @Nullable Level p_43360_, List<Component> p_43361_, TooltipFlag p_43362_) {
+        Syringe.addOwnerTooltip(p_43359_, p_43361_);
         Syringe.addVariantTooltip(p_43359_, p_43361_);
     }
 

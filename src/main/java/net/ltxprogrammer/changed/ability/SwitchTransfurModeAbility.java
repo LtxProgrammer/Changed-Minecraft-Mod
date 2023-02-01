@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -29,7 +30,9 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
             variant.transfurMode = TransfurMode.ABSORPTION;
 
         setDirty(player, variant);
-        Changed.chatLogLocal("Transfur mode is now: " + variant.transfurMode);
+        player.displayClientMessage(
+                new TranslatableComponent("ability.changed.switch_transfur_mode.select", variant.transfurMode.toString()),
+                true);
     }
 
     @Override
