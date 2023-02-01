@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.world.inventory;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
+import net.ltxprogrammer.changed.item.BloodSyringe;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 import net.minecraft.core.BlockPos;
@@ -204,7 +206,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
         this.customSlots.put(SLOT_INPUT, this.addSlot(new InfuserSlotItemHandler(this, internal, 1, 25, 33) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.getItem() instanceof Syringe.BloodSyringe || stack.is(Items.ARROW);
+                return stack.is(ChangedItems.BLOOD_SYRINGE.get()) || stack.is(Items.ARROW);
             }
         }));
 
