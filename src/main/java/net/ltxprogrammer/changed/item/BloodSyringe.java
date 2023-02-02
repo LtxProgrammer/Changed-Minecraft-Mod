@@ -65,7 +65,7 @@ public class BloodSyringe extends Item {
         }
 
         if (player != null) {
-            if (stack.getTag() != null && stack.getTag().getUUID("owner").equals(player.getUUID())) {
+            if (ProcessTransfur.isPlayerLatex(player) || (stack.getOrCreateTag().contains("owner") && stack.getTag().getUUID("owner").equals(player.getUUID()))) {
                 player.heal(1.0f);
             }
 
