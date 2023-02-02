@@ -6,6 +6,7 @@
   "ability.changed.access_saddle": "Tillgång sadel",
   "ability.changed.extra_hands": "Extra händer",
   "ability.changed.switch_transfur_mode": "Växla förpälsvandla läge",
+  "ability.changed.switch_transfur_mode.select": "Förpälsvandla läge är nu: %s",
   "ability.changed.create_cobweb": "Skapa spindelnät",
   "ability.changed.create_inkball": "Skapa bläckboll",
   "ability.changed.access_chest": "Tillgång kista",
@@ -74,6 +75,8 @@
   "text.changed.game_saved_fail": "Kan inte spara spelet.",
   "text.changed.game_loaded": "Spelet laddat.",
   "text.changed.game_loaded_fail": "Kan inte ladda spelet.",
+  "text.changed.syringe.owner": "Ägare: %s",
+  "text.changed.syringe.no_owner": "Kan inte få spelares namn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
 
