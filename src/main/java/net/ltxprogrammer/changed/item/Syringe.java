@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -126,7 +127,7 @@ public class Syringe extends Item {
             if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
                 form = LatexVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
-            tag.putBoolean("safe", true);
+            tag.putBoolean("safe", Pale.isCured(player));
             tag.putString("form", form.toString());
             nStack.setTag(tag);
 
