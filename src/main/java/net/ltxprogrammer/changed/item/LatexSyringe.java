@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -107,7 +108,12 @@ public class LatexSyringe extends Item {
         if (player != null) {
             CompoundTag tag = stack.getTag();
 
-            if (tag != null && tag.contains("form")) {
+            if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerLatex(player)) {
+                if (tag.getBoolean("safe"))
+                    Pale.tryCure(player);
+            }
+
+            else if (tag != null && tag.contains("form")) {
                 ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                 if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
