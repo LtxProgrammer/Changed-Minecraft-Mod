@@ -227,6 +227,8 @@ public class Syringe extends Item {
                 tag.putBoolean("safe", true);
                 tag.putString("form", variant.toString());
                 nStack.setTag(tag);
+                if (!player.getAbilities().instabuild)
+                    itemStack.shrink(1);
 
                 player.getInventory().add(nStack);
                 return InteractionResult.sidedSuccess(player.level.isClientSide);
