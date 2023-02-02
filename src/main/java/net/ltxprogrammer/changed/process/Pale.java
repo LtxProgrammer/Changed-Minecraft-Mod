@@ -91,6 +91,11 @@ public class Pale {
         if (exposure >= THRESHOLD_IMMUNE_MAX)
             exposure++;
 
+        setPaleExposure(player, exposure);
+
+        if (ProcessTransfur.isPlayerLatex(player))
+            return;
+
         // VVV effects VVV
         if (exposure >= THRESHOLD_MINIMAL_DAMAGE && exposure < THRESHOLD_SMALL_DAMAGE) {
             if (exposure % 1200 == 0) { // 1/2 Heart per minute
@@ -107,7 +112,5 @@ public class Pale {
         } else if (exposure >= THRESHOLD_DEATH) {
             player.hurt(ChangedDamageSources.PALE, 2f); // 1 Heart (like poison II)
         }
-
-        setPaleExposure(player, exposure);
     }
 }
