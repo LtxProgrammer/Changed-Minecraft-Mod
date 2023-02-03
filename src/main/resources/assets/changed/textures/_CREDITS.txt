@@ -1,17 +1,53 @@
 Textures were originally flat colored by me (LtxProgrammer), and later shaded by people who can shade.
+Models that have :Ltx: after the given entity name were originally modelled and textured by LtxProgrammer.
 
-aerosol_latex_wolf.png :: Bijimio [remodel]
-dark_latex_wolf.png :: KoBOLTA
-dark_latex_yufeng.png :: KoBOLTA
-dark_latex_dragon.png :: Bijimio [remodel]
-latex_shark.png :: Artemka2009
-latex_tiger_shark.png :: Artemka2009 and KoBOLTA
-latex_beifeng.png :: KoBOLTA
-latex_traffic_cone_dragon.png :: KoBOLTA [Modeled this too]
-latex_leaf.png :: KoBOLTA [Modeled this too]
-latex_red_dragon.png :: Bijimio
-latex_red_panda.png :: Bijimio
-latex_yuin.png :: Bijimio
-latex_crystal_wolf.png :: Bijimio [remodel]
-latex_blue_dragon.png :: KoBOLTA and Bijimio
-litght_latex_knight_fusion :: KoBOLTA
+aerosol_latex_wolf :Ltx: remodeled and retextured by Bijimio
+dark_latex_dragon :Ltx: remodeled and retextured by Bijimio
+dark_latex_wolf_female :Ltx: retextured by KoBOLTA and remodeled by Bijimio
+dark_latex_wolf_male :Ltx: retextured by KoBOLTA and remodeled by Bijimio
+dark_latex_yufeng :Ltx: retextured by KoBOLTA and remodeled by Bijimio
+latex_beifeng :Ltx: retextured by KoBOLTA and remodeled by Bijimio
+latex_benign_wolf :: modeled and textured by Bijimio
+latex_blue_dragon :: modeled and textured by Bijimio
+latex_blue_wolf :Ltx: modeled and textured by LtxProgrammer
+latex_crocodile :: modeled by KoBOLTA and retextured by Candnhen
+latex_crystal_wolf :Ltx: remodeled and retextured by Bijimio
+latex_deer :: modeled and textured by Bijimio
+latex_hypno_cat :Ltx: modeled and textured by LtxProgrammer
+latex_leaf :: modeled and textured by KoBOLTA
+latex_manta_ray_female :Ltx: modeled and textured by LtxProgrammer
+latex_manta_ray_male :Ltx: modeled and textured by LtxProgrammer
+latex_medusa_cat :: modeled and textured by Bijimio
+latex_mermaid_shark :Ltx: retextured by Bijimio
+latex_mimic_plant :: modeled and textured by KoBOLTA
+latex_orca :Ltx: :: modeled and textured by LtxProgrammer
+latex_pink_wyvern :: modeled and textured by Bijimio
+latex_purple_fox :: modeled and textured by KoBOLTA
+latex_raccoon :: modeled and textured by Bijimio
+latex_red_dragon :: modeled and textured by Bijimio
+latex_red_panda :: modeled and textured by Bijimio
+latex_shark :Ltx: retextured by Artemka2009
+latex_shark_female :: modeled and textured by KoBOLTA
+latex_shark_male :: modeled and textured by KoBOLTA
+latex_silver_fox :Ltx: remodeled and retextured by Bijimio
+latex_siren :: modeled and textured by Bijimio
+latex_sniper_dog :: modeled and textured by Bijimio
+latex_snow_leopard_female :Ltx: retextured by Artemka2009
+latex_snow_leopard_male :Ltx: retextured by Artemka2009
+latex_squid_dog_female :Ltx: modeled by LtxProgrammer and textured by Bijimio
+latex_squid_dog_male :Ltx: remodeled and retextured by Bijimio
+latex_squirrel :: modeled and textured by KoBOLTA
+latex_stiger :: modeled and textured by Bijimio
+latex_tiger_shark :Ltx: retextured by Artemka2009 & KoBOLTA
+latex_traffic_cone_dragon :: modeled and textured by KoBOLTA
+latex_translucent_lizard :: modeled and textured by Bijimio
+latex_watermelon_cat :Ltx: modeled and textured by LtxProgrammer
+latex_white_tiger :: modeled and textured by Bijimio
+latex_yuin :: modeled and textured by Bijimio
+light_latex_centaur :Ltx: modeled and textured by LtxProgrammer
+light_latex_knight :Ltx: modeled and textured by LtxProgrammer
+light_latex_knight_fusion :: modeled and textured by KoBOLTA
+light_latex_wolf_female :Ltx: retextured by Bijimio
+light_latex_wolf_male :Ltx: retextured by Bijimio
+light_latex_wolf_organic :: textured by Bijimio
+white_latex_wolf :Ltx: remodeled by Bijimio
