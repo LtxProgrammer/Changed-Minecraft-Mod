@@ -49,7 +49,8 @@ public class PatreonBenefits {
         LEVEL0(0),
         LEVEL1(1),
         LEVEL2(2),
-        LEVEL3(3);
+        LEVEL3(3),
+        LEVEL4(4);
 
         final int value;
 
@@ -409,6 +410,10 @@ public class PatreonBenefits {
             case LEVEL3 -> {
                 name.getSiblings().add(new TextComponent(" | "));
                 name.getSiblings().add(new TranslatableComponent("changed.patreon.level3").withStyle(ChatFormatting.LIGHT_PURPLE));
+            }
+            case LEVEL4 -> {
+                name.getSiblings().add(new TextComponent(" | "));
+                name.getSiblings().add(new TranslatableComponent("changed.patreon.level4").withStyle(ChatFormatting.GOLD));
             }
         }
 
