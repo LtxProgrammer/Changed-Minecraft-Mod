@@ -15,7 +15,7 @@ public class AbstractCanBlock extends AbstractCustomShapeBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 7.0D, 10.0D);
 
     public AbstractCanBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.COPPER).strength(2.0F, 12.0F).noOcclusion());
+        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.COPPER).strength(0.5F, 6.0F).noOcclusion());
     }
 
     public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
