@@ -47,6 +47,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -173,6 +174,8 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_yuin")));
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_DEER)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexPinkDeer> LATEX_PINK_DEER = register(Builder.of(LATEX_DEER, ChangedEntities.LATEX_PINK_DEER)
+            .build(Changed.modResource("form_latex_pink_deer")));
     public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_RED_PANDA)
             .build(Changed.modResource("form_latex_red_panda")));
     public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON.getLocation()).absorbing()
@@ -261,6 +264,12 @@ public class LatexVariant<T extends LatexEntity> {
             CompoundTag abilityTag = tagAbilities.getCompound(name.toString());
             instance.readData(abilityTag);
         });
+    }
+
+    public boolean is(@Nullable LatexVariant<?> variant) {
+        if (variant == null)
+            return false;
+        return getEntityType() == variant.getEntityType();
     }
 
     public enum BreatheMode {
@@ -430,9 +439,8 @@ public class LatexVariant<T extends LatexEntity> {
             specialLatex.setSpecialLatexForm(UUID.fromString(
                     formId.toString().substring(Changed.modResourceStr("special/form_").length())));
         }
-        if (entity instanceof Player) {
-            entity.setLastHurtByMob(newEntity);
-            entity.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
+        if (entity instanceof Player player) {
+            ProcessTransfur.killPlayerAndRemoveBody(player, newEntity);
         } else
             entity.discard();
         return newEntity;

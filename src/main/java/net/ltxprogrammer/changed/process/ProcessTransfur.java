@@ -145,7 +145,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    entity.hurt(ChangedDamageSources.entityTransfur(null), damage);
                     return false;
                 }
             }
@@ -162,7 +162,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.TRANSFUR, damage);
+                    entity.hurt(ChangedDamageSources.entityTransfur(null), damage);
                     return false;
                 }
             }
@@ -301,6 +301,11 @@ public class ProcessTransfur {
         }
     }
 
+    public static void killPlayerAndRemoveBody(Player player, LivingEntity source) {
+        player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
+        player.deathTime = 6000;
+    }
+
     protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
         if (source.transfur == null)
             return;
@@ -318,8 +323,7 @@ public class ProcessTransfur {
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
                         transfur(source.entity, source.entity.level, playerVariant, true);
-                        pvpLoser.setLastHurtByMob(source.entity);
-                        pvpLoser.hurt(ChangedDamageSources.TRANSFUR, 999999999.0f);
+                        killPlayerAndRemoveBody(pvpLoser, source.entity);
                     } else {
                         transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
@@ -344,7 +348,7 @@ public class ProcessTransfur {
             return;
         // Check if attacked entity is not humanoid
         if (possibleMobFusions.isEmpty() && !event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-            bonusHurt(entity, ChangedDamageSources.TRANSFUR, 2.0f, false);
+            bonusHurt(entity, ChangedDamageSources.entityTransfur(source.entity), 2.0f, false);
             return;
         }
 
@@ -360,7 +364,7 @@ public class ProcessTransfur {
         entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
         entity.knockback((double)0.4F, d1, d0);
 
-        entity.hurt(ChangedDamageSources.TRANSFUR, 0.0F);
+        entity.hurt(ChangedDamageSources.entityTransfur(source.entity), 0.0F);
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
             doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
@@ -434,7 +438,7 @@ public class ProcessTransfur {
 
             // Should be one-hit absorption here
             if (event.getEntityLiving() instanceof Player loserPlayer) {
-                bonusHurt(loserPlayer, ChangedDamageSources.TRANSFUR, 9999999999.0f, true);
+                bonusHurt(loserPlayer, ChangedDamageSources.entityTransfur(source.entity), Float.MAX_VALUE, true);
             }
 
             else {
@@ -452,7 +456,7 @@ public class ProcessTransfur {
             event.setCanceled(true);
             return;
         }
-        if (event.getSource() == ChangedDamageSources.TRANSFUR)
+        if (event.getSource() instanceof ChangedDamageSources.TransfurDamageSource)
             return;
         if (event.getSource().isProjectile())
             return;
