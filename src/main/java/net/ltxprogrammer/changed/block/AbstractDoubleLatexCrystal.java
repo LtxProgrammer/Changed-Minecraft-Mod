@@ -29,12 +29,12 @@ public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal im
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     //public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public AbstractDoubleLatexCrystal(LatexVariant<?> variant, Supplier<Item> crystal, Properties p_53514_) {
+    public AbstractDoubleLatexCrystal(LatexVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
         super(variant, crystal, p_53514_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    public AbstractDoubleLatexCrystal(Supplier<Item> crystal, Properties p_53514_) {
+    public AbstractDoubleLatexCrystal(Supplier<? extends Item> crystal, Properties p_53514_) {
         super(crystal, p_53514_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
@@ -70,10 +70,9 @@ public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal im
         }
     }
 
-    public void placeAt(LevelAccessor p_153174_, BlockState p_153175_, BlockPos p_153176_, int p_153177_) {
-        BlockPos blockpos = p_153176_.above();
-        p_153174_.setBlock(p_153176_, p_153175_.setValue(HALF, DoubleBlockHalf.LOWER), p_153177_);
-        p_153174_.setBlock(blockpos, p_153175_.setValue(HALF, DoubleBlockHalf.UPPER), p_153177_);
+    public void placeAt(LevelAccessor level, BlockState blockState, BlockPos blockPos, int flag) {
+        level.setBlock(blockPos, blockState.setValue(HALF, DoubleBlockHalf.LOWER), flag);
+        level.setBlock(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), flag);
     }
 
     public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {

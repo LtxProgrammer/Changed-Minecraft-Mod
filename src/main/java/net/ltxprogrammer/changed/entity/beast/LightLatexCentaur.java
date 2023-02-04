@@ -61,7 +61,7 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
             var variant = ProcessTransfur.getPlayerLatexVariant(getUnderlyingPlayer());
             var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
             if (ability != null)
-                return !ability.saddle.isEmpty();
+                return ability.saddle != null && !ability.saddle.isEmpty();
             else
                 return false;
         }

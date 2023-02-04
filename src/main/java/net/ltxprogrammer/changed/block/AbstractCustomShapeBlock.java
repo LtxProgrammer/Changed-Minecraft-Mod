@@ -5,8 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -92,5 +95,24 @@ public abstract class AbstractCustomShapeBlock extends Block {
 
     public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
         return getInteractionShape(p_54577_, p_54578_, p_54579_);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
+        return switch (direction) {
+            case CLOCKWISE_90 -> state.setValue(FACING, state.getValue(FACING).getClockWise());
+            case CLOCKWISE_180 -> state.setValue(FACING, state.getValue(FACING).getOpposite());
+            case COUNTERCLOCKWISE_90 -> state.setValue(FACING, state.getValue(FACING).getCounterClockWise());
+            default -> state;
+        };
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return switch (mirror) {
+            case FRONT_BACK -> state.getValue(FACING).getAxis() == Direction.Axis.Z ? state.setValue(FACING, state.getValue(FACING).getOpposite()) : state;
+            case LEFT_RIGHT -> state.getValue(FACING).getAxis() == Direction.Axis.X ? state.setValue(FACING, state.getValue(FACING).getOpposite()) : state;
+            default -> state;
+        };
     }
 }

@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

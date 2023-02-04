@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
@@ -36,7 +37,7 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     protected void tryToStartFallFlying(CallbackInfoReturnable<Boolean> ci) {
         Player player = (Player)(Object)this;
-        if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).canGlide) {
+        if (latexVariant != null && latexVariant.canGlide) {
             if (!player.isOnGround() && !player.isFallFlying() && !player.isInWater() && !player.hasEffect(MobEffects.LEVITATION)) {
                 player.startFallFlying();
                 ci.setReturnValue(true);
@@ -54,7 +55,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
     protected void getHurtSound(DamageSource source, CallbackInfoReturnable<SoundEvent> ci) {
-        if (source == ChangedDamageSources.TRANSFUR)
+        if (source instanceof ChangedDamageSources.TransfurDamageSource)
             ci.setReturnValue(ChangedSounds.BLOW1);
     }
 
@@ -68,12 +69,14 @@ public abstract class PlayerMixin extends LivingEntity {
 
     // ADDITIONAL DATA
     public LatexVariant<?> latexVariant = null;
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.LIGHT_LATEX_WOLF.male().getFormId());
+    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
+    public CameraUtil.TugData wantToLookAt;
+    public int paleExposure;
 
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
-        if (ProcessTransfur.isPlayerLatex((Player)(Object)this))
-            if (ProcessTransfur.getPlayerLatexVariant((Player)(Object)this).canClimb && state.is(Blocks.COBWEB))
+        if (latexVariant != null)
+            if (latexVariant.canClimb && state.is(Blocks.COBWEB))
                 ci.cancel();
     }
 
@@ -92,9 +95,9 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "causeFoodExhaustion", at = @At("HEAD"), cancellable = true)
     public void causeFoodExhaustion(float amount, CallbackInfo ci) {
         Player player = (Player)(Object)this;
-        if (ProcessTransfur.isPlayerLatex(player) && !player.getAbilities().invulnerable && !this.level.isClientSide) {
+        if (latexVariant != null && !player.getAbilities().invulnerable && !this.level.isClientSide) {
             ci.cancel();
-            player.getFoodData().addExhaustion(amount * getFoodMul(ProcessTransfur.getPlayerLatexVariant(player)));
+            player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant));
         }
     }
 }

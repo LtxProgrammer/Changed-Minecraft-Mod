@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class LatexCrystal extends AbstractLatexCrystal {
     ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable;
 
-    public LatexCrystal(ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable, Supplier<Item> crystal, Properties properties) {
+    public LatexCrystal(ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable, Supplier<? extends Item> crystal, Properties properties) {
         super(crystal, properties.randomTicks());
         this.spawnable = spawnable;
     }

@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -22,7 +23,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class VariantBlindnessOverlay {
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/misc/white.png");
-    private static final float ALPHA = 0.5F;
+    private static final float ALPHA = 0.65F;
+    private static float alphaO = 0.0F;
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(RenderGameOverlayEvent.Pre event) {
@@ -36,6 +38,13 @@ public class VariantBlindnessOverlay {
             if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && darkLatex.isMaskless())
                 return;
             float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
+            float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
+            float alpha;
+            if (variant.getLatexType() == LatexType.DARK_LATEX)
+                alpha = Mth.lerp(0.65F, alphaO, darkness * ALPHA);
+            else
+                alpha = ALPHA;
+            alphaO = alpha;
 
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
@@ -50,10 +59,10 @@ public class VariantBlindnessOverlay {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder bufferbuilder = tesselator.getBuilder();
             bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color, color, color, ALPHA).endVertex();
-            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color, color, color, ALPHA).endVertex();
+            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color, color, color, alpha).endVertex();
             tesselator.end();
             RenderSystem.depthMask(true);
             RenderSystem.defaultBlendFunc();

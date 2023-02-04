@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
 public class ChangedBlockEntities {
-    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, RegistryObject<Block> block) {
+    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, RegistryObject<? extends Block> block) {
         return () -> BlockEntityType.Builder.of(entitySupplier, block.get()).build(null);
     }
 

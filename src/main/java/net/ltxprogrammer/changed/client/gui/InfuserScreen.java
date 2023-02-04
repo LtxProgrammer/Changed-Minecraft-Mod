@@ -113,7 +113,7 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
             this.recipeBookComponent.toggleVisibility();
             this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
             ((ImageButton)p_98484_).setPosition(this.leftPos + 23, this.height / 2 - 25);
-            maleFemaleSwitch.setPosition(this.leftPos + 131, this.topPos + 51);
+            maleFemaleSwitch.setPosition(this.leftPos + 131, this.topPos + 61);
         }));
         this.addWidget(this.recipeBookComponent);
         this.setInitialFocus(this.recipeBookComponent);

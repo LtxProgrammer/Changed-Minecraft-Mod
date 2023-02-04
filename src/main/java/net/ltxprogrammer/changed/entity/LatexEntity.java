@@ -134,7 +134,10 @@ public abstract class LatexEntity extends Monster {
     }
 
     public float getEyeHeightMul() {
-        return 0.95F;
+        if (this.isCrouching())
+            return 0.82F;
+        else
+            return 0.93F;
     }
 
     public static boolean isDarkEnoughToSpawn(ServerLevelAccessor world, BlockPos pos, Random random) {

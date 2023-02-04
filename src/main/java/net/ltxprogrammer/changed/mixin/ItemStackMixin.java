@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    private Supplier<Item> itemSupplier;
+    private Supplier<? extends Item> itemSupplier;
 
     @Inject(method = "getItem", at = @At("HEAD"), cancellable = true)
     public void getItem(CallbackInfoReturnable<Item> ci) {

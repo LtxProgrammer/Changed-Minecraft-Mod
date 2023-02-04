@@ -8,12 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TransfurProgressOverlay {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(RenderGameOverlayEvent.Pre event) {

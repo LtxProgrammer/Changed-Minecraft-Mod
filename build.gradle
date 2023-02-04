@@ -18,7 +18,7 @@ apply plugin: 'maven-publish'
 
 version = modVersion
 group = 'net.ltxprogrammer.changed' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'Changed-m1.18.2'
+archivesBaseName = "Changed-m${minecraftVersion}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -36,7 +36,7 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: minecraftVersion
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -159,6 +159,16 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 mixin {
@@ -171,7 +181,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-' + forgeVersion
+    minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
@@ -182,6 +192,13 @@ dependencies {
 
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
+
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraftVersion}-${terraBlenderVersion}")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

@@ -13,6 +13,7 @@ public class ChangedPaintings {
         event.getRegistry().register(new Motive(32, 32).setRegistryName("puro_place"));
         event.getRegistry().register(new Motive(64, 64).setRegistryName("sharks_gaze"));
         event.getRegistry().register(new Motive(32, 32).setRegistryName("dr_k"));
+        event.getRegistry().register(new Motive(32, 32).setRegistryName("a_lazy_fox_on_the_paper"));
         event.getRegistry().register(new Motive(64, 32).setRegistryName("creation_of_lin"));
     }
 }

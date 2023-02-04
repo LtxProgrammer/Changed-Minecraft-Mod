@@ -37,17 +37,11 @@ import java.util.List;
 import java.util.Random;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 @Mixin(BlockBehaviour.class)
 public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Block> {
-    private boolean isLatexed(BlockState blockState) {
-        return getLatexed(blockState) != LatexType.NEUTRAL;
-    }
-
-    private LatexType getLatexed(BlockState blockState) {
-        return blockState.getProperties().contains(COVERED) ? blockState.getValue(COVERED) : LatexType.NEUTRAL;
-    }
-
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, CallbackInfo callbackInfo) {
         if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
@@ -55,14 +49,16 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
             if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
             AbstractLatexBlock.randomTick(state, level, position, random, state.getValue(COVERED));
+            if (state.getValue(COVERED).block.get() instanceof AbstractLatexBlock latexBlock)
+                latexBlock.latexTick(state, level, position, random);
             return;
         }
     }
 
     @Inject(method = "getDrops", at = @At("RETURN"), cancellable = true)
     public void getDrops(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> callbackInfoReturnable) {
-        if (isLatexed(state)) {
-            var goo = getLatexed(state).goo;
+        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
+            var goo = state.getValue(COVERED).goo;
             ArrayList<ItemStack> newList = new ArrayList<>(callbackInfoReturnable.getReturnValue());
             newList.add(goo.get().getDefaultInstance());
             callbackInfoReturnable.setReturnValue(newList);
@@ -78,10 +74,15 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
         if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
             return;
 
-        if (isLatexed(state) && getLatexed(state) == getLatexed(otherState))
+        if (isLatexed(state) && getLatexed(state) == getLatexed(otherState)) {
             callbackInfoReturnable.setReturnValue(true);
-        else if (otherState.is(getLatexed(state).block.get()))
-            callbackInfoReturnable.setReturnValue(true);
+            return;
+        }
+
+        if (!isLatexed(state) && isLatexed(otherState)) {
+            callbackInfoReturnable.setReturnValue(false);
+            return;
+        }
     }
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)

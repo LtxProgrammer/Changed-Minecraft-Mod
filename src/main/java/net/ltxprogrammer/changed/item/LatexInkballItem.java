@@ -2,9 +2,6 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
 import net.ltxprogrammer.changed.init.ChangedTabs;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;

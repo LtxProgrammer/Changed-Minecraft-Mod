@@ -17,6 +17,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -25,6 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTransportInterface {
     public WhiteLatexBlock(Properties p_49795_) {
@@ -64,11 +67,42 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
-    @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
-        super.randomTick(state, level, position, random);
+    public static boolean targetNearby(ServerLevel level, BlockPos blockPos) {
+        AtomicBoolean isTargetNearby = new AtomicBoolean(false);
+        level.getEntities().get(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPos).inflate(6), livingEntity -> {
+            if (isTargetNearby.get())
+                return; // Early out
 
-        if (random.nextInt(250) > 0)
+            var latexType = LatexType.getEntityLatexType(livingEntity);
+            if (latexType != null && latexType.isHostileTo(LatexType.WHITE_LATEX)) {
+                isTargetNearby.set(true);
+                return;
+            }
+
+            if (!LatexVariant.getFusionCompatible(LatexVariant.WHITE_LATEX_WOLF, livingEntity.getClass()).isEmpty()) {
+                isTargetNearby.set(true);
+                return;
+            }
+
+            var latexVariant = LatexVariant.getEntityVariant(livingEntity);
+            if (latexVariant != null && !LatexVariant.getFusionCompatible(LatexVariant.WHITE_LATEX_WOLF, latexVariant).isEmpty()) {
+                isTargetNearby.set(true);
+                return;
+            }
+
+            if (livingEntity instanceof Player player && !player.isSpectator() && !ProcessTransfur.isPlayerLatex(player)) {
+                isTargetNearby.set(true);
+                return;
+            }
+        });
+        return isTargetNearby.getAcquire();
+    }
+
+    @Override
+    public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
+        if (random.nextInt(200) > 0)
+            return;
+        if (!targetNearby(level, position))
             return;
 
         BlockPos above = position.above();

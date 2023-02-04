@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed;
 
 import net.ltxprogrammer.changed.client.EventHandlerClient;
+import net.ltxprogrammer.changed.extension.terrablender.LatexBlender;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
@@ -19,6 +20,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -46,6 +48,7 @@ public class Changed {
     private static int messageID = 0;
 
     public Changed() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
 
         try {
@@ -88,6 +91,10 @@ public class Changed {
         //    ^^^ First to process ^^^
     }
 
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(LatexBlender::initialize);
+    }
+
     public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
                                              BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
         PACKET_HANDLER.registerMessage(messageID++, messageType, encoder, decoder, messageConsumer);
@@ -95,21 +102,6 @@ public class Changed {
 
     public static <T extends ChangedPacket> void addNetworkMessage(Class<T> messageType, Function<FriendlyByteBuf, T> ctor) {
         addNetworkMessage(messageType, T::write, ctor, T::handle);
-    }
-
-    public static MinecraftServer currentServer = null;
-    public static void chatLogAll(String message) {
-        if (currentServer != null) {
-            currentServer.getPlayerList().broadcastMessage(new TextComponent(message), ChatType.SYSTEM, Util.NIL_UUID);
-        }
-    }
-
-    public static void chatLogLocal(String message) {
-        Minecraft.getInstance().player.sendMessage(new TextComponent(message).withStyle(ChatFormatting.WHITE), Util.NIL_UUID);
-    }
-
-    public static void chatLogLocalError(String message) {
-        Minecraft.getInstance().player.sendMessage(new TextComponent(message).withStyle(ChatFormatting.DARK_RED), Util.NIL_UUID);
     }
 
     public static ResourceLocation modResource(String path) {

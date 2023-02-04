@@ -22,7 +22,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -50,7 +49,8 @@ public class PatreonBenefits {
         LEVEL0(0),
         LEVEL1(1),
         LEVEL2(2),
-        LEVEL3(3);
+        LEVEL3(3),
+        LEVEL4(4);
 
         final int value;
 
@@ -269,13 +269,14 @@ public class PatreonBenefits {
 
                         LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
-                        Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                        UniversalDist.displayClientMessage(
+                                new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
                 });
             }
 
-            Changed.chatLogLocal("Updated Patreon Data.");
+            UniversalDist.displayClientMessage(new TextComponent("Updated Patreon Data."), false);
             return true;
         }
 
@@ -360,7 +361,8 @@ public class PatreonBenefits {
 
                 LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
-                Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                UniversalDist.displayClientMessage(
+                        new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
         });
@@ -408,6 +410,10 @@ public class PatreonBenefits {
             case LEVEL3 -> {
                 name.getSiblings().add(new TextComponent(" | "));
                 name.getSiblings().add(new TranslatableComponent("changed.patreon.level3").withStyle(ChatFormatting.LIGHT_PURPLE));
+            }
+            case LEVEL4 -> {
+                name.getSiblings().add(new TextComponent(" | "));
+                name.getSiblings().add(new TranslatableComponent("changed.patreon.level4").withStyle(ChatFormatting.GOLD));
             }
         }
 

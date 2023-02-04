@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:brown_concrete",
+    "minecraft:brown_terracotta",
+    "minecraft:light_gray_terracotta",
+    "minecraft:white_terracotta",
+    "changed:wall_library_upper",
+    "changed:wall_library_lower"
+  ]
+}

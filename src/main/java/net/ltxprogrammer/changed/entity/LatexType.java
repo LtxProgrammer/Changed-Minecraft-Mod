@@ -19,14 +19,14 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
     DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedBlocks.DARK_LATEX_BLOCK),
     WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedBlocks.WHITE_LATEX_BLOCK);
 
-    public final Supplier<Item> goo;
-    public final Supplier<Block> block;
+    public final Supplier<? extends Item> goo;
+    public final Supplier<? extends Block> block;
 
     LatexType() {
         this.goo = () -> null;
         this.block = () -> null;
     }
-    LatexType(Supplier<Item> goo, Supplier<Block> block) {
+    LatexType(Supplier<? extends Item> goo, Supplier<? extends Block> block) {
         this.goo = goo;
         this.block = block;
     }
@@ -81,7 +81,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         return toString().toLowerCase();
     }
 
-    public static LatexType create(String name, Supplier<Item> goo, Supplier<Block> block)
+    public static LatexType create(String name, Supplier<? extends Item> goo, Supplier<Block> block)
     {
         throw new IllegalStateException("Enum not extended");
     }
