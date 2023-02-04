@@ -105,11 +105,20 @@ public class PatreonBenefits {
         }
     }
 
-    private static final String REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
-    private static final String LINKS_DOCUMENT = REPO_BASE + "listing.json";
-    private static final String VERSION_DOCUMENT = REPO_BASE + "version.txt";
-    private static final String FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
-    private static final String FORMS_BASE = REPO_BASE + "forms/";
+    private static String REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
+    private static String LINKS_DOCUMENT = REPO_BASE + "listing.json";
+    private static String VERSION_DOCUMENT = REPO_BASE + "version.txt";
+    private static String FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
+    private static String FORMS_BASE = REPO_BASE + "forms/";
+
+    private static void updatePathStrings() {
+        REPO_BASE = "https://" + Changed.config.githubDomain + "/LtxProgrammer/patreon-benefits/main/";
+        LINKS_DOCUMENT = REPO_BASE + "listing.json";
+        VERSION_DOCUMENT = REPO_BASE + "version.txt";
+        FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
+        FORMS_BASE = REPO_BASE + "forms/";
+    }
+
     private static final Map<UUID, Tier> CACHED_LEVELS = new HashMap<>();
     private static final Map<UUID, SpecialLatexForm> CACHED_SPECIAL_FORMS = new HashMap<>();
     public static final List<Resource> ONLINE_TEXTURES = new ArrayList<>();
@@ -178,6 +187,7 @@ public class PatreonBenefits {
     public static boolean checkForUpdates() throws IOException, InterruptedException {
         if (UPDATE_FLAG.computeIfAbsent(FMLEnvironment.dist, dist -> new AtomicBoolean(false)).get()) {
             UPDATE_FLAG.get(FMLEnvironment.dist).set(false); // Consume update flag
+            updatePathStrings();
             HttpClient client = HttpClient.newHttpClient();
 
             {
@@ -284,6 +294,8 @@ public class PatreonBenefits {
     }
 
     public static void loadBenefits() throws IOException, InterruptedException {
+        updatePathStrings();
+
         // Load levels
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(URI.create(LINKS_DOCUMENT)).GET().build();
