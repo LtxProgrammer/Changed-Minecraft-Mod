@@ -52,7 +52,7 @@
   "death.attack.changed:transfur": "%1$s 被Transfur了",
   "death.attack.changed:transfur.player": "%1$s 被 %2$s transfur了",
   "death.attack.changed:white_latex": "%1$s 与白胶融合在了一起",
-  "death.attack.changed:pale": "%s was taken by Pale",
+  "death.attack.changed:pale": "%s 死于苍白病",
   
   "command.changed.error.not_latex_form": "无效胶液形态",
   "command.changed.error.no_special_form": "没有指定特殊形态，请查看 https://www.patreon.com/ltxprogrammer",
@@ -62,7 +62,7 @@
   "gamerule.changed:latexSpread": "是否让胶液自然蔓延",
   "gamerule.changed:transfurTolerance": "胶液生物Transfur伤害(Ticks)",
   "gamerule.changed:npcWantFusePlayer": "是否允许胶液生物与玩家融合",
-  "gamerule.changed:doPale": "Is Pale Enabled",
+  "gamerule.changed:doPale": "启用苍白病",
 
   "key.changed.variant_ability": "主动变化能力",
   "key.changed.extra_jump": "跳跃增强",
