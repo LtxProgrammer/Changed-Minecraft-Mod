@@ -48,9 +48,8 @@ public class LatexTippedArrowItem extends TippedArrowItem {
         if (event.getSource() instanceof IndirectEntityDamageSource indirect) {
             if (indirect.getDirectEntity() instanceof Arrow arrow) {
                 if (arrow.getPersistentData().contains(FORM_LOCATION)) {
-                    if (ProcessTransfur.progressTransfur(event.getEntityLiving(), 8000,
-                            TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION)))
-                        arrow.remove(Entity.RemovalReason.DISCARDED);
+                    ProcessTransfur.progressTransfur(event.getEntityLiving(), 8000, TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION));
+                    arrow.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
         }

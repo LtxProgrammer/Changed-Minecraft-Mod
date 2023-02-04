@@ -13,19 +13,17 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public abstract class LatexFusingItem extends Item implements WearableItem {
-    public LatexFusingItem(Properties properties) {
-        super(properties.tab(ChangedTabs.TAB_CHANGED_ITEMS));
-    }
+public interface LatexFusingItem extends WearableItem {
+    LatexVariant<?> getFusionVariant(LatexVariant<?> currentVariant, LivingEntity livingEntity, ItemStack itemStack);
 
-    public abstract LatexVariant<?> getFusionVariant(LatexVariant<?> currentVariant, LivingEntity livingEntity, ItemStack itemStack);
-
+    void nonLatexWearTick(LivingEntity entity, ItemStack itemStack);
     @Override
-    public void wearTick(LivingEntity entity, ItemStack itemStack) {
+    default void wearTick(LivingEntity entity, ItemStack itemStack) {
         if (entity instanceof LatexEntity latex && latex.getSelfVariant() != null) {
             var newVariant = getFusionVariant(latex.getSelfVariant(), latex, itemStack);
             if (newVariant == null)
                 return;
+            itemStack.shrink(1);
             newVariant.replaceEntity(latex);
         }
 
@@ -33,8 +31,12 @@ public abstract class LatexFusingItem extends Item implements WearableItem {
             var newVariant = getFusionVariant(ProcessTransfur.getPlayerLatexVariant(player), player, itemStack);
             if (newVariant == null)
                 return;
+            itemStack.shrink(1);
             ProcessTransfur.setPlayerLatexVariant(player, newVariant);
             ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
         }
+
+        else if (!(entity instanceof LatexEntity))
+            nonLatexWearTick(entity, itemStack);
     }
 }

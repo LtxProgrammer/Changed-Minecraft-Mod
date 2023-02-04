@@ -106,8 +106,8 @@ public class Pale {
                 player.hurt(ChangedDamageSources.PALE, 1f);
             }
         } else if (exposure >= THRESHOLD_LARGE_DAMAGE && exposure < THRESHOLD_DEATH) {
-            if (exposure % 300 == 0) { // 1/2 Heart per 15 seconds
-                player.hurt(ChangedDamageSources.PALE, 1f);
+            if (exposure % 300 == 0) { // 1 Heart per 15 seconds
+                player.hurt(ChangedDamageSources.PALE, 2f);
             }
         } else if (exposure >= THRESHOLD_DEATH) {
             player.hurt(ChangedDamageSources.PALE, 2f); // 1 Heart (like poison II)

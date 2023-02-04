@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -41,6 +42,7 @@ public class Changed {
 
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
     public static EventHandlerClient eventHandlerClient;
+    public static ChangedConfig config;
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource("transfur_channel"), () -> PROTOCOL_VERSION,
@@ -48,6 +50,7 @@ public class Changed {
     private static int messageID = 0;
 
     public Changed() {
+        config = new ChangedConfig(ModLoadingContext.get());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
 
