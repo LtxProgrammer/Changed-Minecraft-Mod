@@ -1,0 +1,10 @@
+{
+  "parent": "changed:block/connected_floor",
+  "textures": {
+    "north_east": "changed:blocks/tiles_white/ne1",
+    "north_west": "changed:blocks/tiles_white/nw1",
+    "south_east": "changed:blocks/tiles_white/se_c",
+    "south_west": "changed:blocks/tiles_white/sw1",
+    "sides": "changed:blocks/tiles_white/side"
+  }
+}

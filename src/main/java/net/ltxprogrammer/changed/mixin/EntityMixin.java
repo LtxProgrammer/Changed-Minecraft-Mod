@@ -35,16 +35,6 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         super(baseClass);
     }
 
-    /*@Inject(method = "playStepSound", at = @At("HEAD"), cancellable = true)
-    protected void playStepSound(BlockPos pos, BlockState blockState, CallbackInfo ci) {
-        if (((Entity) (Object) this) instanceof Player player) {
-            if (ProcessTransfur.isPlayerLatex(player)) {
-                player.playSound(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getStepSound(pos, blockState), 0.15f, 1);
-                ci.cancel();
-            }
-        }
-    }*/
-
     @Inject(method = "getTicksRequiredToFreeze", at = @At("HEAD"), cancellable = true)
     public void getTicksRequiredToFreeze(CallbackInfoReturnable<Integer> ci) {
         if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
@@ -122,6 +112,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     public final void getEyePosition(float v, CallbackInfoReturnable<Vec3> callback) {
         if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+            if (Math.abs(z) < 0.0001f) return;
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
             if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
                 look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();

@@ -6,8 +6,10 @@ import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +27,9 @@ public class ChangedSounds {
     public static final SoundEvent BOW2 = register("bow2");
     public static final SoundEvent CLOSE1 = register("close1");
     public static final SoundEvent CLOSE3 = register("close3");
+    public static final SoundEvent EQUIP1 = register("equip1");
+    public static final SoundEvent EQUIP2 = register("equip2");
+    public static final SoundEvent EQUIP3 = register("equip3");
     public static final SoundEvent EVASION = register("evasion");
     public static final SoundEvent KEY = register("key");
     public static final SoundEvent OPEN1 = register("open1");
@@ -32,10 +37,16 @@ public class ChangedSounds {
     public static final SoundEvent POISON = register("poison");
     public static final SoundEvent SAVE = register("save");
     public static final SoundEvent SOUND3 = register("sound3");
+    public static final SoundEvent SHOT1 = register("shot1");
     public static final SoundEvent SIREN = register("siren");
 
     public static final SoundEvent LATEX_DANCE = register("latex_dance");
     public static final SoundEvent OWO = register("owo");
+
+    public static class Types {
+        // Represents a sound type that has no sound
+        public static final SoundType NONE = new SoundType(-100, 1, SoundEvents.METAL_BREAK, SoundEvents.METAL_STEP, SoundEvents.METAL_PLACE, SoundEvents.METAL_HIT, SoundEvents.METAL_FALL);
+    }
 
     public static SoundEvent register(String name) {
         ResourceLocation location = Changed.modResource(name);

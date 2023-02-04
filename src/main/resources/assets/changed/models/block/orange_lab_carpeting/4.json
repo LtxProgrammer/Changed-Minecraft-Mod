@@ -1,0 +1,10 @@
+{
+  "parent": "changed:block/connected_floor",
+  "textures": {
+    "north_east": "changed:blocks/orange_lab_carpeting/ne_x",
+    "north_west": "changed:blocks/orange_lab_carpeting/nw0",
+    "south_east": "changed:blocks/orange_lab_carpeting/se_c",
+    "south_west": "changed:blocks/orange_lab_carpeting/sw_y",
+    "sides": "changed:blocks/orange_lab_carpeting/side"
+  }
+}

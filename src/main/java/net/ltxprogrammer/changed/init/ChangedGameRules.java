@@ -9,6 +9,7 @@ import static net.minecraft.world.level.GameRules.register;
 public class ChangedGameRules {
     public static final GameRules.Key<GameRules.BooleanValue> RULE_KEEP_BRAIN = register("changed:keepConscious", GameRules.Category.PLAYER, GameRules.BooleanValue.create(false));
     public static final GameRules.Key<GameRules.BooleanValue> RULE_LATEX_SPREAD = register("changed:latexSpread", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
+    public static final GameRules.Key<GameRules.BooleanValue> RULE_DO_PALE = register("changed:doPale", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
     public static final GameRules.Key<GameRules.BooleanValue> RULE_KEEP_FORM = register("changed:keepForm", GameRules.Category.PLAYER, GameRules.BooleanValue.create(false));
     public static final GameRules.Key<GameRules.BooleanValue> RULE_NPC_WANT_FUSE_PLAYER = register("changed:npcWantFusePlayer", GameRules.Category.PLAYER, GameRules.BooleanValue.create(true));
 

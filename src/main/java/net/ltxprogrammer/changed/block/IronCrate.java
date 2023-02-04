@@ -6,6 +6,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class IronCrate extends AbstractCustomShapeTallBlock {
@@ -18,7 +19,10 @@ public class IronCrate extends AbstractCustomShapeTallBlock {
 
 
     public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
-        return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
+        if (p_52783_.getValue(HALF) == DoubleBlockHalf.LOWER)
+            return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
+        else
+            return super.canSurvive(p_52783_, p_52784_, p_52785_);
     }
 
     @Override

@@ -49,7 +49,8 @@ public class PatreonBenefits {
         LEVEL0(0),
         LEVEL1(1),
         LEVEL2(2),
-        LEVEL3(3);
+        LEVEL3(3),
+        LEVEL4(4);
 
         final int value;
 
@@ -104,11 +105,20 @@ public class PatreonBenefits {
         }
     }
 
-    private static final String REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
-    private static final String LINKS_DOCUMENT = REPO_BASE + "listing.json";
-    private static final String VERSION_DOCUMENT = REPO_BASE + "version.txt";
-    private static final String FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
-    private static final String FORMS_BASE = REPO_BASE + "forms/";
+    private static String REPO_BASE = "https://raw.githubusercontent.com/LtxProgrammer/patreon-benefits/main/";
+    private static String LINKS_DOCUMENT = REPO_BASE + "listing.json";
+    private static String VERSION_DOCUMENT = REPO_BASE + "version.txt";
+    private static String FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
+    private static String FORMS_BASE = REPO_BASE + "forms/";
+
+    private static void updatePathStrings() {
+        REPO_BASE = "https://" + Changed.config.githubDomain + "/LtxProgrammer/patreon-benefits/main/";
+        LINKS_DOCUMENT = REPO_BASE + "listing.json";
+        VERSION_DOCUMENT = REPO_BASE + "version.txt";
+        FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
+        FORMS_BASE = REPO_BASE + "forms/";
+    }
+
     private static final Map<UUID, Tier> CACHED_LEVELS = new HashMap<>();
     private static final Map<UUID, SpecialLatexForm> CACHED_SPECIAL_FORMS = new HashMap<>();
     public static final List<Resource> ONLINE_TEXTURES = new ArrayList<>();
@@ -177,6 +187,7 @@ public class PatreonBenefits {
     public static boolean checkForUpdates() throws IOException, InterruptedException {
         if (UPDATE_FLAG.computeIfAbsent(FMLEnvironment.dist, dist -> new AtomicBoolean(false)).get()) {
             UPDATE_FLAG.get(FMLEnvironment.dist).set(false); // Consume update flag
+            updatePathStrings();
             HttpClient client = HttpClient.newHttpClient();
 
             {
@@ -268,13 +279,14 @@ public class PatreonBenefits {
 
                         LatexVariant.registerSpecial(form.variant);
                     } catch (IOException | InterruptedException e) {
-                        Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                        UniversalDist.displayClientMessage(
+                                new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                         throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
                     }
                 });
             }
 
-            Changed.chatLogLocal("Updated Patreon Data.");
+            UniversalDist.displayClientMessage(new TextComponent("Updated Patreon Data."), false);
             return true;
         }
 
@@ -282,6 +294,8 @@ public class PatreonBenefits {
     }
 
     public static void loadBenefits() throws IOException, InterruptedException {
+        updatePathStrings();
+
         // Load levels
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(URI.create(LINKS_DOCUMENT)).GET().build();
@@ -359,7 +373,8 @@ public class PatreonBenefits {
 
                 LatexVariant.registerSpecial(form.variant);
             } catch (IOException | InterruptedException e) {
-                Changed.chatLogLocalError("Exception while loading patron data" + e.getLocalizedMessage());
+                UniversalDist.displayClientMessage(
+                        new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
                 throw new ReportedException(new CrashReport("Exception while loading patron data", e));
             }
         });
@@ -407,6 +422,10 @@ public class PatreonBenefits {
             case LEVEL3 -> {
                 name.getSiblings().add(new TextComponent(" | "));
                 name.getSiblings().add(new TranslatableComponent("changed.patreon.level3").withStyle(ChatFormatting.LIGHT_PURPLE));
+            }
+            case LEVEL4 -> {
+                name.getSiblings().add(new TextComponent(" | "));
+                name.getSiblings().add(new TranslatableComponent("changed.patreon.level4").withStyle(ChatFormatting.GOLD));
             }
         }
 

@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
+import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.inventory.SpecialLoadingMenu;
@@ -47,6 +48,9 @@ public abstract class ServerPlayerMixin extends Player {
 
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
     protected void readAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
+        if (tag.contains("PaleExposure")) {
+            Pale.setPaleExposure(this, tag.getInt("PaleExposure"));
+        }
         if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType"))
             ProcessTransfur.setPlayerTransfurProgress(this,
                     new ProcessTransfur.TransfurProgress(tag.getInt("TransfurProgress"),
@@ -62,6 +66,7 @@ public abstract class ServerPlayerMixin extends Player {
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
+        tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).ticks());
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
         LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);

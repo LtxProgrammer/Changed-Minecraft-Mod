@@ -37,7 +37,7 @@ public class MilkPudding extends LatexEntity implements Pudding {
 
     @Override
     public LatexVariant<?> getTransfurVariant() {
-        return LatexVariant.LIGHT_LATEX_WOLF.male();
+        return LatexVariant.LIGHT_LATEX_WOLF.randomGender(random);
     }
 
     @Override

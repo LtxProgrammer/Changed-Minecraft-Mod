@@ -16,7 +16,7 @@ public class LatexPinkWyvern extends LatexEntity implements PowderSnowWalkable{
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#d5b4be");
+        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#ffffff");
     }
 
     @Override

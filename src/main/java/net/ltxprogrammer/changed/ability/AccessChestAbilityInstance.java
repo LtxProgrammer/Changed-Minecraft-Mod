@@ -28,7 +28,8 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
 
     @Override
     public boolean canUse() {
-        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE).chest.isEmpty();
+        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        return !(ability == null || ability.chest == null || ability.chest.isEmpty());
     }
 
     @Override

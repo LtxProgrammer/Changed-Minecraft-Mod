@@ -39,6 +39,36 @@
     ],
     "subtitle": "subtitles.changed.close3"
   },
+  "equip1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip1"
+  },
+  "equip2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip2"
+  },
+  "equip3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip3"
+  },
   "evasion": {
     "category": "block",
     "sounds": [
@@ -108,6 +138,16 @@
       }
     ],
     "subtitle": "subtitles.changed.sound3"
+  },
+  "shot1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:shot1",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.shot1"
   },
   "siren": {
     "category": "entity",

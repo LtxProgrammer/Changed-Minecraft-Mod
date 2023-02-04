@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,7 +34,7 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
     public static BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public CardboardBox() {
-        super(BlockBehaviour.Properties.of(Material.WOOL).strength(2.0F, 12.0F).isSuffocating(Blocks::never).isViewBlocking(Blocks::never)
+        super(BlockBehaviour.Properties.of(Material.WOOL).strength(2.0F, 12.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
                 .sound(SoundType.SCAFFOLDING));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
     }

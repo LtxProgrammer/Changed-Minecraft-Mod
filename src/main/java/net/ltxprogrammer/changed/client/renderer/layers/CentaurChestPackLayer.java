@@ -28,13 +28,14 @@ public class CentaurChestPackLayer<T extends LightLatexCentaur, M extends LatexH
             return;
         if (!ProcessTransfur.isPlayerLatex(entity.getUnderlyingPlayer()))
             return;
-        if (ProcessTransfur.getPlayerLatexVariant(entity.getUnderlyingPlayer()).getAbilityInstance(ChangedAbilities.ACCESS_SADDLE).chest.isEmpty())
+        var ability = ProcessTransfur.getPlayerLatexVariant(entity.getUnderlyingPlayer()).getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        if (ability == null || ability.chest == null || ability.chest.isEmpty())
             return;
 
         pose.pushPose();
         ModelPart modelpart = this.getParentModel().getTorso();
         modelpart.translateAndRotate(pose);
-        pose.translate(0.0D, -26.0D / 16.0D, 7.0D / 16.0D);
+        pose.translate(0.0D, entity.isCrouching() ? -23.0D / 16.0D : -26.0D / 16.0D, 7.0D / 16.0D);
         chestPackModel.renderToBuffer(pose, bufferSource.getBuffer(chestPackModel.renderType(chestPackModel.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
         pose.popPose();
     }

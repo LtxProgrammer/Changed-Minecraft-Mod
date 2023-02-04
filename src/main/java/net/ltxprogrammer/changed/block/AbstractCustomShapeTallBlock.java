@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +18,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBlock {
+public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBlock implements DoubleBlockPlace {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     public AbstractCustomShapeTallBlock(Properties properties) {
@@ -54,20 +57,28 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
         p_52901_.add(HALF);
     }
 
-    public boolean canSurvive(BlockState p_52887_, LevelReader p_52888_, BlockPos p_52889_) {
-        if (p_52887_.getValue(HALF) != DoubleBlockHalf.UPPER) {
-            return super.canSurvive(p_52887_, p_52888_, p_52889_);
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockStateOther, LevelAccessor level, BlockPos p_52898_, BlockPos p_52899_) {
+        DoubleBlockHalf half = blockState.getValue(HALF);
+        if (direction.getAxis() != Direction.Axis.Y || half == DoubleBlockHalf.LOWER != (direction == Direction.UP) || blockStateOther.is(this) && blockStateOther.getValue(HALF) != half) {
+            return half == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !blockState.canSurvive(level, p_52898_) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockState, direction, blockStateOther, level, p_52898_, p_52899_);
         } else {
-            BlockState blockstate = p_52888_.getBlockState(p_52889_.below());
-            if (p_52887_.getBlock() != this) return super.canSurvive(p_52887_, p_52888_, p_52889_); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            return Blocks.AIR.defaultBlockState();
+        }
+    }
+
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
+        if (blockState.getValue(HALF) != DoubleBlockHalf.UPPER) {
+            return super.canSurvive(blockState, level, blockPos);
+        } else {
+            BlockState blockstate = level.getBlockState(blockPos.below());
+            if (blockState.getBlock() != this) return super.canSurvive(blockState, level, blockPos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
     }
 
-    public static void placeAt(LevelAccessor p_153174_, BlockState p_153175_, BlockPos p_153176_, int p_153177_) {
-        BlockPos blockpos = p_153176_.above();
-        p_153174_.setBlock(p_153176_, p_153175_.setValue(HALF, DoubleBlockHalf.LOWER), p_153177_);
-        p_153174_.setBlock(blockpos, p_153175_.setValue(HALF, DoubleBlockHalf.UPPER), p_153177_);
+    public void placeAt(LevelAccessor level, BlockState blockState, BlockPos blockPos, int flag) {
+        level.setBlock(blockPos, blockState.setValue(HALF, DoubleBlockHalf.LOWER), flag);
+        level.setBlock(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), flag);
     }
 
     protected static void preventCreativeDropFromBottomPart(Level p_52904_, BlockPos p_52905_, BlockState p_52906_, Player p_52907_) {
@@ -84,19 +95,21 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
 
     }
 
-    public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
-        if (!p_52878_.isClientSide) {
-            if (p_52881_.isCreative()) {
-                preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
+    @Override
+    public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
+        return blockState.getValue(HALF) == DoubleBlockHalf.LOWER ?
+                super.getDrops(blockState, builder) :
+                List.of();
+    }
+
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        if (!level.isClientSide) {
+            if (player.isCreative()) {
+                preventCreativeDropFromBottomPart(level, blockPos, blockState, player);
             }
         }
 
-        switch (p_52880_.getValue(HALF)) {
-            case LOWER -> p_52878_.setBlock(p_52879_.above(), Blocks.AIR.defaultBlockState(), 3);
-            case UPPER -> p_52878_.setBlock(p_52879_.below(), Blocks.AIR.defaultBlockState(), 3);
-        }
-
-        super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
+        super.playerWillDestroy(level, blockPos, blockState, player);
     }
 
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {

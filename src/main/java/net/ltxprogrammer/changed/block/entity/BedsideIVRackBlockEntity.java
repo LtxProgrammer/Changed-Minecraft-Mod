@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.block.BedsideIVRack;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +28,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
@@ -34,6 +39,27 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     public int tickCount = 0;
     public final int TRANSFUR_REQUIRED_TIME = 20 * 20; // 20 seconds
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class EventHandler {
+        @SubscribeEvent
+        public static void onSleepingTimeCheck(SleepingTimeCheckEvent event) {
+            if (ProcessTransfur.isPlayerLatex(event.getPlayer()))
+                return;
+            if (event.getSleepingLocation().isEmpty())
+                return;
+            BlockPos blockPos = event.getSleepingLocation().get();
+            Level level = event.getEntity().getLevel();
+            for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+                if (level.getBlockEntity(blockPos.relative(direction)) instanceof BedsideIVRackBlockEntity ivRack) {
+                    if (ivRack.items.get(0).isEmpty())
+                        continue;
+                    event.setResult(Event.Result.ALLOW);
+                    return;
+                }
+            }
+        }
+    }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BedsideIVRackBlockEntity ivRack) {
         // Handle Blockstate
@@ -51,41 +77,38 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
         if (!tag.contains("owner")) return;
         UUID owner = tag.getUUID("owner");
         if (!ivRack.items.get(0).isEmpty() && ivRack.items.get(0).is(ChangedItems.LATEX_SYRINGE.get())) {
-            for (Direction direction : Direction.values()) {
-                if (direction == Direction.DOWN || direction == Direction.UP)
-                    continue;
-
+            for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
                 BlockPos adjacent = pos.relative(direction);
-                BlockState adjacentState = level.getBlockState(adjacent);
-                BlockEntity adjacentEntity = level.getBlockEntity(adjacent);
-                if (adjacentState.getBlock() instanceof BedBlock bed && adjacentEntity instanceof BedBlockEntity bedEntity) {
-                    for (Player player : level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(adjacent), EntitySelector.NO_SPECTATORS)) {
-                        if (!player.getUUID().equals(owner))
-                            continue;
+                for (Player player : level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(adjacent), EntitySelector.NO_SPECTATORS)) {
+                    if (!player.isSleeping())
+                        continue;
+                    if (!player.getUUID().equals(owner))
+                        continue;
 
-                        if (ProcessTransfur.isPlayerLatex(player))
-                            continue;
+                    if (ProcessTransfur.isPlayerLatex(player))
+                        continue;
 
-                        if (player.getSleepTimer() > 95 && ivRack.tickCount < ivRack.TRANSFUR_REQUIRED_TIME && !ivRack.items.get(0).isEmpty()) {
-                            ivRack.tickCount++;
-                            player.sleepCounter = 95;
-                            success = true;
-                            ivRack.setChanged();
+                    if (player.getSleepTimer() > 95 && ivRack.tickCount < ivRack.TRANSFUR_REQUIRED_TIME && !ivRack.items.get(0).isEmpty()) {
+                        ivRack.tickCount++;
+                        player.sleepCounter = 95;
+                        success = true;
+                        ivRack.setChanged();
+                    }
+
+                    else if (player.getSleepTimer() > 95 && !ivRack.items.get(0).isEmpty()) {
+                        ivRack.tickCount = 0;
+                        ivRack.items.set(0, ItemStack.EMPTY);
+                        try {
+                            ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
+                            if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
+                                formLocation = Changed.modResource("special/form_" + player.getUUID());
+                            ProcessTransfur.setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT));
+                            if (tag.contains("safe") && tag.getBoolean("safe"))
+                                Pale.tryCure(player);
+                        } catch (NullPointerException unused) {
                         }
-
-                        else if (player.getSleepTimer() > 95 && !ivRack.items.get(0).isEmpty()) {
-                            ivRack.tickCount = 0;
-                            ivRack.items.set(0, ItemStack.EMPTY);
-                            try {
-                                ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
-                                if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
-                                    formLocation = Changed.modResource("special/form_" + player.getUUID());
-                                ProcessTransfur.transfur(player, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.LIGHT_LATEX_WOLF.male()), true);
-                            } catch (NullPointerException ex) {
-                            }
-                            ivRack.items.get(0).shrink(1);
-                            ivRack.setChanged();
-                        }
+                        ivRack.items.get(0).shrink(1);
+                        ivRack.setChanged();
                     }
                 }
             }
