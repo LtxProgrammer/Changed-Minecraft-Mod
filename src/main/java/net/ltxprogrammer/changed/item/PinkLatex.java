@@ -74,8 +74,11 @@ public class PinkLatex implements ArmorMaterial {
         public LatexVariant<?> getFusionVariant(LatexVariant<?> currentVariant, LivingEntity livingEntity, ItemStack itemStack) {
             if (currentVariant.is(LatexVariant.LATEX_DEER))
                 return LatexVariant.LATEX_PINK_DEER;
+            else if (currentVariant.is(LatexVariant.LATEX_YUIN))
+                return LatexVariant.LATEX_PINK_YUIN_DRAGON;
             return null;
         }
+
 
         @Override
         public void nonLatexWearTick(LivingEntity entity, ItemStack itemStack) {
