@@ -17,7 +17,7 @@ public class LatexPinkDeer extends LatexEntity {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#cfbc9b");
+        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#d1626d");
     }
 
 
