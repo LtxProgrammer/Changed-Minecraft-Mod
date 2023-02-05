@@ -74,11 +74,11 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
 
         PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(32, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -34.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
-                .texOffs(24, 0).addBox(-2.0F, -29.0F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
-                .texOffs(20, 16).addBox(-1.5F, -27.0F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.5F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(24, 0).addBox(-2.0F, -2.5F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(20, 16).addBox(-1.5F, -0.5F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(0.0F, -26.0F, 0.0F));
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(0.0F, 0.5F, 0.0F));
 
         PartDefinition Base_r1 = RightEar.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(56, 0).addBox(-3.5F, -1.0F, 2.75F, 2.0F, 3.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.6581F, -0.6109F, -0.48F));
 
@@ -86,7 +86,7 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
 
         PartDefinition Base_r3 = RightEar.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(0, 48).addBox(-2.75F, -11.0F, -7.25F, 2.0F, 7.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.6981F, -0.3054F, -0.2618F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offset(0.0F, -26.0F, 0.0F));
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offset(0.0F, 0.5F, 0.0F));
 
         PartDefinition Base_r4 = LeftEar.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(16, 54).addBox(0.75F, -11.0F, -7.25F, 2.0F, 7.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.6981F, 0.3054F, 0.2618F));
 
@@ -106,11 +106,11 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
                 .texOffs(51, 27).addBox(-4.5F, -34.0F, -4.26F, 2.0F, 3.0F, 9.0F, new CubeDeformation(-0.001F))
                 .texOffs(57, 10).addBox(-4.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(54, 24).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(66, 0).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+                .texOffs(66, 0).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, -25.0F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
+        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.5F, 0.0F));
 
         PartDefinition Base_r7 = Tail.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(67, 40).addBox(-1.0F, -10.35F, 13.925F, 2.0F, 2.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, 0.0436F, 0.0F, 0.0F));
 
@@ -120,27 +120,27 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
 
         PartDefinition Base_r10 = Tail.addOrReplaceChild("Base_r10", CubeListBuilder.create().texOffs(40, 48).addBox(-2.0F, -2.8F, 0.4F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 16).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(20, 18).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 34).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 34).addBox(-8.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 34).addBox(-8.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F)), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 16).addBox(-3.0F, -1.5F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(20, 18).addBox(0.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 34).addBox(-3.0F, 10.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 34).addBox(-3.0F, 10.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 34).addBox(-3.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F)), PartPose.offset(-5.0F, 0.5F, 0.0F));
 
-        PartDefinition Base_r11 = RightArm.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(52, 0).addBox(-2.7F, 0.15F, 5.0F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, -24.0F, 0.0F, -0.5672F, -0.5672F, 0.0F));
+        PartDefinition Base_r11 = RightArm.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(52, 0).addBox(-2.7F, 0.15F, 5.0F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(1.0F, 0.5F, 0.0F, -0.5672F, -0.5672F, 0.0F));
 
-        PartDefinition Spike_r1 = RightArm.addOrReplaceChild("Spike_r1", CubeListBuilder.create().texOffs(52, 6).addBox(-2.8F, -5.0F, 1.1F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, -24.0F, 0.0F, -0.3491F, -0.3054F, -0.2618F));
+        PartDefinition Spike_r1 = RightArm.addOrReplaceChild("Spike_r1", CubeListBuilder.create().texOffs(52, 6).addBox(-2.8F, -5.0F, 1.1F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(1.0F, 0.5F, 0.0F, -0.3491F, -0.3054F, -0.2618F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(0, 32).addBox(4.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(24, 18).addBox(4.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 32).addBox(7.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 32).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(12, 32).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F)), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(0, 32).addBox(-1.0F, -1.5F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(24, 18).addBox(-1.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 32).addBox(2.0F, 10.25F, 1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 32).addBox(2.0F, 10.25F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(12, 32).addBox(2.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F)), PartPose.offset(5.0F, 0.5F, 0.0F));
 
-        PartDefinition Spike_r2 = LeftArm.addOrReplaceChild("Spike_r2", CubeListBuilder.create().texOffs(48, 6).addBox(1.8F, -5.0F, 1.1F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, -24.0F, 0.0F, -0.3491F, 0.3054F, 0.2618F));
+        PartDefinition Spike_r2 = LeftArm.addOrReplaceChild("Spike_r2", CubeListBuilder.create().texOffs(48, 6).addBox(1.8F, -5.0F, 1.1F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.0F, 0.5F, 0.0F, -0.3491F, 0.3054F, 0.2618F));
 
-        PartDefinition Base_r12 = LeftArm.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(48, 0).addBox(1.7F, 0.15F, 5.0F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, -24.0F, 0.0F, -0.5672F, 0.5672F, 0.0F));
+        PartDefinition Base_r12 = LeftArm.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(48, 0).addBox(1.7F, 0.15F, 5.0F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.0F, 0.5F, 0.0F, -0.5672F, 0.5672F, 0.0F));
 
-        return LayerDefinition.create(process(meshdefinition), 100, 64);
+        return LayerDefinition.create(meshdefinition, 100, 64);
     }
 
     @Override
