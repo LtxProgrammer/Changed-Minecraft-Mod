@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.entity.beast.AquaticEntity;
-import net.ltxprogrammer.changed.entity.beast.Pudding;
+import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
@@ -181,11 +180,15 @@ public abstract class LatexEntity extends Monster {
 
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getLatexMaxHealth());
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(35.0);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(40.0);
+        if (this instanceof LatexBenignWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
+        if (this instanceof DarkLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(25.0);
+        if (this instanceof WhiteLatexWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(20.0);
+        if (this instanceof LatexRaccoon) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getLatexLandSpeed());
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getLatexSwimSpeed());
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
-        attributes.getInstance(Attributes.ARMOR).setBaseValue(2.0);
+        attributes.getInstance(Attributes.ARMOR).setBaseValue(4.0);
     }
 
     @Override
