@@ -215,7 +215,7 @@
   "item.changed.dark_latex_wolf_male_spawn_egg": "Яицо Призыв Волк Из Тёмного Латекса",
   "item.changed.dark_latex_dragon_spawn_egg": "Яицо Призыва Дракон Из Тёмного Латекса",
   "item.changed.dark_latex_yufeng_spawn_egg": "Яицо Призыва Ю Фэн Из Тёмного Латекса",
-  "item.changed.headless_knight_spawn_egg": "Яицо Призыва Безголовый Рыцарь"
+  "item.changed.headless_knight_spawn_egg": "Яицо Призыва Безголовый Рыцарь",
   "item.changed.milk_pudding_spawn_egg": "Яицо Призыва Молочный Пудинг",
   "item.changed.latex_beifeng_spawn_egg": "Яицо Призыва Латкс. Бейфенг",
   "item.changed.latex_benign_wolf_spawn_egg": "Яицо Призыва Латкс. Доброкачаственный Волк",
@@ -274,7 +274,7 @@
 
   "changed.compact_disc.title.light_latex_wolf": "Попытка сохранить мир",
   "changed.compact_disc.content.light_latex_wolf": "В наших тщетных попытках найти вакцину от вируса во время эпидемии, Мы выяснили, что только животные не подвержены ему. Все мы начали искать способ обьединить человека и животного, в результате мы наконец продвинулись и создали Первичный Латекс, Вещество способное менять ДНК за секунды. Теперь мы наконец МОЖЕМ побороть эпидемию!",
-  "changed.compact_disc.title.aerosol_latex_wolf": "Коричнивые Волки",
+  "changed.compact_disc.title.aerosol_latex_wolf": "Коричневые Волки",
   "changed.compact_disc.content.aerosol_latex_wolf": "После долгих бессоных ночей, Я наконец-то внес свой вклад в центр данных. Все эти шаблонные латексные волки такие скучные, так что Я смешал немного коричневой краски, и получил, ну, что-то уже не особо пресное.",
 
   "changed.compact_disc.title.dark_latex_wolf": "Тайна за маской",
