@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:lab_light_small"
+    ]
+  },
+  "criteria": {
+    "has_lab_light": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:lab_light"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:lab_light_small"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lab_light",
+      "has_the_recipe"
+    ]
+  ]
+}
