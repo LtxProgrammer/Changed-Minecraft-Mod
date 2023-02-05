@@ -79,6 +79,11 @@ public class PinkLatex implements ArmorMaterial {
 
         @Override
         public void nonLatexWearTick(LivingEntity entity, ItemStack itemStack) {
+            var tag = itemStack.getOrCreateTag();
+            var age = (tag.contains("age") ? tag.getInt("age") : 0) + 1;
+            tag.putInt("age", age);
+            if (age < 12000) // Half a minecraft day
+                return;
             if (ProcessTransfur.progressTransfur(entity, 3000, LatexVariant.LATEX_PINK_WYVERN.getFormId()))
                 itemStack.shrink(1);
         }
