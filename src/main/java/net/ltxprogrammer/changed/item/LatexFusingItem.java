@@ -17,20 +17,26 @@ public interface LatexFusingItem extends WearableItem {
     LatexVariant<?> getFusionVariant(LatexVariant<?> currentVariant, LivingEntity livingEntity, ItemStack itemStack);
 
     void nonLatexWearTick(LivingEntity entity, ItemStack itemStack);
+    void nonFusionWearTick(LivingEntity entity, ItemStack itemStack);
+
     @Override
     default void wearTick(LivingEntity entity, ItemStack itemStack) {
         if (entity instanceof LatexEntity latex && latex.getSelfVariant() != null) {
             var newVariant = getFusionVariant(latex.getSelfVariant(), latex, itemStack);
-            if (newVariant == null)
+            if (newVariant == null) {
+                nonFusionWearTick(entity, itemStack);
                 return;
+            }
             itemStack.shrink(1);
             newVariant.replaceEntity(latex);
         }
 
         else if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             var newVariant = getFusionVariant(ProcessTransfur.getPlayerLatexVariant(player), player, itemStack);
-            if (newVariant == null)
+            if (newVariant == null) {
+                nonFusionWearTick(entity, itemStack);
                 return;
+            }
             itemStack.shrink(1);
             ProcessTransfur.setPlayerLatexVariant(player, newVariant);
             ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
