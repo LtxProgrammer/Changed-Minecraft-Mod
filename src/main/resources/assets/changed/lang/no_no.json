@@ -40,6 +40,7 @@
   "item.changed.latex_wolf_crystal_fragment": "Lateks ulv krystallfragment",
   "item.changed.latex_tipped_arrow": "Latekspil",
   "item.changed.orange": "Appelsiner",
+  "item.changed.pink_pants": "Rosa bukser",
   "item.changed.syringe": "Sprøyte",
   "item.changed.white_latex_goo": "Hvit lateks goo",
   "item.changed.white_latex_bucket": "Hvit lateksbøtte",
@@ -49,9 +50,10 @@
   "item.changed.owo_record": "ÒwÓ musikkplate",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
+  "death.attack.changed:transfur": "%1$s ble transpelsert",
   "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
-  "death.attack.changed:white_latex": "%1$s ble oppløst av hvit lateks",
-  "death.attack.changed:pale": "%1$s ble tatt av Pale",
+  "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
+  "death.attack.changed:pale": "%s ble tatt av Pale",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
@@ -176,6 +178,7 @@
   "entity.changed.latex_mermaid_shark": "Lateks havfruehai",
   "entity.changed.latex_mimic_plant": "Lateks etterligning plante",
   "entity.changed.latex_orca": "Lateks spekkhugger",
+  "entity.changed.latex_pink_deer": "Lateks rosa hjort",
   "entity.changed.latex_pink_wyvern": "Lateks rosa wyvern",
   "entity.changed.latex_purple_fox": "Lateks lilla rev",
   "entity.changed.latex_raccoon": "Lateks vaskebjørn",
@@ -229,6 +232,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Fremkallingsegg for lateks havfruehai",
   "item.changed.latex_mimic_plant_spawn_egg": "Fremkallingsegg for lateks etterligning plante",
   "item.changed.latex_orca_spawn_egg": "Fremkallingsegg for lateks spekkhugger",
+  "item.changed.latex_pink_deer_spawn_egg": "Fremkallingsegg for lateks rosa hjort",
   "item.changed.latex_pink_wyvern_spawn_egg": "Fremkallingsegg for lateks rosa wyvern",
   "item.changed.latex_purple_fox_spawn_egg": "Fremkallingsegg for lateks lilla rev",
   "item.changed.latex_raccoon_spawn_egg": "Fremkallingsegg for lateks vaskebjørn",
@@ -264,6 +268,7 @@
   "changed.patreon.level1": "Nivå 1",
   "changed.patreon.level2": "Nivå 2",
   "changed.patreon.level3": "Nivå 3",
+  "changed.patreon.level4": "Nivå 4",
 
   "changed.error.corrupted_disc": "FEIL: Ødelagt plate",
 

@@ -25,7 +25,7 @@
   "subtitles.changed.save": "Näthinnanskanner piper",
 
   "item.changed.aerosol_latex_bucket": "Aerosol latexhink",
-  "item.changed.benign_pants": "Latex byxorna",
+  "item.changed.benign_pants": "Latex byxor",
   "item.changed.blood_syringe": "Blodspruta",
   "item.changed.dark_latex_crystal_fragment": "Mörk latexkristallfragment",
   "item.changed.dark_latex_dragon_crystal_fragment": "Mörk latex drakekristallfragment",
@@ -40,6 +40,7 @@
   "item.changed.latex_wolf_crystal_fragment": "Latex vargkristallfragment",
   "item.changed.latex_tipped_arrow": "Latexpil",
   "item.changed.orange": "Apelsin",
+  "item.changed.pink_pants": "Rosa byxor",
   "item.changed.syringe": "Spruta",
   "item.changed.white_latex_goo": "Vit latex goo",
   "item.changed.white_latex_bucket": "Vit latexhink",
@@ -49,9 +50,10 @@
   "item.changed.owo_record": "ÒwÓ musikskiva",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
+  "death.attack.changed:transfur": "%1$s förpälsvandlades",
   "death.attack.changed:transfur.player": "%1$s förpälsvandlades av %2$s",
-  "death.attack.changed:white_latex": "%1$s upplöst i vit latex",
-  "death.attack.changed:pale": "%1$s togs av Pale",
+  "death.attack.changed:white_latex": "%s upplöst i vit latex",
+  "death.attack.changed:pale": "%s togs av Pale",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
@@ -176,6 +178,7 @@
   "entity.changed.latex_mermaid_shark": "Latex sjöjungfruhaj",
   "entity.changed.latex_mimic_plant": "Latex växt härma",
   "entity.changed.latex_orca": "Latex späckhuggare",
+  "entity.changed.latex_pink_deer": "Latex rosa hjort",
   "entity.changed.latex_pink_wyvern": "Latex rosa wyvern",
   "entity.changed.latex_purple_fox": "Latex lila räv",
   "entity.changed.latex_raccoon": "Latex tvättbjörn",
@@ -229,6 +232,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Skapelseägg för latex sjöjungfruhaj",
   "item.changed.latex_mimic_plant_spawn_egg": "Skapelseägg för latex växt härma",
   "item.changed.latex_orca_spawn_egg": "Skapelseägg för latex späckhuggare",
+  "item.changed.latex_pink_deer_spawn_egg": "Skapelseägg för latex rosa hjort",
   "item.changed.latex_pink_wyvern_spawn_egg": "Skapelseägg för latex rosa wyvern",
   "item.changed.latex_purple_fox_spawn_egg": "Skapelseägg för latex lila räv",
   "item.changed.latex_raccoon_spawn_egg": "Skapelseägg för latex tvättbjörn",
@@ -264,6 +268,7 @@
   "changed.patreon.level1": "Nivå 1",
   "changed.patreon.level2": "Nivå 2",
   "changed.patreon.level3": "Nivå 3",
+  "changed.patreon.level4": "Nivå 4",
 
   "changed.error.corrupted_disc": "FEL: Skadad skiva",
 
