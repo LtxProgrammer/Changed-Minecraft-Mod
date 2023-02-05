@@ -2,14 +2,13 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -89,6 +88,35 @@ public class PinkLatex implements ArmorMaterial {
                 return;
             if (ProcessTransfur.progressTransfur(entity, 3000, LatexVariant.LATEX_PINK_WYVERN.getFormId()))
                 itemStack.shrink(1);
+        }
+
+        @Override
+        public void nonFusionWearTick(LivingEntity entity, ItemStack itemStack) {
+            if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+                if (ProcessTransfur.isPlayerOrganic(player))
+                    return;
+                if (player.getRandom().nextBoolean()) {
+                    var newEntity = ProcessTransfur.getPlayerLatexVariant(player).getEntityType().create(entity.level);
+                    newEntity.moveTo(entity.position());
+                    entity.level.addFreshEntity(newEntity);
+                    ProcessTransfur.setPlayerLatexVariant(player, LatexVariant.LATEX_PINK_WYVERN);
+                } else {
+                    var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(entity.level);
+                    wyvern.moveTo(entity.position());
+                    entity.level.addFreshEntity(wyvern);
+                }
+            }
+
+            else {
+                if (entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+                    return;
+                var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(entity.level);
+                wyvern.moveTo(entity.position());
+                entity.level.addFreshEntity(wyvern);
+            }
+
+            itemStack.shrink(1);
+            ChangedSounds.broadcastSound(entity, LatexVariant.LATEX_PINK_WYVERN.sound, 1, 1);
         }
 
         @Override
