@@ -178,8 +178,9 @@
   "entity.changed.latex_mermaid_shark": "Латкс. Акула Русалка",
   "entity.changed.latex_mimic_plant": "Латкс. Мимик-Растение",
   "entity.changed.latex_orca": "Латкс. Косатка",  
-  "entity.changed.latex_pink_deer": "Розовый Олень",
-  "entity.changed.latex_pink_wyvern": "Розовая Виверна",
+  "entity.changed.latex_pink_deer": "Латкс. Розовый Олень",
+  "entity.changed.latex_pink_wyvern": "Латкс. Розовая Виверна",
+  "entity.changed.latex_pink_yuin_dragon": "Латкс. Розовый Юин Дракон",
   "entity.changed.latex_purple_fox": "Латкс. Розовый Лис",
   "entity.changed.latex_raccoon": "Латкс. Енот",
   "entity.changed.latex_red_dragon": "Красный Дракон",
@@ -215,7 +216,7 @@
   "item.changed.dark_latex_wolf_male_spawn_egg": "Яицо Призыв Волк Из Тёмного Латекса",
   "item.changed.dark_latex_dragon_spawn_egg": "Яицо Призыва Дракон Из Тёмного Латекса",
   "item.changed.dark_latex_yufeng_spawn_egg": "Яицо Призыва Ю Фэн Из Тёмного Латекса",
-  "item.changed.headless_knight_spawn_egg": "Яицо Призыва Безголовый Рыцарь"
+  "item.changed.headless_knight_spawn_egg": "Яицо Призыва Безголовый Рыцарь",
   "item.changed.milk_pudding_spawn_egg": "Яицо Призыва Молочный Пудинг",
   "item.changed.latex_beifeng_spawn_egg": "Яицо Призыва Латкс. Бейфенг",
   "item.changed.latex_benign_wolf_spawn_egg": "Яицо Призыва Латкс. Доброкачаственный Волк",
@@ -234,6 +235,7 @@
   "item.changed.latex_orca_spawn_egg": "Яицо Призыва Латкс. Косатка",
   "item.changed.latex_pink_deer_spawn_egg": "Яицо Призыва Латкс. Розовый Олень",
   "item.changed.latex_pink_wyvern_spawn_egg": "Яицо Призыва Латкс. Розовая Виверна",
+  "item.changed.latex_pink_yuin_dragon_spawn_egg": "Яицо Призыва Латкс. Розовый Юин Дракон",
   "item.changed.latex_purple_fox_spawn_egg": "Яицо Призыва Латкс. Розовый Лис",
   "item.changed.latex_raccoon_spawn_egg": "Яицо Призыва Латкс. Енот",
   "item.changed.latex_red_dragon_spawn_egg": "Яицо Призыва Латкс. Красный Дракон",
@@ -274,7 +276,7 @@
 
   "changed.compact_disc.title.light_latex_wolf": "Попытка сохранить мир",
   "changed.compact_disc.content.light_latex_wolf": "В наших тщетных попытках найти вакцину от вируса во время эпидемии, Мы выяснили, что только животные не подвержены ему. Все мы начали искать способ обьединить человека и животного, в результате мы наконец продвинулись и создали Первичный Латекс, Вещество способное менять ДНК за секунды. Теперь мы наконец МОЖЕМ побороть эпидемию!",
-  "changed.compact_disc.title.aerosol_latex_wolf": "Коричнивые Волки",
+  "changed.compact_disc.title.aerosol_latex_wolf": "Коричневые Волки",
   "changed.compact_disc.content.aerosol_latex_wolf": "После долгих бессоных ночей, Я наконец-то внес свой вклад в центр данных. Все эти шаблонные латексные волки такие скучные, так что Я смешал немного коричневой краски, и получил, ну, что-то уже не особо пресное.",
 
   "changed.compact_disc.title.dark_latex_wolf": "Тайна за маской",
