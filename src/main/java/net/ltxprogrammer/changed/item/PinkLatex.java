@@ -75,12 +75,23 @@ public class PinkLatex implements ArmorMaterial {
                 return LatexVariant.LATEX_PINK_DEER;
             else if (currentVariant.is(LatexVariant.LATEX_YUIN))
                 return LatexVariant.LATEX_PINK_YUIN_DRAGON;
-            return null;
+            else {
+                if (livingEntity.getRandom().nextBoolean()) {
+                    var newEntity = currentVariant.getEntityType().create(livingEntity.level);
+                    newEntity.moveTo(livingEntity.position());
+                    livingEntity.level.addFreshEntity(newEntity);
+                    return LatexVariant.LATEX_PINK_WYVERN;
+                } else {
+                    var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(livingEntity.level);
+                    wyvern.moveTo(livingEntity.position());
+                    livingEntity.level.addFreshEntity(wyvern);
+                    return currentVariant; // Return current to consume pants (Yummy)
+                }
+            }
         }
 
-
         @Override
-        public void nonLatexWearTick(LivingEntity entity, ItemStack itemStack) {
+        public void wearTick(LivingEntity entity, ItemStack itemStack) {
             var tag = itemStack.getOrCreateTag();
             var age = (tag.contains("age") ? tag.getInt("age") : 0) + 1;
             tag.putInt("age", age);
@@ -88,35 +99,6 @@ public class PinkLatex implements ArmorMaterial {
                 return;
             if (ProcessTransfur.progressTransfur(entity, 3000, LatexVariant.LATEX_PINK_WYVERN.getFormId()))
                 itemStack.shrink(1);
-        }
-
-        @Override
-        public void nonFusionWearTick(LivingEntity entity, ItemStack itemStack) {
-            if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-                if (ProcessTransfur.isPlayerOrganic(player))
-                    return;
-                if (player.getRandom().nextBoolean()) {
-                    var newEntity = ProcessTransfur.getPlayerLatexVariant(player).getEntityType().create(entity.level);
-                    newEntity.moveTo(entity.position());
-                    entity.level.addFreshEntity(newEntity);
-                    ProcessTransfur.setPlayerLatexVariant(player, LatexVariant.LATEX_PINK_WYVERN);
-                } else {
-                    var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(entity.level);
-                    wyvern.moveTo(entity.position());
-                    entity.level.addFreshEntity(wyvern);
-                }
-            }
-
-            else {
-                if (entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
-                    return;
-                var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(entity.level);
-                wyvern.moveTo(entity.position());
-                entity.level.addFreshEntity(wyvern);
-            }
-
-            itemStack.shrink(1);
-            ChangedSounds.broadcastSound(entity, LatexVariant.LATEX_PINK_WYVERN.sound, 1, 1);
         }
 
         @Override
