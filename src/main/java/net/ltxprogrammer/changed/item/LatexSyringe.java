@@ -170,6 +170,8 @@ public class LatexSyringe extends Item {
             this.syringe = syringe;
             this.syringeVariant = syringeVariant;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -188,6 +190,8 @@ public class LatexSyringe extends Item {
             this.syringe = syringe;
             this.syringeVariant = syringeVariant;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     @Override

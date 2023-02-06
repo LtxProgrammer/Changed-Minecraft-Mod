@@ -188,6 +188,8 @@ public class Syringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -204,6 +206,8 @@ public class Syringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     @Override
