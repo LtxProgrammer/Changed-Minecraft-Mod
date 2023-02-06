@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -73,10 +74,10 @@ public class LatexSyringe extends Item {
         }
     }
 
-    public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
-        if (this.allowdedIn(p_43356_)) {
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+        if (this.allowdedIn(tab)) {
             for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
-                p_43357_.add(Syringe.setPureVariant(new ItemStack(this), variant));
+                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
             }
         }
     }
