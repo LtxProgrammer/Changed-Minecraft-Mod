@@ -76,6 +76,9 @@ public class PinkLatex implements ArmorMaterial {
             else if (currentVariant.is(LatexVariant.LATEX_YUIN))
                 return LatexVariant.LATEX_PINK_YUIN_DRAGON;
             else {
+                if (livingEntity.level.isClientSide)
+                    return currentVariant;
+
                 if (livingEntity.getRandom().nextBoolean()) {
                     var newEntity = currentVariant.getEntityType().create(livingEntity.level);
                     newEntity.moveTo(livingEntity.position());

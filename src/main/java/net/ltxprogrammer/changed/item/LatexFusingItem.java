@@ -18,6 +18,9 @@ public interface LatexFusingItem extends WearableItem {
     class Event {
         @SubscribeEvent
         static void onVariantAssigned(ProcessTransfur.EntityVariantAssigned event) {
+            if (event.variant == null)
+                return;
+
             event.livingEntity.getArmorSlots().forEach(itemStack -> {
                 if (itemStack.getItem() instanceof LatexFusingItem fusingItem) {
                     var newVariant = fusingItem.getFusionVariant(event.variant, event.livingEntity, itemStack);
