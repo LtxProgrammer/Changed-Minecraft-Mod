@@ -71,6 +71,13 @@ public class Syringe extends Item {
         return itemStack;
     }
 
+    public static ItemStack setOwner(ItemStack itemStack, @Nullable Player player) {
+        if (player == null)
+            return itemStack;
+        itemStack.getOrCreateTag().putUUID("owner", player.getUUID());
+        return itemStack;
+    }
+
     public static void addOwnerTooltip(ItemStack stack, List<Component> builder) {
         if (stack.getOrCreateTag().contains("owner")) {
             Player player = UniversalDist.getLevel().getPlayerByUUID(stack.getOrCreateTag().getUUID("owner"));
@@ -181,6 +188,8 @@ public class Syringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -197,6 +206,8 @@ public class Syringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     @Override
