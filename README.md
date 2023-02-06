@@ -10,11 +10,18 @@ Any aspiring developer is welcome to fork and create a pull request to submit th
 Changes you make to the code should be on your own fork. Create a pull request when ready to submit.
 
 # I want to make my own sub mod
-Alright, grab the [forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install intellij. Add the .jar version of this mod to the './libs' directory in the new mod, remove the file `changed.refmap.json` (in the .jar) as the dev environment will fail to load with it, then add this line in your dependancies (*build.gradle*):
+Alright, grab the [forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install intellij. Add this line in your repositories (*build.gradle*): 
 
 ```gradle
-implementation fg.deobf('net.ltxprogrammer.changed:Changed-m1.18.2:v0.8.3')
-// Replace v0.8.3 with the version you plan to mod
+maven {
+    name = "Changed"
+    url = "https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/mcmodsrepo/"
+}
+```
+Add this line in your dependancies (*build.gradle*):
+
+```gradle
+implementation fg.deobf("net.ltxprogrammer.changed:Changed-m${minecraftVersion}-f${forgeVersion}:${changedVersion}")
 ```
 Then add a mod dependancy to *mods.toml*:
 
@@ -22,7 +29,7 @@ Then add a mod dependancy to *mods.toml*:
 [[dependencies.your_mod_id]]
     modId="changed"
     mandatory=true
-    versionRange="[0.8.3]" # Again, replace 0.8.3 with the version you plan to mod
+    versionRange="[0.10b]" # Replace 0.10b with the version you plan to mod
     ordering="NONE"
     side="BOTH"
 ```
