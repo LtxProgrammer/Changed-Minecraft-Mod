@@ -122,7 +122,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         if (blockState.getValue(EXTENDED) != wantToAppear) {
             ChangedSounds.broadcastSound(level.getServer(), ChangedSounds.POISON, blockPos, 1, 1);
             level.setBlockAndUpdate(blockPos, blockState.setValue(EXTENDED, wantToAppear));
-            level.setBlockAndUpdate(blockPos.above(), level.getBlockState(blockPos.above()).setValue(EXTENDED, wantToAppear));
+            level.setBlockAndUpdate(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER).setValue(EXTENDED, wantToAppear));
         }
     }
 
