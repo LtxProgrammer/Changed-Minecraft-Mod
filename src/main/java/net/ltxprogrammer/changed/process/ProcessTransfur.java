@@ -216,6 +216,8 @@ public class ProcessTransfur {
 
     public static void setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
         try {
+            if (player instanceof ServerPlayer serverPlayer && variant != null)
+                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
             if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
                 variant = variant.clone();
 
@@ -598,8 +600,6 @@ public class ProcessTransfur {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             LatexType.setEntityLatexType(entity, variant.getLatexType());
             if (keepConscious && entity instanceof ServerPlayer player) {
-                ChangedCriteriaTriggers.TRANSFUR.trigger(player, variant);
-
                 LatexVariant<?> uniqueVariant = variant.clone();
 
                 setPlayerLatexVariant(player, uniqueVariant);
