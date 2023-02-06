@@ -70,23 +70,23 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
 
         PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(32, 69).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -34.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
-                .texOffs(56, 57).addBox(-2.0F, -29.0F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
-                .texOffs(24, 19).addBox(-1.5F, -27.0F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -7.5F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(56, 57).addBox(-2.0F, -2.5F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(24, 19).addBox(-1.5F, -0.5F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-        PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 17).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
+        PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 17).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 26.5F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(0, 4).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 32).addBox(-0.5F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(27, 53).addBox(0.5F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 14).addBox(-0.499F, -1.0436F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(24, 14).addBox(-0.5F, 0.0F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-3.1F, -36.0F, 0.0F, 0.0F, 0.0F, -0.1309F));
+                .texOffs(24, 14).addBox(-0.5F, 0.0F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-3.1F, -9.5F, 0.0F, 0.0F, 0.0F, -0.1309F));
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 34).addBox(0.001F, 0.0436F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 30).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(19, 53).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.6F, -36.0F, 0.0F, 0.0F, 0.0F, 0.1309F));
+                .texOffs(19, 53).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.6F, -9.5F, 0.0F, 0.0F, 0.0F, 0.1309F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 52).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
                 .texOffs(28, 0).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
@@ -100,22 +100,22 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
                 .texOffs(60, 57).addBox(-4.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
                 .texOffs(46, 0).addBox(-4.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(71, 2).addBox(-3.5F, -34.0F, -4.5F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 72).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+                .texOffs(0, 72).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(32, 36).addBox(-4.0F, -25.0F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(75, 51).addBox(-3.0F, -25.0F, 1.75F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(28, 4).addBox(-4.0F, -25.0F, 1.5F, 8.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(32, 19).addBox(-4.0F, -25.0F, -2.5F, 8.0F, 3.0F, 1.0F, new CubeDeformation(-0.001F))
-                .texOffs(56, 45).addBox(-3.0F, -22.0F, -2.5F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(76, 70).addBox(-3.0F, -25.0F, -2.75F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(61, 17).addBox(-3.0F, -23.0F, 1.5F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(22, 41).addBox(-2.0F, -23.0F, -2.75F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(32, 36).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(75, 51).addBox(-3.0F, 0.5F, 1.75F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(28, 4).addBox(-4.0F, 0.5F, 1.5F, 8.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(32, 19).addBox(-4.0F, 0.5F, -2.5F, 8.0F, 3.0F, 1.0F, new CubeDeformation(-0.001F))
+                .texOffs(56, 45).addBox(-3.0F, 3.5F, -2.5F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(76, 70).addBox(-3.0F, 0.5F, -2.75F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(61, 17).addBox(-3.0F, 2.5F, 1.5F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(22, 41).addBox(-2.0F, 2.5F, -2.75F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-        PartDefinition RightTuft_r1 = Torso.addOrReplaceChild("RightTuft_r1", CubeListBuilder.create().texOffs(52, 76).addBox(10.5F, -23.5F, -2.5F, 1.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
+        PartDefinition RightTuft_r1 = Torso.addOrReplaceChild("RightTuft_r1", CubeListBuilder.create().texOffs(52, 76).addBox(10.5F, -23.5F, -2.5F, 1.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.0F, 0.0F, -0.6109F));
 
-        PartDefinition LeftTuft_r1 = Torso.addOrReplaceChild("LeftTuft_r1", CubeListBuilder.create().texOffs(75, 63).addBox(-11.5F, -23.5F, -2.5F, 1.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.6109F));
+        PartDefinition LeftTuft_r1 = Torso.addOrReplaceChild("LeftTuft_r1", CubeListBuilder.create().texOffs(75, 63).addBox(-11.5F, -23.5F, -2.5F, 1.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.0F, 0.0F, 0.6109F));
 
-        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
+        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.5F, 0.0F));
 
         PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(54, 0).addBox(-4.5F, 3.0F, -2.5F, 6.0F, 4.0F, 5.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(1.5F, -23.35F, 13.2F, 0.5236F, 0.0F, 0.0F));
 
@@ -141,19 +141,19 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
 
         PartDefinition Base_r12 = Tail.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(75, 6).addBox(-2.5F, 0.0F, -1.0F, 4.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 0.0F, 0.0F, 0.9163F, 0.0F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(57, 29).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(52, 36).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(27, 51).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(19, 51).addBox(-8.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 51).addBox(-8.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(57, 29).addBox(-3.0F, -1.5F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(52, 36).addBox(0.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(27, 51).addBox(-3.0F, 10.25F, 1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(19, 51).addBox(-3.0F, 10.25F, -0.5F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 51).addBox(-3.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(-5.0F, 0.5F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(44, 57).addBox(4.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(0, 53).addBox(4.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(44, 52).addBox(7.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(40, 52).addBox(7.0F, -14.25F, -0.5F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(52, 38).addBox(7.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 25.0F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(44, 57).addBox(-1.0F, -1.5F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(0, 53).addBox(-1.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(44, 52).addBox(2.0F, 10.25F, 1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(40, 52).addBox(2.0F, 10.25F, -0.5F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(52, 38).addBox(2.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(5.0F, 0.5F, 0.0F));
 
-        return LayerDefinition.create(process(meshdefinition), 128, 128);
+        return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
     @Override
