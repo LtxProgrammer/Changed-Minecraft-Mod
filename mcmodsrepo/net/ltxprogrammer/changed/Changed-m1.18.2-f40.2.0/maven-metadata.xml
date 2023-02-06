@@ -3,11 +3,12 @@
   <groupId>net.ltxprogrammer.changed</groupId>
   <artifactId>Changed-m1.18.2-f40.2.0</artifactId>
   <versioning>
-    <latest>v0.10</latest>
-    <release>v0.10</release>
+    <latest>v0.10b</latest>
+    <release>v0.10b</release>
     <versions>
       <version>v0.10</version>
+      <version>v0.10b</version>
     </versions>
-    <lastUpdated>20230205132503</lastUpdated>
+    <lastUpdated>20230206183551</lastUpdated>
   </versioning>
 </metadata>
