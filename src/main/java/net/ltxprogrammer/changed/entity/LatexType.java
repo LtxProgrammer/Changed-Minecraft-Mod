@@ -31,10 +31,6 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         this.block = block;
     }
 
-    public static void setEntityLatexType(@NotNull Entity entity, LatexType type) {
-        entity.getPersistentData().putString("changed:transfur_immunity", type.toString());
-    }
-
     public static LatexType getEntityLatexType(@NotNull Entity entity) {
         if (entity instanceof LatexEntity latexEntity) {
             return latexEntity.getLatexType();

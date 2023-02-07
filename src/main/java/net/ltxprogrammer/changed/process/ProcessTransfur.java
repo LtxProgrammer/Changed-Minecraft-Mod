@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -30,6 +31,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -214,8 +216,29 @@ public class ProcessTransfur {
         return null;
     }
 
+    public static class EntityVariantAssigned extends Event {
+        public final LivingEntity livingEntity;
+        public final @Nullable LatexVariant<?> originalVariant;
+        public @Nullable LatexVariant<?> variant;
+
+        public EntityVariantAssigned(LivingEntity livingEntity, LatexVariant<?> variant) {
+            this.livingEntity = livingEntity;
+            this.originalVariant = variant;
+            this.variant = variant;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
+    }
+
     public static void setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
         try {
+            EntityVariantAssigned event = new EntityVariantAssigned(player, variant);
+            MinecraftForge.EVENT_BUS.post(event);
+            variant = event.variant;
+
             if (player instanceof ServerPlayer serverPlayer && variant != null)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
             if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
@@ -598,7 +621,6 @@ public class ProcessTransfur {
             return;
         if (!LatexType.hasLatexType(entity)) {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
-            LatexType.setEntityLatexType(entity, variant.getLatexType());
             if (keepConscious && entity instanceof ServerPlayer player) {
                 LatexVariant<?> uniqueVariant = variant.clone();
 
@@ -623,7 +645,10 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                variant.replaceEntity(entity);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, variant);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.variant != null)
+                    event.variant.replaceEntity(entity);
             }
         }
 
@@ -663,7 +688,10 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                fusion.replaceEntity(entity);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.variant != null)
+                    event.variant.replaceEntity(entity);
             }
         }
     }
