@@ -17,4 +17,13 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
                     if (form.tailAidsInSwim()) builder.tailAidsInSwim();
                 });
     }
+
+    @Override
+    public void prepareForShorts() {
+        try {
+            body.visible = true;
+            leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+            rightLeg.getChild("RightUpperLeg_r1").visible = true;
+        } catch (Exception ignored) {}
+    }
 }
