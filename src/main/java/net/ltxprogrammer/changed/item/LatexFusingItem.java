@@ -18,6 +18,8 @@ public interface LatexFusingItem extends WearableItem {
     class Event {
         @SubscribeEvent
         static void onVariantAssigned(ProcessTransfur.EntityVariantAssigned event) {
+            if (event.isRedundant())
+                return;
             if (event.variant == null)
                 return;
 
