@@ -87,4 +87,12 @@ public abstract class LivingEntityMixin extends Entity {
             if (blockItem.getBlock() instanceof WearableBlock wearableBlock)
                 callback.setReturnValue(wearableBlock.getEquipmentSlot());
     }
+
+    @Inject(method = "isVisuallySwimming", at = @At("HEAD"), cancellable = true)
+    private void isVisuallySwimming(CallbackInfoReturnable<Boolean> callback) {
+        if ((LivingEntity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().isVisuallySwimming())
+                callback.setReturnValue(true);
+        }
+    }
 }

@@ -115,6 +115,8 @@ public abstract class LatexEntity extends Monster {
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
+        if (this.isVisuallySwimming())
+            return EntityDimensions.scalable(core.width, core.width);
         return switch (pose) {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;

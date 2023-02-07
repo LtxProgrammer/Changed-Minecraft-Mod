@@ -300,6 +300,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<MilkPudding>> MILK_PUDDING = register("milk_pudding", 0xFFFFFF, 0xF0F0F0,
             EntityType.Builder.of(MilkPudding::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.5F),
             ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<Shark>> SHARK = register("shark", 0x969696, 0xFFFFFF,
+            EntityType.Builder.of(Shark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.9F, 0.6F),
+            ChangedEntities::oceanSpawning);
     public static final RegistryObject<EntityType<WhiteLatexWolf>> WHITE_LATEX_WOLF = register("white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(WhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::noSpawning);
