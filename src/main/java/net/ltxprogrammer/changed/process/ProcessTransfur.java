@@ -218,11 +218,13 @@ public class ProcessTransfur {
 
     public static class EntityVariantAssigned extends Event {
         public final LivingEntity livingEntity;
+        public final @Nullable LatexVariant<?> previousVariant;
         public final @Nullable LatexVariant<?> originalVariant;
         public @Nullable LatexVariant<?> variant;
 
-        public EntityVariantAssigned(LivingEntity livingEntity, LatexVariant<?> variant) {
+        public EntityVariantAssigned(LivingEntity livingEntity, @Nullable LatexVariant<?> variant) {
             this.livingEntity = livingEntity;
+            this.previousVariant = LatexVariant.getEntityVariant(livingEntity);
             this.originalVariant = variant;
             this.variant = variant;
         }
@@ -230,6 +232,17 @@ public class ProcessTransfur {
         @Override
         public boolean isCancelable() {
             return false;
+        }
+
+        // Event may be fired every couple of ticks from the sync packet
+        public boolean isRedundant() {
+            if (previousVariant == originalVariant)
+                return true;
+            else if (previousVariant == null)
+                return false;
+            else if (originalVariant == null)
+                return false;
+            return previousVariant.getEntityType() == originalVariant.getEntityType();
         }
     }
 
