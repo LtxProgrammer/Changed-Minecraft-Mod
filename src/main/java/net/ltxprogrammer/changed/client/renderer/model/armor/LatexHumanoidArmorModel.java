@@ -15,7 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.function.Consumer;
 
-public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
+public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
     public final ModelPart head;
     public final ModelPart body;
     public final ModelPart tail;
@@ -126,6 +126,8 @@ public class LatexHumanoidArmorModel<T extends LatexEntity> extends EntityModel<
         if (rightArm3 != null)
             rightArm3.visible = b;
     }
+
+    public abstract void prepareForShorts();
 
     public void translateToHand(HumanoidArm arm, PoseStack stack) {
 
