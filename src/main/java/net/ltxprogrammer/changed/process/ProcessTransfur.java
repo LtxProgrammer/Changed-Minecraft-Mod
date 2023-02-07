@@ -236,7 +236,9 @@ public class ProcessTransfur {
 
         // Event may be fired every couple of ticks from the sync packet
         public boolean isRedundant() {
-            if (previousVariant == originalVariant)
+            if (livingEntity.tickCount == 0)
+                return true;
+            else if (previousVariant == originalVariant)
                 return true;
             else if (previousVariant == null)
                 return false;
