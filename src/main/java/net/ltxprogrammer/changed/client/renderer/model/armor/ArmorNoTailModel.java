@@ -13,6 +13,8 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import java.util.List;
 import java.util.Map;
 
+import static net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel.EMPTY_PART;
+
 public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_no_tail")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_no_tail")).get();
@@ -21,7 +23,7 @@ public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorM
         super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
-                new ModelPart(List.of(), Map.of()),
+                EMPTY_PART,
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
@@ -61,5 +63,12 @@ public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorM
         PartDefinition LeftArm_r1 = LeftArm.addOrReplaceChild("LeftArm_r1", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(0.0F - 5.0F, -2.0F + 24.5F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offsetAndRotation(4.0F, -24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+    @Override
+    public void prepareForShorts() {
+        body.visible = true;
+        leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+        rightLeg.getChild("RightUpperLeg_r1").visible = true;
     }
 }

@@ -16,14 +16,15 @@ import java.util.Map;
 public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body")).get();
+    public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
 
     public ArmorUpperBodyModel(ModelPart modelPart) {
         super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
-                new ModelPart(List.of(), Map.of()),
-                new ModelPart(List.of(), Map.of()),
-                new ModelPart(List.of(), Map.of()),
+                EMPTY_PART,
+                EMPTY_PART,
+                EMPTY_PART,
                 modelPart.getChild("LeftArm"),
                 modelPart.getChild("RightArm")), builder -> {
             builder.noLegs(new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).legLengthOffset(0.0F).tailAidsInSwim();
@@ -48,4 +49,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
+
+    @Override
+    public void prepareForShorts() {}
 }

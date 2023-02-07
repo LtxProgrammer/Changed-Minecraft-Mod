@@ -58,7 +58,7 @@ public class PinkLatex implements ArmorMaterial {
         return 0;
     }
 
-    public static class Pants extends ArmorItem implements LatexFusingItem {
+    public static class Pants extends ArmorItem implements LatexFusingItem, Shorts {
         public Pants() {
             super(INSTANCE, EquipmentSlot.LEGS, new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
         }

@@ -59,7 +59,7 @@ public class Benign implements ArmorMaterial {
         return 0;
     }
 
-    public static class Pants extends ArmorItem {
+    public static class Pants extends ArmorItem implements Shorts {
         public Pants() {
             super(INSTANCE, EquipmentSlot.LEGS, new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
         }

@@ -26,6 +26,9 @@ public class ArmorNoneModel<T extends LatexEntity> extends LatexHumanoidArmorMod
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
+    @Override
+    public void prepareForShorts() {}
+
     public void setAllVisible(boolean b) {
         return;
     }
