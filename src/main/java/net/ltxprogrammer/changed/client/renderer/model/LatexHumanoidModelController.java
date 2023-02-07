@@ -364,6 +364,7 @@ public class LatexHumanoidModelController {
             if (!this.hasLegs) {
                 this.Abdomen.y = 12.2F + hipOffset;
                 this.Abdomen.z = 4.0F + forewardOffset;
+                this.LowerAbdomen.xRot = (float) Math.toRadians(75);
             }
         } else {
             this.Torso.xRot = 0.0F;
