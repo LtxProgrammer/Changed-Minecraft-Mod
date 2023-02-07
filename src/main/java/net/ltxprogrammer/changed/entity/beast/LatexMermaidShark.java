@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -23,5 +24,12 @@ public class LatexMermaidShark extends AbstractGenderedLatexShark {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
+    }
+
+    @Override
+    public boolean isVisuallySwimming() {
+        if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
+            return true;
+        return this.isEyeInFluid(FluidTags.WATER) || super.isVisuallySwimming();
     }
 }
