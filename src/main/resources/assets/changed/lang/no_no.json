@@ -12,7 +12,8 @@
   "ability.changed.access_chest": "Tilgang Kiste",
   "ability.changed.switch_hands": "Bytte Hender",
   "ability.changed.switch_gender": "Endre Kjønn",
-  "ability.changed.use_variant_ability": "Bruke Variant Evne",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnose",
+  "ability.changed.use_variant_ability.siren_sing": "Synge",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -44,6 +45,8 @@
   "item.changed.syringe": "Sprøyte",
   "item.changed.white_latex_goo": "Hvit lateks goo",
   "item.changed.white_latex_bucket": "Hvit lateksbøtte",
+
+  "item.changed.tsc_staff": "TSC stab",
 
   "item.changed.latex_dance_record": "Lateks dansemusikkplate",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
@@ -81,6 +84,7 @@
   "text.changed.syringe.no_owner": "Kan ikke få spillernavn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
+  "effect.changed.shock": "Støt",
 
   "block.changed.aerosol_latex": "Aerosol lateks",
   "block.changed.bedside_iv_rack": "IV stativ",
