@@ -21,7 +21,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         return ctor.apply(this, player, variant);
     }
 
-    public TranslatableComponent getDisplayName() {
+    public TranslatableComponent getDisplayName(Player player, LatexVariant<?> variant) {
         return new TranslatableComponent("ability." + getId().toString().replace(':', '.'));
     }
 

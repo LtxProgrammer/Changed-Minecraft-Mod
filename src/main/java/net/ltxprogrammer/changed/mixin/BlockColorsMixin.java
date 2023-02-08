@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin;
 
-import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -13,9 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 @Mixin(BlockColors.class)
 public abstract class BlockColorsMixin {

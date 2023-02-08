@@ -36,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.*;
 
 @Mixin(BlockBehaviour.class)
 public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Block> {

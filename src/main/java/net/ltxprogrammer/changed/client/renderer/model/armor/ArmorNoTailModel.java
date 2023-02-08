@@ -10,9 +10,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-import java.util.List;
-import java.util.Map;
-
 import static net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel.EMPTY_PART;
 
 public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {

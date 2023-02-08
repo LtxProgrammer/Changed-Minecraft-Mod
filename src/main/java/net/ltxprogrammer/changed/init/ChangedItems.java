@@ -38,6 +38,8 @@ public class ChangedItems {
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", AbstractLatexGoo::new);
     public static final RegistryObject<Item> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
+    public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
+
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);
     }
