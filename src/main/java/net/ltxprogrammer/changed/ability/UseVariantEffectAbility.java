@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -28,6 +29,13 @@ public class UseVariantEffectAbility extends SimpleAbility {
         super.tick(player, variant);
         if (variant.getLatexEntity() instanceof UniqueEffect uniqueEffect)
             uniqueEffect.effectTick(player.level, player);
+    }
+
+    @Override
+    public TranslatableComponent getDisplayName(Player player, LatexVariant<?> variant) {
+        if (variant.getLatexEntity() instanceof UniqueEffect uniqueEffect)
+            return new TranslatableComponent("ability." + getId().toString().replace(':', '.') + "." + uniqueEffect.getEffectName());
+        return super.getDisplayName(player, variant);
     }
 
     @Override

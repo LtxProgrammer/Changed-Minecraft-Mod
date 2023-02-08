@@ -12,7 +12,8 @@
   "ability.changed.access_chest": "Access Chest",
   "ability.changed.switch_hands": "Switch Hands",
   "ability.changed.switch_gender": "Switch Gender",
-  "ability.changed.use_variant_ability": "Use Variant Ability",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnosis",
+  "ability.changed.use_variant_ability.siren_sing": "Sing",
 
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
