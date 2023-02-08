@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.effect.Hypercoagulation;
+import net.ltxprogrammer.changed.effect.Shock;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ChangedEffects {
     private static final List<MobEffect> REGISTRY = new ArrayList<MobEffect>();
     public static final MobEffect HYPERCOAGULATION = register(new Hypercoagulation());
+    public static final MobEffect SHOCK = register(new Shock());
 
     private static MobEffect register(MobEffect effect) {
         REGISTRY.add(effect);

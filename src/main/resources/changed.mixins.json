@@ -42,7 +42,8 @@
     "RecipeButtonMixin",
     "SplashManagerMixin",
     "TextureAtlasMixin",
-    "TextureManagerMixin"
+    "TextureManagerMixin",
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
