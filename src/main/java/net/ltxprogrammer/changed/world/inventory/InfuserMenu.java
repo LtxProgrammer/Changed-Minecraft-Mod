@@ -5,8 +5,6 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
-import net.ltxprogrammer.changed.item.BloodSyringe;
-import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

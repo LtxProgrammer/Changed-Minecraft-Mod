@@ -6,7 +6,9 @@ import com.electronwill.nightconfig.toml.TomlParser;
 import com.electronwill.nightconfig.toml.TomlWriter;
 import net.minecraftforge.fml.ModLoadingContext;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class ChangedConfig {
     private final String file;
