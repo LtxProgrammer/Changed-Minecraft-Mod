@@ -97,7 +97,7 @@ public class AerosolLatexWolfModel extends LatexHumanoidModel<AerosolLatexWolf> 
                 .texOffs(9, 61).addBox(0.49F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(-3.05F, -34.25F, 0.0F, 0.0F, 0.0F, -0.2618F));
 
         PartDefinition LeftEar = Hair.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(11, 62).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(61, 25).addBox(-1.0F, -1.6F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(61, 25).addBox(-1.0F, -1.5F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
                 .texOffs(24, 56).addBox(-1.0F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(61, 13).addBox(-1.0F, -2.9F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(2.6F, -34.475F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
