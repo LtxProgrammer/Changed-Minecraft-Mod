@@ -127,7 +127,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
             model.rightArm.zRot = (-(float)Math.PI / 4.2F);
             model.leftArm.xRot = model.rightArm.xRot * 0.125F - 0.3F;
             model.leftArm.yRot = 0.0F;
-            model.leftArm.zRot = ((float)Math.PI / 2.5F);
+            model.leftArm.zRot = ((float)Math.PI / 4.5F);
             if (!(entity.attackTime <= 0.0F)) {
                 HumanoidArm arm = entity.getAttackArm();
                 ModelPart armModel = model.getArm(entity.getAttackArm());
