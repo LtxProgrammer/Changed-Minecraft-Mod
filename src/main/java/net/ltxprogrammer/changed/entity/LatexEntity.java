@@ -336,10 +336,10 @@ public abstract class LatexEntity extends Monster {
         return this.isCrouching() || this.isVisuallyCrawling();
     }
 
-    public int overrideVisuallySwimming = 0;
+    public boolean overrideVisuallySwimming = false;
     @Override
     public boolean isVisuallySwimming() {
-        if (overrideVisuallySwimming > 0)
+        if (overrideVisuallySwimming)
             return true;
         return super.isVisuallySwimming();
     }

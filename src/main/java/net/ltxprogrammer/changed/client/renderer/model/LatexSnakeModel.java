@@ -41,7 +41,8 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
         this.Tail = LowerAbdomen.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).noLegs(Abdomen, LowerAbdomen).tailJoints(List.of(Tail.getChild("Joint"), Tail.getChild("Joint"))).legLengthOffset(0.0F).build();
+        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of()))
+                .noLegs(Abdomen, LowerAbdomen).tailJoints(List.of(Tail.getChild("Joint"), Tail.getChild("Joint"))).legLengthOffset(0.0F).tailAidsInSwim().build();
     }
 
     public static LayerDefinition createBodyLayer() {
