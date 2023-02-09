@@ -43,7 +43,9 @@
     "SplashManagerMixin",
     "TextureAtlasMixin",
     "TextureManagerMixin",
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "HumanoidModelMixin",
+    "ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
