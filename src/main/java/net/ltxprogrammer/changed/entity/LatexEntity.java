@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.effect.particle.LatexDripParticle;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -282,7 +283,7 @@ public abstract class LatexEntity extends Monster {
                         double dh = level.random.nextDouble(dimensions.height);
                         double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
                         double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-                        ChangedParticles.LatexDripParticle.setNextColor(color);
+                        LatexDripParticle.setNextColor(color);
                         clientLevel.addParticle(ChangedParticles.DRIPPING_LATEX, xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
                     }
                 }

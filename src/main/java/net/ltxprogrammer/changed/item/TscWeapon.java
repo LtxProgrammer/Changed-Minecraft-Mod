@@ -2,9 +2,14 @@ package net.ltxprogrammer.changed.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,5 +39,13 @@ public abstract class TscWeapon extends Item implements Vanishable {
 
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
         return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
+    }
+
+    public void sweepWeapon(LivingEntity source) {
+        double d0 = (double)(-Mth.sin(source.getYRot() * ((float)Math.PI / 180F))) * 1.4;
+        double d1 = (double)Mth.cos(source.getYRot() * ((float)Math.PI / 180F)) * 1.4;
+        if (source.level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ChangedParticles.TSC_SWEEP_ATTACK, source.getX() + d0, source.getY(0.5D), source.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
+        }
     }
 }
