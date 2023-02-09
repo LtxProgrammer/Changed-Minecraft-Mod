@@ -62,7 +62,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
 
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity enemy, LivingEntity source) {
         sweepWeapon(source);
-        enemy.addEffect(new MobEffectInstance(ChangedEffects.SHOCK, 10, 0, false, false, true));
+        applyShock(enemy);
         itemStack.hurtAndBreak(1, source, (entity) -> {
             entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
