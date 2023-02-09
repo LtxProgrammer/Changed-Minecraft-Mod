@@ -4,6 +4,8 @@ import net.ltxprogrammer.changed.item.Syringe;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class Shock extends MobEffect {
@@ -23,7 +25,8 @@ public class Shock extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
-        // TODO lock entity controls
+    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        super.applyEffectTick(livingEntity, amplifier);
+        livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(0, 1, 0));
     }
 }
