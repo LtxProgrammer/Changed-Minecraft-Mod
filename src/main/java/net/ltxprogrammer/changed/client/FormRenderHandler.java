@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -122,7 +123,7 @@ public class FormRenderHandler {
                 renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
                 for (var layer : latexRenderer.layers)  {
                     if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
-                        renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), 15728640, 1F);
+                        renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), LightTexture.FULL_BRIGHT, 1F);
                     if (layer instanceof LatexGelLayer<?,?> gelLayer) {
                         LatexHumanoidModel entityModel = gelLayer.getModel();
                         var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;

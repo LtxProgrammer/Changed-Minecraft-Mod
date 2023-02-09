@@ -119,6 +119,16 @@
     ],
     "subtitle": "subtitles.changed.poison"
   },
+  "paralyze1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:paralyze1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.paralyze1"
+  },
   "save": {
     "category": "neutral",
     "sounds": [
