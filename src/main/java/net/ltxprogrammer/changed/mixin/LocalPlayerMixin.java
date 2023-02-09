@@ -88,4 +88,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         if (variant != null && variant.swimSpeed >= 2.0F && player.isUnderWater())
             player.setSprinting(true);
     }
+
+    @Inject(method = "isMovingSlowly", at = @At("HEAD"), cancellable = true)
+    public void isMovingSlowly(CallbackInfoReturnable<Boolean> ci) {
+        if (ProcessTransfur.isPlayerLatex(this)) {
+            var variant = ProcessTransfur.getPlayerLatexVariant(this);
+            if (variant.getLatexEntity() != null)
+                ci.setReturnValue(variant.getLatexEntity().isMovingSlowly());
+        }
+    }
 }

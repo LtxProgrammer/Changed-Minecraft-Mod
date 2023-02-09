@@ -331,4 +331,16 @@ public abstract class LatexEntity extends Monster {
             }
         }
     }
+
+    public boolean isMovingSlowly() {
+        return this.isCrouching() || this.isVisuallyCrawling();
+    }
+
+    public int overrideVisuallySwimming = 0;
+    @Override
+    public boolean isVisuallySwimming() {
+        if (overrideVisuallySwimming > 0)
+            return true;
+        return super.isVisuallySwimming();
+    }
 }

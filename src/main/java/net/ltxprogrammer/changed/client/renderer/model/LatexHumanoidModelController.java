@@ -2,12 +2,15 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.item.SpecializedAnimations;
+import net.ltxprogrammer.changed.item.SpecializedItemRendering;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
@@ -623,9 +626,45 @@ public class LatexHumanoidModelController {
         return p_102857_.swingingArm == InteractionHand.MAIN_HAND ? humanoidarm : humanoidarm.getOpposite();
     }
 
-    protected void setupAttackAnimation(LatexEntity p_102858_, float p_102859_) {
+    protected SpecializedAnimations.AnimationHandler.EntityStateContext entityContextOf(LatexEntity entity, float partialTicks) {
+        LatexHumanoidModelController tmp = this;
+        return new SpecializedAnimations.AnimationHandler.EntityStateContext(entity, entityModel.attackTime, partialTicks) {
+            LatexHumanoidModelController controller = tmp;
+
+            @Override
+            public HumanoidArm getAttackArm() {
+                return controller.getAttackArm(entity);
+            }
+        };
+    }
+
+    protected SpecializedAnimations.AnimationHandler.UpperModelContext upperModelContext() {
+        LatexHumanoidModelController tmp = this;
+        return new SpecializedAnimations.AnimationHandler.UpperModelContext(this.LeftArm, this.RightArm, this.Torso, this.Head) {
+            LatexHumanoidModelController controller = tmp;
+
+            @Override
+            public ModelPart getArm(HumanoidArm humanoidArm) {
+                return controller.getArm(humanoidArm, false);
+            }
+        };
+    }
+
+    protected void setupAttackAnimation(LatexEntity entity, float partialTicks) {
+        var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
+        if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null) {
+                handler.setupAttackAnimation(mainHandItem,
+                        entityContextOf(entity, partialTicks), upperModelContext());
+                if (this.hasLegs2)
+                    this.Torso.yRot = 0.0F;
+                return;
+            }
+        }
+
         if (!(entityModel.attackTime <= 0.0F)) {
-            HumanoidArm humanoidarm = this.getAttackArm(p_102858_);
+            HumanoidArm humanoidarm = this.getAttackArm(entity);
             ModelPart modelpart = this.getArm(humanoidarm, false);
             float f = entityModel.attackTime;
             if (!this.hasLegs2)
