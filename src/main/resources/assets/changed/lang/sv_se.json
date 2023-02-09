@@ -12,7 +12,8 @@
   "ability.changed.access_chest": "Tillgång kista",
   "ability.changed.switch_hands": "Byta händer",
   "ability.changed.switch_gender": "Byta kön",
-  "ability.changed.use_variant_ability": "Använda variantförmåga",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnos",
+  "ability.changed.use_variant_ability.siren_sing": "Sjunga",
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
@@ -44,6 +45,8 @@
   "item.changed.syringe": "Spruta",
   "item.changed.white_latex_goo": "Vit latex goo",
   "item.changed.white_latex_bucket": "Vit latexhink",
+
+  "item.changed.tsc_staff": "TSC stav",
 
   "item.changed.latex_dance_record": "Latex dansmusikskiva",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
@@ -81,6 +84,7 @@
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
+  "effect.changed.shock": "Chock",
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
