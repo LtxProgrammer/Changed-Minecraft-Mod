@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,16 +36,20 @@ public abstract class TscWeapon extends Item implements Vanishable {
         return !player.isCreative();
     }
 
+    public int attackStun() { return 0; }
     public abstract double attackDamage();
     public abstract double attackSpeed();
+    public double attackRange() {
+        return 1.0;
+    }
 
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
         return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 
     public void sweepWeapon(LivingEntity source) {
-        double d0 = (double)(-Mth.sin(source.getYRot() * ((float)Math.PI / 180F))) * 1.4;
-        double d1 = (double)Mth.cos(source.getYRot() * ((float)Math.PI / 180F)) * 1.4;
+        double d0 = (double)(-Mth.sin(source.getYRot() * ((float)Math.PI / 180F))) * attackRange();
+        double d1 = (double)Mth.cos(source.getYRot() * ((float)Math.PI / 180F)) * attackRange();
         if (source.level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ChangedParticles.TSC_SWEEP_ATTACK, source.getX() + d0, source.getY(0.5D), source.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
         }
@@ -54,6 +57,6 @@ public abstract class TscWeapon extends Item implements Vanishable {
 
     public void applyShock(LivingEntity enemy) {
         ChangedSounds.broadcastSound(enemy, ChangedSounds.PARALYZE1, 1, 1);
-        enemy.addEffect(new MobEffectInstance(ChangedEffects.SHOCK, 10, 0, false, false, true));
+        enemy.addEffect(new MobEffectInstance(ChangedEffects.SHOCK, attackStun(), 0, false, false, true));
     }
 }
