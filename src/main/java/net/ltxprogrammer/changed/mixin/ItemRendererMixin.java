@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.item.SpecializedItemRendering;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -11,9 +10,10 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.model.ItemLayerModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,9 +55,11 @@ public abstract class ItemRendererMixin implements ResourceManagerReloadListener
         model = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(pose, model, type, leftHand);
         pose.translate(-0.5D, -0.5D, -0.5D);
 
-        RenderType renderType = ItemBlockRenderTypes.getRenderType(itemStack, true);
-        self.renderModelLists(model, itemStack, LightTexture.FULL_BRIGHT, packedOverlay, pose,
-                ItemRenderer.getFoilBufferDirect(buffers, renderType, true, itemStack.hasFoil()));
+        RenderType renderType = ItemLayerModel.getLayerRenderType(true);
+        ForgeHooksClient.setRenderType(renderType); // needed for compatibility with MultiLayerModels
+        VertexConsumer vertexBuilder = ItemRenderer.getFoilBufferDirect(buffers, renderType, true, itemStack.hasFoil());
+        self.renderModelLists(model, itemStack, LightTexture.FULL_BRIGHT, packedOverlay, pose, vertexBuilder);
+        ForgeHooksClient.setRenderType(null);
 
         pose.popPose();
     }
