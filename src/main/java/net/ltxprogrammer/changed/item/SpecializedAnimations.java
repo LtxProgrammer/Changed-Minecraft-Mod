@@ -73,32 +73,34 @@ public interface SpecializedAnimations {
             this.item = item;
         }
 
+        public final void setupBasicBodyTwitch(EntityStateContext entity, UpperModelContext model) {
+            model.body.yRot = Mth.sin(Mth.sqrt(entity.attackTime) * ((float)Math.PI * 2F)) * 0.2F;
+            if (entity.getAttackArm() == HumanoidArm.LEFT) {
+                model.body.yRot *= -1.0F;
+            }
+
+            model.rightArm.z = Mth.sin(model.body.yRot) * 5.0F;
+            model.rightArm.x = -Mth.cos(model.body.yRot) * 5.0F;
+            model.leftArm.z = -Mth.sin(model.body.yRot) * 5.0F;
+            model.leftArm.x = Mth.cos(model.body.yRot) * 5.0F;
+            model.rightArm.yRot += model.body.yRot;
+            model.leftArm.yRot += model.body.yRot;
+            model.leftArm.xRot += model.body.yRot;
+        }
+
         public void setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
             if (!(entity.attackTime <= 0.0F)) {
-                HumanoidArm humanoidarm = entity.getAttackArm();
-                ModelPart modelpart = model.getArm(humanoidarm);
-                float f = entity.attackTime;
-                model.body.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
-                if (humanoidarm == HumanoidArm.LEFT) {
-                    model.body.yRot *= -1.0F;
-                }
-
-                model.rightArm.z = Mth.sin(model.body.yRot) * 5.0F;
-                model.rightArm.x = -Mth.cos(model.body.yRot) * 5.0F;
-                model.leftArm.z = -Mth.sin(model.body.yRot) * 5.0F;
-                model.leftArm.x = Mth.cos(model.body.yRot) * 5.0F;
-                model.rightArm.yRot += model.body.yRot;
-                model.leftArm.yRot += model.body.yRot;
-                model.leftArm.xRot += model.body.yRot;
-                f = 1.0F - entity.attackTime;
+                ModelPart modelPart = model.getArm(entity.getAttackArm());
+                setupBasicBodyTwitch(entity, model);
+                float f = 1.0F - entity.attackTime;
                 f *= f;
                 f *= f;
                 f = 1.0F - f;
                 float f1 = Mth.sin(f * (float)Math.PI);
                 float f2 = Mth.sin(entity.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
-                modelpart.xRot -= f1 * 1.2F + f2;
-                modelpart.yRot += model.body.yRot * 2.0F;
-                modelpart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
+                modelPart.xRot -= f1 * 1.2F + f2;
+                modelPart.yRot += model.body.yRot * 2.0F;
+                modelPart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
             }
         }
 

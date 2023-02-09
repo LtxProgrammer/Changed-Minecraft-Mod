@@ -124,27 +124,14 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
 
             model.rightArm.xRot = model.rightArm.xRot * 0.125F - 1.0F;
             model.rightArm.yRot = ((float)Math.PI / 18F);
-            model.rightArm.zRot = (-(float)Math.PI / 4.2F);
+            model.rightArm.zRot = (-(float)Math.PI / 4.3F);
             model.leftArm.xRot = model.rightArm.xRot * 0.125F - 0.3F;
             model.leftArm.yRot = 0.0F;
             model.leftArm.zRot = ((float)Math.PI / 4.5F);
             if (!(entity.attackTime <= 0.0F)) {
-                HumanoidArm arm = entity.getAttackArm();
                 ModelPart armModel = model.getArm(entity.getAttackArm());
-                float f = entity.attackTime;
-                model.body.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
-                if (arm == HumanoidArm.LEFT) {
-                    model.body.yRot *= -1.0F;
-                }
-
-                model.rightArm.z = Mth.sin(model.body.yRot) * 5.0F;
-                model.rightArm.x = -Mth.cos(model.body.yRot) * 5.0F;
-                model.leftArm.z = -Mth.sin(model.body.yRot) * 5.0F;
-                model.leftArm.x = Mth.cos(model.body.yRot) * 5.0F;
-                model.rightArm.yRot += model.body.yRot;
-                model.leftArm.yRot += model.body.yRot;
-                model.leftArm.xRot += model.body.yRot;
-                f = 1.0F - entity.attackTime;
+                setupBasicBodyTwitch(entity, model);
+                float f = 1.0F - entity.attackTime;
                 f *= f;
                 f *= f;
                 f = 1.0F - f;
