@@ -39,6 +39,7 @@ public class ChangedItems {
     public static final RegistryObject<Item> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
     public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
+    public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);
