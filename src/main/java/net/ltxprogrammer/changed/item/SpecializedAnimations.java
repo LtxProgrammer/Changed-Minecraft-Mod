@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.minecraft.client.model.AnimationUtils;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.Mth;
@@ -15,9 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface SpecializedAnimations {
-    // Will only be called on Render Thread
     static final Map<Item, AnimationHandler> ANIMATION_CACHE = new HashMap<>();
 
+    // Will only be called on Render Thread
     @Nullable
     AnimationHandler getAnimationHandler();
 
@@ -67,41 +70,64 @@ public interface SpecializedAnimations {
             }
 
             public abstract ModelPart getArm(HumanoidArm humanoidArm);
+            public ModelPart getMainArm(EntityStateContext entity) {
+                return getArm(entity.livingEntity.getMainArm());
+            }
+
+            public ModelPart getOffhandArm(EntityStateContext entity) {
+                return getArm(entity.livingEntity.getMainArm().getOpposite());
+            }
+
+            public final void setupBasicBodyTwitch(EntityStateContext entity) {
+                body.yRot = Mth.sin(Mth.sqrt(entity.attackTime) * ((float)Math.PI * 2F)) * 0.2F;
+                if (entity.getAttackArm() == HumanoidArm.LEFT) {
+                    body.yRot *= -1.0F;
+                }
+
+                rightArm.z = Mth.sin(body.yRot) * 5.0F;
+                rightArm.x = -Mth.cos(body.yRot) * 5.0F;
+                leftArm.z = -Mth.sin(body.yRot) * 5.0F;
+                leftArm.x = Mth.cos(body.yRot) * 5.0F;
+                rightArm.yRot += body.yRot;
+                leftArm.yRot += body.yRot;
+                leftArm.xRot += body.yRot;
+            }
         }
 
         public AnimationHandler(Item item) {
             this.item = item;
         }
 
-        public final void setupBasicBodyTwitch(EntityStateContext entity, UpperModelContext model) {
-            model.body.yRot = Mth.sin(Mth.sqrt(entity.attackTime) * ((float)Math.PI * 2F)) * 0.2F;
-            if (entity.getAttackArm() == HumanoidArm.LEFT) {
-                model.body.yRot *= -1.0F;
-            }
+        public void setupIdleAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {}
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {}
 
-            model.rightArm.z = Mth.sin(model.body.yRot) * 5.0F;
-            model.rightArm.x = -Mth.cos(model.body.yRot) * 5.0F;
-            model.leftArm.z = -Mth.sin(model.body.yRot) * 5.0F;
-            model.leftArm.x = Mth.cos(model.body.yRot) * 5.0F;
-            model.rightArm.yRot += model.body.yRot;
-            model.leftArm.yRot += model.body.yRot;
-            model.leftArm.xRot += model.body.yRot;
+        public void setupSwingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+            ModelPart modelPart = model.getArm(entity.getAttackArm());
+            model.setupBasicBodyTwitch(entity);
+            float f = 1.0F - entity.attackTime;
+            f *= f;
+            f *= f;
+            f = 1.0F - f;
+            float f1 = Mth.sin(f * (float)Math.PI);
+            float f2 = Mth.sin(entity.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
+            modelPart.xRot -= f1 * 1.2F + f2;
+            modelPart.yRot += model.body.yRot * 2.0F;
+            modelPart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
         }
 
-        public void setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+        public final boolean setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+            if (wantBothHands(itemStack) && !entity.fullEquippedItem(item))
+                return false;
+
             if (!(entity.attackTime <= 0.0F)) {
-                ModelPart modelPart = model.getArm(entity.getAttackArm());
-                setupBasicBodyTwitch(entity, model);
-                float f = 1.0F - entity.attackTime;
-                f *= f;
-                f *= f;
-                f = 1.0F - f;
-                float f1 = Mth.sin(f * (float)Math.PI);
-                float f2 = Mth.sin(entity.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
-                modelPart.xRot -= f1 * 1.2F + f2;
-                modelPart.yRot += model.body.yRot * 2.0F;
-                modelPart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
+                setupSwingAnimation(itemStack, entity, model);
+            } else if (entity.livingEntity.isUsingItem()) {
+                setupUsingAnimation(itemStack, entity, model);
+            } else {
+                setupIdleAnimation(itemStack, entity, model);
             }
+
+            return true;
         }
 
         public final void adjustGrip(LivingEntity entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {
@@ -109,5 +135,7 @@ public interface SpecializedAnimations {
         }
 
         public void adjustGrip(EntityStateContext entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {}
+
+        public boolean wantBothHands(ItemStack item) { return false; }
     }
 }

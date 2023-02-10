@@ -51,9 +51,8 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null) {
-                handler.setupAttackAnimation(mainHandItem,
-                        entityContextOf(entity, partialTicks), upperModelContext());
+            if (handler != null && handler.setupAttackAnimation(mainHandItem,
+                    entityContextOf(entity, partialTicks), upperModelContext())) {
                 callback.cancel();
             }
         }
