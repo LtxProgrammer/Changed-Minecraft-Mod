@@ -99,7 +99,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
 
     @Override
     public double attackDamage() {
-        return 3 + Tiers.IRON.getAttackDamageBonus();
+        return 3 + Tiers.DIAMOND.getAttackDamageBonus();
     }
 
     @Override

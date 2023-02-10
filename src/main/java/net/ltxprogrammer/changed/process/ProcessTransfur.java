@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -334,9 +335,18 @@ public class ProcessTransfur {
 
     @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
-        if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            if (isOrganicLatex(event.getEntityLiving()))
-                return;
+        if (LatexVariant.getEntityVariant(event.getEntityLiving()) == null)
+            return;
+        if (isOrganicLatex(event.getEntityLiving()))
+            return;
+
+        if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
+            if (livingEntity.getItemInHand(livingEntity.swingingArm).is(ChangedTags.Items.TSC_WEAPON)) {
+                event.setAmount(event.getAmount() * 1.5F);
+            }
+        }
+
+        if (event.getSource().isFire()) {
             event.setAmount(event.getAmount() * 2.0F);
         }
     }
@@ -527,7 +537,7 @@ public class ProcessTransfur {
             return;
         }
 
-        if (!sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR))
+        if (!sourceEntity.getItemInHand(sourceEntity.swingingArm).is(Items.AIR))
             return;
 
         onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));

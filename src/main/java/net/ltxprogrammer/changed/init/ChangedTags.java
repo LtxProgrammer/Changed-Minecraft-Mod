@@ -5,6 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class ChangedTags {
@@ -26,6 +27,14 @@ public class ChangedTags {
 
         private static TagKey<Block> create(String p_203849_) {
             return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(p_203849_));
+        }
+    }
+
+    public static class Items {
+        public static final TagKey<Item> TSC_WEAPON = create(Changed.modResourceStr("tsc_weapon"));
+
+        private static TagKey<Item> create(String p_203849_) {
+            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(p_203849_));
         }
     }
 }

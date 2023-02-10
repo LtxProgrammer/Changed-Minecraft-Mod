@@ -22,11 +22,16 @@
 		"thirdperson_righthand": {
 			"translation": [0, 3, 0]
 		},
+		"thirdperson_lefthand": {
+			"translation": [0, 3, 0]
+		},
 		"firstperson_righthand": {
-			"rotation": [0, 0, -15]
+			"translation": [0, 2, 0],
+			"rotation": [0, 0, -10]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, 0, -15]
+			"translation": [0, 2, 0],
+			"rotation": [0, 0, -10]
 		}
 	}
 }
