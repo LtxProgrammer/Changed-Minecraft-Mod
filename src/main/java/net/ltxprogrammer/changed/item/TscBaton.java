@@ -89,7 +89,7 @@ public class TscBaton extends TscWeapon implements SpecializedItemRendering {
 
     @Override
     public double attackDamage() {
-        return 1 + Tiers.DIAMOND.getAttackDamageBonus();
+        return 1 + Tiers.IRON.getAttackDamageBonus();
     }
 
     @Override
