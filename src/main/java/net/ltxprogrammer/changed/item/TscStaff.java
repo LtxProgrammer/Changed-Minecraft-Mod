@@ -124,33 +124,40 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
         }
 
         @Override
-        public void setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
-            if (entity.livingEntity.isVisuallySwimming())
-                return;
-            else if (!entity.fullEquippedItem(item)) {
-                super.setupAttackAnimation(itemStack, entity, model);
+        public void setupIdleAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+            if (entity.livingEntity.isVisuallySwimming()) {
+                super.setupIdleAnimation(itemStack, entity, model);
                 return;
             }
 
-            model.rightArm.xRot = model.rightArm.xRot * 0.125F - 1.0F;
-            model.rightArm.yRot = ((float)Math.PI / 18F);
-            model.rightArm.zRot = (-(float)Math.PI / 4.3F);
-            model.leftArm.xRot = model.rightArm.xRot * 0.125F - 0.3F;
-            model.leftArm.yRot = 0.0F;
-            model.leftArm.zRot = ((float)Math.PI / 4.5F);
-            if (!(entity.attackTime <= 0.0F)) {
-                ModelPart armModel = model.getArm(entity.getAttackArm());
-                setupBasicBodyTwitch(entity, model);
-                float f = 1.0F - entity.attackTime;
-                f *= f;
-                f *= f;
-                f = 1.0F - f;
-                float f1 = Mth.sin(f * (float)Math.PI);
-                float f2 = Mth.sin(entity.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
-                armModel.xRot -= f1 * 1.8F + f2;
-                armModel.yRot += model.body.yRot * 3.0F;
-                armModel.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.8F;
+            ModelPart mainArm = model.getMainArm(entity);
+            ModelPart offArm = model.getOffhandArm(entity);
+            mainArm.xRot = mainArm.xRot * 0.125F - 1.0F;
+            mainArm.yRot = ((float)Math.PI / 18F);
+            mainArm.zRot = (-(float)Math.PI / 4.3F);
+            offArm.xRot = model.rightArm.xRot * 0.125F - 0.3F;
+            offArm.yRot = 0.0F;
+            offArm.zRot = ((float)Math.PI / 4.5F);
+        }
+
+        public void setupSwingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+            setupIdleAnimation(itemStack, entity, model);
+            if (entity.livingEntity.isVisuallySwimming()) {
+                super.setupSwingAnimation(itemStack, entity, model);
+                return;
             }
+
+            ModelPart armModel = model.getArm(entity.getAttackArm());
+            model.setupBasicBodyTwitch(entity);
+            float f = 1.0F - entity.attackTime;
+            f *= f;
+            f *= f;
+            f = 1.0F - f;
+            float f1 = Mth.sin(f * (float)Math.PI);
+            float f2 = Mth.sin(entity.attackTime * (float)Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
+            armModel.xRot -= f1 * 1.8F + f2;
+            armModel.yRot += model.body.yRot * 3.0F;
+            armModel.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.8F;
         }
 
         @Override
@@ -162,6 +169,11 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
                 return;
 
             pose.translate(0, -0.4, 0);
+        }
+
+        @Override
+        public boolean wantBothHands(ItemStack item) {
+            return true;
         }
     }
 }

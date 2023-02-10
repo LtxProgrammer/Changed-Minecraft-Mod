@@ -654,9 +654,8 @@ public class LatexHumanoidModelController {
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null) {
-                handler.setupAttackAnimation(mainHandItem,
-                        entityContextOf(entity, partialTicks), upperModelContext());
+            if (handler != null && handler.setupAttackAnimation(mainHandItem,
+                        entityContextOf(entity, partialTicks), upperModelContext())) {
                 if (this.hasLegs2)
                     this.Torso.yRot = 0.0F;
                 return;
