@@ -22,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -333,6 +334,10 @@ public class ProcessTransfur {
         return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX));
     }
 
+    public static ItemStack getEntityAttackItem(LivingEntity entity) {
+        return entity.swingingArm != null ? entity.getItemInHand(entity.swingingArm) : ItemStack.EMPTY;
+    }
+
     @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
         if (LatexVariant.getEntityVariant(event.getEntityLiving()) == null)
@@ -341,7 +346,7 @@ public class ProcessTransfur {
             return;
 
         if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
-            if (livingEntity.getItemInHand(livingEntity.swingingArm).is(ChangedTags.Items.TSC_WEAPON)) {
+            if (getEntityAttackItem(livingEntity).is(ChangedTags.Items.TSC_WEAPON)) {
                 event.setAmount(event.getAmount() * 1.5F);
             }
         }
@@ -537,7 +542,7 @@ public class ProcessTransfur {
             return;
         }
 
-        if (!sourceEntity.getItemInHand(sourceEntity.swingingArm).is(Items.AIR))
+        if (!getEntityAttackItem(sourceEntity).isEmpty())
             return;
 
         onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));
