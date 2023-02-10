@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class TscBaton extends TscWeapon implements SpecializedItemRendering, SpecializedAnimations {
+public class TscBaton extends TscWeapon implements SpecializedItemRendering {
     public TscBaton() {
         super(new Properties().durability(500));
     }
@@ -48,11 +48,6 @@ public class TscBaton extends TscWeapon implements SpecializedItemRendering, Spe
     public void loadSpecialModels(Consumer<ResourceLocation> loader) {
         loader.accept(BATON_IN_HAND);
         loader.accept(BATON_IN_HAND_EMISSIVE);
-    }
-
-    @Override
-    public AnimationHandler getAnimationHandler() {
-        return null;
     }
 
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity enemy, LivingEntity source) {
