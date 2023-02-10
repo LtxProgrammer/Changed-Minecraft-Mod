@@ -23,7 +23,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -44,6 +43,9 @@ import org.slf4j.Logger;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 
@@ -289,6 +291,30 @@ public class ProcessTransfur {
 
     public static boolean isPlayerLatex(Player player) {
         return getPlayerLatexVariant(player) != null;
+    }
+
+    public static <R> R ifPlayerLatex(Player player, Function<LatexVariant<?>, R> isLatex, Supplier<R> notLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        return variant != null ? isLatex.apply(variant) : notLatex.get();
+    }
+
+    public static <R> R ifPlayerLatex(Player player, Function<LatexVariant<?>, R> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        return variant != null ? isLatex.apply(variant) : null;
+    }
+
+    public static void ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex, Runnable notLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(variant);
+        else
+            notLatex.run();
+    }
+
+    public static void ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(variant);
     }
 
     // Checks if player is either not latex or is organic latex
