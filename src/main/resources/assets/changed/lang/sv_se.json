@@ -14,6 +14,7 @@
   "ability.changed.switch_gender": "Byta kön",
   "ability.changed.use_variant_ability.hypnosis": "Hypnos",
   "ability.changed.use_variant_ability.siren_sing": "Sjunga",
+  "ability.changed.slither": "Glida",
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
@@ -24,6 +25,7 @@
   "subtitles.changed.shot1": "Laser aktiveras",
   "subtitles.changed.siren": "Siren sjunger",
   "subtitles.changed.save": "Näthinnanskanner piper",
+  "subtitles.changed.paralyze1": "Stav stötar",
 
   "item.changed.aerosol_latex_bucket": "Aerosol latexhink",
   "item.changed.benign_pants": "Latex byxor",
@@ -84,7 +86,7 @@
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
-  "effect.changed.shock": "Chock",
+  "effect.changed.shock": "Stöt",
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",

@@ -14,6 +14,7 @@
   "ability.changed.switch_gender": "Endre Kjønn",
   "ability.changed.use_variant_ability.hypnosis": "Hypnose",
   "ability.changed.use_variant_ability.siren_sing": "Synge",
+  "ability.changed.slither": "Glir",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -24,6 +25,7 @@
   "subtitles.changed.shot1": "Laser aktiveres",
   "subtitles.changed.siren": "Sirene synger",
   "subtitles.changed.save": "Netthinneskanner piper",
+  "subtitles.changed.paralyze1": "Stab sjokk",
 
   "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
   "item.changed.benign_pants": "Lateks bukser",

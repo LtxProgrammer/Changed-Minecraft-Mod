@@ -232,7 +232,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = register("latex_siren", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexSiren::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexSnake>> LATEX_SNAKE = register("latex_snake", 0xFFFFFF, 0x8E8E8E,
+    public static final RegistryObject<EntityType<LatexSnake>> LATEX_SNAKE = register("latex_snake", 0xFFFFFF, 0x7E7E7E,
             EntityType.Builder.of(LatexSnake::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::desertSpawning);
     public static final RegistryObject<EntityType<LatexMimicPlant>> LATEX_MIMIC_PLANT = register("latex_mimic_plant", 0x446d5d, 0x729c6a,
