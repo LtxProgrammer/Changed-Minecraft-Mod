@@ -14,7 +14,7 @@ public class SlitherAbility extends SimpleAbility {
 
     @Override
     public boolean canUse(Player player, LatexVariant<?> variant) {
-        return variant.getLatexEntity().overrideVisuallySwimming <= 0;
+        return true;
     }
 
     @Override
@@ -25,26 +25,26 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void startUsing(Player player, LatexVariant<?> variant) {
         super.startUsing(player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming++;
+        variant.getLatexEntity().overrideVisuallySwimming = true;
         setDirty(player, variant);
     }
 
     @Override
     public void stopUsing(Player player, LatexVariant<?> variant) {
         super.stopUsing(player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming--;
+        variant.getLatexEntity().overrideVisuallySwimming = false;
         setDirty(player, variant);
     }
 
     @Override
     public void saveData(CompoundTag tag, Player player, LatexVariant<?> variant) {
         super.saveData(tag, player, variant);
-        tag.putInt("overrideSwimming", variant.getLatexEntity().overrideVisuallySwimming);
+        tag.putBoolean("overrideSwimming", variant.getLatexEntity().overrideVisuallySwimming);
     }
 
     @Override
     public void readData(CompoundTag tag, Player player, LatexVariant<?> variant) {
         super.readData(tag, player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming = tag.getInt("overrideSwimming");
+        variant.getLatexEntity().overrideVisuallySwimming = tag.getBoolean("overrideSwimming");
     }
 }

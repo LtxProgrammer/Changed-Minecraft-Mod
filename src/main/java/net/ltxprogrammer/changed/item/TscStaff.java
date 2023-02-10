@@ -93,13 +93,23 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
     }
 
     @Override
+    public int attackStun() {
+        return 15;
+    }
+
+    @Override
     public double attackDamage() {
-        return Tiers.IRON.getAttackDamageBonus();
+        return 3 + Tiers.DIAMOND.getAttackDamageBonus();
     }
 
     @Override
     public double attackSpeed() {
-        return -2.6;
+        return -3.0;
+    }
+
+    @Override
+    public double attackRange() {
+        return 1.4;
     }
 
     @Override
