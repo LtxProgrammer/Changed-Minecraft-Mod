@@ -14,6 +14,7 @@
   "ability.changed.switch_gender": "Endre Kjønn",
   "ability.changed.use_variant_ability.hypnosis": "Hypnose",
   "ability.changed.use_variant_ability.siren_sing": "Synge",
+  "ability.changed.slither": "Glir",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -24,6 +25,7 @@
   "subtitles.changed.shot1": "Laser aktiveres",
   "subtitles.changed.siren": "Sirene synger",
   "subtitles.changed.save": "Netthinneskanner piper",
+  "subtitles.changed.paralyze1": "Våpensjokker",
 
   "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
   "item.changed.benign_pants": "Lateks bukser",
@@ -47,6 +49,7 @@
   "item.changed.white_latex_bucket": "Hvit lateksbøtte",
 
   "item.changed.tsc_staff": "TSC stab",
+  "item.changed.tsc_baton": "TSC taktpinne",
 
   "item.changed.latex_dance_record": "Lateks dansemusikkplate",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
@@ -214,6 +217,7 @@
   "entity.changed.light_latex_wolf_female": "Kvinnelig lyselateks ulv",
   "entity.changed.light_latex_wolf_male": "Mannlig lyselateks ulv",
   "entity.changed.light_latex_wolf_organic": "Organisk lyse ulv",
+  "entity.changed.shark": "Hai",
   "entity.changed.white_latex_wolf": "Hvit lateks ulv",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Fremkallingsegg for gass lateks ulv",
@@ -270,6 +274,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig lyselateks ulv",
   "item.changed.light_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig lyselateks ulv",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Fremkallingsegg for organisk lyse ulv",
+  "item.changed.shark_spawn_egg": "Fremkallingsegg for hai",
   "item.changed.white_latex_wolf_spawn_egg": "Fremkallingsegg for hvit lateks ulv",
 
   "changed.patreon.level0": "Discord Medlem",

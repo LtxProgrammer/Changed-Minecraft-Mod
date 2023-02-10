@@ -14,6 +14,7 @@
   "ability.changed.switch_gender": "Byta kön",
   "ability.changed.use_variant_ability.hypnosis": "Hypnos",
   "ability.changed.use_variant_ability.siren_sing": "Sjunga",
+  "ability.changed.slither": "Glida",
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
@@ -24,6 +25,7 @@
   "subtitles.changed.shot1": "Laser aktiveras",
   "subtitles.changed.siren": "Siren sjunger",
   "subtitles.changed.save": "Näthinnanskanner piper",
+  "subtitles.changed.paralyze1": "Vapenstötar",
 
   "item.changed.aerosol_latex_bucket": "Aerosol latexhink",
   "item.changed.benign_pants": "Latex byxor",
@@ -47,6 +49,7 @@
   "item.changed.white_latex_bucket": "Vit latexhink",
 
   "item.changed.tsc_staff": "TSC stav",
+  "item.changed.tsc_baton": "TSC taktpinne",
 
   "item.changed.latex_dance_record": "Latex dansmusikskiva",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
@@ -84,7 +87,7 @@
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
-  "effect.changed.shock": "Chock",
+  "effect.changed.shock": "Stöt",
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
@@ -214,6 +217,7 @@
   "entity.changed.light_latex_wolf_female": "Kvinnlig ljuslatexvarg",
   "entity.changed.light_latex_wolf_male": "Manlig ljuslatexvarg",
   "entity.changed.light_latex_wolf_organic": "Organisk ljusvarg",
+  "entity.changed.shark": "Haj",
   "entity.changed.white_latex_wolf": "Vit latexvarg",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Skapelseägg för gas latex varg",
@@ -270,6 +274,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Skapelseägg för kvinnlig ljuslatexvarg",
   "item.changed.light_latex_wolf_male_spawn_egg": "Skapelseägg för manlig ljuslatexvarg",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Skapelseägg för organisk ljusvarg",
+  "item.changed.shark_spawn_egg": "Skapelseägg för haj",
   "item.changed.white_latex_wolf_spawn_egg": "Skapelseägg för vit latexvarg",
 
   "changed.patreon.level0": "Discord Medlem",
