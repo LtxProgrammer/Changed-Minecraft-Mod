@@ -52,4 +52,5 @@ light_latex_knight_fusion :: modeled and textured by KoBOLTA
 light_latex_wolf_female :Ltx: retextured by Bijimio
 light_latex_wolf_male :Ltx: retextured by Bijimio
 light_latex_wolf_organic :: textured by Bijimio
+shark :Ltx: modeled and textured by Bijimio
 white_latex_wolf :Ltx: remodeled by Bijimio
