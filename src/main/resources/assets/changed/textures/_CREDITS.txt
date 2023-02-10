@@ -21,6 +21,7 @@ latex_medusa_cat :: modeled and textured by Bijimio
 latex_mermaid_shark :Ltx: retextured by Bijimio
 latex_mimic_plant :: modeled and textured by KoBOLTA
 latex_orca :Ltx: :: modeled and textured by LtxProgrammer
+latex_otter :: modeled and textured by Bijimio
 latex_pink_deer :: modeled and textured by N1CO785
 latex_pink_wyvern :: modeled and textured by Bijimio
 latex_pink_yuin_dragon :: modeled and textured by Bijimio

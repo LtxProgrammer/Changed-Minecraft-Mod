@@ -295,6 +295,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexOrca>> LATEX_ORCA = register("latex_orca", 0x393939, 0xFFFFFF,
             EntityType.Builder.of(LatexOrca::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
+    public static final RegistryObject<EntityType<LatexOtter>> LATEX_OTTER = register("latex_otter", 0x5D4743, 0xB6957C,
+            EntityType.Builder.of(LatexOtter::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::oceanSpawning);
     public static final RegistryObject<EntityType<LatexWatermelonCat>> LATEX_WATERMELON_CAT = register("latex_watermelon_cat", 0x545454, 0xC7FF5A,
             EntityType.Builder.of(LatexWatermelonCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleSpawning);
