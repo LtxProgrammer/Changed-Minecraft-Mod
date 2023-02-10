@@ -26,11 +26,11 @@
 			"translation": [0, 3, 0]
 		},
 		"firstperson_righthand": {
-			"translation": [0, 2, 0],
+			"translation": [0, 3, 0],
 			"rotation": [0, 0, -10]
 		},
 		"firstperson_lefthand": {
-			"translation": [0, 2, 0],
+			"translation": [0, 3, 0],
 			"rotation": [0, 0, -10]
 		}
 	}
