@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class LatexSyringe extends Item {
+public class LatexSyringe extends Item implements SpecializedAnimations {
     public LatexSyringe(Properties p_41383_) {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
@@ -91,10 +91,6 @@ public class LatexSyringe extends Item {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
-    }
-
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
@@ -145,6 +141,18 @@ public class LatexSyringe extends Item {
         if (stack.getTag() == null)
             return Rarity.COMMON;
         return stack.getTag().contains("safe") ? (stack.getTag().getBoolean("safe") ? Rarity.RARE : Rarity.UNCOMMON) : Rarity.UNCOMMON;
+    }
+
+    @Nullable
+    @Override
+    public SpecializedAnimations.AnimationHandler getAnimationHandler() {
+        return new Syringe.SyringeAnimation(this);
+    }
+
+    @Override
+    public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        entity.playSound(this.getDrinkingSound(), 0.5F, entity.level.random.nextFloat() * 0.1F + 0.9F);
+        return true;
     }
 
     // Cancel this event if your implementation consumes the action upon a block

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BloodSyringe extends Item {
+public class BloodSyringe extends Item implements SpecializedAnimations {
     public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
 
     public BloodSyringe(Properties p_41383_) {
@@ -45,10 +45,6 @@ public class BloodSyringe extends Item {
 
     public int getUseDuration(@NotNull ItemStack p_43001_) {
         return 16;
-    }
-
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
     }
 
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
@@ -83,6 +79,18 @@ public class BloodSyringe extends Item {
         if (stack.getTag() == null)
             return false;
         return stack.getTag().contains("owner");
+    }
+
+    @Nullable
+    @Override
+    public AnimationHandler getAnimationHandler() {
+        return new Syringe.SyringeAnimation(this);
+    }
+
+    @Override
+    public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        entity.playSound(this.getDrinkingSound(), 0.5F, entity.level.random.nextFloat() * 0.1F + 0.9F);
+        return true;
     }
 
     // Cancel this event if your implementation consumes the action upon a block
