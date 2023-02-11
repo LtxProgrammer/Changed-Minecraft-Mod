@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -16,10 +18,12 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -36,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class Syringe extends Item {
+public class Syringe extends Item implements SpecializedAnimations {
     public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
 
     public Syringe(Properties p_41383_) {
@@ -159,10 +163,6 @@ public class Syringe extends Item {
         return 16;
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
-    }
-
     // Cancel this event if your implementation consumes the action upon a block
     public static class UsedOnBlock extends Event {
         public final BlockPos blockPos;
@@ -243,5 +243,39 @@ public class Syringe extends Item {
                         itemStack)) ?
                 InteractionResult.sidedSuccess(player.level.isClientSide) :
                 super.interactLivingEntity(itemStack, player, livingEntity, hand);
+    }
+
+    @Nullable
+    @Override
+    public AnimationHandler getAnimationHandler() {
+        return new SyringeAnimation(this);
+    }
+
+    public static class SyringeAnimation extends AnimationHandler {
+        public SyringeAnimation(Item item) {
+            super(item);
+        }
+
+        @Override
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {
+            super.setupUsingAnimation(itemStack, entity, model, progress);
+        }
+
+        @Override
+        public void setupFirstPersonUseAnimation(ItemStack itemStack, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {
+            super.setupFirstPersonUseAnimation(itemStack, entity, arm, pose, progress);
+            float f3 = 1.0F - (float)Math.pow(1.0 - progress, 27.0D);
+            int i = arm == HumanoidArm.RIGHT ? 1 : -1;
+            pose.translate((double)(f3 * 0.6F * (float)i), (double)(f3 * -0.5F), (double)(f3 * 0.0F));
+            pose.mulPose(Vector3f.YP.rotationDegrees((float)i * f3 * 90.0F));
+            pose.mulPose(Vector3f.XP.rotationDegrees(f3 * 10.0F));
+            pose.mulPose(Vector3f.ZP.rotationDegrees((float)i * f3 * 30.0F));
+        }
+    }
+
+    @Override
+    public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        entity.playSound(this.getDrinkingSound(), 0.5F, entity.level.random.nextFloat() * 0.1F + 0.9F);
+        return true;
     }
 }
