@@ -24,15 +24,12 @@ public class ExtraJumpKeybind {
     public static void handler(ExtraJumpKeybind message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            if (sender == null)
-                return;
-            if (ProcessTransfur.isPlayerLatex(sender) && ProcessTransfur.getPlayerLatexVariant(sender).canDoubleJump()) {
-                if (ProcessTransfur.getPlayerLatexVariant(sender).getJumpCharges() > 0) {
-                    ProcessTransfur.getPlayerLatexVariant(sender).decJumpCharges();
-                    sender.jumpFromGround();
+            ProcessTransfur.ifPlayerLatex(context.getSender(), (player, variant) -> {
+                if (variant.getJumpCharges() > 0) {
+                    variant.decJumpCharges();
+                    player.jumpFromGround();
                 }
-            }
+            });
         });
         context.setPacketHandled(true);
     }

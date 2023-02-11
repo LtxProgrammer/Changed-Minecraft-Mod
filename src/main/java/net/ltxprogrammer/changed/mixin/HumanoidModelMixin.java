@@ -1,15 +1,11 @@
 package net.ltxprogrammer.changed.mixin;
 
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController;
-import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
-import net.ltxprogrammer.changed.item.SpecializedItemRendering;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -51,7 +47,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null && handler.setupAttackAnimation(mainHandItem,
+            if (handler != null && handler.setupAnimation(mainHandItem,
                     entityContextOf(entity, partialTicks), upperModelContext())) {
                 callback.cancel();
             }

@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -21,6 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,13 +37,13 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         super(baseClass);
     }
 
+    private @NotNull Entity asEntity() { return (Entity)(Object)this; }
+
     @Inject(method = "getTicksRequiredToFreeze", at = @At("HEAD"), cancellable = true)
-    public void getTicksRequiredToFreeze(CallbackInfoReturnable<Integer> ci) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-            ci.setReturnValue(variant.getTicksRequiredToFreeze(player.level));
-            ci.cancel();
-        }
+    public void getTicksRequiredToFreeze(CallbackInfoReturnable<Integer> callback) {
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getTicksRequiredToFreeze());
+        });
     }
 
     @Inject(method = "isSwimming", at = @At("HEAD"), cancellable = true)
@@ -66,52 +68,52 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
     @Inject(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F", at = @At("HEAD"), cancellable = true)
     protected void getEyeHeight(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> callback) {
-        if (((Entity)(Object)this) instanceof LatexEntity le) {
+        if ((asEntity()) instanceof LatexEntity le) {
             callback.setReturnValue(dimensions.height * le.getEyeHeightMul());
         }
 
-        else if (((Entity)(Object)this) instanceof Player le && ProcessTransfur.isPlayerLatex(le)) {
-            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(le).getLatexEntity().getEyeHeight(pose));
-        }
+        else ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getEyeHeight(pose));
+        });
     }
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-    public void interact(Player p_19978_, InteractionHand p_19979_, CallbackInfoReturnable<InteractionResult> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().interact(p_19978_, p_19979_));
-        }
+    public void interact(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().interact(player, hand));
+        });
     }
 
     @Inject(method = "getPassengersRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getPassengersRidingOffset(CallbackInfoReturnable<Double> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getPassengersRidingOffset());
-        }
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getPassengersRidingOffset());
+        });
     }
 
     @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            callback.setReturnValue(ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getMyRidingOffset());
-        }
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+        });
     }
 
     @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), (player, variant) -> {
+            float z = variant.cameraZOffset;
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
             if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
                 look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
             callback.setReturnValue(vec.add(look.x() * z, 0.0f, look.z() * z));
-        }
+        });
     }
 
     @Inject(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(float v, CallbackInfoReturnable<Vec3> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-            float z = ProcessTransfur.getPlayerLatexVariant(player).cameraZOffset;
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), (player, variant) -> {
+            float z = variant.cameraZOffset;
             if (Math.abs(z) < 0.0001f) return;
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
             if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
@@ -121,12 +123,12 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
             double d2 = Mth.lerp(v, player.zo + look.z() * z, player.getZ() + look.z() * z);
             callback.setReturnValue(new Vec3(d0, d1, d2));
-        }
+        });
     }
 
     @Inject(method = "isInWall", at = @At("HEAD"), cancellable = true)
     public void isInWall(CallbackInfoReturnable<Boolean> callback) {
-        if ((Entity)(Object)this instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+        if (asEntity() instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
             if (player.noPhysics) {
                 callback.setReturnValue(false);
             } else {
