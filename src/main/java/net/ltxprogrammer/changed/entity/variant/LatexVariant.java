@@ -155,7 +155,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f)
+    public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
     public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().cannotWalk()
             .build(Changed.modResource("form_latex_benign_wolf")));
