@@ -73,11 +73,11 @@ public class CommandTransfur {
     }
 
     private static int untransfurPlayer(CommandSourceStack source, ServerPlayer player) {
-        if (ProcessTransfur.isPlayerLatex(player)) {
-            ProcessTransfur.getPlayerLatexVariant(player).unhookAll(player);
+        ProcessTransfur.ifPlayerLatex(player, variant -> {
+            variant.unhookAll(player);
             ProcessTransfur.setPlayerLatexVariant(player, null);
             ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId()));
-        }
+        });
         return Command.SINGLE_SUCCESS;
     }
 }

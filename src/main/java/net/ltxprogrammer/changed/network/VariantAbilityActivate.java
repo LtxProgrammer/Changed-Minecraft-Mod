@@ -35,15 +35,13 @@ public class VariantAbilityActivate implements ChangedPacket {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ServerPlayer sender = context.getSender();
-            if (sender == null)
-                return;
-            if (ProcessTransfur.isPlayerLatex(sender)) {
+            ProcessTransfur.ifPlayerLatex(context.getSender(), ((player, variant) -> {
                 if (ability.equals(CONTROL_OPEN_RADIAL.ability))
-                    sender.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                            new AbilityRadialMenu(p_52229_, p_52230_, null), AbilityRadialMenu.CONTAINER_TITLE));
+                    player.openMenu(new SimpleMenuProvider((id, inventory, givenPlayer) ->
+                            new AbilityRadialMenu(id, inventory, null), AbilityRadialMenu.CONTAINER_TITLE));
                 else
-                    ProcessTransfur.getPlayerLatexVariant(sender).activateAbility(sender, ability);
-            }
+                    variant.activateAbility(player, ability);
+            }));
         });
         context.setPacketHandled(true);
     }

@@ -30,15 +30,14 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
-    private void updateFallFlying(CallbackInfo ci) {
+    private void updateFallFlying(CallbackInfo callback) {
         if (this.level.isClientSide) return;
-        if ((LivingEntity)(Object)this instanceof Player player) {
-            LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-            if (variant != null && variant.canGlide) {
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (player, variant) -> {
+            if (variant.canGlide) {
                 this.setSharedFlag(7, player.isFallFlying() && !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
-                ci.cancel();
+                callback.cancel();
             }
-        }
+        });
     }
 
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
@@ -98,6 +97,14 @@ public abstract class LivingEntityMixin extends Entity {
                 if (variant.getLatexEntity().isVisuallySwimming())
                     callback.setReturnValue(true);
             });
+        }
+    }
+
+    @Inject(method = "triggerItemUseEffects", at = @At("HEAD"), cancellable = true)
+    protected void triggerItemUseEffects(ItemStack itemStack, int particleCount, CallbackInfo callbackInfo) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof SpecializedAnimations specialized) {
+            if (specialized.triggerItemUseEffects((LivingEntity)(Entity)this, itemStack, particleCount))
+                callbackInfo.cancel();
         }
     }
 }

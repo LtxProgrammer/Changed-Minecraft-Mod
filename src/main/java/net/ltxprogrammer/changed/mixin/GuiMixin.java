@@ -24,18 +24,20 @@ public abstract class GuiMixin extends GuiComponent {
         if (type != Gui.HeartType.CONTAINER && type != Gui.HeartType.NORMAL)
             return;
 
-        if (Minecraft.getInstance().getCameraEntity() instanceof Player player &&
-                ProcessTransfur.isPlayerLatex(player) &&
-                !ProcessTransfur.isPlayerOrganic(player)) {
-            var colors = AbilityRadialScreen.getColors(ProcessTransfur.getPlayerLatexVariant(player));
-            var color = type == Gui.HeartType.NORMAL ? colors.getA() : colors.getB();
-            RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
-            RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1);
-            this.blit(pose, x, y, type.getX(half, blinking), texY, 9, 9);
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-            this.blit(pose, x, y, type.getX(half, blinking), texY + 9, 9, 9);
-            RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
-            callback.cancel();
+        if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
+            if (ProcessTransfur.isPlayerOrganic(player))
+                return;
+            ProcessTransfur.ifPlayerLatex(player, variant -> {
+                var colors = AbilityRadialScreen.getColors(variant);
+                var color = type == Gui.HeartType.NORMAL ? colors.getA() : colors.getB();
+                RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
+                RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1);
+                this.blit(pose, x, y, type.getX(half, blinking), texY, 9, 9);
+                RenderSystem.setShaderColor(1, 1, 1, 1);
+                this.blit(pose, x, y, type.getX(half, blinking), texY + 9, 9, 9);
+                RenderSystem.setShaderTexture(0, Gui.GUI_ICONS_LOCATION);
+                callback.cancel();
+            });
         }
     }
 }

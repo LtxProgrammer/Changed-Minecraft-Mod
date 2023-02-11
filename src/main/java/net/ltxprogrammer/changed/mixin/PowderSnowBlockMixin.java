@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.PowderSnowBlock;
@@ -16,9 +17,9 @@ public abstract class PowderSnowBlockMixin {
     private static void canEntityWalkOnPowderSnow(Entity p_154256_, CallbackInfoReturnable<Boolean> callback) {
         if (p_154256_ instanceof PowderSnowWalkable) {
             callback.setReturnValue(true);
-        } else if (p_154256_ instanceof Player player && ProcessTransfur.isPlayerLatex(player) &&
-                ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity() instanceof PowderSnowWalkable) {
-            callback.setReturnValue(true);
-        }
+        } else ProcessTransfur.ifPlayerLatex(Util.playerOrNull(p_154256_), variant -> {
+            if (variant.getLatexEntity() instanceof PowderSnowWalkable)
+                callback.setReturnValue(true);
+        });
     }
 }

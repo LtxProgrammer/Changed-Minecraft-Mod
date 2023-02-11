@@ -48,22 +48,21 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
         NetworkEvent.Context context = contextSupplier.get();
         if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
             ServerPlayer sender = context.getSender();
-            if (sender != null && ProcessTransfur.isPlayerLatex(sender)) {
+            ProcessTransfur.ifPlayerLatex(sender, variant -> {
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, sender.getUUID()));
-                LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(sender);
                 if (variant.abilityInstances.containsKey(id))
                     variant.abilityInstances.get(id).readData(data);
-            }
+            });
             context.setPacketHandled(true);
         }
 
         else {
             Player affectedPlayer = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
-            if (affectedPlayer != null && ProcessTransfur.isPlayerLatex(affectedPlayer)) {
-                LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(affectedPlayer);
+            ProcessTransfur.ifPlayerLatex(Minecraft.getInstance().level.getPlayerByUUID(playerUUID), variant -> {
                 if (variant.abilityInstances.containsKey(id))
                     variant.abilityInstances.get(id).readData(data);
-            }
+            });
+            context.setPacketHandled(true);
         }
     }
 }

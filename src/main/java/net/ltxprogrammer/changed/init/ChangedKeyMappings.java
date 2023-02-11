@@ -39,13 +39,16 @@ public class ChangedKeyMappings {
                 }
 
                 if (event.getKey() == options.keyJump.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
-                    if (!local.isOnGround() && ProcessTransfur.isPlayerLatex(local) && ProcessTransfur.getPlayerLatexVariant(local).canDoubleJump()) {
-                        if (ProcessTransfur.getPlayerLatexVariant(local).getJumpCharges() > 0) {
-                            ProcessTransfur.getPlayerLatexVariant(local).decJumpCharges();
-                            local.jumpFromGround();
-                            Changed.PACKET_HANDLER.sendToServer(new ExtraJumpKeybind());
-                        }
-                    }
+                    if (!local.isOnGround())
+                        ProcessTransfur.ifPlayerLatex(local, variant -> {
+                            if (!variant.canDoubleJump())
+                                return;
+                            if (variant.getJumpCharges() > 0) {
+                                variant.decJumpCharges();
+                                local.jumpFromGround();
+                                Changed.PACKET_HANDLER.sendToServer(new ExtraJumpKeybind());
+                            }
+                        });
                 }
             }
         }

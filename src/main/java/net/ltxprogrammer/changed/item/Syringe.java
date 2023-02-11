@@ -121,8 +121,9 @@ public class Syringe extends Item {
 
         CompoundTag tag = new CompoundTag();
         tag.putUUID("owner", player.getUUID());
-        if (ProcessTransfur.isPlayerLatex(player)) {
-            ResourceLocation form = ProcessTransfur.getPlayerLatexVariant(player).getFormId();
+
+        ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ResourceLocation form = variant.getFormId();
             if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
                 form = LatexVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
@@ -131,14 +132,12 @@ public class Syringe extends Item {
             nStack.setTag(tag);
 
             player.getInventory().add(nStack);
-        }
-
-        else {
+        }, () -> {
             ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
             nStack.setTag(tag);
 
             player.getInventory().add(nStack);
-        }
+        });
 
         return stack;
     }

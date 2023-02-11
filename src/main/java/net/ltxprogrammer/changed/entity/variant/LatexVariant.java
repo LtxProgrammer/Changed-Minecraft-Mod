@@ -16,6 +16,7 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -1091,19 +1092,21 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public static LatexVariant<?> getEntityTransfur(LivingEntity entity) {
-        if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
-            return ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getTransfurVariant();
-        else if (entity instanceof LatexEntity latexEntity)
-            return latexEntity.getTransfurVariant();
-        return null;
+        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+                variant -> variant.getLatexEntity().getTransfurVariant(), () -> {
+            if (entity instanceof LatexEntity latexEntity)
+                return latexEntity.getTransfurVariant();
+            return null;
+        });
     }
 
     public static LatexVariant<?> getEntityVariant(LivingEntity entity) {
-        if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
-            return ProcessTransfur.getPlayerLatexVariant(player);
-        else if (entity instanceof LatexEntity latexEntity)
-            return latexEntity.getSelfVariant();
-        return null;
+        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+                variant -> variant, () -> {
+                    if (entity instanceof LatexEntity latexEntity)
+                        return latexEntity.getSelfVariant();
+                    return null;
+                });
     }
 
     @SubscribeEvent
@@ -1117,11 +1120,13 @@ public class LatexVariant<T extends LatexEntity> {
     @SubscribeEvent
     public static void onSizeEvent(EntityEvent.Size event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.isAddedToWorld() && ProcessTransfur.isPlayerLatex(player)) {
-                LatexEntity latexEntity = ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity();
+            if (player.isAddedToWorld()) {
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    LatexEntity latexEntity = variant.getLatexEntity();
 
-                event.setNewSize(latexEntity.getDimensions(event.getPose()));
-                event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                    event.setNewSize(latexEntity.getDimensions(event.getPose()));
+                    event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                });
             }
         }
     }

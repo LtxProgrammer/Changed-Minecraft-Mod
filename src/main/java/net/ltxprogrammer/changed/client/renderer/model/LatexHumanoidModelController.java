@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
-import net.ltxprogrammer.changed.item.SpecializedItemRendering;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -654,7 +653,7 @@ public class LatexHumanoidModelController {
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null && handler.setupAttackAnimation(mainHandItem,
+            if (handler != null && handler.setupAnimation(mainHandItem,
                         entityContextOf(entity, partialTicks), upperModelContext())) {
                 if (this.hasLegs2)
                     this.Torso.yRot = 0.0F;
