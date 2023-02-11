@@ -1,0 +1,19 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:kelp"
+    },
+    {
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_latex_otter"
+}
