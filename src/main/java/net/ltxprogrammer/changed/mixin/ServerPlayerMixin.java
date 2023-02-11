@@ -37,12 +37,11 @@ public abstract class ServerPlayerMixin extends Player {
     @Inject(method = "restoreFrom", at = @At("HEAD"))
     public void restoreFrom(ServerPlayer player, boolean restore, CallbackInfo callbackInfo) {
         ServerPlayer self = (ServerPlayer)(Object)this;
-        if ((player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) && ProcessTransfur.isPlayerLatex(player)) {
-            LatexVariant<?> oldVariant = ProcessTransfur.getPlayerLatexVariant(player);
-            CompoundTag tag = oldVariant.saveAbilities();
-
-            ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone());
-            ProcessTransfur.getPlayerLatexVariant(player).loadAbilities(tag);
+        if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
+            ProcessTransfur.ifPlayerLatex(player, oldVariant -> {
+                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone())
+                        .loadAbilities(oldVariant.saveAbilities());
+            });
         }
     }
 
@@ -59,9 +58,10 @@ public abstract class ServerPlayerMixin extends Player {
             ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
         }
 
-        LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(this);
-        if (variant != null && tag.contains("LatexAbilities"))
-            variant.loadAbilities(tag.getCompound("LatexAbilities"));
+        ProcessTransfur.ifPlayerLatex(this, variant -> {
+            if (variant != null && tag.contains("LatexAbilities"))
+                variant.loadAbilities(tag.getCompound("LatexAbilities"));
+        });
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
@@ -69,11 +69,10 @@ public abstract class ServerPlayerMixin extends Player {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).ticks());
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
-        LatexVariant<?> latexVariant = ProcessTransfur.getPlayerLatexVariant(this);
-        if (latexVariant != null) {
-            TagUtil.putResourceLocation(tag, "LatexVariant", latexVariant.getFormId());
-            tag.put("LatexAbilities", latexVariant.saveAbilities());
-        }
+        ProcessTransfur.ifPlayerLatex(this, variant -> {
+            TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
+            tag.put("LatexAbilities", variant.saveAbilities());
+        });
     }
 
     @Inject(method = "stopRiding", at = @At("HEAD"))

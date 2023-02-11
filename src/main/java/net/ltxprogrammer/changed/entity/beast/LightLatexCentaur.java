@@ -57,15 +57,13 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
 
     @Override
     public boolean isSaddled() {
-        if (getUnderlyingPlayer() != null && ProcessTransfur.isPlayerLatex(getUnderlyingPlayer())) {
-            var variant = ProcessTransfur.getPlayerLatexVariant(getUnderlyingPlayer());
+        return ProcessTransfur.ifPlayerLatex(getUnderlyingPlayer(), variant -> {
             var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
             if (ability != null)
                 return ability.saddle != null && !ability.saddle.isEmpty();
             else
                 return false;
-        }
-        return getPersistentData().contains(SADDLE_LOCATION);
+        }, () -> getPersistentData().contains(SADDLE_LOCATION));
     }
 
     protected void doPlayerRide(Player player) {

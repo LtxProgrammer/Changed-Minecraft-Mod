@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.Mth;
@@ -20,9 +17,10 @@ import java.util.Map;
 public interface SpecializedAnimations {
     static final Map<Item, AnimationHandler> ANIMATION_CACHE = new HashMap<>();
 
-    // Will only be called on Render Thread
-    @Nullable
-    AnimationHandler getAnimationHandler();
+    /** Will only ever be called on Render Thread
+     * @return An AnimationHandler tailored for the item, or null for no special animation overrides
+     */
+    @Nullable AnimationHandler getAnimationHandler();
 
     abstract class AnimationHandler {
         public final Item item;
@@ -49,6 +47,10 @@ public interface SpecializedAnimations {
                     super(livingEntity, livingEntity.getAttackAnim(0.5f), 0.5f);
                 }
 
+                protected SimpleEntityState(LivingEntity livingEntity, float partialTicks) {
+                    super(livingEntity, livingEntity.getAttackAnim(partialTicks), partialTicks);
+                }
+
                 @Override
                 public HumanoidArm getAttackArm() {
                     return HumanoidArm.RIGHT;
@@ -57,6 +59,10 @@ public interface SpecializedAnimations {
 
             public static EntityStateContext simpleOf(LivingEntity livingEntity) {
                 return new SimpleEntityState(livingEntity);
+            }
+
+            public static EntityStateContext simpleOf(LivingEntity livingEntity, float partialTicks) {
+                return new SimpleEntityState(livingEntity, partialTicks);
             }
         }
         public abstract static class UpperModelContext {
@@ -99,9 +105,10 @@ public interface SpecializedAnimations {
         }
 
         public void setupIdleAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {}
-        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {}
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {}
+        public void setupFirstPersonUseAnimation(ItemStack item, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {}
 
-        public void setupSwingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+        public void setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
             ModelPart modelPart = model.getArm(entity.getAttackArm());
             model.setupBasicBodyTwitch(entity);
             float f = 1.0F - entity.attackTime;
@@ -115,14 +122,14 @@ public interface SpecializedAnimations {
             modelPart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
         }
 
-        public final boolean setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+        public final boolean setupAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
             if (wantBothHands(itemStack) && !entity.fullEquippedItem(item))
                 return false;
 
             if (!(entity.attackTime <= 0.0F)) {
-                setupSwingAnimation(itemStack, entity, model);
-            } else if (entity.livingEntity.isUsingItem()) {
-                setupUsingAnimation(itemStack, entity, model);
+                setupAttackAnimation(itemStack, entity, model);
+            } else if (entity.livingEntity.isUsingItem() && entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND) {
+                setupUsingAnimation(itemStack, entity, model, 1.0F - ((float)entity.livingEntity.useItemRemaining / (float)entity.livingEntity.getUseItem().getUseDuration()));
             } else {
                 setupIdleAnimation(itemStack, entity, model);
             }
@@ -133,9 +140,16 @@ public interface SpecializedAnimations {
         public final void adjustGrip(LivingEntity entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {
             this.adjustGrip(EntityStateContext.simpleOf(entity), item, type, pose);
         }
-
         public void adjustGrip(EntityStateContext entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {}
 
         public boolean wantBothHands(ItemStack item) { return false; }
+    }
+
+    /** Called when LivingEntity.triggerItemUseEffects() is called on a SpecializedAnimations item.
+     * Use for custom sounds
+     * @return Returns false if don't override, returns true to override original function
+     */
+    default boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        return false;
     }
 }

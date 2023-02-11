@@ -80,15 +80,15 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
             if (!isEntityInWhiteLatex(event.player)) {
                 if (whiteLatex(blockState) || whiteLatex(blockStateEye)) {
-                    if (ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.getPlayerLatexVariant(event.player).getLatexType() == LatexType.WHITE_LATEX) {
-                        entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
-                    }
-
-                    else if (ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.getPlayerLatexVariant(event.player).getLatexType().isHostileTo(LatexType.WHITE_LATEX))
-                        event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
-
-                    else if (!ProcessTransfur.isPlayerLatex(event.player) && ProcessTransfur.progressPlayerTransfur(event.player, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId()))
-                        entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
+                    ProcessTransfur.ifPlayerLatex(event.player, variant -> {
+                        if (variant.getLatexType() == LatexType.WHITE_LATEX)
+                            entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
+                        else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                            event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
+                    }, () -> {
+                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId()))
+                            entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
+                    });
                 }
             }
 

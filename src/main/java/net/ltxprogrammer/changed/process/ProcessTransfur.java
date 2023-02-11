@@ -37,12 +37,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -252,7 +254,8 @@ public class ProcessTransfur {
         }
     }
 
-    public static void setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
+    @Contract("_, null -> null; _, !null -> !null")
+    public static @Nullable LatexVariant<?> setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
         try {
             EntityVariantAssigned event = new EntityVariantAssigned(player, variant);
             MinecraftForge.EVENT_BUS.post(event);
@@ -265,9 +268,9 @@ public class ProcessTransfur {
 
             var oldVariant = (LatexVariant<?>)latexVariantField.get(player);
             if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
-                return;
+                return oldVariant;
             if (variant == null && oldVariant == null)
-                return;
+                return oldVariant;
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
@@ -282,11 +285,13 @@ public class ProcessTransfur {
                 oldVariant.unhookAll(player);
             if (!player.level.isClientSide)
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+            return variant;
         } catch (Exception ignored) {}
+        return null;
     }
 
-    public static void setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
-        setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.get(variant));
+    public static LatexVariant<?> setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
+        return setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.get(variant));
     }
 
     public static boolean isPlayerLatex(Player player) {
@@ -303,18 +308,27 @@ public class ProcessTransfur {
         return variant != null ? isLatex.apply(variant) : null;
     }
 
-    public static void ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex, Runnable notLatex) {
+    public static boolean ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex, Runnable notLatex) {
         LatexVariant<?> variant = getPlayerLatexVariant(player);
         if (variant != null)
             isLatex.accept(variant);
         else
             notLatex.run();
+        return variant != null;
     }
 
-    public static void ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex) {
+    public static boolean ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex) {
         LatexVariant<?> variant = getPlayerLatexVariant(player);
         if (variant != null)
             isLatex.accept(variant);
+        return variant != null;
+    }
+
+    public static boolean ifPlayerLatex(Player player, BiConsumer<Player, LatexVariant<?>> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(player, variant);
+        return variant != null;
     }
 
     // Checks if player is either not latex or is organic latex
