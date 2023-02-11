@@ -158,8 +158,8 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
         }
 
         @Override
-        public void adjustGrip(EntityStateContext entity, ItemStack itemStack, ItemTransforms.TransformType type, PoseStack pose) {
-            super.adjustGrip(entity, itemStack, type, pose);
+        public void adjustGrip(ItemStack itemStack, EntityStateContext entity, ItemTransforms.TransformType type, PoseStack pose) {
+            super.adjustGrip(itemStack, entity, type, pose);
             if (!entity.fullEquippedItem(item))
                 return;
             if (type != ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND && type != ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND)
@@ -169,7 +169,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
         }
 
         @Override
-        public boolean wantBothHands(ItemStack item) {
+        public boolean wantBothHands(ItemStack itemStack) {
             return true;
         }
     }

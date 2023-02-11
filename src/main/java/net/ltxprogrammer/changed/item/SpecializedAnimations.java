@@ -104,10 +104,39 @@ public interface SpecializedAnimations {
             this.item = item;
         }
 
+        /**
+         * Sets up entity model for holding an item, but not attacking or using. Can also be called to setup common angles for using/attack
+         * @param itemStack Item to pull NBT if needed
+         * @param entity Entity context for itemStack holder
+         * @param model Abstracted entity upper body model
+         */
         public void setupIdleAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {}
-        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {}
-        public void setupFirstPersonUseAnimation(ItemStack item, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {}
 
+        /**
+         * Sets up entity model for using an item.
+         * @param itemStack Item to pull NBT if needed
+         * @param entity Entity context for itemStack user
+         * @param model Abstracted entity upper body model
+         * @param progress Item use progress [0, 1]
+         */
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {}
+
+        /**
+         * Sets up pose for rendering first person items use animation. For best use, set Item.getUseAnimation() to UseAnim.NONE
+         * @param itemStack Item to pull NBT if needed
+         * @param entity Entity context for itemStack user
+         * @param arm Left or right arm
+         * @param pose PoseStack matrix to modify
+         * @param progress Item use progress [0, 1]
+         */
+        public void setupFirstPersonUseAnimation(ItemStack itemStack, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {}
+
+        /**
+         * Sets up entity model for attacking with an item.
+         * @param itemStack Item to pull NBT if needed
+         * @param entity Entity context for itemStack wielder
+         * @param model Abstracted entity upper body model
+         */
         public void setupAttackAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
             ModelPart modelPart = model.getArm(entity.getAttackArm());
             model.setupBasicBodyTwitch(entity);
@@ -129,7 +158,7 @@ public interface SpecializedAnimations {
             if (!(entity.attackTime <= 0.0F)) {
                 setupAttackAnimation(itemStack, entity, model);
             } else if (entity.livingEntity.isUsingItem() && entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND) {
-                setupUsingAnimation(itemStack, entity, model, 1.0F - ((float)entity.livingEntity.useItemRemaining / (float)entity.livingEntity.getUseItem().getUseDuration()));
+                setupUsingAnimation(itemStack, entity, model, 1.0F - (((float)entity.livingEntity.useItemRemaining - entity.partialTicks + 1.0F) / (float)entity.livingEntity.getUseItem().getUseDuration()));
             } else {
                 setupIdleAnimation(itemStack, entity, model);
             }
@@ -137,12 +166,25 @@ public interface SpecializedAnimations {
             return true;
         }
 
-        public final void adjustGrip(LivingEntity entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {
-            this.adjustGrip(EntityStateContext.simpleOf(entity), item, type, pose);
+        public final void adjustGrip(ItemStack itemStack, LivingEntity entity, ItemTransforms.TransformType type, PoseStack pose) {
+            this.adjustGrip(itemStack, EntityStateContext.simpleOf(entity), type, pose);
         }
-        public void adjustGrip(EntityStateContext entity, ItemStack item, ItemTransforms.TransformType type, PoseStack pose) {}
 
-        public boolean wantBothHands(ItemStack item) { return false; }
+        /**
+         * Adjusts pose to hold item differently in specific situations.
+         * @param itemStack Item to pull NBT if needed
+         * @param entity Entity context for itemStack holder
+         * @param type Selected transform type for rendering
+         * @param pose PoseStack matrix to modify
+         */
+        public void adjustGrip(ItemStack itemStack, EntityStateContext entity, ItemTransforms.TransformType type, PoseStack pose) {}
+
+        /**
+         * Does the animator only work with an empty offhand?
+         * @param itemStack Item to pull NBT if needed
+         * @return True if the animator should only run with an empty offhand, false otherwise
+         */
+        public boolean wantBothHands(ItemStack itemStack) { return false; }
     }
 
     /** Called when LivingEntity.triggerItemUseEffects() is called on a SpecializedAnimations item.
