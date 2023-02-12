@@ -133,6 +133,7 @@
   "block.changed.tiles_gray": "Grå fliser",
   "block.changed.tiles_gray_stairs": "Trapp av grå fliser",
   "block.changed.tiles_greenhouse": "Drivhusfliser",
+  "block.changed.tiles_greenhouse_connected": "Tilkoblede drivhusfliser",
   "block.changed.tiles_library_brown": "Brun bibliotekfliser",
   "block.changed.tiles_library_tan": "Tan bibliotekfliser",
   "block.changed.tiles_white": "Hvit fliser",
