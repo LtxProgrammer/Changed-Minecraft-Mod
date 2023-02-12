@@ -202,6 +202,8 @@ public class LatexVariant<T extends LatexEntity> {
 
     public TransfurMode transfurMode() { return transfurMode; }
 
+    public boolean isGendered() { return getEntityType().getBaseClass().isAssignableFrom(GenderedEntity.class); }
+
     public int getTicksRequiredToFreeze(Level level) {
         return ChangedEntities.getCachedEntity(level, ctor.get()).getTicksRequiredToFreeze();
     }
