@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.Mth;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -98,6 +100,22 @@ public interface SpecializedAnimations {
                 leftArm.yRot += body.yRot;
                 leftArm.xRot += body.yRot;
             }
+
+            /**
+             * Translates the arm to point to facing.
+             * @param humanoidArm Left or right arm
+             * @param facing Direction to point the arm towards
+             * @param lerp A value between [0, 1] to lerp between the old and new arm rotations
+             */
+            public final void pointArmAt(HumanoidArm humanoidArm, Vec3 facing, float lerp) {
+                ModelPart arm = getArm(humanoidArm);
+                facing = facing.normalize();
+
+                float altitude = (float)Math.asin(-facing.y); // Treat facing vec as up vec
+                float azimuth = (float)Math.asin(facing.x / Math.cos(altitude));
+                arm.xRot = Mth.lerp(lerp, arm.xRot, altitude - (float)(Math.PI / 2));
+                arm.yRot = Mth.lerp(lerp, arm.yRot, azimuth);
+            }
         }
 
         public AnimationHandler(Item item) {
@@ -117,9 +135,10 @@ public interface SpecializedAnimations {
          * @param itemStack Item to pull NBT if needed
          * @param entity Entity context for itemStack user
          * @param model Abstracted entity upper body model
+         * @param arm Arm using the item
          * @param progress Item use progress [0, 1]
          */
-        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {}
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, HumanoidArm arm, float progress) {}
 
         /**
          * Sets up pose for rendering first person items use animation. For best use, set Item.getUseAnimation() to UseAnim.NONE
@@ -158,7 +177,8 @@ public interface SpecializedAnimations {
             if (!(entity.attackTime <= 0.0F)) {
                 setupAttackAnimation(itemStack, entity, model);
             } else if (entity.livingEntity.isUsingItem() && entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND) {
-                setupUsingAnimation(itemStack, entity, model, 1.0F - (((float)entity.livingEntity.useItemRemaining - entity.partialTicks + 1.0F) / (float)entity.livingEntity.getUseItem().getUseDuration()));
+                setupUsingAnimation(itemStack, entity, model, entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND ?
+                        entity.livingEntity.getMainArm() : entity.livingEntity.getMainArm().getOpposite(), 1.0F - (((float)entity.livingEntity.useItemRemaining - entity.partialTicks + 1.0F) / (float)entity.livingEntity.getUseItem().getUseDuration()));
             } else {
                 setupIdleAnimation(itemStack, entity, model);
             }
