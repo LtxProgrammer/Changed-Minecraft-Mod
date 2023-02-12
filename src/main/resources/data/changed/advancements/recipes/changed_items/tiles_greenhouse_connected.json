@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:tiles_greenhouse_connected"
+    ]
+  },
+  "criteria": {
+    "has_tiles_greenhouse": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:tiles_greenhouse"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:tiles_greenhouse_connected"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tiles_greenhouse",
+      "has_the_recipe"
+    ]
+  ]
+}
