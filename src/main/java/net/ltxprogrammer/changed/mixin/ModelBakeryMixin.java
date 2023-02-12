@@ -99,7 +99,7 @@ public abstract class ModelBakeryMixin {
                 toAdd.add(injected);
             });
 
-            toAddSelector.add(new Selector(selector.condition, new MultiVariant(toAdd)));
+            toAddSelector.add(new Selector(selector::getPredicate, new MultiVariant(toAdd)));
         });
 
         MultiPart injected = new MultiPart(multiPart.definition, toAddSelector);
