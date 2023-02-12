@@ -283,6 +283,10 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
         }
     }
 
+    public Slot getResultSlot() {
+        return this.getSlot(0);
+    }
+
     @Override
     public void slotsChanged(@NotNull Container container) {
         if (!this.world.isClientSide) {
@@ -302,7 +306,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                 }
             }
 
-            this.getSlot(0).set(itemstack);
+            this.getResultSlot().set(itemstack);
         }
         super.slotsChanged(container);
     }
