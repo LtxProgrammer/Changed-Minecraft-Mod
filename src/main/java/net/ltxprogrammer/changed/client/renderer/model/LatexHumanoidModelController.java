@@ -649,12 +649,12 @@ public class LatexHumanoidModelController {
         };
     }
 
-    protected void setupAttackAnimation(LatexEntity entity, float partialTicks) {
+    protected void setupAttackAnimation(LatexEntity entity, float ageInTicks) {
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
             if (handler != null && handler.setupAnimation(mainHandItem,
-                        entityContextOf(entity, partialTicks), upperModelContext())) {
+                        entityContextOf(entity, ageInTicks - entity.tickCount), upperModelContext())) {
                 if (this.hasLegs2)
                     this.Torso.yRot = 0.0F;
                 return;

@@ -29,10 +29,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
@@ -257,16 +257,22 @@ public class Syringe extends Item implements SpecializedAnimations {
         }
 
         @Override
-        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, float progress) {
-            super.setupUsingAnimation(itemStack, entity, model, progress);
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, HumanoidArm arm, float progress) {
+            super.setupUsingAnimation(itemStack, entity, model, arm, progress);
+            model.pointArmAt(arm, new Vec3(arm == HumanoidArm.RIGHT ? -1 : 1, -0.2, 0.35),
+                    Mth.clamp(1.0F - (float)Math.pow(1.0 - progress, 27.0D), 0, 1));
         }
 
         @Override
         public void setupFirstPersonUseAnimation(ItemStack itemStack, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {
             super.setupFirstPersonUseAnimation(itemStack, entity, arm, pose, progress);
+            float relativeProgress = progress * itemStack.getUseDuration();
+            if (progress > 0.2F)
+                pose.translate(0.0D, Mth.abs(Mth.cos(relativeProgress / 4.0F * (float)Math.PI) * 0.025F), 0.0D);
+
             float f3 = 1.0F - (float)Math.pow(1.0 - progress, 27.0D);
             int i = arm == HumanoidArm.RIGHT ? 1 : -1;
-            pose.translate((double)(f3 * 0.6F * (float)i), (double)(f3 * -0.5F), (double)(f3 * 0.0F));
+            pose.translate((double)(f3 * 0.3F * (float)i), (double)(f3 * -0.5F), (double)(f3 * 0.0F));
             pose.mulPose(Vector3f.YP.rotationDegrees((float)i * f3 * 90.0F));
             pose.mulPose(Vector3f.XP.rotationDegrees(f3 * 10.0F));
             pose.mulPose(Vector3f.ZP.rotationDegrees((float)i * f3 * 30.0F));

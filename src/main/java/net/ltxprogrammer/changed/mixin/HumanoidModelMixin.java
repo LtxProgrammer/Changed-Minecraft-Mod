@@ -43,12 +43,12 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
     }
 
     @Inject(method = "setupAttackAnimation", at = @At("HEAD"), cancellable = true)
-    protected void setupAttackAnimation(T entity, float partialTicks, CallbackInfo callback) {
+    protected void setupAttackAnimation(T entity, float ageInTicks, CallbackInfo callback) {
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
         if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
             if (handler != null && handler.setupAnimation(mainHandItem,
-                    entityContextOf(entity, partialTicks), upperModelContext())) {
+                    entityContextOf(entity, ageInTicks - entity.tickCount), upperModelContext())) {
                 callback.cancel();
             }
         }
