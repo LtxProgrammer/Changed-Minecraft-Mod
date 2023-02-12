@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.network.packet.SyncSwitchPacket;
 import net.ltxprogrammer.changed.world.inventory.InfuserMenu;
 import net.minecraft.client.Minecraft;
@@ -26,12 +27,15 @@ import net.minecraftforge.network.PacketDistributor;
 public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implements RecipeUpdateListener {
     public static class Switch extends AbstractButton {
         private static final int TEXT_COLOR = 14737632;
+        public boolean disabled;
         private boolean toggle;
         private final boolean showLabel;
         public final AbstractContainerScreen<?> containerScreen;
         private final ResourceLocation name;
 
         public void onPress() {
+            if (this.disabled)
+                return;
             this.toggle = !this.toggle;
 
             Changed.PACKET_HANDLER.send(PacketDistributor.SERVER.noArg(), SyncSwitchPacket.of(this));
@@ -41,33 +45,33 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
             return this.toggle;
         }
 
-        private final ResourceLocation texture0;
-        private final ResourceLocation texture1;
+        private final ResourceLocation sheet;
 
         public Switch(AbstractContainerScreen<?> container, ResourceLocation name,
-                int p_93826_, int p_93827_, int p_93828_, int p_93829_, Component p_93830_, boolean p_93831_, ResourceLocation texture0, ResourceLocation texture1) {
+                      int p_93826_, int p_93827_, int p_93828_, int p_93829_, Component p_93830_, boolean p_93831_, ResourceLocation sheet) {
             super(p_93826_, p_93827_, p_93828_, p_93829_, p_93830_);
             this.name = name;
             this.containerScreen = container;
-            this.texture0 = texture0;
-            this.texture1 = texture1;
+            this.sheet = sheet;
             this.toggle = p_93831_;
             this.showLabel = true;
         }
 
-        public void renderButton(PoseStack p_93843_, int p_93844_, int p_93845_, float p_93846_) {
+        public void renderButton(PoseStack pose, int p_93844_, int p_93845_, float p_93846_) {
             Minecraft minecraft = Minecraft.getInstance();
-            RenderSystem.setShaderTexture(0, toggle ? texture1 : texture0);
+            RenderSystem.setShaderTexture(0, sheet);
             RenderSystem.enableDepthTest();
             Font font = minecraft.font;
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            blit(p_93843_, this.x, this.y, this.isFocused() ? 20.0F : 0.0F, this.toggle ? 20.0F : 0.0F, this.width, this.height, this.width, this.height);
-            this.renderBg(p_93843_, minecraft, p_93844_, p_93845_);
+            int switchX = this.isHoveredOrFocused() ? this.width : 0;
+            int switchY = this.disabled ? this.height * 2 : (this.toggle ? this.height : 0);
+            blit(pose, this.x, this.y, switchX, switchY, this.width, this.height, this.width * 2, this.height * 3);
+            this.renderBg(pose, minecraft, p_93844_, p_93845_);
             if (this.showLabel) {
-                drawString(p_93843_, font, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+                drawString(pose, font, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
             }
         }
 
@@ -94,6 +98,7 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
     }
 
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = new ResourceLocation("textures/gui/recipe_button.png");
+    private static final ResourceLocation GENDER_SWITCH_LOCATION = Changed.modResource("textures/gui/gender_switch.png");
     private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
     private boolean widthTooNarrow;
     private Switch maleFemaleSwitch;
@@ -120,7 +125,7 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
         this.titleLabelX = 29;
 
         maleFemaleSwitch = new Switch(this, Changed.modResource("male_female_switch"), this.leftPos + 131, this.topPos + 61, 20, 10, TextComponent.EMPTY, false,
-                Changed.modResource("textures/gui/gender_switch_male.png"), Changed.modResource("textures/gui/gender_switch_female.png"));
+                GENDER_SWITCH_LOCATION);
         this.addRenderableWidget(maleFemaleSwitch);
     }
 
@@ -128,6 +133,12 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
 
     @Override
     public void render(PoseStack p_98479_, int p_98480_, int p_98481_, float p_98482_) {
+        var variant = Syringe.getVariant(menu.getResultSlot().getItem());
+        if (variant != null && !variant.isGendered())
+            maleFemaleSwitch.disabled = true;
+        else
+            maleFemaleSwitch.disabled = false;
+
         this.renderBackground(p_98479_);
         if (this.recipeBookComponent.isVisible() && this.widthTooNarrow) {
             this.renderBg(p_98479_, p_98482_, p_98480_, p_98481_);

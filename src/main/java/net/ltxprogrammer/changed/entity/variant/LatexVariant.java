@@ -62,6 +62,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
+    public static Map<ResourceLocation, GenderedVariant<?, ?>> GENDERED_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> MOB_FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> SPECIAL_LATEX_FORMS = new HashMap<>();
@@ -202,7 +203,16 @@ public class LatexVariant<T extends LatexEntity> {
 
     public TransfurMode transfurMode() { return transfurMode; }
 
-    public boolean isGendered() { return getEntityType().getBaseClass().isAssignableFrom(GenderedEntity.class); }
+    public boolean isGendered() {
+        for (var entry : GENDERED_LATEX_FORMS.entrySet()) {
+            if (entry.getValue().male.formId.equals(this.formId))
+                return true;
+            if (entry.getValue().female.formId.equals(this.formId))
+                return true;
+        }
+
+        return false;
+    }
 
     public int getTicksRequiredToFreeze(Level level) {
         return ChangedEntities.getCachedEntity(level, ctor.get()).getTicksRequiredToFreeze();
@@ -1065,6 +1075,7 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
+        GENDERED_LATEX_FORMS.put(variant.formId, variant);
         ALL_LATEX_FORMS.put(variant.male.formId, variant.male);
         ALL_LATEX_FORMS.put(variant.female.formId, variant.female);
         PUBLIC_LATEX_FORMS.put(variant.male.formId, variant.male);

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,11 +45,9 @@ public class TransfurProgressOverlay {
                     GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
-            RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/transfur_overlay_bottom.png"));
-            Minecraft.getInstance().gui.blit(event.getMatrixStack(), posX + 96, posY + 92, 0, 0, 8, 26, 8, 26);
-
-            RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/transfur_overlay_top.png"));
-            Minecraft.getInstance().gui.blit(event.getMatrixStack(), posX + 96, posY + 118 - vertSize, 0, 26 - vertSize, 8, vertSize, 8, 26);
+            RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/transfur_overlay.png"));
+            GuiComponent.blit(event.getMatrixStack(), posX + 96, posY + 92, 0, 0, 8, 26, 16, 26);
+            GuiComponent.blit(event.getMatrixStack(), posX + 96, posY + 118 - vertSize, 8, 26 - vertSize, 8, vertSize, 16, 26);
 
             RenderSystem.depthMask(true);
             RenderSystem.defaultBlendFunc();
