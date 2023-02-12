@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "STS",
+    "TTT",
+    "STS"
+  ],
+  "key": {
+    "T": {
+      "item": "changed:tiles_greenhouse"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "changed:tiles_greenhouse_connected",
+    "count": 5
+  }
+}

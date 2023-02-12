@@ -116,6 +116,8 @@ public class Syringe extends Item implements SpecializedAnimations {
     public @NotNull ItemStack usedOnPlayer(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player, boolean ignoreMovement) {
         if (!ignoreMovement && player.getDeltaMovement().lengthSqr() > 0.01f)
             return stack;
+        if (!ProcessTransfur.isPlayerOrganic(player))
+            return stack;
 
         player.hurt(BLOODLOSS, 1.0f);
         player.awardStat(Stats.ITEM_USED.get(this));
@@ -142,7 +144,6 @@ public class Syringe extends Item implements SpecializedAnimations {
 
             player.getInventory().add(nStack);
         });
-
         return stack;
     }
 
@@ -221,21 +222,6 @@ public class Syringe extends Item implements SpecializedAnimations {
             return InteractionResult.sidedSuccess(player.level.isClientSide);
         }
 
-        else if (livingEntity instanceof LatexEntity latex) {
-            var variant = latex.getSelfVariant() != null ? latex.getSelfVariant() : latex.getTransfurVariant();
-            if (variant != null) {
-                CompoundTag tag = new CompoundTag();
-                ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
-                tag.putBoolean("safe", true);
-                tag.putString("form", variant.toString());
-                nStack.setTag(tag);
-                if (!player.getAbilities().instabuild)
-                    itemStack.shrink(1);
-
-                player.getInventory().add(nStack);
-                return InteractionResult.sidedSuccess(player.level.isClientSide);
-            }
-        }
         return MinecraftForge.EVENT_BUS.post(
                 new UsedOnEntity(livingEntity,
                         player.level,
