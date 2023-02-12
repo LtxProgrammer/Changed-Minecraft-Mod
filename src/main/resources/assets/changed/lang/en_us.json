@@ -133,6 +133,7 @@
   "block.changed.tiles_gray": "Gray Tiles",
   "block.changed.tiles_gray_stairs": "Gray Tile Stairs",
   "block.changed.tiles_greenhouse": "Greenhouse Tiles",
+  "block.changed.tiles_greenhouse_connected": "Connected Greenhouse Tiles",
   "block.changed.tiles_library_brown": "Brown Library Tile",
   "block.changed.tiles_library_tan": "Tan Library Tile",
   "block.changed.tiles_white": "White Tiles",
