@@ -133,6 +133,7 @@
   "block.changed.tiles_gray": "Grå tegel",
   "block.changed.tiles_gray_stairs": "Grå tegeltrappa",
   "block.changed.tiles_greenhouse": "Växthustegel",
+  "block.changed.tiles_greenhouse_connected": "Anslutna växthustegel",
   "block.changed.tiles_library_brown": "Brun bibliotektegel",
   "block.changed.tiles_library_tan": "Tan bibliotektegel",
   "block.changed.tiles_white": "Vit tegel",

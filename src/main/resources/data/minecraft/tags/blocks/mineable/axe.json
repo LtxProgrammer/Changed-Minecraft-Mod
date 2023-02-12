@@ -3,6 +3,7 @@
   "values": [
     "changed:cardboard_box",
     "changed:tiles_greenhouse",
+    "changed:tiles_greenhouse_connected",
     "changed:wall_greenhouse"
   ]
 }
