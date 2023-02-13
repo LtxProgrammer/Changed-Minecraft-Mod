@@ -113,10 +113,10 @@ public class Syringe extends Item implements SpecializedAnimations {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
-    public @NotNull ItemStack usedOnPlayer(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player, boolean ignoreMovement) {
+    public @NotNull ItemStack usedOnPlayer(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player, @NotNull Player sourcePlayer, boolean ignoreMovement) {
         if (!ignoreMovement && player.getDeltaMovement().lengthSqr() > 0.01f)
             return stack;
-        if (!ProcessTransfur.isPlayerOrganic(player))
+        if (!ProcessTransfur.isPlayerOrganic(player) && player != sourcePlayer)
             return stack;
 
         player.hurt(BLOODLOSS, 1.0f);
@@ -154,7 +154,7 @@ public class Syringe extends Item implements SpecializedAnimations {
         }
 
         if (player != null)
-            return usedOnPlayer(stack, level, player, false);
+            return usedOnPlayer(stack, level, player, player, false);
 
         //entity.gameEvent(entity, GameEvent.DRINKING_FINISH, entity.eyeBlockPosition());
         return stack;
@@ -218,7 +218,7 @@ public class Syringe extends Item implements SpecializedAnimations {
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity livingEntity, InteractionHand hand) {
         if (livingEntity instanceof Player interactPlayer) {
-            usedOnPlayer(itemStack, interactPlayer.level, interactPlayer, false);
+            usedOnPlayer(itemStack, interactPlayer.level, interactPlayer, player, false);
             return InteractionResult.sidedSuccess(player.level.isClientSide);
         }
 
