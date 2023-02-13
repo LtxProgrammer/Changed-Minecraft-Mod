@@ -262,7 +262,7 @@ public class LatexHumanoidModelController {
             this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.18F : 0.125F) * limbSwingAmount / f;
             this.Tail.zRot = 0.0F;
         }
-        if (!this.hasLegs) { // TODO better slither
+        if (!this.hasLegs) {
             float slitherAmount = Math.min(0.5F, limbSwingAmount);
             this.Abdomen.xRot = (float) Math.toRadians(-12.5);
             this.Abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 0.6F * slitherAmount;
@@ -276,10 +276,11 @@ public class LatexHumanoidModelController {
 
             float offset = 0.0F;
             for (ModelPart joint : this.TailJoints) {
+                joint.zRot = -0.35F * Mth.cos(limbSwing * 0.33333334F -
+                        (((float)Math.PI / 3.0F) * offset)) * slitherAmount;
                 joint.xRot = 0.0F;
-                joint.zRot = Mth.cos((limbSwing * 0.33333334F) - (((float)Math.PI / 2.0F) * offset)) * 0.3F * slitherAmount;
                 joint.yRot = 0.0F;
-                offset += 1.0F;
+                offset += 0.75F;
             }
         }
 
