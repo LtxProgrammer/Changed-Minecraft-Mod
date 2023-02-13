@@ -41,6 +41,22 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 7.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:syringe"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 5,
           "functions": [
             {
@@ -98,43 +114,26 @@
         }
       ]
     },
-
+    {
+      "rolls": 2,
+      "entries": [
         {
           "type": "minecraft:item",
-          "weight": 4,
+          "name": "changed:latex_syringe",
           "functions": [
             {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 7.0
-              },
-              "add": false
-            }
-          ],
-          "name": "changed:syringe"
-        },
-        {
-          "rolls": 2,
-          "entries": [
-            {
-              "type": "minecraft:item",
-              "name": "changed:latex_syringe",
-              "functions": [
-                {
-                  "function": "changed:random_variant",
-                  "variants": [
-                    "changed:form_dark_latex_dragon",
-                    "changed:form_latex_beifeng",
-                    "changed:form_latex_yufeng"
-                  ]
-
-                }
+              "function": "changed:random_variant",
+              "variants": [
+                "changed:form_dark_latex_dragon",
+                "changed:form_latex_beifeng",
+                "changed:form_latex_yufeng"
               ]
+
             }
           ]
         }
       ]
     }
+  ]
+}
 

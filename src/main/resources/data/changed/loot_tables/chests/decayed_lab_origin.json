@@ -71,7 +71,7 @@
               "add": false
             }
           ],
-          "name": "minecraft:iron"
+          "name": "minecraft:iron_ingot"
         },
         {
           "type": "minecraft:item",
