@@ -486,26 +486,24 @@ public class LatexHumanoidModelController {
             }
 
             else if (!this.hasLegs) {
-                this.Abdomen.xRot = Mth.lerp(f2, this.Abdomen.xRot, 0.0f);
-                this.Abdomen.yRot = Mth.lerp(f2, this.Abdomen.yRot, 0.0f);
+                this.Abdomen.xRot = Mth.lerp(this.swimAmount, this.Abdomen.xRot, 0.0f);
+                this.Abdomen.yRot = Mth.lerp(this.swimAmount, this.Abdomen.yRot, 0.0f);
                 this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F));
-                this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
-                this.LowerAbdomen.yRot = Mth.lerp(f2, this.LowerAbdomen.yRot, 0.0f);
+                this.LowerAbdomen.xRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.xRot, 0.0f);
+                this.LowerAbdomen.yRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.yRot, 0.0f);
                 this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 3.0F)));
-                this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
-                this.Tail.yRot = Mth.lerp(f2, this.Tail.yRot, 0.0f);
+                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -0.15f);
+                this.Tail.yRot = Mth.lerp(this.swimAmount, this.Tail.yRot, 0.0f);
                 this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 1.5F)));
 
 
                 float offset = 0.0F;
-                float lastRot = 0.0F;
                 for (ModelPart joint : this.TailJoints) {
-                    joint.zRot = Mth.lerp(this.swimAmount, joint.zRot,
-                            (Mth.cos((limbSwing * 0.33333334F) + ((float)Math.PI * offset)) * 0.3F) - lastRot);
-                    joint.xRot = 0.0F;
-                    joint.yRot = 0.0F;
-                    offset += 1.0F;
-                    lastRot = joint.zRot;
+                    joint.zRot = Mth.lerp(this.swimAmount, joint.zRot, -0.35F * Mth.cos(limbSwing * 0.33333334F -
+                            (((float)Math.PI / 3.0F) * offset)));
+                    joint.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, 0.0f);
+                    joint.yRot = Mth.lerp(this.swimAmount, this.Tail.yRot, 0.0f);
+                    offset += 0.75F;
                 }
 
                 if (swimTail) {
