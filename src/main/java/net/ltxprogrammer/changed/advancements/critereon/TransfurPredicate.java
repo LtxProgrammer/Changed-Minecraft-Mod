@@ -18,12 +18,14 @@ public class TransfurPredicate {
     private final LatexType type;
     private final boolean flying;
     private final boolean swimming;
+    private final boolean legless;
 
     public TransfurPredicate() {
         this.forms = null;
         this.type = null;
         this.flying = false;
         this.swimming = false;
+        this.legless = false;
     }
 
     public TransfurPredicate(LatexType type) {
@@ -31,6 +33,7 @@ public class TransfurPredicate {
         this.type = type;
         this.flying = false;
         this.swimming = false;
+        this.legless = false;
     }
 
     public TransfurPredicate(Set<LatexVariant<?>> forms) {
@@ -38,16 +41,18 @@ public class TransfurPredicate {
         this.type = null;
         this.flying = false;
         this.swimming = false;
+        this.legless = false;
     }
 
-    public TransfurPredicate(boolean flying, boolean swimming) {
+    public TransfurPredicate(boolean flying, boolean swimming, boolean legless) {
         this.forms = null;
         this.type = null;
         this.flying = flying;
         this.swimming = swimming;
+        this.legless = legless;
     }
 
-    public boolean matches(LatexVariant form) {
+    public boolean matches(LatexVariant<?> form) {
         if (this == ANY)
             return true;
         if (forms != null)
@@ -59,6 +64,8 @@ public class TransfurPredicate {
         if (form.canGlide && flying)
             return true;
         if (form.getBreatheMode().canBreatheWater() && swimming)
+            return true;
+        if (!form.hasLegs && legless)
             return true;
         return false;
     }
@@ -86,12 +93,14 @@ public class TransfurPredicate {
                         return new TransfurPredicate(set);
                 }
             }
-            boolean flying = false, swimming = false;
+            boolean flying = false, swimming = false, legless = false;
             if (jsonObject.has("flying"))
                 flying = GsonHelper.getAsBoolean(jsonObject, "flying");
             if (jsonObject.has("swimming"))
                 swimming = GsonHelper.getAsBoolean(jsonObject, "swimming");
-            return (flying || swimming) ? new TransfurPredicate(flying, swimming) : ANY;
+            if (jsonObject.has("legless"))
+                legless = GsonHelper.getAsBoolean(jsonObject, "legless");
+            return (flying || swimming || legless) ? new TransfurPredicate(flying, swimming, legless) : ANY;
         } else {
             return ANY;
         }
@@ -118,6 +127,7 @@ public class TransfurPredicate {
 
             jsonObject.addProperty("flying", this.flying);
             jsonObject.addProperty("swimming", this.swimming);
+            jsonObject.addProperty("legless", this.legless);
             return jsonObject;
         }
     }
