@@ -18,10 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidModelMixin<T extends LivingEntity> extends AgeableListModel<T> implements ArmedModel, HeadedModel {
     protected SpecializedAnimations.AnimationHandler.EntityStateContext entityContextOf(T entity, float partialTicks) {
-        HumanoidModel<T> self = (HumanoidModel<T>)(Object)this;
-        return new SpecializedAnimations.AnimationHandler.EntityStateContext(entity, self.attackTime, partialTicks) {
-            HumanoidModel<T> model = self;
-
+        return new SpecializedAnimations.AnimationHandler.EntityStateContext(entity, this.attackTime, partialTicks) {
             @Override
             public HumanoidArm getAttackArm() {
                 HumanoidArm humanoidarm = entity.getMainArm();
@@ -33,8 +30,6 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
     protected SpecializedAnimations.AnimationHandler.UpperModelContext upperModelContext() {
         HumanoidModel<T> self = (HumanoidModel<T>)(Object)this;
         return new SpecializedAnimations.AnimationHandler.UpperModelContext(self.leftArm, self.rightArm, self.body, self.head) {
-            HumanoidModel<T> model = self;
-
             @Override
             public ModelPart getArm(HumanoidArm humanoidArm) {
                 return humanoidArm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
@@ -44,12 +39,24 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
 
     @Inject(method = "setupAttackAnimation", at = @At("HEAD"), cancellable = true)
     protected void setupAttackAnimation(T entity, float ageInTicks, CallbackInfo callback) {
+        var entityContext = entityContextOf(entity, ageInTicks - entity.tickCount);
+        var upperModelContext = upperModelContext();
+
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
-        if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
+        var offHandItem = entity.getItemBySlot(EquipmentSlot.OFFHAND);
+        if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.MAIN_HAND) &&
+                !mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null && handler.setupAnimation(mainHandItem,
-                    entityContextOf(entity, ageInTicks - entity.tickCount), upperModelContext())) {
-                callback.cancel();
+            if (handler != null && handler.setupAnimation(mainHandItem, entityContext, upperModelContext, InteractionHand.MAIN_HAND)) {
+                return;
+            }
+        }
+
+        else if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.OFF_HAND) &&
+                !offHandItem.isEmpty() && offHandItem.getItem() instanceof SpecializedAnimations specialized) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null && handler.setupAnimation(offHandItem, entityContext, upperModelContext, InteractionHand.OFF_HAND)) {
+                return;
             }
         }
     }
