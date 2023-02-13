@@ -1,0 +1,24 @@
+name: Changed API
+forge-1.18.2:
+  required_when_enabled: true
+  gradle: |
+    apply plugin: 'org.spongepowered.mixin'
+    mixin {
+      env {
+        remapRefMap = true
+      }
+    }
+    repositories {
+      maven {
+        name = "Changed"
+        url = "https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/mcmodsrepo/"
+      }
+      maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+      }
+    }
+    dependencies {
+      implementation fg.deobf("net.ltxprogrammer.changed:Changed-m1.18.2-f40.2.0:v0.10.1")
+      implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:1.18.2-1.2.0.126")
+    }
