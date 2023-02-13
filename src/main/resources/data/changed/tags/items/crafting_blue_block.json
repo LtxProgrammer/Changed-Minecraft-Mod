@@ -3,10 +3,11 @@
   "values": [
     "minecraft:blue_concrete",
     "minecraft:light_blue_concrete",
-    "minecraft:white_concrete",
-    "minecraft:white_terracotta",
+    "minecraft:light_blue_terracotta",
+    "minecraft:blue_terracotta",
 	"changed:tiles_blue",
 	"changed:tiles_blue_small",
+    "changed:tiles_darkblue",
 	"changed:wall_blue_striped"
   ]
 }

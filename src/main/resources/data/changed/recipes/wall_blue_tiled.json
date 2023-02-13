@@ -2,7 +2,7 @@
 	"type": "minecraft:stonecutting",
 	"count": 1,
 	"ingredient": {
-		"tag": "changed:crafting_blue_block"
+		"tag": "changed:crafting_white_block"
 	},
 	"result": "changed:wall_blue_tiles"
 }

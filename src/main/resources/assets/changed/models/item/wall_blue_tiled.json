@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/wall_blue_tiles",
+  "parent": "changed:block/wall_blue_tiled",
   "display": {
     "thirdperson": {
       "rotation": [
