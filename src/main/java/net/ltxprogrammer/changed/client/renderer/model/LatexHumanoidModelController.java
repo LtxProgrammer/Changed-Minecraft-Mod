@@ -502,8 +502,8 @@ public class LatexHumanoidModelController {
                 for (ModelPart joint : this.TailJoints) {
                     joint.zRot = Mth.lerp(this.swimAmount, joint.zRot, -0.35F * Mth.cos(limbSwing * 0.33333334F -
                             (((float)Math.PI / 3.0F) * offset)));
-                    joint.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, 0.0f);
-                    joint.yRot = Mth.lerp(this.swimAmount, this.Tail.yRot, 0.0f);
+                    joint.xRot = Mth.lerp(this.swimAmount, joint.xRot, 0.0f);
+                    joint.yRot = Mth.lerp(this.swimAmount, joint.yRot, 0.0f);
                     offset += 0.75F;
                 }
 
