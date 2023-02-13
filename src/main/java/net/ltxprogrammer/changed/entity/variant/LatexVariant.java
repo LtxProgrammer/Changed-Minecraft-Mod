@@ -163,7 +163,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide().sound(ChangedSounds.SOUND3.getLocation())
             .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
-    public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(LatexVariant.Builder.of(ChangedEntities.LATEX_SNAKE).groundSpeed(1.0F).swimSpeed(0.8f).noLegs()
+    public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(LatexVariant.Builder.of(ChangedEntities.LATEX_SNAKE).groundSpeed(1.0F).swimSpeed(0.9f).noLegs()
             .stepSize(1.1f).addAbility(ChangedAbilities.SLITHER).build(Changed.modResource("form_latex_snake")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
             .build(Changed.modResource("form_dark_latex_yufeng")));
