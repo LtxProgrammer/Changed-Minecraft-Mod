@@ -41,7 +41,8 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
         this.Tail = LowerAbdomen.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).noLegs(Abdomen, LowerAbdomen).tailJoints(List.of(Tail.getChild("Joint"), Tail.getChild("Joint").getChild("Joint2"), Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"))).legLengthOffset(0.0F).build();
+        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).noLegs(Abdomen, LowerAbdomen)
+                .tailJoints(List.of(Tail.getChild("Joint"), Tail.getChild("Joint").getChild("Joint2"), Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"))).legLengthOffset(0.0F).tailAidsInSwim().build();
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -66,13 +67,13 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
 
         PartDefinition Base_r4 = Joint.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(14, 51).addBox(-2.5F, 10.8541F, -2.9527F, 5.0F, 6.0F, 4.0F, new CubeDeformation(0.35F)), PartPose.offsetAndRotation(0.0F, -10.8879F, -1.2762F, 0.2007F, 0.0F, 0.0F));
 
-        PartDefinition Joint2 = Joint.addOrReplaceChild("Joint2", CubeListBuilder.create(), PartPose.offset(0.0F, -10.8879F, -1.2762F));
+        PartDefinition Joint2 = Joint.addOrReplaceChild("Joint2", CubeListBuilder.create(), PartPose.offset(0.0F, 6.2157F, 1.3003F));
 
-        PartDefinition Base_r5 = Joint2.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(0, 43).addBox(-2.5F, 16.8531F, -2.848F, 5.0F, 8.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2007F, 0.0F, 0.0F));
+        PartDefinition Base_r5 = Joint2.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(0, 43).addBox(-2.5F, 16.8531F, -2.848F, 5.0F, 8.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, -17.1036F, -2.5765F, 0.2007F, 0.0F, 0.0F));
 
-        PartDefinition Joint3 = Joint2.addOrReplaceChild("Joint3", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition Joint3 = Joint2.addOrReplaceChild("Joint3", CubeListBuilder.create(), PartPose.offset(0.0F, 7.3826F, 1.4447F));
 
-        PartDefinition Base_r6 = Joint3.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(32, 51).addBox(-2.0F, 23.8458F, -2.4497F, 4.0F, 7.0F, 3.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.2007F, 0.0F, 0.0F));
+        PartDefinition Base_r6 = Joint3.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(32, 51).addBox(-2.0F, 23.8458F, -2.4497F, 4.0F, 7.0F, 3.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, -24.4861F, -4.0212F, 0.2007F, 0.0F, 0.0F));
 
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, 0.0F));
 
