@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.Mth;
@@ -170,14 +169,14 @@ public interface SpecializedAnimations {
             modelPart.zRot += Mth.sin(entity.attackTime * (float)Math.PI) * -0.4F;
         }
 
-        public final boolean setupAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model) {
+        public final boolean setupAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, InteractionHand hand) {
             if (wantBothHands(itemStack) && !entity.fullEquippedItem(item))
                 return false;
 
             if (!(entity.attackTime <= 0.0F)) {
                 setupAttackAnimation(itemStack, entity, model);
-            } else if (entity.livingEntity.isUsingItem() && entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND) {
-                setupUsingAnimation(itemStack, entity, model, entity.livingEntity.getUsedItemHand() == InteractionHand.MAIN_HAND ?
+            } else if (entity.livingEntity.isUsingItem() && entity.livingEntity.getUsedItemHand() == hand) {
+                setupUsingAnimation(itemStack, entity, model, hand == InteractionHand.MAIN_HAND ?
                         entity.livingEntity.getMainArm() : entity.livingEntity.getMainArm().getOpposite(), 1.0F - (((float)entity.livingEntity.useItemRemaining - entity.partialTicks + 1.0F) / (float)entity.livingEntity.getUseItem().getUseDuration()));
             } else {
                 setupIdleAnimation(itemStack, entity, model);

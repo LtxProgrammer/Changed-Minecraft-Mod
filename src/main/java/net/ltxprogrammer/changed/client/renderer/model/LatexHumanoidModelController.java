@@ -653,13 +653,23 @@ public class LatexHumanoidModelController {
     }
 
     protected void setupAttackAnimation(LatexEntity entity, float ageInTicks) {
+        var entityContext = entityContextOf(entity, ageInTicks - entity.tickCount);
+        var upperModelContext = upperModelContext();
+
         var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
-        if (!mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
+        var offHandItem = entity.getItemBySlot(EquipmentSlot.OFFHAND);
+        if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.MAIN_HAND) &&
+                !mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null && handler.setupAnimation(mainHandItem,
-                        entityContextOf(entity, ageInTicks - entity.tickCount), upperModelContext())) {
-                if (this.hasLegs2)
-                    this.Torso.yRot = 0.0F;
+            if (handler != null && handler.setupAnimation(mainHandItem, entityContext, upperModelContext, InteractionHand.MAIN_HAND)) {
+                return;
+            }
+        }
+
+        else if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.OFF_HAND) &&
+                !offHandItem.isEmpty() && offHandItem.getItem() instanceof SpecializedAnimations specialized) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null && handler.setupAnimation(offHandItem, entityContext, upperModelContext, InteractionHand.OFF_HAND)) {
                 return;
             }
         }
