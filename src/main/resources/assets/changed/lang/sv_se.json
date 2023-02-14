@@ -345,5 +345,8 @@
   "changed:advancements.main.transfur_aerial.description": "Förpälsvandla dig själv till en flygform",
 
   "changed:advancements.main.transfur_mask.title": "Förkasta mänskligheten",
-  "changed:advancements.main.transfur_mask.description": "Skaffa och sätt på en mörk latexmask."
+  "changed:advancements.main.transfur_mask.description": "Skaffa och sätt på en mörk latexmask.",
+
+  "changed:advancements.main.transfur_legless.title": "Mina ben!",
+  "changed:advancements.main.transfur_legless.description": "Förpälsvandla dig själv till en benlös form"
 }
