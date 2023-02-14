@@ -122,7 +122,7 @@
       ]
     },
     {
-      "rolls": 4.0,
+      "rolls": 4,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -172,23 +172,23 @@
             }
           ],
           "name": "changed:dark_latex_goo"
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
         {
-          "rolls": 2,
-          "entries": [
+          "type": "minecraft:item",
+          "name": "changed:latex_syringe",
+          "functions": [
             {
-              "type": "minecraft:item",
-              "name": "changed:latex_syringe",
-              "functions": [
-                {
-                  "function": "changed:random_variant",
-                  "variants": [
-                    "changed:form_latex_sniper_dog",
-                    "changed:form_light_latex_wolf",
-                    "changed:form_light_latex_wolf_organic",
-                    "changed:form_light_latex_knight"
-                  ]
-                }
+              "function": "changed:random_variant",
+              "variants": [
+                "changed:form_latex_sniper_dog",
+                "changed:form_light_latex_wolf",
+                "changed:form_light_latex_wolf_organic",
+                "changed:form_light_latex_knight"
               ]
             }
           ]

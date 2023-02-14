@@ -126,24 +126,24 @@
             }
           ],
           "name": "changed:syringe"
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
         {
-          "rolls": 2,
-          "entries": [
+          "type": "minecraft:item",
+          "name": "changed:latex_syringe",
+          "functions": [
             {
-              "type": "minecraft:item",
-              "name": "changed:latex_syringe",
-              "functions": [
-                {
-                  "function": "changed:random_variant",
-                  "variants": [
-                    "changed:form_dark_latex_wolf/male",
-                    "changed:form_dark_latex_wolf/female",
-                    "changed:form_dark_latex_yufeng"
-                  ]
-
-                }
+              "function": "changed:random_variant",
+              "variants": [
+                "changed:form_dark_latex_wolf/male",
+                "changed:form_dark_latex_wolf/female",
+                "changed:form_dark_latex_yufeng"
               ]
+
             }
           ]
         }
