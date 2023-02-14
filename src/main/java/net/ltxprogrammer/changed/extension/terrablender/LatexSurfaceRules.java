@@ -14,7 +14,12 @@ public class LatexSurfaceRules {
         AtomicReference<SurfaceRules.RuleSource> ret = new AtomicReference<>(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
                 SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)));
         ChangedBiomes.DESCRIPTORS.forEach((key, biomeDesc) -> {
-            ret.set(SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.isBiome(key.getKey()), SurfaceRules.state(biomeDesc.groundBlock())), ret.get()));
+            ret.set(SurfaceRules.sequence(
+                        SurfaceRules.ifTrue(
+                            SurfaceRules.isBiome(key.getKey()),
+                                SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
+                                    SurfaceRules.state(biomeDesc.groundBlock()))),
+                    ret.get()));
         });
 
         return ret.getAcquire();
