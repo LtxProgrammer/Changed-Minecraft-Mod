@@ -4,5 +4,5 @@
 	"ingredient": {
 		"tag": "changed:crafting_white_block"
 	},
-	"result": "changed:wall_blue_tiles"
+	"result": "changed:wall_blue_tiled"
 }

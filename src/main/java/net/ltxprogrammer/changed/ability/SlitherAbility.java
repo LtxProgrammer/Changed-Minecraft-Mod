@@ -19,7 +19,7 @@ public class SlitherAbility extends SimpleAbility {
 
     @Override
     public boolean canKeepUsing(Player player, LatexVariant<?> variant) {
-        return !player.isCrouching();
+        return !player.isCrouching() && !player.isSleeping();
     }
 
     @Override
