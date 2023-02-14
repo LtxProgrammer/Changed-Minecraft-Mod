@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "changed:items/gold_lower_abdomen_armor"
+    "layer0": "changed:items/golden_lower_abdomen_armor"
   }
 }

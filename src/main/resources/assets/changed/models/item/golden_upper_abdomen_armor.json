@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "changed:items/gold_upper_abdomen_armor"
+    "layer0": "changed:items/golden_upper_abdomen_armor"
   }
 }

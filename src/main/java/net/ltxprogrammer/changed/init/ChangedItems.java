@@ -55,9 +55,9 @@ public class ChangedItems {
             () -> new AbdomenArmor(ArmorMaterials.IRON, EquipmentSlot.LEGS));
     public static final RegistryObject<AbdomenArmor> IRON_LOWER_ABDOMEN_ARMOR = register("iron_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.IRON, EquipmentSlot.FEET));
-    public static final RegistryObject<AbdomenArmor> GOLD_UPPER_ABDOMEN_ARMOR = register("gold_upper_abdomen_armor",
+    public static final RegistryObject<AbdomenArmor> GOLDEN_UPPER_ABDOMEN_ARMOR = register("golden_upper_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.GOLD, EquipmentSlot.LEGS));
-    public static final RegistryObject<AbdomenArmor> GOLD_LOWER_ABDOMEN_ARMOR = register("gold_lower_abdomen_armor",
+    public static final RegistryObject<AbdomenArmor> GOLDEN_LOWER_ABDOMEN_ARMOR = register("golden_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.GOLD, EquipmentSlot.FEET));
     public static final RegistryObject<AbdomenArmor> DIAMOND_UPPER_ABDOMEN_ARMOR = register("diamond_upper_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.DIAMOND, EquipmentSlot.LEGS));
