@@ -26,8 +26,8 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T>> extends RenderLayer<T, M> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
-    private final A innerModel;
-    private final A outerModel;
+    final A innerModel;
+    final A outerModel;
 
     public LatexHumanoidArmorLayer(RenderLayerParent<T, M> parentModel, A innerModel, A outerModel) {
         super(parentModel);
@@ -46,7 +46,7 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
     }
 
-    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, A model) {
+    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<T> model) {
         ItemStack itemstack = entity.getItemBySlot(slot);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
@@ -69,7 +69,7 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         }
     }
 
-    protected void setPartVisibility(T entity, A model, EquipmentSlot slot) {
+    protected void setPartVisibility(T entity, LatexHumanoidArmorModel<T> model, EquipmentSlot slot) {
         model.setAllVisible(false);
         switch(slot) {
             case HEAD:
@@ -130,14 +130,14 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
 
     }
 
-    private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean p_117111_, A model, float red, float green, float blue, ResourceLocation armorResource) {
+    private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean p_117111_, LatexHumanoidArmorModel<T> model, float red, float green, float blue, ResourceLocation armorResource) {
         model.renderToBuffer(pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, p_117111_),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
-    private A getArmorModel(EquipmentSlot p_117079_) {
-        return (A)(this.usesInnerModel(p_117079_) ? this.innerModel : this.outerModel);
+    LatexHumanoidArmorModel<T> getArmorModel(EquipmentSlot slot) {
+        return this.usesInnerModel(slot) ? this.innerModel : this.outerModel;
     }
 
     private boolean usesInnerModel(EquipmentSlot p_117129_) {
