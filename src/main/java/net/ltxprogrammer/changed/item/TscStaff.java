@@ -91,7 +91,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
 
     @Override
     public int attackStun() {
-        return 15;
+        return 10;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class TscStaff extends TscWeapon implements SpecializedItemRendering, Spe
 
     @Override
     public double attackSpeed() {
-        return -3.0;
+        return -3.5;
     }
 
     @Override
