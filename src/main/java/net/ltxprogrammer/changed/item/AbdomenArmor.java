@@ -37,13 +37,6 @@ public class AbdomenArmor extends ArmorItem implements WearableItem {
         return variant != null && !variant.hasLegs;
     }
 
-    private static boolean usesInnerModel(EquipmentSlot slot) {
-        return switch (slot) {
-            case FEET -> true;
-            default -> false;
-        };
-    }
-
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, @Nullable String type) {
@@ -54,7 +47,7 @@ public class AbdomenArmor extends ArmorItem implements WearableItem {
             domain = texture.substring(0, idx);
             texture = texture.substring(idx + 1);
         }
-        return String.format(java.util.Locale.ROOT, "%s:textures/models/abdomen_armor/%s_layer_%d%s.png", domain, texture, (usesInnerModel(slot) ? 2 : 1),
+        return String.format(java.util.Locale.ROOT, "%s:textures/models/abdomen_armor/%s_layer_%d%s.png", domain, texture, (useInnerAbdomenModel(slot) ? 2 : 1),
                 type == null ? "" : String.format(java.util.Locale.ROOT, "_%s", type));
     }
 }
