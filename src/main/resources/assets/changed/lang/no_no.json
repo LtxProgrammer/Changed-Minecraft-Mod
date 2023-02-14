@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blokker",
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
+  "itemGroup.tab_changed_weapons": "Changed våpen",
 
   "ability.changed.access_saddle": "Tilgang Sal",
   "ability.changed.extra_hands": "Ekstra Hender",
@@ -50,6 +51,19 @@
 
   "item.changed.tsc_staff": "TSC stab",
   "item.changed.tsc_baton": "TSC taktpinne",
+
+  "item.changed.leather_upper_abdomen_armor": "Lær øvre bukrustning",
+  "item.changed.leather_lower_abdomen_armor": "Lær nedre bukrustning",
+  "item.changed.chainmail_upper_abdomen_armor": "Brynje øvre bukrustning",
+  "item.changed.chainmail_lower_abdomen_armor": "Brynje nedre bukrustning",
+  "item.changed.iron_upper_abdomen_armor": "Jern øvre bukrustning",
+  "item.changed.iron_lower_abdomen_armor": "Jern nedre bukrustning",
+  "item.changed.gold_upper_abdomen_armor": "Gull øvre bukrustning",
+  "item.changed.gold_lower_abdomen_armor": "Gull nedre bukrustning",
+  "item.changed.diamond_upper_abdomen_armor": "Diamant øvre bukrustning",
+  "item.changed.diamond_lower_abdomen_armor": "Diamant nedre bukrustning",
+  "item.changed.netherite_upper_abdomen_armor": "Netheritt øvre bukrustning",
+  "item.changed.netherite_lower_abdomen_armor": "Netheritt nedre bukrustning",
 
   "item.changed.latex_dance_record": "Lateks dansemusikkplate",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
