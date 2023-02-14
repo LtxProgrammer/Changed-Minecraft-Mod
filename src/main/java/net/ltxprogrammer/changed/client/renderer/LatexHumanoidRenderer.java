@@ -13,28 +13,47 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T>> extends MobRenderer<T, M> {
-    public LatexHumanoidRenderer(EntityRendererProvider.Context context, M main,
-                                 Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
-        super(context, main, shadowSize);
-        if (main == null) return;
+    private void addLayers(EntityRendererProvider.Context context, M main) {
         this.addLayer(new LatexItemInHandLayer<>(this));
-        this.addLayer(new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter))));
         this.addLayer(new LatexArrowLayer<>(context, this));
         //this.addLayer(new LatexCapeLayer<>(this));
         this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParrotOnShoulderLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexBeeStingerLayer<>(this));
         this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
+    }
+
+    public LatexHumanoidRenderer(EntityRendererProvider.Context context, M main,
+                                 Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
+        super(context, main, shadowSize);
+        if (main == null) return;
+        this.addLayer(new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter))));
+        this.addLayers(context, main);
+    }
+
+    public <B extends LatexHumanoidArmorModel<T>> LatexHumanoidRenderer(EntityRendererProvider.Context context, M main,
+                                                                        Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter,
+                                                                        Function<ModelPart, B> ctorB, ModelLayerLocation armorInnerOther, ModelLayerLocation armorOuterOther,
+                                                                        Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner,
+                                                                        TriConsumer<T, LatexHumanoidArmorModel<T>, EquipmentSlot> setVisibility, float shadowSize) {
+        super(context, main, shadowSize);
+        if (main == null) return;
+        this.addLayer(new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)),
+                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner, setVisibility));
+        this.addLayers(context, main);
     }
 
     protected void setupRotations(@NotNull T p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_) {
