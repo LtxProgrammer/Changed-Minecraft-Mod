@@ -345,5 +345,8 @@
   "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform",
 
   "changed:advancements.main.transfur_mask.title": "Avviser menneskeheten",
-  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske."
+  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske.",
+
+  "changed:advancements.main.transfur_legless.title": "Mine ben!",
+  "changed:advancements.main.transfur_legless.description": "Transpels deg selv inn i en benløs form"
 }
