@@ -32,6 +32,9 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends Ent
     public final ModelPart leftLeg2;
     public final ModelPart rightLeg2;
 
+    public final ModelPart abdomen;
+    public final ModelPart lowerAbdomen;
+
     public final LatexHumanoidModelController controller;
 
     public static class Builder {
@@ -50,6 +53,9 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends Ent
         public ModelPart lowerTorso = null;
         public ModelPart leftLeg2 = null;
         public ModelPart rightLeg2 = null;
+
+        public ModelPart abdomen = null;
+        public ModelPart lowerAbdomen = null;
 
         public Builder(ModelPart head, ModelPart body, ModelPart tail, ModelPart leftLeg, ModelPart rightLeg, ModelPart leftArm, ModelPart rightArm) {
             this.head = head;
@@ -79,6 +85,12 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends Ent
             this.rightLeg2 = rightLeg2;
             return this;
         }
+
+        public Builder noLegs(ModelPart abdomen, ModelPart lowerAbdomen) {
+            this.abdomen = abdomen;
+            this.lowerAbdomen = lowerAbdomen;
+            return this;
+        }
     }
 
     public LatexHumanoidArmorModel(Builder builder, Consumer<LatexHumanoidModelController.Builder> consumer) {
@@ -97,6 +109,9 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends Ent
         this.rightArm2 = builder.rightArm2;
         this.leftArm3 = builder.leftArm3;
         this.rightArm3 = builder.rightArm3;
+
+        this.abdomen = builder.abdomen;
+        this.lowerAbdomen = builder.lowerAbdomen;
 
         var controllerBuilder = LatexHumanoidModelController.Builder.of(this, head, body, tail, rightArm, leftArm, rightLeg, leftLeg);
         if (consumer != null)
@@ -191,5 +206,7 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity> extends Ent
             rightArm3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         if (leftArm3 != null)
             leftArm3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (abdomen != null)
+            abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
