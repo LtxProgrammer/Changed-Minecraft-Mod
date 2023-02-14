@@ -54,7 +54,9 @@
             }
           ],
           "name": "changed:latex_base"
-        },
+        }
+      ]
+    },
     {
       "rolls": {
         "type": "minecraft:uniform",
@@ -108,24 +110,22 @@
             }
           ],
           "name": "changed:syringe"
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
         {
-          "rolls": 2,
-          "entries": [
+          "type": "minecraft:item",
+          "name": "changed:latex_syringe",
+          "functions": [
             {
-              "type": "minecraft:item",
-              "name": "changed:latex_syringe",
-              "functions": [
-                {
-                  "function": "changed:random_variant"
-                }
-              ]
+              "function": "changed:random_variant"
             }
           ]
         }
       ]
     }
-  ]
-}
   ]
 }
