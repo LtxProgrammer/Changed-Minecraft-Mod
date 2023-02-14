@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "changed:items/leather_lower_abdomen_armor"
+    "layer0": "changed:items/leather_lower_abdomen_armor",
+    "layer1": "changed:items/leather_lower_abdomen_armor_overlay"
   }
 }
