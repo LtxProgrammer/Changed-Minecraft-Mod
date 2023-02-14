@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Items",
   "itemGroup.tab_changed_entities": "Changed Entities",
+  "itemGroup.tab_changed_weapons": "Changed Weapons",
 
   "ability.changed.access_saddle": "Access Saddle",
   "ability.changed.extra_hands": "Extra Hands",
@@ -50,6 +51,19 @@
 
   "item.changed.tsc_staff": "TSC Staff",
   "item.changed.tsc_baton": "TSC Baton",
+
+  "item.changed.leather_upper_abdomen_armor": "Leather Upper Abdomen Armor",
+  "item.changed.leather_lower_abdomen_armor": "Leather Lower Abdomen Armor",
+  "item.changed.chainmail_upper_abdomen_armor": "Chainmail Upper Abdomen Armor",
+  "item.changed.chainmail_lower_abdomen_armor": "Chainmail Lower Abdomen Armor",
+  "item.changed.iron_upper_abdomen_armor": "Iron Upper Abdomen Armor",
+  "item.changed.iron_lower_abdomen_armor": "Iron Lower Abdomen Armor",
+  "item.changed.gold_upper_abdomen_armor": "Gold Upper Abdomen Armor",
+  "item.changed.gold_lower_abdomen_armor": "Gold Lower Abdomen Armor",
+  "item.changed.diamond_upper_abdomen_armor": "Diamond Upper Abdomen Armor",
+  "item.changed.diamond_lower_abdomen_armor": "Diamond Lower Abdomen Armor",
+  "item.changed.netherite_upper_abdomen_armor": "Netherite Upper Abdomen Armor",
+  "item.changed.netherite_lower_abdomen_armor": "Netherite Lower Abdomen Armor",
 
   "item.changed.latex_dance_record": "Latex Dance Music Disc",
   "item.changed.latex_dance_record.desc": "By LtxProgrammer",

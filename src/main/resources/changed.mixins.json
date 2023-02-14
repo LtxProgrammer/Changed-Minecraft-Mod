@@ -5,12 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "changed.refmap.json",
   "mixins": [
+    "AbstractContainerScreenMixin",
     "ArrowMixin",
     "BlockBehaviourMixin",
     "BlockMixin",
     "BlockStateBaseMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
+    "ForgeHooksClientMixin",
     "IronGolemMixin",
     "ItemMixin",
     "ItemStackMixin",
@@ -35,6 +37,9 @@
     "GameRendererMixin",
     "GuiMixin",
     "HumanoidMobRendererMixin",
+    "HumanoidModelMixin",
+    "ItemInHandRendererMixin",
+    "ItemRendererMixin",
     "LocalPlayerMixin",
     "ModelBakeryMixin",
     "PlayerRendererMixin",
@@ -42,10 +47,7 @@
     "RecipeButtonMixin",
     "SplashManagerMixin",
     "TextureAtlasMixin",
-    "TextureManagerMixin",
-    "ItemRendererMixin",
-    "HumanoidModelMixin",
-    "ItemInHandRendererMixin"
+    "TextureManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
