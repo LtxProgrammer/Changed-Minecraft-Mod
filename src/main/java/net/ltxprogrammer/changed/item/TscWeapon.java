@@ -25,7 +25,7 @@ public abstract class TscWeapon extends Item implements Vanishable {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public TscWeapon(Properties properties) {
-        super(properties.tab(ChangedTabs.TAB_CHANGED_ITEMS));
+        super(properties.tab(ChangedTabs.TAB_CHANGED_COMBAT));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamage(), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed(), AttributeModifier.Operation.ADDITION));

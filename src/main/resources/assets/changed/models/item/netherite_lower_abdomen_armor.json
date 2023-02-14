@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed:items/netherite_lower_abdomen_armor"
+  }
+}
