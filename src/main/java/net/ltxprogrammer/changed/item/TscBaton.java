@@ -84,7 +84,7 @@ public class TscBaton extends TscWeapon implements SpecializedItemRendering {
 
     @Override
     public int attackStun() {
-        return 8;
+        return 5;
     }
 
     @Override
