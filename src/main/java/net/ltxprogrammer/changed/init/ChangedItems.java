@@ -44,9 +44,9 @@ public class ChangedItems {
     public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);
 
     public static final RegistryObject<AbdomenArmor> LEATHER_UPPER_ABDOMEN_ARMOR = register("leather_upper_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.LEGS));
+            () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.LEGS));
     public static final RegistryObject<AbdomenArmor> LEATHER_LOWER_ABDOMEN_ARMOR = register("leather_lower_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.FEET));
+            () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.FEET));
     public static final RegistryObject<AbdomenArmor> CHAINMAIL_UPPER_ABDOMEN_ARMOR = register("chainmail_upper_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.CHAIN, EquipmentSlot.LEGS));
     public static final RegistryObject<AbdomenArmor> CHAINMAIL_LOWER_ABDOMEN_ARMOR = register("chainmail_lower_abdomen_armor",
