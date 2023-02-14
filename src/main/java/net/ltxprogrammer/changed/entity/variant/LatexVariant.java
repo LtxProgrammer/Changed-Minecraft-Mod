@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -499,6 +500,9 @@ public class LatexVariant<T extends LatexEntity> {
         if (!hasLegs) {
             player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
                 if (itemStack.getItem() instanceof ArmorItem armorItem) {
+                    if (armorItem instanceof AbdomenArmor)
+                        return; // Allowed
+
                     switch (armorItem.getSlot()) {
                         case FEET:
                         case LEGS:
