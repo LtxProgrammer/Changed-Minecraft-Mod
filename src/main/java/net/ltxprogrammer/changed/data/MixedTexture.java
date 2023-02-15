@@ -173,8 +173,10 @@ public class MixedTexture extends AbstractTexture {
                 }
             });
 
-            if (baseImage == null)
+            if (baseImage == null) {
+                LOGGER.warn("Unable to load base image {}", getResourceLocation(baseLocation));
                 return;
+            }
 
             Pair<Integer, Integer> frameSize = imageSize(baseImage, baseMetadata);
             NativeImage newImage = new NativeImage(frameSize.getFirst(), frameSize.getSecond(), false);

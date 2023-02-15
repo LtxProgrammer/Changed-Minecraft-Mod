@@ -126,17 +126,27 @@ public abstract class TextureAtlasMixin {
                 return;
 
             var texture = MixedTexture.findTexture(resourcelocation);
+            if (texture == null) {
+                int attempts = 30; // Corrupt textures may be from a race condition
+                while (attempts > 0 && texture == null) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (Exception e) {
+                        LOGGER.error("Failed to sleep", e);
+                    }
+                    texture = MixedTexture.findTexture(resourcelocation);
+                    attempts--;
+                }
+                if (texture == null)
+                    LOGGER.error("Missing generated texture for {}", info.name());
+            }
+
             if (texture != null) {
                 try {
                     list.add(new TextureAtlasSprite((TextureAtlas)(Object)this, info, param, i1, i2, i3, i4, texture));
                 } catch (Exception exception) {
                     LOGGER.error("Failed to load mixed texture {}", info.name(), exception);
-                    return;
                 }
-            }
-
-            else {
-                LOGGER.error("Missing generated texture for {}", info.name());
             }
         });
     }
