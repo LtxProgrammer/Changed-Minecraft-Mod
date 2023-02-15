@@ -28,6 +28,11 @@ public class LightLatexKnightFusion extends LightLatexKnight {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffffff");
+    }
+
+    @Override
     public LatexVariant<?> getTransfurVariant() {
         return LatexVariant.LIGHT_LATEX_KNIGHT_FUSION;
     }

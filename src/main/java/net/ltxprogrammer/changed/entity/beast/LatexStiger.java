@@ -33,6 +33,11 @@ public class LatexStiger extends LatexEntity {
     public TransfurMode getTransfurMode() { return TransfurMode.REPLICATION; }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#7b4251");
+    }
+
+    @Override
     public MobType getMobType() {
         return MobType.UNDEFINED;
     }

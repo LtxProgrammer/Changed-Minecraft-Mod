@@ -11,6 +11,12 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#383838");
+    }
+
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.DARK;
     }
