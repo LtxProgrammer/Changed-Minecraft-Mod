@@ -2,27 +2,24 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -41,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class LatexSyringe extends Item {
+public class LatexSyringe extends Item implements SpecializedAnimations {
     public LatexSyringe(Properties p_41383_) {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
@@ -73,10 +70,10 @@ public class LatexSyringe extends Item {
         }
     }
 
-    public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
-        if (this.allowdedIn(p_43356_)) {
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+        if (this.allowdedIn(tab)) {
             for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
-                p_43357_.add(Syringe.setPureVariant(new ItemStack(this), variant));
+                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
             }
         }
     }
@@ -95,16 +92,12 @@ public class LatexSyringe extends Item {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
-    }
-
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
-
+        ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null) {
             CompoundTag tag = stack.getTag();
 
@@ -151,6 +144,17 @@ public class LatexSyringe extends Item {
         return stack.getTag().contains("safe") ? (stack.getTag().getBoolean("safe") ? Rarity.RARE : Rarity.UNCOMMON) : Rarity.UNCOMMON;
     }
 
+    @Nullable
+    @Override
+    public SpecializedAnimations.AnimationHandler getAnimationHandler() {
+        return new Syringe.SyringeAnimation(this);
+    }
+
+    @Override
+    public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        return true;
+    }
+
     // Cancel this event if your implementation consumes the action upon a block
     public static class UsedOnBlock extends Event {
         public final BlockPos blockPos;
@@ -169,6 +173,8 @@ public class LatexSyringe extends Item {
             this.syringe = syringe;
             this.syringeVariant = syringeVariant;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -187,6 +193,8 @@ public class LatexSyringe extends Item {
             this.syringe = syringe;
             this.syringeVariant = syringeVariant;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     @Override

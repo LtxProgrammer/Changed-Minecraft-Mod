@@ -21,9 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void use(Level level, Player player, InteractionHand p_41434_, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback) {
-        if ((Item)(Object)this instanceof SaddleItem) {
-            if (ProcessTransfur.isPlayerLatex(player) && ProcessTransfur.getPlayerLatexVariant(player).rideable()) {
-                var variant = ProcessTransfur.getPlayerLatexVariant(player);
+        if (asItem() instanceof SaddleItem) {
+            ProcessTransfur.ifPlayerLatex(player, variant -> {
                 var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
                 if (ability.saddle.isEmpty()) { // Quick equip saddle
                     ItemStack itemstack = player.getItemInHand(p_41434_);
@@ -35,7 +34,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
                     itemstack.shrink(1);
                     callback.setReturnValue(InteractionResultHolder.consume(itemstack));
                 }
-            }
+            });
         }
     }
 }

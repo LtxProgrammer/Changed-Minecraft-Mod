@@ -11,6 +11,7 @@
     "BlockStateBaseMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
+    "ForgeHooksClientMixin",
     "IronGolemMixin",
     "ItemMixin",
     "ItemStackMixin",
@@ -27,6 +28,7 @@
     "WallBlockMixin"
   ],
   "client": [
+    "AbstractContainerScreenMixin",
     "BlockColorsMixin",
     "CameraMixin",
     "ClientRecipeBookMixin",
@@ -35,11 +37,15 @@
     "GameRendererMixin",
     "GuiMixin",
     "HumanoidMobRendererMixin",
+    "HumanoidModelMixin",
+    "ItemInHandRendererMixin",
+    "ItemRendererMixin",
     "LocalPlayerMixin",
     "ModelBakeryMixin",
     "PlayerRendererMixin",
     "RecipeBookTabButtonMixin",
     "RecipeButtonMixin",
+    "SplashManagerMixin",
     "TextureAtlasMixin",
     "TextureManagerMixin"
   ],

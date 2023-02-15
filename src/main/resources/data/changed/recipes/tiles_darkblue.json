@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"count": 1,
+	"ingredient": {
+		"tag": "changed:crafting_blue_block"
+	},
+	"result": "changed:tiles_darkblue"
+}

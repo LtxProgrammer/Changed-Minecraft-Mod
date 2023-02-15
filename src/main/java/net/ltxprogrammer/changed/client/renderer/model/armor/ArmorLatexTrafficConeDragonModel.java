@@ -65,4 +65,11 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
 
         return LayerDefinition.create(process(meshdefinition), 64, 32);
     }
+
+    @Override
+    public void prepareForShorts() {
+        body.visible = true;
+        leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+        rightLeg.getChild("RightUpperLeg_r1").visible = true;
+    }
 }

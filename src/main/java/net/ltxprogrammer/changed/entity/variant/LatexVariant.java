@@ -13,9 +13,11 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -61,6 +63,7 @@ public class LatexVariant<T extends LatexEntity> {
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
     public static Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> PUBLIC_LATEX_FORMS = new HashMap<>();
+    public static Map<ResourceLocation, GenderedVariant<?, ?>> GENDERED_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> MOB_FUSION_LATEX_FORMS = new HashMap<>();
     public static Map<ResourceLocation, LatexVariant<?>> SPECIAL_LATEX_FORMS = new HashMap<>();
@@ -138,12 +141,12 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_ORCA).replicating()
             .build(Changed.modResource("form_latex_orca")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
-            .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(2.9F).absorbing().additionalHealth(10).noLegs().cannotWalk())
+            .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(2.9F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
     public static final LatexVariant<LatexMedusaCat> LATEX_MEDUSA_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_MEDUSA_CAT)
             .build(Changed.modResource("form_latex_medusa_cat")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
-            .groundSpeed(0.26F).swimSpeed(2.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(10).noLegs().cannotWalk()
+            .groundSpeed(0.26F).swimSpeed(2.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final GenderedVariant<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOG = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SQUID_DOG_MALE, ChangedEntities.LATEX_SQUID_DOG_FEMALE)
@@ -155,10 +158,14 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
+    public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
+            .build(Changed.modResource("form_latex_otter")));
     public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().cannotWalk()
             .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide().sound(ChangedSounds.SOUND3.getLocation())
             .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(Builder.of(ChangedEntities.LATEX_SNAKE).groundSpeed(1.0F).swimSpeed(0.9f).additionalHealth(6).noLegs()
+            .stepSize(1.1f).addAbility(ChangedAbilities.SLITHER).build(Changed.modResource("form_latex_snake")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
             .build(Changed.modResource("form_dark_latex_yufeng")));
     public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
@@ -196,6 +203,17 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public TransfurMode transfurMode() { return transfurMode; }
+
+    public boolean isGendered() {
+        for (var entry : GENDERED_LATEX_FORMS.entrySet()) {
+            if (entry.getValue().male.formId.equals(this.formId))
+                return true;
+            if (entry.getValue().female.formId.equals(this.formId))
+                return true;
+        }
+
+        return false;
+    }
 
     public int getTicksRequiredToFreeze(Level level) {
         return ChangedEntities.getCachedEntity(level, ctor.get()).getTicksRequiredToFreeze();
@@ -482,6 +500,9 @@ public class LatexVariant<T extends LatexEntity> {
         if (!hasLegs) {
             player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
                 if (itemStack.getItem() instanceof ArmorItem armorItem) {
+                    if (armorItem instanceof AbdomenArmor)
+                        return; // Allowed
+
                     switch (armorItem.getSlot()) {
                         case FEET:
                         case LEGS:
@@ -1058,6 +1079,7 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> GenderedVariant<M, F> register(GenderedVariant<M, F> variant) {
+        GENDERED_LATEX_FORMS.put(variant.formId, variant);
         ALL_LATEX_FORMS.put(variant.male.formId, variant.male);
         ALL_LATEX_FORMS.put(variant.female.formId, variant.female);
         PUBLIC_LATEX_FORMS.put(variant.male.formId, variant.male);
@@ -1087,19 +1109,21 @@ public class LatexVariant<T extends LatexEntity> {
     }
 
     public static LatexVariant<?> getEntityTransfur(LivingEntity entity) {
-        if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
-            return ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity().getTransfurVariant();
-        else if (entity instanceof LatexEntity latexEntity)
-            return latexEntity.getTransfurVariant();
-        return null;
+        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+                variant -> variant.getLatexEntity().getTransfurVariant(), () -> {
+            if (entity instanceof LatexEntity latexEntity)
+                return latexEntity.getTransfurVariant();
+            return null;
+        });
     }
 
     public static LatexVariant<?> getEntityVariant(LivingEntity entity) {
-        if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
-            return ProcessTransfur.getPlayerLatexVariant(player);
-        else if (entity instanceof LatexEntity latexEntity)
-            return latexEntity.getSelfVariant();
-        return null;
+        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+                variant -> variant, () -> {
+                    if (entity instanceof LatexEntity latexEntity)
+                        return latexEntity.getSelfVariant();
+                    return null;
+                });
     }
 
     @SubscribeEvent
@@ -1113,11 +1137,13 @@ public class LatexVariant<T extends LatexEntity> {
     @SubscribeEvent
     public static void onSizeEvent(EntityEvent.Size event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.isAddedToWorld() && ProcessTransfur.isPlayerLatex(player)) {
-                LatexEntity latexEntity = ProcessTransfur.getPlayerLatexVariant(player).getLatexEntity();
+            if (player.isAddedToWorld()) {
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    LatexEntity latexEntity = variant.getLatexEntity();
 
-                event.setNewSize(latexEntity.getDimensions(event.getPose()));
-                event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                    event.setNewSize(latexEntity.getDimensions(event.getPose()));
+                    event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                });
             }
         }
     }

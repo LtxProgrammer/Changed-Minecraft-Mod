@@ -1,19 +1,13 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BloodSyringe extends Item {
+public class BloodSyringe extends Item implements SpecializedAnimations {
     public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
 
     public BloodSyringe(Properties p_41383_) {
@@ -54,16 +48,12 @@ public class BloodSyringe extends Item {
         return 16;
     }
 
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
-        return UseAnim.DRINK;
-    }
-
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity) {
         Player player = entity instanceof Player ? (Player)entity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
-
+        ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null) {
             if (ProcessTransfur.isPlayerLatex(player) || (stack.getOrCreateTag().contains("owner") && stack.getTag().getUUID("owner").equals(player.getUUID()))) {
                 player.heal(1.0f);
@@ -92,6 +82,17 @@ public class BloodSyringe extends Item {
         return stack.getTag().contains("owner");
     }
 
+    @Nullable
+    @Override
+    public AnimationHandler getAnimationHandler() {
+        return new Syringe.SyringeAnimation(this);
+    }
+
+    @Override
+    public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
+        return true;
+    }
+
     // Cancel this event if your implementation consumes the action upon a block
     public static class UsedOnBlock extends Event {
         public final BlockPos blockPos;
@@ -108,6 +109,8 @@ public class BloodSyringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     // Cancel this event if your implementation consumes the action upon a block
@@ -124,6 +127,8 @@ public class BloodSyringe extends Item {
             this.player = player;
             this.syringe = syringe;
         }
+
+        @Override public boolean isCancelable() { return true; }
     }
 
     @Override

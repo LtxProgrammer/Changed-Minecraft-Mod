@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -67,5 +68,12 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
             randomXZdir = randomXZdir.normalize();
             livingEntity.move(MoverType.SELF, randomXZdir.multiply(0.05, 0, 0.05));
         });
+    }
+
+    @Override
+    public boolean isVisuallySwimming() {
+        if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
+            return true;
+        return this.isEyeInFluid(FluidTags.WATER) || super.isVisuallySwimming();
     }
 }

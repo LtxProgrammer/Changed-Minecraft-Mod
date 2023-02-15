@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Items",
   "itemGroup.tab_changed_entities": "Changed Entities",
+  "itemGroup.tab_changed_combat": "Changed Combat",
 
   "ability.changed.access_saddle": "Access Saddle",
   "ability.changed.extra_hands": "Extra Hands",
@@ -12,7 +13,9 @@
   "ability.changed.access_chest": "Access Chest",
   "ability.changed.switch_hands": "Switch Hands",
   "ability.changed.switch_gender": "Switch Gender",
-  "ability.changed.use_variant_ability": "Use Variant Ability",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnosis",
+  "ability.changed.use_variant_ability.siren_sing": "Sing",
+  "ability.changed.slither": "Slither",
 
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
@@ -23,7 +26,8 @@
   "subtitles.changed.shot1": "Laser activates",
   "subtitles.changed.siren": "Siren sings",
   "subtitles.changed.save": "Retinal scanner beeps",
-
+  "subtitles.changed.sword1": "Needle pricks",
+  "subtitles.changed.paralyze1": "Weapon shocks",
 
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.benign_pants": "Latex Pants",
@@ -46,6 +50,22 @@
   "item.changed.white_latex_goo": "White Latex Goo",
   "item.changed.white_latex_bucket": "White Latex Bucket",
 
+  "item.changed.tsc_staff": "TSC Staff",
+  "item.changed.tsc_baton": "TSC Baton",
+
+  "item.changed.leather_upper_abdomen_armor": "Leather Upper Abdomen Armor",
+  "item.changed.leather_lower_abdomen_armor": "Leather Lower Abdomen Armor",
+  "item.changed.chainmail_upper_abdomen_armor": "Chainmail Upper Abdomen Armor",
+  "item.changed.chainmail_lower_abdomen_armor": "Chainmail Lower Abdomen Armor",
+  "item.changed.iron_upper_abdomen_armor": "Iron Upper Abdomen Armor",
+  "item.changed.iron_lower_abdomen_armor": "Iron Lower Abdomen Armor",
+  "item.changed.golden_upper_abdomen_armor": "Golden Upper Abdomen Armor",
+  "item.changed.golden_lower_abdomen_armor": "Golden Lower Abdomen Armor",
+  "item.changed.diamond_upper_abdomen_armor": "Diamond Upper Abdomen Armor",
+  "item.changed.diamond_lower_abdomen_armor": "Diamond Lower Abdomen Armor",
+  "item.changed.netherite_upper_abdomen_armor": "Netherite Upper Abdomen Armor",
+  "item.changed.netherite_lower_abdomen_armor": "Netherite Lower Abdomen Armor",
+
   "item.changed.latex_dance_record": "Latex Dance Music Disc",
   "item.changed.latex_dance_record.desc": "By LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ Music Disc",
@@ -55,6 +75,7 @@
   "death.attack.changed:transfur.player": "%1$s was transfurred by %2$s",
   "death.attack.changed:white_latex": "%s was dissolved by white latex",
   "death.attack.changed:pale": "%s was taken by Pale",
+  "death.attack.changed:bloodloss": "%s used foreign plasma",
 
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
@@ -82,6 +103,7 @@
   "text.changed.syringe.no_owner": "Cannot get player name",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
+  "effect.changed.shock": "Shock",
 
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
@@ -119,6 +141,7 @@
   "block.changed.tiles_blue": "Blue Tiles",
   "block.changed.tiles_blue_small": "Small Blue Tiles",
   "block.changed.tiles_caution": "Caution Tiles",
+  "block.changed.tiles_darkblue": "Dark Blue Tiles",
   "block.changed.tiles_grayblue": "Grayblue Tiles",
   "block.changed.tiles_grayblue_bolted_connected": "Connected Bolted Grayblue Tiles",
   "block.changed.tiles_grayblue_bolted": "Bolted Grayblue Tiles",
@@ -127,6 +150,7 @@
   "block.changed.tiles_gray": "Gray Tiles",
   "block.changed.tiles_gray_stairs": "Gray Tile Stairs",
   "block.changed.tiles_greenhouse": "Greenhouse Tiles",
+  "block.changed.tiles_greenhouse_connected": "Connected Greenhouse Tiles",
   "block.changed.tiles_library_brown": "Brown Library Tile",
   "block.changed.tiles_library_tan": "Tan Library Tile",
   "block.changed.tiles_white": "White Tiles",
@@ -134,6 +158,7 @@
   "block.changed.tiles_white_connected": "Connected White Tiles",
   "block.changed.vent_hatch": "Vent Hatch",
   "block.changed.wall_blue_striped": "Striped Blue Wall",
+  "block.changed.wall_blue_tiled": "Tiled Blue Wall",
   "block.changed.wall_caution": "Caution Wall",
   "block.changed.wall_library_upper": "Upper Library Wall",
   "block.changed.wall_library_lower": "Lower Library Wall",
@@ -179,6 +204,7 @@
   "entity.changed.latex_mermaid_shark": "Latex Mermaid Shark",
   "entity.changed.latex_mimic_plant": "Latex Mimic Plant",
   "entity.changed.latex_orca": "Latex Orca",
+  "entity.changed.latex_otter": "Latex Otter",
   "entity.changed.latex_pink_deer": "Latex Pink Deer",
   "entity.changed.latex_pink_wyvern": "Latex Pink Wyvern",
   "entity.changed.latex_pink_yuin_dragon": "Latex Pink Yuin Dragon",
@@ -193,6 +219,7 @@
   "entity.changed.latex_snow_leopard_male": "Male Latex Snow Leopard",
   "entity.changed.latex_silver_fox": "Latex Silver Fox",
   "entity.changed.latex_siren": "Latex Siren",
+  "entity.changed.latex_snake": "Latex Snake",
   "entity.changed.latex_sniper_dog": "Sniper Dog",
   "entity.changed.latex_squid_dog_female": "Female Latex Squid Dog",
   "entity.changed.latex_squid_dog_male": "Male Latex Squid Dog",
@@ -210,6 +237,7 @@
   "entity.changed.light_latex_wolf_female": "Female Light Latex Wolf",
   "entity.changed.light_latex_wolf_male": "Male Light Latex Wolf",
   "entity.changed.light_latex_wolf_organic": "Organic Light Wolf",
+  "entity.changed.shark": "Shark",
   "entity.changed.white_latex_wolf": "White Latex Wolf",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Gas Latex Wolf Spawn Egg",
@@ -234,6 +262,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Latex Mermaid Shark Spawn Egg",
   "item.changed.latex_mimic_plant_spawn_egg": "Latex Mimic Plant Spawn Egg",
   "item.changed.latex_orca_spawn_egg": "Latex Orca Spawn Egg",
+  "item.changed.latex_otter_spawn_egg": "Latex Otter Spawn Egg",
   "item.changed.latex_pink_deer_spawn_egg": "Latex Pink Deer Spawn Egg",
   "item.changed.latex_pink_wyvern_spawn_egg": "Latex Pink Wyvern Spawn Egg",
   "item.changed.latex_pink_yuin_dragon_spawn_egg": "Latex Pink Yuin Dragon Spawn Egg",
@@ -252,6 +281,7 @@
   "item.changed.latex_stiger_spawn_egg": "Latex Stiger Spawn Egg",
   "item.changed.latex_silver_fox_spawn_egg": "Latex Silver Fox Spawn Egg",
   "item.changed.latex_siren_spawn_egg": "Latex Siren Spawn Egg",
+  "item.changed.latex_snake_spawn_egg": "Latex Snake Spawn Egg",
   "item.changed.latex_sniper_dog_spawn_egg": "Sniper Dog Spawn Egg",
   "item.changed.latex_tiger_shark_spawn_egg": "Latex Tiger Shark Spawn Egg",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Latex Traffic Cone Dragon Spawn Egg",
@@ -265,6 +295,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Female Light Latex Wolf Spawn Egg",
   "item.changed.light_latex_wolf_male_spawn_egg": "Male Light Latex Wolf Spawn Egg",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Organic Light Wolf Spawn Egg",
+  "item.changed.shark_spawn_egg": "Shark Spawn Egg",
   "item.changed.white_latex_wolf_spawn_egg": "White Latex Wolf Spawn Egg",
 
   "changed.patreon.level0": "Discord Member",
@@ -330,5 +361,8 @@
   "changed:advancements.main.transfur_aerial.description": "Transfur yourself into a aerial form",
 
   "changed:advancements.main.transfur_mask.title": "Rejecting Humanity",
-  "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask."
+  "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask.",
+
+  "changed:advancements.main.transfur_legless.title": "My Legs!",
+  "changed:advancements.main.transfur_legless.description": "Transfur yourself into a legless form"
 }

@@ -1,0 +1,9 @@
+{
+  "id": "changed-mcreator-plugin",
+  "minversion": 202000318613,
+  "info": {
+    "name": "Changed plugin for MCreator",
+    "version": "1.0.0",
+    "authors": "LtxProgrammer"
+  }
+}

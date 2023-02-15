@@ -51,7 +51,7 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F + 25.5F, 0.0F));
 
-        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(4, 20).addBox(-1.5F, 0.1914F, -1.4483F, 3.0F, 6.0F, 3.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+        PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(4, 20).addBox(-1.5F, 0.1914F, -1.4483F, 3.0F, 6.0F, 3.0F, layer.slightAltDeformation), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
         PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(4, 19).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create(), PartPose.offset(0.0F, 25.0F, 0.0F));
@@ -63,5 +63,12 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
         PartDefinition LeftArm_r1 = LeftArm.addOrReplaceChild("LeftArm_r1", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(0.0F - 5.0F, -2.0F + 24.5F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offsetAndRotation(4.0F, -24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
+    }
+
+    @Override
+    public void prepareForShorts() {
+        body.visible = true;
+        leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+        rightLeg.getChild("RightUpperLeg_r1").visible = true;
     }
 }

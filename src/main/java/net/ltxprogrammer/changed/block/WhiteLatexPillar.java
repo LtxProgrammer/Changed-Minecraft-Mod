@@ -17,7 +17,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -122,7 +121,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         if (blockState.getValue(EXTENDED) != wantToAppear) {
             ChangedSounds.broadcastSound(level.getServer(), ChangedSounds.POISON, blockPos, 1, 1);
             level.setBlockAndUpdate(blockPos, blockState.setValue(EXTENDED, wantToAppear));
-            level.setBlockAndUpdate(blockPos.above(), level.getBlockState(blockPos.above()).setValue(EXTENDED, wantToAppear));
+            level.setBlockAndUpdate(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER).setValue(EXTENDED, wantToAppear));
         }
     }
 

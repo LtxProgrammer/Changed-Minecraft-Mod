@@ -56,7 +56,7 @@ public class MixedTexture extends AbstractTexture {
         this.name = name;
     }
 
-    public static NativeImage findTexture(ResourceLocation name) {
+    public static NativeImage findMixedTexture(ResourceLocation name) {
         return IMAGE_CACHE.getOrDefault(name, null);
     }
 
@@ -114,10 +114,12 @@ public class MixedTexture extends AbstractTexture {
     }
 
     private static final Map<ResourceLocation, AnimationMetadataSection> IMAGE_META_CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, NativeImage> IMAGE_SETUP_CACHE = new HashMap<>();
     private static final Map<ResourceLocation, NativeImage> IMAGE_CACHE = new HashMap<>();
 
     public static void clearCache() {
         IMAGE_META_CACHE.clear();
+        IMAGE_SETUP_CACHE.clear();
         IMAGE_CACHE.clear();
     }
 
@@ -155,7 +157,7 @@ public class MixedTexture extends AbstractTexture {
                     return null;
                 }
             });
-            NativeImage baseImage = IMAGE_CACHE.computeIfAbsent(getResourceLocation(baseLocation), loc ->
+            NativeImage baseImage = IMAGE_SETUP_CACHE.computeIfAbsent(getResourceLocation(baseLocation), loc ->
             {
                 try {
                     return NativeImage.read(resourceManager.getResource(loc).getInputStream());
@@ -164,7 +166,7 @@ public class MixedTexture extends AbstractTexture {
                     return null;
                 }
             });
-            NativeImage overlayImage = IMAGE_CACHE.computeIfAbsent(getResourceLocation(overlayLocation), loc ->
+            NativeImage overlayImage = IMAGE_SETUP_CACHE.computeIfAbsent(getResourceLocation(overlayLocation), loc ->
             {
                 try {
                     return NativeImage.read(resourceManager.getResource(loc).getInputStream());
@@ -173,8 +175,10 @@ public class MixedTexture extends AbstractTexture {
                 }
             });
 
-            if (baseImage == null)
+            if (baseImage == null) {
+                LOGGER.warn("Unable to load base image {}", getResourceLocation(baseLocation));
                 return;
+            }
 
             Pair<Integer, Integer> frameSize = imageSize(baseImage, baseMetadata);
             NativeImage newImage = new NativeImage(frameSize.getFirst(), frameSize.getSecond(), false);

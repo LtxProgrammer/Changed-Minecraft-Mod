@@ -36,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.*;
 
 @Mixin(BlockBehaviour.class)
 public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Block> {
@@ -117,15 +115,16 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
             callbackInfoReturnable.setReturnValue(InteractionResult.PASS);
 
             if (coveredWith == LatexType.WHITE_LATEX) {
-                LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-                if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
-                        /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
-                    if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
-                        return;
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    if (variant.getLatexType() == LatexType.WHITE_LATEX &&
+                            /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
+                        if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
+                            return;
 
-                    WhiteLatexTransportInterface.entityEnterLatex(player, pos);
-                    callbackInfoReturnable.setReturnValue(InteractionResult.CONSUME);
-                }
+                        WhiteLatexTransportInterface.entityEnterLatex(player, pos);
+                        callbackInfoReturnable.setReturnValue(InteractionResult.CONSUME);
+                    }
+                });
             }
         }
     }

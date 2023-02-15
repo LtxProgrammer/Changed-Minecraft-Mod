@@ -2,12 +2,14 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
@@ -260,7 +262,7 @@ public class LatexHumanoidModelController {
             this.Tail.yRot = Mth.cos(limbSwing * 0.6662F) * (entity.isInWaterOrBubble() && swimTail ? 0.18F : 0.125F) * limbSwingAmount / f;
             this.Tail.zRot = 0.0F;
         }
-        if (!this.hasLegs) { // TODO better slither
+        if (!this.hasLegs) {
             float slitherAmount = Math.min(0.5F, limbSwingAmount);
             this.Abdomen.xRot = (float) Math.toRadians(-12.5);
             this.Abdomen.yRot = Mth.cos(limbSwing * 0.33333334F + ((float)Math.PI / 2.0F)) * 0.6F * slitherAmount;
@@ -274,10 +276,11 @@ public class LatexHumanoidModelController {
 
             float offset = 0.0F;
             for (ModelPart joint : this.TailJoints) {
+                joint.zRot = -0.35F * Mth.cos(limbSwing * 0.33333334F -
+                        (((float)Math.PI / 3.0F) * offset)) * slitherAmount;
                 joint.xRot = 0.0F;
-                joint.zRot = Mth.cos((limbSwing * 0.33333334F) - (((float)Math.PI / 2.0F) * offset)) * 0.3F * slitherAmount;
                 joint.yRot = 0.0F;
-                offset += 1.0F;
+                offset += 0.75F;
             }
         }
 
@@ -364,6 +367,7 @@ public class LatexHumanoidModelController {
             if (!this.hasLegs) {
                 this.Abdomen.y = 12.2F + hipOffset;
                 this.Abdomen.z = 4.0F + forewardOffset;
+                this.LowerAbdomen.xRot = (float) Math.toRadians(75);
             }
         } else {
             this.Torso.xRot = 0.0F;
@@ -483,22 +487,24 @@ public class LatexHumanoidModelController {
             }
 
             else if (!this.hasLegs) {
-                this.Abdomen.xRot = Mth.lerp(f2, this.Abdomen.xRot, 0.0f);
-                this.Abdomen.yRot = Mth.lerp(f2, this.Abdomen.yRot, 0.0f);
+                this.Abdomen.xRot = Mth.lerp(this.swimAmount, this.Abdomen.xRot, 0.0f);
+                this.Abdomen.yRot = Mth.lerp(this.swimAmount, this.Abdomen.yRot, 0.0f);
                 this.Abdomen.zRot = Mth.lerp(this.swimAmount, this.Abdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F));
-                this.LowerAbdomen.xRot = Mth.lerp(f2, this.LowerAbdomen.xRot, 0.0f);
-                this.LowerAbdomen.yRot = Mth.lerp(f2, this.LowerAbdomen.yRot, 0.0f);
+                this.LowerAbdomen.xRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.xRot, 0.0f);
+                this.LowerAbdomen.yRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.yRot, 0.0f);
                 this.LowerAbdomen.zRot = Mth.lerp(this.swimAmount, this.LowerAbdomen.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 3.0F)));
-                this.Tail.xRot = Mth.lerp(f2, this.Tail.xRot, 0.0f);
-                this.Tail.yRot = Mth.lerp(f2, this.Tail.yRot, 0.0f);
+                this.Tail.xRot = Mth.lerp(this.swimAmount, this.Tail.xRot, -0.15f);
+                this.Tail.yRot = Mth.lerp(this.swimAmount, this.Tail.yRot, 0.0f);
                 this.Tail.zRot = Mth.lerp(this.swimAmount, this.Tail.zRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - ((float)Math.PI / 1.5F)));
+
 
                 float offset = 0.0F;
                 for (ModelPart joint : this.TailJoints) {
-                    offset += 1.0F;
-                    joint.xRot = 0.0F;
-                    joint.zRot = 0.0F;
-                    joint.yRot = Mth.lerp(this.swimAmount, joint.yRot, 0.35F * Mth.cos(limbSwing * 0.33333334F - (((float)Math.PI / 3.0F) * offset)));
+                    joint.zRot = Mth.lerp(this.swimAmount, joint.zRot, -0.35F * Mth.cos(limbSwing * 0.33333334F -
+                            (((float)Math.PI / 3.0F) * offset)));
+                    joint.xRot = Mth.lerp(this.swimAmount, joint.xRot, 0.0f);
+                    joint.yRot = Mth.lerp(this.swimAmount, joint.yRot, 0.0f);
+                    offset += 0.75F;
                 }
 
                 if (swimTail) {
@@ -622,9 +628,54 @@ public class LatexHumanoidModelController {
         return p_102857_.swingingArm == InteractionHand.MAIN_HAND ? humanoidarm : humanoidarm.getOpposite();
     }
 
-    protected void setupAttackAnimation(LatexEntity p_102858_, float p_102859_) {
+    protected SpecializedAnimations.AnimationHandler.EntityStateContext entityContextOf(LatexEntity entity, float partialTicks) {
+        LatexHumanoidModelController tmp = this;
+        return new SpecializedAnimations.AnimationHandler.EntityStateContext(entity, entityModel.attackTime, partialTicks) {
+            LatexHumanoidModelController controller = tmp;
+
+            @Override
+            public HumanoidArm getAttackArm() {
+                return controller.getAttackArm(entity);
+            }
+        };
+    }
+
+    protected SpecializedAnimations.AnimationHandler.UpperModelContext upperModelContext() {
+        LatexHumanoidModelController tmp = this;
+        return new SpecializedAnimations.AnimationHandler.UpperModelContext(this.LeftArm, this.RightArm, this.Torso, this.Head) {
+            LatexHumanoidModelController controller = tmp;
+
+            @Override
+            public ModelPart getArm(HumanoidArm humanoidArm) {
+                return controller.getArm(humanoidArm, false);
+            }
+        };
+    }
+
+    protected void setupAttackAnimation(LatexEntity entity, float ageInTicks) {
+        var entityContext = entityContextOf(entity, ageInTicks - entity.tickCount);
+        var upperModelContext = upperModelContext();
+
+        var mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
+        var offHandItem = entity.getItemBySlot(EquipmentSlot.OFFHAND);
+        if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.MAIN_HAND) &&
+                !mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null && handler.setupAnimation(mainHandItem, entityContext, upperModelContext, InteractionHand.MAIN_HAND)) {
+                return;
+            }
+        }
+
+        else if ((!entity.isUsingItem() || entity.getUsedItemHand() == InteractionHand.OFF_HAND) &&
+                !offHandItem.isEmpty() && offHandItem.getItem() instanceof SpecializedAnimations specialized) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null && handler.setupAnimation(offHandItem, entityContext, upperModelContext, InteractionHand.OFF_HAND)) {
+                return;
+            }
+        }
+
         if (!(entityModel.attackTime <= 0.0F)) {
-            HumanoidArm humanoidarm = this.getAttackArm(p_102858_);
+            HumanoidArm humanoidarm = this.getAttackArm(entity);
             ModelPart modelpart = this.getArm(humanoidarm, false);
             float f = entityModel.attackTime;
             if (!this.hasLegs2)

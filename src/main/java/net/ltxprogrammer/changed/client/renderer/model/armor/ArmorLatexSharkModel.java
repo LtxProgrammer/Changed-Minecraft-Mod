@@ -75,4 +75,11 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
+
+    @Override
+    public void prepareForShorts() {
+        body.getChild("Torso_r1").visible = true;
+        leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+        rightLeg.getChild("RightUpperLeg_r1").visible = true;
+    }
 }

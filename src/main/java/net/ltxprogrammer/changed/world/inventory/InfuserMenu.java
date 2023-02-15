@@ -5,8 +5,6 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
-import net.ltxprogrammer.changed.item.BloodSyringe;
-import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -285,6 +283,10 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
         }
     }
 
+    public Slot getResultSlot() {
+        return this.getSlot(0);
+    }
+
     @Override
     public void slotsChanged(@NotNull Container container) {
         if (!this.world.isClientSide) {
@@ -304,7 +306,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                 }
             }
 
-            this.getSlot(0).set(itemstack);
+            this.getResultSlot().set(itemstack);
         }
         super.slotsChanged(container);
     }

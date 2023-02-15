@@ -35,7 +35,7 @@ public class LatexInkball extends ThrowableItemProjectile {
 
     private ParticleOptions getParticle() {
         ItemStack itemstack = this.getItemRaw();
-        return (ParticleOptions) (itemstack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemParticleOption(ParticleTypes.ITEM, itemstack));
+        return new ItemParticleOption(ParticleTypes.ITEM, itemstack.isEmpty() ? ChangedItems.LATEX_INKBALL.get().getDefaultInstance() : itemstack);
     }
 
     public void handleEntityEvent(byte p_37402_) {

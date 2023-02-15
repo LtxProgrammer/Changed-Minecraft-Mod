@@ -51,7 +51,11 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -14.0F, 0.0F));
 
-        PartDefinition secondarytailsegment_r1 = Tail.addOrReplaceChild("secondarytailsegment_r1", CubeListBuilder.create().texOffs(0, 20).addBox(-1.5F, -13.875F, -1.1F, 3.0F, 3.0F, 6.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition quaternarytailsegment_r1 = Tail.addOrReplaceChild("quaternarytailsegment_r1", CubeListBuilder.create().texOffs(7, 20).addBox(-1.0F, 14.2F, -4.7F, 2.0F, 3.0F, 2.0F, layer.deformation.extend(0.65F)), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 1.6144F, 0.0F, 0.0F));
+
+        PartDefinition tertiarytailsegment_r1 = Tail.addOrReplaceChild("tertiarytailsegment_r1", CubeListBuilder.create().texOffs(2, 18).addBox(-1.0F, 10.2F, -2.2F, 2.0F, 4.0F, 2.0F, layer.deformation.extend(0.9F)), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 1.4399F, 0.0F, 0.0F));
+
+        PartDefinition secondarytailsegment_r1 = Tail.addOrReplaceChild("secondarytailsegment_r1", CubeListBuilder.create().texOffs(3, 20).addBox(-1.5F, 3.875F, -0.2F, 3.0F, 6.0F, 3.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 1.1964F, 0.0F, 0.0F));
 
         PartDefinition primarytailsegment_r1 = Tail.addOrReplaceChild("primarytailsegment_r1", CubeListBuilder.create().texOffs(0, 20).addBox(-2.0F, -14.15F, -6.1F, 4.0F, 4.0F, 4.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
@@ -62,5 +66,12 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -34.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 25.0F, 0.0F));
 
         return LayerDefinition.create(process(meshdefinition), 64, 32);
+    }
+
+    @Override
+    public void prepareForShorts() {
+        body.visible = true;
+        leftLeg.getChild("LeftUpperLeg_r1").visible = true;
+        rightLeg.getChild("RightUpperLeg_r1").visible = true;
     }
 }

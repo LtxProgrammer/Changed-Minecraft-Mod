@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "changed:block/wall_blue_tiled"
+    }
+  }
+}

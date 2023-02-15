@@ -16,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)

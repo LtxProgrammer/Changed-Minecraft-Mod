@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blokker",
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
+  "itemGroup.tab_changed_combat": "Changed Kamputstyr",
 
   "ability.changed.access_saddle": "Tilgang Sal",
   "ability.changed.extra_hands": "Ekstra Hender",
@@ -12,17 +13,21 @@
   "ability.changed.access_chest": "Tilgang Kiste",
   "ability.changed.switch_hands": "Bytte Hender",
   "ability.changed.switch_gender": "Endre Kjønn",
-  "ability.changed.use_variant_ability": "Bruke Variant Evne",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnose",
+  "ability.changed.use_variant_ability.siren_sing": "Synge",
+  "ability.changed.slither": "Glir",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
   "subtitles.changed.open3": "Laboratoriedøren åpnes",
   "subtitles.changed.close3": "Laboratoriedøren lukkes",
-  "subtitles.changed.equip3": "Bukser rasle",
+  "subtitles.changed.equip3": "Bukser rasler",
   "subtitles.changed.bow2": "Eske åpnes",
   "subtitles.changed.shot1": "Laser aktiveres",
   "subtitles.changed.siren": "Sirene synger",
   "subtitles.changed.save": "Netthinneskanner piper",
+  "subtitles.changed.sword1": "Nålstikk",
+  "subtitles.changed.paralyze1": "Våpensjokker",
 
   "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
   "item.changed.benign_pants": "Lateks bukser",
@@ -45,6 +50,22 @@
   "item.changed.white_latex_goo": "Hvit lateks goo",
   "item.changed.white_latex_bucket": "Hvit lateksbøtte",
 
+  "item.changed.tsc_staff": "TSC stab",
+  "item.changed.tsc_baton": "TSC taktpinne",
+
+  "item.changed.leather_upper_abdomen_armor": "Lær øvre bukrustning",
+  "item.changed.leather_lower_abdomen_armor": "Lær nedre bukrustning",
+  "item.changed.chainmail_upper_abdomen_armor": "Brynje øvre bukrustning",
+  "item.changed.chainmail_lower_abdomen_armor": "Brynje nedre bukrustning",
+  "item.changed.iron_upper_abdomen_armor": "Jern øvre bukrustning",
+  "item.changed.iron_lower_abdomen_armor": "Jern nedre bukrustning",
+  "item.changed.golden_upper_abdomen_armor": "Gull øvre bukrustning",
+  "item.changed.golden_lower_abdomen_armor": "Gull nedre bukrustning",
+  "item.changed.diamond_upper_abdomen_armor": "Diamant øvre bukrustning",
+  "item.changed.diamond_lower_abdomen_armor": "Diamant nedre bukrustning",
+  "item.changed.netherite_upper_abdomen_armor": "Netheritt øvre bukrustning",
+  "item.changed.netherite_lower_abdomen_armor": "Netheritt nedre bukrustning",
+
   "item.changed.latex_dance_record": "Lateks dansemusikkplate",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ musikkplate",
@@ -54,6 +75,7 @@
   "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
   "death.attack.changed:pale": "%s ble tatt av Pale",
+  "death.attack.changed:bloodloss": "%s brukt fremmed plasma",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
@@ -81,6 +103,7 @@
   "text.changed.syringe.no_owner": "Kan ikke få spillernavn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
+  "effect.changed.shock": "Støt",
 
   "block.changed.aerosol_latex": "Aerosol lateks",
   "block.changed.bedside_iv_rack": "IV stativ",
@@ -118,6 +141,7 @@
   "block.changed.tiles_blue": "Blå fliser",
   "block.changed.tiles_blue_small": "Liten blå fliser",
   "block.changed.tiles_caution": "Forsiktigefliser",
+  "block.changed.tiles_darkblue": "Mørk blå fliser",
   "block.changed.tiles_grayblue": "Gråblå fliser",
   "block.changed.tiles_grayblue_bolted_connected": "Tilkoblede boltede gråblå fliser",
   "block.changed.tiles_grayblue_bolted": "Boltede gråblå fliser",
@@ -126,6 +150,7 @@
   "block.changed.tiles_gray": "Grå fliser",
   "block.changed.tiles_gray_stairs": "Trapp av grå fliser",
   "block.changed.tiles_greenhouse": "Drivhusfliser",
+  "block.changed.tiles_greenhouse_connected": "Tilkoblede drivhusfliser",
   "block.changed.tiles_library_brown": "Brun bibliotekfliser",
   "block.changed.tiles_library_tan": "Tan bibliotekfliser",
   "block.changed.tiles_white": "Hvit fliser",
@@ -133,6 +158,7 @@
   "block.changed.tiles_white_connected": "Tilkoblede hvit fliser",
   "block.changed.vent_hatch": "Ventilasjonsluke",
   "block.changed.wall_blue_striped": "Stripet blå vegg",
+  "block.changed.wall_blue_tiled": "Flislagt blå vegg",
   "block.changed.wall_caution": "Forsiktigvegg",
   "block.changed.wall_library_upper": "Øvre bibliotekvegg",
   "block.changed.wall_library_lower": "Nedre bibliotekvegg",
@@ -178,6 +204,7 @@
   "entity.changed.latex_mermaid_shark": "Lateks havfruehai",
   "entity.changed.latex_mimic_plant": "Lateks etterligning plante",
   "entity.changed.latex_orca": "Lateks spekkhugger",
+  "entity.changed.latex_otter": "Lateks oter",
   "entity.changed.latex_pink_deer": "Lateks rosa hjort",
   "entity.changed.latex_pink_wyvern": "Lateks rosa wyvern",
   "entity.changed.latex_pink_yuin_dragon": "Lateks rosa yuin-drage",
@@ -192,6 +219,7 @@
   "entity.changed.latex_snow_leopard_male": "Mannlig lateks snøleopard",
   "entity.changed.latex_silver_fox": "Lateks sølvrev",
   "entity.changed.latex_siren": "Lateks sirene",
+  "entity.changed.latex_snake": "Lateks slange",
   "entity.changed.latex_sniper_dog": "Snikskytterhund",
   "entity.changed.latex_squid_dog_female": "Kvinnelig lateks blekkspruthund",
   "entity.changed.latex_squid_dog_male": "Mannlig lateks blekkspruthund",
@@ -209,6 +237,7 @@
   "entity.changed.light_latex_wolf_female": "Kvinnelig lyselateks ulv",
   "entity.changed.light_latex_wolf_male": "Mannlig lyselateks ulv",
   "entity.changed.light_latex_wolf_organic": "Organisk lyse ulv",
+  "entity.changed.shark": "Hai",
   "entity.changed.white_latex_wolf": "Hvit lateks ulv",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Fremkallingsegg for gass lateks ulv",
@@ -233,6 +262,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Fremkallingsegg for lateks havfruehai",
   "item.changed.latex_mimic_plant_spawn_egg": "Fremkallingsegg for lateks etterligning plante",
   "item.changed.latex_orca_spawn_egg": "Fremkallingsegg for lateks spekkhugger",
+  "item.changed.latex_otter_spawn_egg": "Fremkallingsegg for lateks oter",
   "item.changed.latex_pink_deer_spawn_egg": "Fremkallingsegg for lateks rosa hjort",
   "item.changed.latex_pink_wyvern_spawn_egg": "Fremkallingsegg for lateks rosa wyvern",
   "item.changed.latex_pink_yuin_dragon_spawn_egg": "Fremkallingsegg for lateks rosa yuin-drage",
@@ -247,6 +277,7 @@
   "item.changed.latex_snow_leopard_male_spawn_egg": "Fremkallingsegg for mannlig lateks snøleopard",
   "item.changed.latex_silver_fox_spawn_egg": "Fremkallingsegg for lateks sølvrev",
   "item.changed.latex_siren_spawn_egg": "Fremkallingsegg for lateks sirene",
+  "item.changed.latex_snake_spawn_egg": "Fremkallingsegg for lateks slange",
   "item.changed.latex_sniper_dog_spawn_egg": "Fremkallingsegg for snikskytterhund",
   "item.changed.latex_squid_dog_female_spawn_egg": "Fremkallingsegg for kvinnelig lateks blekkspruthund",
   "item.changed.latex_squid_dog_male_spawn_egg": "Fremkallingsegg for mannlig lateks blekkspruthund",
@@ -264,6 +295,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig lyselateks ulv",
   "item.changed.light_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig lyselateks ulv",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Fremkallingsegg for organisk lyse ulv",
+  "item.changed.shark_spawn_egg": "Fremkallingsegg for hai",
   "item.changed.white_latex_wolf_spawn_egg": "Fremkallingsegg for hvit lateks ulv",
 
   "changed.patreon.level0": "Discord Medlem",
@@ -329,5 +361,8 @@
   "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform",
 
   "changed:advancements.main.transfur_mask.title": "Avviser menneskeheten",
-  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske."
+  "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske.",
+
+  "changed:advancements.main.transfur_legless.title": "Mine ben!",
+  "changed:advancements.main.transfur_legless.description": "Transpels deg selv inn i en benløs form"
 }

@@ -21,6 +21,7 @@ latex_medusa_cat :: modeled and textured by Bijimio
 latex_mermaid_shark :Ltx: retextured by Bijimio
 latex_mimic_plant :: modeled and textured by KoBOLTA
 latex_orca :Ltx: :: modeled and textured by LtxProgrammer
+latex_otter :: modeled and textured by Bijimio
 latex_pink_deer :: modeled and textured by N1CO785
 latex_pink_wyvern :: modeled and textured by Bijimio
 latex_pink_yuin_dragon :: modeled and textured by Bijimio
@@ -33,6 +34,7 @@ latex_shark_female :: modeled and textured by KoBOLTA
 latex_shark_male :: modeled and textured by KoBOLTA
 latex_silver_fox :Ltx: remodeled and retextured by Bijimio
 latex_siren :: modeled and textured by Bijimio
+latex_snake :: modeled and textured by Bijimio
 latex_sniper_dog :: modeled and textured by Bijimio
 latex_snow_leopard_female :Ltx: retextured by Artemka2009
 latex_snow_leopard_male :Ltx: retextured by Artemka2009
@@ -52,4 +54,5 @@ light_latex_knight_fusion :: modeled and textured by KoBOLTA
 light_latex_wolf_female :Ltx: retextured by Bijimio
 light_latex_wolf_male :Ltx: retextured by Bijimio
 light_latex_wolf_organic :: textured by Bijimio
+shark :Ltx: modeled and textured by Bijimio
 white_latex_wolf :Ltx: remodeled by Bijimio

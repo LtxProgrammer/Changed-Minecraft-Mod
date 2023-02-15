@@ -26,17 +26,17 @@ public class CentaurChestPackLayer<T extends LightLatexCentaur, M extends LatexH
     public void render(PoseStack pose, MultiBufferSource bufferSource, int i, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
         if (entity.getUnderlyingPlayer() == null)
             return;
-        if (!ProcessTransfur.isPlayerLatex(entity.getUnderlyingPlayer()))
-            return;
-        var ability = ProcessTransfur.getPlayerLatexVariant(entity.getUnderlyingPlayer()).getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
-        if (ability == null || ability.chest == null || ability.chest.isEmpty())
-            return;
+        ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
+            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+            if (ability == null || ability.chest == null || ability.chest.isEmpty())
+                return;
 
-        pose.pushPose();
-        ModelPart modelpart = this.getParentModel().getTorso();
-        modelpart.translateAndRotate(pose);
-        pose.translate(0.0D, entity.isCrouching() ? -23.0D / 16.0D : -26.0D / 16.0D, 7.0D / 16.0D);
-        chestPackModel.renderToBuffer(pose, bufferSource.getBuffer(chestPackModel.renderType(chestPackModel.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
-        pose.popPose();
+            pose.pushPose();
+            ModelPart modelpart = this.getParentModel().getTorso();
+            modelpart.translateAndRotate(pose);
+            pose.translate(0.0D, entity.isCrouching() ? -23.0D / 16.0D : -26.0D / 16.0D, 7.0D / 16.0D);
+            chestPackModel.renderToBuffer(pose, bufferSource.getBuffer(chestPackModel.renderType(chestPackModel.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+            pose.popPose();
+        });
     }
 }

@@ -58,8 +58,9 @@ public class SyncTransfurPacket implements ChangedPacket {
                 Player player = level.getPlayerByUUID(uuid);
                 if (player != null) {
                     ProcessTransfur.setPlayerLatexVariantNamed(player, listing.form);
-                    if (ProcessTransfur.isPlayerLatex(player))
-                        ProcessTransfur.getPlayerLatexVariant(player).loadAbilities(listing.data);
+                    ProcessTransfur.ifPlayerLatex(player, variant -> {
+                        variant.loadAbilities(listing.data);
+                    });
                 }
             });
             context.setPacketHandled(true);
@@ -77,10 +78,13 @@ public class SyncTransfurPacket implements ChangedPacket {
         private final Map<UUID, Listing> changedForms = new HashMap<>();
 
         public void addPlayer(Player player) {
-            var variant = ProcessTransfur.getPlayerLatexVariant(player);
-            changedForms.put(player.getUUID(),
-                    new Listing(variant != null ? variant.getFormId() : NO_FORM,
-                            variant != null ? variant.saveAbilities() : new CompoundTag()));
+            ProcessTransfur.ifPlayerLatex(player, variant -> {
+                changedForms.put(player.getUUID(),
+                        new Listing(variant.getFormId(), variant.saveAbilities()));
+            }, () -> {
+                changedForms.put(player.getUUID(),
+                        new Listing(NO_FORM, new CompoundTag()));
+            });
         }
 
         public SyncTransfurPacket build() {

@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Föremål",
   "itemGroup.tab_changed_entities": "Changed Enheter",
+  "itemGroup.tab_changed_combat": "Changed Strid",
 
   "ability.changed.access_saddle": "Tillgång sadel",
   "ability.changed.extra_hands": "Extra händer",
@@ -12,17 +13,21 @@
   "ability.changed.access_chest": "Tillgång kista",
   "ability.changed.switch_hands": "Byta händer",
   "ability.changed.switch_gender": "Byta kön",
-  "ability.changed.use_variant_ability": "Använda variantförmåga",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnos",
+  "ability.changed.use_variant_ability.siren_sing": "Sjunga",
+  "ability.changed.slither": "Glida",
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
   "subtitles.changed.open3": "Laboratoriedörren öppnas",
   "subtitles.changed.close3": "Laboratoriedörren stängs",
-  "subtitles.changed.equip3": "Byxorna prassla",
+  "subtitles.changed.equip3": "Byxorna knarrar",
   "subtitles.changed.bow2": "Lådan öppnas",
   "subtitles.changed.shot1": "Laser aktiveras",
   "subtitles.changed.siren": "Siren sjunger",
   "subtitles.changed.save": "Näthinnanskanner piper",
+  "subtitles.changed.sword1": "Nålsticka",
+  "subtitles.changed.paralyze1": "Vapenstötar",
 
   "item.changed.aerosol_latex_bucket": "Aerosol latexhink",
   "item.changed.benign_pants": "Latex byxor",
@@ -45,6 +50,22 @@
   "item.changed.white_latex_goo": "Vit latex goo",
   "item.changed.white_latex_bucket": "Vit latexhink",
 
+  "item.changed.tsc_staff": "TSC stav",
+  "item.changed.tsc_baton": "TSC taktpinne",
+
+  "item.changed.leather_upper_abdomen_armor": "Läder övre bukrustning",
+  "item.changed.leather_lower_abdomen_armor": "Läder lägre bukrustning",
+  "item.changed.chainmail_upper_abdomen_armor": "Ringbryn övre bukrustning",
+  "item.changed.chainmail_lower_abdomen_armor": "Ringbryn lägre bukrustning",
+  "item.changed.iron_upper_abdomen_armor": "Järn övre bukrustning",
+  "item.changed.iron_lower_abdomen_armor": "Järn lägre bukrustning",
+  "item.changed.golden_upper_abdomen_armor": "Guld övre bukrustning",
+  "item.changed.golden_lower_abdomen_armor": "Guld lägre bukrustning",
+  "item.changed.diamond_upper_abdomen_armor": "Diamant övre bukrustning",
+  "item.changed.diamond_lower_abdomen_armor": "Diamant lägre bukrustning",
+  "item.changed.netherite_upper_abdomen_armor": "Netherit övre bukrustning",
+  "item.changed.netherite_lower_abdomen_armor": "Netherit lägre bukrustning",
+
   "item.changed.latex_dance_record": "Latex dansmusikskiva",
   "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ musikskiva",
@@ -54,6 +75,7 @@
   "death.attack.changed:transfur.player": "%1$s förpälsvandlades av %2$s",
   "death.attack.changed:white_latex": "%s upplöst i vit latex",
   "death.attack.changed:pale": "%s togs av Pale",
+  "death.attack.changed:bloodloss": "%s använt främmande plasma",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
@@ -81,6 +103,7 @@
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
+  "effect.changed.shock": "Stöt",
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
@@ -118,6 +141,7 @@
   "block.changed.tiles_blue": "Blå tegel",
   "block.changed.tiles_blue_small": "Litet blå tegel",
   "block.changed.tiles_caution": "Försiktighettegel",
+  "block.changed.tiles_darkblue": "Mörkblå tegel",
   "block.changed.tiles_grayblue": "Gråblå tegel",
   "block.changed.tiles_grayblue_bolted_connected": "Anslutna bultade gråblå tegel",
   "block.changed.tiles_grayblue_bolted": "Bultade gråblå tegel",
@@ -126,6 +150,7 @@
   "block.changed.tiles_gray": "Grå tegel",
   "block.changed.tiles_gray_stairs": "Grå tegeltrappa",
   "block.changed.tiles_greenhouse": "Växthustegel",
+  "block.changed.tiles_greenhouse_connected": "Anslutna växthustegel",
   "block.changed.tiles_library_brown": "Brun bibliotektegel",
   "block.changed.tiles_library_tan": "Tan bibliotektegel",
   "block.changed.tiles_white": "Vit tegel",
@@ -133,6 +158,7 @@
   "block.changed.tiles_white_connected": "Anslutna vit tegel",
   "block.changed.vent_hatch": "ventileraslucka",
   "block.changed.wall_blue_striped": "Randig blå vägg",
+  "block.changed.wall_blue_tiled": "Teglad blå vägg",
   "block.changed.wall_caution": "Försiktighetvägg",
   "block.changed.wall_library_upper": "Övre bibliotekvägg",
   "block.changed.wall_library_lower": "Lägre bibliotekvägg",
@@ -178,6 +204,7 @@
   "entity.changed.latex_mermaid_shark": "Latex sjöjungfruhaj",
   "entity.changed.latex_mimic_plant": "Latex växt härma",
   "entity.changed.latex_orca": "Latex späckhuggare",
+  "entity.changed.latex_otter": "Latex utter",
   "entity.changed.latex_pink_deer": "Latex rosa hjort",
   "entity.changed.latex_pink_wyvern": "Latex rosa wyvern",
   "entity.changed.latex_pink_yuin_dragon": "Latex rosa yuin-drake",
@@ -192,6 +219,7 @@
   "entity.changed.latex_snow_leopard_male": "Manlig latex snöleopard",
   "entity.changed.latex_silver_fox": "Latex silverräv",
   "entity.changed.latex_siren": "Latex siren",
+  "entity.changed.latex_snake": "Latex orm",
   "entity.changed.latex_sniper_dog": "Prickskytthund",
   "entity.changed.latex_squid_dog_female": "Kvinnlig latex bläckfiskhund",
   "entity.changed.latex_squid_dog_male": "Manlig latex bläckfiskhund",
@@ -209,6 +237,7 @@
   "entity.changed.light_latex_wolf_female": "Kvinnlig ljuslatexvarg",
   "entity.changed.light_latex_wolf_male": "Manlig ljuslatexvarg",
   "entity.changed.light_latex_wolf_organic": "Organisk ljusvarg",
+  "entity.changed.shark": "Haj",
   "entity.changed.white_latex_wolf": "Vit latexvarg",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Skapelseägg för gas latex varg",
@@ -233,6 +262,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Skapelseägg för latex sjöjungfruhaj",
   "item.changed.latex_mimic_plant_spawn_egg": "Skapelseägg för latex växt härma",
   "item.changed.latex_orca_spawn_egg": "Skapelseägg för latex späckhuggare",
+  "item.changed.latex_otter_spawn_egg": "Skapelseägg för latex utter",
   "item.changed.latex_pink_deer_spawn_egg": "Skapelseägg för latex rosa hjort",
   "item.changed.latex_pink_wyvern_spawn_egg": "Skapelseägg för latex rosa wyvern",
   "item.changed.latex_pink_yuin_dragon_spawn_egg": "Skapelseägg för latex rosa yuin-drake",
@@ -247,6 +277,7 @@
   "item.changed.latex_snow_leopard_male_spawn_egg": "Skapelseägg för manlig latex snöleopard",
   "item.changed.latex_silver_fox_spawn_egg": "Skapelseägg för latex silverräv",
   "item.changed.latex_siren_spawn_egg": "Skapelseägg för latex siren",
+  "item.changed.latex_snake_spawn_egg": "Skapelseägg för latex orm",
   "item.changed.latex_sniper_dog_spawn_egg": "Skapelseägg för prickskytthund",
   "item.changed.latex_squid_dog_female_spawn_egg": "Skapelseägg för kvinnlig latex bläckfiskhund",
   "item.changed.latex_squid_dog_male_spawn_egg": "Skapelseägg för manlig latex bläckfiskhund",
@@ -264,6 +295,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Skapelseägg för kvinnlig ljuslatexvarg",
   "item.changed.light_latex_wolf_male_spawn_egg": "Skapelseägg för manlig ljuslatexvarg",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Skapelseägg för organisk ljusvarg",
+  "item.changed.shark_spawn_egg": "Skapelseägg för haj",
   "item.changed.white_latex_wolf_spawn_egg": "Skapelseägg för vit latexvarg",
 
   "changed.patreon.level0": "Discord Medlem",
@@ -329,5 +361,8 @@
   "changed:advancements.main.transfur_aerial.description": "Förpälsvandla dig själv till en flygform",
 
   "changed:advancements.main.transfur_mask.title": "Förkasta mänskligheten",
-  "changed:advancements.main.transfur_mask.description": "Skaffa och sätt på en mörk latexmask."
+  "changed:advancements.main.transfur_mask.description": "Skaffa och sätt på en mörk latexmask.",
+
+  "changed:advancements.main.transfur_legless.title": "Mina ben!",
+  "changed:advancements.main.transfur_legless.description": "Förpälsvandla dig själv till en benlös form"
 }

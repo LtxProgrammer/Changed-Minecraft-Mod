@@ -17,12 +17,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -30,16 +32,22 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 
@@ -214,16 +222,55 @@ public class ProcessTransfur {
         return null;
     }
 
-    public static void setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
+    public static class EntityVariantAssigned extends Event {
+        public final LivingEntity livingEntity;
+        public final @Nullable LatexVariant<?> previousVariant;
+        public final @Nullable LatexVariant<?> originalVariant;
+        public @Nullable LatexVariant<?> variant;
+
+        public EntityVariantAssigned(LivingEntity livingEntity, @Nullable LatexVariant<?> variant) {
+            this.livingEntity = livingEntity;
+            this.previousVariant = LatexVariant.getEntityVariant(livingEntity);
+            this.originalVariant = variant;
+            this.variant = variant;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
+
+        // Event may be fired every couple of ticks from the sync packet
+        public boolean isRedundant() {
+            if (livingEntity.tickCount == 0)
+                return true;
+            else if (previousVariant == originalVariant)
+                return true;
+            else if (previousVariant == null)
+                return false;
+            else if (originalVariant == null)
+                return false;
+            return previousVariant.getEntityType() == originalVariant.getEntityType();
+        }
+    }
+
+    @Contract("_, null -> null; _, !null -> !null")
+    public static @Nullable LatexVariant<?> setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
         try {
+            EntityVariantAssigned event = new EntityVariantAssigned(player, variant);
+            MinecraftForge.EVENT_BUS.post(event);
+            variant = event.variant;
+
+            if (player instanceof ServerPlayer serverPlayer && variant != null)
+                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
             if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
                 variant = variant.clone();
 
             var oldVariant = (LatexVariant<?>)latexVariantField.get(player);
             if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
-                return;
+                return oldVariant;
             if (variant == null && oldVariant == null)
-                return;
+                return oldVariant;
             if (oldVariant != null && oldVariant.getLatexEntity() != null)
                 oldVariant.getLatexEntity().discard();
             latexVariantField.set(player, variant);
@@ -238,15 +285,50 @@ public class ProcessTransfur {
                 oldVariant.unhookAll(player);
             if (!player.level.isClientSide)
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+            return variant;
         } catch (Exception ignored) {}
+        return null;
     }
 
-    public static void setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
-        setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.get(variant));
+    public static LatexVariant<?> setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
+        return setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.get(variant));
     }
 
     public static boolean isPlayerLatex(Player player) {
         return getPlayerLatexVariant(player) != null;
+    }
+
+    public static <R> R ifPlayerLatex(Player player, Function<LatexVariant<?>, R> isLatex, Supplier<R> notLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        return variant != null ? isLatex.apply(variant) : notLatex.get();
+    }
+
+    public static <R> R ifPlayerLatex(Player player, Function<LatexVariant<?>, R> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        return variant != null ? isLatex.apply(variant) : null;
+    }
+
+    public static boolean ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex, Runnable notLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(variant);
+        else
+            notLatex.run();
+        return variant != null;
+    }
+
+    public static boolean ifPlayerLatex(Player player, Consumer<LatexVariant<?>> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(variant);
+        return variant != null;
+    }
+
+    public static boolean ifPlayerLatex(Player player, BiConsumer<Player, LatexVariant<?>> isLatex) {
+        LatexVariant<?> variant = getPlayerLatexVariant(player);
+        if (variant != null)
+            isLatex.accept(player, variant);
+        return variant != null;
     }
 
     // Checks if player is either not latex or is organic latex
@@ -292,11 +374,24 @@ public class ProcessTransfur {
         return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX));
     }
 
+    public static ItemStack getEntityAttackItem(LivingEntity entity) {
+        return entity.swingingArm != null ? entity.getItemInHand(entity.swingingArm) : ItemStack.EMPTY;
+    }
+
     @SubscribeEvent
     public static void onLivingDamaged(LivingDamageEvent event) {
-        if (event.getSource().isFire() && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            if (isOrganicLatex(event.getEntityLiving()))
-                return;
+        if (LatexVariant.getEntityVariant(event.getEntityLiving()) == null)
+            return;
+        if (isOrganicLatex(event.getEntityLiving()))
+            return;
+
+        if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
+            if (getEntityAttackItem(livingEntity).is(ChangedTags.Items.TSC_WEAPON)) {
+                event.setAmount(event.getAmount() * 1.5F);
+            }
+        }
+
+        if (event.getSource().isFire()) {
             event.setAmount(event.getAmount() * 2.0F);
         }
     }
@@ -364,6 +459,7 @@ public class ProcessTransfur {
         entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
         entity.knockback((double)0.4F, d1, d0);
 
+        ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
         entity.hurt(ChangedDamageSources.entityTransfur(source.entity), 0.0F);
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
@@ -487,7 +583,7 @@ public class ProcessTransfur {
             return;
         }
 
-        if (!sourceEntity.getItemInHand(sourceEntity.getUsedItemHand()).is(Items.AIR))
+        if (!getEntityAttackItem(sourceEntity).isEmpty())
             return;
 
         onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));
@@ -596,10 +692,7 @@ public class ProcessTransfur {
             return;
         if (!LatexType.hasLatexType(entity)) {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
-            LatexType.setEntityLatexType(entity, variant.getLatexType());
             if (keepConscious && entity instanceof ServerPlayer player) {
-                ChangedCriteriaTriggers.TRANSFUR.trigger(player, variant);
-
                 LatexVariant<?> uniqueVariant = variant.clone();
 
                 setPlayerLatexVariant(player, uniqueVariant);
@@ -623,7 +716,10 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                variant.replaceEntity(entity);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, variant);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.variant != null)
+                    event.variant.replaceEntity(entity);
             }
         }
 
@@ -663,7 +759,10 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                fusion.replaceEntity(entity);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion);
+                MinecraftForge.EVENT_BUS.post(event);
+                if (event.variant != null)
+                    event.variant.replaceEntity(entity);
             }
         }
     }

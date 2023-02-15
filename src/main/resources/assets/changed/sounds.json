@@ -119,6 +119,16 @@
     ],
     "subtitle": "subtitles.changed.poison"
   },
+  "paralyze1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:paralyze1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.paralyze1"
+  },
   "save": {
     "category": "neutral",
     "sounds": [
@@ -158,6 +168,16 @@
       }
     ],
     "subtitle": "subtitles.changed.siren"
+  },
+  "sword1": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:sword1",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.sword1"
   },
   "latex_dance": {
     "category": "music",

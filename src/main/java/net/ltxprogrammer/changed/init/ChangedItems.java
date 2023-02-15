@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +39,34 @@ public class ChangedItems {
     public static final RegistryObject<AbstractLatexItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment", AbstractLatexItem::new);
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", AbstractLatexGoo::new);
     public static final RegistryObject<Item> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
+
+    public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
+    public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);
+
+    public static final RegistryObject<AbdomenArmor> LEATHER_UPPER_ABDOMEN_ARMOR = register("leather_upper_abdomen_armor",
+            () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> LEATHER_LOWER_ABDOMEN_ARMOR = register("leather_lower_abdomen_armor",
+            () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.FEET));
+    public static final RegistryObject<AbdomenArmor> CHAINMAIL_UPPER_ABDOMEN_ARMOR = register("chainmail_upper_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.CHAIN, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> CHAINMAIL_LOWER_ABDOMEN_ARMOR = register("chainmail_lower_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.CHAIN, EquipmentSlot.FEET));
+    public static final RegistryObject<AbdomenArmor> IRON_UPPER_ABDOMEN_ARMOR = register("iron_upper_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.IRON, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> IRON_LOWER_ABDOMEN_ARMOR = register("iron_lower_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.IRON, EquipmentSlot.FEET));
+    public static final RegistryObject<AbdomenArmor> GOLDEN_UPPER_ABDOMEN_ARMOR = register("golden_upper_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.GOLD, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> GOLDEN_LOWER_ABDOMEN_ARMOR = register("golden_lower_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.GOLD, EquipmentSlot.FEET));
+    public static final RegistryObject<AbdomenArmor> DIAMOND_UPPER_ABDOMEN_ARMOR = register("diamond_upper_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.DIAMOND, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> DIAMOND_LOWER_ABDOMEN_ARMOR = register("diamond_lower_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.DIAMOND, EquipmentSlot.FEET));
+    public static final RegistryObject<AbdomenArmor> NETHERITE_UPPER_ABDOMEN_ARMOR = register("netherite_upper_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS));
+    public static final RegistryObject<AbdomenArmor> NETHERITE_LOWER_ABDOMEN_ARMOR = register("netherite_lower_abdomen_armor",
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET));
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);

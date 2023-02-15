@@ -86,4 +86,10 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<LightLa
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
+
+    @Override
+    public void prepareForShorts() {
+        leftLeg2.getChild("LeftUpperLeg_r2").visible = true;
+        rightLeg2.getChild("RightUpperLeg_r2").visible = true;
+    }
 }

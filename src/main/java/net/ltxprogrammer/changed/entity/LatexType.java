@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -31,23 +32,13 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         this.block = block;
     }
 
-    public static void setEntityLatexType(@NotNull Entity entity, LatexType type) {
-        entity.getPersistentData().putString("changed:transfur_immunity", type.toString());
-    }
-
     public static LatexType getEntityLatexType(@NotNull Entity entity) {
         if (entity instanceof LatexEntity latexEntity) {
             return latexEntity.getLatexType();
         }
 
-        else if (entity instanceof Player player) {
-            LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-            if (variant != null) {
-                return variant.getLatexType();
-            }
-        }
-
-        return null;
+        else
+            return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), LatexVariant::getLatexType, () -> null);
     }
 
     public static boolean hasLatexType(@NotNull Entity entity) {

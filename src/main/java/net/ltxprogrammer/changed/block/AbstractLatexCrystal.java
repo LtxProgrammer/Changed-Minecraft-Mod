@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractDoubleLatexCrystal.HALF;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {

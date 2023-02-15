@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
-import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ItemLike;
@@ -16,9 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
-import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
+import static net.ltxprogrammer.changed.block.AbstractLatexBlock.isLatexed;
 
 @Mixin(Block.class)
 public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net.minecraftforge.common.extensions.IForgeBlock {
