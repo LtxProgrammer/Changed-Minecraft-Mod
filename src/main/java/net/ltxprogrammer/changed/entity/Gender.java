@@ -7,6 +7,10 @@ import net.minecraftforge.common.IExtensibleEnum;
 public enum Gender implements IExtensibleEnum {
     MALE,
     FEMALE;
+
+    public static Gender create(String name) {
+        throw new IllegalStateException("Enum not extended");
+    }
     
     public static ResourceLocation switchGenderedForm(ResourceLocation form) {
         if (form.getPath().contains("/male")) {
