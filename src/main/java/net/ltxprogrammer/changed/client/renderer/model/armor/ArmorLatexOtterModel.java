@@ -53,11 +53,11 @@ public class ArmorLatexOtterModel<T extends LatexEntity> extends LatexHumanoidAr
 
         PartDefinition quaternarytailsegment_r1 = Tail.addOrReplaceChild("quaternarytailsegment_r1", CubeListBuilder.create().texOffs(2, 18).addBox(-1.0F, 16.5F, -4.85F, 2.0F, 4.0F, 2.0F, layer.deformation.extend(0.85F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.5272F, 0.0F, 0.0F));
 
-        PartDefinition tertiarytailsegment_r1 = Tail.addOrReplaceChild("tertiarytailsegment_r1", CubeListBuilder.create().texOffs(2, 18).addBox(-1.0F, 10.5F, -3.425F, 2.0F, 6.0F, 2.0F, layer.deformation.extend(1.15F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.4399F, 0.0F, 0.0F));
+        PartDefinition tertiarytailsegment_r1 = Tail.addOrReplaceChild("tertiarytailsegment_r1", CubeListBuilder.create().texOffs(2, 18).addBox(-1.0F, 11.5F, -3.425F, 2.0F, 5.0F, 2.0F, layer.deformation.extend(1.15F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.4399F, 0.0F, 0.0F));
 
         PartDefinition secondarytailsegment_r1 = Tail.addOrReplaceChild("secondarytailsegment_r1", CubeListBuilder.create().texOffs(2, 18).addBox(-1.0F, 6.0F, -0.55F, 2.0F, 5.0F, 2.0F, layer.deformation.extend(1.5F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
 
-        PartDefinition primarytailsegment_r1 = Tail.addOrReplaceChild("primarytailsegment_r1", CubeListBuilder.create().texOffs(1, 18).addBox(-1.0F, 0.75F, 0.125F, 2.0F, 5.0F, 2.0F, layer.deformation.extend(1.7F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.0472F, 0.0F, 0.0F));
+        PartDefinition primarytailsegment_r1 = Tail.addOrReplaceChild("primarytailsegment_r1", CubeListBuilder.create().texOffs(1, 18).addBox(-1.0F, 0.75F, 0.125F, 2.0F, 5.0F, 2.0F, layer.deformation.extend(1.75F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.0472F, 0.0F, 0.0F));
 
         PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(4.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(0.0F, 25.0F, 0.0F));
 
