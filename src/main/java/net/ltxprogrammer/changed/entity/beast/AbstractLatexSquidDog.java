@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implements GenderedEntity {
     public AbstractLatexSquidDog(EntityType<? extends AbstractLatexSquidDog> p_19870_, Level p_19871_) {
@@ -15,6 +16,11 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
         return ChangedParticles.Color3.WHITE;
     }
 

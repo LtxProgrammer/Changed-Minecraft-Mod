@@ -13,6 +13,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import org.jetbrains.annotations.NotNull;
 
 public class MilkPudding extends LatexEntity implements Pudding {
     public MilkPudding(EntityType<? extends MilkPudding> p_19870_, Level p_19871_) {
@@ -47,6 +48,11 @@ public class MilkPudding extends LatexEntity implements Pudding {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
         return ChangedParticles.Color3.WHITE;
     }
 }

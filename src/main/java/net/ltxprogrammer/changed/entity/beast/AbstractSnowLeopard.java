@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractSnowLeopard extends LatexEntity implements GenderedEntity, PowderSnowWalkable {
     public AbstractSnowLeopard(EntityType<? extends AbstractSnowLeopard> p_19870_, Level p_19871_) {
@@ -22,6 +23,11 @@ public abstract class AbstractSnowLeopard extends LatexEntity implements Gendere
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.GRAY : ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
     }
 
     public LatexType getLatexType() {

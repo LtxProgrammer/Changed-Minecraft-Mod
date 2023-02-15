@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 
 public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
@@ -31,5 +32,10 @@ public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
     }
 }
