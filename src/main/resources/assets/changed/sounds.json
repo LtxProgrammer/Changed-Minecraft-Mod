@@ -169,6 +169,16 @@
     ],
     "subtitle": "subtitles.changed.siren"
   },
+  "sword1": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:sword1",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.sword1"
+  },
   "latex_dance": {
     "category": "music",
     "sounds": [
