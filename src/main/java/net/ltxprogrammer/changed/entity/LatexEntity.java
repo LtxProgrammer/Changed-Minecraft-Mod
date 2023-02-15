@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -40,6 +41,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -50,6 +52,8 @@ public abstract class LatexEntity extends Monster {
     @Nullable
     private Player underlyingPlayer;
 
+    private HairStyle hairStyle;
+
     @Nullable
     public Player getUnderlyingPlayer() {
         return underlyingPlayer;
@@ -57,6 +61,20 @@ public abstract class LatexEntity extends Monster {
 
     public void setUnderlyingPlayer(@Nullable Player player) {
         this.underlyingPlayer = player;
+    }
+
+    public @NotNull HairStyle getHairStyle() {
+        return hairStyle != null ? hairStyle : HairStyle.BALD;
+    }
+
+    public void setHairStyle(HairStyle style) {
+        this.hairStyle = style != null ? style : HairStyle.BALD;
+    }
+
+    public abstract @NotNull ChangedParticles.Color3 getHairColor();
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return null;
     }
 
     public boolean shouldShowName() {
@@ -173,12 +191,20 @@ public abstract class LatexEntity extends Monster {
         return findLatexEntityVariant(this);
     }
 
-    public LatexEntity(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
-        super(p_19870_, p_19871_);
+    public LatexEntity(EntityType<? extends LatexEntity> type, Level level) {
+        super(type, level);
         this.setAttributes(getAttributes());
         this.setHealth((float)this.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue());
         if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
+
+        if (this.getValidHairStyles() != null) {
+            var styles = this.getValidHairStyles();
+            hairStyle = styles.get(level.random.nextInt(styles.size()));
+        } else if (this instanceof GenderedEntity genderedEntity)
+            hairStyle = HairStyle.randomStyle(genderedEntity.getGender(), level.random);
+        else
+            hairStyle = HairStyle.randomStyle(level.random);
     }
 
     protected void setAttributes(AttributeMap attributes) {
@@ -342,5 +368,18 @@ public abstract class LatexEntity extends Monster {
         if (overrideVisuallySwimming)
             return true;
         return super.isVisuallySwimming();
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("HairStyle"))
+            hairStyle = HairStyle.valueOf(tag.getString("HairStyle"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putString("HairStyle", hairStyle.name());
     }
 }

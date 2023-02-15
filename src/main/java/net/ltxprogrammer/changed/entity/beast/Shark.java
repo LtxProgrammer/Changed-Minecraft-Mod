@@ -106,6 +106,11 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
