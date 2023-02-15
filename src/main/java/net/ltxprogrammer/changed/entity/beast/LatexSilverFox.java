@@ -1,10 +1,16 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.PatronOC;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class LatexSilverFox extends AbstractLatexWolf {
+import java.util.List;
+
+public class LatexSilverFox extends AbstractLatexWolf implements PatronOC {
     public LatexSilverFox(EntityType<? extends LatexSilverFox> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -12,5 +18,14 @@ public class LatexSilverFox extends AbstractLatexWolf {
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.SILVER;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
 
-public class LatexPinkDeer extends LatexEntity {
+public class LatexPinkDeer extends LatexPinkWyvern {
     public LatexPinkDeer(EntityType<? extends LatexPinkDeer> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

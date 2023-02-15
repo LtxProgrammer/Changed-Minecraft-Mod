@@ -1,14 +1,15 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable {
+import java.util.List;
+
+public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable, PatronOC {
     public LatexBlueDragon(EntityType<? extends LatexBlueDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -29,5 +30,14 @@ public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable {
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#cae5fe");
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 }

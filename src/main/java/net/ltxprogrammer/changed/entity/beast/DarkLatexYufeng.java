@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     public DarkLatexYufeng(EntityType<? extends DarkLatexYufeng> p_19870_, Level p_19871_) {

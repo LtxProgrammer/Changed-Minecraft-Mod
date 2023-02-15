@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class LightLatexKnight extends AbstractLatexWolf {
     public LightLatexKnight(EntityType<? extends LightLatexKnight> p_19870_, Level p_19871_) {
@@ -30,5 +31,10 @@ public class LightLatexKnight extends AbstractLatexWolf {
     @Override
     public LatexVariant<?> getTransfurVariant() {
         return LatexVariant.LIGHT_LATEX_CENTAUR;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
     }
 }

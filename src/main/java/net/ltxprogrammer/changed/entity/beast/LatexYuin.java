@@ -1,16 +1,17 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
-public class LatexYuin extends LatexEntity implements PowderSnowWalkable{
+public class LatexYuin extends LatexEntity implements PowderSnowWalkable, PatronOC {
     public LatexYuin(EntityType<? extends LatexYuin> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -31,5 +32,14 @@ public class LatexYuin extends LatexEntity implements PowderSnowWalkable{
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 }

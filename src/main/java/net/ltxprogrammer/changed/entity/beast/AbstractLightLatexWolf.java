@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractLightLatexWolf extends LatexEntity implements GenderedEntity {
     public AbstractLightLatexWolf(EntityType<? extends AbstractLightLatexWolf> p_19870_, Level p_19871_) {
@@ -22,6 +23,11 @@ public abstract class AbstractLightLatexWolf extends LatexEntity implements Gend
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
         return ChangedParticles.Color3.WHITE;
     }
 }
