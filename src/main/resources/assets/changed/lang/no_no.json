@@ -2,7 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blokker",
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
-  "itemGroup.tab_changed_weapons": "Changed våpen",
+  "itemGroup.tab_changed_combat": "Changed Kamputstyr",
 
   "ability.changed.access_saddle": "Tilgang Sal",
   "ability.changed.extra_hands": "Ekstra Hender",
