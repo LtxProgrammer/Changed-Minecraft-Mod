@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "changed:lab_door",
 	"texture_size": [128, 128],
 	"textures": {
 		"0": "lab_door",

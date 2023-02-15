@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "changed:book_stack",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "book_stack",
