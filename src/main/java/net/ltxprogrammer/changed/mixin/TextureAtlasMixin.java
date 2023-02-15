@@ -23,10 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -118,14 +115,14 @@ public abstract class TextureAtlasMixin {
 
     // Replacing mixin `load` >1000, with 1 `getLoadedSprites`
     @Inject(method = "getLoadedSprites", at = @At("RETURN"))
-    private void getLoadedSprites(ResourceManager resourceManager, Stitcher p_118285_, int param, CallbackInfoReturnable<List<TextureAtlasSprite>> callback) {
+    private void getLoadedSprites(ResourceManager resourceManager, Stitcher stitcher, int mipLevels, CallbackInfoReturnable<List<TextureAtlasSprite>> callback) {
         var list = callback.getReturnValue(); // Append covered blocks
-        p_118285_.gatherSprites((info, i1, i2, i3, i4) -> {
+        stitcher.gatherSprites((info, atlasWidth, atlasHeight, x, y) -> {
             ResourceLocation resourcelocation = this.getResourceLocation(info.name());
             if (resourceManager.hasResource(resourcelocation) || info == MissingTextureAtlasSprite.info())
                 return;
 
-            var texture = MixedTexture.findTexture(resourcelocation);
+            var texture = MixedTexture.findMixedTexture(resourcelocation);
             if (texture == null) {
                 int attempts = 30; // Corrupt textures may be from a race condition
                 while (attempts > 0 && texture == null) {
@@ -134,7 +131,7 @@ public abstract class TextureAtlasMixin {
                     } catch (Exception e) {
                         LOGGER.error("Failed to sleep", e);
                     }
-                    texture = MixedTexture.findTexture(resourcelocation);
+                    texture = MixedTexture.findMixedTexture(resourcelocation);
                     attempts--;
                 }
                 if (texture == null)
@@ -143,7 +140,7 @@ public abstract class TextureAtlasMixin {
 
             if (texture != null) {
                 try {
-                    list.add(new TextureAtlasSprite((TextureAtlas)(Object)this, info, param, i1, i2, i3, i4, texture));
+                    list.add(new TextureAtlasSprite((TextureAtlas)(Object)this, info, mipLevels, atlasWidth, atlasHeight, x, y, texture));
                 } catch (Exception exception) {
                     LOGGER.error("Failed to load mixed texture {}", info.name(), exception);
                 }
@@ -152,15 +149,17 @@ public abstract class TextureAtlasMixin {
     }
 
     @Inject(method = "load(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite$Info;IIIII)Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", at = @At("HEAD"), cancellable = true)
-    private void load(ResourceManager rm, TextureAtlasSprite.Info info, int p_118290_, int p_118291_, int p_118292_, int p_118293_, int p_118294_,
+    private void load(ResourceManager rm, TextureAtlasSprite.Info info, int atlasWidth, int atlasHeight, int mipLevels, int x, int y,
         CallbackInfoReturnable<TextureAtlasSprite> callbackInfo) {
         ResourceLocation resourcelocation = this.getResourceLocation(info.name());
         if (rm.hasResource(resourcelocation) || info == MissingTextureAtlasSprite.info())
             return;
 
-        var texture = MixedTexture.findTexture(resourcelocation);
-        if (texture != null) {
-            callbackInfo.setReturnValue(null);
+        for (var type : Arrays.stream(LatexType.values()).filter(type -> type != LatexType.NEUTRAL).toList()) {
+            if (resourcelocation.getPath().endsWith("/" + type.getSerializedName() + ".png")) {
+                callbackInfo.setReturnValue(null);
+                return;
+            }
         }
     }
 }
