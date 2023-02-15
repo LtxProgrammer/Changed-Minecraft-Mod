@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -20,6 +21,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
@@ -102,5 +105,9 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
         }
 
         return InteractionResult.PASS;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 }

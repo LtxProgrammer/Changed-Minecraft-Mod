@@ -1,10 +1,8 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.UniqueEffect;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,8 +12,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect {
+import java.util.List;
+
+public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect, PatronOC {
     public LatexHypnoCat(EntityType<? extends LatexHypnoCat> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -58,5 +60,14 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
             livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 2, false, false), self);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 2, false, false), self);
         });
+    }
+
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 }
