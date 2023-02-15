@@ -458,9 +458,10 @@ public class ProcessTransfur {
 
         entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
         entity.knockback((double)0.4F, d1, d0);
-
+        if(entity instanceof Player) {
         ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
         entity.hurt(ChangedDamageSources.entityTransfur(source.entity), 0.0F);
+        }
         boolean doesAbsorption = false;
         if (source.entity instanceof LatexEntity latexEntity)
             doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
