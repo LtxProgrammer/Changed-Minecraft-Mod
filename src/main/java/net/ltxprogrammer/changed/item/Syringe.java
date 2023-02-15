@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -152,7 +153,7 @@ public class Syringe extends Item implements SpecializedAnimations {
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
-
+        ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null)
             return usedOnPlayer(stack, level, player, player, false);
 
@@ -267,7 +268,6 @@ public class Syringe extends Item implements SpecializedAnimations {
 
     @Override
     public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
-        entity.playSound(this.getDrinkingSound(), 0.5F, entity.level.random.nextFloat() * 0.1F + 0.9F);
         return true;
     }
 }

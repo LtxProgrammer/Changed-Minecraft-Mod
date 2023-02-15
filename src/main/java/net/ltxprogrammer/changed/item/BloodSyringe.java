@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -52,7 +53,7 @@ public class BloodSyringe extends Item implements SpecializedAnimations {
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
-
+        ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null) {
             if (ProcessTransfur.isPlayerLatex(player) || (stack.getOrCreateTag().contains("owner") && stack.getTag().getUUID("owner").equals(player.getUUID()))) {
                 player.heal(1.0f);
@@ -89,7 +90,6 @@ public class BloodSyringe extends Item implements SpecializedAnimations {
 
     @Override
     public boolean triggerItemUseEffects(LivingEntity entity, ItemStack itemStack, int particleCount) {
-        entity.playSound(this.getDrinkingSound(), 0.5F, entity.level.random.nextFloat() * 0.1F + 0.9F);
         return true;
     }
 
