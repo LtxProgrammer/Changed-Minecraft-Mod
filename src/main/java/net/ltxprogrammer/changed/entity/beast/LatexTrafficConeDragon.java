@@ -23,6 +23,11 @@ public class LatexTrafficConeDragon extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffd201");
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.YELLOW;
     }

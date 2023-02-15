@@ -18,6 +18,11 @@ public class LatexTranslucentLizard extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffb84c");
+    }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }

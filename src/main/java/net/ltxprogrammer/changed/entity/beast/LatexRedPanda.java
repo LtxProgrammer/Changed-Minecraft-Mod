@@ -17,6 +17,11 @@ public class LatexRedPanda extends LatexEntity {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
+        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#bb2a3b" : "#5a2b49");
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
         return ChangedParticles.Color3.getColor("#bb2a3b");
     }
 

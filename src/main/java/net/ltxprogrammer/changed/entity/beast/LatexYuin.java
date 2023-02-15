@@ -22,7 +22,6 @@ public class LatexYuin extends LatexEntity implements PowderSnowWalkable, Patron
         return ChangedParticles.Color3.getColor("#ffffff");
     }
 
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;

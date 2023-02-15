@@ -23,6 +23,12 @@ public class LatexSnake extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffffff");
+    }
+
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#ffffff");
     }

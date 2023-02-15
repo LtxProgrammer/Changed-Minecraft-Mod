@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast.boss;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -9,7 +11,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BehemothHead extends Behemoth {
@@ -23,6 +28,14 @@ public class BehemothHead extends Behemoth {
     public BehemothHead(EntityType<? extends BehemothHead> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.xpReward = 50;
+    }
+    @Override
+    public @NotNull ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 
     protected void setAttributes(AttributeMap attributes) {

@@ -16,6 +16,11 @@ public class LatexMimicPlant extends LatexLeaf {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#446d5d");
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#446d5d");
     }

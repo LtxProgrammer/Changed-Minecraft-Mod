@@ -20,6 +20,11 @@ public class LatexMedusaCat extends LatexEntity {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#ffdb4f" : "#f0f0f0");
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#719b6f");
+    }
+
 
     @Override
     public LatexType getLatexType() {

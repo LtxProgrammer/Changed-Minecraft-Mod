@@ -10,6 +10,11 @@ public class AerosolLatexWolf extends AbstractLatexWolf {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#544742");
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.BROWN : ChangedParticles.Color3.WHITE;
     }

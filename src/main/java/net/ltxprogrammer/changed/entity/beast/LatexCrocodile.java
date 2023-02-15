@@ -23,6 +23,11 @@ public class LatexCrocodile extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#2b86a3");
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#2b86a3" : "#29b297");
     }

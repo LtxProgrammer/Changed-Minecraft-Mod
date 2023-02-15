@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.tags.FluidTags;
@@ -31,6 +32,12 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffffff");
+    }
+
 
     private boolean wantToSing() {
         return getTarget() != null;

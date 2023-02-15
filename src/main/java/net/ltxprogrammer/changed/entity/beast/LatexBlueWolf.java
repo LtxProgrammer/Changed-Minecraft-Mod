@@ -22,6 +22,11 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
         return Gender.FEMALE;
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#cdcdcd");
+    }
+
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#8ad6e7");
     }
