@@ -2,7 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blocks",
   "itemGroup.tab_changed_items": "Changed Föremål",
   "itemGroup.tab_changed_entities": "Changed Enheter",
-  "itemGroup.tab_changed_weapons": "Changed vapen",
+  "itemGroup.tab_changed_combat": "Changed Strid",
 
   "ability.changed.access_saddle": "Tillgång sadel",
   "ability.changed.extra_hands": "Extra händer",
@@ -74,6 +74,7 @@
   "death.attack.changed:transfur.player": "%1$s förpälsvandlades av %2$s",
   "death.attack.changed:white_latex": "%s upplöst i vit latex",
   "death.attack.changed:pale": "%s togs av Pale",
+  "death.attack.changed:bloodloss": "%s använt främmande plasma",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
