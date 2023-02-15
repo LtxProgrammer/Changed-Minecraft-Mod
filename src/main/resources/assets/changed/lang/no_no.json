@@ -2,7 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Blokker",
   "itemGroup.tab_changed_items": "Changed Varer",
   "itemGroup.tab_changed_entities": "Changed Enheter",
-  "itemGroup.tab_changed_weapons": "Changed våpen",
+  "itemGroup.tab_changed_combat": "Changed Kamputstyr",
 
   "ability.changed.access_saddle": "Tilgang Sal",
   "ability.changed.extra_hands": "Ekstra Hender",
@@ -74,6 +74,7 @@
   "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
   "death.attack.changed:pale": "%s ble tatt av Pale",
+  "death.attack.changed:bloodloss": "%s brukt fremmed plasma",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
