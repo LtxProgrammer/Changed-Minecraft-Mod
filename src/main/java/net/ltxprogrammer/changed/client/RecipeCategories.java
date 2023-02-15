@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
+import net.ltxprogrammer.changed.item.AbdomenArmor;
+import net.ltxprogrammer.changed.item.TscWeapon;
 import net.ltxprogrammer.changed.util.DelayedItemStack;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static net.minecraft.client.RecipeBookCategories.CRAFTING_EQUIPMENT;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class RecipeCategories {
     public static final List<RecipeBookCategories> INJECTED_CATEGORIES = new ArrayList<>();
@@ -31,9 +35,8 @@ public class RecipeCategories {
         return category;
     }
 
-    public static <T extends Recipe<?>> void registerTypeCategories(RecipeBookType bookType, RecipeType<T> recipeType,
-                                                                    RecipeBookCategories coreCategory, List<RecipeBookCategories> categories, Function<T, List<RecipeBookCategories>> finder) {
-        RecipeBookRegistry.addCategoriesToType(bookType, categories);
+    public static <T extends Recipe<?>> void registerCategoriesFinder(RecipeType<T> recipeType,
+                                                                    RecipeBookCategories coreCategory, Function<T, List<RecipeBookCategories>> finder) {
         RecipeBookRegistry.addCategoriesFinder(recipeType, recipe -> coreCategory);
         MULTICATEGORY_FINDER.add(recipe -> {
             try {
@@ -42,6 +45,12 @@ public class RecipeCategories {
                 return Lists.newArrayList();
             }
         });
+    }
+
+    public static <T extends Recipe<?>> void registerTypeCategories(RecipeBookType bookType, RecipeType<T> recipeType,
+                                                                    RecipeBookCategories coreCategory, List<RecipeBookCategories> categories, Function<T, List<RecipeBookCategories>> finder) {
+        RecipeBookRegistry.addCategoriesToType(bookType, categories);
+        registerCategoriesFinder(recipeType, coreCategory, finder);
     }
 
     public static final List<Function<Recipe<?>, List<RecipeBookCategories>>> MULTICATEGORY_FINDER = new ArrayList<>();
@@ -75,6 +84,15 @@ public class RecipeCategories {
             if (recipe.gendered)
                 categories.add(INFUSER_GENDERED);
 
+            return categories;
+        });
+
+        registerCategoriesFinder(RecipeType.CRAFTING, RecipeBookCategories.CRAFTING_SEARCH, recipe -> {
+            List<RecipeBookCategories> categories = new ArrayList<>();
+            if (recipe.getResultItem().getItem() instanceof AbdomenArmor)
+                categories.add(CRAFTING_EQUIPMENT);
+            else if (recipe.getResultItem().getItem() instanceof TscWeapon)
+                categories.add(CRAFTING_EQUIPMENT);
             return categories;
         });
     }
