@@ -11,6 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class AbdomenArmor extends ArmorItem implements WearableItem {
+    public static boolean useAbdomenModel(EquipmentSlot slot) {
+        return slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET;
+    }
+
+    public static boolean useInnerAbdomenModel(EquipmentSlot slot) {
+        return slot == EquipmentSlot.FEET;
+    }
+
     public AbdomenArmor(ArmorMaterial material, EquipmentSlot slot) {
         super(material, slot, new Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT));
     }
