@@ -28,8 +28,8 @@ public class Legacy {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 0).addBox(-4.5F, -8.1F, -4.75F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 0).addBox(-4.5F, -6.1F, -4.75F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 0).addBox(-4.5F, -8.0F, -4.75F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-4.5F, -6.0F, -4.75F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(28, 30).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, new CubeDeformation(0.001F))
                 .texOffs(34, 30).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, new CubeDeformation(0.001F))
                 .texOffs(18, 30).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, new CubeDeformation(0.001F))
