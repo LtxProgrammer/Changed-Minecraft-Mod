@@ -31,8 +31,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         return texture != null;
     }
 
-    private static class Sorted {
-        private static final EnumMap<Gender, List<HairStyle>> BY_GENDER = new EnumMap<>(Gender.class);
+    public static class Sorted {
+        public static final EnumMap<Gender, List<HairStyle>> BY_GENDER = new EnumMap<>(Gender.class);
     }
 
     HairStyle(Gender gender, @Nullable ModelLayerLocation model, @Nullable ResourceLocation texture) {
@@ -56,7 +56,7 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         }
     }
 
-    public static HairStyle create(String name, @Nullable Gender gender) {
+    public static HairStyle create(String name, @Nullable Gender gender, @Nullable ModelLayerLocation model, @Nullable ResourceLocation texture) {
         throw new IllegalStateException("Enum not extended");
     }
 

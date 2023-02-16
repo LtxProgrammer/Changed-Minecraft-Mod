@@ -29,7 +29,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
 
     public LatexHumanoidHairLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
         super(parent);
-        Arrays.stream(HairStyle.values()).filter(HairStyle::hasModel).filter(MODEL_BY_HAIRSTYLE::containsKey).forEach(style -> {
+        Arrays.stream(HairStyle.values()).filter(HairStyle::hasModel).filter(style -> !MODEL_BY_HAIRSTYLE.containsKey(style)).forEach(style -> {
             try {
                 MODEL_BY_HAIRSTYLE.put(style, new HairModel(modelSet.bakeLayer(style.model)));
             } catch (Exception ex) {
@@ -38,9 +38,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         });
     }
 
-    public void render(PoseStack pose, MultiBufferSource bufferSource, int i, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
-        if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.DARK_LATEX_MASK.get()))
-            return;
+    public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
         HairStyle style = entity.getHairStyle();
         ChangedParticles.Color3 color = entity.getHairColor();
         if (style.model == null || style.texture == null)
@@ -50,7 +48,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         ModelPart head = this.getParentModel().getHead();
         head.translateAndRotate(pose);
         MODEL_BY_HAIRSTYLE.get(style)
-                .renderToBuffer(pose, bufferSource.getBuffer(RenderType.entityCutoutNoCull(style.texture)), i,
+                .renderToBuffer(pose, bufferSource.getBuffer(RenderType.entityCutoutNoCull(style.texture)), packedLight,
                         OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0f);
         pose.popPose();
     }

@@ -3,7 +3,9 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
+import net.ltxprogrammer.changed.client.renderer.model.hair.Legacy;
 import net.ltxprogrammer.changed.data.DelayLoadedModel;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -162,5 +164,8 @@ public class ChangedLayerDefinitions {
                             DelayLoadedModel.HUMANOID_PART_FIXER,
                             DelayLoadedModel.HUMANOID_GROUP_FIXER));
         });
+
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_MALE.model, Legacy::createMaleHair);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE.model, Legacy::createFemaleHair);
     }
 }

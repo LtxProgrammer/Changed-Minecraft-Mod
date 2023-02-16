@@ -41,6 +41,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
@@ -74,7 +75,10 @@ public abstract class LatexEntity extends Monster {
     public abstract @NotNull ChangedParticles.Color3 getHairColor();
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return null;
+        if (this instanceof GenderedEntity gendered)
+            return HairStyle.Sorted.BY_GENDER.get(gendered.getGender());
+        else
+            return Arrays.stream(HairStyle.values()).toList();
     }
 
     public boolean shouldShowName() {
@@ -201,10 +205,7 @@ public abstract class LatexEntity extends Monster {
         if (this.getValidHairStyles() != null) {
             var styles = this.getValidHairStyles();
             hairStyle = styles.get(level.random.nextInt(styles.size()));
-        } else if (this instanceof GenderedEntity genderedEntity)
-            hairStyle = HairStyle.randomStyle(genderedEntity.getGender(), level.random);
-        else
-            hairStyle = HairStyle.randomStyle(level.random);
+        }
     }
 
     protected void setAttributes(AttributeMap attributes) {

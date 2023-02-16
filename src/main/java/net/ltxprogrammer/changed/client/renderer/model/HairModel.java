@@ -15,7 +15,7 @@ public class HairModel extends Model {
     }
 
     @Override
-    public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int p_103113_, int p_103114_, float p_103115_, float p_103116_, float p_103117_, float p_103118_) {
-        root.render(pose, buffer, p_103113_, p_103114_, p_103115_, p_103116_, p_103117_, p_103118_);
+    public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        root.render(pose, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
