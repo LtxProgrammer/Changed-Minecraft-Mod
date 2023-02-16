@@ -173,5 +173,6 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ.model, Legacy::createHeadFuzzHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD.model, Legacy::createMaleStandardHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE.model, Legacy::createMaleHairNWE);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.model, Legacy::createShortFrontHair);
     }
 }
