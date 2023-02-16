@@ -26,7 +26,7 @@ public class LatexDeer extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.getColor("#ac967d");
     }
 

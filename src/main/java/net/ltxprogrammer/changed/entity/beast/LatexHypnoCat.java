@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
     }
 
     @Override
-    public @NotNull ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 

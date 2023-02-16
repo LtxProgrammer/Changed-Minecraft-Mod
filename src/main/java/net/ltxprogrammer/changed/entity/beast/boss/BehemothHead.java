@@ -11,7 +11,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class BehemothHead extends Behemoth {
         this.xpReward = 50;
     }
     @Override
-    public @NotNull ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 

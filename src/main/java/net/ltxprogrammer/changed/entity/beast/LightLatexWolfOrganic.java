@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class LightLatexWolfOrganic extends AbstractLatexWolf {
     public LightLatexWolfOrganic(EntityType<? extends LightLatexWolfOrganic> p_19870_, Level p_19871_) {
@@ -12,7 +11,7 @@ public class LightLatexWolfOrganic extends AbstractLatexWolf {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 
