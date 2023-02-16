@@ -19,7 +19,7 @@ public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 
 

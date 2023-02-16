@@ -8,7 +8,27 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+
 public class Shock extends MobEffect {
+    private static Field noControlField;
+
+    static {
+        try {
+            noControlField = LivingEntity.class.getField("controlDisabledFor");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setNoControlTicks(LivingEntity entity, int ticks) {
+        try {
+            noControlField.set(entity, ticks);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Shock() {
         super(MobEffectCategory.HARMFUL, 14688288);
         setRegistryName("shock");

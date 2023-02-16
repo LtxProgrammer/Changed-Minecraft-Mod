@@ -18,7 +18,7 @@ public class DarkLatexWolfMale extends AbstractDarkLatexWolf {
 
     @Override
     public ChangedParticles.Color3 getHairColor() {
-        return ChangedParticles.Color3.getColor("#383838");
+        return ChangedParticles.Color3.DARK;
     }
 
     @Override
