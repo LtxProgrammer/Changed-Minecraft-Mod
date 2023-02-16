@@ -43,7 +43,7 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_NWE_S;
     }
 
     @Override

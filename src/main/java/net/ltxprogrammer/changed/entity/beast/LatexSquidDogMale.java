@@ -18,7 +18,7 @@ public class LatexSquidDogMale extends AbstractLatexSquidDog {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD;
+        return HairStyle.MALE_STANDARD_S;
     }
 
     @Override

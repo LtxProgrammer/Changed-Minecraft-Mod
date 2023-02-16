@@ -115,20 +115,6 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
 
             PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(48, 34).addBox(0.0088F, -2.0341F, -1.0F, 2.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.5F, -34.135F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
-            PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(61, 37).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
-                    .texOffs(65, 21).addBox(-4.0F, -26.75F, 2.0F, 8.0F, 1.0F, 2.0F, CubeDeformation.NONE)
-                    .texOffs(61, 37).addBox(-4.0F, -34.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
-                    .texOffs(61, 37).addBox(2.0F, -34.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
-                    .texOffs(61, 37).addBox(-5.0F, -34.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
-                    .texOffs(70, 32).addBox(4.0F, -34.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
-                    .texOffs(75, 29).addBox(3.75F, -30.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
-                    .texOffs(75, 29).addBox(-4.75F, -30.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
-                    .texOffs(81, 25).addBox(-2.0F, -35.0F, 4.0F, 4.0F, 12.0F, 1.0F, CubeDeformation.NONE)
-                    .texOffs(75, 24).addBox(-4.0F, -34.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
-                    .texOffs(75, 24).addBox(2.0F, -34.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
-                    .texOffs(69, 37).addBox(-4.5F, -32.0F, -5.0F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
-                    .texOffs(65, 21).addBox(-4.5F, -34.0F, -5.0F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
-
             PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(0, 32).addBox(-8.0F, -26.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
                     .texOffs(32, 14).addBox(-5.0F, -14.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                     .texOffs(12, 32).addBox(-8.0F, -14.25F, 1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)

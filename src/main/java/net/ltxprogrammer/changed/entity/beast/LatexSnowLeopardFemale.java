@@ -24,7 +24,7 @@ public class LatexSnowLeopardFemale extends AbstractSnowLeopard {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE;
+        return HairStyle.LEGACY_FEMALE_RIGHT_BANG_S;
     }
 
     @Override
