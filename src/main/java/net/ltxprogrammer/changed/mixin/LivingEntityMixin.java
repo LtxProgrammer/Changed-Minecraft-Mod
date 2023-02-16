@@ -31,7 +31,7 @@ public abstract class LivingEntityMixin extends Entity {
         super(p_19870_, p_19871_);
     }
 
-    private int controlDisabledFor = 0;
+    public int controlDisabledFor = 0;
 
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
     private void updateFallFlying(CallbackInfo callback) {
@@ -112,7 +112,7 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo callback) {
         if (controlDisabledFor > 0) {
             if ((Entity)this instanceof Mob mob) {

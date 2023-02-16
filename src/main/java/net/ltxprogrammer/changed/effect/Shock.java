@@ -11,20 +11,23 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 
 public class Shock extends MobEffect {
-    private static Field noControlField;
+    private static final Field noControlField;
 
     static {
+        Field noControlField1;
         try {
-            noControlField = LivingEntity.class.getField("controlDisabledFor");
+            noControlField1 = LivingEntity.class.getField("controlDisabledFor");
         } catch (NoSuchFieldException e) {
+            noControlField1 = null;
             e.printStackTrace();
         }
+        noControlField = noControlField1;
     }
 
     public static void setNoControlTicks(LivingEntity entity, int ticks) {
         try {
             noControlField.set(entity, ticks);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
