@@ -24,7 +24,7 @@ public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.FEMALE_NO_BANGS;
+        return HairStyle.FEMALE_NO_BANGS_S;
     }
 
     @Override

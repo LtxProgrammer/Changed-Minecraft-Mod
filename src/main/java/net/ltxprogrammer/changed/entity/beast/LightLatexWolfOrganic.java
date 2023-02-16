@@ -17,7 +17,7 @@ public class LightLatexWolfOrganic extends AbstractLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD;
+        return HairStyle.MALE_STANDARD_S;
     }
 
     public ChangedParticles.Color3 getDripColor() {

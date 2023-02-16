@@ -24,7 +24,7 @@ public class LatexMermaidShark extends AbstractGenderedLatexShark {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_NWE_S;
     }
 
     @Override

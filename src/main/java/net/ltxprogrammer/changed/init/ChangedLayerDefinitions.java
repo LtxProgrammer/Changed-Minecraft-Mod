@@ -175,6 +175,15 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ.model, Legacy::createHeadFuzzHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD.model, Legacy::createMaleStandardHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE.model, Legacy::createMaleHairNWE);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG_S.model, Legacy::createFemaleRightBangHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG_S.model, Legacy::createFemaleLeftBangHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS_S.model, Legacy::createFemaleDualBangHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_NO_BANGS_S.model, Legacy::createFemaleNoBangsHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS_S.model, Legacy::createFemaleSideBangsHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MOHAWK_S.model, Legacy::createMohawkHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ_S.model, Legacy::createHeadFuzzHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD_S.model, Legacy::createMaleStandardHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE_S.model, Legacy::createMaleHairNWESHDD);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.model, Legacy::createShortFrontHair);
     }
 }
