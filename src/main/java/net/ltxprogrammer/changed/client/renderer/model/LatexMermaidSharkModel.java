@@ -100,21 +100,6 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
         PartDefinition Head_r2 = Fins.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(23, 66).addBox(-0.5F, -7.0F, 0.0F, 2.0F, 3.0F, 3.0F, CubeDeformation.NONE)
                 .texOffs(59, 45).addBox(-0.5F, -4.0F, 0.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 2.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
 
-        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 37).addBox(-2.0F, -33.0F, 3.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
-                .texOffs(34, 21).addBox(-4.0F, -32.5F, 4.0F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
-                .texOffs(34, 21).addBox(-4.0F, -32.4F, 2.75F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
-                .texOffs(0, 62).addBox(2.0F, -33.0F, 7.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(16, 50).addBox(2.5F, -32.0F, 3.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
-                .texOffs(34, 25).addBox(-3.5F, -31.0F, 2.75F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 29).addBox(3.5F, -32.0F, 2.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(24, 0).addBox(-4.5F, -32.0F, 2.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(44, 57).addBox(2.5F, -29.0F, 6.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
-                .texOffs(28, 50).addBox(-4.5F, -29.0F, 6.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
-                .texOffs(48, 21).addBox(-4.5F, -32.0F, 3.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
-                .texOffs(60, 20).addBox(-4.0F, -33.0F, 7.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(32, 8).addBox(-4.0F, -32.0F, 2.5F, 8.0F, 1.0F, 1.0F, new CubeDeformation(-0.05F))
-                .texOffs(55, 38).addBox(-4.0F, -32.0F, 11.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 25.0F, -7.0F));
-
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, 0.0F));
 
         PartDefinition Torso_r1 = Torso.addOrReplaceChild("Torso_r1", CubeListBuilder.create().texOffs(0, 29).addBox(-4.0F, -5.0F, -3.05F, 9.0F, 3.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.5F, 14.0F, 0.5F, 0.0F, 0.0F, 0.0F));
