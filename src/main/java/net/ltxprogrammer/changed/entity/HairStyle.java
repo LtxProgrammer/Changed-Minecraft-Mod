@@ -5,12 +5,13 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraftforge.common.IExtensibleEnum;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public enum HairStyle implements IExtensibleEnum, StringRepresentable {
-    BALD(Gender.MALE, null, null),
+    BALD(Gender.MALE),
     LEGACY_MALE(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/legacy_male"), "main"),
             Changed.modResource("textures/hair/legacy_male.png")),
@@ -41,25 +42,31 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
 
     @Nullable
     public final ModelLayerLocation model;
-    @Nullable
-    public final ResourceLocation texture;
+    @NotNull
+    public final ResourceLocation[] textures;
 
     public boolean hasModel() {
         return model != null;
     }
 
     public boolean hasTexture() {
-        return texture != null;
+        return textures != null;
     }
 
     public static class Sorted {
         public static final EnumMap<Gender, List<HairStyle>> BY_GENDER = new EnumMap<>(Gender.class);
     }
 
-    HairStyle(Gender gender, @Nullable ModelLayerLocation model, @Nullable ResourceLocation texture) {
+    HairStyle(Gender gender) {
+        Sorted.BY_GENDER.computeIfAbsent(gender, ignored -> new ArrayList<>()).add(this);
+        this.model = null;
+        this.textures = new ResourceLocation[0];
+    }
+
+    HairStyle(Gender gender, @Nullable ModelLayerLocation model, @NotNull ResourceLocation... textures) {
         Sorted.BY_GENDER.computeIfAbsent(gender, ignored -> new ArrayList<>()).add(this);
         this.model = model;
-        this.texture = texture;
+        this.textures = textures;
     }
 
     public static HairStyle randomStyle(Random random) {
@@ -77,7 +84,11 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         }
     }
 
-    public static HairStyle create(String name, @Nullable Gender gender, @Nullable ModelLayerLocation model, @Nullable ResourceLocation texture) {
+    public static HairStyle create(String name, Gender gender) {
+        throw new IllegalStateException("Enum not extended");
+    }
+
+    public static HairStyle create(String name, Gender gender, @Nullable ModelLayerLocation model, @NotNull ResourceLocation... texture) {
         throw new IllegalStateException("Enum not extended");
     }
 

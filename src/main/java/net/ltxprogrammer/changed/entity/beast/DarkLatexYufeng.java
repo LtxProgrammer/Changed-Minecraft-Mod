@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     public DarkLatexYufeng(EntityType<? extends DarkLatexYufeng> p_19870_, Level p_19871_) {
@@ -17,7 +16,7 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.DARK;
     }
 

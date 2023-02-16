@@ -47,7 +47,7 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 

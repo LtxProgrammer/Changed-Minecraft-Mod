@@ -73,7 +73,7 @@ public abstract class LatexEntity extends Monster {
         this.hairStyle = style != null ? style : HairStyle.BALD;
     }
 
-    public abstract @NotNull ChangedParticles.Color3 getHairColor();
+    public abstract ChangedParticles.Color3 getHairColor(int layer);
 
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
