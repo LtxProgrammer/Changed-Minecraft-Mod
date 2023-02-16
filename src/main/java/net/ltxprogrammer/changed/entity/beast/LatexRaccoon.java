@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -23,6 +24,11 @@ public class LatexRaccoon extends LatexEntity {
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
     }
 
     @Override

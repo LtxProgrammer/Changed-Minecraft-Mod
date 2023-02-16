@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,10 @@ public class LatexSniperDog extends AbstractLatexWolf {
         return ChangedParticles.Color3.getColor("#eb8c44");
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
+    }
 
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#ef8f44");

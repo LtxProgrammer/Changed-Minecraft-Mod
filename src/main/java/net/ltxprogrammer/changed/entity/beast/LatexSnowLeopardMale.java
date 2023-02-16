@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +17,11 @@ public class LatexSnowLeopardMale extends AbstractSnowLeopard {
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.2f);
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MOHAWK;
     }
 
     @Override
