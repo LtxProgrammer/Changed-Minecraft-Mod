@@ -882,6 +882,7 @@ public class LatexVariant<T extends LatexEntity> {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
             this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId());
+            this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE.getId());
         }
 
         private void ignored() {}

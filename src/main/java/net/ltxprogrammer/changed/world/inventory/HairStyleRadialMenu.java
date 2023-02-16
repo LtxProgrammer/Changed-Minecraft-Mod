@@ -40,7 +40,7 @@ public class HairStyleRadialMenu extends AbstractContainerMenu {
     }
 
     public HairStyleRadialMenu(int id, Inventory inv, Container p_38971_, ContainerData p_38972_) {
-        super(ChangedMenus.ABILITY_RADIAL, id);
+        super(ChangedMenus.HAIRSTYLE_RADIAL, id);
         this.container = p_38971_;
         this.data = p_38972_;
         this.world = inv.player.level;
