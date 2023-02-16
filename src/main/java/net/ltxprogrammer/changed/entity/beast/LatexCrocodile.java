@@ -22,6 +22,7 @@ public class LatexCrocodile extends LatexEntity {
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
+
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD;

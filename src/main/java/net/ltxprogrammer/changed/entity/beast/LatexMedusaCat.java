@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -18,6 +19,11 @@ public class LatexMedusaCat extends LatexEntity {
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#ffdb4f" : "#f0f0f0");
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.FEMALE_SIDE_BANGS;
     }
 
     @Override
