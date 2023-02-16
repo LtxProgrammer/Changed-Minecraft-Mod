@@ -49,7 +49,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         head.translateAndRotate(pose);
         MODEL_BY_HAIRSTYLE.get(style)
                 .renderToBuffer(pose, bufferSource.getBuffer(RenderType.entityCutoutNoCull(style.texture)), packedLight,
-                        OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0f);
+                        OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), p_116675_);
         pose.popPose();
     }
 }

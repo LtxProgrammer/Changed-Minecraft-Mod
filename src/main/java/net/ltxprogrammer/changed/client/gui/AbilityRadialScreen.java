@@ -45,7 +45,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     }
 
     @Override
-    public void renderSectionForeground(PoseStack pose, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue) {
+    public void renderSectionForeground(PoseStack pose, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue, float alpha) {
         boolean enabled = false;
         if (menu.variant.abilityInstances.containsKey(abilities.get(section))) {
             enabled = menu.variant.abilityInstances.get(abilities.get(section)).canUse();
@@ -59,7 +59,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         float minRed = Math.max(red, 0.125f);
         float minGreen = Math.max(green, 0.125f);
         float minBlue = Math.max(blue, 0.125f);
-        RenderSystem.setShaderColor(minRed, minGreen, minBlue, enabled ? 1 : 0.5f);
+        RenderSystem.setShaderColor(minRed, minGreen, minBlue, (enabled ? 1 : 0.5f) * alpha);
         this.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
     }
 
