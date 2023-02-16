@@ -8,26 +8,25 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
-import net.ltxprogrammer.changed.network.VariantAbilityActivate;
-import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.ltxprogrammer.changed.world.inventory.HairStyleRadialMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
 import oshi.util.tuples.Pair;
@@ -60,9 +59,9 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
         this.secondaryColor = colors.getB();
     }
 
-    public static void renderEntityHeadWithHair(int x, int y, int scale, float xRot, float yRot, LatexEntity entity) {
-        float f = (float)Math.atan((double)(xRot / 40.0F));
-        float f1 = (float)Math.atan((double)(yRot / 40.0F));
+    public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, LatexEntity entity) {
+        float f = (float)Math.atan((double)(lookX / 40.0F));
+        float f1 = (float)Math.atan((double)(lookY / 40.0F));
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
         posestack.translate((double)x, (double)y, 1050.0D);
@@ -71,8 +70,8 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
         PoseStack posestack1 = new PoseStack();
         posestack1.translate(0.0D, 0.0D, 1000.0D);
         posestack1.scale((float)scale, (float)scale, (float)scale);
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+        Quaternion quaternion = Vector3f.YP.rotationDegrees(f * 20.0F);
+        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(-f1 * 20.0F);
         quaternion.mul(quaternion1);
         posestack1.mulPose(quaternion);
         float f2 = entity.yBodyRot;
@@ -90,20 +89,19 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
         quaternion1.conj();
         dispatcher.overrideCameraOrientation(quaternion1);
         dispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
+        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
             var renderer = dispatcher.getRenderer(entity);
             if (renderer instanceof LatexHumanoidRenderer latexRenderer) {
-                FormRenderHandler.renderModelPartWithTexture(
-                        latexRenderer.getModel(entity).getHead(),
-                        new PoseStack(),
-                        posestack1, multibuffersource$buffersource.getBuffer(latexRenderer.getModel().renderType(latexRenderer.getTextureLocation(entity))),
-                        15728880, 1.0F);
+                latexRenderer.getModel(entity).getHead().render(posestack1,
+                        bufferSource.getBuffer(latexRenderer.getModel().renderType(latexRenderer.getTextureLocation(entity))),
+                        LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY
+                );
                 latexRenderer.getHairLayer().render(posestack1,
-                        multibuffersource$buffersource, 0, entity, 0, 0, 0, 0, 0, 0);
+                        bufferSource, LightTexture.FULL_BRIGHT, entity, 0, 0, 0, 0, 0, 0);
             }
         });
-        multibuffersource$buffersource.endBatch();
+        bufferSource.endBatch();
         dispatcher.setRenderShadow(true);
         entity.yBodyRot = f2;
         entity.setYRot(f3);
@@ -166,28 +164,24 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
             int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
             int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
 
-            boolean enabled = false;
-            if (sect < styles.size() && menu.variant.abilityInstances.containsKey(styles.get(sect))) {
-                enabled = menu.variant.abilityInstances.get(styles.get(sect)).canUse();
-            }
-
-            RenderSystem.setShaderColor(primaryColor.red(), primaryColor.green(), primaryColor.blue(), enabled ? 1 : 0.5f);
+            RenderSystem.setShaderColor(primaryColor.red(), primaryColor.green(), primaryColor.blue(), 1);
             RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/radial/" + sect + ".png"));
             this.blit(ms, x - 32 + this.leftPos, y - 32 + this.topPos, 0, 0, 64, 64, 64, 64);
         }
 
+        HairStyle originalStyle = variant.getLatexEntity().getHairStyle();
         for (int sect = 0; sect < 8 && sect < styles.size() && sect <= tickCount; sect++) {
             double dbl = (sect + 0.5 + calcOffset(sect)) / 8.0;
-            int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
-            int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE);
+            int x = (int)(Math.sin(dbl * Math.PI * 2.0) * RADIAL_DISTANCE * 0.9);
+            int y = -(int)(Math.cos(dbl * Math.PI * 2.0) * RADIAL_DISTANCE) - 16;
 
-            boolean enabled = false;
-            if (menu.variant.abilityInstances.containsKey(styles.get(sect))) {
-                enabled = menu.variant.abilityInstances.get(styles.get(sect)).canUse();
-            }
-
-            renderEntityHeadWithHair(x - 24 + this.leftPos, y - 24 + this.topPos, 40, 40, 20, variant.getLatexEntity());
+            variant.getLatexEntity().setHairStyle(styles.get(sect));
+            renderEntityHeadWithHair(x + this.leftPos, y + 32 + this.topPos, 40,
+                    (float)(this.leftPos) - gx + x,
+                    (float)(this.topPos) - gy + y,
+                    variant.getLatexEntity());
         }
+        variant.getLatexEntity().setHairStyle(originalStyle);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
         InventoryScreen.renderEntityInInventory(this.leftPos, this.topPos + 50, 38, (float)(this.leftPos) - gx, (float)(this.topPos) - gy, variant.getLatexEntity());
@@ -195,30 +189,32 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
         RenderSystem.disableBlend();
     }
 
-    /*@Override
+    @Override
     public boolean mouseClicked(double p_97748_, double p_97749_, int p_97750_) {
-        var ability = getHairStyleAt((int)p_97748_, (int)p_97749_);
-        if (ability != null && menu.variant.abilityInstances.get(ability).canUse()) {
+        var style = getHairStyleAt((int)p_97748_, (int)p_97749_);
+        if (style != null) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            this.minecraft.player.closeContainer();
-            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(ability));
+            this.variant.getLatexEntity().setHairStyle(style);
+            ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(this.menu.player, this.variant);
+            this.menu.player.closeContainer();
             return true;
         }
 
         return false;
-    }*/
+    }
 
-    /*@Override
+    @Override
     public boolean keyPressed(int key, int b, int c) {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            this.minecraft.player.closeContainer();
+            this.menu.player.closeContainer();
             return true;
         }
 
         if (key == GLFW.GLFW_KEY_0) { // Due to keyboard positioning, 0 will be treated as 10
             if (10 < styles.size()) {
-                this.minecraft.player.closeContainer();
-                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(styles.get(10)));
+                this.variant.getLatexEntity().setHairStyle(styles.get(10));
+                ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(this.menu.player, this.variant);
+                this.menu.player.closeContainer();
                 return true;
             }
         }
@@ -226,14 +222,15 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
         if (key >= GLFW.GLFW_KEY_1 && key <= GLFW.GLFW_KEY_9) {
             int idx = key - GLFW.GLFW_KEY_1;
             if (idx < styles.size()) {
-                this.minecraft.player.closeContainer();
-                Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(styles.get(idx)));
+                this.variant.getLatexEntity().setHairStyle(styles.get(idx));
+                ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(this.menu.player, this.variant);
+                this.menu.player.closeContainer();
                 return true;
             }
         }
 
         return super.keyPressed(key, b, c);
-    }*/
+    }
 
     @Override
     public void containerTick() {
