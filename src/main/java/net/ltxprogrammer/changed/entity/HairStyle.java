@@ -17,12 +17,15 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
             Changed.modResource("textures/hair/legacy_male.png")),
     LEGACY_FEMALE_RIGHT_BANG(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/legacy_female_right_bang"), "main"),
+            new ModelLayerLocation(Changed.modResource("hair/legacy_female_lower"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
     LEGACY_FEMALE_LEFT_BANG(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/legacy_female_left_bang"), "main"),
+            LEGACY_FEMALE_RIGHT_BANG.lowerHair,
             Changed.modResource("textures/hair/legacy_collection.png")),
     LEGACY_FEMALE_DUAL_BANGS(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/legacy_female_dual_bangs"), "main"),
+            LEGACY_FEMALE_RIGHT_BANG.lowerHair,
             Changed.modResource("textures/hair/legacy_collection.png")),
     FEMALE_NO_BANGS(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/female_no_bangs"), "main"),
@@ -73,18 +76,20 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
             new ModelLayerLocation(Changed.modResource("hair/male_short_front"), "main"),
             Changed.modResource("textures/hair/male_short_front.png")),
     DICHROME_MALE_STANDARD(Gender.MALE,
-            MALE_STANDARD.model,
+            MALE_STANDARD.headHair,
             MALE_STANDARD.textures[0], Changed.modResource("textures/hair/squirrel_layer.png")),
     DICHROME_MALE_STANDARD_S(Gender.MALE,
-                           MALE_STANDARD.model,
+                           MALE_STANDARD.headHair,
                            MALE_STANDARD.textures[0], Changed.modResource("textures/hair/raccoon_layer.png"));
     @Nullable
-    public final ModelLayerLocation model;
+    public final ModelLayerLocation headHair;
+    @Nullable
+    public final ModelLayerLocation lowerHair;
     @NotNull
     public final ResourceLocation[] textures;
 
     public boolean hasModel() {
-        return model != null;
+        return headHair != null || lowerHair != null;
     }
 
     public boolean hasTexture() {
@@ -97,13 +102,22 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
 
     HairStyle(Gender gender) {
         Sorted.BY_GENDER.computeIfAbsent(gender, ignored -> new ArrayList<>()).add(this);
-        this.model = null;
+        this.headHair = null;
+        this.lowerHair = null;
         this.textures = new ResourceLocation[0];
     }
 
-    HairStyle(Gender gender, @Nullable ModelLayerLocation model, @NotNull ResourceLocation... textures) {
+    HairStyle(Gender gender, @Nullable ModelLayerLocation headHair, @NotNull ResourceLocation... textures) {
         Sorted.BY_GENDER.computeIfAbsent(gender, ignored -> new ArrayList<>()).add(this);
-        this.model = model;
+        this.headHair = headHair;
+        this.lowerHair = null;
+        this.textures = textures;
+    }
+
+    HairStyle(Gender gender, @Nullable ModelLayerLocation headHair, @Nullable ModelLayerLocation lowerHair, @NotNull ResourceLocation... textures) {
+        Sorted.BY_GENDER.computeIfAbsent(gender, ignored -> new ArrayList<>()).add(this);
+        this.headHair = headHair;
+        this.lowerHair = lowerHair;
         this.textures = textures;
     }
 
@@ -126,7 +140,12 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         throw new IllegalStateException("Enum not extended");
     }
 
-    public static HairStyle create(String name, Gender gender, @Nullable ModelLayerLocation model, @NotNull ResourceLocation... texture) {
+    public static HairStyle create(String name, Gender gender, @NotNull ModelLayerLocation headHair, @NotNull ResourceLocation... texture) {
+        throw new IllegalStateException("Enum not extended");
+    }
+
+    public static HairStyle create(String name, Gender gender, @NotNull ModelLayerLocation headHair,
+                                   @NotNull ModelLayerLocation lowerHair, @NotNull ResourceLocation... texture) {
         throw new IllegalStateException("Enum not extended");
     }
 
