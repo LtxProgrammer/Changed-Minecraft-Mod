@@ -84,7 +84,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
         int offFloor = (int)Math.floor(getViewOffset());
         int offCiel = (int)Math.ceil(getViewOffset());
         double offFrac = Mth.frac(off);
-        for (int sect = 0; sect < 8 && sect < getCount() && sect <= tickCount; sect++) {
+        for (int sect = offFloor; sect < 8 + offCiel && sect < getCount() && sect <= tickCount; sect++) {
             double dbl = (sect - offFrac + 0.5 + calcOffset(sect - offFloor) - offFloor) / 8.0;
             double anim;
             if (sect < offCiel) {
