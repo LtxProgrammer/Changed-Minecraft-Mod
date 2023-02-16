@@ -173,7 +173,7 @@ public class Legacy {
                 .texOffs(0, 25).addBox(-4.5F, -7.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
                 .texOffs(0, 52).addBox(-4.0F, -7.95F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(42, 24).addBox(-4.0F, -7.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(42, 17).addBox(-4.0F, -7.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+                .texOffs(42, 17).addBox(-4.0F, -7.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 72, 72);
     }
@@ -348,7 +348,7 @@ public class Legacy {
                 .texOffs(0, 25).addBox(-4.5F, -7.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
                 .texOffs(0, 52).addBox(-4.0F, -7.95F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(42, 24).addBox(-4.0F, -7.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(42, 17).addBox(-4.0F, -7.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+                .texOffs(42, 17).addBox(-4.0F, -7.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 72, 72);
     }
