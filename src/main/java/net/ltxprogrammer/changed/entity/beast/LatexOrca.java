@@ -17,7 +17,7 @@ public class LatexOrca extends AbstractAquaticEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_SHORT_FRONT;
+        return HairStyle.MALE_SHORT_FRONT_S;
     }
 
     @Override
