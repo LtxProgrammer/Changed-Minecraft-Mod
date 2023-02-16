@@ -42,7 +42,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         this.styles = variant.getLatexEntity().getValidHairStyles();
     }
 
-    public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, LatexEntity entity) {
+    public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, LatexEntity entity, float alpha) {
         float f = (float)Math.atan((double)(lookX / 40.0F));
         float f1 = (float)Math.atan((double)(lookY / 40.0F));
         PoseStack posestack = RenderSystem.getModelViewStack();
@@ -78,10 +78,10 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
             if (renderer instanceof LatexHumanoidRenderer latexRenderer) {
                 latexRenderer.getModel(entity).getHead().render(posestack1,
                         bufferSource.getBuffer(latexRenderer.getModel().renderType(latexRenderer.getTextureLocation(entity))),
-                        LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY
+                        LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, alpha
                 );
                 latexRenderer.getHairLayer().render(posestack1,
-                        bufferSource, LightTexture.FULL_BRIGHT, entity, 0, 0, 0, 0, 0, 0);
+                        bufferSource, LightTexture.FULL_BRIGHT, entity, 0, 0, 0, 0, 0, alpha);
             }
         });
         bufferSource.endBatch();
@@ -108,7 +108,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
     }
 
     @Override
-    public void renderSectionForeground(PoseStack pose, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue) {
+    public void renderSectionForeground(PoseStack pose, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue, float alpha) {
         x = x * 0.9;
         y = (y * 0.9) - 16;
 
@@ -117,7 +117,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
                 (float)(this.leftPos) - mouseX + (int)x,
                 (float)(this.topPos) - mouseY + (int)y,
-                variant.getLatexEntity());
+                variant.getLatexEntity(), alpha);
         variant.getLatexEntity().setHairStyle(oldStyle);
     }
 
