@@ -19,6 +19,7 @@ public class ChangedAbilities {
     public static SwitchGenderAbility SWITCH_GENDER = register(new SwitchGenderAbility());
     public static UseVariantEffectAbility USE_VARIANT_EFFECT = register(new UseVariantEffectAbility());
     public static SlitherAbility SLITHER = register(new SlitherAbility());
+    public static SelectHairstyleAbility SELECT_HAIRSTYLE = register(new SelectHairstyleAbility());
 
     public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
