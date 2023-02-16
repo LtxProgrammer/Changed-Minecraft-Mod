@@ -15,7 +15,6 @@ public class LatexSquidDogMale extends AbstractLatexSquidDog {
         return ChangedParticles.Color3.WHITE;
     }
 
-
     @Override
     public Gender getGender() {
         return Gender.MALE;

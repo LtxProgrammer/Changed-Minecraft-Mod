@@ -27,7 +27,6 @@ public class LatexSnake extends LatexEntity {
         return ChangedParticles.Color3.WHITE;
     }
 
-
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.WHITE;

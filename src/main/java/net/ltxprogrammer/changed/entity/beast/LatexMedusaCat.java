@@ -25,12 +25,10 @@ public class LatexMedusaCat extends LatexEntity {
         return ChangedParticles.Color3.getColor("#719b6f");
     }
 
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
-
 
     @Override
     public TransfurMode getTransfurMode() {

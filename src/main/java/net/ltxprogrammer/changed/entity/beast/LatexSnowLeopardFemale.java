@@ -21,7 +21,6 @@ public class LatexSnowLeopardFemale extends AbstractSnowLeopard {
         return ChangedParticles.Color3.WHITE;
     }
 
-
     @Override
     public Gender getGender() {
         return Gender.FEMALE;
