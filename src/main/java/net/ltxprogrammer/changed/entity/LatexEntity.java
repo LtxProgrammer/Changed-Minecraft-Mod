@@ -74,6 +74,16 @@ public abstract class LatexEntity extends Monster {
 
     public abstract @NotNull ChangedParticles.Color3 getHairColor();
 
+    public HairStyle getDefaultHairStyle() {
+        if (this.getValidHairStyles() != null) {
+            var styles = this.getValidHairStyles();
+            return styles.get(level.random.nextInt(styles.size()));
+        }
+
+        else
+            return HairStyle.BALD;
+    }
+
     public @Nullable List<HairStyle> getValidHairStyles() {
         if (this instanceof GenderedEntity gendered)
             return HairStyle.Sorted.BY_GENDER.get(gendered.getGender());
@@ -202,10 +212,7 @@ public abstract class LatexEntity extends Monster {
         if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
 
-        if (this.getValidHairStyles() != null) {
-            var styles = this.getValidHairStyles();
-            hairStyle = styles.get(level.random.nextInt(styles.size()));
-        }
+        hairStyle = this.getDefaultHairStyle();
     }
 
     protected void setAttributes(AttributeMap attributes) {
