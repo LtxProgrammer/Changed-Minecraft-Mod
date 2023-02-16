@@ -18,16 +18,6 @@ public class LatexMantaRayMale extends AbstractLatexMantaRay {
     }
 
     @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
-    }
-
-    @Override
-    public ChangedParticles.Color3 getHairColor() {
-        return ChangedParticles.Color3.getColor("#6f7696");
-    }
-
-    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
