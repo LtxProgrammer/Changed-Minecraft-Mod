@@ -37,12 +37,12 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+        return layer == 0 ? ChangedParticles.Color3.getColor("#ffffff") : ChangedParticles.Color3.getColor("#f3df60");
     }
 
     @Override
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.DICHROME_FEMALE_TRIPLE_BANGS_S;
     }
 
     private boolean wantToSing() {
