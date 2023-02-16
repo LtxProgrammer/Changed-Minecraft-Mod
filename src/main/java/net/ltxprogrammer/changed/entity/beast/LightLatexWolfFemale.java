@@ -19,7 +19,7 @@ public class LightLatexWolfFemale extends AbstractLightLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE;
+        return HairStyle.LEGACY_FEMALE_RIGHT_BANG;
     }
 
     @Override

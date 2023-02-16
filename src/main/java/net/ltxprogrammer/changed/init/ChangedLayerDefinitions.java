@@ -166,7 +166,9 @@ public class ChangedLayerDefinitions {
         });
 
         ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_MALE.model, Legacy::createMaleHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE.model, Legacy::createFemaleHair);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.model, Legacy::createFemaleRightBangHair);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG.model, Legacy::createFemaleLeftBangHair);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS.model, Legacy::createFemaleDualBangHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_NO_BANGS.model, Legacy::createFemaleNoBangsHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS.model, Legacy::createFemaleSideBangsHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MOHAWK.model, Legacy::createMohawkHair);
