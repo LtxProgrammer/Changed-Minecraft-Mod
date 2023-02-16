@@ -20,7 +20,6 @@ public class LatexRaccoon extends LatexEntity {
         return ChangedParticles.Color3.getColor("#949494");
     }
 
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
