@@ -45,6 +45,18 @@ public class Legacy {
         return LayerDefinition.create(meshdefinition, 72, 72);
     }
 
+    public static LayerDefinition createFemaleLowerHair() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition LowerHair = partdefinition.addOrReplaceChild("LowerHair", CubeListBuilder.create().texOffs(60, 14).addBox(2.5F, -1.0F, -3.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(60, 14).addBox(-4.5F, -1.0F, -3.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(60, 10).addBox(-4.5F, 0.0F, -3.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(60, 10).addBox(2.5F, 0.0F, -3.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 1.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 72, 72);
+    }
+
     public static LayerDefinition createFemaleLeftBangHair() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
