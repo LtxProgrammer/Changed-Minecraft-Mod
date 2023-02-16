@@ -20,6 +20,10 @@ public class LatexDeer extends LatexEntity {
         return ChangedParticles.Color3.getColor("#cfbc9b");
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ac967d");
+    }
 
     @Override
     public LatexType getLatexType() {

@@ -9,6 +9,11 @@ public class LatexSniperDog extends AbstractLatexWolf {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#eb8c44");
+    }
+
 
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#ef8f44");

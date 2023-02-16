@@ -15,6 +15,11 @@ public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEnti
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#383838");
+    }
+
+    @Override
     public boolean isMaskless() {
         return true;
     }

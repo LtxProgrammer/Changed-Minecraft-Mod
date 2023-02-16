@@ -13,4 +13,8 @@ public class LatexOrca extends AbstractAquaticEntity {
     public ChangedParticles.Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.DARK : ChangedParticles.Color3.WHITE;
     }
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#373737");
+    }
 }

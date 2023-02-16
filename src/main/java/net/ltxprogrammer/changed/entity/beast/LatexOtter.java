@@ -23,6 +23,12 @@ public class LatexOtter extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#5d4743");
+    }
+
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#5d4743" : "#b6957c");
     }

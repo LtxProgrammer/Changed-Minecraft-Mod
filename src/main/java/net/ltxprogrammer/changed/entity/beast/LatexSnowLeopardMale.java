@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,6 +22,12 @@ public class LatexSnowLeopardMale extends AbstractSnowLeopard {
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffffff");
+    }
+
 
     @Override
     public Gender getGender() {

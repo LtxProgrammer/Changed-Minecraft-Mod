@@ -26,6 +26,11 @@ public class LatexRaccoon extends LatexEntity {
         return LatexType.NEUTRAL;
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#919191");
+    }
+
 
     @Override
     public TransfurMode getTransfurMode() {

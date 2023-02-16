@@ -29,12 +29,12 @@ public class LightLatexKnight extends AbstractLatexWolf {
     }
 
     @Override
-    public LatexVariant<?> getTransfurVariant() {
-        return LatexVariant.LIGHT_LATEX_CENTAUR;
+    public ChangedParticles.Color3 getHairColor() {
+        return ChangedParticles.Color3.getColor("#ffffff");
     }
 
     @Override
-    public @NotNull ChangedParticles.Color3 getHairColor() {
-        return ChangedParticles.Color3.WHITE;
+    public LatexVariant<?> getTransfurVariant() {
+        return LatexVariant.LIGHT_LATEX_CENTAUR;
     }
 }
