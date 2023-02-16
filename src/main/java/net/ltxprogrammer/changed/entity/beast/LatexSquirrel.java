@@ -22,6 +22,11 @@ public class LatexSquirrel extends LatexLeaf {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#ac8f64") : ChangedParticles.Color3.getColor("#6f482a");
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#ac8f64" : "#ffe8a5");
     }
