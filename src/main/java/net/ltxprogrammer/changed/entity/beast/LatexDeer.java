@@ -14,7 +14,6 @@ public class LatexDeer extends LatexEntity {
         super(p_19870_, p_19871_);
     }
 
-
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#cfbc9b");
@@ -29,7 +28,6 @@ public class LatexDeer extends LatexEntity {
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
-
 
     @Override
     public TransfurMode getTransfurMode() {

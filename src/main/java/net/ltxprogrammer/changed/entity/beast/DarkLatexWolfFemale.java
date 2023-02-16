@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,11 @@ public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
     @Override
     public ChangedParticles.Color3 getHairColor() {
         return ChangedParticles.Color3.DARK;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.FEMALE_NO_BANGS;
     }
 
     @Override

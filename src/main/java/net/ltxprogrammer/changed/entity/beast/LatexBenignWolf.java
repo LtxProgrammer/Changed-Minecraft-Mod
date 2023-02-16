@@ -20,7 +20,6 @@ public class LatexBenignWolf extends AbstractLatexWolf {
         return ChangedParticles.Color3.getColor("#282828");
     }
 
-
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#282828");
     }
