@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -38,6 +39,11 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
     }
 
     @Override

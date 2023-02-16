@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -25,6 +26,10 @@ public class LatexRedPanda extends LatexEntity {
         return ChangedParticles.Color3.getColor("#bb2a3b");
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
+    }
 
     @Override
     public LatexType getLatexType() {

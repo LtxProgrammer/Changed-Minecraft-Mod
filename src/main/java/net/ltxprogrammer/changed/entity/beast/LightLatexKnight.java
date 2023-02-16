@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -26,6 +27,11 @@ public class LightLatexKnight extends AbstractLatexWolf {
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.WHITE;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
     }
 
     @Override

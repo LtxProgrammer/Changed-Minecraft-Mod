@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.tags.FluidTags;
@@ -19,6 +20,11 @@ public class LatexMermaidShark extends AbstractGenderedLatexShark {
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
     }
 
     @Override

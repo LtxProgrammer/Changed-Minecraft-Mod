@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.tags.FluidTags;
@@ -20,6 +21,11 @@ public class LatexMantaRayFemale extends AbstractLatexMantaRay {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
     }
 
     @Override

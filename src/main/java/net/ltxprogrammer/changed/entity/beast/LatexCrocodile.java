@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -20,6 +21,10 @@ public class LatexCrocodile extends LatexEntity {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
+    }
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
     }
 
     @Override
