@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -20,6 +21,11 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
     @Override
     public Gender getGender() {
         return Gender.FEMALE;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.LEGACY_FEMALE;
     }
 
     @Override
