@@ -18,7 +18,7 @@ public class LatexSnowLeopardFemale extends AbstractSnowLeopard {
 
     @Override
     public ChangedParticles.Color3 getHairColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 
 

@@ -12,10 +12,10 @@ public class LightLatexWolfOrganic extends AbstractLatexWolf {
 
     @Override
     public ChangedParticles.Color3 getHairColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 }

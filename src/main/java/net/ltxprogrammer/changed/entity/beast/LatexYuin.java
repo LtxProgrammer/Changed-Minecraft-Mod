@@ -19,7 +19,7 @@ public class LatexYuin extends LatexEntity implements PowderSnowWalkable, Patron
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 
     @Override

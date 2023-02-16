@@ -186,7 +186,7 @@ public class HairStyleRadialScreen extends AbstractContainerScreen<HairStyleRadi
                 enabled = menu.variant.abilityInstances.get(styles.get(sect)).canUse();
             }
 
-            renderEntityHeadWithHair(x - 24 + this.leftPos, y - 24 + this.topPos, 40, 40, 0, variant.getLatexEntity());
+            renderEntityHeadWithHair(x - 24 + this.leftPos, y - 24 + this.topPos, 40, 40, 20, variant.getLatexEntity());
         }
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
