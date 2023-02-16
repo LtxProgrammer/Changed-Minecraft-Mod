@@ -74,7 +74,7 @@ public class Legacy {
                 .texOffs(16, 16).addBox(-3.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(0, 0).addBox(2.0F, -7.0F, 3.25F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(23, 24).addBox(-2.0F, -7.025F, 3.75F, 4.0F, 7.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 25).addBox(-2.0F, -7.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
+                .texOffs(0, 25).addBox(-2.0F, -7.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

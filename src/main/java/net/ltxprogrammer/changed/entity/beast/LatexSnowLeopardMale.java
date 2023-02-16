@@ -21,7 +21,7 @@ public class LatexSnowLeopardMale extends AbstractSnowLeopard {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MOHAWK;
+        return HairStyle.BALD;
     }
 
     @Override
