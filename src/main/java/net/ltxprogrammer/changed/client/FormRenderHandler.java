@@ -143,7 +143,7 @@ public class FormRenderHandler {
         }, () -> false);
     }
 
-    private static void renderModelPartWithTexture(ModelPart part, PoseStack stackCorrector, PoseStack stack, VertexConsumer buffer, int light, float alpha) {
+    public static void renderModelPartWithTexture(ModelPart part, PoseStack stackCorrector, PoseStack stack, VertexConsumer buffer, int light, float alpha) {
         if(part == null) return;
 
         float prevX = part.xRot;
