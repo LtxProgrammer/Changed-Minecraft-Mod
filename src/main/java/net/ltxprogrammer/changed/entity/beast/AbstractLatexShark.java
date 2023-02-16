@@ -18,7 +18,6 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -63,7 +62,7 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
     }
 
     @Override
-    public @NotNull ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 }

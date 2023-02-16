@@ -23,7 +23,7 @@ public class LightLatexWolfMale extends AbstractLightLatexWolf {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
 

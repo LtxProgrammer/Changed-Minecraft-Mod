@@ -2,24 +2,20 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.DarkLatexMaskModel;
 import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -40,16 +36,20 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
         HairStyle style = entity.getHairStyle();
-        ChangedParticles.Color3 color = entity.getHairColor();
-        if (style.model == null || style.texture == null)
+        if (style.model == null || style.textures.length == 0)
             return;
 
         pose.pushPose();
         ModelPart head = this.getParentModel().getHead();
         head.translateAndRotate(pose);
-        MODEL_BY_HAIRSTYLE.get(style)
-                .renderToBuffer(pose, bufferSource.getBuffer(RenderType.entityCutoutNoCull(style.texture)), packedLight,
-                        OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), p_116675_);
+        Model hair = MODEL_BY_HAIRSTYLE.get(style);
+        int colorLayer = 0;
+        for (ResourceLocation layer : style.textures) {
+            ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
+            hair.renderToBuffer(pose, bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer)), packedLight,
+                    OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), p_116675_);
+            ++colorLayer;
+        }
         pose.popPose();
     }
 }

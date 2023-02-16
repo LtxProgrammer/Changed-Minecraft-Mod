@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implements DarkLatexEntity {
 
@@ -22,7 +21,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     }
 
     @Override
-    public @NotNull ChangedParticles.Color3 getHairColor() {
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.DARK;
     }
 }
