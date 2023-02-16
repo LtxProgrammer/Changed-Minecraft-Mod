@@ -12,7 +12,7 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_NWE_S;
     }
 
     @Override

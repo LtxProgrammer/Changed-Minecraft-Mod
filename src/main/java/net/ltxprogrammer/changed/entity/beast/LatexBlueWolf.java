@@ -25,7 +25,7 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE;
+        return HairStyle.LEGACY_FEMALE_RIGHT_BANG;
     }
 
     @Override
