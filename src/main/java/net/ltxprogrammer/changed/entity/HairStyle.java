@@ -74,8 +74,10 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
             Changed.modResource("textures/hair/male_short_front.png")),
     DICHROME_MALE_STANDARD(Gender.MALE,
             MALE_STANDARD.model,
-            MALE_STANDARD.textures[0], Changed.modResource("textures/hair/squirrel_layer.png"));
-
+            MALE_STANDARD.textures[0], Changed.modResource("textures/hair/squirrel_layer.png")),
+    DICHROME_MALE_STANDARD_S(Gender.MALE,
+                           MALE_STANDARD.model,
+                           MALE_STANDARD.textures[0], Changed.modResource("textures/hair/raccoon_layer.png"));
     @Nullable
     public final ModelLayerLocation model;
     @NotNull
