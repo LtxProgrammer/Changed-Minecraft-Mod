@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.NoiseThresholdCountPlacement;
-import terrablender.api.ParameterUtils;
 
 import java.util.List;
 
@@ -32,14 +31,6 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_PILLAR =
             FeatureUtils.register(Changed.modResourceStr("patch_white_latex_pillar"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.WHITE_LATEX_PILLAR), 8));
-
-    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-            Climate.Parameter.span(temperatures[1], temperatures[2]),
-            Climate.Parameter.span(-0.125f, 0.125f),
-            farInlandContinentalness,
-            erosions[3],
-            Climate.Parameter.point(0),
-            Climate.Parameter.span(-0.25f, 0.25f), 0);
 
 
     public Biome build() {
@@ -96,19 +87,14 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
     }
 
     @Override
-    public Climate.ParameterPoint climate() {
-        return PARAMETER_POINT;
-    }
-
-    @Override
     public List<Climate.ParameterPoint> getPoints() {
-        return new ParameterUtils.ParameterPointListBuilder()
-                .temperature(ParameterUtils.Temperature.COOL)
-                .humidity(ParameterUtils.Humidity.ARID, ParameterUtils.Humidity.DRY, ParameterUtils.Humidity.NEUTRAL, ParameterUtils.Humidity.WET, ParameterUtils.Humidity.HUMID)
-                .continentalness(ParameterUtils.Continentalness.span(ParameterUtils.Continentalness.MID_INLAND, ParameterUtils.Continentalness.FAR_INLAND))
-                .erosion(ParameterUtils.Erosion.EROSION_0, ParameterUtils.Erosion.EROSION_1)
-                .depth(ParameterUtils.Depth.SURFACE, ParameterUtils.Depth.FLOOR)
-                .weirdness(ParameterUtils.Weirdness.HIGH_SLICE_VARIANT_ASCENDING, ParameterUtils.Weirdness.PEAK_VARIANT, ParameterUtils.Weirdness.HIGH_SLICE_VARIANT_DESCENDING)
+        return new ParameterPointsBuilder()
+                .temperature(Temperature.COOL)
+                .humidity(Humidity.FULL_RANGE)
+                .continentalness(Continentalness.span(Continentalness.MID_INLAND, Continentalness.FAR_INLAND))
+                .erosion(Erosion.EROSION_0, Erosion.EROSION_1)
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.span(Weirdness.VALLEY, Weirdness.MID_SLICE_VARIANT_ASCENDING))
                 .build();
     }
 }

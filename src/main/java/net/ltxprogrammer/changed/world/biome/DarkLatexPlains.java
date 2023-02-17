@@ -26,7 +26,6 @@ import java.util.List;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.calculateSkyColor;
 import static net.ltxprogrammer.changed.init.ChangedBiomes.grassPatch;
-import static terrablender.api.ParameterUtils.*;
 
 public class DarkLatexPlains implements ChangedBiomeInterface {
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_CRYSTAL =
@@ -50,20 +49,6 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_WOLF_CRYSTAL_SMALL =
             FeatureUtils.register(Changed.modResourceStr("patch_wolf_crystal_small"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_WOLF_CRYSTAL_SMALL), 4));
-
-    /*public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(Climate.Parameter.span(-0.142857142857f, 0.142857142857f),
-            Climate.Parameter.span(-0.142857142857f, 0.142857142857f), Climate.Parameter.span(0.367142857143f, 0.652857142857f),
-            Climate.Parameter.span(0.657142857143f, 0.942857142857f), Climate.Parameter.point(0),
-            Climate.Parameter.span(-0.709325650395f, -0.423611364681f), 0);*/
-
-    public static final Climate.ParameterPoint PARAMETER_POINT = new Climate.ParameterPoint(
-            temperatures[3],
-            Climate.Parameter.span(0.0f, 0.3f),
-            farInlandContinentalness,
-            erosions[3],
-            Climate.Parameter.point(0),
-            Climate.Parameter.span(-0.25f, 0.25f), 0);
-
 
     public Biome build() {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -145,19 +130,14 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
     }
 
     @Override
-    public Climate.ParameterPoint climate() {
-        return PARAMETER_POINT;
-    }
-
-    @Override
     public List<Climate.ParameterPoint> getPoints() {
-        return new ParameterPointListBuilder()
+        return new ParameterPointsBuilder()
                 .temperature(Temperature.NEUTRAL, Temperature.WARM)
-                .humidity(Humidity.ARID, Humidity.DRY, Humidity.NEUTRAL, Humidity.WET, Humidity.HUMID)
+                .humidity(Humidity.FULL_RANGE)
                 .continentalness(Continentalness.span(Continentalness.MID_INLAND, Continentalness.FAR_INLAND))
                 .erosion(Erosion.EROSION_0, Erosion.EROSION_1)
                 .depth(Depth.SURFACE, Depth.FLOOR)
-                .weirdness(Weirdness.HIGH_SLICE_VARIANT_ASCENDING, Weirdness.PEAK_VARIANT, Weirdness.HIGH_SLICE_VARIANT_DESCENDING)
+                .weirdness(Weirdness.span(Weirdness.VALLEY, Weirdness.MID_SLICE_VARIANT_ASCENDING))
                 .build();
     }
 }

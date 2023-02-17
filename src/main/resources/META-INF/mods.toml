@@ -50,10 +50,3 @@ description='''Nothing to be seen here.'''
     versionRange="[1.18.2]"
     ordering="NONE"
     side="BOTH"
-
-[[dependencies.changed]]
-    modId="terrablender"
-    mandatory=true
-    versionRange="[1.0.0.59,)"
-    ordering="NONE"
-    side="BOTH"

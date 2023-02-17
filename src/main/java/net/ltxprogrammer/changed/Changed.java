@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed;
 
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
-import net.ltxprogrammer.changed.extension.terrablender.LatexBlender;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
@@ -47,7 +46,6 @@ public class Changed {
 
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
 
@@ -89,10 +87,6 @@ public class Changed {
         ChangedBlocks.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         //    ^^^ First to process ^^^
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(LatexBlender::initialize);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
