@@ -21,7 +21,6 @@ public abstract class WallBlockMixin extends Block implements SimpleWaterloggedB
         super(p_49795_);
     }
 
-    // TODO BUG: walls render weirdly
     @Inject(method = "makeShapes", at = @At("RETURN"), cancellable = true)
     private void makeShapes(float p_57966_, float p_57967_, float p_57968_, float p_57969_, float p_57970_, float p_57971_, CallbackInfoReturnable<Map<BlockState, VoxelShape>> callbackInfoReturnable) {
         if (!defaultBlockState().getProperties().contains(COVERED))
