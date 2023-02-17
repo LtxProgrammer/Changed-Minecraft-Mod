@@ -25,7 +25,7 @@ public class LatexOtter extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_SIDEBURN;
     }
 
     @Override
