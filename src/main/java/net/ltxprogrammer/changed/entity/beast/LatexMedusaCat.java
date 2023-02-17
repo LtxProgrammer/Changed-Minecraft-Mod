@@ -30,8 +30,7 @@ public class LatexMedusaCat extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.LEGACY_FEMALE_DUAL_BANGS, HairStyle.FEMALE_NO_BANGS, HairStyle.LEGACY_FEMALE_RIGHT_BANG,
-                HairStyle.LEGACY_FEMALE_LEFT_BANG, HairStyle.LEGACY_FEMALE_TRIPLE_BANGS, HairStyle.FEMALE_SIDE_BANGS);
+        return HairStyle.Collections.FEMALE;
     }
 
     @Override

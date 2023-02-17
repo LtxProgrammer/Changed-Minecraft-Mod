@@ -40,6 +40,6 @@ public class LatexRedDragon extends LatexEntity implements PatronOC {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 }

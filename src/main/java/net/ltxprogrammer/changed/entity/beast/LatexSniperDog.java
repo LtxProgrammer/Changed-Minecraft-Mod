@@ -24,7 +24,7 @@ public class LatexSniperDog extends AbstractLatexWolf {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 
     public ChangedParticles.Color3 getDripColor() {

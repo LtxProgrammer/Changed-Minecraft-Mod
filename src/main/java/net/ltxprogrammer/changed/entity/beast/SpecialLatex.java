@@ -33,7 +33,7 @@ public class SpecialLatex extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 
     public UUID getAssignedUUID() {

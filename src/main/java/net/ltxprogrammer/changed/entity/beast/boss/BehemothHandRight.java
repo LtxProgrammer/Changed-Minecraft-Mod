@@ -18,6 +18,6 @@ public class BehemothHandRight extends BehemothHand {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 }

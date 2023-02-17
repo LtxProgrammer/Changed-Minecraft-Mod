@@ -108,6 +108,6 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 }
