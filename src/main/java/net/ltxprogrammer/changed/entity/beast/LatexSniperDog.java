@@ -4,6 +4,9 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexSniperDog extends AbstractLatexWolf {
     public LatexSniperDog(EntityType<? extends LatexSniperDog> p_19870_, Level p_19871_) {
@@ -18,6 +21,10 @@ public class LatexSniperDog extends AbstractLatexWolf {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 
     public ChangedParticles.Color3 getDripColor() {

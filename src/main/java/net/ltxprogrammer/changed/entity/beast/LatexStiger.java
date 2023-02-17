@@ -15,6 +15,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexStiger extends LatexEntity {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(LatexStiger.class, EntityDataSerializers.BYTE);
@@ -27,7 +30,16 @@ public class LatexStiger extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.DICHROME_MALE_NWE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK, HairStyle.HEAD_FUZZ, HairStyle.MALE_SHORT_FRONT, HairStyle.MALE_NWE, HairStyle.MALE_SIDEBURN);
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#7b4251") : ChangedParticles.Color3.getColor("#512742");
     }
 
     @Override
@@ -37,11 +49,6 @@ public class LatexStiger extends LatexEntity {
 
     @Override
     public TransfurMode getTransfurMode() { return TransfurMode.REPLICATION; }
-
-    @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#7b4251");
-    }
 
     @Override
     public MobType getMobType() {

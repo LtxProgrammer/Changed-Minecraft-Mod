@@ -7,6 +7,9 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LightLatexKnight extends AbstractLatexWolf {
     public LightLatexKnight(EntityType<? extends LightLatexKnight> p_19870_, Level p_19871_) {
@@ -31,6 +34,10 @@ public class LightLatexKnight extends AbstractLatexWolf {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.MALE_NWE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK, HairStyle.HEAD_FUZZ, HairStyle.MALE_SHORT_FRONT, HairStyle.MALE_NWE, HairStyle.MALE_SIDEBURN);
     }
 
     @Override
