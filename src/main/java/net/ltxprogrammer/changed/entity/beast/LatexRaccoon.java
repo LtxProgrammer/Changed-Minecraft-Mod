@@ -31,7 +31,11 @@ public class LatexRaccoon extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.DICHROME_MALE_STANDARD_S;
+        return HairStyle.DICHROME_MALE_SHORT_FRONT_S;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK_S, HairStyle.HEAD_FUZZ_S, HairStyle.MALE_SHORT_FRONT_S, HairStyle.MALE_NWE_S, HairStyle.MALE_SIDEBURN_S);
     }
 
     @Override

@@ -4,6 +4,9 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexTigerShark extends AbstractAquaticEntity {
     public LatexTigerShark(EntityType<? extends LatexTigerShark> p_19870_, Level p_19871_) {
@@ -13,6 +16,10 @@ public class LatexTigerShark extends AbstractAquaticEntity {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.MALE_NWE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK_S, HairStyle.HEAD_FUZZ_S, HairStyle.MALE_SHORT_FRONT_S, HairStyle.MALE_NWE_S, HairStyle.MALE_SIDEBURN_S);
     }
 
     @Override
