@@ -32,7 +32,7 @@ public class LatexSnake extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 
     @Override

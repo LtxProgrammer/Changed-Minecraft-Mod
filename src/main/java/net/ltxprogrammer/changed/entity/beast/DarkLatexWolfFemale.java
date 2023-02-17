@@ -26,8 +26,7 @@ public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.LEGACY_FEMALE_DUAL_BANGS_S, HairStyle.FEMALE_NO_BANGS_S, HairStyle.LEGACY_FEMALE_RIGHT_BANG_S,
-                HairStyle.LEGACY_FEMALE_LEFT_BANG_S, HairStyle.LEGACY_FEMALE_TRIPLE_BANGS_S, HairStyle.FEMALE_SIDE_BANGS_S);
+        return HairStyle.Collections.FEMALE_SHADED;
     }
 
     @Override

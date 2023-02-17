@@ -67,6 +67,6 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD);
+        return HairStyle.Collections.NONE;
     }
 }

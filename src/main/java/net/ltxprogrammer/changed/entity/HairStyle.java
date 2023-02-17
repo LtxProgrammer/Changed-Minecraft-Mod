@@ -102,6 +102,21 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     DICHROME_FEMALE_TRIPLE_BANGS_S(Gender.FEMALE,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.headHair,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.textures[0], Changed.modResource("textures/hair/siren_layer.png"));
+
+    public static class Collections {
+        public static List<HairStyle> NONE = List.of(BALD);
+        
+        public static List<HairStyle> MALE = List.of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN);
+        public static List<HairStyle> MALE_SHADED = List.of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> FEMALE = List.of(LEGACY_FEMALE_DUAL_BANGS, FEMALE_NO_BANGS, LEGACY_FEMALE_RIGHT_BANG,
+                LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_TRIPLE_BANGS, FEMALE_SIDE_BANGS);
+        public static List<HairStyle> FEMALE_SHADED = List.of(LEGACY_FEMALE_DUAL_BANGS_S, FEMALE_NO_BANGS_S, LEGACY_FEMALE_RIGHT_BANG_S,
+                LEGACY_FEMALE_LEFT_BANG_S, LEGACY_FEMALE_TRIPLE_BANGS_S, FEMALE_SIDE_BANGS_S);
+
+        public static List<HairStyle> MALE_NO_WOLF_EARS = List.of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN);
+        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = List.of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S);
+    }
+
     @Nullable
     public final ModelLayerLocation headHair;
     @Nullable
