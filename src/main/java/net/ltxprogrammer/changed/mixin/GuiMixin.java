@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.AbilityRadialScreen;
+import net.ltxprogrammer.changed.client.gui.LatexAbilityRadialScreen;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -28,7 +29,7 @@ public abstract class GuiMixin extends GuiComponent {
             if (ProcessTransfur.isPlayerOrganic(player))
                 return;
             ProcessTransfur.ifPlayerLatex(player, variant -> {
-                var colors = AbilityRadialScreen.getColors(variant);
+                var colors = LatexAbilityRadialScreen.getColors(variant);
                 var color = type == Gui.HeartType.NORMAL ? colors.getA() : colors.getB();
                 RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
                 RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1);

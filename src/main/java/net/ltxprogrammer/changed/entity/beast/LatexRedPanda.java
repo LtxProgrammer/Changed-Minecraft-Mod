@@ -1,12 +1,16 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class LatexRedPanda extends LatexEntity {
@@ -17,9 +21,22 @@ public class LatexRedPanda extends LatexEntity {
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
+        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#bb2a3b" : "#5a2b49");
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.getColor("#bb2a3b");
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+    }
 
     @Override
     public LatexType getLatexType() {

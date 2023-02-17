@@ -24,6 +24,11 @@ public abstract class AbstractSnowLeopard extends LatexEntity implements Gendere
         return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.GRAY : ChangedParticles.Color3.WHITE;
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
+
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }

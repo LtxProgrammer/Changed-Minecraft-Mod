@@ -16,6 +16,7 @@
   "ability.changed.use_variant_ability.hypnosis": "Hypnosis",
   "ability.changed.use_variant_ability.siren_sing": "Sing",
   "ability.changed.slither": "Slither",
+  "ability.changed.select_hairstyle": "Select Hairstyle",
 
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
@@ -28,6 +29,7 @@
   "subtitles.changed.save": "Retinal scanner beeps",
   "subtitles.changed.sword1": "Needle pricks",
   "subtitles.changed.paralyze1": "Weapon shocks",
+  "subtitles.changed.blow1": "Player latexed",
 
   "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
   "item.changed.benign_pants": "Latex Pants",

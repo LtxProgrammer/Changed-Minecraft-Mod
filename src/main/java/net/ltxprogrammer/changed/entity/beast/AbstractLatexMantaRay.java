@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
@@ -18,5 +19,15 @@ public abstract class AbstractLatexMantaRay extends AbstractAquaticGenderedEntit
     @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor("#6f7696");
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.getColor("#d2d9e1");
     }
 }

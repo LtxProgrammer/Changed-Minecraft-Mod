@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -8,7 +9,9 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 
 public class SpecialLatex extends LatexEntity {
@@ -22,6 +25,15 @@ public class SpecialLatex extends LatexEntity {
     public void setSpecialLatexForm(UUID uuid) {
         this.assignedUUID = uuid;
         this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(uuid);
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.NONE;
     }
 
     public UUID getAssignedUUID() {

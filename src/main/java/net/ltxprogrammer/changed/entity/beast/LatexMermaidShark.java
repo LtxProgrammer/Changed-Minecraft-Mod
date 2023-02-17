@@ -1,11 +1,15 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexMermaidShark extends AbstractGenderedLatexShark {
     public LatexMermaidShark(EntityType<? extends LatexMermaidShark> p_19870_, Level p_19871_) {
@@ -19,6 +23,15 @@ public class LatexMermaidShark extends AbstractGenderedLatexShark {
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_NWE_S;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE_SHADED;
     }
 
     @Override

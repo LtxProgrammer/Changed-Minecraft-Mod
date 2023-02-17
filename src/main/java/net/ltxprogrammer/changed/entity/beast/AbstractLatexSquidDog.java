@@ -18,6 +18,11 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
         return ChangedParticles.Color3.WHITE;
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.2);

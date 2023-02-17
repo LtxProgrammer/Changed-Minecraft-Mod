@@ -1,11 +1,15 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexSnake extends LatexEntity {
     public LatexSnake(EntityType<? extends LatexSnake> entityType, Level level) {
@@ -23,8 +27,22 @@ public class LatexSnake extends LatexEntity {
     }
 
     @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.NONE;
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
+    }
+
+    @Override
     public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#ffffff");
+        return ChangedParticles.Color3.WHITE;
     }
 
     @Override

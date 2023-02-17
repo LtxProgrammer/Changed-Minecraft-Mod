@@ -4,20 +4,22 @@ import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.DistUtil;
 import net.ltxprogrammer.changed.util.Util;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,6 +30,8 @@ public abstract class LivingEntityMixin extends Entity {
     public LivingEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
+
+    public int controlDisabledFor = 0;
 
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
     private void updateFallFlying(CallbackInfo callback) {
@@ -105,6 +109,23 @@ public abstract class LivingEntityMixin extends Entity {
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof SpecializedAnimations specialized) {
             if (specialized.triggerItemUseEffects((LivingEntity)(Entity)this, itemStack, particleCount))
                 callbackInfo.cancel();
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void tick(CallbackInfo callback) {
+        if (controlDisabledFor > 0) {
+            if ((Entity)this instanceof Mob mob) {
+                MoveControl move = mob.getMoveControl();
+                move.setWantedPosition(move.getWantedX(), move.getWantedY(), move.getWantedZ(), move.getSpeedModifier());
+            }
+
+            if ((Entity)this instanceof Player player && DistUtil.isLocalPlayer(player)) {
+                ((LocalPlayer)player).input.forwardImpulse *= 0.05F;
+                ((LocalPlayer)player).input.leftImpulse *= 0.05F;
+            }
+
+            --controlDisabledFor;
         }
     }
 }

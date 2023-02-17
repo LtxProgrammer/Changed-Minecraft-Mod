@@ -1,12 +1,16 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class LatexRaccoon extends LatexEntity {
@@ -20,12 +24,24 @@ public class LatexRaccoon extends LatexEntity {
         return ChangedParticles.Color3.getColor("#949494");
     }
 
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.DICHROME_MALE_SHORT_FRONT_S;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE_NO_WOLF_EARS_SHADED;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#949494") : ChangedParticles.Color3.getColor("#fafafa");
+    }
 
     @Override
     public TransfurMode getTransfurMode() {

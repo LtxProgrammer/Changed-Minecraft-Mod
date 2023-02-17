@@ -6,8 +6,8 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
+import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.item.TscWeapon;
-import net.ltxprogrammer.changed.util.DelayedItemStack;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.RecipeBookType;
@@ -15,9 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.RecipeBookRegistry;
-import net.minecraftforge.fml.common.Mod;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.function.Function;
 
 import static net.minecraft.client.RecipeBookCategories.CRAFTING_EQUIPMENT;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class RecipeCategories {
     public static final List<RecipeBookCategories> INJECTED_CATEGORIES = new ArrayList<>();
-    private static RecipeBookCategories registerBookCategory(String name, ItemStack icon) {
-        var category = RecipeBookCategories.create(name, icon);
+    private static RecipeBookCategories registerBookCategory(String name, ItemStack... icons) {
+        var category = RecipeBookCategories.create(name, icons);
         INJECTED_CATEGORIES.add(category);
         return category;
     }
@@ -56,13 +53,17 @@ public class RecipeCategories {
     public static final List<Function<Recipe<?>, List<RecipeBookCategories>>> MULTICATEGORY_FINDER = new ArrayList<>();
 
     public static final RecipeBookCategories INFUSER_SEARCH = registerBookCategory("CHANGED_INFUSER_SEARCH", new ItemStack(Items.COMPASS));
-    public static final RecipeBookCategories INFUSER_DARK_LATEX = registerBookCategory("CHANGED_INFUSER_DARK_LATEX", DelayedItemStack.of(ChangedItems.DARK_LATEX_GOO));
-    public static final RecipeBookCategories INFUSER_WHITE_LATEX = registerBookCategory("CHANGED_INFUSER_WHITE_LATEX", DelayedItemStack.of(ChangedItems.WHITE_LATEX_GOO));
+    public static final RecipeBookCategories INFUSER_DARK_LATEX = registerBookCategory("CHANGED_INFUSER_DARK_LATEX", new ItemStack(ChangedItems.DARK_LATEX_GOO.get()));
+    public static final RecipeBookCategories INFUSER_WHITE_LATEX = registerBookCategory("CHANGED_INFUSER_WHITE_LATEX", new ItemStack(ChangedItems.WHITE_LATEX_GOO.get()));
     public static final RecipeBookCategories INFUSER_AQUATIC = registerBookCategory("CHANGED_INFUSER_AQUATIC", new ItemStack(Items.WATER_BUCKET));
     public static final RecipeBookCategories INFUSER_AERIAL = registerBookCategory("CHANGED_INFUSER_AERIAL", new ItemStack(Items.ELYTRA));
-    public static final RecipeBookCategories INFUSER_GENDERED = registerBookCategory("CHANGED_INFUSER_GENDERED", DelayedItemStack.of(ChangedItems.LATEX_SYRINGE));
+    public static final RecipeBookCategories INFUSER_GENDERED = registerBookCategory("CHANGED_INFUSER_GENDERED",
+            Syringe.setVariant(
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), LatexVariant.LATEX_SHARK.formId),
+            Syringe.setVariant(
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), LatexVariant.DARK_LATEX_WOLF.female().formId));
 
-    static {
+    public static void registerCategories() {
         registerTypeCategories(ChangedRecipeTypes.INFUSER_BOOK, ChangedRecipeTypes.INFUSER_RECIPE, INFUSER_SEARCH, ImmutableList.of(
                 INFUSER_SEARCH, INFUSER_DARK_LATEX, INFUSER_WHITE_LATEX, INFUSER_AQUATIC, INFUSER_AERIAL, INFUSER_GENDERED
         ), recipe -> {

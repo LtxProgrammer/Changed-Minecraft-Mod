@@ -24,4 +24,9 @@ public abstract class AbstractLightLatexWolf extends LatexEntity implements Gend
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.WHITE;
     }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
 }

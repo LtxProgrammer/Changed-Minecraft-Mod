@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -19,4 +20,8 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         return LatexType.DARK_LATEX;
     }
 
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.DARK;
+    }
 }

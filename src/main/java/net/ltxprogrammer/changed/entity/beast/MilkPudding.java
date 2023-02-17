@@ -49,4 +49,9 @@ public class MilkPudding extends LatexEntity implements Pudding {
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.WHITE;
     }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return ChangedParticles.Color3.WHITE;
+    }
 }

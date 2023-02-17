@@ -186,7 +186,8 @@
               "function": "changed:random_variant",
               "variants": [
                 "changed:form_latex_sniper_dog",
-                "changed:form_light_latex_wolf",
+                "changed:form_light_latex_wolf/male",
+                "changed:form_light_latex_wolf/female",
                 "changed:form_light_latex_wolf_organic",
                 "changed:form_light_latex_knight"
               ]

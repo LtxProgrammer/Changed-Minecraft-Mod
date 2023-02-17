@@ -1,10 +1,15 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexMantaRayFemale extends AbstractLatexMantaRay {
     public LatexMantaRayFemale(EntityType<? extends LatexMantaRayFemale> p_19870_, Level p_19871_) {
@@ -19,6 +24,11 @@ public class LatexMantaRayFemale extends AbstractLatexMantaRay {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
+    }
+
+    @Override
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return addHairStyle(super.getValidHairStyles(), HairStyle.BALD);
     }
 
     @Override

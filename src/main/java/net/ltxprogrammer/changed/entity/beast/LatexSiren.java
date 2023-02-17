@@ -1,20 +1,23 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.effect.Shock;
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 
 public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffect {
@@ -30,6 +33,16 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#ffffff") : ChangedParticles.Color3.getColor("#f3df60");
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.DICHROME_FEMALE_TRIPLE_BANGS_S;
     }
 
     private boolean wantToSing() {
@@ -59,14 +72,14 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
             if (LatexVariant.getEntityVariant(livingEntity) != null)
                 return;
 
-            CameraUtil.tugEntityLookDirection(livingEntity, self, 0.4);
+            Shock.setNoControlTicks(livingEntity, 5);
             if (!livingEntity.isOnGround())
                 return;
-
             Random random = new Random(livingEntity.getId() + (livingEntity.tickCount / 10));
             Vec3 randomXZdir = new Vec3(random.nextDouble(-1, 1), 0, random.nextDouble(-1, 1));
             randomXZdir = randomXZdir.normalize();
-            livingEntity.move(MoverType.SELF, randomXZdir.multiply(0.05, 0, 0.05));
+            final double moveScale = livingEntity.getSpeed() * 0.8;
+            livingEntity.travel(randomXZdir.multiply(moveScale, 0, moveScale));
         });
     }
 

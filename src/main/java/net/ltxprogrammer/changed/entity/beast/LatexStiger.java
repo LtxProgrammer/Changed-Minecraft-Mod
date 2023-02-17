@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -14,6 +15,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexStiger extends LatexEntity {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(LatexStiger.class, EntityDataSerializers.BYTE);
@@ -23,6 +27,20 @@ public class LatexStiger extends LatexEntity {
 
     @Override
     public int getTicksRequiredToFreeze() { return 240; }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.DICHROME_MALE_NWE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#7b4251") : ChangedParticles.Color3.getColor("#512742");
+    }
 
     @Override
     public LatexType getLatexType() {

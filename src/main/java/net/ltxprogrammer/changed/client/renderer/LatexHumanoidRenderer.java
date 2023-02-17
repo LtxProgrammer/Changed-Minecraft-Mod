@@ -26,8 +26,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T>> extends MobRenderer<T, M> {
+    private LatexHumanoidHairLayer<T, M> hairLayer;
+
+    public LatexHumanoidHairLayer<T, M> getHairLayer() {
+        return hairLayer;
+    }
+
     private void addLayers(EntityRendererProvider.Context context, M main) {
+        hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());
         this.addLayer(new LatexItemInHandLayer<>(this));
+        this.addLayer(hairLayer);
         this.addLayer(new LatexArrowLayer<>(context, this));
         //this.addLayer(new LatexCapeLayer<>(this));
         this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));

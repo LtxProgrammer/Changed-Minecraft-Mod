@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed;
 
 import net.ltxprogrammer.changed.client.EventHandlerClient;
-import net.ltxprogrammer.changed.extension.terrablender.LatexBlender;
+import net.ltxprogrammer.changed.client.RecipeCategories;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
@@ -15,6 +15,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkEvent;
@@ -45,7 +46,7 @@ public class Changed {
 
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
 
         try {
@@ -88,8 +89,8 @@ public class Changed {
         //    ^^^ First to process ^^^
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(LatexBlender::initialize);
+    private void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(RecipeCategories::registerCategories);
     }
 
     public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
