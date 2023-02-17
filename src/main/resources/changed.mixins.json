@@ -19,6 +19,7 @@
     "MobMixin",
     "PlayerMixin",
     "PowderSnowBlockMixin",
+    "PrimaryLevelDataMixin",
     "ServerPlayerMixin",
     "ShovelItemMixin",
     "SimpleBlockFeatureMixin",
