@@ -6,6 +6,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
     public DarkLatexWolfFemale(EntityType<? extends DarkLatexWolfFemale> p_19870_, Level p_19871_) {
@@ -20,6 +23,11 @@ public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.DARK;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.LEGACY_FEMALE_DUAL_BANGS_S, HairStyle.FEMALE_NO_BANGS_S, HairStyle.LEGACY_FEMALE_RIGHT_BANG_S,
+                HairStyle.LEGACY_FEMALE_LEFT_BANG_S, HairStyle.LEGACY_FEMALE_TRIPLE_BANGS_S, HairStyle.FEMALE_SIDE_BANGS_S);
     }
 
     @Override

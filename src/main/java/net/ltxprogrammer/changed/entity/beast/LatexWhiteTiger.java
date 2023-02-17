@@ -5,6 +5,9 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
@@ -28,6 +31,9 @@ public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
         return LatexType.NEUTRAL;
     }
 
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK_S, HairStyle.HEAD_FUZZ_S, HairStyle.MALE_SHORT_FRONT_S, HairStyle.MALE_STANDARD_S, HairStyle.MALE_SIDEBURN_S);
+    }
 
     @Override
     public TransfurMode getTransfurMode() {

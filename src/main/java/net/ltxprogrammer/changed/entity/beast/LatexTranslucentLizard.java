@@ -7,6 +7,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexTranslucentLizard extends LatexEntity {
     public LatexTranslucentLizard(EntityType<? extends LatexTranslucentLizard> p_19870_, Level p_19871_) {
@@ -26,6 +29,10 @@ public class LatexTranslucentLizard extends LatexEntity {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 
     @Override

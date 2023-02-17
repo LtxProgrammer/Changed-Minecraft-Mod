@@ -8,6 +8,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public class LatexMedusaCat extends LatexEntity {
@@ -24,6 +27,11 @@ public class LatexMedusaCat extends LatexEntity {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.FEMALE_SIDE_BANGS;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.LEGACY_FEMALE_DUAL_BANGS, HairStyle.FEMALE_NO_BANGS, HairStyle.LEGACY_FEMALE_RIGHT_BANG,
+                HairStyle.LEGACY_FEMALE_LEFT_BANG, HairStyle.LEGACY_FEMALE_TRIPLE_BANGS, HairStyle.FEMALE_SIDE_BANGS);
     }
 
     @Override

@@ -93,12 +93,15 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     DICHROME_MALE_STANDARD(Gender.MALE,
             MALE_STANDARD.headHair,
             MALE_STANDARD.textures[0], Changed.modResource("textures/hair/squirrel_layer.png")),
-    DICHROME_MALE_STANDARD_S(Gender.MALE,
-                           MALE_STANDARD.headHair,
-                           MALE_STANDARD.textures[0], Changed.modResource("textures/hair/raccoon_layer.png")),
+    DICHROME_MALE_SHORT_FRONT_S(Gender.MALE,
+                           MALE_SHORT_FRONT_S.headHair,
+                           MALE_SHORT_FRONT_S.textures[0], Changed.modResource("textures/hair/raccoon_layer.png")),
+    DICHROME_MALE_NWE(Gender.MALE,
+            MALE_NWE.headHair,
+            MALE_NWE.textures[0], Changed.modResource("textures/hair/stiger_layer.png")),
     DICHROME_FEMALE_TRIPLE_BANGS_S(Gender.FEMALE,
-                             MALE_STANDARD.headHair,
-                             MALE_STANDARD.textures[0], Changed.modResource("textures/hair/siren_layer.png"));
+                             LEGACY_FEMALE_TRIPLE_BANGS_S.headHair,
+                             LEGACY_FEMALE_TRIPLE_BANGS_S.textures[0], Changed.modResource("textures/hair/siren_layer.png"));
     @Nullable
     public final ModelLayerLocation headHair;
     @Nullable

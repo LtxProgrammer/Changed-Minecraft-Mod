@@ -4,6 +4,9 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEntity {
     public LatexCrystalWolf(EntityType<? extends AbstractLatexWolf> p_19870_, Level p_19871_) {
@@ -18,6 +21,10 @@ public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEnti
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.MALE_STANDARD;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD, HairStyle.MOHAWK, HairStyle.HEAD_FUZZ, HairStyle.MALE_SHORT_FRONT, HairStyle.MALE_STANDARD, HairStyle.MALE_SIDEBURN);
     }
 
     @Override

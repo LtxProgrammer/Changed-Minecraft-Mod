@@ -7,6 +7,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexSnake extends LatexEntity {
     public LatexSnake(EntityType<? extends LatexSnake> entityType, Level level) {
@@ -26,6 +29,10 @@ public class LatexSnake extends LatexEntity {
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return List.of(HairStyle.BALD);
     }
 
     @Override
