@@ -125,33 +125,6 @@ public class ChangedFeatures {
     public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> ORANGE_TREE = FeatureUtils.register(Changed.modResourceStr("orange_tree"), Feature.TREE, createOrangeTree().build());
     public static final Holder<PlacedFeature> ORANGE_TREE_CHECKED = registerTree("orange_tree_checked", ORANGE_TREE, Set.of()/*new ResourceLocation("trees_birch_and_oak"), 0.1f*/, ChangedBlocks.ORANGE_TREE_SAPLING.getId());
 
-    public static class DeferredWouldSurvivePredicate implements BlockPredicate {
-        public static final Codec<DeferredWouldSurvivePredicate> CODEC = RecordCodecBuilder.create((p_190577_) -> {
-            return p_190577_.group(Vec3i.offsetCodec(16).optionalFieldOf("offset", Vec3i.ZERO).forGetter((p_190581_) -> {
-                return p_190581_.offset;
-            }), ResourceLocation.CODEC.fieldOf("block").forGetter((p_190579_) -> {
-                return p_190579_.block;
-            })).apply(p_190577_, DeferredWouldSurvivePredicate::new);
-        });
-        private final Vec3i offset;
-        private final ResourceLocation block;
-
-        public DeferredWouldSurvivePredicate(Vec3i offset, ResourceLocation block) {
-            this.offset = offset;
-            this.block = block;
-        }
-
-        @Override
-        public BlockPredicateType<?> type() {
-            return ChangedBlockPredicateTypes.DEFERRED_WOULD_SURVIVE;
-        }
-
-        @Override
-        public boolean test(WorldGenLevel worldGenLevel, BlockPos blockPos) {
-            return Registry.BLOCK.get(block).defaultBlockState().canSurvive(worldGenLevel, blockPos.offset(offset));
-        }
-    }
-
     private static Holder<PlacedFeature> registerTree(String name, Holder<ConfiguredFeature<TreeConfiguration, ?>> holder, Set<ResourceLocation> biomes, ResourceLocation sapling) {
         var reg = PlacementUtils.register(Changed.modResourceStr(name), holder, treePlacement(PlacementUtils.countExtra(0, 0.1F, 1))/*BlockPredicateFilter.forPredicate(
                 new DeferredWouldSurvivePredicate(BlockPos.ZERO, sapling))*/);
