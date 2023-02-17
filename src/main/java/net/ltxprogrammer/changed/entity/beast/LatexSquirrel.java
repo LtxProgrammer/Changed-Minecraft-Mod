@@ -18,7 +18,12 @@ public class LatexSquirrel extends LatexLeaf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.MALE_STANDARD;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#ac8f64") : ChangedParticles.Color3.getColor("#6f482a");
     }
 
     @Override
