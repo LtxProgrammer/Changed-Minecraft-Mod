@@ -14,8 +14,9 @@
   "ability.changed.switch_hands": "Поменять руки",
   "ability.changed.switch_gender": "Поменять Пол",
   "ability.changed.use_variant_ability.hypnosis": "Гипноз",
-  "ability.changed.use_variant_ability.siren_sing": "Пение",
+  "ability.changed.use_variant_ability.siren_sing": "Петь",
   "ability.changed.slither": "Скольжение",
+  "ability.changed.select_hairstyle": "Выбрать прическу",
 
   "subtitles.changed.sound3": "Кто-то Трансфурмирован Органически",
   "subtitles.changed.poison": "Кто-то Трансфурмирован",
@@ -28,9 +29,10 @@
   "subtitles.changed.save": "Звук сканера сетчатки",
   "subtitles.changed.sword1": "Укол иглы",
   "subtitles.changed.paralyze1": "Оглушающий удар",
+  "subtitles.changed.blow1": "Кого-то шлепнул латекс",
   
   "item.changed.aerosol_latex_bucket": "Ведро Аэрозольного Латекса",
-  "item.changed.benign_pants": "Латексные Штаны",
+  "item.changed.benign_pants": "Латексные Шорты",
   "item.changed.blood_syringe": "Шприц С Образцом Крови",
   "item.changed.dark_latex_crystal_fragment": "Фрагмент Кристалла Тёмного Латекса",
   "item.changed.dark_latex_dragon_crystal_fragment": "Фрагмент Кристалла Драконьего Тёмного Латекса",
@@ -45,7 +47,7 @@
   "item.changed.latex_wolf_crystal_fragment": "Фрагмент Красного Кристалльного Латекса",
   "item.changed.latex_tipped_arrow": "Стрела С Латексным Наконечником",
   "item.changed.orange": "Апельсин",
-  "item.changed.pink_pants": "Розовые Штаны",
+  "item.changed.pink_pants": "Розовые Шорты",
   "item.changed.syringe": "Шприц",
   "item.changed.white_latex_goo": "Белая Латкс. Субстанция",
   "item.changed.white_latex_bucket": "Ведро Белого Латекса",
@@ -75,7 +77,8 @@
   "death.attack.transfur.player": "%1$s был трансфуррирован %2$s",
   "death.attack.white_latex": "%1$s был растворен в белом латексе",
   "death.attack.changed:pale": "%s отправился в мир грез из-за Бледного вируса",
-  "death.attack.changed:bloodloss": "%s использовал заграничные плазменные иновации",
+  "death.attack.changed:bloodloss": "У %s случился инфаркт",
+  //"death.attack.changed:bloodloss": "Сердце %s вышло из чата",
   
   "command.changed.error.not_latex_form": "Недоступная Латкс. форма",
   "command.changed.error.no_special_form": "У вас нет доступа к особой форме, если вы хотите её получить поддержите автора на патреон https://www.patreon.com/ltxprogrammer все очень просто (почти)",
@@ -304,7 +307,7 @@
   "changed.patreon.level3": "III Уровень",
   "changed.patreon.level4": "IV Уровень",
 
-  "changed.error.corrupted_disc": "ERR: Некорректная Диск",
+  "changed.error.corrupted_disc": "ERR: Некорректный Диск",
 
   "changed.compact_disc.title.light_latex_wolf": "Попытка сохранить мир",
   "changed.compact_disc.content.light_latex_wolf": "В наших тщетных попытках найти вакцину от вируса во время эпидемии, Мы выяснили, что только животные не подвержены ему. Все мы начали искать способ обьединить человека и животного, в результате мы наконец продвинулись и создали Первичный Латекс, Вещество способное менять ДНК за секунды. Теперь мы наконец МОЖЕМ побороть эпидемию!",
@@ -340,29 +343,29 @@
   "changed:advancements.main.root.description": "Добро пожаловать в будующее!",
 
   "changed:advancements.main.transfur.title": "Это навсегда!?",
-  "changed:advancements.main.transfur.description": "Трансфурмируйтесь",
+  "changed:advancements.main.transfur.description": "Трансфурмируйтесь.",
 
   "changed:advancements.main.transfur_aquatic.title": "Время плавать!",
-  "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой Аква латекс",
+  "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой аква латекс.",
 
   "changed:advancements.main.aquatic_swimming.title": "Я искал монетку!",
-  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи в Аква латексом",
+  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи в аква латексом.",
 
   "changed:advancements.main.transfur_white.title": "Один из нас",
-  "changed:advancements.main.transfur_white.description": "Трансфурмируйтесь в любой светлый латекс",
+  "changed:advancements.main.transfur_white.description": "Трансфурмируйтесь в любой светлый латекс.",
 
   "changed:advancements.main.transfur_dark.title": "Братство",
-  "changed:advancements.main.transfur_dark.description": "Трансфурмируйтесь в любой тёмный латекс",
+  "changed:advancements.main.transfur_dark.description": "Трансфурмируйтесь в любой тёмный латекс.",
 
   "changed:advancements.main.white_latex_fuse.title": "IT'S OVER 9000!",
-  "changed:advancements.main.white_latex_fuse.description": "Слейтесь воедино в более совершенную форму латекса",
+  "changed:advancements.main.white_latex_fuse.description": "Слейтесь воедино в более совершенную форму латекса.",
 
   "changed:advancements.main.transfur_aerial.title": "Взлеты и падения",
-  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс",
+  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс.",
   
   "changed:advancements.main.transfur_mask.title": "Отрекая человечность",
   "changed:advancements.main.transfur_mask.description": "Получите и наденьте маску из тёмного латекса.",
   
   "changed:advancements.main.transfur_legless.title": "У кого-то есть, у кого-то нет...",
-  "changed:advancements.main.transfur_legless.description": "Трансфурмируйтесь в безногую форму"
+  "changed:advancements.main.transfur_legless.description": "Трансфурмируйтесь в любую безногую форму латекса."
 }
