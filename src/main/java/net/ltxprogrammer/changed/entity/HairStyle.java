@@ -33,6 +33,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     FEMALE_NO_BANGS(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/female_no_bangs"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
+    MALE_SHORT_FRONT(Gender.MALE,
+            new ModelLayerLocation(Changed.modResource("hair/male_short_front"), "main"),
+            Changed.modResource("textures/hair/legacy_collection.png")),
     FEMALE_SIDE_BANGS(Gender.FEMALE,
             new ModelLayerLocation(Changed.modResource("hair/female_side_bangs"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
@@ -42,53 +45,56 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     HEAD_FUZZ(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/head_fuzz"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
+    MALE_SIDEBURN(Gender.MALE,
+            new ModelLayerLocation(Changed.modResource("hair/male_sideburn"), "main"),
+            Changed.modResource("textures/hair/legacy_collection.png")),
     MALE_STANDARD(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/male_standard"), "main"),
+            Changed.modResource("textures/hair/legacy_collection.png")),
+    MALE_BANGS(Gender.MALE,
+            new ModelLayerLocation(Changed.modResource("hair/male_bangs"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
     MALE_NWE(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/male_nwe"), "main"),
             Changed.modResource("textures/hair/legacy_collection.png")),
     LEGACY_FEMALE_RIGHT_BANG_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/legacy_female_right_bang_s"), "main"),
+            LEGACY_FEMALE_RIGHT_BANG.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     LEGACY_FEMALE_LEFT_BANG_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/legacy_female_left_bang_s"), "main"),
+            LEGACY_FEMALE_LEFT_BANG.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     LEGACY_FEMALE_DUAL_BANGS_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/legacy_female_dual_bangs_s"), "main"),
-            Changed.modResource("textures/hair/legacy_collection_s.png")),
-    FEMALE_NO_BANGS_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/female_no_bangs_s"), "main"),
+            LEGACY_FEMALE_DUAL_BANGS.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     LEGACY_FEMALE_TRIPLE_BANGS_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/legacy_female_triple_bangs_s"), "main"),
+            LEGACY_FEMALE_TRIPLE_BANGS.headHair,
+            Changed.modResource("textures/hair/legacy_collection_s.png")),
+    FEMALE_NO_BANGS_S(Gender.FEMALE,
+            FEMALE_NO_BANGS.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     FEMALE_SIDE_BANGS_S(Gender.FEMALE,
-            new ModelLayerLocation(Changed.modResource("hair/female_side_bangs_s"), "main"),
+            FEMALE_SIDE_BANGS.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     MOHAWK_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/mohawk_hair_s"), "main"),
+            MOHAWK.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     HEAD_FUZZ_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/head_fuzz_s"), "main"),
+            HEAD_FUZZ.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     MALE_STANDARD_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_standard_s"), "main"),
+            MALE_STANDARD.headHair,
+            Changed.modResource("textures/hair/legacy_collection_s.png")),
+    MALE_BANGS_S(Gender.MALE,
+            MALE_BANGS.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     MALE_NWE_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_nwe_s"), "main"),
+            MALE_NWE.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
-    MALE_SHORT_FRONT(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_short_front"), "main"),
-            Changed.modResource("textures/hair/legacy_collection.png")),
     MALE_SHORT_FRONT_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_short_front_s"), "main"),
+            MALE_SHORT_FRONT.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
-    MALE_SIDEBURN(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_sideburn"), "main"),
-            Changed.modResource("textures/hair/legacy_collection.png")),
     MALE_SIDEBURN_S(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/male_sideburn_s"), "main"),
+            MALE_SIDEBURN.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     DICHROME_MALE_STANDARD(Gender.MALE,
             MALE_STANDARD.headHair,
@@ -106,8 +112,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     public static class Collections {
         public static List<HairStyle> NONE = of(BALD);
         
-        public static List<HairStyle> MALE = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN);
-        public static List<HairStyle> MALE_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> MALE = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN, MALE_BANGS);
+        public static List<HairStyle> MALE_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S, MALE_BANGS_S);
         public static List<HairStyle> FEMALE = of(LEGACY_FEMALE_DUAL_BANGS, FEMALE_NO_BANGS, LEGACY_FEMALE_RIGHT_BANG,
                 LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_TRIPLE_BANGS, FEMALE_SIDE_BANGS);
         public static List<HairStyle> FEMALE_SHADED = of(LEGACY_FEMALE_DUAL_BANGS_S, FEMALE_NO_BANGS_S, LEGACY_FEMALE_RIGHT_BANG_S,
@@ -116,8 +122,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         public static List<HairStyle> MALE_FEMALE = combine(MALE, FEMALE);
         public static List<HairStyle> MALE_FEMALE_SHADED = combine(MALE_SHADED, FEMALE_SHADED);
 
-        public static List<HairStyle> MALE_NO_WOLF_EARS = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN);
-        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> MALE_NO_WOLF_EARS = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN, MALE_BANGS);
+        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S, MALE_BANGS_S);
 
         public static List<HairStyle> of(HairStyle... styles) {
             return List.of(styles);
