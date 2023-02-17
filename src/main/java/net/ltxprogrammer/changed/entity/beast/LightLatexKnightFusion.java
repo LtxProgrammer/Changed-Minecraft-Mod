@@ -30,7 +30,7 @@ public class LightLatexKnightFusion extends LightLatexKnight {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.BALD;
     }
 
     @Override
