@@ -72,9 +72,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     MALE_SHORT_FRONT(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/male_short_front"), "main"),
             Changed.modResource("textures/hair/male_short_front.png")),
-    LatexSquirrel(Gender.MALE,
-            new ModelLayerLocation(Changed.modResource("hair/squirrel"), "main"),
-            Changed.modResource("textures/hair/legacy_collection.png"), Changed.modResource("textures/hair/squirrel_layer.png"));
+    DICHROME_MALE_STANDARD(Gender.MALE,
+            MALE_STANDARD.model,
+            MALE_STANDARD.textures[0], Changed.modResource("textures/hair/squirrel_layer.png"));
 
     @Nullable
     public final ModelLayerLocation model;

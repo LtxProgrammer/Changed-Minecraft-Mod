@@ -18,7 +18,7 @@ public class LatexSquirrel extends LatexLeaf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD;
+        return HairStyle.BALD;
     }
 
     @Override
