@@ -164,7 +164,6 @@ public class ChangedFeatures {
                         if (!atomic.getAcquire()) {
                             ImmutableList.Builder<WeightedPlacedFeature> listBuilder = ImmutableList.builder();
                             listBuilder.addAll(randomFeatureConfiguration.features);
-                            // TODO bruh `Tried to biome check an unregistered feature`
                             listBuilder.add(new WeightedPlacedFeature(registration.placedFeature().get(), registration.weight()));
                             randomFeatureConfiguration.features = listBuilder.build();
                         }
