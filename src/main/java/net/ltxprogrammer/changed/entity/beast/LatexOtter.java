@@ -32,7 +32,7 @@ public class LatexOtter extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD, HairStyle.MOHAWK, HairStyle.HEAD_FUZZ, HairStyle.MALE_SHORT_FRONT, HairStyle.MALE_NWE, HairStyle.MALE_SIDEBURN);
+        return HairStyle.Collections.MALE_NO_WOLF_EARS;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD, HairStyle.MOHAWK_S, HairStyle.HEAD_FUZZ_S, HairStyle.MALE_SHORT_FRONT_S, HairStyle.MALE_STANDARD_S, HairStyle.MALE_SIDEBURN_S);
+        return HairStyle.Collections.MALE_SHADED;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEnti
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.BALD, HairStyle.MOHAWK, HairStyle.HEAD_FUZZ, HairStyle.MALE_SHORT_FRONT, HairStyle.MALE_STANDARD, HairStyle.MALE_SIDEBURN);
+        return HairStyle.Collections.MALE;
     }
 
     @Override

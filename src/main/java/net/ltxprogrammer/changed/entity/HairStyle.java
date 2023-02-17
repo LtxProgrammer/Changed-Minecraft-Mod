@@ -102,6 +102,35 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     DICHROME_FEMALE_TRIPLE_BANGS_S(Gender.FEMALE,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.headHair,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.textures[0], Changed.modResource("textures/hair/siren_layer.png"));
+
+    public static class Collections {
+        public static List<HairStyle> NONE = of(BALD);
+        
+        public static List<HairStyle> MALE = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN);
+        public static List<HairStyle> MALE_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> FEMALE = of(LEGACY_FEMALE_DUAL_BANGS, FEMALE_NO_BANGS, LEGACY_FEMALE_RIGHT_BANG,
+                LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_TRIPLE_BANGS, FEMALE_SIDE_BANGS);
+        public static List<HairStyle> FEMALE_SHADED = of(LEGACY_FEMALE_DUAL_BANGS_S, FEMALE_NO_BANGS_S, LEGACY_FEMALE_RIGHT_BANG_S,
+                LEGACY_FEMALE_LEFT_BANG_S, LEGACY_FEMALE_TRIPLE_BANGS_S, FEMALE_SIDE_BANGS_S);
+
+        public static List<HairStyle> MALE_FEMALE = combine(MALE, FEMALE);
+        public static List<HairStyle> MALE_FEMALE_SHADED = combine(MALE_SHADED, FEMALE_SHADED);
+
+        public static List<HairStyle> MALE_NO_WOLF_EARS = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN);
+        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S);
+
+        public static List<HairStyle> of(HairStyle... styles) {
+            return List.of(styles);
+        }
+
+        public static List<HairStyle> combine(List<HairStyle> collectionA, List<HairStyle> collectionB) {
+            List<HairStyle> list = new ArrayList<>();
+            list.addAll(collectionA);
+            list.addAll(collectionB);
+            return java.util.Collections.unmodifiableList(list);
+        }
+    }
+
     @Nullable
     public final ModelLayerLocation headHair;
     @Nullable
