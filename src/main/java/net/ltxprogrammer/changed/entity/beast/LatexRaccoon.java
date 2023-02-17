@@ -30,13 +30,13 @@ public class LatexRaccoon extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#949494");
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.DICHROME_MALE_STANDARD_S;
     }
 
     @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD_S;
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#949494") : ChangedParticles.Color3.getColor("#fafafa");
     }
 
     @Override
