@@ -7,6 +7,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexSquirrel extends LatexEntity {
     public LatexSquirrel(EntityType<? extends LatexSquirrel> p_19870_, Level p_19871_) {
@@ -26,6 +29,10 @@ public class LatexSquirrel extends LatexEntity {
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
+    }
+
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE;
     }
 
     @Override

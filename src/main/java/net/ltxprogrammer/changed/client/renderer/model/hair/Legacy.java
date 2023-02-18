@@ -329,7 +329,7 @@ public class Legacy {
                 .texOffs(64, 14).addBox(-4.0F, -10.0001F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(32, 69).addBox(-4.0F, -9.0001F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(36, 56).addBox(-4.0F, -9.0001F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(34, 71).addBox(-3.5F, -8.0001F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 2.0F, 0.0F));
+                .texOffs(34, 71).addBox(-3.5F, -8.0001F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 1.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
