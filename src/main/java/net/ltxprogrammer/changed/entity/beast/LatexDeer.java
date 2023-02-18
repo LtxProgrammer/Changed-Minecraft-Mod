@@ -25,7 +25,7 @@ public class LatexDeer extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_BANGS;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

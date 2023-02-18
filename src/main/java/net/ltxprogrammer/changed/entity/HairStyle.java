@@ -75,6 +75,12 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     MALE_STANDARD_S(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/male_standard_s"), "main"),
             Changed.modResource("textures/hair/legacy_collection_s.png")),
+    MALE_BANGS(Gender.MALE,
+            new ModelLayerLocation(Changed.modResource("hair/male_bangs"), "main"),
+            Changed.modResource("textures/hair/legacy_collection.png")),
+    MALE_BANGS_S(Gender.MALE,
+            new ModelLayerLocation(Changed.modResource("hair/male_bangs_s"), "main"),
+            Changed.modResource("textures/hair/legacy_collection_s.png")),
     MALE_NWE_S(Gender.MALE,
             new ModelLayerLocation(Changed.modResource("hair/male_nwe_s"), "main"),
             Changed.modResource("textures/hair/legacy_collection_s.png")),
@@ -106,8 +112,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     public static class Collections {
         public static List<HairStyle> NONE = of(BALD);
         
-        public static List<HairStyle> MALE = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN);
-        public static List<HairStyle> MALE_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> MALE = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN, MALE_BANGS);
+        public static List<HairStyle> MALE_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S, MALE_BANGS_S);
         public static List<HairStyle> FEMALE = of(LEGACY_FEMALE_DUAL_BANGS, FEMALE_NO_BANGS, LEGACY_FEMALE_RIGHT_BANG,
                 LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_TRIPLE_BANGS, FEMALE_SIDE_BANGS);
         public static List<HairStyle> FEMALE_SHADED = of(LEGACY_FEMALE_DUAL_BANGS_S, FEMALE_NO_BANGS_S, LEGACY_FEMALE_RIGHT_BANG_S,
@@ -116,8 +122,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
         public static List<HairStyle> MALE_FEMALE = combine(MALE, FEMALE);
         public static List<HairStyle> MALE_FEMALE_SHADED = combine(MALE_SHADED, FEMALE_SHADED);
 
-        public static List<HairStyle> MALE_NO_WOLF_EARS = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN);
-        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S);
+        public static List<HairStyle> MALE_NO_WOLF_EARS = of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN, MALE_BANGS);
+        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S, MALE_BANGS_S);
 
         public static List<HairStyle> of(HairStyle... styles) {
             return List.of(styles);

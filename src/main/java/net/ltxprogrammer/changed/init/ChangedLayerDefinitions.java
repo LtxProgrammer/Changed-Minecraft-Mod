@@ -186,6 +186,8 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(HairStyle.MOHAWK_S.headHair, Legacy::createMohawkHairSHDD);
         ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ_S.headHair, Legacy::createHeadFuzzHairSHDD);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD_S.headHair, Legacy::createMaleStandardHairSHDD);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleStandardBangHair);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS_S.headHair, Legacy::createMaleStandardBangHairSHDD);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE_S.headHair, Legacy::createMaleHairNWESHDD);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT_S.headHair, Legacy::createShortFrontHairSHDD);
