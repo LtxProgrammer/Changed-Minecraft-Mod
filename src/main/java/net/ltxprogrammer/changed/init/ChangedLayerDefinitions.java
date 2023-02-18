@@ -177,21 +177,8 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ.headHair, Legacy::createHeadFuzzHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD.headHair, Legacy::createMaleStandardHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE.headHair, Legacy::createMaleHairNWE);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG_S.headHair, Legacy::createFemaleRightBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG_S.headHair, Legacy::createFemaleLeftBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS_S.headHair, Legacy::createFemaleDualBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_TRIPLE_BANGS_S.headHair, Legacy::createFemaleTripleBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_NO_BANGS_S.headHair, Legacy::createFemaleNoBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS_S.headHair, Legacy::createFemaleSideBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MOHAWK_S.headHair, Legacy::createMohawkHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ_S.headHair, Legacy::createHeadFuzzHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD_S.headHair, Legacy::createMaleStandardHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleStandardBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS_S.headHair, Legacy::createMaleStandardBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE_S.headHair, Legacy::createMaleHairNWE);
+        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT_S.headHair, Legacy::createShortFrontHair);
         ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SIDEBURN_S.headHair, Legacy::createSideburnHair);
     }
 }
