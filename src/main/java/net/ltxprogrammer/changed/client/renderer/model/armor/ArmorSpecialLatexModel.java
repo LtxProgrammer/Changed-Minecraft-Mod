@@ -5,16 +5,17 @@ import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
 
 public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
-    public ArmorSpecialLatexModel(ModelPart modelPart, PatreonBenefits.SpecialLatexForm form) {
+    public ArmorSpecialLatexModel(ModelPart modelPart, PatreonBenefits.ModelData model) {
         super(new Builder(
                 modelPart.getChild("Head"),
                 modelPart.getChild("Torso"),
-                form.animationData().hasTail() ? modelPart.getChild("Torso").getChild("Tail") : null,
+                model.animationData().hasTail() ? modelPart.getChild("Torso").getChild("Tail") : null,
                 modelPart.getChild("LeftLeg"),
                 modelPart.getChild("RightLeg"),
                 modelPart.getChild("LeftArm"),
                 modelPart.getChild("RightArm")), builder -> {
-                    if (form.tailAidsInSwim()) builder.tailAidsInSwim();
+                    if (model.animationData().swimTail())
+                        builder.tailAidsInSwim();
                 });
     }
 

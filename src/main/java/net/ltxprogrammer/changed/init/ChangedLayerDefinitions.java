@@ -4,9 +4,8 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
 import net.ltxprogrammer.changed.client.renderer.model.hair.Legacy;
-import net.ltxprogrammer.changed.data.DelayLoadedModel;
+import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -17,10 +16,18 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import javax.annotation.Nullable;
+import java.util.function.Supplier;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedLayerDefinitions {
     public static final ModelLayerLocation LATEX_COAT = new ModelLayerLocation(Changed.modResource("player"), "latex_coat");
     public static final ModelLayerLocation LATEX_COAT_SLIM = new ModelLayerLocation(Changed.modResource("player_slim"), "latex_coat");
+
+    private static void registerLayerDefinition(@Nullable DeferredModelLayerLocation location, Supplier<LayerDefinition> supplier) {
+        if (location != null)
+            ForgeHooksClient.registerLayerDefinition(location.get(), supplier);
+    }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(FMLCommonSetupEvent event) {
@@ -139,46 +146,20 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightFusionModel.INNER_ARMOR, () -> ArmorLightLatexKnightFusionModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightFusionModel.OUTER_ARMOR, () -> ArmorLightLatexKnightFusionModel.createArmorLayer(ArmorModel.OUTER));
 
-        PatreonBenefits.LAYER_LOCATIONS.forEach((uuid, location) -> {
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(uuid);
-            if (form == null)
-                return;
-
-            ForgeHooksClient.registerLayerDefinition(location.get(), () ->
-                    form.model().createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-        });
-
-        ArmorModelLayerLocation.ARMOR_LAYER_LOCATIONS.forEach((uuid, locations) -> {
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(uuid);
-            if (form == null)
-                return;
-
-            ForgeHooksClient.registerLayerDefinition(locations.inner().get(), () ->
-                    form.armorModelInner().createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-            ForgeHooksClient.registerLayerDefinition(locations.outer().get(), () ->
-                    form.armorModelOuter().createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-        });
-
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_MALE.headHair, Legacy::createMaleHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.lowerHair, Legacy::createFemaleLowerHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.headHair, Legacy::createFemaleRightBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG.headHair, Legacy::createFemaleLeftBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS.headHair, Legacy::createFemaleDualBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.LEGACY_FEMALE_TRIPLE_BANGS.headHair, Legacy::createFemaleTripleBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_NO_BANGS.headHair, Legacy::createFemaleNoBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS.headHair, Legacy::createFemaleSideBangsHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MOHAWK.headHair, Legacy::createMohawkHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.HEAD_FUZZ.headHair, Legacy::createHeadFuzzHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_STANDARD.headHair, Legacy::createMaleStandardHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_NWE.headHair, Legacy::createMaleHairNWE);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
-        ForgeHooksClient.registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
+        registerLayerDefinition(HairStyle.LEGACY_MALE.headHair, Legacy::createMaleHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.lowerHair, Legacy::createFemaleLowerHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.headHair, Legacy::createFemaleRightBangHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG.headHair, Legacy::createFemaleLeftBangHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS.headHair, Legacy::createFemaleDualBangHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_TRIPLE_BANGS.headHair, Legacy::createFemaleTripleBangsHair);
+        registerLayerDefinition(HairStyle.FEMALE_NO_BANGS.headHair, Legacy::createFemaleNoBangsHair);
+        registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS.headHair, Legacy::createFemaleSideBangsHair);
+        registerLayerDefinition(HairStyle.MOHAWK.headHair, Legacy::createMohawkHair);
+        registerLayerDefinition(HairStyle.HEAD_FUZZ.headHair, Legacy::createHeadFuzzHair);
+        registerLayerDefinition(HairStyle.MALE_STANDARD.headHair, Legacy::createMaleStandardHair);
+        registerLayerDefinition(HairStyle.MALE_NWE.headHair, Legacy::createMaleHairNWE);
+        registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
+        registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
+        registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
     }
 }

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, SpecialLatexModel, ArmorSpecialLatexModel<SpecialLatex>> {
-    private static final Map<UUID, SpecialLatexRenderer> SPECIAL_RENDERERS = new HashMap<>();
+    private static final Map<Pair<UUID, String>, SpecialLatexRenderer> SPECIAL_RENDERERS = new HashMap<>();
     private final EntityRendererProvider.Context context;
     private final boolean isDelegate;
 
@@ -33,24 +34,33 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
         this.context = context;
     }
 
-    public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.SpecialLatexForm form) {
-        super(context, new SpecialLatexModel(context.bakeLayer(form.modelLayerLocation().get()), form),
-                (part) -> new ArmorSpecialLatexModel<>(part, form), form.armorModelLayerLocation().inner().get(), form.armorModelLayerLocation().outer().get(), form.shadowSize());
-        if (form.emissive().isPresent())
-            this.addLayer(new EmissiveBodyLayer<>(this, form.emissive().get()));
+    public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.ModelData modelData) {
+        super(context, new SpecialLatexModel(context.bakeLayer(modelData.modelLayerLocation().get()), modelData),
+                (part) -> new ArmorSpecialLatexModel<>(part, modelData), modelData.armorModelLayerLocation().inner().get(),
+                modelData.armorModelLayerLocation().outer().get(), modelData.shadowSize());
+        if (modelData.emissive().isPresent())
+            this.addLayer(new EmissiveBodyLayer<>(this, modelData.emissive().get()));
         this.isDelegate = false;
         this.context = context;
+    }
+
+    public SpecialLatexRenderer getAndCacheFor(SpecialLatex entity) {
+        if (!entity.specialLatexForm.modelData().containsKey(entity.wantedState))
+            return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
+                    new SpecialLatexRenderer(this.context, entity.specialLatexForm.getDefaultModel()));
+
+        return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
+                new SpecialLatexRenderer(this.context, entity.specialLatexForm.modelData().get(pair.getSecond())));
     }
 
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
     protected boolean runIfValid(SpecialLatex entity, Consumer<SpecialLatexRenderer> rendererConsumer) {
         if (this.isDelegate) {
             if (entity.getAssignedUUID() == null) return false;
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
+            PatreonBenefits.SpecialForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
             if (form == null) return false;
 
-            rendererConsumer.accept(SPECIAL_RENDERERS.computeIfAbsent(entity.getAssignedUUID(),
-                    uuid -> new SpecialLatexRenderer(this.context, form)));
+            rendererConsumer.accept(getAndCacheFor(entity));
             return false;
         }
 
@@ -62,11 +72,10 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     protected <R> Optional<R> runIfValid(SpecialLatex entity, Function<SpecialLatexRenderer, R> rendererConsumer) {
         if (this.isDelegate) {
             if (entity.getAssignedUUID() == null) return Optional.ofNullable(null);
-            PatreonBenefits.SpecialLatexForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
+            PatreonBenefits.SpecialForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
             if (form == null) return Optional.ofNullable(null);
 
-            return Optional.of(rendererConsumer.apply(SPECIAL_RENDERERS.computeIfAbsent(entity.getAssignedUUID(),
-                    uuid -> new SpecialLatexRenderer(this.context, form))));
+            return Optional.of(rendererConsumer.apply(getAndCacheFor(entity)));
         }
 
         else
@@ -89,8 +98,9 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SpecialLatex p_114482_) {
-        return p_114482_.specialLatexForm != null ? p_114482_.specialLatexForm.texture() : Changed.modResource("textures/delay_loaded_latex.png");
+    public ResourceLocation getTextureLocation(SpecialLatex latex) {
+        return latex.specialLatexForm != null ? latex.specialLatexForm.modelData().get(latex.wantedState).texture() :
+                Changed.modResource("textures/delay_loaded_latex.png");
     }
 
     public LatexHumanoidModel<SpecialLatex> getModel(LatexEntity entity) {

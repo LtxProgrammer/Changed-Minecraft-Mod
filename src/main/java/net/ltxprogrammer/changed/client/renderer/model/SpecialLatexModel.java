@@ -20,7 +20,7 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
     private final ModelPart LeftWing;
     private final LatexHumanoidModelController controller;
 
-    public SpecialLatexModel(ModelPart root, PatreonBenefits.SpecialLatexForm form) {
+    public SpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");

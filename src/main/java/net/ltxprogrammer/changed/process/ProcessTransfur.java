@@ -6,12 +6,14 @@ import net.ltxprogrammer.changed.block.WhiteLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -371,7 +373,21 @@ public class ProcessTransfur {
     }
 
     private static boolean isOrganicLatex(LivingEntity entity) {
-        return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || (LatexVariant.getEntityVariant(entity) != null && LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX));
+        if (entity instanceof LatexEntity latex) {
+            if (latex instanceof SpecialLatex specialLatex)
+                return specialLatex.getCurrentData() != null && specialLatex.getCurrentData().organic();
+            else
+                return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+        }
+
+        else return ifPlayerLatex(Util.playerOrNull(entity), variant -> {
+            if (variant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+                return true;
+            else if (variant.getLatexEntity() instanceof SpecialLatex special &&
+                    special.getCurrentData() != null && special.getCurrentData().organic())
+                return true;
+            return false;
+        }, () -> true);
     }
 
     public static ItemStack getEntityAttackItem(LivingEntity entity) {
