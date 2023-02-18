@@ -30,7 +30,7 @@ public class LatexStiger extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.DICHROME_MALE_NWE;
+        return HairStyle.DICHROME_MALE_SHORT_FRONT;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

@@ -102,9 +102,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable {
     DICHROME_MALE_SHORT_FRONT_S(Gender.MALE,
                            MALE_SHORT_FRONT_S.headHair,
                            MALE_SHORT_FRONT_S.textures[0], Changed.modResource("textures/hair/raccoon_layer.png")),
-    DICHROME_MALE_NWE(Gender.MALE,
-            MALE_NWE.headHair,
-            MALE_NWE.textures[0], Changed.modResource("textures/hair/stiger_layer.png")),
+    DICHROME_MALE_SHORT_FRONT(Gender.MALE,
+            MALE_SHORT_FRONT.headHair,
+            MALE_SHORT_FRONT.textures[0], Changed.modResource("textures/hair/stiger_layer.png")),
     DICHROME_FEMALE_TRIPLE_BANGS_S(Gender.FEMALE,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.headHair,
                              LEGACY_FEMALE_TRIPLE_BANGS_S.textures[0], Changed.modResource("textures/hair/siren_layer.png"));

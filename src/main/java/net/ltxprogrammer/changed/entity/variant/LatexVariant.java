@@ -106,7 +106,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_aerosol_latex_wolf")));
     public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LATEX_SILVER_FOX, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
-    public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.WHITE_LATEX_WOLF).faction(LatexType.WHITE_LATEX)
+    public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.WHITE_LATEX_WOLF).faction(LatexType.WHITE_LATEX).noVision()
             .build(Changed.modResource("form_white_latex_wolf")));
     public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
             .build(Changed.modResource("form_latex_purple_fox")));
@@ -141,12 +141,12 @@ public class LatexVariant<T extends LatexEntity> {
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_ORCA).replicating()
             .build(Changed.modResource("form_latex_orca")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
-            .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(2.9F).absorbing().additionalHealth(8).noLegs().cannotWalk())
+            .split(Builder::ignored, female -> female.groundSpeed(0.06F).swimSpeed(2.9F).absorbing().additionalHealth(8).noLegs().cannotWalk())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
     public static final LatexVariant<LatexMedusaCat> LATEX_MEDUSA_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_MEDUSA_CAT)
             .build(Changed.modResource("form_latex_medusa_cat")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
-            .groundSpeed(0.26F).swimSpeed(2.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(8).noLegs().cannotWalk()
+            .groundSpeed(0.05F).swimSpeed(2.95F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.USE_VARIANT_EFFECT)).additionalHealth(8).noLegs().cannotWalk()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
 
     public static final GenderedVariant<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOG = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SQUID_DOG_MALE, ChangedEntities.LATEX_SQUID_DOG_FEMALE)
@@ -160,7 +160,7 @@ public class LatexVariant<T extends LatexEntity> {
             .build(Changed.modResource("form_latex_raccoon")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
-    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().cannotWalk()
+    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.05f).swimSpeed(0.05f).noVision().cannotWalk()
             .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(LatexVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide().sound(ChangedSounds.SOUND3.getLocation())
             .stepSize(0.7f).faction(LatexType.DARK_LATEX).build(Changed.modResource("form_dark_latex_dragon")));
