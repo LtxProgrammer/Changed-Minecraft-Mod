@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HairStyleRadialMenu extends AbstractContainerMenu {
-    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.radial_hairstyle");
+public class SpecialStateRadialMenu extends AbstractContainerMenu {
+    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.radial_special");
 
     public final Container container;
     public final ContainerData data;
@@ -33,12 +33,12 @@ public class HairStyleRadialMenu extends AbstractContainerMenu {
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
 
-    public HairStyleRadialMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public SpecialStateRadialMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, new SimpleContainer(1), new SimpleContainerData(1));
     }
 
-    public HairStyleRadialMenu(int id, Inventory inv, Container p_38971_, ContainerData p_38972_) {
-        super(ChangedMenus.HAIRSTYLE_RADIAL, id);
+    public SpecialStateRadialMenu(int id, Inventory inv, Container p_38971_, ContainerData p_38972_) {
+        super(ChangedMenus.SPECIAL_RADIAL, id);
         this.container = p_38971_;
         this.data = p_38972_;
         this.world = inv.player.level;

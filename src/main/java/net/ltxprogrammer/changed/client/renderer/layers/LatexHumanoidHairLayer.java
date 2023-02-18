@@ -31,9 +31,9 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         Arrays.stream(HairStyle.values()).filter(style -> !MODEL_BY_LOCATION.containsKey(style)).forEach(style -> {
             try {
                 if (style.headHair != null)
-                    MODEL_BY_LOCATION.computeIfAbsent(style.headHair, location -> new HairModel(modelSet.bakeLayer(location)));
+                    MODEL_BY_LOCATION.computeIfAbsent(style.headHair.get(), location -> new HairModel(modelSet.bakeLayer(location)));
                 if (style.lowerHair != null)
-                    MODEL_BY_LOCATION.computeIfAbsent(style.lowerHair, location -> new HairModel(modelSet.bakeLayer(location)));
+                    MODEL_BY_LOCATION.computeIfAbsent(style.lowerHair.get(), location -> new HairModel(modelSet.bakeLayer(location)));
             } catch (Exception ex) {
                 Changed.LOGGER.error("Failed to load HairStyle model for {}", style.getSerializedName(), ex);
             }
@@ -46,8 +46,8 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
             return;
 
         ModelPart head = this.getParentModel().getHead();
-        Model headHair = MODEL_BY_LOCATION.get(style.headHair);
-        Model shoulderHair = MODEL_BY_LOCATION.get(style.lowerHair);
+        Model headHair = MODEL_BY_LOCATION.get(style.headHair.get());
+        Model shoulderHair = MODEL_BY_LOCATION.get(style.lowerHair.get());
 
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);

@@ -21,6 +21,8 @@ public class ChangedAbilities {
     public static SlitherAbility SLITHER = register(new SlitherAbility());
     public static SelectHairstyleAbility SELECT_HAIRSTYLE = register(new SelectHairstyleAbility());
 
+    public static SelectSpecialStateAbility SELECT_SPECIAL_STATE = register(new SelectSpecialStateAbility());
+
     public static <T extends AbstractAbility<?>> T register(T ability) {
         if (REGISTRY.containsKey(ability.getId()))
             throw new RuntimeException("Duplicate ability id");

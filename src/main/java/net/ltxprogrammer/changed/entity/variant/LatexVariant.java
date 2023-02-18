@@ -1151,6 +1151,10 @@ public class LatexVariant<T extends LatexEntity> {
 
     // Parses variant from JSON, does not register variant
     public static LatexVariant<?> fromJson(ResourceLocation id, JsonObject root) {
+        return fromJson(id, root, List.of());
+    }
+
+    public static LatexVariant<?> fromJson(ResourceLocation id, JsonObject root, List<ResourceLocation> injectAbilities) {
         ResourceLocation entityType = ResourceLocation.tryParse(GsonHelper.getAsString(root, "entity", ChangedEntities.SPECIAL_LATEX.getId().toString()));
 
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
@@ -1176,7 +1180,7 @@ public class LatexVariant<T extends LatexEntity> {
             } catch (ClassNotFoundException ignored) {}
         });
 
-        List<ResourceLocation> abilities = new ArrayList<>();
+        List<ResourceLocation> abilities = new ArrayList<>(injectAbilities);
         GsonHelper.getAsJsonArray(root, "abilities", new JsonArray()).forEach(element -> {
             ResourceLocation location = ResourceLocation.tryParse(element.getAsString());
             abilities.add(location);

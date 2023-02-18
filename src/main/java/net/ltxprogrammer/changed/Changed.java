@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -46,19 +47,11 @@ public class Changed {
 
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
 
-        try {
-            PatreonBenefits.loadBenefits();
-            PatreonBenefits.UPDATE_CHECKER.start();
-        } catch (Exception ex) {
-            Changed.LOGGER.error("Failed to load Patreon Benefits. Patrons will not receive benefits visible to this client.");
-            ex.printStackTrace();
-        }
-
         // Initialize packet types
-
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
         addNetworkMessage(MountLatexPacket.class, MountLatexPacket::new);
         addNetworkMessage(SyncSwitchPacket.class, SyncSwitchPacket::new);
@@ -87,6 +80,18 @@ public class Changed {
         ChangedBlocks.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         //    ^^^ First to process ^^^
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            try {
+                PatreonBenefits.loadBenefits();
+                PatreonBenefits.UPDATE_CHECKER.start();
+            } catch (Exception ex) {
+                Changed.LOGGER.error("Failed to load Patreon Benefits. Patrons will not receive benefits visible to this client.");
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
