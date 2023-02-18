@@ -18,6 +18,8 @@ public class ChangedMenus {
             AbilityRadialMenu::new);
     public static final MenuType<HairStyleRadialMenu> HAIRSTYLE_RADIAL = register("hairstyle_radial",
             HairStyleRadialMenu::new);
+    public static final MenuType<SpecialStateRadialMenu> SPECIAL_RADIAL = register("special_radial",
+            SpecialStateRadialMenu::new);
     public static final MenuType<ComputerMenu> COMPUTER = register("computer",
             ComputerMenu::new);
     public static final MenuType<ExtraHandsMenu> EXTRA_HANDS = register("extra_hands",

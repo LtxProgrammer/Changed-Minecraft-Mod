@@ -9,17 +9,19 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelLayerLoca
 import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.data.DelayLoadedModel;
 import net.ltxprogrammer.changed.data.OnlineResource;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.ChatFormatting;
-import net.minecraft.CrashReport;
-import net.minecraft.ReportedException;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -38,6 +40,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.PUBLIC_LATEX_FORMS;
 
@@ -72,36 +79,214 @@ public class PatreonBenefits {
             boolean hasWings) {
         public static final AnimationData DEFAULT = new AnimationData(true, false, false);
 
-        public static AnimationData from(JsonElement object) {
+        public static AnimationData fromJSON(JsonElement object) {
             if (object == null || object.isJsonNull() || !object.isJsonObject()) return DEFAULT;
             else {
                 JsonObject json = (JsonObject)object;
                 return new AnimationData(
-                        GsonHelper.getAsBoolean(json, "hastail", true),
-                        GsonHelper.getAsBoolean(json, "swimtail", false),
-                        GsonHelper.getAsBoolean(json, "haswings", false));
+                        GsonHelper.getAsBoolean(json, "hasTail", GsonHelper.getAsBoolean(json, "hastail", true)),
+                        GsonHelper.getAsBoolean(json, "swimTail", GsonHelper.getAsBoolean(json, "swimtail", false)),
+                        GsonHelper.getAsBoolean(json, "hasWings", GsonHelper.getAsBoolean(json, "haswings", false)));
             }
         }
     }
 
-    public record SpecialLatexForm(
-            UUID uuid,
-            List<ChangedParticles.Color3> weightedColors,
-            ResourceLocation texture,
-            Optional<ResourceLocation> emissive,
+    public record EntityData(
+            ChangedParticles.Color3 primaryColor,
+            ChangedParticles.Color3 secondaryColor,
+            List<ChangedParticles.Color3> dripColors,
+            List<ChangedParticles.Color3> hairColors,
+            List<HairStyle> hairStyles,
+            EntityDimensions dimensions,
+            boolean organic
+    ) {
+        public static EntityData fromJSON(UUID uuid, JsonObject object) {
+            List<ChangedParticles.Color3> dripColors = new ArrayList<>();
+            try {
+                object.get("particles").getAsJsonArray().forEach(color -> dripColors.add(ChangedParticles.Color3.getColor(color.getAsString())));
+            } catch (Exception ignored) {}
+
+            List<ChangedParticles.Color3> hairColors = new ArrayList<>();
+            try {
+                object.get("hairColor").getAsJsonArray().forEach(color -> hairColors.add(ChangedParticles.Color3.getColor(color.getAsString())));
+            } catch (Exception ignored) {}
+            if (hairColors.isEmpty())
+                hairColors.add(ChangedParticles.Color3.WHITE);
+
+            List<HairStyle> styles = new ArrayList<>();
+            if (object.has("hairStyles")) {
+                if (object.get("hairStyles").isJsonArray()) object.get("hairColor").getAsJsonArray().forEach(style -> {
+                    try {
+                        styles.add(HairStyle.valueOf(style.getAsString()));
+                    } catch (Exception ex) {
+                        LOGGER.warn("Bad hairStyle {}", style);
+                    }
+                });
+
+                else {
+                    try {
+                        styles.addAll(HairStyle.Collections.getCollection(ResourceLocation.tryParse(object.get("hairStyles").getAsString())));
+                    } catch (Exception ex) {
+                        LOGGER.warn("Bad type {}", object.get("hairStyles"));
+                    }
+                }
+            }
+
+            if (styles.isEmpty())
+                styles.add(HairStyle.BALD);
+
+            return new EntityData(
+                    ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "primaryColor", "WHITE")),
+                    ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "secondaryColor", "WHITE")),
+                    dripColors,
+                    hairColors,
+                    styles,
+                    EntityDimensions.scalable(object.get("width").getAsFloat(), object.get("height").getAsFloat()),
+                    GsonHelper.getAsBoolean(object, "organic", false)
+            );
+        }
+    }
+
+    // Client only info
+    public record ModelData(
             DeferredModelLayerLocation modelLayerLocation,
             ArmorModelLayerLocation armorModelLayerLocation,
+
+            ResourceLocation texture,
+            Optional<ResourceLocation> emissive,
+            AnimationData animationData,
+
+            boolean oldModelRig,
             DelayLoadedModel model,
             DelayLoadedModel armorModelInner,
             DelayLoadedModel armorModelOuter,
-            AnimationData animationData,
-            float shadowSize,
-            float width,
-            float height,
-            LatexVariant<?> variant) {
 
-        public boolean tailAidsInSwim() {
-            return variant.getBreatheMode().canBreatheWater();
+            float shadowSize
+    ) {
+        public static ModelData fromJSON(Function<String, JsonObject> jsonGetter, String fullId, JsonObject object) {
+            ResourceLocation textureLocation = Changed.modResource(fullId + "/texture.png");
+            ResourceLocation modelLocation = Changed.modResource(fullId + "/model_" + fullId);
+            DeferredModelLayerLocation layerLocation = new DeferredModelLayerLocation(modelLocation, "main");
+            ArmorModelLayerLocation armorLocations = new ArmorModelLayerLocation(
+                    ArmorModelLayerLocation.createInnerArmorLocation(modelLocation),
+                    ArmorModelLayerLocation.createOuterArmorLocation(modelLocation)
+            );
+
+            return new ModelData(
+                    layerLocation,
+                    armorLocations,
+                    textureLocation,
+                    GsonHelper.getAsBoolean(object, "emissive", false) ?
+                            Optional.of(Changed.modResource(fullId + "/emissive.png")) : Optional.empty(),
+                    AnimationData.fromJSON(object.get("animation")),
+                    GsonHelper.getAsBoolean(object, "oldModelRig", true),
+                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/model.json")),
+                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_inner.json")),
+                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_outer.json")),
+                    GsonHelper.getAsFloat(object, "shadowsize", 0.5f)
+            );
+        }
+
+        public void registerLayerDefinitions(BiConsumer<DeferredModelLayerLocation, Supplier<LayerDefinition>> registrar) {
+            if (oldModelRig) {
+                registrar.accept(modelLayerLocation, () -> model.createBodyLayer(
+                        DelayLoadedModel.HUMANOID_PART_FIXER,
+                        DelayLoadedModel.HUMANOID_GROUP_FIXER));
+                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.createBodyLayer(
+                        DelayLoadedModel.HUMANOID_PART_FIXER,
+                        DelayLoadedModel.HUMANOID_GROUP_FIXER));
+                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.createBodyLayer(
+                        DelayLoadedModel.HUMANOID_PART_FIXER,
+                        DelayLoadedModel.HUMANOID_GROUP_FIXER));
+            }
+
+            else {
+                registrar.accept(modelLayerLocation, () -> model.createBodyLayer(
+                        DelayLoadedModel.PART_NO_FIX,
+                        DelayLoadedModel.GROUP_NO_FIX));
+                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.createBodyLayer(
+                        DelayLoadedModel.PART_NO_FIX,
+                        DelayLoadedModel.GROUP_NO_FIX));
+                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.createBodyLayer(
+                        DelayLoadedModel.PART_NO_FIX,
+                        DelayLoadedModel.GROUP_NO_FIX));
+            }
+        }
+
+        public void registerTextures(Consumer<ResourceLocation> registrar) {
+            registrar.accept(texture);
+            emissive.ifPresent(registrar);
+        }
+    }
+
+    public record SpecialForm(
+            UUID playerUUID,
+
+            String defaultState,
+            Map<String, EntityData> entityData,
+            Map<String, ModelData> modelData,
+            LatexVariant<?> variant
+    ) {
+        public EntityData getDefaultEntity() {
+            return entityData.get(defaultState);
+        }
+
+        public ModelData getDefaultModel() {
+            return modelData.get(defaultState);
+        }
+
+        public void registerLayerDefinitions(BiConsumer<DeferredModelLayerLocation, Supplier<LayerDefinition>> registrar) {
+            modelData.forEach((key, model) -> model.registerLayerDefinitions(registrar));
+        }
+
+        public void registerTextures(Consumer<ResourceLocation> registrar) {
+            modelData.forEach((id, model) -> model.registerTextures(registrar));
+        }
+
+        public static SpecialForm fromJSON(Function<String, JsonObject> jsonGetter, JsonObject object) {
+            Map<String, ModelData> models = new HashMap<>();
+            Map<String, EntityData> entities = new HashMap<>();
+            String dState = "default";
+            UUID uuid = UUID.fromString(GsonHelper.getAsString(object, "location"));
+            List<ResourceLocation> injectedAbilities = new ArrayList<>();
+            if (object.has("entities")) {
+                GsonHelper.getAsJsonArray(object, "entities").forEach(element -> {
+                    JsonObject entityObject = element.getAsJsonObject();
+                    String id = GsonHelper.getAsString(entityObject, "id");
+                    entities.put(id, EntityData.fromJSON(uuid, entityObject));
+                });
+                dState = GsonHelper.getAsString(object, "defaultState");
+            } else {
+                entities.put(dState, EntityData.fromJSON(uuid, object));
+            }
+            if (entities.size() > 1)
+                injectedAbilities.add(ChangedAbilities.SELECT_SPECIAL_STATE.getId());
+            for (var entry : entities.values())
+                if (entry.hairStyles.size() > 1) {
+                    injectedAbilities.add(ChangedAbilities.SELECT_HAIRSTYLE.getId());
+                    break;
+                }
+
+            final String lockedDefault = dState;
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                if (object.has("models")) {
+                    GsonHelper.getAsJsonArray(object, "models").forEach(element -> {
+                        JsonObject modelObject = element.getAsJsonObject();
+                        String id = GsonHelper.getAsString(modelObject, "id");
+                        models.put(id, ModelData.fromJSON(jsonGetter, uuid + "/" + id, modelObject));
+                    });
+                } else {
+                    models.put(lockedDefault, ModelData.fromJSON(jsonGetter, uuid.toString(), object));
+                }
+            });
+
+            return new SpecialForm(
+                    uuid,
+                    dState,
+                    entities,
+                    models,
+                    LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject(), injectedAbilities)
+            );
         }
     }
 
@@ -120,27 +305,10 @@ public class PatreonBenefits {
     }
 
     private static final Map<UUID, Tier> CACHED_LEVELS = new HashMap<>();
-    private static final Map<UUID, SpecialLatexForm> CACHED_SPECIAL_FORMS = new HashMap<>();
+    private static final Map<UUID, SpecialForm> CACHED_SPECIAL_FORMS = new HashMap<>();
     public static final List<Resource> ONLINE_TEXTURES = new ArrayList<>();
     public static final Map<UUID, DeferredModelLayerLocation> LAYER_LOCATIONS = new HashMap<>();
     public static int currentVersion;
-
-    private static class Internal {
-        private static void lateRegisterModel(DeferredModelLayerLocation layerLocation, ArmorModelLayerLocation armorLocations, SpecialLatexForm form) {
-            DynamicClient.lateRegisterLayerDefinition(layerLocation, () ->
-                    form.model.createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-            DynamicClient.lateRegisterLayerDefinition(armorLocations.inner(), () ->
-                    form.armorModelInner.createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-            DynamicClient.lateRegisterLayerDefinition(armorLocations.outer(), () ->
-                    form.armorModelOuter.createBodyLayer(
-                            DelayLoadedModel.HUMANOID_PART_FIXER,
-                            DelayLoadedModel.HUMANOID_GROUP_FIXER));
-        }
-    }
 
     private static final Logger LOGGER = LogManager.getLogger(Changed.class);
     private static final Map<Dist, AtomicBoolean> UPDATE_FLAG = new HashMap<>();
@@ -184,6 +352,49 @@ public class PatreonBenefits {
         }
     }
 
+    public static void loadSpecialForms(HttpClient client) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder(URI.create(FORMS_DOCUMENT)).GET().build();
+        JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
+        JsonArray formLocations = json.getAsJsonObject().get("forms").getAsJsonArray();
+
+        AtomicInteger count = new AtomicInteger(0);
+
+        formLocations.forEach((element) -> {
+            JsonObject object = element.getAsJsonObject();
+            if (GsonHelper.getAsInt(object, "version", 1) > COMPATIBLE_VERSION)
+                return;
+
+            SpecialForm form = SpecialForm.fromJSON(
+                    str -> {
+                        try {
+                            return JsonParser.parseString(client.send(HttpRequest.newBuilder(URI.create(FORMS_BASE + str)).GET().build(), HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return new JsonObject();
+                        }
+                    },
+                    object
+            );
+
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                form.registerTextures(location ->
+                        DynamicClient.lateRegisterOnlineTexture(OnlineResource.of(
+                                location.getPath(),
+                                location,
+                                URI.create(FORMS_BASE + location.getPath())
+                        )));
+
+                form.registerLayerDefinitions(DynamicClient::lateRegisterLayerDefinition);
+            });
+
+            CACHED_SPECIAL_FORMS.put(form.playerUUID, form);
+            LatexVariant.registerSpecial(form.variant);
+            count.getAndIncrement();
+        });
+
+        LOGGER.info("Updated {} patreon special forms", count.get());
+    }
+
     public static boolean checkForUpdates() throws IOException, InterruptedException {
         if (UPDATE_FLAG.computeIfAbsent(FMLEnvironment.dist, dist -> new AtomicBoolean(false)).get()) {
             UPDATE_FLAG.get(FMLEnvironment.dist).set(false); // Consume update flag
@@ -202,89 +413,7 @@ public class PatreonBenefits {
                 });
             }
 
-            {
-                HttpRequest request = HttpRequest.newBuilder(URI.create(FORMS_DOCUMENT)).GET().build();
-                JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
-                JsonArray formLocations = json.getAsJsonObject().get("forms").getAsJsonArray();
-
-                formLocations.forEach((element) -> {
-                    try {
-                        HttpClient iterClient = HttpClient.newHttpClient();
-                        JsonObject object = element.getAsJsonObject();
-                        if (GsonHelper.getAsInt(object, "version", 1) > COMPATIBLE_VERSION)
-                            return;
-                        String name = object.get("location").getAsString();
-                        UUID uuid = UUID.fromString(name);
-                        HttpRequest modelRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/model.json")).GET().build();
-                        HttpRequest armorModelInnerRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/armor_inner.json")).GET().build();
-                        HttpRequest armorModelOuterRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/armor_outer.json")).GET().build();
-
-                        ResourceLocation textureLocation = Changed.modResource("special/texture_" + name + ".png");
-                        var onlineResource = OnlineResource.of(
-                                "special_" + name,
-                                textureLocation,
-                                URI.create(FORMS_BASE + name + "/texture.png")
-                        );
-
-                        ONLINE_TEXTURES.add(onlineResource);
-
-                        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> DynamicClient.lateRegisterOnlineTexture(onlineResource));
-
-                        ResourceLocation modelLocation = Changed.modResource("special/model_" + name);
-                        DeferredModelLayerLocation layerLocation = new DeferredModelLayerLocation(modelLocation, "main");
-                        ArmorModelLayerLocation armorLocations = new ArmorModelLayerLocation(
-                                ArmorModelLayerLocation.createInnerArmorLocation(modelLocation),
-                                ArmorModelLayerLocation.createOuterArmorLocation(modelLocation)
-                        );
-                        LAYER_LOCATIONS.put(uuid, layerLocation);
-                        ArmorModelLayerLocation.ARMOR_LAYER_LOCATIONS.put(uuid, armorLocations);
-
-                        List<ChangedParticles.Color3> colors = new ArrayList<>();
-                        try {
-                            object.get("particles").getAsJsonArray().forEach((particle) -> colors.add(ChangedParticles.Color3.getColor(particle.getAsString())));
-                        } catch (Exception ignored) {}
-
-                        SpecialLatexForm form = new SpecialLatexForm(
-                                uuid,
-                                colors,
-                                textureLocation,
-                                GsonHelper.getAsBoolean(object, "emissive", false) ?
-                                        Optional.of(Changed.modResource("special/emissive_" + name + ".png")) : Optional.empty(),
-                                layerLocation,
-                                armorLocations,
-                                DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(modelRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                                DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelInnerRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                                DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelOuterRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                                AnimationData.from(object.get("animation")),
-                                object.get("shadowsize").getAsFloat(),
-                                object.get("width").getAsFloat(),
-                                object.get("height").getAsFloat(),
-                                LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject())
-                        );
-
-                        form.emissive.ifPresent(location -> {
-                            var onlineResourceEmissive = OnlineResource.of(
-                                    "special_" + name,
-                                    form.emissive.get(),
-                                    URI.create(FORMS_BASE + name + "/emissive.png")
-                            );
-
-                            ONLINE_TEXTURES.add(onlineResourceEmissive);
-                            DynamicClient.lateRegisterOnlineTexture(onlineResourceEmissive);
-                        });
-
-                        CACHED_SPECIAL_FORMS.put(uuid, form);
-
-                        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Internal.lateRegisterModel(layerLocation, armorLocations, form));
-
-                        LatexVariant.registerSpecial(form.variant);
-                    } catch (IOException | InterruptedException e) {
-                        UniversalDist.displayClientMessage(
-                                new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
-                        throw new ReportedException(new CrashReport("Exception while reloading patron data", e));
-                    }
-                });
-            }
+            loadSpecialForms(client);
 
             UniversalDist.displayClientMessage(new TextComponent("Updated Patreon Data."), false);
             return true;
@@ -308,77 +437,7 @@ public class PatreonBenefits {
         });
 
         // Load forms
-        request = HttpRequest.newBuilder(URI.create(FORMS_DOCUMENT)).GET().build();
-        json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
-        JsonArray formLocations = json.getAsJsonObject().get("forms").getAsJsonArray();
-
-        formLocations.forEach((element) -> {
-            try {
-                HttpClient iterClient = HttpClient.newHttpClient();
-                JsonObject object = element.getAsJsonObject();
-                if (GsonHelper.getAsInt(object, "version", 1) > COMPATIBLE_VERSION)
-                    return;
-                String name = object.get("location").getAsString();
-                UUID uuid = UUID.fromString(name);
-                HttpRequest modelRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/model.json")).GET().build();
-                HttpRequest armorModelInnerRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/armor_inner.json")).GET().build();
-                HttpRequest armorModelOuterRequest = HttpRequest.newBuilder(URI.create(FORMS_BASE + name + "/armor_outer.json")).GET().build();
-
-                ResourceLocation textureLocation = Changed.modResource("special/texture_" + name + ".png");
-                ONLINE_TEXTURES.add(OnlineResource.of(
-                        "special_" + name,
-                        textureLocation,
-                        URI.create(FORMS_BASE + name + "/texture.png")
-                ));
-
-                ResourceLocation modelLocation = Changed.modResource("special/model_" + name);
-                DeferredModelLayerLocation layerLocation = new DeferredModelLayerLocation(modelLocation, "main");
-                ArmorModelLayerLocation armorLocations = new ArmorModelLayerLocation(
-                        ArmorModelLayerLocation.createInnerArmorLocation(modelLocation),
-                        ArmorModelLayerLocation.createOuterArmorLocation(modelLocation)
-                );
-                LAYER_LOCATIONS.put(uuid, layerLocation);
-                ArmorModelLayerLocation.ARMOR_LAYER_LOCATIONS.put(uuid, armorLocations);
-
-                List<ChangedParticles.Color3> colors = new ArrayList<>();
-                try {
-                    object.get("particles").getAsJsonArray().forEach((particle) -> colors.add(ChangedParticles.Color3.getColor(particle.getAsString())));
-                } catch (Exception ignored) {}
-
-                SpecialLatexForm form = new SpecialLatexForm(
-                        uuid,
-                        colors,
-                        textureLocation,
-                        GsonHelper.getAsBoolean(object, "emissive", false) ?
-                                Optional.of(Changed.modResource("special/emissive_" + name + ".png")) : Optional.empty(),
-                        layerLocation,
-                        armorLocations,
-                        DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(modelRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                        DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelInnerRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                        DelayLoadedModel.parse(JsonParser.parseString(iterClient.send(armorModelOuterRequest, HttpResponse.BodyHandlers.ofString()).body()).getAsJsonObject()),
-                        AnimationData.from(object.get("animation")),
-                        object.get("shadowsize").getAsFloat(),
-                        object.get("width").getAsFloat(),
-                        object.get("height").getAsFloat(),
-                        LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject())
-                );
-
-                form.emissive.ifPresent(location -> ONLINE_TEXTURES.add(OnlineResource.of(
-                        "special_" + name,
-                        location,
-                        URI.create(FORMS_BASE + name + "/emissive.png")
-                )));
-
-                CACHED_SPECIAL_FORMS.put(uuid, form);
-
-                LatexVariant.registerSpecial(form.variant);
-            } catch (IOException | InterruptedException e) {
-                UniversalDist.displayClientMessage(
-                        new TextComponent("Exception while loading patron data" + e.getLocalizedMessage()).withStyle(ChatFormatting.DARK_RED), false);
-                throw new ReportedException(new CrashReport("Exception while loading patron data", e));
-            }
-        });
-
+        loadSpecialForms(client);
         PUBLIC_LATEX_FORMS.put(LatexVariant.SPECIAL_LATEX, null);
 
         // Load version
@@ -391,12 +450,12 @@ public class PatreonBenefits {
     }
 
     @Nullable
-    public static SpecialLatexForm getPlayerSpecialForm(UUID player) {
+    public static SpecialForm getPlayerSpecialForm(UUID player) {
         return CACHED_SPECIAL_FORMS.getOrDefault(player, null);
     }
 
     public static LatexVariant<?> getPlayerSpecialVariant(UUID player) {
-        SpecialLatexForm form = getPlayerSpecialForm(player);
+        SpecialForm form = getPlayerSpecialForm(player);
         if (form == null)
             return null;
 

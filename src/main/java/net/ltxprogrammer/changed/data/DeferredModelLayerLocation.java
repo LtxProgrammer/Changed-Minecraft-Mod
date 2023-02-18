@@ -14,6 +14,10 @@ public class DeferredModelLayerLocation implements Supplier<ModelLayerLocation> 
         this.layer = p_171122_;
     }
 
+    public static DeferredModelLayerLocation main(ResourceLocation model) {
+        return new DeferredModelLayerLocation(model, "main");
+    }
+
     public ResourceLocation getModel() {
         return this.model;
     }
