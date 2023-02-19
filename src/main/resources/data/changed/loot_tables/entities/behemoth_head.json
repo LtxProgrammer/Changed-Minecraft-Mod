@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron",
+          "name": "minecraft:iron_ingot",
           "functions": [
           ]
         }
@@ -64,7 +64,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 12.0,
-                "max": 36.0
+                "max": 31.0
               },
               "add": false
             },
@@ -73,7 +73,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 12.0,
-                "max": 36.0
+                "max": 31.0
               }
             }
           ],
