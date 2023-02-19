@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,powered=true": {
+      "model": "changed:block/keypad"
+    },
+    "variants": {
+      "facing=north,powered=false": {
+        "model": "changed:block/keypad_locked"
+      },
+      "facing=east,powered=true": {
+        "model": "changed:block/keypad",
+        "y": 90
+      },
+      "facing=east,powered=false": {
+        "model": "changed:block/keypad_locked",
+        "y": 90
+      },
+      "facing=south,powered=true": {
+        "model": "changed:block/keypad",
+        "y": 180
+      },
+      "facing=south,powered=false": {
+        "model": "changed:block/keypad_locked",
+        "y": 180
+      },
+      "facing=west,powered=true": {
+        "model": "changed:block/keypad",
+        "y": 270
+      },
+      "facing=west,powered=false": {
+        "model": "changed:block/keypad_locked",
+        "y": 270
+      }
+    }
+  }
+}
