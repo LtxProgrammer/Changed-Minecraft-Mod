@@ -28,7 +28,7 @@
   "subtitles.changed.siren": "Sirene synger",
   "subtitles.changed.save": "Netthinneskanner piper",
   "subtitles.changed.sword1": "Nålstikk",
-  "subtitles.changed.paralyze1": "Våpensjokker",
+  "subtitles.changed.paralyze1": "Våpenstøt",
   "subtitles.changed.blow1": "Spiller latekset",
 
   "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
@@ -95,10 +95,12 @@
   "container.changed.extra_hands": "Ekstra hendermeny",
   "container.changed.infuser": "Tilførermenyen",
   "container.changed.purifier": "Rensermenyen",
+  "container.changed.keypad": "Angi passkode",
   "container.changed.access_chest": "Kiste inventar",
 
   "text.changed.game_saved": "Spill er ikke lagret.",
   "text.changed.game_saved_fail": "Kan ikke lagre spill.",
+  "text.changed.game_keypad_incorrect": "Feil passkode.",
   "text.changed.game_loaded": "Spill lastet.",
   "text.changed.game_loaded_fail": "Kan ikke laste spill.",
   "text.changed.syringe.owner": "Eier: %s",
@@ -120,6 +122,7 @@
   "block.changed.dark_latex_ice": "Mørk lateks is",
   "block.changed.infuser": "Tilfører",
   "block.changed.iron_crate": "Jernkasse",
+  "block.changed.keypad": "Tastaturet",
   "block.changed.laser_emitter": "Lasersender",
   "block.changed.latex_beifeng_crystal": "Lateks beifengkrystall",
   "block.changed.latex_wolf_crystal": "Lateks ulvekrystall",
@@ -176,7 +179,7 @@
   "block.changed.white_latex_block": "Hvit lateksblokk",
   "block.changed.white_latex_pillar": "Hvit latekssøyle",
 
-  "biome.changed.dark_latex_plains": "Mørk lateksfelt",
+  "biome.changed.dark_latex_plains": "Mørk latekseng",
   "biome.changed.white_latex_forest": "Hvit lateks skog",
 
   "entity.changed.special": "Spesiell lateks",
