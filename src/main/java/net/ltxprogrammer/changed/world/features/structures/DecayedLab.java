@@ -20,7 +20,7 @@ public class DecayedLab extends BasicNBTStructure {
     private static Map<ResourceLocation, DecayedLab> FEATURES = new HashMap<>();
     private static Map<ResourceLocation, Holder<PlacedFeature>> PLACED_FEATURES = new HashMap<>();
 
-    public static final int LAB_RARITY = 1000; // Lower is rarer
+    public static final int LAB_RARITY = 300; // Lower is rarer
     private final int yOffset;
     private final ResourceLocation lootTable;
     private final boolean underground;
