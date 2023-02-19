@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
+import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -38,6 +39,11 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
         Player player = event.getPlayer();
+
+        if (player.isDeadOrDying() && player.getLastDamageSource() instanceof ChangedDamageSources.TransfurDamageSource) {
+            event.setCanceled(true);
+            return;
+        }
 
         if (player.vehicle != null && player.vehicle instanceof CardboardBoxBlockEntity.EntityContainer container) {
             if (player.isInvisible()) {
