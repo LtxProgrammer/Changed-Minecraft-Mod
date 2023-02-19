@@ -46,18 +46,18 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
             return;
 
         ModelPart head = this.getParentModel().getHead();
-        Model headHair = MODEL_BY_LOCATION.get(style.headHair.get());
-        Model shoulderHair = MODEL_BY_LOCATION.get(style.lowerHair.get());
+        Model headHair = style.headHair != null ? MODEL_BY_LOCATION.get(style.headHair.get()) : null;
+        Model lowerHair = style.lowerHair != null ? MODEL_BY_LOCATION.get(style.lowerHair.get()) : null;
 
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
-        if (shoulderHair != null) {
+        if (lowerHair != null) {
             for (ResourceLocation layer : style.textures) {
                 ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
                 VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
-                shoulderHair.renderToBuffer(pose, buffer, packedLight,
+                lowerHair.renderToBuffer(pose, buffer, packedLight,
                         overlay, color.red(), color.green(), color.blue(), alpha);
                 ++colorLayer;
             }
