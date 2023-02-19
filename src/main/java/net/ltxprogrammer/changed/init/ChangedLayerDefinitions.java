@@ -147,7 +147,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightFusionModel.OUTER_ARMOR, () -> ArmorLightLatexKnightFusionModel.createArmorLayer(ArmorModel.OUTER));
 
         registerLayerDefinition(HairStyle.LEGACY_MALE.headHair, Legacy::createMaleHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.lowerHair, Legacy::createFemaleLowerHair);
+        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG_L.lowerHair, Legacy::createFemaleLowerHair);
         registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.headHair, Legacy::createFemaleRightBangHair);
         registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG.headHair, Legacy::createFemaleLeftBangHair);
         registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS.headHair, Legacy::createFemaleDualBangHair);

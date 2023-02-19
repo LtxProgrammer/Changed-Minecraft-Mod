@@ -16,7 +16,7 @@ public class LatexSharkFemale extends AbstractLatexShark implements GenderedEnti
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE_RIGHT_BANG_S;
+        return HairStyle.LEGACY_FEMALE_RIGHT_BANG_S_L;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

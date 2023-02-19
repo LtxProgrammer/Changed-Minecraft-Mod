@@ -23,7 +23,7 @@ public class LatexSquirrel extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.DICHROME_MALE_STANDARD;
+        return HairStyle.MALE_STANDARD;
     }
 
     @Override
