@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron",
+          "name": "minecraft:iron_ingot",
           "functions": [
           ]
         }
@@ -20,35 +20,6 @@
           "condition": "minecraft:random_chance_with_looting",
           "chance": 0.6,
           "looting_multiplier": 0.3
-        }
-      ]
-    },
-    {
-      "rolls": 1.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8.0,
-                "max": 14.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 8.0,
-                "max": 14.0
-              }
-            }
-          ],
-          "name": "changed:latex_base"
         }
       ]
     },
@@ -78,6 +49,35 @@
             }
           ],
           "name": "changed:white_latex_goo"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8.0,
+                "max": 14.0
+              },
+              "add": false
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8.0,
+                "max": 14.0
+              }
+            }
+          ],
+          "name": "changed:latex_base"
         },
         {
           "type": "minecraft:item",
