@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedParticles {
@@ -74,14 +75,14 @@ public class ChangedParticles {
         public static final Color3 TSC_BLUE = named("tsc_blue", 0.31f, 0.76f, 1.0f);
     }
 
-    private static final Map<ParticleType<?>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> REGISTRY = new HashMap<>();
+    private static final Map<ParticleType<?>, Supplier<Function<SpriteSet, ParticleProvider<SimpleParticleType>>>> REGISTRY = new HashMap<>();
 
     public static final SimpleParticleType DRIPPING_LATEX = register(new SimpleParticleType(false)
-            .setRegistryName("dripping_latex"), LatexDripParticle.Provider::new);
+            .setRegistryName("dripping_latex"), () -> LatexDripParticle.Provider::new);
     public static final SimpleParticleType TSC_SWEEP_ATTACK = register(new SimpleParticleType(false)
-            .setRegistryName("tsc_sweep_attack"), TscSweepParticle.Provider::new);
+            .setRegistryName("tsc_sweep_attack"), () -> TscSweepParticle.Provider::new);
 
-    private static SimpleParticleType register(ParticleType<?> particle, Function<SpriteSet, ParticleProvider<SimpleParticleType>> provider) {
+    private static SimpleParticleType register(ParticleType<?> particle, Supplier<Function<SpriteSet, ParticleProvider<SimpleParticleType>>> provider) {
         REGISTRY.put(particle, provider);
         return (SimpleParticleType) particle;
     }
@@ -94,6 +95,6 @@ public class ChangedParticles {
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         REGISTRY.forEach((particle, provider) -> Minecraft.getInstance().particleEngine.register((SimpleParticleType) particle,
-                provider::apply));
+                provider.get()::apply));
     }
 }
