@@ -42,7 +42,12 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.DICHROME_FEMALE_TRIPLE_BANGS_S;
+        return HairStyle.LEGACY_FEMALE_TRIPLE_BANGS_S;
+    }
+
+    @Override
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.FEMALE_SHADED;
     }
 
     private boolean wantToSing() {
