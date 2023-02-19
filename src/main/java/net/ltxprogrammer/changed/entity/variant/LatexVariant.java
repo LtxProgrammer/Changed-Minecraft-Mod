@@ -459,7 +459,7 @@ public class LatexVariant<T extends LatexEntity> {
                     formId.toString().substring(Changed.modResourceStr("special/form_").length())));
         }
         if (entity instanceof Player player) {
-            ProcessTransfur.killPlayerAndRemoveBody(player, newEntity);
+            ProcessTransfur.killPlayerBy(player, newEntity);
         } else
             entity.discard();
         return newEntity;

@@ -363,12 +363,16 @@ public class ProcessTransfur {
         }
     }
 
-    private static void bonusHurt(LivingEntity entity, DamageSource p_108729_, float p_108730_, boolean overrideImmunity) {
-        if (!entity.isInvulnerableTo(p_108729_) || overrideImmunity) {
+    private static void bonusHurt(LivingEntity entity, DamageSource source, float damage, boolean overrideImmunity) {
+        if (!entity.isInvulnerableTo(source) || overrideImmunity) {
             boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
 
-            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity)
-                entity.setHealth(entity.getHealth() - p_108730_);
+            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity) {
+                if (entity.getHealth() - damage > 0)
+                    entity.setHealth(entity.getHealth() - damage);
+                else
+                    entity.hurt(source, Float.MAX_VALUE);
+            }
         }
     }
 
@@ -412,9 +416,8 @@ public class ProcessTransfur {
         }
     }
 
-    public static void killPlayerAndRemoveBody(Player player, LivingEntity source) {
+    public static void killPlayerBy(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
-        player.deathTime = 6000;
     }
 
     protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
@@ -434,7 +437,7 @@ public class ProcessTransfur {
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
                         transfur(source.entity, source.entity.level, playerVariant, true);
-                        killPlayerAndRemoveBody(pvpLoser, source.entity);
+                        killPlayerBy(pvpLoser, source.entity);
                     } else {
                         transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
@@ -552,7 +555,7 @@ public class ProcessTransfur {
 
             // Should be one-hit absorption here
             if (event.getEntityLiving() instanceof Player loserPlayer) {
-                bonusHurt(loserPlayer, ChangedDamageSources.entityTransfur(source.entity), Float.MAX_VALUE, true);
+                killPlayerBy(loserPlayer, source.entity);
             }
 
             else {
