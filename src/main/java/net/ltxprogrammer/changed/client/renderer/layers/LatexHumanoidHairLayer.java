@@ -58,7 +58,6 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
 
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
-        pose.mulPoseMatrix(stackCorrector.last().pose());
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
         if (lowerHair != null) {

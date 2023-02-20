@@ -4,6 +4,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public enum CorrectorType {
     HAIR(false),
+    LOWER_HAIR(false),
     LEFT_ARM(true),
     RIGHT_ARM(true);
     private final boolean isArm;

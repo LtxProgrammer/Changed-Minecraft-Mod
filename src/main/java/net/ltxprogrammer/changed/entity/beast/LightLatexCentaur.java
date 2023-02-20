@@ -21,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     public LightLatexCentaur(EntityType<? extends LightLatexCentaur> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
@@ -44,6 +46,11 @@ public class LightLatexCentaur extends LightLatexKnight implements Saddleable {
     @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.MALE_NWE_S;
+    }
+
+    @Override
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collections.MALE_FEMALE_SHADED;
     }
 
     @Override
