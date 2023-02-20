@@ -3,8 +3,10 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -48,9 +50,15 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         ModelPart head = this.getParentModel().getHead();
         Model headHair = style.headHair != null ? MODEL_BY_LOCATION.get(style.headHair.get()) : null;
         Model lowerHair = style.lowerHair != null ? MODEL_BY_LOCATION.get(style.lowerHair.get()) : null;
+        PoseStack stackCorrector;
+        if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
+            stackCorrector = modelInterface.getPlacementCorrectors(CorrectorType.HAIR);
+        else
+            stackCorrector = new PoseStack();
 
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
+        pose.mulPoseMatrix(stackCorrector.last().pose());
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
         if (lowerHair != null) {
@@ -65,6 +73,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         pose.popPose();
         pose.pushPose();
         head.translateAndRotate(pose);
+        pose.mulPoseMatrix(stackCorrector.last().pose());
         if (headHair != null) {
             for (ResourceLocation layer : style.textures) {
                 ChangedParticles.Color3 color = entity.getHairColor(colorLayer);

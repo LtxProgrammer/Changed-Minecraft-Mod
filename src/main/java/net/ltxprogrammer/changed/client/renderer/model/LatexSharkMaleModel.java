@@ -196,9 +196,10 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 	public void prepareMobModel(LatexSharkMale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
 		this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
 	}
-	public PoseStack getPlacementCorrectors(HumanoidArm arm) {
-		PoseStack corrector = new PoseStack();
-		corrector.translate(0.0f, 7.0f / 14.0f, 0.0f);
+	public PoseStack getPlacementCorrectors(CorrectorType type) {
+		PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+		if (type.isArm())
+			corrector.translate(0.0f, 7.0f / 14.0f, 0.0f);
 		return corrector;
 	}
 

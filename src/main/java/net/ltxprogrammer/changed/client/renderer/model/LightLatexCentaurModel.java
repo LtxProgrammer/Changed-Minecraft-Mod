@@ -179,9 +179,12 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
         controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public PoseStack getPlacementCorrectors(HumanoidArm arm) {
-        PoseStack corrector = new PoseStack();
-        corrector.translate(0.0f, 4.0f / 18.0f, 0.1f);
+    public PoseStack getPlacementCorrectors(CorrectorType type) {
+        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        if (type.isArm())
+            corrector.translate(0.0f, 4.0f / 18.0f, 0.1f);
+        else if (type == CorrectorType.HAIR)
+            corrector.translate(0.0f, -1.0f / 16.0f, 0.0f);
         return corrector;
     }
 
