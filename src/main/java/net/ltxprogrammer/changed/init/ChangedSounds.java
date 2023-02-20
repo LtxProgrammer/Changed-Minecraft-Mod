@@ -26,6 +26,8 @@ public class ChangedSounds {
     public static final SoundEvent BLOW1 = register("blow1");
     public static final SoundEvent BOW2 = register("bow2");
     public static final SoundEvent CLOSE1 = register("close1");
+    public static final SoundEvent BUZZER1 = register("buzzer1");
+    public static final SoundEvent CHIME2 = register("chime2");
     public static final SoundEvent CLOSE3 = register("close3");
     public static final SoundEvent EQUIP1 = register("equip1");
     public static final SoundEvent EQUIP2 = register("equip2");
