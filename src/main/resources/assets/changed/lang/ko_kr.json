@@ -27,7 +27,7 @@
   "subtitles.changed.shot1": "레이저가 작동함",
   "subtitles.changed.siren": "Siren이 노래함",
   "subtitles.changed.save": "홍채 스캐너가 삐빅거림",
-  "subtitles.changed.sword1": "주삿바늘이 찌름"
+  "subtitles.changed.sword1": "주삿바늘이 찌름",
   "subtitles.changed.paralyze1": "전기 충격",
   "subtitles.changed.blow1": "플레이어가 점액에 뒤덮힘",
 
@@ -363,7 +363,7 @@
   "changed:advancements.main.transfur_aerial.description": "스스로를 비행 생물의 형태로 수화시키세요",
 
   "changed:advancements.main.transfur_mask.title": "인간성 거부",
-  "changed:advancements.main.transfur_mask.description": "검은 라텍스 마스크를 획득하고 착용하세요"
+  "changed:advancements.main.transfur_mask.description": "검은 라텍스 마스크를 획득하고 착용하세요",
   
   "changed:advancements.main.transfur_legless.title": "내 다리!",
   "changed:advancements.main.transfur_legless.description": "스스로를 다리가 없는 형태로 수화시키세요"
