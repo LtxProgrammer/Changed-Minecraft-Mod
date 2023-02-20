@@ -317,7 +317,7 @@ public abstract class LatexEntity extends Monster {
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
-        if (level.random.nextInt(25) == 0) {
+        if (level.isClientSide && level.random.nextInt(25) == 0) {
             ChangedParticles.Color3 color = getDripColor();
             if (color != null) {
                 EntityDimensions dimensions = getDimensions(getPose());
