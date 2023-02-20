@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
+import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -89,7 +90,7 @@ public class FormRenderHandler {
                         controller.swimAmount = lastSwim;
 
                         handPart = latexHumanoidModel.getArm(handSide);
-                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(handSide);
+                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
                         texture = entRenderer.getTextureLocation(livingInstance);
                     }
 
@@ -107,7 +108,7 @@ public class FormRenderHandler {
                         controller.swimAmount = lastSwim;
 
                         handPart = latexHumanoidModel.getArm(handSide);
-                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(handSide);
+                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
                         texture = entRenderer.getTextureLocation(livingInstance);
                     }
                 }

@@ -165,7 +165,7 @@ public class PatreonBenefits {
     ) {
         public static ModelData fromJSON(Function<String, JsonObject> jsonGetter, String fullId, JsonObject object) {
             ResourceLocation textureLocation = Changed.modResource(fullId + "/texture.png");
-            ResourceLocation modelLocation = Changed.modResource(fullId + "/model_" + fullId);
+            ResourceLocation modelLocation = Changed.modResource(fullId + "/model");
             DeferredModelLayerLocation layerLocation = new DeferredModelLayerLocation(modelLocation, "main");
             ArmorModelLayerLocation armorLocations = new ArmorModelLayerLocation(
                     ArmorModelLayerLocation.createInnerArmorLocation(modelLocation),
