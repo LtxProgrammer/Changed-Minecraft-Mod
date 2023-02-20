@@ -5,35 +5,22 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.effect.particle.ColoredParticleOption;
 import net.ltxprogrammer.changed.effect.particle.LatexDripParticle;
 import net.ltxprogrammer.changed.effect.particle.TscSweepParticle;
-import net.ltxprogrammer.changed.network.packet.ChangedLevelParticlesPacket;
-import net.ltxprogrammer.changed.network.packet.ChangedPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedParticles {
     public record Color3(float red, float green, float blue) {
         public static final Codec<Color3> CODEC = Codec.INT.xmap(Color3::fromInt, Color3::toInt);
@@ -92,33 +79,6 @@ public class ChangedParticles {
 
     private static final Map<ResourceLocation, ParticleType<?>> REGISTRY = new HashMap<>();
 
-    public static <T extends ParticleOptions> int sendParticles(ServerLevel server, T particle, double x, double y, double z, int p_8772_, double p_8773_, double p_8774_, double p_8775_, double p_8776_) {
-        ChangedLevelParticlesPacket packet = new ChangedLevelParticlesPacket(particle, false, x, y, z, (float)p_8773_, (float)p_8774_, (float)p_8775_, (float)p_8776_, p_8772_);
-        int i = 0;
-
-        for(int j = 0; j < server.players().size(); ++j) {
-            ServerPlayer serverplayer = server.players().get(j);
-            if (sendParticles(server, serverplayer, false, x, y, z, packet)) {
-                ++i;
-            }
-        }
-
-        return i;
-    }
-
-    private static boolean sendParticles(ServerLevel server, ServerPlayer player, boolean overrideLimiter, double x, double y, double z, ChangedPacket packet) {
-        if (player.getLevel() != server) {
-            return false;
-        } else {
-            BlockPos blockpos = player.blockPosition();
-            if (blockpos.closerToCenterThan(new Vec3(x, y, z), overrideLimiter ? 512.0D : 32.0D)) {
-                Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), packet);
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
     public static final ParticleType<ColoredParticleOption> DRIPPING_LATEX = register(Changed.modResource("dripping_latex"),
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
     public static final SimpleParticleType TSC_SWEEP_ATTACK = (SimpleParticleType)register(Changed.modResource("tsc_sweep_attack"),
