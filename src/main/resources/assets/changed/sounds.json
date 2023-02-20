@@ -19,6 +19,26 @@
     ],
     "subtitle": "subtitles.changed.bow2"
   },
+  "buzzer1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:buzzer1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.buzzer1"
+  },
+  "chime2": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:chime2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.chime2"
+  },
   "close1": {
     "category": "block",
     "sounds": [
