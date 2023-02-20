@@ -51,7 +51,7 @@ public abstract class TscWeapon extends Item implements Vanishable {
         double d0 = (double)(-Mth.sin(source.getYRot() * ((float)Math.PI / 180F))) * attackRange();
         double d1 = (double)Mth.cos(source.getYRot() * ((float)Math.PI / 180F)) * attackRange();
         if (source.level instanceof ServerLevel serverLevel)
-            ChangedParticles.sendParticles(serverLevel, ChangedParticles.TSC_SWEEP_ATTACK,
+            serverLevel.sendParticles(ChangedParticles.TSC_SWEEP_ATTACK,
                     source.getX() + d0, source.getY(0.5D),
                     source.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
     }
