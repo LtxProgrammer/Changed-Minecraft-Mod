@@ -146,6 +146,21 @@
 
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "changed:dark_latex_mask",
+          "functions": [
+            {
+              "function": "changed:random_variant",
+              "variants": [
+                "changed:form_dark_latex_wolf/male",
+                "changed:form_dark_latex_wolf/female",
+                "changed:form_dark_latex_yufeng"
+              ]
+
+            }
+          ]
         }
       ]
     }
