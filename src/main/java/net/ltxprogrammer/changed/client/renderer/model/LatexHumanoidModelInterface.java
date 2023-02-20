@@ -7,7 +7,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public interface LatexHumanoidModelInterface {
     ModelPart getArm(HumanoidArm arm);
-    default PoseStack getPlacementCorrectors(HumanoidArm arm) {
+    default PoseStack getPlacementCorrectors(CorrectorType type) {
         return new PoseStack();
     }
     void setupHand();
