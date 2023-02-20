@@ -22,6 +22,8 @@
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open3": "Lab door opens",
   "subtitles.changed.close3": "Lab door closes",
+  "subtitles.changed.chime2": "Keypad grants access",
+  "subtitles.changed.buzzer1": "Keypad denies access",
   "subtitles.changed.equip3": "Pants rustle",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.shot1": "Laser activates",
