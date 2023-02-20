@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 public class LatexDripParticle extends TextureSheetParticle {
     private boolean lastOnGround = false;
 
-    protected LatexDripParticle(ClientLevel p_108328_, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprite, ChangedParticles.Color3 color) {
-        super(p_108328_, x, y, z, vx, vy, vz);
+    protected LatexDripParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprite, ChangedParticles.Color3 color) {
+        super(level, x, y, z, vx, vy, vz);
         this.setSize(0.07f, 0.07f);
         this.quadSize *= 0.28f;
 
@@ -48,9 +48,8 @@ public class LatexDripParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<ColoredParticleOption> {
         protected final SpriteSet sprite;
-        protected static ChangedParticles.Color3 nextColor = null;
 
         public Provider(SpriteSet p_106394_) {
             this.sprite = p_106394_;
@@ -58,27 +57,9 @@ public class LatexDripParticle extends TextureSheetParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z,
+        public Particle createParticle(ColoredParticleOption type, ClientLevel level, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
-            var ret = new LatexDripParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite, nextColor);
-            nextColor = null;
-            return ret;
+            return new LatexDripParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite, type.getColor());
         }
-
-        public static void setNextColor(ChangedParticles.Color3 next) {
-            nextColor = next;
-        }
-
-        public static void setNextColor(String next) {
-            nextColor = ChangedParticles.Color3.getColor(next);
-        }
-    }
-
-    public static void setNextColor(ChangedParticles.Color3 next) {
-        Provider.nextColor = next;
-    }
-
-    public static void setNextColor(String next) {
-        Provider.nextColor = ChangedParticles.Color3.getColor(next);
     }
 }

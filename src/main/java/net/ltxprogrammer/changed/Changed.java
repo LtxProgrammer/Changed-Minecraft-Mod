@@ -60,6 +60,7 @@ public class Changed {
         addNetworkMessage(QueryTransfurPacket.class, QueryTransfurPacket::new);
         addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
         addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
+        addNetworkMessage(ChangedLevelParticlesPacket.class, ChangedLevelParticlesPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);
@@ -98,12 +99,12 @@ public class Changed {
         event.enqueueWork(RecipeCategories::registerCategories);
     }
 
-    public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
+    private static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
                                              BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
         PACKET_HANDLER.registerMessage(messageID++, messageType, encoder, decoder, messageConsumer);
     }
 
-    public static <T extends ChangedPacket> void addNetworkMessage(Class<T> messageType, Function<FriendlyByteBuf, T> ctor) {
+    private static <T extends ChangedPacket> void addNetworkMessage(Class<T> messageType, Function<FriendlyByteBuf, T> ctor) {
         addNetworkMessage(messageType, T::write, ctor, T::handle);
     }
 
