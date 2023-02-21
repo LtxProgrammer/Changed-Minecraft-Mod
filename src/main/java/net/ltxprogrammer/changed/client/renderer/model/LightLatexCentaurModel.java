@@ -170,7 +170,7 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
         if (type.isArm())
             corrector.translate(0.0f, 4.0f / 18.0f, 0.1f);
         else if (type == CorrectorType.HAIR)
-            corrector.translate(0.0f, -1.0f / 16.0f, 0.0f);
+            corrector.translate(0.0f, -1.5f / 15.0f, 0.0f);
         else if (type == CorrectorType.LOWER_HAIR)
             corrector.translate(0.0f, -2.0f / 16.0f, 0.0f);
         return corrector;
