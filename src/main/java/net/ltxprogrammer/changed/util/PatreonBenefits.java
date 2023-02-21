@@ -49,7 +49,7 @@ import java.util.function.Supplier;
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.PUBLIC_LATEX_FORMS;
 
 public class PatreonBenefits {
-    private static final int COMPATIBLE_VERSION = 2;
+    private static final int COMPATIBLE_VERSION = 3;
 
     public enum Tier {
         NONE(-1),
