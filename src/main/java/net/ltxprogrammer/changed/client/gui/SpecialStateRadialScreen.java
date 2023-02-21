@@ -53,7 +53,7 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
 
         var oldState = special.wantedState;
         special.wantedState = states.get(section);
-        InventoryScreen.renderEntityInInventory((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
+        InventoryScreen.renderEntityInInventory((int)x + this.leftPos, (int)y + 32 + this.topPos, 20,
                 (float)(this.leftPos) - mouseX + (int)x,
                 (float)(this.topPos) - mouseY + (int)y,
                 special);
