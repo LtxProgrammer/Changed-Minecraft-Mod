@@ -255,7 +255,7 @@ public class PatreonBenefits {
                     String id = GsonHelper.getAsString(entityObject, "id");
                     entities.put(id, EntityData.fromJSON(uuid, entityObject));
                 });
-                dState = GsonHelper.getAsString(object, "defaultState");
+                dState = GsonHelper.getAsString(object, "defaultState", dState);
             } else {
                 entities.put(dState, EntityData.fromJSON(uuid, object));
             }

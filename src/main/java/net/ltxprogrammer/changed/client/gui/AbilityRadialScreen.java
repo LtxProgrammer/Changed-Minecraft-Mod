@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,7 +55,28 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
             enabled = menu.variant.abilityInstances.get(abilities.get(section)).canUse();
         }
 
-        if (!abilities.get(section).equals(ChangedAbilities.SELECT_HAIRSTYLE.getId())) {
+        var ability = abilities.get(section);
+        if (ability.equals(ChangedAbilities.SELECT_HAIRSTYLE.getId())) {
+            x = x * 0.9;
+            y = (y * 0.9) - 16;
+
+            HairStyleRadialScreen.renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
+                    (float)(this.leftPos) - mouseX + (int)x,
+                    (float)(this.topPos) - mouseY + (int)y,
+                    variant.getLatexEntity(), alpha);
+        }
+
+        else if (ability.equals(ChangedAbilities.SELECT_SPECIAL_STATE.getId())) {
+            x = x * 0.9;
+            y = (y * 0.9) - 16;
+
+            InventoryScreen.renderEntityInInventory((int)x + this.leftPos, (int)y + 32 + this.topPos, 20,
+                    (float)(this.leftPos) - mouseX + (int)x,
+                    (float)(this.topPos) - mouseY + (int)y,
+                    variant.getLatexEntity());
+        }
+
+        else {
             RenderSystem.setShaderTexture(0, ChangedAbilities.getAbility(abilities.get(section)).getTexture(menu.player, menu.variant));
             if (enabled) {
                 RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
@@ -65,16 +87,6 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
             float minBlue = Math.max(blue, 0.125f);
             RenderSystem.setShaderColor(minRed, minGreen, minBlue, (enabled ? 1 : 0.5f) * alpha);
             this.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
-        }
-
-        else {
-            x = x * 0.9;
-            y = (y * 0.9) - 16;
-
-            HairStyleRadialScreen.renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
-                    (float)(this.leftPos) - mouseX + (int)x,
-                    (float)(this.topPos) - mouseY + (int)y,
-                    variant.getLatexEntity(), alpha);
         }
     }
 
