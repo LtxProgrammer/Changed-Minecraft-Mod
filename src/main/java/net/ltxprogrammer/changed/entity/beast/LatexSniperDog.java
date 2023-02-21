@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -14,17 +15,22 @@ public class LatexSniperDog extends AbstractLatexWolf {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#eb8c44");
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.MALE_STANDARD_S;
     }
 
     @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collections.MALE_SHADED;
+    }
+
+    @Override
+    public ChangedParticles.Color3 getHairColor(int layer) {
+        return layer == 0 ? ChangedParticles.Color3.getColor("#eb8c44") : ChangedParticles.Color3.getColor("#894633");
     }
 
     public ChangedParticles.Color3 getDripColor() {
