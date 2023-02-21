@@ -128,7 +128,7 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
             Changed.modResource("textures/hair/legacy_collection_s.png")),
     MALE_STANDARD_S(Gender.MALE,
             MALE_STANDARD.headHair,
-            Changed.modResource("textures/hair/legacy_collection_s.png")),
+            Changed.modResource("textures/hair/legacy_collection_s.png"), Changed.modResource("textures/hair/sniper_dog_layer.png")),
     MALE_BANGS_S(Gender.MALE,
             MALE_BANGS.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
