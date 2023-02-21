@@ -29,7 +29,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import oshi.util.tuples.Pair;
+import com.mojang.datafixers.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,11 +64,11 @@ public class ChangedEntities {
     }
 
     public static int getEntityColorBack(ResourceLocation location) {
-        return getEntityColor(location).getA();
+        return getEntityColor(location).getFirst();
     }
 
     public static int getEntityColorFront(ResourceLocation location) {
-        return getEntityColor(location).getB();
+        return getEntityColor(location).getSecond();
     }
 
     public static <T extends Entity> T getCachedEntity(Level level, EntityType<T> type) {
@@ -447,6 +447,6 @@ public class ChangedEntities {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getA().get(), pair.getB().get().build()));
+        ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
     }
 }

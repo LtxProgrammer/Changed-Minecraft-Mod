@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
-import oshi.util.tuples.Pair;
+import com.mojang.datafixers.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class SyncTransfurPacket implements ChangedPacket {
         this.changedForms = new HashMap<>();
         buffer.readList(next ->
                 new Pair<>(next.readUUID(), Listing.fromStream(next))).forEach(pair ->
-                    changedForms.put(pair.getA(), pair.getB()));
+                    changedForms.put(pair.getFirst(), pair.getSecond()));
     }
 
     public void write(FriendlyByteBuf buffer) {

@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class LatexAbilityRadialScreen<T extends AbstractContainerMenu> extends AbstractRadialScreen<T> {
     public LatexAbilityRadialScreen(T menu, Inventory inventory, Component text, LatexVariant<?> variant) {
-        super(menu, inventory, text, getColors(variant).getA(), getColors(variant).getB(), variant.getLatexEntity());
+        super(menu, inventory, text, getColors(variant).getFirst(), getColors(variant).getSecond(), variant.getLatexEntity());
     }
 
     @Override

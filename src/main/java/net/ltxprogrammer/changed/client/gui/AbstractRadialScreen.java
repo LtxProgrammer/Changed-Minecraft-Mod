@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -23,7 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.lwjgl.glfw.GLFW;
-import oshi.util.tuples.Pair;
+import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -66,10 +67,17 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
     public abstract int getCount();
 
     public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariant<?> variant) {
+        if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
+            return new Pair<>(
+                    specialLatex.getCurrentData().primaryColor(),
+                    specialLatex.getCurrentData().secondaryColor()
+            );
+        }
+
         var ints = ChangedEntities.getEntityColor(variant.getEntityType().getRegistryName());
         return new Pair<>(
-                ChangedParticles.Color3.fromInt(ints.getA()),
-                ChangedParticles.Color3.fromInt(ints.getB()));
+                ChangedParticles.Color3.fromInt(ints.getFirst()),
+                ChangedParticles.Color3.fromInt(ints.getSecond()));
     }
 
     private static final double RADIAL_DISTANCE = 90.0;
