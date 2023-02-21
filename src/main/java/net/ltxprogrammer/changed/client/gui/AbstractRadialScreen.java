@@ -24,7 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.lwjgl.glfw.GLFW;
-import oshi.util.tuples.Pair;
+import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -76,8 +76,8 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
         var ints = ChangedEntities.getEntityColor(variant.getEntityType().getRegistryName());
         return new Pair<>(
-                ChangedParticles.Color3.fromInt(ints.getA()),
-                ChangedParticles.Color3.fromInt(ints.getB()));
+                ChangedParticles.Color3.fromInt(ints.getFirst()),
+                ChangedParticles.Color3.fromInt(ints.getSecond()));
     }
 
     private static final double RADIAL_DISTANCE = 90.0;

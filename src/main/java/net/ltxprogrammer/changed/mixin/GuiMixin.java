@@ -30,7 +30,7 @@ public abstract class GuiMixin extends GuiComponent {
                 return;
             ProcessTransfur.ifPlayerLatex(player, variant -> {
                 var colors = LatexAbilityRadialScreen.getColors(variant);
-                var color = type == Gui.HeartType.NORMAL ? colors.getA() : colors.getB();
+                var color = type == Gui.HeartType.NORMAL ? colors.getFirst() : colors.getSecond();
                 RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
                 RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1);
                 this.blit(pose, x, y, type.getX(half, blinking), texY, 9, 9);
