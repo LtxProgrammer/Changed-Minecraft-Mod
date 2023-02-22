@@ -45,6 +45,11 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     }
 
     @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
+    }
+
+    @Override
     public boolean isSaddleable() {
         return false;
     }
