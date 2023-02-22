@@ -105,7 +105,7 @@ public class ChangedEntities {
     }
 
     public static boolean beachSpawning(Biome.BiomeCategory category) {
-        return category == Biome.BiomeCategory.BEACH;
+        return category == Biome.BiomeCategory.BEACH || category == Biome.BiomeCategory.RIVER;
     }
 
     public static boolean mesaSpawning(Biome.BiomeCategory category) {
