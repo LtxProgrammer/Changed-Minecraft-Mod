@@ -104,6 +104,10 @@ public class ChangedEntities {
         return category == Biome.BiomeCategory.DESERT;
     }
 
+    public static boolean beachSpawning(Biome.BiomeCategory category) {
+        return category == Biome.BiomeCategory.BEACH;
+    }
+
     public static boolean mesaSpawning(Biome.BiomeCategory category) {
         return category == Biome.BiomeCategory.MESA;
     }
@@ -297,7 +301,7 @@ public class ChangedEntities {
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<LatexOtter>> LATEX_OTTER = register("latex_otter", 0x5D4743, 0xB6957C,
             EntityType.Builder.of(LatexOtter::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::oceanSpawning);
+            ChangedEntities::beachSpawning);
     public static final RegistryObject<EntityType<LatexWatermelonCat>> LATEX_WATERMELON_CAT = register("latex_watermelon_cat", 0x545454, 0xC7FF5A,
             EntityType.Builder.of(LatexWatermelonCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleSpawning);
