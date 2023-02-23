@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
@@ -44,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -60,24 +60,22 @@ public class ProcessTransfur {
     public static final int TRANSFUR_PROGRESSION_TAKEOVER = 20000;
     public static record TransfurProgress(int ticks, ResourceLocation type) {}
 
-    public static void setPlayerTransfurProgress(Player player, TransfurProgress progress) {
-        try {
-            var oldProgress = (TransfurProgress)transfurProgressField.get(player);
-            if (progress != null && oldProgress != null && progress.equals(oldProgress))
-                return;
-            if (progress == null && oldProgress == null)
-                return;
-            transfurProgressField.set(player, progress);
-            if (!player.level.isClientSide)
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncTransfurProgressPacket(player.getUUID(), progress));
-        } catch (Exception ignored) {}
+    public static void setPlayerTransfurProgress(Player player, @NotNull TransfurProgress progress) {
+        if (!(player instanceof PlayerDataExtension ext))
+            return;
+
+        var oldProgress = ext.getTransfurProgress();
+        if (progress.equals(oldProgress))
+            return;
+        ext.setTransfurProgress(progress);
+        if (!player.level.isClientSide)
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncTransfurProgressPacket(player.getUUID(), progress));
     }
 
     public static TransfurProgress getPlayerTransfurProgress(Player player) {
-        try {
-            return (TransfurProgress) transfurProgressField.get(player);
-        } catch (Exception ignored) {}
-        return null;
+        if (!(player instanceof PlayerDataExtension ext))
+            return null;
+        return ext.getTransfurProgress();
     }
 
     public static boolean progressPlayerTransfur(Player player, int amount, ResourceLocation type) {
@@ -199,28 +197,9 @@ public class ProcessTransfur {
         }
     }
 
-    private static final Field latexVariantField;
-    private static final Field transfurProgressField;
-
-    static {
-        Field latexVariantField1;
-        Field transfurProgressField1;
-        try {
-            latexVariantField1 = Player.class.getField("latexVariant");
-            transfurProgressField1 = Player.class.getField("transfurProgress");
-        } catch (NoSuchFieldException e) {
-            latexVariantField1 = null;
-            transfurProgressField1 = null;
-            e.printStackTrace();
-        }
-        latexVariantField = latexVariantField1;
-        transfurProgressField = transfurProgressField1;
-    }
-
     public static LatexVariant<?> getPlayerLatexVariant(Player player) {
-        try {
-            return (LatexVariant<?>) latexVariantField.get(player);
-        } catch (Exception ignored) {}
+        if (player instanceof PlayerDataExtension ext)
+            return ext.getLatexVariant();
         return null;
     }
 
@@ -258,38 +237,36 @@ public class ProcessTransfur {
 
     @Contract("_, null -> null; _, !null -> !null")
     public static @Nullable LatexVariant<?> setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> variant) {
-        try {
-            EntityVariantAssigned event = new EntityVariantAssigned(player, variant);
-            MinecraftForge.EVENT_BUS.post(event);
-            variant = event.variant;
+        PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
+        EntityVariantAssigned event = new EntityVariantAssigned(player, variant);
+        MinecraftForge.EVENT_BUS.post(event);
+        variant = event.variant;
 
-            if (player instanceof ServerPlayer serverPlayer && variant != null)
-                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
-            if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
-                variant = variant.clone();
+        if (player instanceof ServerPlayer serverPlayer && variant != null)
+            ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
+        if (variant != null && LatexVariant.ALL_LATEX_FORMS.containsValue(variant))
+            variant = variant.clone();
 
-            var oldVariant = (LatexVariant<?>)latexVariantField.get(player);
-            if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
-                return oldVariant;
-            if (variant == null && oldVariant == null)
-                return oldVariant;
-            if (oldVariant != null && oldVariant.getLatexEntity() != null)
-                oldVariant.getLatexEntity().discard();
-            latexVariantField.set(player, variant);
-            if (variant != null) {
-                variant.generateForm(player, player.level).setUnderlyingPlayer(player);
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
-            }
-            else {
-                player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
-            }
-            if (oldVariant != null)
-                oldVariant.unhookAll(player);
-            if (!player.level.isClientSide)
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
-            return variant;
-        } catch (Exception ignored) {}
-        return null;
+        var oldVariant = playerDataExtension.getLatexVariant();
+        if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
+            return oldVariant;
+        if (variant == null && oldVariant == null)
+            return oldVariant;
+        if (oldVariant != null && oldVariant.getLatexEntity() != null)
+            oldVariant.getLatexEntity().discard();
+        playerDataExtension.setLatexVariant(variant);
+        if (variant != null) {
+            variant.generateForm(player, player.level).setUnderlyingPlayer(player);
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
+        }
+        else {
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
+        }
+        if (oldVariant != null)
+            oldVariant.unhookAll(player);
+        if (!player.level.isClientSide)
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+        return variant;
     }
 
     public static LatexVariant<?> setPlayerLatexVariantNamed(Player player, ResourceLocation variant) {
@@ -297,7 +274,9 @@ public class ProcessTransfur {
     }
 
     public static boolean isPlayerLatex(Player player) {
-        return getPlayerLatexVariant(player) != null;
+        if (player instanceof PlayerDataExtension ext)
+            return ext.isLatex();
+        return false;
     }
 
     public static <R> R ifPlayerLatex(Player player, Function<LatexVariant<?>, R> isLatex, Supplier<R> notLatex) {

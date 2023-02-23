@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -19,15 +20,18 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity {
+public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
     @Shadow public abstract boolean isSwimming();
 
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
@@ -68,10 +72,56 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     // ADDITIONAL DATA
+    @Unique
     public LatexVariant<?> latexVariant = null;
+    @Unique
     public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
+    @Unique
     public CameraUtil.TugData wantToLookAt;
+    @Unique
     public int paleExposure;
+
+    @Nullable
+    @Override
+    public LatexVariant<?> getLatexVariant() {
+        return latexVariant;
+    }
+
+    @Override
+    public void setLatexVariant(LatexVariant<?> latexVariant) {
+        this.latexVariant = latexVariant;
+    }
+
+    @NotNull
+    @Override
+    public ProcessTransfur.TransfurProgress getTransfurProgress() {
+        return transfurProgress;
+    }
+
+    @Override
+    public void setTransfurProgress(@NotNull ProcessTransfur.TransfurProgress transfurProgress) {
+        this.transfurProgress = transfurProgress;
+    }
+
+    @Override
+    public CameraUtil.TugData getTugData() {
+        return wantToLookAt;
+    }
+
+    @Override
+    public void setTugData(CameraUtil.TugData data) {
+        this.wantToLookAt = data;
+    }
+
+    @Override
+    public int getPaleExposure() {
+        return paleExposure;
+    }
+
+    @Override
+    public void setPaleExposure(int paleExposure) {
+        this.paleExposure = paleExposure;
+    }
 
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {

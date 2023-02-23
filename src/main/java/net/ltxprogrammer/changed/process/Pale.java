@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.process;
 
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -7,35 +8,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Pale {
-    private static final Field paleExposureField;
-
-    static {
-        Field paleExposureField1;
-        try {
-            paleExposureField1 = Player.class.getField("paleExposure");
-        } catch (NoSuchFieldException e) {
-            paleExposureField1 = null;
-            e.printStackTrace();
-        }
-        paleExposureField = paleExposureField1;
-    }
-
     public static void setPaleExposure(Player player, int level) {
-        try {
-            paleExposureField.set(player, level);
-        } catch (IllegalAccessException unused) {}
+        if (player instanceof PlayerDataExtension ext)
+            ext.setPaleExposure(level);
     }
 
     public static int getPaleExposure(Player player) {
-        try {
-            return (Integer)paleExposureField.get(player);
-        } catch (IllegalAccessException unused) {
-            return 0;
-        }
+        if (player instanceof PlayerDataExtension ext)
+            return ext.getPaleExposure();
+        return 0;
     }
 
     public static boolean isCured(Player player) {
