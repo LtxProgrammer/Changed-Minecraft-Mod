@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.process.ProcessTransfur;

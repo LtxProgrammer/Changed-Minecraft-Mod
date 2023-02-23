@@ -1,13 +1,8 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.ltxprogrammer.changed.world.inventory.HairStyleRadialMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

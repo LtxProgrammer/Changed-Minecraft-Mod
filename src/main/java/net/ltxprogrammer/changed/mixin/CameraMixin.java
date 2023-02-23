@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
-import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.Entity;

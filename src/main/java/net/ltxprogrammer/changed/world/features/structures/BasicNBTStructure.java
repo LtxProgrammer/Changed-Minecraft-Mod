@@ -1,7 +1,5 @@
 package net.ltxprogrammer.changed.world.features.structures;
 
-import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.init.ChangedFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

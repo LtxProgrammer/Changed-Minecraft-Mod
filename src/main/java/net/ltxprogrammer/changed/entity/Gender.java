@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.IExtensibleEnum;

@@ -6,7 +6,6 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ChangedSurfaceRules {
     private static final SurfaceRules.RuleSource DIRT = SurfaceRules.state(Blocks.DIRT.defaultBlockState());

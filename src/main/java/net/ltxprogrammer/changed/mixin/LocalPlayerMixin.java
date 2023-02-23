@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 
 import com.mojang.authlib.GameProfile;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;

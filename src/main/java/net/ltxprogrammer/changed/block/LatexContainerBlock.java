@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;

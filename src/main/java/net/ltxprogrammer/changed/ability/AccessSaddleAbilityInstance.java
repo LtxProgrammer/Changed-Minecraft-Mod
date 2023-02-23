@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.minecraft.nbt.CompoundTag;

@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
-import net.ltxprogrammer.changed.world.inventory.HairStyleRadialMenu;
 import net.ltxprogrammer.changed.world.inventory.SpecialStateRadialMenu;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;

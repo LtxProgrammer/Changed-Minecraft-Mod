@@ -1,7 +1,5 @@
 package net.ltxprogrammer.changed.util;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * Acts like a Runnable, but will only run once
  */
