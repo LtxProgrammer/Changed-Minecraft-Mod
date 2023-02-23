@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.block.entity;
 
-import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;

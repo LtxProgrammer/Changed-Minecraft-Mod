@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
 import net.ltxprogrammer.changed.process.Pale;
