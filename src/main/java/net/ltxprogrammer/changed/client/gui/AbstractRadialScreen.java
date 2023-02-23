@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.util.SingleRunnable;
@@ -66,7 +67,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public abstract int getCount();
 
-    public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariant<?> variant) {
+    public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
             return new Pair<>(
                     specialLatex.getCurrentData().primaryColor(),
@@ -74,7 +75,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             );
         }
 
-        var ints = ChangedEntities.getEntityColor(variant.getEntityType().getRegistryName());
+        var ints = ChangedEntities.getEntityColor(variant.getParent().getEntityType().getRegistryName());
         return new Pair<>(
                 ChangedParticles.Color3.fromInt(ints.getFirst()),
                 ChangedParticles.Color3.fromInt(ints.getSecond()));

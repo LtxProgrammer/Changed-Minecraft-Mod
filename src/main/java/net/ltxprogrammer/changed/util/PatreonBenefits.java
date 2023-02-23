@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.network.chat.Component;
@@ -359,6 +360,7 @@ public class PatreonBenefits {
 
         AtomicInteger count = new AtomicInteger(0);
 
+        ChangedRegistry.LATEX_VARIANT.get().unfreeze();
         formLocations.forEach((element) -> {
             JsonObject object = element.getAsJsonObject();
             if (GsonHelper.getAsInt(object, "version", 1) > COMPATIBLE_VERSION)
@@ -389,9 +391,11 @@ public class PatreonBenefits {
 
             CACHED_SPECIAL_FORMS.put(form.playerUUID, form);
             LatexVariant.registerSpecial(form.variant);
+            ChangedRegistry.LATEX_VARIANT.get().register(form.variant);
             count.getAndIncrement();
         });
 
+        ChangedRegistry.LATEX_VARIANT.get().freeze();
         LOGGER.info("Updated {} patreon special forms", count.get());
     }
 
@@ -438,7 +442,6 @@ public class PatreonBenefits {
 
         // Load forms
         loadSpecialForms(client);
-        PUBLIC_LATEX_FORMS.put(LatexVariant.SPECIAL_LATEX, null);
 
         // Load version
         request = HttpRequest.newBuilder(URI.create(VERSION_DOCUMENT)).GET().build();

@@ -41,7 +41,7 @@ public abstract class CameraMixin {
         Camera self = (Camera)(Object)this;
         if (self.getEntity() instanceof Player player && !player.isSpectator()) {
             ProcessTransfur.ifPlayerLatex(player, variant -> {
-                float z = variant.cameraZOffset;
+                float z = variant.getParent().cameraZOffset;
                 var look = self.getLookVector().copy();
                 if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
                     look = self.getUpVector().copy();

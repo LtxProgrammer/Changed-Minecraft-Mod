@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.data.BiSignaler;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -20,13 +21,13 @@ public class SyncTransfurProgressPacket implements ChangedPacket {
 
     public SyncTransfurProgressPacket(FriendlyByteBuf buffer) {
         this.uuid = buffer.readUUID();
-        this.progress = new ProcessTransfur.TransfurProgress(buffer.readInt(), buffer.readResourceLocation());
+        this.progress = new ProcessTransfur.TransfurProgress(buffer.readInt(), ChangedRegistry.LATEX_VARIANT.get().getKey(buffer.readInt()).location());
     }
 
     public void write(FriendlyByteBuf buffer) {
         buffer.writeUUID(uuid);
         buffer.writeInt(progress.ticks());
-        buffer.writeResourceLocation(progress.type());
+        buffer.writeInt(ChangedRegistry.LATEX_VARIANT.get().getID(progress.type()));
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {

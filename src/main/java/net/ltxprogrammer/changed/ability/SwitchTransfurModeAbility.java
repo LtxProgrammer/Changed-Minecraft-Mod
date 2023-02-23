@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -15,15 +15,15 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     }
 
     @Override
-    public boolean canUse(Player player, LatexVariant<?> variant) {
+    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return true;
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariant<?> variant) { return false; }
+    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }
 
     @Override
-    public void startUsing(Player player, LatexVariant<?> variant) {
+    public void startUsing(Player player, LatexVariantInstance<?> variant) {
         if (variant.transfurMode == TransfurMode.ABSORPTION)
             variant.transfurMode = TransfurMode.REPLICATION;
         else
@@ -36,25 +36,25 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     }
 
     @Override
-    public void saveData(CompoundTag tag, Player player, LatexVariant<?> variant) {
+    public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
         super.saveData(tag, player, variant);
         tag.putString("TransfurMode", variant.transfurMode.toString());
     }
 
     @Override
-    public void readData(CompoundTag tag, Player player, LatexVariant<?> variant) {
+    public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
         super.readData(tag, player, variant);
         variant.transfurMode = TransfurMode.valueOf(tag.getString("TransfurMode"));
     }
 
     @Override
-    public void tick(Player player, LatexVariant<?> variant) {}
+    public void tick(Player player, LatexVariantInstance<?> variant) {}
 
     @Override
-    public void stopUsing(Player player, LatexVariant<?> variant) {}
+    public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
 
     @Override
-    public ResourceLocation getTexture(Player player, LatexVariant<?> variant) {
+    public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
         return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + getId().getPath() + "_" +
                 variant.transfurMode.toString().toLowerCase() + ".png");
     }

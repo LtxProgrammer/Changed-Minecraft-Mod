@@ -2,11 +2,11 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolf;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +40,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     }
 
     static void entityEnterLatex(LivingEntity entity, BlockPos pos) {
-        if (LatexVariant.getEntityVariant(entity) != null && !(LatexVariant.getEntityVariant(entity).getLatexEntity() instanceof WhiteLatexWolf))
+        if (LatexVariant.getEntityVariant(entity) != null && !(LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.WHITE_LATEX_SWIMMING)))
             return;
 
         if (isEntityInWhiteLatex(entity) || entity.isDeadOrDying())

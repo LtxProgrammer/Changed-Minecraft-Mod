@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -38,7 +39,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         }
 
         else
-            return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), LatexVariant::getLatexType, () -> null);
+            return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), LatexVariantInstance::getLatexType, () -> null);
     }
 
     public static boolean hasLatexType(@NotNull Entity entity) {

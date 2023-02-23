@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,7 +41,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     protected void tryToStartFallFlying(CallbackInfoReturnable<Boolean> ci) {
         Player player = (Player)(Object)this;
-        if (latexVariant != null && latexVariant.canGlide) {
+        if (latexVariant != null && latexVariant.getParent().canGlide) {
             if (!player.isOnGround() && !player.isFallFlying() && !player.isInWater() && !player.hasEffect(MobEffects.LEVITATION)) {
                 player.startFallFlying();
                 ci.setReturnValue(true);
@@ -73,7 +73,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     // ADDITIONAL DATA
     @Unique
-    public LatexVariant<?> latexVariant = null;
+    public LatexVariantInstance<?> latexVariant = null;
     @Unique
     public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
     @Unique
@@ -81,14 +81,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public int paleExposure;
 
-    @Nullable
     @Override
-    public LatexVariant<?> getLatexVariant() {
+    public LatexVariantInstance<?> getLatexVariant() {
         return latexVariant;
     }
 
     @Override
-    public void setLatexVariant(LatexVariant<?> latexVariant) {
+    public void setLatexVariant(LatexVariantInstance<?> latexVariant) {
         this.latexVariant = latexVariant;
     }
 
@@ -126,7 +125,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Inject(method = "makeStuckInBlock", at = @At("HEAD"), cancellable = true)
     public void makeStuckInBlock(BlockState state, Vec3 v3, CallbackInfo ci) {
         if (latexVariant != null)
-            if (latexVariant.canClimb && state.is(Blocks.COBWEB))
+            if (latexVariant.getParent().canClimb && state.is(Blocks.COBWEB))
                 ci.cancel();
     }
 
@@ -147,7 +146,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         Player player = (Player)(Object)this;
         if (latexVariant != null && !player.getAbilities().invulnerable && !this.level.isClientSide) {
             ci.cancel();
-            player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant));
+            player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant.getParent()));
         }
     }
 }

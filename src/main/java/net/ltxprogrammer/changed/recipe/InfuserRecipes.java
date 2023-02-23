@@ -7,10 +7,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedRecipeSerializers;
-import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.util.MapUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.NonNullList;
@@ -158,7 +155,7 @@ public class InfuserRecipes {
             ResourceLocation formId = form;
             if (gendered)
                 formId = new ResourceLocation(formId + "/" + gender.toString().toLowerCase());
-            LatexVariant<?> variant = LatexVariant.PUBLIC_LATEX_FORMS.get(formId);
+            LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(formId);
             if (variant == null)
                 return new TranslatableComponent("syringe." + form);
             LatexEntity entity = ChangedEntities.getCachedEntity(level, variant.getEntityType());

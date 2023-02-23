@@ -57,7 +57,7 @@ public class LatexTippedArrowItem extends TippedArrowItem {
 
     public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
         if (this.allowdedIn(p_43356_)) {
-            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
+            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS) {
                 p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
             }
         }

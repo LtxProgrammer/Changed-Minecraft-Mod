@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -81,7 +82,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         if (entity instanceof LatexEntity) latexEntity = (LatexEntity)entity;
 
         if (entity instanceof Player player) {
-            LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
+            LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
             if (variant != null)
                 latexEntity = variant.getLatexEntity();
         }

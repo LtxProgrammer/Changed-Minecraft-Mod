@@ -37,7 +37,7 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
     }
 
     public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
-        super(base, null,
+        super(null,
                 LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
                 false, false, false, false, false,

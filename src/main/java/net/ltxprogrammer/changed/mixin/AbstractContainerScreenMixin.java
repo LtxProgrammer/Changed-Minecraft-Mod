@@ -50,7 +50,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
             if (menu != null) {
                 ProcessTransfur.ifPlayerLatex(menu.owner, variant -> {
                     var originalPair = slot.getNoItemIcon();
-                    if (originalPair != null && !variant.hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
+                    if (originalPair != null && !variant.getParent().hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
                         callback.cancel();
                         renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, ABDOMEN_SLOT_OVERRIDES.get(originalPair.getSecond())));
                     }

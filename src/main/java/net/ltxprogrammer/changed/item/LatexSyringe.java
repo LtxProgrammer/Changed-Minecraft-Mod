@@ -2,10 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -72,7 +69,7 @@ public class LatexSyringe extends Item implements SpecializedAnimations {
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         if (this.allowdedIn(tab)) {
-            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS.keySet()) {
+            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS) {
                 list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
             }
         }
@@ -110,7 +107,7 @@ public class LatexSyringe extends Item implements SpecializedAnimations {
                 ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                 if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
-                ProcessTransfur.transfur(entity, level, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT),
+                ProcessTransfur.transfur(entity, level, ChangedRegistry.LATEX_VARIANT.get().getValue(formLocation),
                         false);
             }
 

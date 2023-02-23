@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -52,7 +53,7 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
             ResourceLocation formId = infuserRecipe.form;
             if (infuserRecipe.gendered)
                 formId = new ResourceLocation(formId + "/" + activeGender.toString().toLowerCase());
-            LatexVariant<?> variant = LatexVariant.PUBLIC_LATEX_FORMS.get(formId);
+            LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(formId);
             if (variant == null)
                 return;
             LatexEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());

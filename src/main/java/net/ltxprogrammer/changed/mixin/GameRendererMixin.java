@@ -23,11 +23,11 @@ public abstract class GameRendererMixin {
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void getNightVisionScale(LivingEntity livingEntity, float p_109110_, CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(livingEntity), variant -> {
-            if (variant.nightVision) {
+            if (variant.getParent().nightVision) {
                 callback.setReturnValue(1.0f);
             }
 
-            if (variant.getBreatheMode().canBreatheWater()) {
+            if (variant.getParent().getBreatheMode().canBreatheWater()) {
                 callback.setReturnValue(0.85f);
             }
         });
@@ -36,7 +36,7 @@ public abstract class GameRendererMixin {
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void bobView(PoseStack pose, float partialTicks, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(Minecraft.getInstance().getCameraEntity()), variant -> {
-            if (!variant.hasLegs)
+            if (!variant.getParent().hasLegs)
                 callback.cancel();
         });
     }
