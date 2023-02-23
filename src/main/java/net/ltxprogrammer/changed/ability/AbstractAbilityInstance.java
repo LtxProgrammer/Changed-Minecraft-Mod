@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -8,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
     public final Player player;
-    public final LatexVariant<?> variant;
+    public final LatexVariantInstance<?> variant;
 
-    public AbstractAbilityInstance(AbstractAbility<?> ability, Player player, LatexVariant<?> variant) {
+    public AbstractAbilityInstance(AbstractAbility<?> ability, Player player, LatexVariantInstance<?> variant) {
         this.ability = ability;
         this.player = player;
         this.variant = variant;

@@ -15,7 +15,7 @@ public abstract class EnchantmentHelperMixin {
     @Inject(method = "hasAquaAffinity", at = @At("HEAD"), cancellable = true)
     private static void hasAquaAffinity(LivingEntity le, CallbackInfoReturnable<Boolean> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(le), variant -> {
-            if (variant.breatheMode.hasAquaAffinity())
+            if (variant.getParent().breatheMode.hasAquaAffinity())
                 callback.setReturnValue(true);
         });
     }

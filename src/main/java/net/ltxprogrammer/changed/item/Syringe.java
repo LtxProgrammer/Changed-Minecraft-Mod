@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.Pale;
@@ -92,7 +93,7 @@ public class Syringe extends Item implements SpecializedAnimations {
     }
 
     public static String getVariantDescriptionId(ItemStack stack) {
-        LatexVariant<?> variant = LatexVariant.ALL_LATEX_FORMS.get(TagUtil.getResourceLocation(stack.getTag(), "form"));
+        LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(stack.getTag(), "form"));
         if (variant == null)
             return "entity." + TagUtil.getResourceLocation(stack.getTag(), "form").toString().replace("form_", "")
                     .replace(':', '.').replace('/', '_');
@@ -102,7 +103,7 @@ public class Syringe extends Item implements SpecializedAnimations {
     public static LatexVariant<?> getVariant(ItemStack p_43364_) {
         if (p_43364_.getTag() != null) {
             if (p_43364_.getTag().contains("form")) {
-                return LatexVariant.PUBLIC_LATEX_FORMS.get(TagUtil.getResourceLocation(p_43364_.getTag(), "form"));
+                return ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(p_43364_.getTag(), "form"));
             }
         }
 
@@ -131,7 +132,7 @@ public class Syringe extends Item implements SpecializedAnimations {
 
         ProcessTransfur.ifPlayerLatex(player, variant -> {
             ResourceLocation form = variant.getFormId();
-            if (LatexVariant.SPECIAL_LATEX_FORMS.containsKey(form))
+            if (LatexVariant.SPECIAL_LATEX_FORMS.contains(form))
                 form = LatexVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
             tag.putBoolean("safe", Pale.isCured(player));

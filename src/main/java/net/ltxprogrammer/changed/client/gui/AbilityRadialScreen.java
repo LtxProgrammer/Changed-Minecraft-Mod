@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
@@ -23,7 +24,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
 
     public final AbilityRadialMenu menu;
-    public final LatexVariant<?> variant;
+    public final LatexVariantInstance<?> variant;
     public final List<ResourceLocation> abilities;
 
     public AbilityRadialScreen(AbilityRadialMenu menu, Inventory inventory, Component text) {
@@ -32,7 +33,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.abilities = menu.variant.abilities.stream().filter(location ->
+        this.abilities = menu.variant.abilityInstances.keySet().stream().filter(location ->
                 location != ChangedAbilities.SELECT_HAIRSTYLE.getId() || ChangedAbilities.getAbility(location).canUse(menu.player, variant))
                 .collect(Collectors.toList());
     }

@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.block.BedsideIVRack;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -100,7 +101,7 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
                             ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                             if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
                                 formLocation = Changed.modResource("special/form_" + player.getUUID());
-                            ProcessTransfur.setPlayerLatexVariant(player, LatexVariant.ALL_LATEX_FORMS.getOrDefault(formLocation, LatexVariant.FALLBACK_VARIANT));
+                            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(formLocation));
                             if (tag.contains("safe") && tag.getBoolean("safe"))
                                 Pale.tryCure(player);
                         } catch (NullPointerException unused) {

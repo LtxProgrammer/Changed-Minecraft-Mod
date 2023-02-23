@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -54,7 +55,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        LatexVariant<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
+        LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
         if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
                 /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
             if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)

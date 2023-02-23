@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
@@ -83,9 +84,9 @@ public class TransfurPredicate {
                     ImmutableSet.Builder<LatexVariant<?>> builder = ImmutableSet.builder();
                     for (var element : jsonArray) {
                         ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.convertToString(element, "form"));
-                        if (!LatexVariant.PUBLIC_LATEX_FORMS.containsKey(resourcelocation))
+                        if (!LatexVariant.PUBLIC_LATEX_FORMS.contains(resourcelocation))
                             throw new JsonSyntaxException("Unknown form id '" + resourcelocation + "'");
-                        builder.add(LatexVariant.PUBLIC_LATEX_FORMS.get(resourcelocation));
+                        builder.add(ChangedRegistry.LATEX_VARIANT.get().getValue(resourcelocation));
                     }
 
                     Set<LatexVariant<?>> set = builder.build();

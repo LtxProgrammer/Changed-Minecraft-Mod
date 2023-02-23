@@ -39,7 +39,7 @@ public abstract class ServerPlayerMixin extends Player {
         ServerPlayer self = (ServerPlayer)(Object)this;
         if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
             ProcessTransfur.ifPlayerLatex(player, oldVariant -> {
-                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone())
+                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent())
                         .loadAbilities(oldVariant.saveAbilities());
             });
         }

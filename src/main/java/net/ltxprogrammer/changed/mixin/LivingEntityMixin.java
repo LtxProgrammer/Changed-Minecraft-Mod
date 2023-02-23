@@ -47,7 +47,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     private void updateFallFlying(CallbackInfo callback) {
         if (this.level.isClientSide) return;
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (player, variant) -> {
-            if (variant.canGlide) {
+            if (variant.getParent().canGlide) {
                 this.setSharedFlag(7, player.isFallFlying() && !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
                 callback.cancel();
             }
@@ -57,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
     public void onClimbable(CallbackInfoReturnable<Boolean> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (variant) -> {
-            if (variant.canClimb && this.horizontalCollision)
+            if (variant.getParent().canClimb && this.horizontalCollision)
                 callback.setReturnValue(true);
         });
     }
@@ -65,20 +65,20 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "getJumpBoostPower", at = @At("RETURN"), cancellable = true)
     public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (variant) -> {
-            callback.setReturnValue(callback.getReturnValue() * variant.jumpStrength);
+            callback.setReturnValue(callback.getReturnValue() * variant.getParent().jumpStrength);
         });
     }
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
     public void hasEffect(MobEffect effect, CallbackInfoReturnable<Boolean> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (variant) -> {
-            if (variant.nightVision && effect.equals(MobEffects.NIGHT_VISION))
+            if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(true);
-            if (variant.breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
                 callback.setReturnValue(true);
-            if (variant.noVision && effect.equals(MobEffects.BLINDNESS))
+            if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(true);
-            if (variant.cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
+            if (variant.getParent().cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
                 callback.setReturnValue(true);
         });
     }
@@ -86,13 +86,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
     public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(this), (variant) -> {
-            if (variant.nightVision && effect.equals(MobEffects.NIGHT_VISION))
+            if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
-            if (variant.breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
-            if (variant.noVision && effect.equals(MobEffects.BLINDNESS))
+            if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.BLINDNESS, 300, 1, false, false));
-            if (variant.cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
+            if (variant.getParent().cannotWalk && effect.equals(MobEffects.MOVEMENT_SLOWDOWN))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 300, 5, false, false));
         });
     }

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,19 +21,19 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class SyncTransfurPacket implements ChangedPacket {
-    record Listing(ResourceLocation form, CompoundTag data) {
+    record Listing(int form, CompoundTag data) {
         static Listing fromStream(FriendlyByteBuf buf) {
-            return new Listing(buf.readResourceLocation(), buf.readNbt());
+            return new Listing(buf.readInt(), buf.readNbt());
         }
 
         void toStream(FriendlyByteBuf buf) {
-            buf.writeResourceLocation(form);
+            buf.writeInt(form);
             buf.writeNbt(data);
         }
     }
 
     private final Map<UUID, Listing> changedForms;
-    private static final ResourceLocation NO_FORM = Changed.modResource("no_form");
+    private static final int NO_FORM = -1;
 
     public SyncTransfurPacket(Map<UUID, Listing> changedForms) {
         this.changedForms = changedForms;
@@ -57,7 +58,7 @@ public class SyncTransfurPacket implements ChangedPacket {
             changedForms.forEach((uuid, listing) -> {
                 Player player = level.getPlayerByUUID(uuid);
                 if (player != null) {
-                    ProcessTransfur.setPlayerLatexVariantNamed(player, listing.form);
+                    ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(listing.form));
                     ProcessTransfur.ifPlayerLatex(player, variant -> {
                         variant.loadAbilities(listing.data);
                     });
@@ -80,7 +81,7 @@ public class SyncTransfurPacket implements ChangedPacket {
         public void addPlayer(Player player) {
             ProcessTransfur.ifPlayerLatex(player, variant -> {
                 changedForms.put(player.getUUID(),
-                        new Listing(variant.getFormId(), variant.saveAbilities()));
+                        new Listing(ChangedRegistry.LATEX_VARIANT.get().getID(variant.getParent()), variant.saveAbilities()));
             }, () -> {
                 changedForms.put(player.getUUID(),
                         new Listing(NO_FORM, new CompoundTag()));

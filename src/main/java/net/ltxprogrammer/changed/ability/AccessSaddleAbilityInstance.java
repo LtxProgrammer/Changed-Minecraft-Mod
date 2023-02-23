@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +12,7 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
     public ItemStack saddle = ItemStack.EMPTY;
     public ItemStack chest = ItemStack.EMPTY;
 
-    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, Player player, LatexVariant<?> variant) {
+    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
         super(ability, player, variant);
     }
 

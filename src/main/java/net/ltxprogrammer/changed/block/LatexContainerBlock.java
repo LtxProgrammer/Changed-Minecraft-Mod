@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallBlock implements
             //goo.
         }
 
-        LatexVariant variant = ProcessTransfur.getPlayerLatexVariant(player);
+        LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
         if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
                 /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
             if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
