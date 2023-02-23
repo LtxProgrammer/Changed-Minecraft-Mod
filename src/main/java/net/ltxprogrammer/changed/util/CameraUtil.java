@@ -1,29 +1,14 @@
 package net.ltxprogrammer.changed.util;
 
 import com.mojang.datafixers.util.Either;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import java.lang.reflect.Field;
-
 public class CameraUtil {
-    private static final Field wantToLookAtField;
-
-    static {
-        Field wantToLookAtField1;
-        try {
-            wantToLookAtField1 = Player.class.getDeclaredField("wantToLookAt");
-            wantToLookAtField1.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            wantToLookAtField1 = null;
-            e.printStackTrace();
-        }
-        wantToLookAtField = wantToLookAtField1;
-    }
-
     public static record TugData(Either<Vec3, LivingEntity> lookAt, double strength, long tickExpire) {
         public Vec3 getDirection(LivingEntity source) {
             if (lookAt.left().isPresent())
@@ -52,26 +37,21 @@ public class CameraUtil {
     }
 
     public static TugData getTugData(Player player) {
-        try {
-            return (TugData) wantToLookAtField.get(player);
-        } catch (IllegalAccessException ignored) {}
-
+        if (player instanceof PlayerDataExtension ext)
+            return ext.getTugData();
         return null;
     }
 
     public static void resetTugData(Player player) {
-        try {
-            wantToLookAtField.set(player, null);
-        } catch (IllegalAccessException ignored) {}
+        if (player instanceof PlayerDataExtension ext)
+            ext.setTugData(null);
     }
 
     public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {
-        if (livingEntity instanceof Player player) {
-            try {
-                wantToLookAtField.set(player, new TugData(Either.left(direction), strength * 0.333, livingEntity.tickCount + 10));
-                if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
-                    return;
-            } catch (IllegalAccessException ignored) {}
+        if (livingEntity instanceof Player player && player instanceof PlayerDataExtension ext) {
+            ext.setTugData(new TugData(Either.left(direction), strength * 0.333, livingEntity.tickCount + 10));
+            if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
+                return;
         }
 
         float xRotO = livingEntity.xRotO;
@@ -83,12 +63,10 @@ public class CameraUtil {
     }
 
     public static void tugEntityLookDirection(LivingEntity livingEntity, LivingEntity lookAt, double strength) {
-        if (livingEntity instanceof Player player) {
-            try {
-                wantToLookAtField.set(player, new TugData(Either.right(lookAt), strength * 0.333, livingEntity.tickCount + 10));
-                if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
-                    return;
-            } catch (IllegalAccessException ignored) {}
+        if (livingEntity instanceof Player player && player instanceof PlayerDataExtension ext) {
+            ext.setTugData(new TugData(Either.right(lookAt), strength * 0.333, livingEntity.tickCount + 10));
+            if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
+                return;
         }
 
         Vec3 direction = lookAt.getEyePosition().subtract(livingEntity.getEyePosition()).normalize();
