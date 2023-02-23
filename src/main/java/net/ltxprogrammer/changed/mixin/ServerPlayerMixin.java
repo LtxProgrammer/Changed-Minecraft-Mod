@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
 import net.ltxprogrammer.changed.process.Pale;
@@ -39,7 +38,7 @@ public abstract class ServerPlayerMixin extends Player {
         ServerPlayer self = (ServerPlayer)(Object)this;
         if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
             ProcessTransfur.ifPlayerLatex(player, oldVariant -> {
-                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.clone())
+                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent())
                         .loadAbilities(oldVariant.saveAbilities());
             });
         }

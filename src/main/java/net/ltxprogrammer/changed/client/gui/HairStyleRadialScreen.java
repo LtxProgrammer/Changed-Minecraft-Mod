@@ -8,7 +8,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
@@ -29,7 +29,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
     private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
 
     public final HairStyleRadialMenu menu;
-    public final LatexVariant<?> variant;
+    public final LatexVariantInstance<?> variant;
     public final List<HairStyle> styles;
     private int tickCount = 0;
 

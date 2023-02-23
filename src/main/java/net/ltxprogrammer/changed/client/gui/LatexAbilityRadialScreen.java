@@ -3,13 +3,13 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class LatexAbilityRadialScreen<T extends AbstractContainerMenu> extends AbstractRadialScreen<T> {
-    public LatexAbilityRadialScreen(T menu, Inventory inventory, Component text, LatexVariant<?> variant) {
+    public LatexAbilityRadialScreen(T menu, Inventory inventory, Component text, LatexVariantInstance<?> variant) {
         super(menu, inventory, text, getColors(variant).getFirst(), getColors(variant).getSecond(), variant.getLatexEntity());
     }
 

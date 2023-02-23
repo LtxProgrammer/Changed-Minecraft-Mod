@@ -2,19 +2,16 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.screens.packs.TransferableSelectionList;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.lwjgl.glfw.GLFW;
-import com.mojang.datafixers.util.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -66,7 +62,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public abstract int getCount();
 
-    public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariant<?> variant) {
+    public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
             return new Pair<>(
                     specialLatex.getCurrentData().primaryColor(),
@@ -74,7 +70,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             );
         }
 
-        var ints = ChangedEntities.getEntityColor(variant.getEntityType().getRegistryName());
+        var ints = ChangedEntities.getEntityColor(variant.getParent().getEntityType().getRegistryName());
         return new Pair<>(
                 ChangedParticles.Color3.fromInt(ints.getFirst()),
                 ChangedParticles.Color3.fromInt(ints.getSecond()));

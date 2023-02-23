@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 
 public class SimpleAbilityInstance extends AbstractAbilityInstance {
-    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, Player player, LatexVariant<?> variant) {
+    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
         super(ability, player, variant);
     }
 

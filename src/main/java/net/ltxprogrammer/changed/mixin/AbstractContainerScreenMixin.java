@@ -13,7 +13,9 @@ import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,7 +52,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
             if (menu != null) {
                 ProcessTransfur.ifPlayerLatex(menu.owner, variant -> {
                     var originalPair = slot.getNoItemIcon();
-                    if (originalPair != null && !variant.hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
+                    if (originalPair != null && !variant.getParent().hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
                         callback.cancel();
                         renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, ABDOMEN_SLOT_OVERRIDES.get(originalPair.getSecond())));
                     }

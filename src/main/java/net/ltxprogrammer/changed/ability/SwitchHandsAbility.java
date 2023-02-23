@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -16,17 +16,17 @@ public class SwitchHandsAbility extends SimpleAbility {
     }
 
     @Override
-    public boolean canUse(Player player, LatexVariant<?> variant) {
-        return variant.abilities.contains(ChangedAbilities.EXTRA_HANDS.getId());
+    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
+        return variant.abilityInstances.containsKey(ChangedAbilities.EXTRA_HANDS.getId());
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariant<?> variant) {
+    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) {
         return false;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariant<?> variant) {
+    public void startUsing(Player player, LatexVariantInstance<?> variant) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
 
@@ -43,8 +43,8 @@ public class SwitchHandsAbility extends SimpleAbility {
     }
 
     @Override
-    public void tick(Player player, LatexVariant<?> variant) {}
+    public void tick(Player player, LatexVariantInstance<?> variant) {}
 
     @Override
-    public void stopUsing(Player player, LatexVariant<?> variant) {}
+    public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
 }

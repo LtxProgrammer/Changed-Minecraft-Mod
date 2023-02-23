@@ -58,9 +58,7 @@ public class RandomVariantFunction extends LootItemConditionalFunction {
         }
 
         public RandomVariantFunction.Builder withAllVariants() {
-            LatexVariant.PUBLIC_LATEX_FORMS.forEach((name, variant) -> {
-                this.variants.add(name);
-            });
+            this.variants.addAll(LatexVariant.PUBLIC_LATEX_FORMS);
             return this;
         }
 

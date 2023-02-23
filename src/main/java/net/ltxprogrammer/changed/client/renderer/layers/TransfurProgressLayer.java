@@ -2,10 +2,10 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedLayerDefinitions;
 import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -31,7 +31,7 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
     }
 
     public static ChangedParticles.Color3 getProgressColor(ResourceLocation type) {
-        return ChangedParticles.Color3.fromInt(ChangedEntities.getEntityColorBack(LatexVariant.ALL_LATEX_FORMS.get(type).getEntityType().getRegistryName()));
+        return ChangedParticles.Color3.fromInt(ChangedEntities.getEntityColorBack(ChangedRegistry.LATEX_VARIANT.get().getValue(type).getEntityType().getRegistryName()));
     }
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int i, AbstractClientPlayer player, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {

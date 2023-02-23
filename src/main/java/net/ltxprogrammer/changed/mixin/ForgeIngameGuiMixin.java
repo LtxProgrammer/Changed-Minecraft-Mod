@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +21,7 @@ public abstract class ForgeIngameGuiMixin extends Gui {
     protected void renderAir(int width, int height, PoseStack poseStack, CallbackInfo callback) {
         var entity = Minecraft.getInstance().getCameraEntity();
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), (player, variant) -> {
-            if (variant.breatheMode.canBreatheWater() && player.getAirSupply() >= 300)
+            if (variant.getParent().breatheMode.canBreatheWater() && player.getAirSupply() >= 300)
                 callback.cancel();
         });
     }

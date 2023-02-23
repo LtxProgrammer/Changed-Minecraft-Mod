@@ -1,13 +1,12 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.IExtensibleEnum;
@@ -38,7 +37,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         }
 
         else
-            return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), LatexVariant::getLatexType, () -> null);
+            return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), LatexVariantInstance::getLatexType, () -> null);
     }
 
     public static boolean hasLatexType(@NotNull Entity entity) {

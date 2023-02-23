@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,7 +28,7 @@ public class SpecialStateRadialMenu extends AbstractContainerMenu {
     public final ContainerData data;
     public final Level world;
     public final Player player;
-    public final LatexVariant<?> variant;
+    public final LatexVariantInstance<?> variant;
     public int x, y, z;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();

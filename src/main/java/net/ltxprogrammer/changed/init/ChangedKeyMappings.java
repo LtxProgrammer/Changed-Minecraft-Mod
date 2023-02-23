@@ -41,7 +41,7 @@ public class ChangedKeyMappings {
                 if (event.getKey() == options.keyJump.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     if (!local.isOnGround())
                         ProcessTransfur.ifPlayerLatex(local, variant -> {
-                            if (!variant.canDoubleJump())
+                            if (!variant.getParent().canDoubleJump())
                                 return;
                             if (variant.getJumpCharges() > 0) {
                                 variant.decJumpCharges();

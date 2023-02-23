@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
     final NonNullList<ItemStack> itemStacks = NonNullList.withSize(2 * 9, ItemStack.EMPTY);
 
-    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, Player player, LatexVariant<?> variant) {
+    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
         super(ability, player, variant);
     }
 

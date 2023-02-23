@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin;
 
 
 import com.mojang.authlib.GameProfile;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -28,7 +27,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)
     private void getWaterVision(CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerLatex(this, variant -> {
-            if (!variant.getBreatheMode().canBreatheWater())
+            if (!variant.getParent().getBreatheMode().canBreatheWater())
                 return;
             if (!this.isEyeInFluid(FluidTags.WATER))
                 return;
@@ -47,7 +46,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         if (!player.level.isClientSide) return;
 
         ProcessTransfur.ifPlayerLatex(player, variant -> {
-            if (variant.canGlide) {
+            if (variant.getParent().canGlide) {
                 boolean flag = player.input.jumping;
 
                 KeyboardInput kb = null;
@@ -86,7 +85,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
                 }
             }
 
-            if (variant.swimSpeed >= 2.0F && player.isUnderWater())
+            if (variant.getParent().swimSpeed >= 2.0F && player.isUnderWater())
                 player.setSprinting(true);
         });
     }

@@ -1,13 +1,8 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.effect.particle.LatexDripParticle;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedGameRules;
-import net.ltxprogrammer.changed.init.ChangedParticles;
-import net.ltxprogrammer.changed.init.ChangedTags;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.ltxprogrammer.changed.init.*;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +29,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
@@ -247,8 +241,8 @@ public abstract class LatexEntity extends Monster {
         super.registerGoals();
 
         final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
-            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS.values()) {
-                if (checkVariant.isFusionOf(getSelfVariant(), livingEntity.getClass()))
+            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS) {
+                if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
                     return true;
             }
             if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
@@ -258,8 +252,8 @@ public abstract class LatexEntity extends Monster {
             LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
             if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
                 return false;
-            for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS.values()) {
-                if (checkVariant.isFusionOf(getSelfVariant(), playerVariant))
+            for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS) {
+                if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
                     return true;
             }
 
