@@ -197,9 +197,7 @@ public class Legacy {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 20.0F, 0.0F));
-
-        PartDefinition Base = partdefinition.addOrReplaceChild("Base", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -7.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+        PartDefinition Hair= partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -7.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
                 .texOffs(42, 30).addBox(2.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(25, 42).addBox(-3.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(0, 79).addBox(-4.0F, -6.0F, 4.0F, 8.0F, 5.0F, 1.0F, CubeDeformation.NONE)
@@ -208,7 +206,7 @@ public class Legacy {
                 .texOffs(44, 84).addBox(4.0F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(69, 28).addBox(-5.0F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(44, 73).addBox(-5.0F, -4.0F, -2.0F, 1.0F, 4.0F, 6.0F, CubeDeformation.NONE)
-                .texOffs(51, 34).addBox(-2.0F, -7.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 23.0F, 0.0F));
+                .texOffs(51, 34).addBox(-2.0F, -7.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -306,6 +304,27 @@ public class Legacy {
                 .texOffs(42, 24).addBox(-4.0F, -7.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(25, 43).addBox(-1.0F, -5.25F, -4.2499F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(42, 17).addBox(-4.0F, -7.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 128, 128);
+    }
+
+    public static LayerDefinition createSideTuftsHair() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(76, 11).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(50, 70).addBox(-4.0F, -8.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(15, 83).addBox(-4.0F, -8.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(32, 83).addBox(-4.45F, -8.0F, -4.0F, 1.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(51, 59).addBox(-4.65F, -5.0F, -1.0F, 2.0F, 3.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(0, 88).addBox(2.65F, -5.0F, -1.0F, 2.0F, 3.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(0, 89).addBox(-4.5F, -8.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(9, 89).addBox(3.5F, -8.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(28, 94).addBox(-3.5F, -7.25F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(68, 35).addBox(3.45F, -8.0F, -4.0F, 1.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(59, 51).addBox(2.0F, -8.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(76, 0).addBox(-4.0F, -8.5F, -3.5F, 8.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(6, 89).addBox(-2.0F, -8.75F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }

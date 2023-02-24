@@ -163,5 +163,6 @@ public class ChangedLayerDefinitions {
         registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
         registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
         registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
+        registerLayerDefinition(HairStyle.SIDE_TUFTS.headHair, Legacy::createSideTuftsHair);
     }
 }
