@@ -1,0 +1,18 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:honey_block"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    },
+    {
+      "tag": "minecraft:flowers"
+    }
+  ],
+  "form": "changed:form_latex_bee"
+}
