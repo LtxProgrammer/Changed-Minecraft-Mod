@@ -196,7 +196,7 @@ public class Legacy {
     public static LayerDefinition createFlaredMohawk() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
+        PartDefinition Hair= partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -7.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
 
                 .texOffs(42, 30).addBox(2.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(25, 42).addBox(-3.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
