@@ -146,19 +146,19 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		Tail.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(0, 16).addBox(-0.5F, 5.3462F, -1.8296F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.05F))
 				.texOffs(40, 59).addBox(-0.5F, -2.5538F, -1.8296F, 1.0F, 8.0F, 3.0F, new CubeDeformation(-0.05F)), PartPose.offsetAndRotation(0.0F, 8.55F, 24.3F, 1.309F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(39, 70).addBox(-0.5F, -8.1668F, -2.1179F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
-				.texOffs(16, 40).addBox(-0.5F, -6.1668F, 0.8821F, 1.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 63).addBox(-0.5F, -6.1668F, -2.1179F, 1.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 7.675F, 24.2F, -0.6981F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(39, 70).addBox(-0.5F, -8.1668F, -2.1179F, 1.0F, 2.0F, 3.0F, CubeDeformation.NONE)
+				.texOffs(16, 40).addBox(-0.5F, -6.1668F, 0.8821F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+				.texOffs(0, 63).addBox(-0.5F, -6.1668F, -2.1179F, 1.0F, 8.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 7.675F, 24.2F, -0.6981F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r9", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -0.15F, -0.8F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 8.9F, 20.3F, 1.5708F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r9", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -0.15F, -0.8F, 2.0F, 5.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.9F, 20.3F, 1.5708F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r10", CubeListBuilder.create().texOffs(62, 15).addBox(-1.5F, -1.3563F, -1.8F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 7.95F, 15.8F, 1.4835F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r10", CubeListBuilder.create().texOffs(62, 15).addBox(-1.5F, -1.3563F, -1.8F, 3.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 7.95F, 15.8F, 1.4835F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(0, 28).addBox(-3.0F, -1.0F, -1.0F, 5.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 3.0F, 2.9F, 0.8727F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(0, 28).addBox(-3.0F, -1.0F, -1.0F, 5.0F, 7.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 3.0F, 2.9F, 0.8727F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(26, 10).addBox(-4.0F, 2.0F, -1.0F, 6.0F, 4.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, 0.7F, -2.6F, 1.0908F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r12", CubeListBuilder.create().texOffs(26, 10).addBox(-4.0F, 2.0F, -1.0F, 6.0F, 4.0F, 6.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(1.0F, 0.7F, -2.6F, 1.0908F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r13", CubeListBuilder.create().texOffs(48, 43).addBox(-2.0F, 1.0F, -1.0F, 4.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 6.0F, 6.3F, 1.2217F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r13", CubeListBuilder.create().texOffs(48, 43).addBox(-2.0F, 1.0F, -1.0F, 4.0F, 8.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 6.0F, 6.3F, 1.2217F, 0.0F, 0.0F));
 
 		PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create(), PartPose.offset(-5.0F, -8.0F, 0.0F));
 

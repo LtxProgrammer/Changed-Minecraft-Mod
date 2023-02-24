@@ -155,11 +155,11 @@ public class LatexSharkFemaleModel extends LatexHumanoidModel<LatexSharkFemale> 
 		Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(16, 29).addBox(-0.5F, 5.3462F, -1.8296F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.05F))
 				.texOffs(24, 78).addBox(-0.5F, -2.5538F, -1.8296F, 1.0F, 8.0F, 3.0F, new CubeDeformation(-0.05F)), PartPose.offsetAndRotation(0.0F, 8.45F, 25.3F, 1.309F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(20, 41).addBox(-0.5F, -8.1668F, -2.1179F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
-				.texOffs(44, 7).addBox(-0.5F, -6.1668F, 0.8821F, 1.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
-				.texOffs(32, 78).addBox(-0.5F, -6.1668F, -2.1179F, 1.0F, 8.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 7.575F, 25.2F, -0.6981F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(20, 41).addBox(-0.5F, -8.1668F, -2.1179F, 1.0F, 2.0F, 3.0F, CubeDeformation.NONE)
+				.texOffs(44, 7).addBox(-0.5F, -6.1668F, 0.8821F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+				.texOffs(32, 78).addBox(-0.5F, -6.1668F, -2.1179F, 1.0F, 8.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 7.575F, 25.2F, -0.6981F, 0.0F, 0.0F));
 
-		Tail.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(48, 40).addBox(-1.0F, -0.15F, -0.8F, 2.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 8.8F, 21.3F, 1.5708F, 0.0F, 0.0F));
+		Tail.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(48, 40).addBox(-1.0F, -0.15F, -0.8F, 2.0F, 5.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.8F, 21.3F, 1.5708F, 0.0F, 0.0F));
 
 		Tail.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(59, 70).addBox(-1.5F, -1.3563F, -1.8F, 3.0F, 7.0F, 3.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, 7.85F, 15.8F, 1.4835F, 0.0F, 0.0F));
 
