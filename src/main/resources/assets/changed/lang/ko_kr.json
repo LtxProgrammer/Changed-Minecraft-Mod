@@ -17,6 +17,7 @@
   "ability.changed.use_variant_ability.siren_sing": "노래부르기",
   "ability.changed.slither": "미끄러지기",
   "ability.changed.select_hairstyle": "헤어스타일 선택하기",
+  "ability.changed.select_special_state": "특수 상태 선택",
 
   "subtitles.changed.sound3": "유기적으로 수화함",
   "subtitles.changed.poison": "수화함",
@@ -97,6 +98,7 @@
   "container.changed.extra_hands": "추가 손 메뉴",
   "container.changed.infuser": "주입기 메뉴",
   "container.changed.purifier": "정화기 메뉴",
+  "container.changed.keypad": "비밀번호 입력",
   "container.changed.access_chest": "상자 인벤토리",
 
   "text.changed.game_saved": "게임이 저장되었습니다.",
@@ -194,6 +196,7 @@
   "entity.changed.dark_latex_yufeng": "검은 라텍스 용용이",
   "entity.changed.headless_knight": "머리없는 백기사",
   "entity.changed.milk_pudding": "우유 푸딩",
+  "entity.changed.latex_bee": "라텍스 벌",
   "entity.changed.latex_beifeng": "Beifeng",
   "entity.changed.latex_benign_wolf": "유순한 라텍스 늑대",
   "entity.changed.latex_blue_dragon": "푸른 라텍스 용",
@@ -252,6 +255,7 @@
   "item.changed.dark_latex_yufeng_spawn_egg": "검은 라텍스 용용이 생성 알",
   "item.changed.headless_knight_spawn_egg": "머리없는 백기사 생성 알",
   "item.changed.milk_pudding_spawn_egg": "우유 푸딩 생성 알",
+  "item.changed.latex_bee_spawn_egg": "라텍스 벌 생성 알",
   "item.changed.latex_beifeng_spawn_egg": "Beifeng 생성 알",
   "item.changed.latex_benign_wolf_spawn_egg": "유순한 라텍스 늑대 생성 알",
   "item.changed.latex_blue_dragon_spawn_egg": "푸른 라텍스 용 생성 알",
