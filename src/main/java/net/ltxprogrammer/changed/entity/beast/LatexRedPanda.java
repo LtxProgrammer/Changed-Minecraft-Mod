@@ -26,12 +26,12 @@ public class LatexRedPanda extends LatexEntity {
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#bb2a3b");
+        return layer == 0 ? ChangedParticles.Color3.getColor("#bb2a3b") : ChangedParticles.Color3.getColor("#ffffff");
     }
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.SIDE_TUFTS;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
