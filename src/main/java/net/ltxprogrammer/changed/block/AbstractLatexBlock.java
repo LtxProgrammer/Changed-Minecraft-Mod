@@ -55,6 +55,14 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         this.goo = goo;
     }
 
+    public static boolean tryCover(Level level, BlockPos relative, LatexType type) {
+        BlockState old = level.getBlockState(relative);
+        if (!old.getProperties().contains(COVERED))
+            return false;
+        level.setBlockAndUpdate(relative, old.setValue(COVERED, type));
+        return true;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);

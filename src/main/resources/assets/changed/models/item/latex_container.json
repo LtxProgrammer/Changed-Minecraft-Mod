@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/latex_container_0",
+  "parent": "changed:custom/latex_container",
   "display": {
     "thirdperson": {
       "rotation": [

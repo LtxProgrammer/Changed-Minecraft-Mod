@@ -1,10 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.BedsideIVRackBlockEntity;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
-import net.ltxprogrammer.changed.block.entity.KeypadBlockEntity;
-import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
+import net.ltxprogrammer.changed.block.entity.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,4 +23,5 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<BedsideIVRackBlockEntity>> BEDSIDE_IV_RACK = REGISTRY.register("bedside_iv_rack", deferredProvider(BedsideIVRackBlockEntity::new, ChangedBlocks.BEDSIDE_IV_RACK));
     public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX = REGISTRY.register("cardboard_box", deferredProvider(CardboardBoxBlockEntity::new, ChangedBlocks.CARDBOARD_BOX));
     public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD = REGISTRY.register("keypad", deferredProvider(KeypadBlockEntity::new, ChangedBlocks.KEYPAD));
+    public static final RegistryObject<BlockEntityType<LatexContainerBlockEntity>> LATEX_CONTAINER = REGISTRY.register("latex_container", deferredProvider(LatexContainerBlockEntity::new, ChangedBlocks.LATEX_CONTAINER));
 }
