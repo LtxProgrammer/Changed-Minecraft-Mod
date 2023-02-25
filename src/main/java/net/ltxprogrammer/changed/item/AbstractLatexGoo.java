@@ -8,6 +8,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public class AbstractLatexGoo extends AbstractLatexItem {
+    private final LatexType type;
+
+    public AbstractLatexGoo(LatexType type) {
+        this.type = type;
+    }
+
     public InteractionResult useOn(UseOnContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         if (state.getProperties().contains(COVERED) && state.getValue(COVERED) == LatexType.NEUTRAL) {
@@ -22,5 +28,9 @@ public class AbstractLatexGoo extends AbstractLatexItem {
         }
 
         return InteractionResult.FAIL;
+    }
+
+    public LatexType getLatexType() {
+        return type;
     }
 }

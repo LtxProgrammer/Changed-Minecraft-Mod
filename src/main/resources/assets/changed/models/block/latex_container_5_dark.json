@@ -1,6 +1,0 @@
-{
-  "parent": "changed:custom/latex_container_5",
-  "textures": {
-    "1": "changed:blocks/dark_latex_fill"
-  }
-}

@@ -3,6 +3,9 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.item.AbstractLatexBucket;
+import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.util.StringRepresentable;
@@ -16,19 +19,25 @@ import java.util.function.Supplier;
 
 public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL(),
-    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedBlocks.DARK_LATEX_BLOCK),
-    WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedBlocks.WHITE_LATEX_BLOCK);
+    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedParticles.Color3.DARK),
+    WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedItems.WHITE_LATEX_BUCKET, ChangedBlocks.WHITE_LATEX_BLOCK, ChangedParticles.Color3.WHITE);
 
-    public final Supplier<? extends Item> goo;
+    public final Supplier<? extends AbstractLatexGoo> goo;
+    public final Supplier<? extends AbstractLatexBucket> gooBucket;
     public final Supplier<? extends Block> block;
+    public final ChangedParticles.Color3 color;
 
     LatexType() {
         this.goo = () -> null;
+        this.gooBucket = () -> null;
         this.block = () -> null;
+        this.color = ChangedParticles.Color3.WHITE;
     }
-    LatexType(Supplier<? extends Item> goo, Supplier<? extends Block> block) {
+    LatexType(Supplier<? extends AbstractLatexGoo> goo, Supplier<? extends AbstractLatexBucket> gooBucket, Supplier<? extends Block> block, ChangedParticles.Color3 color) {
         this.goo = goo;
+        this.gooBucket = gooBucket;
         this.block = block;
+        this.color = color;
     }
 
     public static LatexType getEntityLatexType(@NotNull Entity entity) {
@@ -71,7 +80,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         return toString().toLowerCase();
     }
 
-    public static LatexType create(String name, Supplier<? extends Item> goo, Supplier<Block> block)
+    public static LatexType create(String name, Supplier<? extends Item> goo, Supplier<? extends Item> gooBucket, Supplier<Block> block, ChangedParticles.Color3 color)
     {
         throw new IllegalStateException("Enum not extended");
     }

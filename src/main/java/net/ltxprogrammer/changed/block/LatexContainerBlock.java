@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -14,39 +12,104 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-public class LatexContainerBlock extends AbstractCustomShapeTallBlock implements NonLatexCoverableBlock { // TODO finish
-    public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 30.0D, 14.0D);
-    public static final VoxelShape SHAPE_OCC = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 32.0D, 16.0D);
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    public LatexContainerBlock(Properties properties) {
-        super(properties);
+public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements NonLatexCoverableBlock {
+    public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 24, 12.0D);
+
+    public LatexContainerBlock() {
+        super(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F));
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    private LatexContainerBlockEntity getBlockEntity(BlockState state, BlockGetter level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof LatexContainerBlockEntity blockEntity)
+            return blockEntity;
+        return null;
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER)
+            pos = pos.below();
+        LatexContainerBlockEntity blockEntity = getBlockEntity(state, level, pos);
+        if (blockEntity == null)
+            return InteractionResult.PASS;
+
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.getItem() instanceof AbstractLatexGoo goo) {
-            //goo.
-        }
-
-        LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
-                /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
-            if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
-                return super.use(state, level, pos, player, hand, hitResult);
-
-            WhiteLatexTransportInterface.entityEnterLatex(player, pos);
-            return InteractionResult.CONSUME;
+        var nStack = blockEntity.tryUse(itemStack);
+        if (nStack != itemStack) {
+            player.setItemInHand(hand, nStack);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
-    public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
-        return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
+    private int processBreak(Level level, BlockPos blockPos, LatexType type, int remaining, AtomicBoolean placedFluid) {
+        switch (level.getRandom().nextInt(6)) {
+            case 0:
+                return 1; // Destroy goo
+            case 1:
+                if (remaining >= 4 && !placedFluid.get()) {
+                    level.setBlockAndUpdate(blockPos, type.gooBucket.get().fluid.get().defaultFluidState().createLegacyBlock());
+                    popResource(level, blockPos, new ItemStack(this));
+                    placedFluid.set(true);
+                    return 4; // Put goo fluid
+                }
+
+                else {
+                    popResource(level, blockPos, new ItemStack(type.goo.get()));
+                    return 1; // Drop goo item
+                }
+            case 2:
+                int attempts = 3;
+                while (attempts > 0) {
+                    if (AbstractLatexBlock.tryCover(
+                            level,
+                            blockPos
+                                    .relative(Direction.getRandom(level.getRandom()))
+                                    .relative(Direction.getRandom(level.getRandom())),
+                            type))
+                        return 1;
+
+                    attempts--;
+                }
+            default:
+                popResource(level, blockPos, new ItemStack(type.goo.get()));
+                return 1; // Drop goo item
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos blockPos, BlockState newState, boolean noSimulate) {
+        var blockEntity = getBlockEntity(state, level, blockPos);
+        super.onRemove(state, level, blockPos, newState, noSimulate);
+
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER && blockEntity != null && blockEntity.getFillType() != LatexType.NEUTRAL &&
+                blockEntity.getFillLevel() > 0 && !noSimulate) {
+            int fill = blockEntity.getFillLevel();
+            AtomicBoolean atomic = new AtomicBoolean(false);
+            while (fill > 0)
+                fill -= processBreak(level, blockPos, blockEntity.getFillType(), fill, atomic);
+        }
+    }
+
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos pos) {
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
     }
 
     @Override
@@ -55,5 +118,13 @@ public class LatexContainerBlock extends AbstractCustomShapeTallBlock implements
             case UPPER -> SHAPE_WHOLE.move(0.0, -1.0, 0.0);
             case LOWER -> SHAPE_WHOLE;
         };
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
+            return null;
+        return new LatexContainerBlockEntity(blockPos, blockState);
     }
 }

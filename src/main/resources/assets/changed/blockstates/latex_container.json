@@ -1,76 +1,10 @@
 {
   "variants": {
-    "level=0": {
-      "model": "changed:block/latex_container_0"
+    "half=lower": {
+      "model": "changed:custom/latex_container_lower"
     },
-    "type=NEUTRAL": {
-      "model": "changed:block/latex_container_0"
-    },
-    "level=1,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_1_dark"
-    },
-    "level=2,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_2_dark"
-    },
-    "level=3,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_3_dark"
-    },
-    "level=4,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_4_dark"
-    },
-    "level=5,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_5_dark"
-    },
-    "level=6,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_6_dark"
-    },
-    "level=7,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_7_dark"
-    },
-    "level=8,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_8_dark"
-    },
-    "level=9,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_9_dark"
-    },
-    "level=10,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_10_dark"
-    },
-    "level=11,type=DARK_LATEX": {
-      "model": "changed:block/latex_container_11_dark"
-    },
-    "level=1,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_1_white"
-    },
-    "level=2,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_2_white"
-    },
-    "level=3,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_3_white"
-    },
-    "level=4,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_4_white"
-    },
-    "level=5,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_5_white"
-    },
-    "level=6,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_6_white"
-    },
-    "level=7,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_7_white"
-    },
-    "level=8,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_8_white"
-    },
-    "level=9,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_9_white"
-    },
-    "level=10,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_10_white"
-    },
-    "level=11,type=WHITE_LATEX": {
-      "model": "changed:block/latex_container_11_white"
+    "half=upper": {
+      "model": "changed:custom/latex_container_upper"
     }
   }
 }
