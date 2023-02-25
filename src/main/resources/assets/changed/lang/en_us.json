@@ -27,6 +27,7 @@
   "subtitles.changed.buzzer1": "Keypad denies access",
   "subtitles.changed.equip3": "Pants rustle",
   "subtitles.changed.bow2": "Box opens",
+  "subtitles.changed.key": "Keypad latch clicks",
   "subtitles.changed.shot1": "Laser activates",
   "subtitles.changed.siren": "Siren sings",
   "subtitles.changed.save": "Retinal scanner beeps",
@@ -98,7 +99,7 @@
   "container.changed.extra_hands": "Extra Hands Menu",
   "container.changed.infuser": "Infuser Menu",
   "container.changed.purifier": "Purifier Menu",
-  "container.changed.keypad_first": "Enter Passcode",
+  "container.changed.keypad_first": "Set a Passcode",
   "container.changed.keypad": "Enter Passcode",
   "container.changed.access_chest": "Chest Inventory",
 
