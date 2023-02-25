@@ -87,6 +87,10 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
             return true;
         }
 
+        else if (!attemptedCode.isEmpty() && key == GLFW.GLFW_KEY_BACKSLASH) {
+            attemptedCode.remove(attemptedCode.size() - 1);
+        }
+
         if (attemptedCode.size() >= 8)
             return super.keyPressed(key, b, c);
 
