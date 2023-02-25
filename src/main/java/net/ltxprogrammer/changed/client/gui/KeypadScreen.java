@@ -81,7 +81,7 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
 
     @Override
     public boolean keyPressed(int key, int b, int c) {
-        if (key == GLFW.GLFW_KEY_ENTER) {
+        if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER) {
             menu.useCode(attemptedCode);
             player.closeContainer();
             return true;
