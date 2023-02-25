@@ -27,6 +27,7 @@
   "subtitles.changed.buzzer1": "Tastatur nektet tilgang",
   "subtitles.changed.equip3": "Bukser rasler",
   "subtitles.changed.bow2": "Eske åpnes",
+  "subtitles.changed.key": "Tastaturlåsen klikker",
   "subtitles.changed.shot1": "Laser aktiveres",
   "subtitles.changed.siren": "Sirene synger",
   "subtitles.changed.save": "Netthinneskanner piper",
@@ -98,6 +99,7 @@
   "container.changed.extra_hands": "Ekstra hendermeny",
   "container.changed.infuser": "Tilførermenyen",
   "container.changed.purifier": "Rensermenyen",
+  "container.changed.keypad_first": "Sette et passkode",
   "container.changed.keypad": "Angi passkode",
   "container.changed.access_chest": "Kiste inventar",
 
