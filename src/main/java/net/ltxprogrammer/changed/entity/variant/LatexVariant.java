@@ -145,7 +145,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).glide().extraHands()
+    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands()
             .build(Changed.modResource("form_latex_bee")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
