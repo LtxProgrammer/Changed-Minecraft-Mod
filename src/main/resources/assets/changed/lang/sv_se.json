@@ -27,6 +27,7 @@
   "subtitles.changed.buzzer1": "Knappsats nekar åtkomst",
   "subtitles.changed.equip3": "Byxorna knarrar",
   "subtitles.changed.bow2": "Lådan öppnas",
+  "subtitles.changed.key": "Knappsatsspärren klickar",
   "subtitles.changed.shot1": "Laser aktiveras",
   "subtitles.changed.siren": "Siren sjunger",
   "subtitles.changed.save": "Näthinnanskanner piper",
@@ -98,6 +99,7 @@
   "container.changed.extra_hands": "Extra händermeny",
   "container.changed.infuser": "Infusionsanordningmeny",
   "container.changed.purifier": "Renaremeny",
+  "container.changed.keypad_first": "Sätta ett passkod",
   "container.changed.keypad": "Ange passkod",
   "container.changed.access_chest": "Kistaförråd",
 
