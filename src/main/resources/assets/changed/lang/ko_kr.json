@@ -27,6 +27,7 @@
   "subtitles.changed.buzzer1": "키패드가 접근을 거부함",
   "subtitles.changed.equip3": "숏팬츠가 부스럭거림",
   "subtitles.changed.bow2": "종이박스가 열림",
+  "subtitles.changed.key": "키패드 걸쇠가 찰칵거림",
   "subtitles.changed.shot1": "레이저가 작동함",
   "subtitles.changed.siren": "Siren이 노래함",
   "subtitles.changed.save": "홍채 스캐너가 삐빅거림",
@@ -98,6 +99,7 @@
   "container.changed.extra_hands": "추가 손 메뉴",
   "container.changed.infuser": "주입기 메뉴",
   "container.changed.purifier": "정화기 메뉴",
+  "container.changed.keypad_first": "비밀번호 설정",
   "container.changed.keypad": "비밀번호 입력",
   "container.changed.access_chest": "상자 인벤토리",
 
