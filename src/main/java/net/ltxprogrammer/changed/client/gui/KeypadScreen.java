@@ -87,7 +87,7 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
             return true;
         }
 
-        else if (!attemptedCode.isEmpty() && key == GLFW.GLFW_KEY_BACKSLASH) {
+        else if (!attemptedCode.isEmpty() && key == GLFW.GLFW_KEY_BACKSPACE) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ChangedSounds.SWITCH1, 1.0F));
             attemptedCode.remove(attemptedCode.size() - 1);
             return true;
