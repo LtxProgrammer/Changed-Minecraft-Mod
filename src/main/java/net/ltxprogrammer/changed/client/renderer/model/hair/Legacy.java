@@ -196,15 +196,15 @@ public class Legacy {
     public static LayerDefinition createFlaredMohawk() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -7.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
 
+        PartDefinition Hair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -7.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
                 .texOffs(42, 30).addBox(2.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(25, 42).addBox(-3.0F, -7.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
                 .texOffs(0, 79).addBox(-4.0F, -6.0F, 4.0F, 8.0F, 5.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(67, 1).addBox(4.0F, -4.0F, -2.0F, 1.0F, 4.0F, 6.0F, CubeDeformation.NONE)
                 .texOffs(0, 86).addBox(-3.0F, -7.0F, 4.0F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(44, 84).addBox(4.0F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
-                .texOffs(69, 28).addBox(-5.0F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(44, 84).addBox(3.75F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(69, 28).addBox(-4.75F, -6.0F, 2.0F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(44, 73).addBox(-5.0F, -4.0F, -2.0F, 1.0F, 4.0F, 6.0F, CubeDeformation.NONE)
                 .texOffs(51, 34).addBox(-2.0F, -7.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
 
