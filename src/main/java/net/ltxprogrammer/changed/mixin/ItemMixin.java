@@ -24,7 +24,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
         if (asItem() instanceof SaddleItem) {
             ProcessTransfur.ifPlayerLatex(player, variant -> {
                 var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
-                if (ability.saddle.isEmpty()) { // Quick equip saddle
+                if (ability != null && ability.saddle.isEmpty()) { // Quick equip saddle
                     ItemStack itemstack = player.getItemInHand(p_41434_);
                     ItemStack copy = itemstack.copy();
                     copy.setCount(1);
