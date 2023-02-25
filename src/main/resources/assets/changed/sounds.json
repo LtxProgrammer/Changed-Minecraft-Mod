@@ -179,6 +179,26 @@
     ],
     "subtitle": "subtitles.changed.shot1"
   },
+  "switch1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:switch1",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.switch1"
+  },
+  "switch2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:switch2",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.switch2"
+  },
   "siren": {
     "category": "entity",
     "sounds": [
