@@ -20,6 +20,7 @@ public class ChangedScreens {
             MenuScreens.register(ChangedMenus.ABILITY_RADIAL, AbilityRadialScreen::new);
             MenuScreens.register(ChangedMenus.HAIRSTYLE_RADIAL, HairStyleRadialScreen::new);
             MenuScreens.register(ChangedMenus.SPECIAL_RADIAL, SpecialStateRadialScreen::new);
+            MenuScreens.register(ChangedMenus.KEYPAD, KeypadScreen::new);
         });
     }
 }
