@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "minecraft:block/vent_fan",
+      "x": 90
+    },
+    "facing=down,powered=true": {
+      "model": "minecraft:block/vent_fan_on",
+      "x": 90
+    },
+    "facing=east,powered=false": {
+      "model": "minecraft:block/vent_fan",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "minecraft:block/vent_fan_on",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "minecraft:block/vent_fan"
+    },
+    "facing=north,powered=true": {
+      "model": "minecraft:block/vent_fan_on"
+    },
+    "facing=south,powered=false": {
+      "model": "minecraft:block/vent_fan",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "minecraft:block/vent_fan_on",
+      "y": 180
+    },
+    "facing=up,powered=false": {
+      "model": "minecraft:block/vent_fan",
+      "x": 270
+    },
+    "facing=up,powered=true": {
+      "model": "minecraft:block/vent_fan_on",
+      "x": 270
+    },
+    "facing=west,powered=false": {
+      "model": "minecraft:block/vent_fan",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "minecraft:block/vent_fan_on",
+      "y": 270
+    }
+  }
+}

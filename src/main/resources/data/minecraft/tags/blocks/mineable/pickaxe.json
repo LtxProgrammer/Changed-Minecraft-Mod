@@ -31,6 +31,7 @@
     "changed:tiles_white",
     "changed:tiles_white_stairs",
     "changed:tiles_white_connected",
+    "changed:vent_fan",
     "changed:vent_hatch",
     "changed:wall_blue_striped",
     "changed:wall_caution",
