@@ -18,6 +18,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +40,7 @@ public class KeypadBlock extends AbstractCustomShapeEntityBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 1.0D, 11.0D, 15.0D, 10.0D, 16.0D);
 
     public KeypadBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK));
+        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).strength(4.0F, 30.0F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE));
     }
 
