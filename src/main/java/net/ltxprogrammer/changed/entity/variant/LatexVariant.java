@@ -54,6 +54,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final List<ResourceLocation> FUSION_LATEX_FORMS = new ArrayList<>();
     public static final List<ResourceLocation> MOB_FUSION_LATEX_FORMS = new ArrayList<>();
     public static final List<ResourceLocation> SPECIAL_LATEX_FORMS = new ArrayList<>();
+    public static final EnumMap<LatexType, List<ResourceLocation>> VARIANTS_BY_TYPE = new EnumMap<>(LatexType.class);
 
     public static List<LatexVariant<?>> getFusionCompatible(LatexVariant<?> source, LatexVariant<?> other) {
         List<LatexVariant<?>> list = new ArrayList<>();
@@ -615,6 +616,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static <T extends LatexEntity> LatexVariant<T> register(LatexVariant<T> variant) {
         ALL_LATEX_FORMS.put(variant.getFormId(), variant);
         PUBLIC_LATEX_FORMS.add(variant.getFormId());
+        if (variant.type != LatexType.NEUTRAL)
+            VARIANTS_BY_TYPE.computeIfAbsent(variant.type, t -> new ArrayList<>()).add(variant.getFormId());
         if (variant.fusionOf.isPresent())
             FUSION_LATEX_FORMS.add(variant.getFormId());
         if (variant.mobFusionOf.isPresent())
@@ -627,6 +630,10 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         ALL_LATEX_FORMS.put(variant.female.getFormId(), variant.female);
         PUBLIC_LATEX_FORMS.add(variant.male.getFormId());
         PUBLIC_LATEX_FORMS.add(variant.female.getFormId());
+        if (variant.male.type != LatexType.NEUTRAL)
+            VARIANTS_BY_TYPE.computeIfAbsent(variant.male.type, t -> new ArrayList<>()).add(variant.male.getFormId());
+        if (variant.female.type != LatexType.NEUTRAL)
+            VARIANTS_BY_TYPE.computeIfAbsent(variant.female.type, t -> new ArrayList<>()).add(variant.female.getFormId());
         if (variant.male.fusionOf.isPresent())
             FUSION_LATEX_FORMS.add(variant.male.getFormId());
         if (variant.female.fusionOf.isPresent())
