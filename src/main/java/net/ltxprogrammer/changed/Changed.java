@@ -59,6 +59,7 @@ public class Changed {
         addNetworkMessage(QueryTransfurPacket.class, QueryTransfurPacket::new);
         addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
         addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
+        addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);

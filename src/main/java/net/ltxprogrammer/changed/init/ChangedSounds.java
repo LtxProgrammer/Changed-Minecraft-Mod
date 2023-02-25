@@ -67,7 +67,7 @@ public class ChangedSounds {
     }
 
     public static void broadcastSound(MinecraftServer server, SoundEvent event, BlockPos blockPos, float volume, float pitch) {
-        server.getPlayerList().broadcastAll(new ClientboundSoundPacket(event, SoundSource.BLOCKS, blockPos.getX(), blockPos.getY(), blockPos.getZ(), volume, pitch));
+        server.getPlayerList().broadcastAll(new ClientboundSoundPacket(event, SoundSource.BLOCKS, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, volume, pitch));
     }
 
     public static void broadcastSound(MinecraftServer server, SoundEvent event, SoundSource source, double x, double y, double z, float volume, float pitch) {
