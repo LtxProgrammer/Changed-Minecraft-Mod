@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCustomShapeBlock extends Block {
-    protected static final Map<Block, Map<Direction, VoxelShape>> SHAPES = new HashMap<Block, Map<Direction, VoxelShape>>();
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public AbstractCustomShapeBlock(BlockBehaviour.Properties properties) {
@@ -70,23 +69,6 @@ public abstract class AbstractCustomShapeBlock extends Block {
 
         FLAG_CALCULATING_SHAPES.set(false);
         return rShape;
-    }
-
-    protected void runCalculation(VoxelShape shape) {
-        SHAPES.put(this, new HashMap<Direction, VoxelShape>());
-        Map<Direction, VoxelShape> facingMap = SHAPES.get(this);
-        for (Direction direction : Direction.values()) {
-            facingMap.put(direction, calculateShapes(direction, shape));
-        }
-    }
-
-    protected VoxelShape transformShape(VoxelShape shape, double x, double y, double z) {
-        AtomicReference<VoxelShape> newShape = new AtomicReference<>();
-        shape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
-            newShape.set(Shapes.or(Block.box(minX + x, minY + y, minZ + z, maxX + x, maxY + y, maxZ + z),
-                    newShape.get() == null ? Shapes.empty() : newShape.get()));
-        });
-        return newShape.get();
     }
 
     public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {

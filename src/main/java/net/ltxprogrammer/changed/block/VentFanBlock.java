@@ -53,7 +53,7 @@ public class VentFanBlock extends DirectionalBlock implements NonLatexCoverableB
     public void stepOn(Level level, BlockPos blockPos, BlockState state, Entity entity) {
         super.stepOn(level, blockPos, state, entity);
         if (state.getValue(FACING) == Direction.UP && state.getValue(POWERED))
-            entity.hurt(DamageSource.GENERIC, 1);
+            entity.hurt(ChangedDamageSources.FAN, 1);
     }
 
     @Override

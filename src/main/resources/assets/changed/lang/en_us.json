@@ -83,6 +83,7 @@
   "death.attack.changed:white_latex": "%s was dissolved by white latex",
   "death.attack.changed:pale": "%s was taken by Pale",
   "death.attack.changed:bloodloss": "%s used foreign plasma",
+  "death.attack.changed:fan": "%s was diced by a fan",
 
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
@@ -138,7 +139,7 @@
   "block.changed.latex_wolf_crystal_small": "Small Latex Wolf Crystal",
   "block.changed.latex_crystal": "Latex Crystal",
   "block.changed.latex_traffic_cone": "Latex Traffic Cone",
-  "block.changed.lab_door": "Lab Door",
+  "block.changed.maintenance_door": "Maintenance Door",
   "block.changed.lab_light": "Lab Light",
   "block.changed.lab_light_small": "Small Lab Light",
   "block.changed.lab_table": "Lab Table",

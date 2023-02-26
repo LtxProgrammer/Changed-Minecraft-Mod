@@ -1,8 +1,0 @@
-{
-  "parent": "changed:custom/lab_door_open",
-  "textures": {
-    "all": "changed:blocks/lab_door",
-    "particle": "changed:blocks/lab_door",
-    "0": "changed:blocks/lab_door"
-  }
-}
