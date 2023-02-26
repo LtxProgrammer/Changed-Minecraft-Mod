@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/lab_door",
+  "parent": "changed:custom/maintenance_door",
   "display": {
     "thirdperson": {
       "rotation": [
