@@ -2,6 +2,7 @@
   "itemGroup.tab_changed_blocks": "Changed Lohkot",
   "itemGroup.tab_changed_items": "Changed Tuotteet",
   "itemGroup.tab_changed_entities": "Changed Yksiköt",
+  "itemGroup.tab_changed_combat": "Changed Taistelu",
 
   "ability.changed.access_saddle": "Istu Satulan Päälle",
   "ability.changed.extra_hands": "Ylimääräiset Kädet",
@@ -11,7 +12,11 @@
   "ability.changed.access_chest": "Katso Arkkuun",
   "ability.changed.switch_hands": "Vaihda Kädet",
   "ability.changed.switch_gender": "Vaihda Sukupuolta",
-  "ability.changed.use_variant_ability": "Käytä Muunnoskykyä",
+  "ability.changed.use_variant_ability.hypnosis": "Hypnoosi",
+  "ability.changed.use_variant_ability.siren_sing": "Laula",
+  "ability.changed.slither": "Liukastuminen",
+  "ability.changed.select_hairstyle": "Valitse kampaus",
+  "ability.changed.select_special_state": "Valitse erityistilanne",
 
   "subtitles.changed.sound3": "Orgaaninen transfur",
   "subtitles.changed.poison": "Transfur",
@@ -19,9 +24,16 @@
   "subtitles.changed.close3": "Labran ovi sulkeutuu",
   "subtitles.changed.equip3": "Housut kahisevat",
   "subtitles.changed.bow2": "Laatikko aukeaa",
+  "subtitles.changed.chime2": "Näppäimistö antaa pääsyn",
+  "subtitles.changed.buzzer1": "Näppäimistö estää pääsyn",
   "subtitles.changed.shot1": "Laser aktivoituu",
+  "subtitles.changed.key": "Näppäimistön salpa naksahtaa",
+  "subtitles.changed.switch1": "Näppäimistön painikkeiden napsautukset",
   "subtitles.changed.siren": "Seireeni laulaa",
   "subtitles.changed.save": "Verkkokalvon skanneri piippaa",
+  "subtitles.changed.sword1": "Neulan pistot",
+  "subtitles.changed.paralyze1": "Aseiden iskut",
+  "subtitles.changed.blow1": "Pelaaja lateksoitu",
 
   "item.changed.aerosol_latex_bucket": "Aerosolinen lateksiämpäri",
   "item.changed.blood_syringe": "Veriruisku",
@@ -42,14 +54,32 @@
   "item.changed.white_latex_goo": "Tahmainen valkoinen lateksi",
   "item.changed.white_latex_bucket": "Valkoinen lateksiämpäri",
 
+  "item.changed.tsc_staff": "TSC staff",
+  "item.changed.tsc_baton": "TSC kapula",
+
+  "item.changed.leather_upper_abdomen_armor": "Nahkainen vatsan yläosan panssari",
+  "item.changed.leather_lower_abdomen_armor": "Nahkainen alavatsapanssari",
+  "item.changed.chainmail_upper_abdomen_armor": "Ketjupanssari vatsan yläosan panssari",
+  "item.changed.chainmail_lower_abdomen_armor": "Ketjupanssari alavatsapanssari",
+  "item.changed.iron_upper_abdomen_armor": "Rautainen ylävatsapanssari",
+  "item.changed.iron_lower_abdomen_armor": "Rautainen alavatsapanssari",
+  "item.changed.golden_upper_abdomen_armor": "Kultainen ylävatsapanssari",
+  "item.changed.golden_lower_abdomen_armor": "Kultainen alavatsapanssari",
+  "item.changed.diamond_upper_abdomen_armor": "Timantti vatsan yläosan panssari",
+  "item.changed.diamond_lower_abdomen_armor": "Timantti alavatsapanssari",
+  "item.changed.netherite_upper_abdomen_armor": "Netherite vatsan yläosan panssari",
+  "item.changed.netherite_lower_abdomen_armor": "Netherite alavatsapanssari",
+
   "item.changed.latex_dance_record": "Latex musiikkilevy",
   "item.changed.latex_dance_record.desc": "Tehnyt: LtxProgrammer",
   "item.changed.owo_record": "ÒwÓ musiikilevy",
   "item.changed.owo_record.desc": "Tehnyt: Artemka2009",
 
+  "death.attack.changed:transfur": "%1$s was transfurred",
   "death.attack.changed:transfur.player": "%1$s sai transfurmaation %2$s lta",
   "death.attack.changed:white_latex": " liukeni valkoiseen lateksiin.",
   "death.attack.changed:pale": "%1$s otettiin Pale",
+  "death.attack.changed:bloodloss": "%s käytti ulkomaista plasmaa",
 
   "command.changed.error.not_latex_form": "Virheellinen lateksilomake",
   "command.changed.error.no_special_form": "Ei erityistä lomaketta, käy https://www.patreon.com/ltxprogrammer sivulla",
@@ -66,6 +96,8 @@
 
   "container.changed.extra_hands": "Ylimääräisten käsien-valikko",
   "container.changed.infuser": "Infuusori valikko",
+  "container.changed.keypad_first": "Aseta salasana",
+  "container.changed.keypad": "Enter Passcode",
   "container.changed.purifier": "Puhdistusaine valikko",
   "container.changed.access_chest": "Rintakehän inventaario",
 
@@ -73,8 +105,10 @@
   "text.changed.game_saved_fail": "Peliä ei voitu tallentaa!",
   "text.changed.game_loaded": "Peli on ladattu!",
   "text.changed.game_loaded_fail": "Peliä ei voitu ladata!",
+  "text.changed.syringe.owner": "Omistaja: %s",
 
   "effect.changed.hypercoagulation": "Hyperkoagulaatio",
+  "effect.changed.shock": "Shock",
 
   "block.changed.aerosol_latex": "Aerosolinen lateksi",
   "block.changed.bedside_iv_rack": "IV teline",
@@ -89,7 +123,9 @@
   "block.changed.dark_latex_ice": "Tumma lateksinen jää",
   "block.changed.infuser": "Infuusori",
   "block.changed.iron_crate": "Rautalaatikko",
+  "block.changed.keypad": "Näppäimistö",
   "block.changed.laser_emitter": "Lasersäteilijä",
+  "block.changed.latex_container": "Lateksisäiliö",
   "block.changed.latex_beifeng_crystal": "Lateksinen beifeng kristalli",
   "block.changed.latex_wolf_crystal": "Lateksinen susikristalli",
   "block.changed.latex_wolf_crystal_block": "Lateksinen susikristallin lohko",
@@ -112,6 +148,7 @@
   "block.changed.tiles_blue": "Siniset laatat",
   "block.changed.tiles_blue_small": "Pienet siniset laatat",
   "block.changed.tiles_caution": "Huomiolaatat",
+  "block.changed.tiles_darkblue": "Tummansiniset laatat",
   "block.changed.tiles_grayblue": "Siniharmaat laatat",
   "block.changed.tiles_grayblue_bolted_connected": "Liitetyt pultatut harmaansiniset laatat",
   "block.changed.tiles_grayblue_bolted": "Pultatut Siniharmaat laatat",
@@ -126,6 +163,8 @@
   "block.changed.tiles_white_stairs": "Valkoiset laattaportaat",
   "block.changed.tiles_white_connected": "Yhdistetyt valkoiset tiilet",
   "block.changed.wall_blue_striped": "Raidallinen sininen seinä",
+  "block.changed.wall_blue_tiled": "Laatoitettu sininen seinä",
+  "block.changed.vent_fan": "Tuuletuspuhallin",
   "block.changed.vent_hatch": "Tuuletusaukon luukku",
   "block.changed.wall_caution": "Huomioseinä",
   "block.changed.wall_library_upper": "Ylempi kirjaston seinä",
@@ -157,6 +196,7 @@
   "entity.changed.dark_latex_yufeng": "Tumma lateksinen yufeng",
   "entity.changed.headless_knight": "Päätön ritari",
   "entity.changed.milk_pudding": "Maitolätäkkö",
+  "entity.changed.latex_bee": "Lateksi mehiläinen",
   "entity.changed.latex_beifeng": "Lateksinen beifeng",
   "entity.changed.latex_benign_wolf": "Benign lateksiusi",
   "entity.changed.latex_blue_dragon": "Sininen lateksinen lohikäärme",
@@ -172,6 +212,7 @@
   "entity.changed.latex_mermaid_shark": "Lateksinen mereneitohai",
   "entity.changed.latex_mimic_plant": "Lateksinen jäljennös kasvi",
   "entity.changed.latex_orca": "Lateksinen miekkavalas",
+  "entity.changed.latex_otter": "Lateksisaukko",
   "entity.changed.latex_pink_wyvern": "Lateksinen pinkki traakki",
   "entity.changed.latex_purple_fox": "Lateksinen violetti kettu",
   "entity.changed.latex_raccoon": "Lateksinen pesukarhu",
@@ -210,6 +251,7 @@
   "item.changed.dark_latex_yufeng_spawn_egg": "Tumman lateksisen yufengin kutumuna",
   "item.changed.headless_knight_spawn_egg": "Päätön ritari kutumuna",
   "item.changed.milk_pudding_spawn_egg": "Maitolätäkön kutumuna",
+  "item.changed.latex_bee_spawn_egg": "Lateksi mehiläinen Kutumuna",
   "item.changed.latex_beifeng_spawn_egg": "Lateksisen beifengin kutumuna",
   "item.changed.latex_benign_wolf_spawn_egg": "Lateksisen benign suden kutumuna",
   "item.changed.latex_blue_dragon_spawn_egg": "Lateksisen sinisen lohikäärmeen kutumuna",
@@ -225,6 +267,7 @@
   "item.changed.latex_mermaid_shark_spawn_egg": "Lateksisen merenneitohain kutumuna",
   "item.changed.latex_mimic_plant_spawn_egg": "Lateksisen jäljennös kasvin kutumuna",
   "item.changed.latex_orca_spawn_egg": "Lateksisen miekkavalaan kutumuna",
+  "item.changed.latex_otter_spawn_egg": "Lateksisaukko Kutumuna",
   "item.changed.latex_pink_wyvern_spawn_egg": "Lateksisen pinkin traakin kutumuna",
   "item.changed.latex_purple_fox_spawn_egg": "Lateksisen violetin ketun kutumuna",
   "item.changed.latex_raccoon_spawn_egg": "Lateksisen pesukarhun kutumuna",
@@ -260,6 +303,7 @@
   "changed.patreon.level1": "Taso 1",
   "changed.patreon.level2": "Taso 2",
   "changed.patreon.level3": "Taso 3",
+  "changed.patreon.level4": "Taso 4",
 
   "changed.error.corrupted_disc": "Virhe: Korruptoinut Levyke",
 
@@ -318,5 +362,8 @@
   "changed:advancements.main.transfur_aerial.description": "Siirrä itsesi ilmamuotoon",
 
   "changed:advancements.main.transfur_mask.title": "Hylkää ihmisyytesi!",
-  "changed:advancements.main.transfur_mask.description": "Hanki tumma lateksinaamari ja pue se päällesi."
+  "changed:advancements.main.transfur_mask.description": "Hanki tumma lateksinaamari ja pue se päällesi.",
+
+  "changed:advancements.main.transfur_legless.title": "Jalkani!",
+  "changed:advancements.main.transfur_legless.description": "Muuta itsesi jalattomaan muotoon"
 }
