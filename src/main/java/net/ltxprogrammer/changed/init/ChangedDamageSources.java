@@ -27,7 +27,8 @@ public class ChangedDamageSources {
         return new TransfurDamageSource(Changed.modResourceStr("transfur"), source);
     }
 
-    //public static final DamageSource TRANSFUR = (new DamageSource(Changed.modResourceStr("transfur"))).bypassArmor().bypassMagic();
+    public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
     public static final DamageSource WHITE_LATEX = (new DamageSource(Changed.modResourceStr("white_latex"))).bypassArmor().bypassMagic();
     public static final DamageSource PALE = (new DamageSource(Changed.modResourceStr("pale"))).bypassArmor().bypassMagic();
+    public static final DamageSource FAN = new DamageSource(Changed.modResourceStr("fan"));
 }

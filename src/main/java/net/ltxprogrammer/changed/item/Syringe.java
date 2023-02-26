@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -42,8 +39,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class Syringe extends Item implements SpecializedAnimations {
-    public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
-
     public Syringe(Properties p_41383_) {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
@@ -120,7 +115,7 @@ public class Syringe extends Item implements SpecializedAnimations {
         if (!ProcessTransfur.isPlayerOrganic(player) && player != sourcePlayer)
             return stack;
 
-        player.hurt(BLOODLOSS, 1.0f);
+        player.hurt(ChangedDamageSources.BLOODLOSS, 1.0f);
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {
             stack.shrink(1);
