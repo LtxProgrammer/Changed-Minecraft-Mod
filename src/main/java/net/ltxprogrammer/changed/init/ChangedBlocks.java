@@ -75,7 +75,6 @@ public class ChangedBlocks {
     public static final RegistryObject<LatexContainerBlock> LATEX_CONTAINER = register("latex_container", LatexContainerBlock::new);
     public static final RegistryObject<LatexTrafficCone> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
     public static final RegistryObject<LatexBeifengCrystal> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);
-    public static final RegistryObject<LabBlock> VENT_FAN = register("vent_fan", () -> new LabBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).strength(4.0F, 30.0F)));
     public static final RegistryObject<LatexCrystal> LATEX_BEIFENG_CRYSTAL_SMALL = register("latex_beifeng_crystal_small", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
             .add(ChangedEntities.LATEX_BEIFENG::get).build(), ChangedItems.LATEX_BEIFENG_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<DarkLatexDragonCrystal> DARK_LATEX_DRAGON_CRYSTAL = register("dark_latex_dragon_crystal", () -> new DarkLatexDragonCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(4.0F, 30.0F)), AbstractLatexCrystal::cutoutRenderer);
@@ -106,6 +105,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LabStairBlock> TILES_WHITE_STAIRS = register("tiles_white_stairs", () -> new LabStairBlock(TILES_WHITE.get()::defaultBlockState, BlockBehaviour.Properties.copy(TILES_WHITE.get())));
     public static final RegistryObject<ConnectedFloorBlock> TILES_WHITE_CONNECTED = register("tiles_white_connected", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.copy(TILES_WHITE.get())));
     public static final RegistryObject<ConnectedFloorBlock> ORANGE_LAB_CARPETING = register("orange_lab_carpeting", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOL).strength(0.3F, 6.0F)));
+    public static final RegistryObject<VentFanBlock> VENT_FAN = register("vent_fan", VentFanBlock::new);
     public static final RegistryObject<TrapDoorBlock> VENT_HATCH = register("vent_hatch", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).sound(SoundType.METAL)), AbstractLatexCrystal::cutoutRenderer);
     public static final RegistryObject<LabBlock> WALL_BLUE_STRIPED = register("wall_blue_striped", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).sound(SoundType.STONE).strength(1.5F, 6.0F)));
     public static final RegistryObject<LabBlock> WALL_BLUE_TILED = register("wall_blue_tiled", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).sound(SoundType.STONE).strength(1.5F, 6.0F)));
