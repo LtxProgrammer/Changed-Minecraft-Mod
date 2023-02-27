@@ -1,10 +1,10 @@
 {
   "parent": "block/orientable",
   "textures": {
-    "down": "changed:blocks/vent_fan_side_r",
+    "down": "changed:blocks/vent_fan_side_r_inv",
     "up": "changed:blocks/vent_fan_side_r",
     "north": "changed:blocks/vent_fan_on",
-    "east": "changed:blocks/vent_fan_side",
+    "east": "changed:blocks/vent_fan_side_inv",
     "south": "changed:blocks/vent_fan_back",
     "west": "changed:blocks/vent_fan_side",
     "particle": "changed:blocks/vent_fan_back"
