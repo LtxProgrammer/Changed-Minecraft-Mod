@@ -43,7 +43,7 @@ public class KeypadMenu extends AbstractContainerMenu implements UpdateableMenu 
 
     @Override
     public boolean stillValid(Player player) {
-        return blockEntity != null && !blockEntity.isRemoved();
+        return blockEntity != null && !blockEntity.isRemoved() && !player.isSpectator();
     }
 
     public void useCode(List<Byte> attemptedCode) {
