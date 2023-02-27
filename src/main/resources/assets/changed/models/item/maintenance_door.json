@@ -1,5 +1,5 @@
 {
-  "parent": "changed:custom/maintenance_door",
+  "parent": "changed:custom/maintenance_door_full",
   "display": {
     "thirdperson": {
       "rotation": [

@@ -68,14 +68,6 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         this.close = close;
     }
 
-
-    public RenderShape getRenderShape(BlockState state) {
-        if (state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
-            return RenderShape.MODEL;
-        else
-            return RenderShape.INVISIBLE;
-    }
-
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
         return getInteractionShape(state, level, pos);
     }
