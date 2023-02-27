@@ -83,6 +83,7 @@
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
   "death.attack.changed:pale": "%s ble tatt av Pale",
   "death.attack.changed:bloodloss": "%s brukt fremmed plasma",
+  "death.attack.changed:fan": "%s ble hakket opp av en vifte",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
@@ -138,7 +139,7 @@
   "block.changed.latex_wolf_crystal_small": "Liten lateks ulvekrystall",
   "block.changed.latex_crystal": "Lateks krystall",
   "block.changed.latex_traffic_cone": "Lateks trafikk-kjegle",
-  "block.changed.maintenance_door": "Laboratoriedøren",
+  "block.changed.maintenance_door": "Vedlikeholdsdør",
   "block.changed.lab_light": "Laboratorielys",
   "block.changed.lab_light_small": "Liten laboratorielys",
   "block.changed.lab_table": "Laboratoriebord",
