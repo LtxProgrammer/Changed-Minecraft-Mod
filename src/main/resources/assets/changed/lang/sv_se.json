@@ -83,6 +83,7 @@
   "death.attack.changed:white_latex": "%s upplöst i vit latex",
   "death.attack.changed:pale": "%s togs av Pale",
   "death.attack.changed:bloodloss": "%s använt främmande plasma",
+  "death.attack.changed:fan": "%s hackades upp av en fläkt",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
@@ -138,7 +139,7 @@
   "block.changed.latex_wolf_crystal_small": "Litet latex vargkristall",
   "block.changed.latex_crystal": "Latex kristall",
   "block.changed.latex_traffic_cone": "Latex trafikkon",
-  "block.changed.maintenance_door": "Laboratoriedörren",
+  "block.changed.maintenance_door": "Underhållsdörr",
   "block.changed.lab_light": "Laboratorieljus",
   "block.changed.lab_light_small": "Litet laboratorieljus",
   "block.changed.lab_table": "Laboratoriebord",
