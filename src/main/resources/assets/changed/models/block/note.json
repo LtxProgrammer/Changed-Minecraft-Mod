@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/note",
+  "textures": {
+    "all": "changed:blocks/note",
+    "particle": "changed:blocks/note",
+    "0": "changed:blocks/note"
+  }
+}
