@@ -1,0 +1,30 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "note",
+		"particle": "note"
+	},
+	"elements": [
+		{
+			"from": [4, 2, 0],
+			"to": [12, 14, 1],
+			"faces": {
+				"north": {"uv": [0, 0, 4, 6], "texture": "#0"},
+				"east": {"uv": [0, 6, 0.5, 12], "texture": "#0"},
+				"south": {"uv": [4, 0, 8, 6], "texture": "#0"},
+				"west": {"uv": [0.5, 6, 1, 12], "texture": "#0"},
+				"up": {"uv": [5, 6.5, 1, 6], "texture": "#0"},
+				"down": {"uv": [9, 6, 5, 6.5], "texture": "#0"}
+			},
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}
+	]
+}
