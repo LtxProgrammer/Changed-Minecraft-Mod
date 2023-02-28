@@ -10,12 +10,15 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class ChangedBlockEntities {
-    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, RegistryObject<? extends Block> block) {
-        return () -> BlockEntityType.Builder.of(entitySupplier, block.get()).build(null);
+    @SafeVarargs
+    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, Supplier<? extends Block>... block) {
+        return () -> new BlockEntityType<>(entitySupplier, Arrays.stream(block).map(Supplier::get).collect(Collectors.toSet()), null);
     }
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Changed.MODID);
@@ -24,4 +27,5 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX = REGISTRY.register("cardboard_box", deferredProvider(CardboardBoxBlockEntity::new, ChangedBlocks.CARDBOARD_BOX));
     public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD = REGISTRY.register("keypad", deferredProvider(KeypadBlockEntity::new, ChangedBlocks.KEYPAD));
     public static final RegistryObject<BlockEntityType<LatexContainerBlockEntity>> LATEX_CONTAINER = REGISTRY.register("latex_container", deferredProvider(LatexContainerBlockEntity::new, ChangedBlocks.LATEX_CONTAINER));
+    public static final RegistryObject<BlockEntityType<TextBlockEntity>> TEXT_BLOCK_ENTITY = REGISTRY.register("text_block_entity", deferredProvider(TextBlockEntity::new, ChangedBlocks.NOTE, ChangedBlocks.CLIPBOARD));
 }
