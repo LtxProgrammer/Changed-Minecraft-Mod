@@ -103,6 +103,7 @@
   "container.changed.purifier": "Purifier Menu",
   "container.changed.keypad_first": "Set a Passcode",
   "container.changed.keypad": "Enter Passcode",
+  "container.changed.note": "Notice",
   "container.changed.access_chest": "Chest Inventory",
 
   "text.changed.game_saved": "Game has been saved.",
@@ -118,6 +119,7 @@
 
   "block.changed.aerosol_latex": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
+  "block.changed.blue_lab_door": "Blue Lab Door",
   "block.changed.book_stack": "Book Stack",
   "block.changed.canned_peaches": "Canned Peaches",
   "block.changed.computer": "Computer",
@@ -144,6 +146,7 @@
   "block.changed.lab_light_small": "Small Lab Light",
   "block.changed.lab_table": "Lab Table",
   "block.changed.laser_beam": "Laser Beam",
+  "block.changed.library_door": "Library Door",
   "block.changed.light_latex_puddle_female": "Female Light Latex Wolf Puddle",
   "block.changed.light_latex_puddle_male": "Male Light Latex Wolf Puddle",
   "block.changed.maintenance_door": "Maintenance Door",
