@@ -103,6 +103,7 @@
   "container.changed.purifier": "Renaremeny",
   "container.changed.keypad_first": "Sätta ett passkod",
   "container.changed.keypad": "Ange passkod",
+  "container.changed.note": "Märka",
   "container.changed.access_chest": "Kistaförråd",
 
   "text.changed.game_saved": "Spelet har sparats.",
@@ -118,6 +119,7 @@
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
+  "block.changed.blue_lab_door": "Blå laboratoriedörr",
   "block.changed.book_stack": "Bokhög",
   "block.changed.canned_peaches": "Konserverade persikor",
   "block.changed.computer": "Dator",
@@ -146,6 +148,7 @@
   "block.changed.lab_light_small": "Litet laboratorieljus",
   "block.changed.lab_table": "Laboratoriebord",
   "block.changed.laser_beam": "Laserstråle",
+  "block.changed.library_door": "Biblioteksdörr",
   "block.changed.light_latex_puddle_female": "Kvinnlig ljuslatex vargpöl",
   "block.changed.light_latex_puddle_male": "Manlig ljuslatex vargpöl",
   "block.changed.orange_lab_carpeting": "Orange labbmatta",
