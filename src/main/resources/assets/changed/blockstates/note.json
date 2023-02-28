@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "changed:block/note"
-    },
-    "facing=east": {
-      "model": "changed:block/note",
-      "y": 90
-    },
-    "facing=south": {
       "model": "changed:block/note",
       "y": 180
     },
-    "facing=west": {
+    "facing=east": {
       "model": "changed:block/note",
       "y": 270
+    },
+    "facing=south": {
+      "model": "changed:block/note"
+    },
+    "facing=west": {
+      "model": "changed:block/note",
+      "y": 90
     }
   }
 }
