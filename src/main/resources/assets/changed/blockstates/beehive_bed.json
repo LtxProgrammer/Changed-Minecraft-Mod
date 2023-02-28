@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,state=normal": {
+      "model": "changed:custom/beehive_bed_a"
+    },
+    "facing=east,state=normal": {
+      "model": "changed:custom/beehive_bed_a",
+      "y": 90
+    },
+    "facing=south,state=normal": {
+      "model": "changed:custom/beehive_bed_a",
+      "y": 180
+    },
+    "facing=west,state=normal": {
+      "model": "changed:custom/beehive_bed_a",
+      "y": 270
+    },
+    "facing=north,state=offset": {
+      "model": "changed:custom/beehive_bed_b"
+    },
+    "facing=east,state=offset": {
+      "model": "changed:custom/beehive_bed_b",
+      "y": 90
+    },
+    "facing=south,state=offset": {
+      "model": "changed:custom/beehive_bed_b",
+      "y": 180
+    },
+    "facing=west,state=offset": {
+      "model": "changed:custom/beehive_bed_b",
+      "y": 270
+    }
+  }
+}
