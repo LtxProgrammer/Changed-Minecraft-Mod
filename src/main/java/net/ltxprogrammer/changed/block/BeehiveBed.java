@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.beast.LatexBee;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -99,6 +101,10 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
                 if (!state.is(this)) {
                     return InteractionResult.CONSUME;
                 }
+            }
+
+            if (!ProcessTransfur.ifPlayerLatex(player, variant -> variant.is(LatexVariant.LATEX_BEE), () -> false)) {
+                return InteractionResult.SUCCESS;
             }
 
             if (!canSetSpawn(level)) {

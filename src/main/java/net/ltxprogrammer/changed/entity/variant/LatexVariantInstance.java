@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.beast.LatexBee;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -574,5 +575,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public LatexType getLatexType() {
         return parent.getLatexType();
+    }
+
+    public boolean is(LatexVariant<?> variant) {
+        return parent.is(variant);
     }
 }
