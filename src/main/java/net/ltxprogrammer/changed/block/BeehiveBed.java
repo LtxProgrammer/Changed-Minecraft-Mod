@@ -1,9 +1,12 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.beast.LatexBee;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,7 +41,7 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
             Block.box(1.0D, 0.0D, 1.0D, 15.0D, 3.0D, 15.0D),
             Block.box(1.0D, 15.0D, 1.0D, 15.0D, 16.0D, 15.0D)
     );
-    public static final VoxelShape SHAPE_WHOLE_OFFSET = Block.box(1.0D, 7.0D, 1.0D, 15.0D, 11.0D, 15.0D);
+    public static final VoxelShape SHAPE_WHOLE_OFFSET = Block.box(1.0D, 7.0D, 1.0D, 15.0D, 12.0D, 15.0D);
 
     public enum BeehiveState implements StringRepresentable {
         NORMAL,
@@ -59,7 +62,7 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
     public static final BooleanProperty OCCUPIED = BedBlock.OCCUPIED;
 
     public BeehiveBed() {
-        super(Properties.copy(Blocks.BEE_NEST));
+        super(Properties.copy(Blocks.BEE_NEST).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never));
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(STATE, BeehiveState.NORMAL)
@@ -99,13 +102,6 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
             }
 
             if (!canSetSpawn(level)) {
-                level.removeBlock(pos, false);
-                BlockPos blockpos = pos.relative(state.getValue(FACING).getOpposite());
-                if (level.getBlockState(blockpos).is(this)) {
-                    level.removeBlock(blockpos, false);
-                }
-
-                level.explode(null, DamageSource.badRespawnPointExplosion(), null, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, 5.0F, true, Explosion.BlockInteraction.DESTROY);
                 return InteractionResult.SUCCESS;
             } else if (state.getValue(OCCUPIED)) {
                 if (!this.kickBeeOutOfBed(level, pos)) {
@@ -119,6 +115,9 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
                         player.displayClientMessage(problem.getMessage(), true);
                     }
 
+                }).ifRight(unit -> {
+                    if (player instanceof ServerPlayer serverPlayer)
+                        ChangedCriteriaTriggers.BEEHIVE_SLEEP.trigger(serverPlayer);
                 });
                 return InteractionResult.SUCCESS;
             }
