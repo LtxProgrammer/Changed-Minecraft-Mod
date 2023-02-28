@@ -119,6 +119,11 @@
 
   "block.changed.aerosol_latex": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
+  "block.changed.beehive_bed": "Bikupasäng",
+  "block.changed.beehive_wall": "Bikupavägg",
+  "block.changed.beehive_floor": "Bikupa golv",
+  "block.changed.beehive_roof": "Bikupatak",
+  "block.changed.beehive_corner": "Bikupahörn",
   "block.changed.blue_lab_door": "Blå laboratoriedörr",
   "block.changed.book_stack": "Bokhög",
   "block.changed.canned_peaches": "Konserverade persikor",
@@ -385,5 +390,8 @@
   "changed:advancements.main.transfur_mask.description": "Skaffa och sätt på en mörk latexmask.",
 
   "changed:advancements.main.transfur_legless.title": "Mina ben!",
-  "changed:advancements.main.transfur_legless.description": "Förpälsvandla dig själv till en benlös form"
+  "changed:advancements.main.transfur_legless.description": "Förpälsvandla dig själv till en benlös form",
+
+  "changed:advancements.main.beehive_sleep.title": "Sötare drömmar",
+  "changed:advancements.main.beehive_sleep.description": "Sova i en bikupasäng"
 }
