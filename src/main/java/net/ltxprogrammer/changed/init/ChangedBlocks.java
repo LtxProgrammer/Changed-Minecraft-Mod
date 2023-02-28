@@ -55,6 +55,7 @@ public class ChangedBlocks {
     public static final Map<RegistryObject<? extends Block>, Consumer<Block>> REGISTRY_CRL = new HashMap<>();
     public static final RegistryObject<AerosolLatex> AEROSOL_LATEX = registerNoItem("aerosol_latex", AerosolLatex::new);
     public static final RegistryObject<BedsideIVRack> BEDSIDE_IV_RACK = register("bedside_iv_rack", BedsideIVRack::new, ChangedBlocks::translucentRenderer);
+    public static final RegistryObject<BeehiveBed> BEEHIVE_BED = register("beehive_bed", BeehiveBed::new);
     public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<BookStack> BOOK_STACK = register("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F, 6.0F)));
     public static final RegistryObject<ClipboardBlock> CLIPBOARD = register("clipboard", ClipboardBlock::new);
