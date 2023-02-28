@@ -21,8 +21,8 @@
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
-  "subtitles.changed.open3": "Laboratoriedörren öppnas",
-  "subtitles.changed.close3": "Laboratoriedörren stängs",
+  "subtitles.changed.open3": "Laboratoriedörr öppnas",
+  "subtitles.changed.close3": "Laboratoriedörr stängs",
   "subtitles.changed.chime2": "Knappsats ger åtkomst",
   "subtitles.changed.buzzer1": "Knappsats nekar åtkomst",
   "subtitles.changed.equip3": "Byxorna knarrar",
@@ -139,6 +139,7 @@
   "block.changed.latex_wolf_crystal_small": "Litet latex vargkristall",
   "block.changed.latex_crystal": "Latex kristall",
   "block.changed.latex_traffic_cone": "Latex trafikkon",
+  "block.changed.lab_door": "Laboratoriedörr",
   "block.changed.maintenance_door": "Underhållsdörr",
   "block.changed.note": "Not",
   "block.changed.lab_light": "Laboratorieljus",

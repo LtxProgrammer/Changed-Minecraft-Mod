@@ -21,8 +21,8 @@
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
-  "subtitles.changed.open3": "Laboratoriedøren åpnes",
-  "subtitles.changed.close3": "Laboratoriedøren lukkes",
+  "subtitles.changed.open3": "Laboratoriedør åpnes",
+  "subtitles.changed.close3": "Laboratoriedør lukkes",
   "subtitles.changed.chime2": "Tastatur gir tilgang",
   "subtitles.changed.buzzer1": "Tastatur nektet tilgang",
   "subtitles.changed.equip3": "Bukser rasler",
@@ -139,6 +139,7 @@
   "block.changed.latex_wolf_crystal_small": "Liten lateks ulvekrystall",
   "block.changed.latex_crystal": "Lateks krystall",
   "block.changed.latex_traffic_cone": "Lateks trafikk-kjegle",
+  "block.changed.lab_door": "Laboratoriedør",
   "block.changed.maintenance_door": "Vedlikeholdsdør",
   "block.changed.note": "Lapp",
   "block.changed.lab_light": "Laboratorielys",
