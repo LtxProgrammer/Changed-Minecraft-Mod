@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:changed/transfur",
+  "display": {
+    "icon": {
+      "item": "changed:beehive_bed"
+    },
+    "title": {
+      "translate": "changed:advancements.main.beehive_sleep.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.beehive_sleep.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "beehive_sleep": {
+      "trigger": "changed:beehive_sleep",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "beehive_sleep"
+    ]
+  ]
+}

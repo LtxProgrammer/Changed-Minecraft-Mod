@@ -386,5 +386,8 @@
   "changed:advancements.main.transfur_mask.description": "Obtain and put on a dark latex mask.",
 
   "changed:advancements.main.transfur_legless.title": "My Legs!",
-  "changed:advancements.main.transfur_legless.description": "Transfur yourself into a legless form"
+  "changed:advancements.main.transfur_legless.description": "Transfur yourself into a legless form",
+
+  "changed:advancements.main.beehive_sleep.title": "Sweeter Dreams",
+  "changed:advancements.main.beehive_sleep.description": "Sleep in a beehive bed"
 }
