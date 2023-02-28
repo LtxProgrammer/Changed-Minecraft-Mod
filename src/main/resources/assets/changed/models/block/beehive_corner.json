@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/beehive_outer",
+    "up": "changed:blocks/beehive_outer",
+    "north": "changed:blocks/beehive_inner_wall",
+    "east": "changed:blocks/beehive_inner_wall",
+    "south": "changed:blocks/beehive_outer_wall",
+    "west": "changed:blocks/beehive_outer_wall",
+    "particle": "changed:blocks/beehive_outer_wall"
+  }
+}

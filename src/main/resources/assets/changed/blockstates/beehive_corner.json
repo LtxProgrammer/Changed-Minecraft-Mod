@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/beehive_corner"
+    },
+    "facing=east": {
+      "model": "changed:block/beehive_corner",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/beehive_corner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/beehive_corner",
+      "y": 270
+    }
+  }
+}
