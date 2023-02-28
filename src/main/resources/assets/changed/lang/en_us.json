@@ -103,6 +103,7 @@
   "container.changed.purifier": "Purifier Menu",
   "container.changed.keypad_first": "Set a Passcode",
   "container.changed.keypad": "Enter Passcode",
+  "container.changed.note": "Notice",
   "container.changed.access_chest": "Chest Inventory",
 
   "text.changed.game_saved": "Game has been saved.",

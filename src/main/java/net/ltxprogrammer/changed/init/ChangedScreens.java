@@ -21,6 +21,8 @@ public class ChangedScreens {
             MenuScreens.register(ChangedMenus.HAIRSTYLE_RADIAL, HairStyleRadialScreen::new);
             MenuScreens.register(ChangedMenus.SPECIAL_RADIAL, SpecialStateRadialScreen::new);
             MenuScreens.register(ChangedMenus.KEYPAD, KeypadScreen::new);
+            MenuScreens.register(ChangedMenus.CLIPBOARD, ClipboardScreen::new);
+            MenuScreens.register(ChangedMenus.NOTE, NoteScreen::new);
         });
     }
 }
