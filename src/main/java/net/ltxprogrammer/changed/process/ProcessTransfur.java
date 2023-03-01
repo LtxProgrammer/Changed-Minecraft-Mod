@@ -253,13 +253,10 @@ public class ProcessTransfur {
             oldVariant.getLatexEntity().discard();
         LatexVariantInstance<?> instance = LatexVariantInstance.variantFor(variant, player);
         playerDataExtension.setLatexVariant(instance);
-        if (variant != null) {
-            variant.generateForm(player, player.level).setUnderlyingPlayer(player);
+        if (variant != null)
             player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
-        }
-        else {
+        else
             player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
-        }
         if (oldVariant != null)
             oldVariant.unhookAll(player);
         if (!player.level.isClientSide)
