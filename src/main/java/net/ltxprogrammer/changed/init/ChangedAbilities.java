@@ -13,9 +13,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class ChangedAbilities {
-    public static final DeferredRegister<AbstractAbility<?>> REGISTRY = DeferredRegister.create(ChangedRegistry.ABILITY_REGISTRY, Changed.MODID);
-
-    //private static final Map<ResourceLocation, AbstractAbility<?>> REGISTRY = new HashMap<>();
+    public static final DeferredRegister<AbstractAbility<?>> REGISTRY = ChangedRegistry.ABILITY.createDeferred(Changed.MODID);
 
     public static RegistryObject<ExtraHandsAbility> EXTRA_HANDS = REGISTRY.register("extra_hands", ExtraHandsAbility::new);
     public static RegistryObject<AccessSaddleAbility> ACCESS_SADDLE = REGISTRY.register("access_saddle", AccessSaddleAbility::new);

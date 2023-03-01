@@ -114,7 +114,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexMimicPlant> LATEX_MIMIC_PLANT = register(Builder.of(LATEX_LEAF, ChangedEntities.LATEX_MIMIC_PLANT)
             .build(Changed.modResource("form_latex_mimic_plant")));
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
-            .groundSpeed(1.15f).swimSpeed(0.8f).stepSize(0.7f).weakLungs().reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
+            .groundSpeed(1.15f).swimSpeed(0.8f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
             .buildGendered(Changed.modResource("form_latex_snow_leopard")));
     public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_WATERMELON_CAT)
             .build(Changed.modResource("form_latex_watermelon_cat")));
@@ -149,7 +149,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB)
+    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_bee")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
@@ -389,7 +389,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.abilities.contains(ChangedAbilities.ACCESS_SADDLE.getId()); }
+    public boolean rideable() { return this.abilities.contains(ChangedAbilities.ACCESS_SADDLE); }
 
     public static class Builder<T extends LatexEntity> {
         final Supplier<EntityType<T>> entityType;
@@ -402,7 +402,6 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         boolean canGlide = false;
         int extraJumpCharges = 0;
         int additionalHealth = 4;
-        boolean weakLungs = false;
         boolean reducedFall = false;
         boolean noVision = false;
         boolean cannotWalk = false;
@@ -503,14 +502,6 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
         public Builder<T> scares(List<Class<? extends PathfinderMob>> v) {
             scares = v; return this;
-        }
-
-        public Builder<T> weakLungs() {
-            this.weakLungs = true; return this;
-        }
-
-        public Builder<T> weakLungs(boolean v) {
-            this.weakLungs = v; return this;
         }
 
         public Builder<T> stepSize(float factor) {
