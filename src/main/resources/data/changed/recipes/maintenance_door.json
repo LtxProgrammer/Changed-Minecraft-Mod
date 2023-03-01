@@ -1,16 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    "XDX",
-    "RXR"
+    "IPI",
+    "IDI",
+    "RPR"
   ],
   "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
     "D": {
       "item": "minecraft:iron_door"
-    },
-    "X": {
-      "item": "minecraft:iron_ingot"
     },
     "R": {
       "item": "minecraft:redstone"
