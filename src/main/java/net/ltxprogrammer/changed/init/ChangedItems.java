@@ -43,6 +43,7 @@ public class ChangedItems {
 
     public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
     public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);
+    public static final RegistryObject<TscShield> TSC_SHIELD = register("tsc_shield", TscShield::new);
 
     public static final RegistryObject<AbdomenArmor> LEATHER_UPPER_ABDOMEN_ARMOR = register("leather_upper_abdomen_armor",
             () -> new DyeableAbdomenArmor(ArmorMaterials.LEATHER, EquipmentSlot.LEGS));

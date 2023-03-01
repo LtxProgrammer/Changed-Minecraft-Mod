@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
 	"changed:tsc_staff",
-	"changed:tsc_baton"
+	"changed:tsc_baton",
+	"changed:tsc_shield"
   ]
 }

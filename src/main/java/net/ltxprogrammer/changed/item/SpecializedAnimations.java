@@ -43,6 +43,10 @@ public interface SpecializedAnimations {
                         livingEntity.getItemInHand(InteractionHand.OFF_HAND).isEmpty();
             }
 
+            public boolean isUsing(ItemStack itemStack) {
+                return livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack;
+            }
+
             public static class SimpleEntityState extends EntityStateContext {
                 protected SimpleEntityState(LivingEntity livingEntity) {
                     super(livingEntity, livingEntity.getAttackAnim(0.5f), 0.5f);
