@@ -663,7 +663,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
     public static LatexVariant<?> getEntityVariant(LivingEntity entity) {
         return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
-                variant -> variant.getParent(), () -> {
+                LatexVariantInstance::getParent,
+                () -> {
                     if (entity instanceof LatexEntity latexEntity)
                         return latexEntity.getSelfVariant();
                     return null;
