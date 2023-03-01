@@ -10,6 +10,7 @@
   "ability.changed.switch_transfur_mode.select": "Förpälsvandla läge är nu: %s",
   "ability.changed.create_cobweb": "Skapa spindelnät",
   "ability.changed.create_inkball": "Skapa bläckboll",
+  "ability.changed.create_honeycomb": "Skapa vaxkaka",
   "ability.changed.access_chest": "Tillgång kista",
   "ability.changed.switch_hands": "Byta händer",
   "ability.changed.switch_gender": "Byta kön",
@@ -59,6 +60,7 @@
 
   "item.changed.tsc_staff": "TSC stav",
   "item.changed.tsc_baton": "TSC taktpinne",
+  "item.changed.tsc_shield": "TSC sköld",
 
   "item.changed.leather_upper_abdomen_armor": "Läder övre bukrustning",
   "item.changed.leather_lower_abdomen_armor": "Läder lägre bukrustning",
@@ -121,7 +123,7 @@
   "block.changed.bedside_iv_rack": "IV kuggstång",
   "block.changed.beehive_bed": "Bikupasäng",
   "block.changed.beehive_wall": "Bikupavägg",
-  "block.changed.beehive_floor": "Bikupa golv",
+  "block.changed.beehive_floor": "Bikupagolv",
   "block.changed.beehive_roof": "Bikupatak",
   "block.changed.beehive_corner": "Bikupahörn",
   "block.changed.blue_lab_door": "Blå laboratoriedörr",
@@ -197,6 +199,10 @@
   "block.changed.wall_white": "Vit vegg",
   "block.changed.white_latex_block": "Vit latexblock",
   "block.changed.white_latex_pillar": "Vit latexspelare",
+
+  "fluid.changed.aerosol_latex": "Varggas",
+  "fluid.changed.dark_latex": "Flytande mörk latex",
+  "fluid.changed.white_latex": "Flytande vit latex",
 
   "biome.changed.dark_latex_plains": "Mörk latexslätter",
   "biome.changed.white_latex_forest": "Vit latexskog",
