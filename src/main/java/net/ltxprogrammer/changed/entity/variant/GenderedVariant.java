@@ -161,9 +161,10 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.additionalHealth = value; this.femaleBuilder.additionalHealth = value; return this;
         }
 
-        public Builder<M, F> addAbility(AbstractAbility<?> ability) {
+        public Builder<M, F> addAbility(Supplier<? extends AbstractAbility<?>> ability) {
             this.maleBuilder.addAbility(ability); this.femaleBuilder.addAbility(ability); return this;
         }
+
         public Builder<M, F> noLegs() {
             this.maleBuilder.noLegs(); this.femaleBuilder.noLegs(); return this;
         }

@@ -113,7 +113,7 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
 
         if (variant == null)
             return;
-        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
         if (ability == null)
             return;
 

@@ -2,12 +2,15 @@ package net.ltxprogrammer.changed.init;
 
 import com.mojang.serialization.Lifecycle;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -16,17 +19,22 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public abstract class ChangedRegistry<T> extends Registry<T> {
+    private static final Logger LOGGER = LogManager.getLogger(ChangedRegistry.class);
+
     private static final int MAX_VARINT = Integer.MAX_VALUE - 1;
     private static final HashMap<ResourceKey<Registry<?>>, Supplier<ForgeRegistry<?>>> REGISTRY_HOLDERS = new HashMap<>();
 
     public static final ResourceKey<Registry<LatexVariant<?>>> LATEX_VARIANT_REGISTRY = registryKey("latex_variant");
+    public static final ResourceKey<Registry<AbstractAbility<?>>> ABILITY_REGISTRY = registryKey("ability");
     public static final Supplier<ForgeRegistry<LatexVariant<?>>> LATEX_VARIANT = registerHolder(LATEX_VARIANT_REGISTRY);
+    public static final Supplier<ForgeRegistry<AbstractAbility<?>>> ABILITY = registerHolder(ABILITY_REGISTRY);
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
         createRegistry(event, LATEX_VARIANT_REGISTRY, c(LatexVariant.class), builder -> {
             builder.missing((key, network) -> LatexVariant.FALLBACK_VARIANT);
         }, null);
+        createRegistry(event, ABILITY_REGISTRY, c(AbstractAbility.class));
     }
 
     private static <T extends IForgeRegistryEntry<T>> Supplier<ForgeRegistry<T>> registerHolder(ResourceKey<Registry<T>> key) {
@@ -45,6 +53,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
             additionalBuilder.accept(builder);
         Supplier<IForgeRegistry<T>> holder = event.create(builder, onFill);
         REGISTRY_HOLDERS.put((ResourceKey)key, () -> (ForgeRegistry<?>)holder.get());
+        LOGGER.info("Created registry {}", key);
     }
 
     static <T> Class<T> c(Class<?> cls) { return (Class<T>)cls; }

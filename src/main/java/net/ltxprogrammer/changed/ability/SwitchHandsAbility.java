@@ -11,11 +11,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class SwitchHandsAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("switch_hands");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return variant.abilityInstances.containsKey(ChangedAbilities.EXTRA_HANDS.getId());
     }

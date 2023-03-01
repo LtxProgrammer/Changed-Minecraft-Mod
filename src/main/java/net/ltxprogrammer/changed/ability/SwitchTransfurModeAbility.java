@@ -10,11 +10,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("switch_transfur_mode");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return true;
     }
@@ -55,7 +50,7 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
     @Override
     public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
-        return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + getId().getPath() + "_" +
+        return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_" +
                 variant.transfurMode.toString().toLowerCase() + ".png");
     }
 }

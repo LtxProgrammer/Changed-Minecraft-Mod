@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
@@ -13,34 +14,33 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class VariantAbilityActivate implements ChangedPacket {
-    public static final VariantAbilityActivate CONTROL_OPEN_RADIAL = new VariantAbilityActivate(Changed.modResource("open_radial"));
+    public static final VariantAbilityActivate CONTROL_OPEN_RADIAL = new VariantAbilityActivate(-1);
 
-    final ResourceLocation ability;
+    final int ability;
 
-    public VariantAbilityActivate(ResourceLocation ability) {
+    public VariantAbilityActivate(int ability) {
         this.ability = ability;
     }
 
     public VariantAbilityActivate(FriendlyByteBuf buffer) {
-        this.ability = buffer.readResourceLocation();
+        this.ability = buffer.readInt();
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(ability);
+        buffer.writeInt(ability);
     }
 
     @Override
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
             ProcessTransfur.ifPlayerLatex(context.getSender(), ((player, variant) -> {
-                if (ability.equals(CONTROL_OPEN_RADIAL.ability))
+                if (ability == CONTROL_OPEN_RADIAL.ability)
                     player.openMenu(new SimpleMenuProvider((id, inventory, givenPlayer) ->
                             new AbilityRadialMenu(id, inventory, null), AbilityRadialMenu.CONTAINER_TITLE));
                 else
-                    variant.activateAbility(player, ability);
+                    variant.activateAbility(player, ChangedRegistry.ABILITY.get().getValue(ability));
             }));
         });
         context.setPacketHandled(true);

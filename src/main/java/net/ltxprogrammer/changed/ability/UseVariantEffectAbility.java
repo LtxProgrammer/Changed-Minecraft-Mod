@@ -10,11 +10,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class UseVariantEffectAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("use_variant_ability");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return variant.getLatexEntity() instanceof UniqueEffect;
     }
@@ -34,14 +29,14 @@ public class UseVariantEffectAbility extends SimpleAbility {
     @Override
     public TranslatableComponent getDisplayName(Player player, LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof UniqueEffect uniqueEffect)
-            return new TranslatableComponent("ability." + getId().toString().replace(':', '.') + "." + uniqueEffect.getEffectName());
+            return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.') + "." + uniqueEffect.getEffectName());
         return super.getDisplayName(player, variant);
     }
 
     @Override
     public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof UniqueEffect uniqueEffect)
-            return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + uniqueEffect.getEffectName() + ".png");
+            return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + uniqueEffect.getEffectName() + ".png");
         return super.getTexture(player, variant);
     }
 }

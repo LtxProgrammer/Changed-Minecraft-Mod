@@ -8,11 +8,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class SlitherAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("slither");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return true;
     }
