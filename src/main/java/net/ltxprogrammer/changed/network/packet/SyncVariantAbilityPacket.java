@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -15,30 +16,30 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class SyncVariantAbilityPacket implements ChangedPacket {
-    private final ResourceLocation id;
+    private final int id;
     private final CompoundTag data;
     private final UUID playerUUID; // Field is ignored when server receives packet
 
-    public SyncVariantAbilityPacket(ResourceLocation id, CompoundTag data) {
+    public SyncVariantAbilityPacket(int id, CompoundTag data) {
         this.id = id;
         this.data = data;
         this.playerUUID = UUID.randomUUID();
     }
 
-    public SyncVariantAbilityPacket(ResourceLocation id, CompoundTag data, UUID uuid) {
+    public SyncVariantAbilityPacket(int id, CompoundTag data, UUID uuid) {
         this.id = id;
         this.data = data;
         this.playerUUID = uuid;
     }
 
     public SyncVariantAbilityPacket(FriendlyByteBuf buffer) {
-        this.id = buffer.readResourceLocation();
+        this.id = buffer.readInt();
         this.data = buffer.readNbt();
         this.playerUUID = buffer.readUUID();
     }
 
     public void write(FriendlyByteBuf buffer) {
-        buffer.writeResourceLocation(id);
+        buffer.writeInt(id);
         buffer.writeNbt(data);
         buffer.writeUUID(playerUUID);
     }
@@ -48,9 +49,10 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
         if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
             ServerPlayer sender = context.getSender();
             ProcessTransfur.ifPlayerLatex(sender, variant -> {
+                var ability = ChangedRegistry.ABILITY.get().getValue(id);
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, sender.getUUID()));
-                if (variant.abilityInstances.containsKey(id))
-                    variant.abilityInstances.get(id).readData(data);
+                if (variant.abilityInstances.containsKey(ability))
+                    variant.abilityInstances.get(ability).readData(data);
             });
             context.setPacketHandled(true);
         }
@@ -58,8 +60,9 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
         else {
             Player affectedPlayer = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
             ProcessTransfur.ifPlayerLatex(Minecraft.getInstance().level.getPlayerByUUID(playerUUID), variant -> {
-                if (variant.abilityInstances.containsKey(id))
-                    variant.abilityInstances.get(id).readData(data);
+                var ability = ChangedRegistry.ABILITY.get().getValue(id);
+                if (variant.abilityInstances.containsKey(ability))
+                    variant.abilityInstances.get(ability).readData(data);
             });
             context.setPacketHandled(true);
         }

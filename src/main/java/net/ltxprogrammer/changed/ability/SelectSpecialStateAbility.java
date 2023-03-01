@@ -11,11 +11,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class SelectSpecialStateAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("select_special_state");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return variant.getLatexEntity() instanceof SpecialLatex;
     }

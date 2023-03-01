@@ -27,7 +27,7 @@ public class CentaurChestPackLayer<T extends LightLatexCentaur, M extends LatexH
         if (entity.getUnderlyingPlayer() == null)
             return;
         ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
-            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
             if (ability == null || ability.chest == null || ability.chest.isEmpty())
                 return;
 

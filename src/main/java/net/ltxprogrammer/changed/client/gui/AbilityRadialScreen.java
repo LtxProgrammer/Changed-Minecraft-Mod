@@ -3,8 +3,10 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
@@ -24,7 +26,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
 
     public final AbilityRadialMenu menu;
     public final LatexVariantInstance<?> variant;
-    public final List<ResourceLocation> abilities;
+    public final List<AbstractAbility<?>> abilities;
 
     public AbilityRadialScreen(AbilityRadialMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text, menu.variant);
@@ -32,8 +34,8 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.abilities = menu.variant.abilityInstances.keySet().stream().filter(location ->
-                location != ChangedAbilities.SELECT_HAIRSTYLE.getId() || ChangedAbilities.getAbility(location).canUse(menu.player, variant))
+        this.abilities = menu.variant.abilityInstances.keySet().stream().filter(ability ->
+                ability != ChangedAbilities.SELECT_HAIRSTYLE.get() || ability.canUse(menu.player, variant))
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +47,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     @Nullable
     @Override
     public List<Component> tooltipsFor(int section) {
-        return List.of(ChangedAbilities.getAbility(abilities.get(section)).getDisplayName(menu.player, menu.variant));
+        return List.of(abilities.get(section).getDisplayName(menu.player, menu.variant));
     }
 
     @Override
@@ -56,7 +58,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         }
 
         var ability = abilities.get(section);
-        if (ability.equals(ChangedAbilities.SELECT_HAIRSTYLE.getId())) {
+        if (ability == ChangedAbilities.SELECT_HAIRSTYLE.get()) {
             x = x * 0.9;
             y = (y * 0.9) - 16;
 
@@ -66,7 +68,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
                     variant.getLatexEntity(), alpha);
         }
 
-        else if (ability.equals(ChangedAbilities.SELECT_SPECIAL_STATE.getId())) {
+        else if (ability == ChangedAbilities.SELECT_SPECIAL_STATE.get()) {
             x = x * 0.9;
             y = (y * 0.9) - 16;
 
@@ -77,7 +79,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         }
 
         else {
-            RenderSystem.setShaderTexture(0, ChangedAbilities.getAbility(abilities.get(section)).getTexture(menu.player, menu.variant));
+            RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(menu.player, menu.variant));
             if (enabled) {
                 RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
                 this.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
@@ -93,7 +95,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         close.run();
-        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(abilities.get(section)));
+        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(ChangedRegistry.ABILITY.get().getID(abilities.get(section))));
         return false;
     }
 }

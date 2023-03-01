@@ -12,11 +12,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class SwitchGenderAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("switch_gender");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return variant.getLatexEntity() instanceof GenderedEntity;
     }

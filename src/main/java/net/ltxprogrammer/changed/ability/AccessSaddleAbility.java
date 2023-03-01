@@ -13,11 +13,6 @@ public class AccessSaddleAbility extends AbstractAbility<AccessSaddleAbilityInst
     }
 
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("access_saddle");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return true;
     }

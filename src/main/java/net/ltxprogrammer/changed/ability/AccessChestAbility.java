@@ -7,9 +7,4 @@ public class AccessChestAbility extends AbstractAbility<AccessChestAbilityInstan
     public AccessChestAbility() {
         super(AccessChestAbilityInstance::new);
     }
-
-    @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("access_chest");
-    }
 }

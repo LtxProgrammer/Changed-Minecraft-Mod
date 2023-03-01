@@ -77,7 +77,7 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     @Override
     public boolean isSaddled() {
         return ProcessTransfur.ifPlayerLatex(getUnderlyingPlayer(), variant -> {
-            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
             if (ability != null)
                 return ability.saddle != null && !ability.saddle.isEmpty();
             else

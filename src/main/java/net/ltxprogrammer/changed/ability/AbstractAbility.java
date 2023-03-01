@@ -2,15 +2,19 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.function.TriFunction;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> {
+public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
     private final TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor;
 
     public AbstractAbility(TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor) {
@@ -22,10 +26,8 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     public TranslatableComponent getDisplayName(Player player, LatexVariantInstance<?> variant) {
-        return new TranslatableComponent("ability." + getId().toString().replace(':', '.'));
+        return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
     }
-
-    public abstract ResourceLocation getId();
 
     public boolean canUse(Player player, LatexVariantInstance<?> variant) { return false; }
     public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }
@@ -42,7 +44,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {}
 
     public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
-        return new ResourceLocation(getId().getNamespace(), "textures/abilities/" + getId().getPath() + ".png");
+        return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + ".png");
     }
 
     // Broadcast changes to clients
@@ -50,19 +52,21 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         CompoundTag data = new CompoundTag();
         saveData(data, player, variant);
 
+        int id = ChangedRegistry.ABILITY.get().getID(this);
         if (player.level.isClientSide)
-            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(getId(), data));
+            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(getId(), data, player.getUUID()));
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, player.getUUID()));
     }
 
     public final void setDirty(AccessSaddleAbilityInstance instance) {
         CompoundTag data = new CompoundTag();
         instance.saveData(data);
 
+        int id = ChangedRegistry.ABILITY.get().getID(this);
         if (instance.player.level.isClientSide)
-            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(getId(), data));
+            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(getId(), data, instance.player.getUUID()));
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.player.getUUID()));
     }
 }

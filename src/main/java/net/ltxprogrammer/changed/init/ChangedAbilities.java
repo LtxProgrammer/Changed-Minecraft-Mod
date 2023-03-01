@@ -1,36 +1,41 @@
 package net.ltxprogrammer.changed.init;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class ChangedAbilities {
-    private static final Map<ResourceLocation, AbstractAbility<?>> REGISTRY = new HashMap<>();
+    public static final DeferredRegister<AbstractAbility<?>> REGISTRY = DeferredRegister.create(ChangedRegistry.ABILITY_REGISTRY, Changed.MODID);
 
-    public static ExtraHandsAbility EXTRA_HANDS = register(new ExtraHandsAbility());
-    public static AccessSaddleAbility ACCESS_SADDLE = register(new AccessSaddleAbility());
-    public static SwitchTransfurModeAbility SWITCH_TRANSFUR_MODE = register(new SwitchTransfurModeAbility());
-    public static CreateCobwebAbility CREATE_COBWEB = register(new CreateCobwebAbility());
-    public static CreateInkballAbility CREATE_INKBALL = register(new CreateInkballAbility());
-    public static SwitchHandsAbility SWITCH_HANDS = register(new SwitchHandsAbility());
-    public static AccessChestAbility ACCESS_CHEST = register(new AccessChestAbility());
-    public static SwitchGenderAbility SWITCH_GENDER = register(new SwitchGenderAbility());
-    public static UseVariantEffectAbility USE_VARIANT_EFFECT = register(new UseVariantEffectAbility());
-    public static SlitherAbility SLITHER = register(new SlitherAbility());
-    public static SelectHairstyleAbility SELECT_HAIRSTYLE = register(new SelectHairstyleAbility());
+    //private static final Map<ResourceLocation, AbstractAbility<?>> REGISTRY = new HashMap<>();
 
-    public static SelectSpecialStateAbility SELECT_SPECIAL_STATE = register(new SelectSpecialStateAbility());
+    public static RegistryObject<ExtraHandsAbility> EXTRA_HANDS = REGISTRY.register("extra_hands", ExtraHandsAbility::new);
+    public static RegistryObject<AccessSaddleAbility> ACCESS_SADDLE = REGISTRY.register("access_saddle", AccessSaddleAbility::new);
+    public static RegistryObject<SwitchTransfurModeAbility> SWITCH_TRANSFUR_MODE = REGISTRY.register("switch_transfur_mode", SwitchTransfurModeAbility::new);
+    public static RegistryObject<SimpleCreateItemAbility> CREATE_COBWEB = REGISTRY.register("create_cobweb",
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.COBWEB), 2.0f, 6.0f));
+    public static RegistryObject<SimpleCreateItemAbility> CREATE_INKBALL = REGISTRY.register("create_inkball",
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(ChangedItems.LATEX_INKBALL.get()), 3.0f, 6.0f));
+    public static RegistryObject<SimpleCreateItemAbility> CREATE_HONEYCOMB = REGISTRY.register("create_honeycomb",
+            () -> new SimpleCreateItemAbility(() -> new ItemStack(Items.HONEYCOMB), 3.0f, 6.0f));
+    public static RegistryObject<SwitchHandsAbility> SWITCH_HANDS = REGISTRY.register("switch_hands", SwitchHandsAbility::new);
+    public static RegistryObject<AccessChestAbility> ACCESS_CHEST = REGISTRY.register("access_chest", AccessChestAbility::new);
+    public static RegistryObject<SwitchGenderAbility> SWITCH_GENDER = REGISTRY.register("switch_gender", SwitchGenderAbility::new);
+    public static RegistryObject<UseVariantEffectAbility> USE_VARIANT_EFFECT = REGISTRY.register("use_variant_ability", UseVariantEffectAbility::new);
+    public static RegistryObject<SlitherAbility> SLITHER = REGISTRY.register("slither", SlitherAbility::new);
+    public static RegistryObject<SelectHairstyleAbility> SELECT_HAIRSTYLE = REGISTRY.register("select_hairstyle", SelectHairstyleAbility::new);
 
-    public static <T extends AbstractAbility<?>> T register(T ability) {
-        if (REGISTRY.containsKey(ability.getId()))
-            throw new RuntimeException("Duplicate ability id");
-        REGISTRY.put(ability.getId(), ability);
-        return ability;
-    }
+    public static RegistryObject<SelectSpecialStateAbility> SELECT_SPECIAL_STATE = REGISTRY.register("select_special_state", SelectSpecialStateAbility::new);
 
     public static AbstractAbility<?> getAbility(ResourceLocation location) {
-        return REGISTRY.get(location);
+        return ChangedRegistry.ABILITY.get().getValue(location);
     }
 }

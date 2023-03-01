@@ -11,11 +11,6 @@ import net.minecraft.world.item.ItemStack;
 
 public class ExtraHandsAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("extra_hands");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return true;
     }
