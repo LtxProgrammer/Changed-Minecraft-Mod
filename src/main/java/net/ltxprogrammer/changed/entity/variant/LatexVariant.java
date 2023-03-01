@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -35,6 +36,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -43,6 +45,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<LatexVariant<?>> {
@@ -146,7 +149,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands()
+    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB)
             .build(Changed.modResource("form_latex_bee")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
@@ -296,7 +299,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public final TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
-    public final ImmutableList<ResourceLocation> abilities;
+    public final ImmutableList<Supplier<? extends AbstractAbility<?>>> abilities;
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
@@ -305,7 +308,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<ResourceLocation> abilities, float cameraZOffset, ResourceLocation sound) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Supplier<? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
         this.groundSpeed = groundSpeed;
@@ -320,7 +323,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         this.additionalHealth = additionalHealth;
         this.nightVision = nightVision;
         this.hasLegs = hasLegs;
-        this.abilities = ImmutableList.<ResourceLocation>builder().addAll(abilities).build();
+        this.abilities = ImmutableList.<Supplier<? extends AbstractAbility<?>>>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
         this.canClimb = canClimb;
         this.scares = scares;
@@ -410,15 +413,15 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
-        List<ResourceLocation> abilities = new ArrayList<>();
+        List<Supplier<? extends AbstractAbility<?>>> abilities = new ArrayList<>();
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.POISON.getLocation();
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
-            this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE.getId());
-            this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE.getId());
+            this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE);
         }
 
         private void ignored() {}
@@ -534,13 +537,13 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             this.additionalHealth = value; return this;
         }
         
-        public Builder<T> addAbility(AbstractAbility<?> ability) {
+        public Builder<T> addAbility(Supplier<? extends AbstractAbility<?>> ability) {
             if (ability != null)
-                this.abilities.add(ability.getId());
+                this.abilities.add(ability);
             return this;
         }
         
-        public Builder<T> abilities(List<ResourceLocation> abilities) {
+        public Builder<T> abilities(List<Supplier<? extends AbstractAbility<?>>> abilities) {
             this.abilities = new ArrayList<>(abilities); return this;
         }
 
@@ -681,7 +684,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         return fromJson(id, root, List.of());
     }
 
-    public static LatexVariant<?> fromJson(ResourceLocation id, JsonObject root, List<ResourceLocation> injectAbilities) {
+    public static LatexVariant<?> fromJson(ResourceLocation id, JsonObject root, List<AbstractAbility<?>> injectAbilities) {
         ResourceLocation entityType = ResourceLocation.tryParse(GsonHelper.getAsString(root, "entity", ChangedEntities.SPECIAL_LATEX.getId().toString()));
 
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
@@ -707,11 +710,12 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             } catch (ClassNotFoundException ignored) {}
         });
 
-        List<ResourceLocation> abilities = new ArrayList<>(injectAbilities);
+        List<AbstractAbility<?>> abilities = new ArrayList<>(injectAbilities);
         GsonHelper.getAsJsonArray(root, "abilities", new JsonArray()).forEach(element -> {
-            ResourceLocation location = ResourceLocation.tryParse(element.getAsString());
-            abilities.add(location);
+            abilities.add(ChangedRegistry.ABILITY.get().getValue(ResourceLocation.tryParse(element.getAsString())));
         });
+
+        List<Supplier<? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Supplier<AbstractAbility<?>>) () -> a).collect(Collectors.toList());
 
         return new LatexVariant<>(
                 () -> (EntityType<LatexEntity>) Registry.ENTITY_TYPE.get(entityType),
@@ -736,7 +740,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                         fusionOf.get(0), fusionOf.get(1)
                 )),
                 mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
-                abilities,
+                nAbilitiesList,
                 GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
                 ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))).setRegistryName(id);
     }

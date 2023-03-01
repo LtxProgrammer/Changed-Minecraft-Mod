@@ -11,11 +11,6 @@ import net.minecraft.world.entity.player.Player;
 
 public class SelectHairstyleAbility extends SimpleAbility {
     @Override
-    public ResourceLocation getId() {
-        return Changed.modResource("select_hairstyle");
-    }
-
-    @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
         return variant.getLatexEntity() != null && variant.getLatexEntity().getValidHairStyles() != null &&
                 variant.getLatexEntity().getValidHairStyles().size() > 1;

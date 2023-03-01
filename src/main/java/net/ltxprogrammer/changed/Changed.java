@@ -71,6 +71,7 @@ public class Changed {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //    vvv Last to process vvv
+        ChangedAbilities.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
         ChangedFeatures.REGISTRY.register(modEventBus);
         ChangedBiomes.REGISTRY.register(modEventBus);

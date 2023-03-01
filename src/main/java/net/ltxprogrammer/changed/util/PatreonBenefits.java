@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelLayerLocation;
 import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.data.DelayLoadedModel;
@@ -247,7 +248,7 @@ public class PatreonBenefits {
             Map<String, EntityData> entities = new HashMap<>();
             String dState = "default";
             UUID uuid = UUID.fromString(GsonHelper.getAsString(object, "location"));
-            List<ResourceLocation> injectedAbilities = new ArrayList<>();
+            List<AbstractAbility<?>> injectedAbilities = new ArrayList<>();
             if (object.has("entities")) {
                 GsonHelper.getAsJsonArray(object, "entities").forEach(element -> {
                     JsonObject entityObject = element.getAsJsonObject();
@@ -259,10 +260,10 @@ public class PatreonBenefits {
                 entities.put(dState, EntityData.fromJSON(uuid, object));
             }
             if (entities.size() > 1)
-                injectedAbilities.add(ChangedAbilities.SELECT_SPECIAL_STATE.getId());
+                injectedAbilities.add(ChangedAbilities.SELECT_SPECIAL_STATE.get());
             for (var entry : entities.values())
                 if (entry.hairStyles.size() > 1) {
-                    injectedAbilities.add(ChangedAbilities.SELECT_HAIRSTYLE.getId());
+                    injectedAbilities.add(ChangedAbilities.SELECT_HAIRSTYLE.get());
                     break;
                 }
 

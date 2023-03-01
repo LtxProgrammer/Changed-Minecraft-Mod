@@ -57,8 +57,8 @@ import java.util.function.Consumer;
 public class LatexVariantInstance<T extends LatexEntity> {
     private final LatexVariant<T> parent;
     private final T entity;
-    public final ImmutableMap<ResourceLocation, AbstractAbilityInstance> abilityInstances;
-    private final List<ResourceLocation> activeAbilities = new ArrayList<>();
+    public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
+    private final List<AbstractAbility<?>> activeAbilities = new ArrayList<>();
 
     private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
@@ -75,8 +75,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
         this.transfurMode = parent.transfurMode;
 
-        var builder = new ImmutableMap.Builder<ResourceLocation, AbstractAbilityInstance>();
-        parent.abilities.forEach(name -> builder.put(name, ChangedAbilities.getAbility(name).makeInstance(host, this)));
+        var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
+        parent.abilities.forEach(ability -> builder.put(ability.get(), ability.get().makeInstance(host, this)));
         abilityInstances = builder.build();
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -100,7 +100,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public <A extends AbstractAbilityInstance> A getAbilityInstance(AbstractAbility<A> ability) {
         try {
-            return (A) abilityInstances.get(ability.getId());
+            return (A) abilityInstances.get(ability);
         } catch (Exception unused) {
             return null;
         }
@@ -515,11 +515,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
         else
             player.maxUpStep = parent.stepSize;
 
-        List<ResourceLocation> toRemove = new ArrayList<>();
+        List<AbstractAbility<?>> toRemove = new ArrayList<>();
         forEachActiveAbility(instance -> {
             if (!instance.canKeepUsing()) {
                 instance.stopUsing();
-                toRemove.add(instance.ability.getId());
+                toRemove.add(instance.ability);
                 return;
             }
 
@@ -550,12 +550,12 @@ public class LatexVariantInstance<T extends LatexEntity> {
         });
     }
 
-    public void activateAbility(Player player, ResourceLocation name) {
-        if (abilityInstances.containsKey(name)) {
-            var ability = abilityInstances.get(name);
-            if (ability.canUse()) {
-                activeAbilities.add(name);
-                ability.startUsing();
+    public void activateAbility(Player player, AbstractAbility<?> ability) {
+        if (abilityInstances.containsKey(ability)) {
+            var instance = abilityInstances.get(ability);
+            if (instance.canUse()) {
+                activeAbilities.add(ability);
+                instance.startUsing();
             }
         }
     }

@@ -28,7 +28,7 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
 
     @Override
     public boolean canUse() {
-        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE);
+        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
         return !(ability == null || ability.chest == null || ability.chest.isEmpty());
     }
 
@@ -36,7 +36,7 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     public boolean canKeepUsing() {
         if (!ProcessTransfur.isPlayerLatex(player))
             return false;
-        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE).chest.isEmpty();
+        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get()).chest.isEmpty();
     }
 
     @Override
