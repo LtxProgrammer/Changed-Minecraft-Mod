@@ -129,14 +129,6 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.scares = v; this.femaleBuilder.scares = v; return this;
         }
 
-        public Builder<M, F> weakLungs() {
-            this.maleBuilder.weakLungs = true; this.femaleBuilder.weakLungs = true; return this;
-        }
-
-        public Builder<M, F> weakLungs(boolean v) {
-            this.maleBuilder.weakLungs = v; this.femaleBuilder.weakLungs = v; return this;
-        }
-
         public Builder<M, F> stepSize(float factor) {
             this.maleBuilder.stepSize = factor; this.femaleBuilder.stepSize = factor; return this;
         }
