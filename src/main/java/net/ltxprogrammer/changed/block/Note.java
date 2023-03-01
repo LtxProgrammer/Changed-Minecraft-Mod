@@ -34,7 +34,7 @@ public class Note extends AbstractCustomShapeEntityBlock implements TextMenuProv
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 2.0D, 15.0D, 12.0D, 14.0D, 16.0D);
 
     public Note() {
-        super(Properties.of(Material.BAMBOO, MaterialColor.COLOR_YELLOW).sound(SoundType.BAMBOO));
+        super(Properties.of(Material.BAMBOO, MaterialColor.COLOR_YELLOW).sound(SoundType.SMALL_DRIPLEAF));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
