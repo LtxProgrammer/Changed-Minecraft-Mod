@@ -36,7 +36,7 @@ public class TscShield extends TscWeapon implements SpecializedItemRendering {
     @Nullable
     @Override
     public ModelResourceLocation getEmissiveModelLocation(ItemStack itemStack, ItemTransforms.TransformType type) {
-        return SpecializedItemRendering.isGUI(type) ? null : SHIELD_IN_HAND_EMISSIVE;
+        return SHIELD_IN_HAND_EMISSIVE;
     }
 
     @Override
