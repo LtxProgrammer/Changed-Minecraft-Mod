@@ -37,7 +37,7 @@
   "subtitles.changed.paralyze1": "Weapon shocks",
   "subtitles.changed.blow1": "Player latexed",
 
-  "item.changed.aerosol_latex_bucket": "Aerosol Latex Bucket",
+  "item.changed.wolf_gas_bucket": "Aerosol Latex Bucket",
   "item.changed.benign_pants": "Latex Pants",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Fragment",
@@ -119,7 +119,7 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
 
-  "block.changed.aerosol_latex": "Aerosol Latex",
+  "block.changed.wolf_gas": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.beehive_bed": "Beehive Bed",
   "block.changed.beehive_wall": "Beehive Wall",
@@ -200,7 +200,7 @@
   "block.changed.white_latex_block": "White Latex Block",
   "block.changed.white_latex_pillar": "White Latex Pillar",
 
-  "fluid.changed.aerosol_latex": "Wolf Gas",
+  "fluid.changed.wolf_gas": "Wolf Gas",
   "fluid.changed.dark_latex": "Liquid Dark Latex",
   "fluid.changed.white_latex": "Liquid White Latex",
 

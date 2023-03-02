@@ -50,7 +50,7 @@ public class CameraUtil {
     public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {
         if (livingEntity instanceof Player player && player instanceof PlayerDataExtension ext) {
             ext.setTugData(new TugData(Either.left(direction), strength * 0.333, livingEntity.tickCount + 10));
-            if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
+            if (UniversalDist.isLocalPlayer(player)) // Let local player handle adjusting view
                 return;
         }
 
@@ -65,7 +65,7 @@ public class CameraUtil {
     public static void tugEntityLookDirection(LivingEntity livingEntity, LivingEntity lookAt, double strength) {
         if (livingEntity instanceof Player player && player instanceof PlayerDataExtension ext) {
             ext.setTugData(new TugData(Either.right(lookAt), strength * 0.333, livingEntity.tickCount + 10));
-            if (DistUtil.isLocalPlayer(player)) // Let local player handle adjusting view
+            if (UniversalDist.isLocalPlayer(player)) // Let local player handle adjusting view
                 return;
         }
 

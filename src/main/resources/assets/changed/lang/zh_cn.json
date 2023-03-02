@@ -29,7 +29,7 @@
   "subtitles.changed.sword1": "针刺声",
   "subtitles.changed.paralyze1": "武器冲击声",
 
-  "item.changed.aerosol_latex_bucket": "桶装气溶胶",
+  "item.changed.wolf_gas_bucket": "桶装气溶胶",
   "item.changed.benign_pants": "胶裤子",
   "item.changed.blood_syringe": "注射器（血液）",
   "item.changed.dark_latex_crystal_fragment": "胶液水晶碎片",
@@ -105,7 +105,7 @@
   "effect.changed.hypercoagulation": "血液高凝状态",
   "effect.changed.shock": "电击",
 
-  "block.changed.aerosol_latex": "气溶胶",
+  "block.changed.wolf_gas": "气溶胶",
   "block.changed.bedside_iv_rack": "注射架",
   "block.changed.book_stack": "一摞书",
   "block.changed.canned_peaches": "罐装桃子",

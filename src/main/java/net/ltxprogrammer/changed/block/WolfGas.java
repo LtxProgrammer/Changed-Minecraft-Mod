@@ -10,9 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Material;
 
-public class AerosolLatex extends LiquidBlock {
-    public AerosolLatex() {
-        super(() -> (FlowingFluid)ChangedFluids.AEROSOL_LATEX.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f));
+public class WolfGas extends LiquidBlock {
+    public WolfGas() {
+        super(() -> (FlowingFluid)ChangedFluids.WOLF_GAS.get(), BlockBehaviour.Properties.of(Material.WATER).strength(100f));
     }
 
     @Override

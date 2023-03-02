@@ -31,7 +31,7 @@
   "subtitles.changed.paralyze1": "Оглушающий удар",
   "subtitles.changed.blow1": "Кого-то шлепнул латекс",
   
-  "item.changed.aerosol_latex_bucket": "Ведро Аэрозольного Латекса",
+  "item.changed.wolf_gas_bucket": "Ведро Аэрозольного Латекса",
   "item.changed.benign_pants": "Латексные Шорты",
   "item.changed.blood_syringe": "Шприц С Образцом Крови",
   "item.changed.dark_latex_crystal_fragment": "Фрагмент Кристалла Тёмного Латекса",
@@ -74,11 +74,10 @@
   "item.changed.owo_record.desc": "За Авторством Artemka2009",
   
   "death.attack.changed:transfur": "%1$s был трансфуррирован",
-  "death.attack.transfur.player": "%1$s был трансфуррирован %2$s",
-  "death.attack.white_latex": "%1$s был растворен в белом латексе",
+  "death.attack.changed:transfur.player": "%1$s был трансфуррирован %2$s",
+  "death.attack.changed:white_latex": "%1$s был растворен в белом латексе",
   "death.attack.changed:pale": "%s отправился в мир грез из-за Бледного вируса",
   "death.attack.changed:bloodloss": "У %s случился инфаркт",
-  //"death.attack.changed:bloodloss": "Сердце %s вышло из чата",
   
   "command.changed.error.not_latex_form": "Недоступная Латкс. форма",
   "command.changed.error.no_special_form": "У вас нет доступа к особой форме, если вы хотите её получить поддержите автора на патреон https://www.patreon.com/ltxprogrammer все очень просто (почти)",
@@ -108,7 +107,7 @@
   "effect.changed.hypercoagulation": "Загустевание крови",
   "effect.changed.shock": "Шок",
   
-  "block.changed.aerosol_latex": "Аэрозольный Латекс",
+  "block.changed.wolf_gas": "Аэрозольный Латекс",
   "block.changed.bedside_iv_rack": "Капельница",
   "block.changed.book_stack": "Стопка книг",
   "block.changed.canned_peaches": "Консервированые Персики",

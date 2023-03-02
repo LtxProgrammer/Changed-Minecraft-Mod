@@ -37,7 +37,7 @@
   "subtitles.changed.paralyze1": "Vapenstötar",
   "subtitles.changed.blow1": "Spelare latexad",
 
-  "item.changed.aerosol_latex_bucket": "Aerosol latexhink",
+  "item.changed.wolf_gas_bucket": "Aerosol latexhink",
   "item.changed.benign_pants": "Latex byxor",
   "item.changed.blood_syringe": "Blodspruta",
   "item.changed.dark_latex_crystal_fragment": "Mörk latexkristallfragment",
@@ -119,7 +119,7 @@
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
 
-  "block.changed.aerosol_latex": "Aerosol latex",
+  "block.changed.wolf_gas": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
   "block.changed.beehive_bed": "Bikupasäng",
   "block.changed.beehive_wall": "Bikupavägg",
@@ -200,7 +200,7 @@
   "block.changed.white_latex_block": "Vit latexblock",
   "block.changed.white_latex_pillar": "Vit latexspelare",
 
-  "fluid.changed.aerosol_latex": "Varggas",
+  "fluid.changed.wolf_gas": "Varggas",
   "fluid.changed.dark_latex": "Flytande mörk latex",
   "fluid.changed.white_latex": "Flytande vit latex",
 

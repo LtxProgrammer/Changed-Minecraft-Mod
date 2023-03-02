@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,6 +21,9 @@ public class UniversalDist {
         }
         public static void displayClientMessage(Component component, boolean notInChat) {
             Minecraft.getInstance().player.displayClientMessage(component, notInChat);
+        }
+        public static Entity getCameraEntity() {
+            return Minecraft.getInstance().cameraEntity;
         }
     }
 
@@ -41,5 +45,13 @@ public class UniversalDist {
 
     public static @Nullable Player getLocalPlayer() {
         return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> ClientDist::getLocalPlayer);
+    }
+
+    public static @Nullable Entity getCameraEntity() {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> ClientDist::getCameraEntity);
+    }
+
+    public static boolean isLocalPlayer(Player player) {
+        return player == getLocalPlayer();
     }
 }
