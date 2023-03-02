@@ -1,5 +1,5 @@
 {
   "parent": "forge:item/bucket_drip",
   "loader": "forge:bucket",
-  "fluid": "changed:aerosol_latex"
+  "fluid": "changed:wolf_gas"
 }

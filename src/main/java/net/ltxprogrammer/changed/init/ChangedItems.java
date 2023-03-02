@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedItems {
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Changed.MODID);
-    public static final RegistryObject<AbstractLatexBucket> AEROSOL_LATEX_BUCKET = register("aerosol_latex_bucket", AbstractLatexBucket.from(ChangedFluids.AEROSOL_LATEX));
+    public static final RegistryObject<AbstractLatexBucket> WOLF_GAS_BUCKET = register("wolf_gas_bucket", AbstractLatexBucket.from(ChangedFluids.WOLF_GAS));
     public static final RegistryObject<Benign.Pants> BENIGN_PANTS = register("benign_pants", Benign.Pants::new);
     public static final RegistryObject<PinkLatex.Pants> PINK_PANTS = register("pink_pants", PinkLatex.Pants::new);
     public static final RegistryObject<AbstractLatexItem> DARK_LATEX_CRYSTAL_FRAGMENT = register("dark_latex_crystal_fragment", AbstractLatexItem::new);

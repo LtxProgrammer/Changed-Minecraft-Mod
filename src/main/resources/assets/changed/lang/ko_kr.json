@@ -36,7 +36,7 @@
   "subtitles.changed.paralyze1": "무기로 전기 충격함",
   "subtitles.changed.blow1": "플레이어가 라텍스에 뒤덮힘",
 
-  "item.changed.aerosol_latex_bucket": "가스 라텍스 양동이",
+  "item.changed.wolf_gas_bucket": "가스 라텍스 양동이",
   "item.changed.benign_pants": "라텍스 숏팬츠",
   "item.changed.blood_syringe": "혈액이 담긴 주사기",
   "item.changed.dark_latex_crystal_fragment": "검은 라텍스 수정 조각",
@@ -117,7 +117,7 @@
   "effect.changed.hypercoagulation": "과응고",
   "effect.changed.shock": "전기 충격",
 
-  "block.changed.aerosol_latex": "가스 라텍스",
+  "block.changed.wolf_gas": "가스 라텍스",
   "block.changed.bedside_iv_rack": "링거 스탠드",
   "block.changed.beehive_bed": "벌집 침대",
   "block.changed.beehive_wall": "벌집 벽",
@@ -390,7 +390,7 @@
   "changed:advancements.main.transfur_mask.description": "검은 라텍스 마스크를 획득하고 착용하세요",
   
   "changed:advancements.main.transfur_legless.title": "내 다리!",
-  "changed:advancements.main.transfur_legless.description": "스스로를 다리가 없는 형태로 수화시키세요"
+  "changed:advancements.main.transfur_legless.description": "스스로를 다리가 없는 형태로 수화시키세요",
   
   "changed:advancements.main.beehive_sleep.title": "더 달콤한 꿈",
   "changed:advancements.main.beehive_sleep.description": "벌집 침대에서 자세요"

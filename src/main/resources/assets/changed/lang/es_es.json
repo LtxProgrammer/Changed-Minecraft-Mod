@@ -35,7 +35,7 @@
   "subtitles.changed.paralyze1": "Choques de armas",
   "subtitles.changed.blow1": "Jugador con látex",
 
-  "item.changed.aerosol_latex_bucket": "Cubo de látex en aerosol",
+  "item.changed.wolf_gas_bucket": "Cubo de látex en aerosol",
   "item.changed.benign_pants": "Pantalones de látex",
   "item.changed.blood_syringe": "Jeringa de sangre",
   "item.changed.dark_latex_crystal_fragment": "Fragmento de cristal de látex oscuro",
@@ -110,7 +110,7 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Choque",
 
-  "block.changed.aerosol_latex": "Aerosol látex",
+  "block.changed.wolf_gas": "Aerosol látex",
   "block.changed.bedside_iv_rack": "Estantería IV",
   "block.changed.book_stack": "Pila de libros",
   "block.changed.canned_peaches": "Melocotones en conserva",

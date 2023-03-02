@@ -35,7 +35,7 @@
   "subtitles.changed.paralyze1": "武器の衝撃",
   "subtitles.changed.blow1": "プレイヤーラテックス",
 
-  "item.changed.aerosol_latex_bucket": "エアゾール式ラテックスバケット",
+  "item.changed.wolf_gas_bucket": "エアゾール式ラテックスバケット",
   "item.changed.blood_syringe": "血液シリンジ",
   "item.changed.dark_latex_crystal_fragment": "ダークラテックス結晶片",
   "item.changed.dark_latex_dragon_crystal_fragment": "ダークラテックス竜結晶片",
@@ -109,7 +109,7 @@
   "effect.changed.hypercoagulation": "血液凝固促進作用",
   "effect.changed.shock": "ショック",
 
-  "block.changed.aerosol_latex": "エアゾールラテックス",
+  "block.changed.wolf_gas": "エアゾールラテックス",
   "block.changed.bedside_iv_rack": "IVラック",
   "block.changed.book_stack": "書庫",
   "block.changed.canned_peaches": "桃の缶詰",

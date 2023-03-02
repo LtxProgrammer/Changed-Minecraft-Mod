@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "changed:blocks/aerosol_latex"
+    "layer0": "changed:blocks/wolf_gas"
   }
 }
