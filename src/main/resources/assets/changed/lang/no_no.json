@@ -37,7 +37,7 @@
   "subtitles.changed.paralyze1": "Våpenstøt",
   "subtitles.changed.blow1": "Spiller latekset",
 
-  "item.changed.aerosol_latex_bucket": "Aerosol lateksbøtte",
+  "item.changed.wolf_gas_bucket": "Aerosol lateksbøtte",
   "item.changed.benign_pants": "Lateks bukser",
   "item.changed.blood_syringe": "Blodsprøyte",
   "item.changed.dark_latex_crystal_fragment": "Mørk lateks krystallfragment",
@@ -119,7 +119,7 @@
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   "effect.changed.shock": "Støt",
 
-  "block.changed.aerosol_latex": "Aerosol lateks",
+  "block.changed.wolf_gas": "Aerosol lateks",
   "block.changed.bedside_iv_rack": "IV stativ",
   "block.changed.beehive_bed": "Bikubeseng",
   "block.changed.beehive_wall": "Bikubevegg",
@@ -200,7 +200,7 @@
   "block.changed.white_latex_block": "Hvit lateksblokk",
   "block.changed.white_latex_pillar": "Hvit latekssøyle",
 
-  "fluid.changed.aerosol_latex": "Ulv gass",
+  "fluid.changed.wolf_gas": "Ulv gass",
   "fluid.changed.dark_latex": "Flytende mørk lateks",
   "fluid.changed.white_latex": "Flytende hvit lateks",
 

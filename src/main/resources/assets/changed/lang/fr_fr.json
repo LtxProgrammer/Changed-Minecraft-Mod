@@ -35,7 +35,7 @@
   "subtitles.changed.paralyze1": "Chocs d'armess",
   "subtitles.changed.blow1": "Joueur latexé",
 
-  "item.changed.aerosol_latex_bucket": "Seau à latex aérosol",
+  "item.changed.wolf_gas_bucket": "Seau à latex aérosol",
   "item.changed.blood_syringe": "Seringue du sang",
   "item.changed.dark_latex_crystal_fragment": "Fragment de cristal du latex sombre",
   "item.changed.dark_latex_dragon_crystal_fragment": "Fragment de cristal du dragon latex sombre",
@@ -111,7 +111,7 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
 
-  "block.changed.aerosol_latex": "Latex en aérosol",
+  "block.changed.wolf_gas": "Latex en aérosol",
   "block.changed.bedside_iv_rack": "Rack IV",
   "block.changed.book_stack": "Pile de livres",
   "block.changed.canned_peaches": "Pêches en conserve",

@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -53,7 +54,7 @@ public class ChangedBlocks {
     
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, Changed.MODID);
     public static final Map<RegistryObject<? extends Block>, Consumer<Block>> REGISTRY_CRL = new HashMap<>();
-    public static final RegistryObject<AerosolLatex> AEROSOL_LATEX = registerNoItem("aerosol_latex", AerosolLatex::new);
+    public static final RegistryObject<WolfGas> AEROSOL_LATEX = registerNoItem("wolf_gas", WolfGas::new);
     public static final RegistryObject<BedsideIVRack> BEDSIDE_IV_RACK = register("bedside_iv_rack", BedsideIVRack::new, ChangedBlocks::translucentRenderer);
     public static final RegistryObject<BeehiveBed> BEEHIVE_BED = register("beehive_bed", BeehiveBed::new);
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_WALL = register("beehive_wall", AbstractBeehiveBlock::new);
@@ -184,10 +185,15 @@ public class ChangedBlocks {
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockConstructor, @Nullable Consumer<Block> renderLayer) {
+        return register(name, blockConstructor, renderLayer, block -> new BlockItem(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS)));
+    }
+
+    private static <T extends Block, I extends Item> RegistryObject<T> register(String name, Supplier<T> blockConstructor, @Nullable Consumer<Block> renderLayer,
+                                                                                Function<T, I> item) {
         RegistryObject<T> block = REGISTRY.register(name, blockConstructor);
         if (renderLayer != null)
             REGISTRY_CRL.put(block, renderLayer);
-        ChangedItems.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS)));
+        ChangedItems.register(name, () -> item.apply(block.get()));
         return block;
     }
 

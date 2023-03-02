@@ -15,15 +15,15 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
-public abstract class AerosolLatexFluid extends AbstractLatexFluid {
+public abstract class WolfGasFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
-            ChangedFluids.AEROSOL_LATEX::get,
-            ChangedFluids.AEROSOL_LATEX_FLOWING::get,
+            ChangedFluids.WOLF_GAS::get,
+            ChangedFluids.WOLF_GAS_FLOWING::get,
             FluidAttributes.builder(ChangedBlocks.textureOf(ChangedBlocks.AEROSOL_LATEX), ChangedBlocks.textureOf(ChangedBlocks.AEROSOL_LATEX))
             .gaseous().density(-1024).viscosity(512)).explosionResistance(100f)
-            .bucket(ChangedItems.AEROSOL_LATEX_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.AEROSOL_LATEX.get());
+            .bucket(ChangedItems.WOLF_GAS_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.AEROSOL_LATEX.get());
 
-    private AerosolLatexFluid() {
+    private WolfGasFluid() {
         super(PROPERTIES, LatexVariant.AEROSOL_LATEX_WOLF);
     }
 
@@ -31,7 +31,7 @@ public abstract class AerosolLatexFluid extends AbstractLatexFluid {
         return ChangedBlocks.AEROSOL_LATEX.get().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(p_76466_));
     }
 
-    public static class Source extends AerosolLatexFluid {
+    public static class Source extends WolfGasFluid {
         public Source() {
             super();
         }
@@ -45,7 +45,7 @@ public abstract class AerosolLatexFluid extends AbstractLatexFluid {
         }
     }
 
-    public static class Flowing extends AerosolLatexFluid {
+    public static class Flowing extends WolfGasFluid {
         public Flowing() {
             super();
         }

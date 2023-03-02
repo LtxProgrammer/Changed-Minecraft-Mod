@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.util;
+package net.ltxprogrammer.changed.world.inventory;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
