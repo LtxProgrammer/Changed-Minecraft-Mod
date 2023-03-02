@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/gas_canister_lower",
+  "textures": {
+    "all": "changed:blocks/wolf_gas_canister",
+    "particle": "changed:blocks/wolf_gas_canister",
+    "0": "changed:blocks/wolf_gas_canister"
+  }
+}
