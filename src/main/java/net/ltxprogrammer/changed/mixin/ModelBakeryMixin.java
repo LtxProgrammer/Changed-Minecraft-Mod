@@ -17,6 +17,9 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import org.apache.commons.compress.utils.Lists;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -29,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
@@ -102,7 +106,7 @@ public abstract class ModelBakeryMixin {
             toAddSelector.add(new Selector(selector::getPredicate, new MultiVariant(toAdd)));
         });
 
-        MultiPart injected = new MultiPart(multiPart.definition, toAddSelector);
+        MultiPart injected = new MultiPart(((Supplier<StateDefinition<Block, BlockState>>)multiPart).get(), toAddSelector);
         self.unbakedCache.put(model, injected);
         self.topLevelModels.put(model, injected);
         return injected;
