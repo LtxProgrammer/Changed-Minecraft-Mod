@@ -119,7 +119,6 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
 
-  "block.changed.wolf_gas": "Aerosol Latex",
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.beehive_bed": "Beehive Bed",
   "block.changed.beehive_wall": "Beehive Wall",
@@ -199,6 +198,8 @@
   "block.changed.wall_white": "White Wall",
   "block.changed.white_latex_block": "White Latex Block",
   "block.changed.white_latex_pillar": "White Latex Pillar",
+  "block.changed.wolf_gas": "Wolf Gas",
+  "block.changed.wolf_gas_canister": "Wolf Gas Canister",
 
   "fluid.changed.wolf_gas": "Wolf Gas",
   "fluid.changed.dark_latex": "Liquid Dark Latex",

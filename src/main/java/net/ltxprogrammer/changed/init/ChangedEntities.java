@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandLeft;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -342,6 +343,8 @@ public class ChangedEntities {
 
     public static final RegistryObject<EntityType<LatexInkball>> LATEX_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
+    public static final RegistryObject<EntityType<GasParticle>> GAS_PARTICLE = REGISTRY.register("gas_particle",
+            () -> EntityType.Builder.of(GasParticle::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(4).updateInterval(10).build("gas_particle"));
 
     // TODO make register function for non `LatexEntity`
 

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "changed:block/wolf_gas_canister_lower"
+    },
+    "half=upper": {
+      "model": "changed:block/wolf_gas_canister_upper"
+    }
+  }
+}

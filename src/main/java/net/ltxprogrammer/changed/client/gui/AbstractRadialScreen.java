@@ -70,10 +70,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             );
         }
 
-        var ints = ChangedEntities.getEntityColor(variant.getParent().getEntityType().getRegistryName());
-        return new Pair<>(
-                ChangedParticles.Color3.fromInt(ints.getFirst()),
-                ChangedParticles.Color3.fromInt(ints.getSecond()));
+        return variant.getParent().getColors();
     }
 
     private static final double RADIAL_DISTANCE = 90.0;
