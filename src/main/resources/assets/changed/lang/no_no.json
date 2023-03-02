@@ -10,6 +10,7 @@
   "ability.changed.switch_transfur_mode.select": "Transpelsmodus er nå: %s",
   "ability.changed.create_cobweb": "Lage spindelvev",
   "ability.changed.create_inkball": "Lage blekkball",
+  "ability.changed.create_honeycomb": "Lage bikake",
   "ability.changed.access_chest": "Tilgang kiste",
   "ability.changed.switch_hands": "Bytte hender",
   "ability.changed.switch_gender": "Endre kjønn",
@@ -59,6 +60,7 @@
 
   "item.changed.tsc_staff": "TSC stab",
   "item.changed.tsc_baton": "TSC taktpinne",
+  "item.changed.tsc_shield": "TSC skjold",
 
   "item.changed.leather_upper_abdomen_armor": "Lær øvre bukrustning",
   "item.changed.leather_lower_abdomen_armor": "Lær nedre bukrustning",
@@ -103,7 +105,7 @@
   "container.changed.purifier": "Rensermenyen",
   "container.changed.keypad_first": "Sette et passkode",
   "container.changed.keypad": "Angi passkode",
-  "container.changed.note": "Notis",
+  "container.changed.note": "Varsel",
   "container.changed.access_chest": "Kiste inventar",
 
   "text.changed.game_saved": "Spill er ikke lagret.",
@@ -121,9 +123,9 @@
   "block.changed.bedside_iv_rack": "IV stativ",
   "block.changed.beehive_bed": "Bikubeseng",
   "block.changed.beehive_wall": "Bikubevegg",
-  "block.changed.beehive_floor": "Bikube gulvet",
+  "block.changed.beehive_floor": "Bikubegulv",
   "block.changed.beehive_roof": "Bikubetak",
-  "block.changed.beehive_corner": "Bikube hjørnet",
+  "block.changed.beehive_corner": "Bikube hjørne",
   "block.changed.blue_lab_door": "Blå laboratoriedør",
   "block.changed.book_stack": "Bokstabel",
   "block.changed.canned_peaches": "Hermetisert fersken",
@@ -197,6 +199,10 @@
   "block.changed.wall_white": "Hvit vegg",
   "block.changed.white_latex_block": "Hvit lateksblokk",
   "block.changed.white_latex_pillar": "Hvit latekssøyle",
+
+  "fluid.changed.aerosol_latex": "Ulv gass",
+  "fluid.changed.dark_latex": "Flytende mørk lateks",
+  "fluid.changed.white_latex": "Flytende hvit lateks",
 
   "biome.changed.dark_latex_plains": "Mørk latekseng",
   "biome.changed.white_latex_forest": "Hvit lateks skog",

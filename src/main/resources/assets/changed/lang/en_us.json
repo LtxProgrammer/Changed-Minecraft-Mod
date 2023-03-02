@@ -10,6 +10,7 @@
   "ability.changed.switch_transfur_mode.select": "Transfur mode is now: %s",
   "ability.changed.create_cobweb": "Create Cobweb",
   "ability.changed.create_inkball": "Create Inkball",
+  "ability.changed.create_honeycomb": "Create Honeycomb",
   "ability.changed.access_chest": "Access Chest",
   "ability.changed.switch_hands": "Switch Hands",
   "ability.changed.switch_gender": "Switch Gender",
@@ -60,6 +61,7 @@
   "item.changed.tsc_staff": "TSC Staff",
   "item.changed.tsc_shield": "TSC Shield",
   "item.changed.tsc_baton": "TSC Baton",
+  "item.changed.tsc_shield": "TSC Shield",
 
   "item.changed.leather_upper_abdomen_armor": "Leather Upper Abdomen Armor",
   "item.changed.leather_lower_abdomen_armor": "Leather Lower Abdomen Armor",
@@ -198,6 +200,10 @@
   "block.changed.wall_white": "White Wall",
   "block.changed.white_latex_block": "White Latex Block",
   "block.changed.white_latex_pillar": "White Latex Pillar",
+
+  "fluid.changed.aerosol_latex": "Wolf Gas",
+  "fluid.changed.dark_latex": "Liquid Dark Latex",
+  "fluid.changed.white_latex": "Liquid White Latex",
 
   "biome.changed.dark_latex_plains": "Dark Latex Plains",
   "biome.changed.white_latex_forest": "White Latex Forest",
