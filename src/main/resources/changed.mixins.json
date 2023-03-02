@@ -43,6 +43,7 @@
     "ItemRendererMixin",
     "LocalPlayerMixin",
     "ModelBakeryMixin",
+    "MultiPartMixin",
     "PlayerRendererMixin",
     "RecipeBookTabButtonMixin",
     "RecipeButtonMixin",
