@@ -161,6 +161,7 @@ public class ChangedLayerDefinitions {
         registerLayerDefinition(HairStyle.HEAD_FUZZ.headHair, Legacy::createHeadFuzzHair);
         registerLayerDefinition(HairStyle.MALE_STANDARD.headHair, Legacy::createMaleStandardHair);
         registerLayerDefinition(HairStyle.MALE_NWE.headHair, Legacy::createMaleHairNWE);
+        registerLayerDefinition(HairStyle.MALE_NWE_FULL.headHair, Legacy::createMaleHairFullNWE);
         registerLayerDefinition(HairStyle.FLARED_MOHAWK.headHair, Legacy::createFlaredMohawk);
         registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
         registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
