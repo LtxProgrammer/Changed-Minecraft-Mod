@@ -24,21 +24,32 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     private static final int MAX_VARINT = Integer.MAX_VALUE - 1;
     private static final HashMap<ResourceKey<Registry<?>>, Supplier<ForgeRegistry<?>>> REGISTRY_HOLDERS = new HashMap<>();
 
-    public static final ResourceKey<Registry<LatexVariant<?>>> LATEX_VARIANT_REGISTRY = registryKey("latex_variant");
-    public static final ResourceKey<Registry<AbstractAbility<?>>> ABILITY_REGISTRY = registryKey("ability");
-    public static final Supplier<ForgeRegistry<LatexVariant<?>>> LATEX_VARIANT = registerHolder(LATEX_VARIANT_REGISTRY);
-    public static final Supplier<ForgeRegistry<AbstractAbility<?>>> ABILITY = registerHolder(ABILITY_REGISTRY);
+    public static class RegistryHolder<T extends IForgeRegistryEntry<T>>implements Supplier<ForgeRegistry<T>> {
+        protected final ResourceKey<Registry<T>> key;
+
+        public RegistryHolder(ResourceKey<Registry<T>> key) {
+            this.key = key;
+        }
+
+        @Override
+        public ForgeRegistry<T> get() {
+            return (ForgeRegistry<T>) REGISTRY_HOLDERS.get(key).get();
+        }
+
+        public DeferredRegister<T> createDeferred(String modId) {
+            return DeferredRegister.create(key, modId);
+        }
+    }
+
+    public static final RegistryHolder<LatexVariant<?>> LATEX_VARIANT = new RegistryHolder<LatexVariant<?>>(registryKey("latex_variant"));
+    public static final RegistryHolder<AbstractAbility<?>> ABILITY = new RegistryHolder<AbstractAbility<?>>(registryKey("ability"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
-        createRegistry(event, LATEX_VARIANT_REGISTRY, c(LatexVariant.class), builder -> {
+        createRegistry(event, LATEX_VARIANT.key, c(LatexVariant.class), builder -> {
             builder.missing((key, network) -> LatexVariant.FALLBACK_VARIANT);
         }, null);
-        createRegistry(event, ABILITY_REGISTRY, c(AbstractAbility.class));
-    }
-
-    private static <T extends IForgeRegistryEntry<T>> Supplier<ForgeRegistry<T>> registerHolder(ResourceKey<Registry<T>> key) {
-        return () -> (ForgeRegistry<T>) REGISTRY_HOLDERS.get(key).get();
+        createRegistry(event, ABILITY.key, c(AbstractAbility.class));
     }
 
     private static <T extends IForgeRegistryEntry<T>> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key, Class<T> type) {
