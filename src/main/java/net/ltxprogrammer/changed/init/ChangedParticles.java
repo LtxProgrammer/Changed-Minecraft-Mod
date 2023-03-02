@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.effect.particle.ColoredParticleOption;
+import net.ltxprogrammer.changed.effect.particle.GasParticle;
 import net.ltxprogrammer.changed.effect.particle.LatexDripParticle;
 import net.ltxprogrammer.changed.effect.particle.TscSweepParticle;
 import net.minecraft.client.Minecraft;
@@ -81,11 +82,17 @@ public class ChangedParticles {
 
     public static final ParticleType<ColoredParticleOption> DRIPPING_LATEX = register(Changed.modResource("dripping_latex"),
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
+    public static final ParticleType<ColoredParticleOption> GAS = register(Changed.modResource("gas"),
+            ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
     public static final SimpleParticleType TSC_SWEEP_ATTACK = (SimpleParticleType)register(Changed.modResource("tsc_sweep_attack"),
             new SimpleParticleType(false));
 
     public static ColoredParticleOption drippingLatex(Color3 color) {
         return new ColoredParticleOption(DRIPPING_LATEX, color);
+    }
+
+    public static ColoredParticleOption gas(Color3 color) {
+        return new ColoredParticleOption(GAS, color);
     }
 
     private static <T extends ParticleOptions> ParticleType<T> register(ResourceLocation name, ParticleType<T> type) {
@@ -115,6 +122,7 @@ public class ChangedParticles {
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         var engine = Minecraft.getInstance().particleEngine;
         engine.register(DRIPPING_LATEX, LatexDripParticle.Provider::new);
+        engine.register(GAS, GasParticle.Provider::new);
         engine.register(TSC_SWEEP_ATTACK, TscSweepParticle.Provider::new);
     }
 }

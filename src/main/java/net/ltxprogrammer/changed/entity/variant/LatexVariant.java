@@ -9,10 +9,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.*;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.Util;
@@ -737,5 +734,13 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                 nAbilitiesList,
                 GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
                 ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))).setRegistryName(id);
+    }
+
+
+    public Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors() {
+        var ints = ChangedEntities.getEntityColor(getEntityType().getRegistryName());
+        return new Pair<>(
+                ChangedParticles.Color3.fromInt(ints.getFirst()),
+                ChangedParticles.Color3.fromInt(ints.getSecond()));
     }
 }
