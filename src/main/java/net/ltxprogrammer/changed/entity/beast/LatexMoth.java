@@ -21,7 +21,7 @@ public class LatexMoth extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.MALE_NWE_FULL;
     }
 
     @Override
