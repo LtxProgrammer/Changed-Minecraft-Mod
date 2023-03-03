@@ -119,7 +119,6 @@
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
 
-  "block.changed.wolf_gas": "Aerosol latex",
   "block.changed.bedside_iv_rack": "IV kuggstång",
   "block.changed.beehive_bed": "Bikupasäng",
   "block.changed.beehive_wall": "Bikupavägg",
@@ -199,6 +198,8 @@
   "block.changed.wall_white": "Vit vegg",
   "block.changed.white_latex_block": "Vit latexblock",
   "block.changed.white_latex_pillar": "Vit latexspelare",
+  "block.changed.wolf_gas": "Varggas",
+  "block.changed.wolf_gas_canister": "Varggasbehållare",
 
   "fluid.changed.wolf_gas": "Varggas",
   "fluid.changed.dark_latex": "Flytande mörk latex",

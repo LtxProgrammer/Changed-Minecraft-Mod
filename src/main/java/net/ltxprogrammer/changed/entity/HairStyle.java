@@ -81,6 +81,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
     MALE_NWE(Gender.MALE,
             DeferredModelLayerLocation.main(Changed.modResource("hair/male_nwe")),
             Changed.modResource("textures/hair/legacy_collection.png")),
+    MALE_NWE_FULL(Gender.MALE,
+            DeferredModelLayerLocation.main(Changed.modResource("hair/male_nwe_full")),
+            Changed.modResource("textures/hair/legacy_collection.png")),
     FLARED_MOHAWK(Gender.MALE,
             DeferredModelLayerLocation.main(Changed.modResource("hair/flared_mohawk")),
             Changed.modResource("textures/hair/legacy_collection.png")),
@@ -141,6 +144,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
     MALE_NWE_S(Gender.MALE,
             MALE_NWE.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
+    MALE_NWE_FULL_S(Gender.MALE,
+            MALE_NWE_FULL.headHair,
+            Changed.modResource("textures/hair/legacy_collection_s.png")),
     FLARED_MOHAWK_S(Gender.MALE,
             FLARED_MOHAWK.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
@@ -169,8 +175,8 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
         public static List<HairStyle> MALE_FEMALE = named("male_female", combine(MALE, FEMALE));
         public static List<HairStyle> MALE_FEMALE_SHADED = named("male_female_shaded", combine(MALE_SHADED, FEMALE_SHADED));
 
-        public static List<HairStyle> MALE_NO_WOLF_EARS = named("male_no_wolf_ears", of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN, MALE_BANGS, FLARED_MOHAWK, SIDE_TUFTS));
-        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = named("male_no_wolf_ears_shaded", of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S, MALE_BANGS_S, FLARED_MOHAWK_S, SIDE_TUFTS_S));
+        public static List<HairStyle> MALE_NO_WOLF_EARS = named("male_no_wolf_ears", of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_NWE, MALE_SIDEBURN, MALE_BANGS, FLARED_MOHAWK, SIDE_TUFTS, MALE_NWE_FULL));
+        public static List<HairStyle> MALE_NO_WOLF_EARS_SHADED = named("male_no_wolf_ears_shaded", of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_NWE_S, MALE_SIDEBURN_S, MALE_BANGS_S, FLARED_MOHAWK_S, SIDE_TUFTS_S, MALE_NWE_FULL_S));
 
         public static List<HairStyle> getCollection(ResourceLocation name) {
             return REGISTRY.getOrDefault(name, NONE);
