@@ -151,6 +151,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_raccoon")));
     public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_bee")));
+    public static final LatexVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH).groundSpeed(1.05f).swimSpeed(0.6f).extraJumps(4).reducedFall().breatheMode(BreatheMode.WEAK)
+            .build(Changed.modResource("form_latex_bee")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
             .build(Changed.modResource("form_latex_otter")));
     public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().cannotWalk()
