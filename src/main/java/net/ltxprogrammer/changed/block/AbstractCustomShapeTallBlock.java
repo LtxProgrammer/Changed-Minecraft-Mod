@@ -46,10 +46,10 @@ public abstract class AbstractCustomShapeTallBlock extends AbstractCustomShapeBl
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_52863_) {
-        BlockPos blockpos = p_52863_.getClickedPos();
-        Level level = p_52863_.getLevel();
-        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(p_52863_) ? super.getStateForPlacement(p_52863_) : null;
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        Level level = context.getLevel();
+        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
