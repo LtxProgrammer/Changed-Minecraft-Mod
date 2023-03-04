@@ -28,4 +28,5 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD = REGISTRY.register("keypad", deferredProvider(KeypadBlockEntity::new, ChangedBlocks.KEYPAD));
     public static final RegistryObject<BlockEntityType<LatexContainerBlockEntity>> LATEX_CONTAINER = REGISTRY.register("latex_container", deferredProvider(LatexContainerBlockEntity::new, ChangedBlocks.LATEX_CONTAINER));
     public static final RegistryObject<BlockEntityType<TextBlockEntity>> TEXT_BLOCK_ENTITY = REGISTRY.register("text_block_entity", deferredProvider(TextBlockEntity::new, ChangedBlocks.NOTE, ChangedBlocks.CLIPBOARD));
+    public static final RegistryObject<BlockEntityType<GasCanisterBlockEntity>> GAS_CANISTER = REGISTRY.register("gas_canister", deferredProvider(GasCanisterBlockEntity::new, ChangedBlocks.WOLF_GAS_CANISTER));
 }
