@@ -20,7 +20,7 @@ public abstract class ItemInHandRendererMixin {
     public void renderItem(LivingEntity entity, ItemStack item, ItemTransforms.TransformType type, boolean leftHand, PoseStack pose, MultiBufferSource buffers, int packedLight, CallbackInfo callback) {
         if (!item.isEmpty() && item.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
-            if (handler != null) {
+            if (handler != null && (!type.firstPerson() || handler.changesFirstPersonAnimation())) {
                 handler.adjustGrip(item, entity, type, pose);
             }
         }
@@ -35,7 +35,7 @@ public abstract class ItemInHandRendererMixin {
                 return;
 
             var handler = specialized.getAnimationHandler();
-            if (handler != null) {
+            if (handler != null && handler.changesFirstPersonAnimation()) {
                 pose.pushPose();
                 float progress = 1.0F - (((float)player.useItemRemaining - partialTicks + 1.0F) / (float)item.getUseDuration());
                 handler.setupFirstPersonUseAnimation(
@@ -56,7 +56,8 @@ public abstract class ItemInHandRendererMixin {
             if (player.getUsedItemHand() != hand)
                 return;
 
-            if (specialized.getAnimationHandler() != null) {
+            var handler = specialized.getAnimationHandler();
+            if (handler != null && handler.changesFirstPersonAnimation()) {
                 pose.popPose();
             }
         }

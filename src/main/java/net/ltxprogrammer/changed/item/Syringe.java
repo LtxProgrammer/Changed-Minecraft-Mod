@@ -246,6 +246,11 @@ public class Syringe extends Item implements SpecializedAnimations {
         }
 
         @Override
+        public boolean changesFirstPersonAnimation() {
+            return true;
+        }
+
+        @Override
         public void setupFirstPersonUseAnimation(ItemStack itemStack, EntityStateContext entity, HumanoidArm arm, PoseStack pose, float progress) {
             super.setupFirstPersonUseAnimation(itemStack, entity, arm, pose, progress);
             float relativeProgress = progress * itemStack.getUseDuration();

@@ -5,6 +5,9 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,10 +22,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GasCanister extends BlockItem {
+import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController.findLargestCube;
+
+public class GasCanister extends BlockItem implements SpecializedAnimations {
     private final List<LatexVariant<?>> variants;
     private final ChangedParticles.Color3 color;
 
@@ -84,5 +90,24 @@ public class GasCanister extends BlockItem {
         stack.hurtAndBreak(1, entity, (livingEntity) -> {
             livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
+    }
+
+    @Nullable
+    @Override
+    public AnimationHandler getAnimationHandler() {
+        return ANIMATION_CACHE.computeIfAbsent(this, GasCanisterAnimator::new);
+    }
+
+    public static class GasCanisterAnimator extends AnimationHandler {
+        public GasCanisterAnimator(Item item) {
+            super(item);
+        }
+
+        @Override
+        public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, HumanoidArm arm, float progress) {
+            super.setupUsingAnimation(itemStack, entity, model, arm, progress);
+            model.rightArm.xRot = model.head.xRot - 1.570796f - (entity.livingEntity.isCrouching() ? 0.2617994F : 0.0F);
+            model.rightArm.yRot = model.head.yRot;
+        }
     }
 }
