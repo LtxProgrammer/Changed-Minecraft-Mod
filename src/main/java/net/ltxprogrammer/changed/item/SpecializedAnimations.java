@@ -143,6 +143,14 @@ public interface SpecializedAnimations {
          */
         public void setupUsingAnimation(ItemStack itemStack, EntityStateContext entity, UpperModelContext model, HumanoidArm arm, float progress) {}
 
+
+        /**
+         * @return True if the animator wants to adjust first person animations, false otherwise
+         */
+        public boolean changesFirstPersonAnimation() {
+            return false;
+        }
+
         /**
          * Sets up pose for rendering first person items use animation. For best use, set Item.getUseAnimation() to UseAnim.NONE
          * @param itemStack Item to pull NBT if needed
