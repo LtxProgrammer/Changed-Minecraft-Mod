@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -42,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static net.ltxprogrammer.changed.init.ChangedSounds.OPEN2;
 
 public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
@@ -204,8 +207,10 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!state.getValue(POWERED))
-            return InteractionResult.FAIL;
+        if (!state.getValue(POWERED)) {
+            level.playSound(null, pos, OPEN2, SoundSource.BLOCKS, 1, 1);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (state.getValue(OPEN) && player.getDimensions(player.getPose()).makeBoundingBox(player.position()).intersects(new AABB(
                 state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.BOTTOM_LEFT),
                 state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.TOP_RIGHT))))
