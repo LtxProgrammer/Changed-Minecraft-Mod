@@ -320,20 +320,42 @@ public class ProcessTransfur {
 
     public static class LatexedEntity {
         final LivingEntity entity;
+        @Nullable
         final LatexVariant<?> variant;
         @NotNull
         final LatexVariant<?> transfur;
         final boolean isPlayer;
+        @Nullable
+        final LatexVariantInstance<?> playerVariant;
 
         LatexedEntity(LivingEntity entity) {
             this.entity = entity;
             this.variant = LatexVariant.getEntityVariant(entity);
             this.transfur = LatexVariant.getEntityTransfur(entity);
             this.isPlayer = entity instanceof Player;
+            this.playerVariant = isPlayer ? ProcessTransfur.getPlayerLatexVariant((Player)entity) : null;
         }
 
         static boolean isLatexed(LivingEntity entity) {
             return LatexVariant.getEntityVariant(entity) != null || LatexVariant.getEntityTransfur(entity) != null;
+        }
+
+        boolean wantAbsorption() {
+            boolean doesAbsorption;
+            if (entity instanceof LatexEntity latexEntity)
+                doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+            else if (playerVariant != null)
+                doesAbsorption = playerVariant.transfurMode == TransfurMode.ABSORPTION;
+            else if (variant != null)
+                doesAbsorption = variant.transfurMode() == TransfurMode.ABSORPTION;
+            else if (transfur.transfurMode() == TransfurMode.ABSORPTION)
+                doesAbsorption = true;
+            else if (transfur.getEntityType() == ChangedEntities.SPECIAL_LATEX.get())
+                doesAbsorption = true;
+            else
+                doesAbsorption = false;
+
+            return doesAbsorption;
         }
     }
 
@@ -456,16 +478,8 @@ public class ProcessTransfur {
             ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
             
         entity.hurt(ChangedDamageSources.entityTransfur(source.entity), 0.0F);
-        boolean doesAbsorption = false;
-        if (source.entity instanceof LatexEntity latexEntity)
-            doesAbsorption = latexEntity.getTransfurMode() == TransfurMode.ABSORPTION;
-        else if (source.variant != null)
-            doesAbsorption = source.variant.transfurMode() == TransfurMode.ABSORPTION;
-        else if (source.transfur.transfurMode() == TransfurMode.ABSORPTION)
-            doesAbsorption = true;
+        boolean doesAbsorption = source.wantAbsorption();
         if (!possibleMobFusions.isEmpty())
-            doesAbsorption = true;
-        if (source.transfur.getEntityType() == ChangedEntities.SPECIAL_LATEX.get())
             doesAbsorption = true;
 
         if (!doesAbsorption) { // Replication
