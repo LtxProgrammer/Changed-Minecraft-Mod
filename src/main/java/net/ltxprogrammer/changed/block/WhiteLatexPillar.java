@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -108,6 +109,9 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
             else if (!(entity instanceof Player)){
                 ProcessTransfur.progressTransfur(le, 4800, LatexVariant.WHITE_LATEX_WOLF.getFormId());
             }
+        } else if (entity instanceof LatexEntity latexEntity) {
+            if (latexEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                latexEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         }
         entity.makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
     }
