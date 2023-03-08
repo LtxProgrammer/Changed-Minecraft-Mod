@@ -392,4 +392,28 @@ public class Legacy {
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
+
+    public static LayerDefinition createPonytail() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition Base_r1 = partdefinition.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(24, 5).addBox(-4.5F, -8.0F, -4.75F, 9.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(32, 18).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(32, 30).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(0, 36).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(12, 37).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(24, 8).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
+        PartDefinition PonyTail = partdefinition.addOrReplaceChild("PonyTail", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition Base_r2 = PonyTail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(51, 38).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(51, 26).addBox(3.75F, -4.0F, 0.0F, 1.0F, 2.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(24, 50).addBox(-4.0F, -8.75F, 3.25F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(30, 50).addBox(2.0F, -8.75F, 3.25F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(28, 12).addBox(-1.0F, -10.0F, 2.5F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(41, 41).addBox(-1.0F, -9.0F, 4.5F, 2.0F, 12.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(41, 42).addBox(-2.0F, -9.0F, 3.5F, 4.0F, 8.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 128, 128);
+    }
 }
