@@ -14,6 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -69,17 +73,25 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
             return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
         }
 
+        static boolean interactionCollide(LivingEntity entity, BlockPos pos, BlockState state) {
+            VoxelShape voxelshape = state.getInteractionShape(entity.level, pos);
+            VoxelShape voxelshape1 = voxelshape.move(entity.getX(), entity.getY(), entity.getZ());
+            return Shapes.joinIsNotEmpty(voxelshape1, Shapes.create(entity.getBoundingBox()), BooleanOp.AND);
+        }
+
         @SubscribeEvent
         static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.player.getPersistentData().contains(TRANSPORT_TAG))
                 entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
 
-            BlockPos pos = new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ());
-            BlockState blockState = event.player.level.getBlockState(pos);
+            BlockState blockState = event.player.level.getBlockState(event.player.blockPosition());
             BlockState blockStateEye = event.player.level.getBlockState(event.player.eyeBlockPosition());
 
+            boolean colliding = interactionCollide(event.player, event.player.blockPosition(), blockState);
+            boolean collidingEye = interactionCollide(event.player, event.player.eyeBlockPosition(), blockStateEye);
+
             if (!isEntityInWhiteLatex(event.player)) {
-                if (whiteLatex(blockState) || whiteLatex(blockStateEye)) {
+                if ((colliding && whiteLatex(blockState)) || (collidingEye && whiteLatex(blockStateEye))) {
                     ProcessTransfur.ifPlayerLatex(event.player, variant -> {
                         if (variant.getLatexType() == LatexType.WHITE_LATEX)
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));

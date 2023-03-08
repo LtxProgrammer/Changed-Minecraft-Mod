@@ -129,6 +129,12 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
             FEMALE_SIDE_BANGS_S.headHair,
             LEGACY_FEMALE_RIGHT_BANG_L.lowerHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
+    PONYTAIL(Gender.FEMALE,
+            DeferredModelLayerLocation.main(Changed.modResource("hair/ponytail")),
+            Changed.modResource("textures/hair/legacy_collection.png")),
+    PONYTAIL_S(Gender.FEMALE,
+            PONYTAIL.headHair,
+            Changed.modResource("textures/hair/legacy_collection_s.png")),
     MOHAWK_S(Gender.MALE,
             MOHAWK.headHair,
             Changed.modResource("textures/hair/legacy_collection_s.png")),
@@ -168,9 +174,9 @@ public enum HairStyle implements IExtensibleEnum, StringRepresentable { // TODO 
         public static List<HairStyle> MALE = named("male", of(BALD, MOHAWK, HEAD_FUZZ, MALE_SHORT_FRONT, MALE_STANDARD, MALE_SIDEBURN, MALE_BANGS, FLARED_MOHAWK, SIDE_TUFTS));
         public static List<HairStyle> MALE_SHADED = named("male_shaded", of(BALD, MOHAWK_S, HEAD_FUZZ_S, MALE_SHORT_FRONT_S, MALE_STANDARD_S, MALE_SIDEBURN_S, MALE_BANGS_S, FLARED_MOHAWK_S, SIDE_TUFTS_S));
         public static List<HairStyle> FEMALE = named("female", of(LEGACY_FEMALE_DUAL_BANGS, LEGACY_FEMALE_DUAL_BANGS_L, FEMALE_NO_BANGS, FEMALE_NO_BANGS_L, LEGACY_FEMALE_RIGHT_BANG, LEGACY_FEMALE_RIGHT_BANG_L,
-                LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_LEFT_BANG_L, LEGACY_FEMALE_TRIPLE_BANGS, LEGACY_FEMALE_TRIPLE_BANGS_L, FEMALE_SIDE_BANGS, FEMALE_SIDE_BANGS_L));
+                LEGACY_FEMALE_LEFT_BANG, LEGACY_FEMALE_LEFT_BANG_L, LEGACY_FEMALE_TRIPLE_BANGS, LEGACY_FEMALE_TRIPLE_BANGS_L, FEMALE_SIDE_BANGS, FEMALE_SIDE_BANGS_L, PONYTAIL));
         public static List<HairStyle> FEMALE_SHADED = named("female_shaded", of(LEGACY_FEMALE_DUAL_BANGS_S, LEGACY_FEMALE_DUAL_BANGS_S_L, FEMALE_NO_BANGS_S, FEMALE_NO_BANGS_S_L, LEGACY_FEMALE_RIGHT_BANG_S, LEGACY_FEMALE_RIGHT_BANG_S_L,
-                LEGACY_FEMALE_LEFT_BANG_S, LEGACY_FEMALE_LEFT_BANG_S_L, LEGACY_FEMALE_TRIPLE_BANGS_S, LEGACY_FEMALE_TRIPLE_BANGS_S_L, FEMALE_SIDE_BANGS_S, FEMALE_SIDE_BANGS_S_L));
+                LEGACY_FEMALE_LEFT_BANG_S, LEGACY_FEMALE_LEFT_BANG_S_L, LEGACY_FEMALE_TRIPLE_BANGS_S, LEGACY_FEMALE_TRIPLE_BANGS_S_L, FEMALE_SIDE_BANGS_S, FEMALE_SIDE_BANGS_S_L, PONYTAIL_S));
 
         public static List<HairStyle> MALE_FEMALE = named("male_female", combine(MALE, FEMALE));
         public static List<HairStyle> MALE_FEMALE_SHADED = named("male_female_shaded", combine(MALE_SHADED, FEMALE_SHADED));
