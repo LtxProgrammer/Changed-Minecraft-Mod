@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,6 +14,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -32,12 +34,15 @@ public class ChangedItems {
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new Item((new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<AbstractLatexItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment", AbstractLatexItem::new);
+    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
+            () -> new AbstractLatexCrystalItem(LatexVariant.LATEX_BEIFENG));
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
     public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
-    public static final RegistryObject<AbstractLatexItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment", AbstractLatexItem::new);
-    public static final RegistryObject<AbstractLatexItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment", AbstractLatexItem::new);
+    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment",
+            () -> new AbstractLatexCrystalItem(LatexVariant.LATEX_CRYSTAL_WOLF));
+    public static final RegistryObject<AbstractLatexCrystalItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment",
+            () -> new AbstractLatexCrystalItem(LatexVariant.DARK_LATEX_DRAGON));
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexGoo(LatexType.WHITE_LATEX));
     public static final RegistryObject<AbstractLatexBucket> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
