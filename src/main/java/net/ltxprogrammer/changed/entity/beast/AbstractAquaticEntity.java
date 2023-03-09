@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -118,20 +119,28 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
 
     public void updateSwimming() {
         if (!this.level.isClientSide) {
-            if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim())
-                this.navigation = this.waterNavigation;
-            else
-                this.navigation = this.groundNavigation;
-
             if (this.isInWater() && !this.isOnGround()) {
-                this.setPose(Pose.SWIMMING);
-                this.setSwimming(true);
+                if (!this.wantsToSwim() && !this.level.getBlockState(this.blockPosition().above()).getFluidState().is(FluidTags.WATER)) {
+                    if (this.isEffectiveAi())
+                        this.navigation = this.groundNavigation;
+                    this.setPose(Pose.STANDING);
+                    this.setSwimming(false);
+                }
+
+                else {
+                    if (this.isEffectiveAi())
+                        this.navigation = this.waterNavigation;
+                    this.setPose(Pose.SWIMMING);
+                    this.setSwimming(true);
+                }
             } else {
+                if (this.isEffectiveAi())
+                    this.navigation = this.groundNavigation;
                 this.setPose(Pose.STANDING);
                 this.setSwimming(false);
             }
 
-            this.maxUpStep = this.isInWater() ? 1.0f : 0.7f;
+            this.maxUpStep = this.isInWater() ? 1.05f : 0.7f;
         }
     }
 

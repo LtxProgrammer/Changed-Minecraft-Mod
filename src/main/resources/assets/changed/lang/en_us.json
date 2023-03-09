@@ -38,7 +38,6 @@
   "subtitles.changed.paralyze1": "Weapon shocks",
   "subtitles.changed.blow1": "Player latexed",
 
-  "item.changed.wolf_gas_bucket": "Wolf Gas Bucket",
   "item.changed.benign_pants": "Latex Pants",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Fragment",
@@ -200,10 +199,8 @@
   "block.changed.wall_white": "White Wall",
   "block.changed.white_latex_block": "White Latex Block",
   "block.changed.white_latex_pillar": "White Latex Pillar",
-  "block.changed.wolf_gas": "Wolf Gas",
   "block.changed.wolf_gas_canister": "Wolf Gas Canister",
 
-  "fluid.changed.wolf_gas": "Wolf Gas",
   "fluid.changed.dark_latex": "Liquid Dark Latex",
   "fluid.changed.white_latex": "Liquid White Latex",
 
