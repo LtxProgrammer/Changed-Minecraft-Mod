@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "CPC",
+    "PPP"
+  ],
+  "key": {
+    "C": {
+      "item": "changed:cardboard_box"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "changed:box_pile",
+    "count": 2
+  }
+}
