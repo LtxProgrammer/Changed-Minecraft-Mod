@@ -92,6 +92,6 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
     public boolean isVisuallySwimming() {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
-        return this.isEyeInFluid(FluidTags.WATER) || super.isVisuallySwimming();
+        return super.isVisuallySwimming();
     }
 }
