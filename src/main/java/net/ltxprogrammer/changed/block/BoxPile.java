@@ -34,9 +34,9 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
 
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    public static final VoxelShape SHAPE_FRAME1 = Block.box(14.0D, 0.0D, 2.0D, 16.0D, 32.0D, 14.0D);
-    public static final VoxelShape SHAPE_FRAME2 = Block.box(-16.0D, 0.0D, 2.0D, -14.0D, 32.0D, 14.0D);
-    public static final VoxelShape SHAPE_FRAME3 = Block.box(-16.0D, 30.0D, 2.0D, 16.0D, 32.0D, 14.0D);
+    public static final VoxelShape BOX1 = Block.box(13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
+    public static final VoxelShape BOX2 = Block.box(-13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
+    public static final VoxelShape BOX3 = Block.box(-6.0D, 10.0D, 2.0D, 6.0D, 20.0D, 14.0D);
 
     public BoxPile(Properties p_54120_) {
         super(p_54120_);
@@ -57,28 +57,6 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockPos blockpos = context.getClickedPos();
-        Level level = context.getLevel();
-        Direction direction = context.getHorizontalDirection();
-        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context)) {
-            boolean place;
-            switch (direction) {
-                case NORTH -> place = level.getBlockState(blockpos.east()).canBeReplaced(context) && level.getBlockState(blockpos.east().above()).canBeReplaced(context);
-                case EAST -> place = level.getBlockState(blockpos.south()).canBeReplaced(context) && level.getBlockState(blockpos.south().above()).canBeReplaced(context);
-                case SOUTH -> place = level.getBlockState(blockpos.west()).canBeReplaced(context) && level.getBlockState(blockpos.west().above()).canBeReplaced(context);
-                case WEST -> place = level.getBlockState(blockpos.north()).canBeReplaced(context) && level.getBlockState(blockpos.north().above()).canBeReplaced(context);
-                default -> place = false;
-            }
-
-            if (!place) return null;
-            return this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(OPEN, Boolean.FALSE);
-        } else {
-            return null;
-        }
     }
 
     @Override
