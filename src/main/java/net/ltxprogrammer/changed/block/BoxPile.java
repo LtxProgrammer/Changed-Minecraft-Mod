@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -32,7 +31,6 @@ import java.util.List;
 public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
 
-    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public static final VoxelShape BOX1 = Block.box(13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
     public static final VoxelShape BOX2 = Block.box(-13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
