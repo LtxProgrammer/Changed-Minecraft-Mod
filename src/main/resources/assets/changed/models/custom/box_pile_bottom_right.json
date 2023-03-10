@@ -1,0 +1,42 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "changed:blocks/box_pile",
+		"particle": "changed:blocks/box_pile"
+	},
+	"elements": [
+		{
+			"from": [-6, 10, 2],
+			"to": [0, 16, 14],
+			"faces": {
+				"north": {"uv": [12, 2, 13.5, 3.5], "texture": "#0"},
+				"east": {"uv": [9, 0, 12, 1.5], "texture": "#0"},
+				"south": {"uv": [3, 12, 4.5, 13.5], "texture": "#0"},
+				"west": {"uv": [9, 1.5, 12, 3], "texture": "#0"},
+				"up": {"uv": [10.5, 6, 9, 3], "texture": "#0"},
+				"down": {"uv": [10.5, 6, 9, 9], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-13, 0, 2],
+			"to": [-1, 10, 14],
+			"faces": {
+				"north": {"uv": [6, 5, 9, 7.5], "texture": "#0"},
+				"east": {"uv": [6, 7.5, 9, 10], "texture": "#0"},
+				"south": {"uv": [0, 8.5, 3, 11], "texture": "#0"},
+				"west": {"uv": [3, 8.5, 6, 11], "texture": "#0"},
+				"up": {"uv": [6, 3, 3, 0], "texture": "#0"},
+				"down": {"uv": [6, 3, 3, 6], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "BottomRight",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}
