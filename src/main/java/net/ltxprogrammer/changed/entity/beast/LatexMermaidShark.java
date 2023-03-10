@@ -43,6 +43,6 @@ public class LatexMermaidShark extends AbstractGenderedLatexShark {
     public boolean isVisuallySwimming() {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
-        return this.isEyeInFluid(FluidTags.WATER) || super.isVisuallySwimming();
+        return super.isVisuallySwimming();
     }
 }
