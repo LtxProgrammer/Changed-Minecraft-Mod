@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,12 +14,17 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,13 +37,22 @@ import java.util.List;
 public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
 
-
     public static final VoxelShape BOX1 = Block.box(13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
     public static final VoxelShape BOX2 = Block.box(-13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
     public static final VoxelShape BOX3 = Block.box(-6.0D, 10.0D, 2.0D, 6.0D, 20.0D, 14.0D);
+    public static final VoxelShape ALL_BOXES = Shapes.or(BOX1, BOX2, BOX3);
 
-    public BoxPile(Properties p_54120_) {
-        super(p_54120_);
+    public BoxPile() {
+        super(BlockBehaviour.Properties.of(Material.WOOL).strength(2.0F, 12.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
+                .sound(SoundType.SCAFFOLDING));
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(FACING, Direction.NORTH)
+                .setValue(SECTION, QuarterSection.BOTTOM_LEFT));
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING, SECTION);
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
@@ -50,6 +65,52 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return getInteractionShape(state, level, pos);
+    }
+
+    @Override
+    public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        VoxelShape shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), ALL_BOXES);
+
+        double x = 0.0D;
+        double z = 0.0D;
+
+        switch (state.getValue(FACING)) {
+            case NORTH -> x = 1.0D;
+            case EAST -> z = 1.0D;
+            case SOUTH -> x = -1.0D;
+            case WEST -> z = -1.0D;
+        }
+
+        switch (state.getValue(SECTION)) {
+            case BOTTOM_LEFT -> { return shape; }
+            case TOP_LEFT -> { return shape.move(0, -1.0D, 0); }
+            case TOP_RIGHT -> { return shape.move(x, -1.0D, z); }
+            case BOTTOM_RIGHT -> { return shape.move(x, 0.0D, z); }
+        }
+
+        return shape;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        Level level = context.getLevel();
+        Direction direction = context.getHorizontalDirection();
+        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context)) {
+            boolean place;
+            switch (direction) {
+                case NORTH -> place = level.getBlockState(blockpos.east()).canBeReplaced(context) && level.getBlockState(blockpos.east().above()).canBeReplaced(context);
+                case EAST -> place = level.getBlockState(blockpos.south()).canBeReplaced(context) && level.getBlockState(blockpos.south().above()).canBeReplaced(context);
+                case SOUTH -> place = level.getBlockState(blockpos.west()).canBeReplaced(context) && level.getBlockState(blockpos.west().above()).canBeReplaced(context);
+                case WEST -> place = level.getBlockState(blockpos.north()).canBeReplaced(context) && level.getBlockState(blockpos.north().above()).canBeReplaced(context);
+                default -> place = false;
+            }
+
+            if (!place) return null;
+            return this.defaultBlockState().setValue(FACING, direction.getOpposite());
+        } else {
+            return null;
+        }
     }
 
     @Override
