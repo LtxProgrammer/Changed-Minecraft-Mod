@@ -116,30 +116,26 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
                 .texOffs(0, 16).addBox(-4.0F, -8.0F, -2.0F, 8.0F, 8.0F, 4.0F, new CubeDeformation(-0.3F))
                 .texOffs(24, 16).addBox(-4.0F, -12.0F, -2.0F, 8.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 13.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
+        PartDefinition LeftTuft_r1 = Torso.addOrReplaceChild("LeftTuft_r1", CubeListBuilder.create().texOffs(76, 37).addBox(-11.75F, -23.25F, -2.5F, 1.0F, 2.0F, 5.0F, new CubeDeformation(-0.01F)), PartPose.offsetAndRotation(0.0F, 26.0F, 0.0F, 0.0F, 0.0F, 0.6109F));
+
+        PartDefinition RightTuft_r1 = Torso.addOrReplaceChild("RightTuft_r1", CubeListBuilder.create().texOffs(50, 71).addBox(10.75F, -23.25F, -2.5F, 1.0F, 2.0F, 5.0F, new CubeDeformation(-0.01F)), PartPose.offsetAndRotation(0.0F, 26.0F, 0.0F, 0.0F, 0.0F, -0.6109F));
+
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.5F, 0.0F));
 
-        PartDefinition Base_r13 = Tail.addOrReplaceChild("Base_r13", CubeListBuilder.create().texOffs(0, 44).addBox(-2.0F, -2.8086F, -0.9483F, 4.0F, 10.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.5F, 8.75F, 1.4835F, 0.0F, 0.0F));
+        PartDefinition Base_r14 = Tail.addOrReplaceChild("Base_r14", CubeListBuilder.create().texOffs(0, 44).addBox(-2.0F, -2.8086F, -0.9483F, 4.0F, 10.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.5F, 8.75F, 1.4835F, 0.0F, 0.0F));
 
-        PartDefinition Base_r14 = Tail.addOrReplaceChild("Base_r14", CubeListBuilder.create().texOffs(60, 36).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        PartDefinition Base_r15 = Tail.addOrReplaceChild("Base_r15", CubeListBuilder.create().texOffs(60, 36).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
 
         PartDefinition NeckFluff = Torso.addOrReplaceChild("NeckFluff", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition Base_r15 = NeckFluff.addOrReplaceChild("Base_r15", CubeListBuilder.create().texOffs(36, 40).addBox(-0.5F, -0.5F, -1.75F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(48, 67).addBox(-0.5F, -0.5F, -0.75F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.7316F, 0.8502F, -0.775F, 0.0F, 0.0F, 0.7854F));
-
-        PartDefinition Base_r16 = NeckFluff.addOrReplaceChild("Base_r16", CubeListBuilder.create().texOffs(0, 44).addBox(-0.5F, -0.5F, -1.75F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(68, 42).addBox(-0.5F, -0.5F, -0.75F, 1.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.6816F, 0.8502F, -0.775F, 0.0F, 0.0F, -0.7854F));
-
-        PartDefinition Base_r17 = NeckFluff.addOrReplaceChild("Base_r17", CubeListBuilder.create().texOffs(66, 12).addBox(3.75F, 0.0F, -3.0F, 1.0F, 2.0F, 4.0F, CubeDeformation.NONE)
+        PartDefinition Base_r16 = NeckFluff.addOrReplaceChild("Base_r16", CubeListBuilder.create().texOffs(66, 12).addBox(3.75F, 0.0F, -3.0F, 1.0F, 2.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(26, 66).addBox(-2.75F, 0.0F, -3.0F, 1.0F, 2.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(0, 16).addBox(-2.0F, 0.0F, -3.25F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 28).addBox(3.0F, 0.0F, -3.25F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(12, 28).addBox(-1.0F, -1.0F, -3.25F, 4.0F, 3.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 76).addBox(-2.0F, 0.0F, -3.25F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(44, 17).addBox(-2.75F, 0.0F, 1.5F, 2.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(28, 51).addBox(2.75F, 0.0F, 1.5F, 2.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(69, 35).addBox(-1.0F, 0.0F, 1.75F, 4.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(16, 34).addBox(-1.0F, 0.0F, 1.5F, 4.0F, 3.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(16, 44).addBox(-2.0F, 0.0F, -3.0F, 6.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+                .texOffs(19, 74).addBox(-2.0F, 0.0F, -3.0F, 6.0F, 3.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
         PartDefinition Plantoids = Torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
