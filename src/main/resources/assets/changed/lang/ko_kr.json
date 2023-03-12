@@ -10,6 +10,7 @@
   "ability.changed.switch_transfur_mode.select": "수화 모드가 %s(으)로 변경되었습니다.",
   "ability.changed.create_cobweb": "거미줄 생성",
   "ability.changed.create_inkball": "먹물덩이 생성",
+  "ability.changed.create_honeycomb": "벌집 생성",
   "ability.changed.access_chest": "상자 사용",
   "ability.changed.switch_hands": "손 바꾸기",
   "ability.changed.switch_gender": "성별 바꾸기",
@@ -21,6 +22,7 @@
 
   "subtitles.changed.sound3": "유기적으로 수화함",
   "subtitles.changed.poison": "수화함",
+  "subtitles.changed.open2": "문이 열리지 않음",
   "subtitles.changed.open3": "연구실 문이 열림",
   "subtitles.changed.close3": "연구실 문이 닫힘",
   "subtitles.changed.chime2": "키패드가 접근을 허가함",
@@ -59,6 +61,7 @@
   
   "item.changed.tsc_staff": "TSC 지팡이",
   "item.changed.tsc_baton": "TSC 진압봉",
+  "item.changed.tsc_shield": "TSC 방패",
   
   "item.changed.leather_upper_abdomen_armor": "상복부 가죽 갑옷",
   "item.changed.leather_lower_abdomen_armor": "하복부 가죽 갑옷",
@@ -125,7 +128,8 @@
   "block.changed.beehive_roof": "벌집 지붕",
   "block.changed.beehive_corner": "벌집 모서리",
   "block.changed.blue_lab_door": "파란 연구실 문",
-  "block.changed.book_stack": "책 무더기",
+  "block.changed.book_stack": "쌓인 책",
+  "block.changed.box_pile": "책 무더기",
   "block.changed.canned_peaches": "복숭아 통조림",
   "block.changed.computer": "컴퓨터",
   "block.changed.clipboard": "클립보드",
@@ -159,6 +163,7 @@
   "block.changed.orange_lab_carpeting": "주황색 연구실 카펫",
   "block.changed.orange_tree_sapling": "오렌지 나무 묘목",
   "block.changed.orange_tree_leaves": "오렌지 나무 잎",
+  "block.changed.pipe": "파이프",
   "block.changed.purifier": "정화기",
   "block.changed.retinal_scanner": "홍채 스캐너",
   "block.changed.tiles_blue": "파란색 타일",
@@ -197,6 +202,10 @@
   "block.changed.wall_white": "흰색 벽",
   "block.changed.white_latex_block": "하얀 라텍스 블록",
   "block.changed.white_latex_pillar": "하얀 라텍스 기둥",
+  "block.changed.wolf_gas_canister": "늑대 가스통",
+
+  "fluid.changed.dark_latex": "검은 라텍스 액체",
+  "fluid.changed.white_latex": "하얀 라텍스 액체",
 
   "biome.changed.dark_latex_plains": "검은 라텍스 평원",
   "biome.changed.white_latex_forest": "하얀 라텍스 숲",
@@ -228,6 +237,7 @@
   "entity.changed.latex_medusa_cat": "라텍스 메두사 고양이",
   "entity.changed.latex_mermaid_shark": "라텍스 인어 상어",
   "entity.changed.latex_mimic_plant": "라텍스 모방 식물",
+  "entity.changed.latex_moth": "라텍스 나방",
   "entity.changed.latex_orca": "라텍스 범고래",
   "entity.changed.latex_otter": "라텍스 수달",
   "entity.changed.latex_pink_deer": "분홍색 라텍스 사슴",
@@ -287,6 +297,7 @@
   "item.changed.latex_medusa_cat_spawn_egg": "라텍스 메두사 고양이 생성 알",
   "item.changed.latex_mermaid_shark_spawn_egg": "라텍스 인어 상어 생성 알",
   "item.changed.latex_mimic_plant_spawn_egg": "라텍스 모방 식물 생성 알",
+  "item.changed.latex_moth_spawn_egg": "라텍스 나방 생성 알",
   "item.changed.latex_orca_spawn_egg": "라텍스 범고래 생성 알",
   "item.changed.latex_otter_spawn_egg": "라텍스 수달 생성 알",
   "item.changed.latex_pink_deer_spawn_egg": "분홍색 라텍스 사슴 생성 알",
