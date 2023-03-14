@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:box_pile",
     "changed:cardboard_box",
     "changed:tiles_greenhouse",
     "changed:tiles_greenhouse_connected",
