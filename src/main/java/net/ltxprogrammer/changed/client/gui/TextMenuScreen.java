@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
@@ -56,8 +57,9 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
     public abstract int getTextAreaHeight();
     public abstract int getTextAreaX();
     public abstract int getTextAreaY();
+    public int getTextColor() { return 0; }
     public abstract ResourceLocation getBackground();
-    public abstract Component getNoteTitle();
+    public abstract @Nullable Component getNoteTitle();
 
     private void setClipboard(String p_98148_) {
         if (this.minecraft != null) {
@@ -91,9 +93,16 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
         blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 
         int offset = getTextAreaY();
+        int finalX = this.leftPos + getTextAreaX();
+        int finalY = this.topPos + offset;
         for (var line : cache.lines) {
-            this.font.draw(pose, line.getString(), this.leftPos + getTextAreaX(), this.topPos + offset, 0);
+            finalX = this.font.draw(pose, line.getString(), this.leftPos + getTextAreaX(), this.topPos + offset, getTextColor());
+            finalY = this.topPos + offset;
             offset += 9;
+        }
+
+        if (menu.textCopyLastReceived.isEmpty()) {
+            this.font.draw(pose, "_", finalX, finalY, getTextColor());
         }
     }
 
