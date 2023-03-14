@@ -61,7 +61,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
     private final SoundEvent open, close;
 
     public AbstractLabDoor(SoundEvent open, SoundEvent close) {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(6.0F, 12.0F));
+        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(6.0F, 10.0F));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(POWERED, Boolean.FALSE)
