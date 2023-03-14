@@ -78,7 +78,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LabLight> LAB_LIGHT = register("lab_light", () -> new LabLight(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.METAL).strength(3.0F, 18.0F).lightLevel(
             (state) -> state.getValue(LabLight.POWERED) ? 15 : 0)));
     public static final RegistryObject<LabLightSmall> LAB_LIGHT_SMALL = register("lab_light_small", () -> new LabLightSmall(BlockBehaviour.Properties.copy(LAB_LIGHT.get())));
-    public static final RegistryObject<LabTable> LAB_TABLE = register("lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));
+    public static final RegistryObject<LabTable> LAB_TABLE = register("lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LaserBeamBlock> LASER_BEAM = register("laser_beam", LaserBeamBlock::new, ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LaserEmitterBlock> LASER_EMITTER = register("laser_emitter", LaserEmitterBlock::new);
     public static final RegistryObject<LatexCrystal> LATEX_CRYSTAL = register("latex_crystal", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
