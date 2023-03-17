@@ -40,7 +40,7 @@ public class KeypadBlock extends AbstractCustomShapeEntityBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 1.0D, 11.0D, 15.0D, 10.0D, 16.0D);
 
     public KeypadBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).strength(4.0F, 30.0F));
+        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 3.0F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, Boolean.FALSE));
     }
 

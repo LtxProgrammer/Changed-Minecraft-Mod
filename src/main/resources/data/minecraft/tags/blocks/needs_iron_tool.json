@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "changed:blue_lab_door",
+    "changed:lab_door",
+    "changed:library_door",
+    "changed:maintenance_door"
+  ]
+}
