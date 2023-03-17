@@ -28,7 +28,7 @@ public class VentFanBlock extends DirectionalBlock implements NonLatexCoverableB
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public VentFanBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().sound(SoundType.COPPER).strength(5.0F, 6.0F));
+        super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().sound(SoundType.COPPER).strength(3.0F, 5.0F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(POWERED, Boolean.FALSE));
     }
 

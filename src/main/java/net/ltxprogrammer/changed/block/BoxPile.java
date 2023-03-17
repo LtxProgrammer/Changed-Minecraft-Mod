@@ -43,7 +43,7 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
     public static final VoxelShape ALL_BOXES = Shapes.or(BOX1, BOX2, BOX3);
 
     public BoxPile() {
-        super(BlockBehaviour.Properties.of(Material.WOOL).strength(1.0F, 4.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
+        super(BlockBehaviour.Properties.of(Material.WOOL).strength(1.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
                 .sound(SoundType.SCAFFOLDING));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)

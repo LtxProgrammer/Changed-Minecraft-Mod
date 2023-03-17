@@ -29,7 +29,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 24, 12.0D);
 
     public LatexContainerBlock() {
-        super(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().sound(SoundType.GLASS).strength(5.0F, 6.0F));
+        super(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().sound(SoundType.GLASS).strength(3.0F, 5.0F).requiresCorrectToolForDrops());
     }
 
     @Override

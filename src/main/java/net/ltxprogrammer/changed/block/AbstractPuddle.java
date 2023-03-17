@@ -9,11 +9,13 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatexCoverableBlock {
-    public static final VoxelShape SHAPE_WHOLE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
     protected final LatexVariant<?> variant;
 
     public AbstractPuddle(Properties properties, LatexVariant<?> variant) {
@@ -31,6 +33,11 @@ public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatex
             if (ProcessTransfur.progressTransfur(entity, 6000, variant.getFormId()))
                 p_49315_.removeBlock(p_49316_, false);
         }
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+        return SHAPE_WHOLE;
     }
 
     @Override

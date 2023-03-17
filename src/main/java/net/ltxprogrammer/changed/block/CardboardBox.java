@@ -33,7 +33,7 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
     public static BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public CardboardBox() {
-        super(BlockBehaviour.Properties.of(Material.WOOL).strength(1.0F, 4.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
+        super(BlockBehaviour.Properties.of(Material.WOOL).strength(1.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
                 .sound(SoundType.SCAFFOLDING));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
     }
