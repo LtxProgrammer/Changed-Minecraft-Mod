@@ -119,7 +119,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LabBlock> TILES_WHITE = register("tiles_white", () -> new LabBlock(BlockBehaviour.Properties.copy(TILES_CAUTION.get()).color(MaterialColor.WOOL)));
     public static final RegistryObject<LabStairBlock> TILES_WHITE_STAIRS = register("tiles_white_stairs", () -> new LabStairBlock(TILES_WHITE.get()::defaultBlockState, BlockBehaviour.Properties.copy(TILES_WHITE.get())));
     public static final RegistryObject<ConnectedFloorBlock> TILES_WHITE_CONNECTED = register("tiles_white_connected", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.copy(TILES_WHITE.get())));
-    public static final RegistryObject<OrangeLabCarpetingBlock> ORANGE_LAB_CARPETING = register("orange_lab_carpeting", () -> new OrangeLabCarpetingBlock(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOL).strength(0.8F)));
+    public static final RegistryObject<ConnectedFloorBlock> ORANGE_LAB_CARPETING = register("orange_lab_carpeting", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOL).strength(0.8F)));
     public static final RegistryObject<VentFanBlock> VENT_FAN = register("vent_fan", VentFanBlock::new);
     public static final RegistryObject<TrapDoorBlock> VENT_HATCH = register("vent_hatch", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).sound(SoundType.METAL).requiresCorrectToolForDrops()), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LabBlock> WALL_BLUE_STRIPED = register("wall_blue_striped", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).sound(SoundType.STONE).strength(1.5F, 6.5F)));
