@@ -15,11 +15,15 @@ import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.util.Util;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -635,17 +640,32 @@ public class ProcessTransfur {
 
     // Transfurs an entity, keepConscious applies to players being transfurred
     public static void transfur(LivingEntity entity, Level level, LatexVariant<?> variant, boolean keepConscious) {
+        if (entity == null)
+            return;
         if (entity.isDeadOrDying())
             return; // To prevent most bugs, entity has to be alive to transfur
-        if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN) || (entity instanceof Player player && player.isCreative()))
+        if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
             keepConscious = true;
+        else if (entity instanceof Player player && player.isCreative())
+            keepConscious = true;
+        else for (var hand : InteractionHand.values()) {
+            if (entity.getItemInHand(hand).is(Items.TOTEM_OF_UNDYING)) {
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
+                    CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, entity.getItemInHand(hand));
+                }
 
-        if (entity.level.isClientSide && keepConscious && entity instanceof LocalPlayer player) {
+                entity.getItemInHand(hand).shrink(1);
+                entity.level.broadcastEntityEvent(entity, (byte)35);
+                keepConscious = true;
+                break;
+            }
+        }
+
+        if (entity.level.isClientSide && keepConscious && entity instanceof Player player && UniversalDist.isLocalPlayer(player)) {
             return;
         }
 
-        if (entity == null)
-            return;
         if (variant == null)
             return;
         if (!LatexType.hasLatexType(entity)) {
