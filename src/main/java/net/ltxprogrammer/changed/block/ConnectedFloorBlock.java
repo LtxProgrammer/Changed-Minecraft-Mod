@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public class ConnectedFloorBlock extends LabBlock {
+public class ConnectedFloorBlock extends ChangedBlock {
     // Refer to https://optifine.readthedocs.io/_images/ctm.png
     public static final IntegerProperty STATE = IntegerProperty.create("state", 0, 46);
     private int getRotateC90(int state) {
