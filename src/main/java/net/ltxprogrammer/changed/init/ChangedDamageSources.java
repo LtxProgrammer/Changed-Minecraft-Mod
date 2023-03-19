@@ -24,7 +24,7 @@ public class ChangedDamageSources {
     }
 
     public static DamageSource entityTransfur(LivingEntity source) {
-        return new TransfurDamageSource(Changed.modResourceStr("transfur"), source);
+        return new TransfurDamageSource(Changed.modResourceStr("transfur"), source).bypassArmor();
     }
 
     public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
