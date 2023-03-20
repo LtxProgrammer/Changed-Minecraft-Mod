@@ -102,6 +102,7 @@
 
   "container.changed.extra_hands": "Extra händermeny",
   "container.changed.infuser": "Infusionsanordningmeny",
+  "container.changed.computer_writing": "Skriva till skiva",
   "container.changed.purifier": "Renaremeny",
   "container.changed.keypad_first": "Sätta ett passkod",
   "container.changed.keypad": "Ange passkod",
