@@ -29,7 +29,7 @@ public class CommandEmote {
 
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("emote").requires(p -> p.hasPermission(1))
+        event.getDispatcher().register(Commands.literal("emote")
                 .then(Commands.argument("emote", StringArgumentType.string()).suggests(SUGGEST_EMOTE)
                         .executes(context -> doEmote(context.getSource(), Emote.valueOf(StringArgumentType.getString(context, "emote").toUpperCase(Locale.ROOT))))
                 ));

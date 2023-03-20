@@ -10,7 +10,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class ProcessEmote {
     private static void rawEmote(LivingEntity entity, Emote emote) {
-        entity.level.addParticle(ChangedParticles.emote(emote), entity.getX(), entity.getY() + entity.getDimensions(entity.getPose()).height + 0.65, entity.getZ(),
+        entity.level.addParticle(ChangedParticles.emote(entity, emote), entity.getX(), entity.getY() + entity.getDimensions(entity.getPose()).height + 0.65, entity.getZ(),
                 0, 0, 0);
     }
 

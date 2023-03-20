@@ -9,6 +9,8 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -95,8 +97,8 @@ public class ChangedParticles {
         return new ColoredParticleOption(GAS, color);
     }
 
-    public static EmoteParticleOption emote(Emote emote) {
-        return new EmoteParticleOption(EMOTE, emote);
+    public static EmoteParticleOption emote(Entity entity, Emote emote) {
+        return new EmoteParticleOption(EMOTE, emote, entity);
     }
 
     private static <T extends ParticleOptions> ParticleType<T> register(ResourceLocation name, ParticleType<T> type) {
