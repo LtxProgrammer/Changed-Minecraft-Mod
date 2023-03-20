@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
+import net.ltxprogrammer.changed.entity.Emote;
+import net.ltxprogrammer.changed.process.ProcessEmote;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,23 +11,23 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class MountLatexPacket implements ChangedPacket {
+public class EmotePacket implements ChangedPacket {
     private final UUID entity;
-    private final UUID mount;
+    private final Emote emote;
 
-    public MountLatexPacket(UUID entity, UUID mount) {
+    public EmotePacket(UUID entity, Emote emote) {
         this.entity = entity;
-        this.mount = mount;
+        this.emote = emote;
     }
 
-    public MountLatexPacket(FriendlyByteBuf buffer) {
+    public EmotePacket(FriendlyByteBuf buffer) {
         this.entity = buffer.readUUID();
-        this.mount = buffer.readUUID();
+        this.emote = Emote.values()[buffer.readInt()];
     }
 
     public void write(FriendlyByteBuf buffer) {
         buffer.writeUUID(entity);
-        buffer.writeUUID(mount);
+        buffer.writeInt(emote.ordinal());
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -34,10 +36,7 @@ public class MountLatexPacket implements ChangedPacket {
             ClientLevel level = Minecraft.getInstance().level;
             Objects.requireNonNull(level);
 
-            if (entity.equals(mount))
-                level.getPlayerByUUID(entity).stopRiding();
-            else
-                level.getPlayerByUUID(entity).startRiding(level.getPlayerByUUID(mount));
+            ProcessEmote.playerEmote(level.getPlayerByUUID(entity), emote);
             context.setPacketHandled(true);
         }
     }

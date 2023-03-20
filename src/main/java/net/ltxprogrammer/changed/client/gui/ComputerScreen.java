@@ -51,7 +51,7 @@ public class ComputerScreen extends TextMenuScreen {
 
     @Override
     public ResourceLocation getBackground() {
-        return Changed.modResource("textures/gui/computer_v2.png");
+        return Changed.modResource("textures/gui/computer.png");
     }
 
     private static final TranslatableComponent title = new TranslatableComponent("container.changed.computer_writing");

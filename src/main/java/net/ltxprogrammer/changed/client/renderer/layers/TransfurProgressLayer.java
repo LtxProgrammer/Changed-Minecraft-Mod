@@ -18,11 +18,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
-    private final PlayerModel<AbstractClientPlayer> playerModel;
-
     public TransfurProgressLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent, EntityModelSet modelSet, boolean slim) {
         super(parent);
-        this.playerModel = new PlayerModel<>(modelSet.bakeLayer(slim ? ChangedLayerDefinitions.LATEX_COAT_SLIM : ChangedLayerDefinitions.LATEX_COAT), slim);
     }
 
     public static ResourceLocation getProgressTexture(int ticks) {

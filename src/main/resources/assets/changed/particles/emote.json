@@ -1,0 +1,14 @@
+{
+  "textures": [
+    "changed:emote/startled",
+    "changed:emote/confused",
+    "changed:emote/singing",
+    "changed:emote/heart",
+    "changed:emote/angry",
+    "changed:emote/nervous",
+    "changed:emote/deny",
+    "changed:emote/pause",
+    "changed:emote/idea",
+    "changed:emote/sleepy"
+  ]
+}
