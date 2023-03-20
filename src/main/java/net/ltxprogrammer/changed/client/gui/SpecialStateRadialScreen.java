@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialStateRadialMenu> {
-    private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
-
     public final SpecialStateRadialMenu menu;
     public final SpecialLatex special;
     public final List<String> states;

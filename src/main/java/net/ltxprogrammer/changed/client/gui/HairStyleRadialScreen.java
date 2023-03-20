@@ -26,8 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRadialMenu> {
-    private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
-
     public final HairStyleRadialMenu menu;
     public final LatexVariantInstance<?> variant;
     public final List<HairStyle> styles;
