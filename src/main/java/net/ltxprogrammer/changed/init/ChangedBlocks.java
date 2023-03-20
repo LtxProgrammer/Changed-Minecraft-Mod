@@ -79,7 +79,7 @@ public class ChangedBlocks {
             (state) -> state.getValue(LabLight.POWERED) ? 15 : 0)));
     public static final RegistryObject<LabLightSmall> LAB_LIGHT_SMALL = register("lab_light_small", () -> new LabLightSmall(BlockBehaviour.Properties.copy(LAB_LIGHT.get())));
     public static final RegistryObject<LabTable> LAB_TABLE = register("lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<LaserBeamBlock> LASER_BEAM = register("laser_beam", LaserBeamBlock::new, ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<LaserBeamBlock> LASER_BEAM = register("laser_beam", LaserBeamBlock::new, ChangedBlocks::cutoutRenderer, null);
     public static final RegistryObject<LaserEmitterBlock> LASER_EMITTER = register("laser_emitter", LaserEmitterBlock::new);
     public static final RegistryObject<LatexCrystal> LATEX_CRYSTAL = register("latex_crystal", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
             .add(ChangedEntities.DARK_LATEX_WOLF_MALE::get)
@@ -193,11 +193,12 @@ public class ChangedBlocks {
     }
 
     private static <T extends Block, I extends Item> RegistryObject<T> register(String name, Supplier<T> blockConstructor, @Nullable Consumer<Block> renderLayer,
-                                                                                Function<T, I> item) {
+                                                                                @Nullable Function<T, I> item) {
         RegistryObject<T> block = REGISTRY.register(name, blockConstructor);
         if (renderLayer != null)
             REGISTRY_CRL.put(block, renderLayer);
-        ChangedItems.register(name, () -> item.apply(block.get()));
+        if (item != null)
+            ChangedItems.register(name, () -> item.apply(block.get()));
         return block;
     }
 
