@@ -101,7 +101,7 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
             offset += 9;
         }
 
-        if (menu.textCopyLastReceived.isEmpty()) {
+        if (menu.textCopyLastReceived.isEmpty() && this.minecraft != null && this.minecraft.player != null && this.minecraft.player.tickCount % 10 >= 0) {
             this.font.draw(pose, "_", finalX, finalY, getTextColor());
         }
     }
@@ -114,6 +114,7 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
     }
 
     public boolean charTyped(char c, int i) {
+        this.textEdit.setCursorToEnd();
         if (super.charTyped(c, i)) {
             return true;
         } else if (menu.textCopyLastReceived.isEmpty() && SharedConstants.isAllowedChatCharacter(c)) {
@@ -126,6 +127,7 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
 
     @Override
     public boolean keyPressed(int key, int scancode, int mods) {
+        this.textEdit.setCursorToEnd();
         if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER) {
             if (!Screen.hasShiftDown()) {
                 menu.setText(menu.textCopy);

@@ -29,7 +29,6 @@ import java.util.Optional;
 
 public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
     static final ResourceLocation ICON_OVERLAY_LOCATION = new ResourceLocation("textures/gui/resource_packs.png");
-    private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
 
     public final T menu;
     private int tickCount = 0;

@@ -1,17 +1,19 @@
 package net.ltxprogrammer.changed.world.inventory;
 
+import net.ltxprogrammer.changed.block.TextEnterable;
 import net.ltxprogrammer.changed.init.ChangedMenus;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -20,37 +22,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class ComputerMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>>, SpecialLoadingMenu {
-    public final static HashMap<String, Object> guistate = new HashMap<>();
-
+public class ComputerMenu extends TextMenu implements SpecialLoadingMenu {
     private ItemStack serverDisk;
-
-    private IItemHandler internal;
-    public final Container container;
-    public final ContainerData data;
-    public final Level world;
-    public final Player entity;
-    public int x, y, z;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
 
-    public ComputerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, new SimpleContainer(1), new SimpleContainerData(1));
+    public ComputerMenu(int id, Inventory inventory, BlockPos pos, BlockState state, TextEnterable textMenuBlockEntity) {
+        super(ChangedMenus.COMPUTER, id, inventory, pos, state, textMenuBlockEntity);
     }
 
-    public ComputerMenu(int id, Inventory inv, Container p_38971_, ContainerData p_38972_) {
-        super(ChangedMenus.COMPUTER, id);
-        this.container = p_38971_;
-        this.data = p_38972_;
-        this.world = inv.player.level;
-        this.entity = inv.player;
-        this.internal = new ItemStackHandler(1);
-        this.customSlots.put(0, this.addSlot(new Slot(p_38971_, 0, 9999, 9999) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-        }));
+    public ComputerMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
+        super(ChangedMenus.COMPUTER, id, inventory, extraData);
     }
 
     public ComputerMenu setDisk(ItemStack disk) {
@@ -68,14 +50,22 @@ public class ComputerMenu extends AbstractContainerMenu implements Supplier<Map<
     }
 
     @Override
-    public Map<Integer, Slot> get() {
-        return customSlots;
+    public void afterInit(AbstractContainerMenu menu) {
+        this.setDirty(serverDisk.serializeNBT());
     }
 
     @Override
-    public void afterInit(AbstractContainerMenu menu) {
-        this.internal.insertItem(0, serverDisk, false);
-        this.slots.get(0).set(serverDisk);
-        this.sendAllDataToRemote();
+    public void update(CompoundTag payload, LogicalSide receiver) {
+        if (receiver.isServer() && serverDisk != null) {
+            if (payload.contains("Text")) {
+                textCopy = payload.getString("Text");
+                serverDisk.getOrCreateTag().putString("Text", textCopy);
+            } else {
+                this.setDirty(serverDisk.serializeNBT());
+            }
+        } else if (receiver.isClient()) {
+            serverDisk = ItemStack.of(payload);
+            textCopy = serverDisk.getOrCreateTag().getString("Text");
+        }
     }
 }
