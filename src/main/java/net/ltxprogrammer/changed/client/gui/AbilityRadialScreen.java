@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialMenu> {
-    private final static HashMap<String, Object> guistate = ComputerMenu.guistate;
-
     public final AbilityRadialMenu menu;
     public final LatexVariantInstance<?> variant;
     public final List<AbstractAbility<?>> abilities;
