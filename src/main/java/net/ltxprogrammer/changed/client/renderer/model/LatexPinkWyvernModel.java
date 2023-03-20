@@ -85,7 +85,7 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
 
         PartDefinition Horn_r5 = Head.addOrReplaceChild("Horn_r5", CubeListBuilder.create().texOffs(24, 3).addBox(-3.69F, -23.75F, 17.75F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.025F)), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.6109F, -0.5672F, 0.0F));
 
-        PartDefinition Horn_r6 = Head.addOrReplaceChild("Horn_r6", CubeListBuilder.create().texOffs(28, 41).addBox(-4.05F, -29.8F, 9.9F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.3054F, -0.6109F, 0.0F));
+        PartDefinition Horn_r6 = Head.addOrReplaceChild("Horn_r6", CubeListBuilder.create().texOffs(28, 41).addBox(-4.05F, -29.8F, 10.15F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.3054F, -0.6109F, 0.0F));
 
         PartDefinition Horn_r7 = Head.addOrReplaceChild("Horn_r7", CubeListBuilder.create().texOffs(61, 56).addBox(1.0F, -31.4F, 19.0F, 2.0F, 2.0F, 3.0F, new CubeDeformation(-0.3F)), PartPose.offsetAndRotation(0.0F, 25.5F, 0.0F, 0.48F, 0.1745F, 0.0F));
 
