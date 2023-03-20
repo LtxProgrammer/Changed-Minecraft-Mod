@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,12 +19,13 @@ public class DarkLatexBlock extends AbstractLatexBlock {
 
     @Override
     public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
-        if (random.nextInt(200) > 0)
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+                random.nextInt(20000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
 
         BlockPos above = position.above();
         if (level.getBlockState(above).is(Blocks.AIR)) {
-            level.setBlock(above, ChangedBlocks.LATEX_CRYSTAL.get().defaultBlockState(), 3);
+            level.setBlockAndUpdate(above, ChangedBlocks.LATEX_CRYSTAL.get().defaultBlockState());
         }
     }
 }

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -25,11 +26,11 @@ public class LatexCrystal extends AbstractLatexCrystal {
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         super.randomTick(state, level, position, random);
-        if (random.nextInt(10) == 0) {
-            Supplier<EntityType<? extends DarkLatexEntity>> entityTypeSupplier = spawnable.get(random.nextInt(spawnable.size()));
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+                random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
+            return;
 
-            entityTypeSupplier.get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
-            level.setBlock(position, Blocks.AIR.defaultBlockState(), 3);
-        }
+        spawnable.get(random.nextInt(spawnable.size())).get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
+        level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
     }
 }
