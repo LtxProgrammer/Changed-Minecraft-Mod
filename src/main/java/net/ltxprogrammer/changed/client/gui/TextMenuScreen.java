@@ -101,7 +101,7 @@ public abstract class TextMenuScreen extends AbstractContainerScreen<TextMenu> {
             offset += 9;
         }
 
-        if (menu.textCopyLastReceived.isEmpty() && this.minecraft != null && this.minecraft.player != null && this.minecraft.player.tickCount % 10 >= 0) {
+        if (menu.textCopyLastReceived.isEmpty() && this.minecraft != null && this.minecraft.player != null && this.minecraft.player.tickCount % 10 >= 5) {
             this.font.draw(pose, "_", finalX, finalY, getTextColor());
         }
     }

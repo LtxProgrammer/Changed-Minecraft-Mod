@@ -60,6 +60,7 @@ public class Changed {
         addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
         addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
         addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
+        addNetworkMessage(EmotePacket.class, EmotePacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);
