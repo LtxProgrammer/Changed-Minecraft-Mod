@@ -163,7 +163,7 @@
     "category": "neutral",
     "sounds": [
       {
-        "name": "changed:paralyze1",
+        "name": "changed:paralyze3",
         "stream": false
       }
     ],
