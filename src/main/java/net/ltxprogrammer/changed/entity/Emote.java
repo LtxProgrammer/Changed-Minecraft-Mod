@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 public enum Emote {
     STARTLED,
     CONFUSED,
-    SINGING,
+    CASUAL,
     HEART,
     ANGRY,
     NERVOUS,
