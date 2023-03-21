@@ -5,11 +5,14 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -184,28 +188,12 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             if (checkDir == Direction.UP && random.nextInt(3) > 0) // Reduced chance of spreading up
                 return;
 
-            for (var tag : checkState.getTags().toList()) {
-                if (tag.location().equals(new ResourceLocation("minecraft:flowers"))) {
-                    level.setBlockAndUpdate(checkPos, Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType));
-                    return;
-                }
-            }
-
-
-            if (checkState.is(Blocks.GRASS)) {
-                level.setBlockAndUpdate(checkPos, Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType));
+            var event = new AbstractLatexGoo.CoveringBlockEvent(latexType, state, checkPos, level);
+            if (MinecraftForge.EVENT_BUS.post(event))
                 return;
-            }
-
-            else if (checkState.is(Blocks.GRASS_BLOCK)) {
-                level.setBlockAndUpdate(checkPos, Blocks.DIRT.defaultBlockState().setValue(COVERED, latexType));
+            if (event.originalState == event.plannedState)
                 return;
-            }
-
-            else {
-                level.setBlockAndUpdate(checkPos, checkState.setValue(COVERED, latexType));
-                return;
-            }
+            level.setBlockAndUpdate(event.blockPos, event.plannedState);
         }
     }
 
