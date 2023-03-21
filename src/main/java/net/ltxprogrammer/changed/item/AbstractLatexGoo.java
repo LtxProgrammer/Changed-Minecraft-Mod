@@ -61,7 +61,7 @@ public class AbstractLatexGoo extends Item {
                 plannedState = Blocks.DIRT.defaultBlockState().setValue(COVERED, latexType);
             else if (originalState.is(Blocks.GRASS))
                 plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
-            else if (originalState.is(BlockTags.FLOWERS))
+            else if (originalState.is(BlockTags.SMALL_FLOWERS))
                 plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
             else if (originalState.is(BlockTags.SAPLINGS))
                 plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
