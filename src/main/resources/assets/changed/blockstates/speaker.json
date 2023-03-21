@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,boom=false": {
+      "model": "changed:custom/speaker"
+    },
+    "facing=east,boom=false": {
+      "model": "changed:custom/speaker",
+      "y": 90
+    },
+    "facing=south,boom=false": {
+      "model": "changed:custom/speaker",
+      "y": 180
+    },
+    "facing=west,boom=false": {
+      "model": "changed:custom/speaker",
+      "y": 270
+    },
+    "facing=north,boom=true": {
+      "model": "changed:custom/speaker_alt"
+    },
+    "facing=east,boom=true": {
+      "model": "changed:custom/speaker_alt",
+      "y": 90
+    },
+    "facing=south,boom=true": {
+      "model": "changed:custom/speaker_alt",
+      "y": 180
+    },
+    "facing=west,boom=true": {
+      "model": "changed:custom/speaker_alt",
+      "y": 270
+    }
+  }
+}
