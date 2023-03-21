@@ -36,6 +36,7 @@
   "subtitles.changed.save": "Netthinneskanner piper",
   "subtitles.changed.sword1": "Nålstikk",
   "subtitles.changed.paralyze1": "Våpenstøt",
+  "subtitles.changed.paralyze3": "Intercom kunngjør",
   "subtitles.changed.blow1": "Spiller latekset",
 
   "item.changed.benign_pants": "Lateks bukser",
@@ -138,6 +139,7 @@
   "block.changed.dark_latex_dragon_crystal": "Mørk lateks dragekrystall",
   "block.changed.dark_latex_ice": "Mørk lateks is",
   "block.changed.infuser": "Tilfører",
+  "block.changed.intercom": "Intercom",
   "block.changed.iron_crate": "Jernkasse",
   "block.changed.keypad": "Tastatur",
   "block.changed.laser_emitter": "Lasersender",

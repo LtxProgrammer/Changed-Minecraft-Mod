@@ -36,6 +36,7 @@
   "subtitles.changed.save": "Näthinnanskanner piper",
   "subtitles.changed.sword1": "Nålsticker",
   "subtitles.changed.paralyze1": "Vapenstötar",
+  "subtitles.changed.paralyze3": "Intercom tillkännager",
   "subtitles.changed.blow1": "Spelare latexad",
 
   "item.changed.benign_pants": "Latex byxor",
@@ -138,6 +139,7 @@
   "block.changed.dark_latex_dragon_crystal": "Mörk latex drakekristall",
   "block.changed.dark_latex_ice": "Mörk latex is",
   "block.changed.infuser": "Infusionsanordning",
+  "block.changed.intercom": "Intercom",
   "block.changed.iron_crate": "järnspjällåda",
   "block.changed.keypad": "Knappsats",
   "block.changed.laser_emitter": "Laserutsändare",

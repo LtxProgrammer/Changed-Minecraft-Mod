@@ -36,6 +36,7 @@
   "subtitles.changed.save": "Retinal scanner beeps",
   "subtitles.changed.sword1": "Needle pricks",
   "subtitles.changed.paralyze1": "Weapon shocks",
+  "subtitles.changed.paralyze3": "Intercom announces",
   "subtitles.changed.blow1": "Player latexed",
 
   "item.changed.benign_pants": "Latex Pants",
@@ -138,6 +139,7 @@
   "block.changed.dark_latex_dragon_crystal": "Dark Latex Dragon Crystal",
   "block.changed.dark_latex_ice": "Dark Latex Ice",
   "block.changed.infuser": "Infuser",
+  "block.changed.intercom": "Intercom",
   "block.changed.iron_crate": "Iron Crate",
   "block.changed.keypad": "Keypad",
   "block.changed.laser_emitter": "Laser Emitter",
