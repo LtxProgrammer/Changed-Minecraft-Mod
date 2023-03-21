@@ -3,9 +3,12 @@
   "pattern": [
     "IIB",
     "INB",
-    "ICI"
+    "ICR"
   ],
   "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
     "C": {
       "item": "minecraft:copper_ingot"
     },
