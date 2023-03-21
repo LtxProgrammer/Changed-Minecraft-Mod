@@ -17,7 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SpeakerBlock extends AbstractCustomShapeBlock {
-    public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 3.0D, 11.0D, 14.0D, 13.0D, 16.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 4.0D, 11.0D, 14.0D, 13.0D, 16.0D);
     public static final BooleanProperty BOOM = BooleanProperty.create("boom");
 
     public SpeakerBlock(Properties properties) {
