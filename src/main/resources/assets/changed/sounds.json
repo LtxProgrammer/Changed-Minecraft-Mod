@@ -159,6 +159,16 @@
     ],
     "subtitle": "subtitles.changed.paralyze1"
   },
+  "paralyze3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:paralyze3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.paralyze3"
+  },
   "save": {
     "category": "neutral",
     "sounds": [

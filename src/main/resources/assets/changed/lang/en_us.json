@@ -36,6 +36,7 @@
   "subtitles.changed.save": "Retinal scanner beeps",
   "subtitles.changed.sword1": "Needle pricks",
   "subtitles.changed.paralyze1": "Weapon shocks",
+  "subtitles.changed.paralyze3": "Intercom announces",
   "subtitles.changed.blow1": "Player latexed",
 
   "item.changed.benign_pants": "Latex Pants",
@@ -138,6 +139,7 @@
   "block.changed.dark_latex_dragon_crystal": "Dark Latex Dragon Crystal",
   "block.changed.dark_latex_ice": "Dark Latex Ice",
   "block.changed.infuser": "Infuser",
+  "block.changed.intercom": "Intercom",
   "block.changed.iron_crate": "Iron Crate",
   "block.changed.keypad": "Keypad",
   "block.changed.laser_emitter": "Laser Emitter",
@@ -153,7 +155,6 @@
   "block.changed.lab_light": "Lab Light",
   "block.changed.lab_light_small": "Small Lab Light",
   "block.changed.lab_table": "Lab Table",
-  "block.changed.laser_beam": "Laser Beam",
   "block.changed.library_door": "Library Door",
   "block.changed.light_latex_puddle_female": "Female Light Latex Wolf Puddle",
   "block.changed.light_latex_puddle_male": "Male Light Latex Wolf Puddle",
