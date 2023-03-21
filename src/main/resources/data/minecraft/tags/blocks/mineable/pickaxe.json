@@ -24,6 +24,7 @@
     "changed:maintenance_door",
 
     "changed:retinal_scanner",
+    "changed:speaker",
     "changed:tiles_caution",
     "changed:dark_latex_ice",
     "changed:tiles_blue",
