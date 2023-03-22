@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HeadlessKnight extends LightLatexKnight implements Saddleable {
+public class HeadlessKnight extends LightLatexKnight implements LatexTaur<HeadlessKnight> {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -55,14 +55,6 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     }
 
     public final static String SADDLE_LOCATION = Changed.modResourceStr("saddle");
-    @Override
-    public void equipSaddle(@Nullable SoundSource p_21748_) {
-        getPersistentData().put(SADDLE_LOCATION, (new ItemStack(Items.SADDLE)).serializeNBT());
-        if (p_21748_ != null) {
-            this.level.playSound((Player)null, this, SoundEvents.HORSE_SADDLE, p_21748_, 0.5F, 1.0F);
-        }
-
-    }
 
     @Override
     public LatexVariant<?> getSelfVariant() {
@@ -75,28 +67,17 @@ public class HeadlessKnight extends LightLatexKnight implements Saddleable {
     }
 
     @Override
+    public void equipSaddle(@Nullable SoundSource p_21748_) {
+        equipSaddle(this, p_21748_);
+    }
+
+    @Override
     public boolean isSaddled() {
-        return ProcessTransfur.ifPlayerLatex(getUnderlyingPlayer(), variant -> {
-            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
-            if (ability != null)
-                return ability.saddle != null && !ability.saddle.isEmpty();
-            else
-                return false;
-        }, () -> getPersistentData().contains(SADDLE_LOCATION));
+        return isSaddled(this);
     }
 
     protected void doPlayerRide(Player player) {
-        if (!this.level.isClientSide) {
-            player.setYRot(this.getYRot());
-            player.setXRot(this.getXRot());
-            Player underlying = getUnderlyingPlayer();
-            if (underlying == null)
-                player.startRiding(this);
-            else {
-                player.startRiding(underlying);
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(player.getUUID(), underlying.getUUID()));
-            }
-        }
+        doPlayerRide(this, player);
     }
 
     public double getPassengersRidingOffset() {
