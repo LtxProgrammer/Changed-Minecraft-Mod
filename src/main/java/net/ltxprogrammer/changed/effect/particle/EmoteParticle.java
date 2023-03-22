@@ -41,7 +41,7 @@ public class EmoteParticle extends TextureSheetParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
     public static class Provider implements ParticleProvider<EmoteParticleOption> {
