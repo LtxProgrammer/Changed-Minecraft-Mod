@@ -83,22 +83,22 @@ public class ChangedFeatures {
                 new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, DecayedLab.placedFeature(idRsrc)));
     }
 
+    private static final RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, Set<ResourceLocation> biomes, ResourceLocation lootTable) {
+        ResourceLocation idRsrc = Changed.modResource(nbtName);
+        return register(nbtName, DecayedLab.feature(idRsrc, yOffset, lootTable, false),
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(idRsrc)));
+    }
+
     private static final RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset) {
         ResourceLocation idRsrc = Changed.modResource(nbtName);
         return register(nbtName, Beehive.feature(idRsrc, yOffset, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, DecayedLab.placedFeature(idRsrc)));
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, Beehive.placedFeature(idRsrc)));
     }
 
     private static final RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset, Set<ResourceLocation> biomes) {
         ResourceLocation idRsrc = Changed.modResource(nbtName);
         return register(nbtName, Beehive.feature(idRsrc, yOffset, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(idRsrc)));
-    }
-
-    private static final RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, Set<ResourceLocation> biomes, ResourceLocation lootTable) {
-        ResourceLocation idRsrc = Changed.modResource(nbtName);
-        return register(nbtName, DecayedLab.feature(idRsrc, yOffset, lootTable, false),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(idRsrc)));
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, Beehive.placedFeature(idRsrc)));
     }
 
     public static final RegistryObject<Feature<?>> AQUATIC1 = registerLab("aquatic1",
