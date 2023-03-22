@@ -37,8 +37,8 @@ import java.util.List;
 public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
 
-    public static final VoxelShape BOX1 = Block.box(13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
-    public static final VoxelShape BOX2 = Block.box(-13.0D, 0.0D, 2.0D, 14.0D, 10.0D, 14.0D);
+    public static final VoxelShape BOX1 = Block.box(1.0D, 0.0D, 2.0D, 13.0D, 10.0D, 14.0D);
+    public static final VoxelShape BOX2 = Block.box(-13.0D, 0.0D, 2.0D, -1.0D, 10.0D, 14.0D);
     public static final VoxelShape BOX3 = Block.box(-6.0D, 10.0D, 2.0D, 6.0D, 20.0D, 14.0D);
     public static final VoxelShape ALL_BOXES = Shapes.or(BOX1, BOX2, BOX3);
 
