@@ -36,7 +36,7 @@ public class EmoteParticle extends TextureSheetParticle {
     @Override
     public void tick() {
         super.tick();
-        this.setPos(track.getX(), track.getDimensions(track.getPose()).height + 0.65, track.getZ());
+        this.setPos(track.getX(), track.getY() + track.getDimensions(track.getPose()).height + 0.65, track.getZ());
     }
 
     @Override
