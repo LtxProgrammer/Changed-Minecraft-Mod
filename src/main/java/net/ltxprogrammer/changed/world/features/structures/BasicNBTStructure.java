@@ -60,16 +60,15 @@ public abstract class BasicNBTStructure extends Feature<NoneFeatureConfiguration
                 if (spawnTo.getY() < context.level().getSeaLevel())
                     continue;
 
-                if (template.get().placeInWorld(context.level(), spawnTo, spawnTo,
-                        new StructurePlaceSettings().setMirror(Mirror.values()[context.random().nextInt(2)])
-                                .setRotation(Rotation.values()[context.random().nextInt(3)]).setRandom(context.random())
-                                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
-                                .addProcessor(ChestLootTableProcessor.of(getLootTable()))
-                                .setIgnoreEntities(false),
-                        context.random(), 2)) {
+                var settings = new StructurePlaceSettings().setMirror(Mirror.values()[context.random().nextInt(2)])
+                        .setRotation(Rotation.values()[context.random().nextInt(3)]).setRandom(context.random())
+                        .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
+                        .setIgnoreEntities(false);
+                if (getLootTable() != null)
+                    settings.addProcessor(ChestLootTableProcessor.of(getLootTable()));
 
+                if (template.get().placeInWorld(context.level(), spawnTo, spawnTo, settings, context.random(), 2))
                     anyPlaced = true;
-                }
             }
         }
 
