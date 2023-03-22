@@ -3,13 +3,16 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +22,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -26,11 +31,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTransportInterface {
     public WhiteLatexBlock(Properties p_49795_) {
         super(p_49795_, LatexType.WHITE_LATEX, ChangedItems.WHITE_LATEX_GOO);
@@ -111,6 +121,33 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         BlockPos above = position.above();
         if (level.getBlockState(above).is(Blocks.AIR) && level.getBlockState(above.above()).is(Blocks.AIR)) {
             ChangedEntities.WHITE_LATEX_WOLF.get().spawn(level, null, null, null, above, MobSpawnType.NATURAL, true, true);
+        }
+    }
+
+    private static final List<Supplier<? extends WhiteLatexPillar>> PILLAR = List.of(
+            ChangedBlocks.WHITE_LATEX_PILLAR
+    );
+
+    @SubscribeEvent
+    public static void onLatexCover(AbstractLatexGoo.CoveringBlockEvent event) {
+        if (event.latexType != LatexType.WHITE_LATEX)
+            return;
+
+        if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(BlockTags.TALL_FLOWERS)) {
+            var pillar = PILLAR.get(event.level.random.nextInt(PILLAR.size()));
+            switch (event.originalState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+                case UPPER -> {
+                    event.level.setBlockAndUpdate(event.blockPos.below(), pillar.get().defaultBlockState()
+                            .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
+                    event.setPlannedState(pillar.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
+                }
+
+                case LOWER -> {
+                    event.level.setBlockAndUpdate(event.blockPos.above(), pillar.get().defaultBlockState()
+                            .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
+                    event.setPlannedState(pillar.get().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER));
+                }
+            }
         }
     }
 }
