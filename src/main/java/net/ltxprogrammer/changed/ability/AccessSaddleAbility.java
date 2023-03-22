@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
-import net.minecraft.resources.ResourceLocation;
+import net.ltxprogrammer.changed.world.inventory.TaurSaddleMenu;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 
@@ -19,13 +17,13 @@ public class AccessSaddleAbility extends AbstractAbility<AccessSaddleAbilityInst
 
     @Override
     public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) {
-        return player.containerMenu instanceof CentaurSaddleMenu;
+        return player.containerMenu instanceof TaurSaddleMenu;
     }
 
     @Override
     public void startUsing(Player player, LatexVariantInstance<?> variant) {
         player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
-                new CentaurSaddleMenu(p_52229_, p_52230_, null), CentaurSaddleMenu.CONTAINER_TITLE));
+                new TaurSaddleMenu(p_52229_, p_52230_, null), TaurSaddleMenu.CONTAINER_TITLE));
     }
 
     @Override

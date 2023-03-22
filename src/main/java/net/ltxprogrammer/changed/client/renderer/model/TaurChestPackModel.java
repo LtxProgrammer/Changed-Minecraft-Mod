@@ -11,11 +11,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class CentaurChestPackModel extends Model {
+public class TaurChestPackModel extends Model {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("chest_pack"), "main");
     private final ModelPart ChestPack;
 
-    public CentaurChestPackModel(ModelPart root) {
+    public TaurChestPackModel(ModelPart root) {
         super(RenderType::entityCutoutNoCull);
         this.ChestPack = root.getChild("ChestPack");
     }
