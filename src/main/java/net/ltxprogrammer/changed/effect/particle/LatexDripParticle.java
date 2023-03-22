@@ -4,8 +4,7 @@ package net.ltxprogrammer.changed.effect.particle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,8 +35,7 @@ public class LatexDripParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
         if (!lastOnGround && this.onGround) {
-            level.playLocalSound(x, y, z, new SoundEvent(new ResourceLocation("minecraft:entity.slime.squish_small")),
-                    SoundSource.HOSTILE, 0.05f, 1.0f, true);
+            level.playLocalSound(x, y, z, SoundEvents.SLIME_SQUISH_SMALL, SoundSource.HOSTILE, 0.025f, 1.0f, true);
             lastOnGround = this.onGround;
         }
     }
