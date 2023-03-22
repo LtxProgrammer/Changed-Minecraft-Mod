@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.world.inventory.CentaurSaddleMenu;
+import net.ltxprogrammer.changed.world.inventory.TaurSaddleMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -12,10 +12,10 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.HashMap;
 
-public class CentaurSaddleScreen extends AbstractContainerScreen<CentaurSaddleMenu> {
-    private final static HashMap<String, Object> guistate = CentaurSaddleMenu.guistate;
+public class TaurSaddleScreen extends AbstractContainerScreen<TaurSaddleMenu> {
+    private final static HashMap<String, Object> guistate = TaurSaddleMenu.guistate;
 
-    public CentaurSaddleScreen(CentaurSaddleMenu container, Inventory inventory, Component text) {
+    public TaurSaddleScreen(TaurSaddleMenu container, Inventory inventory, Component text) {
         super(container, inventory, text);
         this.imageWidth = 182;
         this.imageHeight = 126;

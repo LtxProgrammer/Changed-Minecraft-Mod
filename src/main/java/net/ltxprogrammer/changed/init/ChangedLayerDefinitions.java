@@ -37,7 +37,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LATEX_COAT_SLIM, () ->
                 LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.01F), false), 64, 64));
         ForgeHooksClient.registerLayerDefinition(DarkLatexMaskModel.LAYER_LOCATION, DarkLatexMaskModel::createMask);
-        ForgeHooksClient.registerLayerDefinition(CentaurChestPackModel.LAYER_LOCATION, CentaurChestPackModel::createPack);
+        ForgeHooksClient.registerLayerDefinition(TaurChestPackModel.LAYER_LOCATION, TaurChestPackModel::createPack);
 
         ForgeHooksClient.registerLayerDefinition(BehemothHeadModel.LAYER_LOCATION, BehemothHeadModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(BehemothHandLeftModel.LAYER_LOCATION, BehemothHandLeftModel::createBodyLayer);

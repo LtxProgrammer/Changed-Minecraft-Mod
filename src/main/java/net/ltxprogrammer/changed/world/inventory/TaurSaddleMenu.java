@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
-    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.centaur_saddle");
+public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
+    public static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.taur_saddle");
 
     public final static HashMap<String, Object> guistate = new HashMap<>();
 
@@ -42,8 +42,8 @@ public class CentaurSaddleMenu extends AbstractContainerMenu implements Supplier
 
     private boolean bound = false;
 
-    public CentaurSaddleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        super(ChangedMenus.CENTAUR_SADDLE, id);
+    public TaurSaddleMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        super(ChangedMenus.TAUR_SADDLE, id);
 
         this.player = inv.player;
         this.world = inv.player.level;
