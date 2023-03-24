@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,7 +12,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFemale> implements LatexHumanoidModelInterface {
+import java.util.List;
+
+public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFemale> implements LatexHumanoidModelInterface<LatexSquidDogFemale, LatexSquidDogFemaleModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_female"), "main");
     public final ModelPart Head;
     public final ModelPart Torso;
@@ -20,7 +24,7 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
     public final ModelPart RightArm2;
     public final ModelPart LeftLeg;
     public final ModelPart RightLeg;
-    public final LatexHumanoidModelController controller;
+    public final LatexAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> animator;
 
     public LatexSquidDogFemaleModel(ModelPart root) {
         super(root);
@@ -32,7 +36,8 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
         this.RightArm2 = root.getChild("rightArm2");
         this.LeftArm = root.getChild("leftArm");
         this.LeftArm2 = root.getChild("leftArm2");
-        this.controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Torso.getChild("Tail"), RightArm, LeftArm, RightLeg, LeftLeg).arms2(RightArm2, LeftArm2).hipOffset(-4.0f).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Torso.getChild("Tail"), List.of(), LeftLeg, RightLeg))
+                .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2)).hipOffset(-4.0f);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -266,18 +271,18 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
 
     @Override
     public void prepareMobModel(LatexSquidDogFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     @Override
     public void setupAnim(LatexSquidDogFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
         PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type.isArm())
-            corrector.translate(0.0f, 2.5f / 18.0f, 0.0f);
+            corrector.translate(0.0f, -6f / 16.0f, 0.0f);
         return corrector;
     }
 
@@ -291,12 +296,12 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
 
     @Override
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> getAnimator() {
+        return animator;
     }
 
     @Override

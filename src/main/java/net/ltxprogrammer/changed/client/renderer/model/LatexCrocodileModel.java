@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexCrocodile;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -13,8 +15,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @OnlyIn(Dist.CLIENT)
-public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> implements LatexHumanoidModelInterface {
+public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> implements LatexHumanoidModelInterface<LatexCrocodile, LatexCrocodileModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_crocodile"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +28,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LatexCrocodile, LatexCrocodileModel> animator;
 
     public LatexCrocodileModel(ModelPart root) {
         super(root);
@@ -35,8 +39,8 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).hipOffset(-5.0f).legLengthOffset(-4.0f).armLengthOffset(8.0f)
-                .torsoLengthOffset(6.0f).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+                .hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -267,7 +271,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
 
     @Override
     public void prepareMobModel(LatexCrocodile p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -278,12 +282,12 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull LatexCrocodile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
     }
 
@@ -306,7 +310,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexCrocodile, LatexCrocodileModel> getAnimator() {
+        return animator;
     }
 }

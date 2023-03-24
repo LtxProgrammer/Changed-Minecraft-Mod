@@ -6,6 +6,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSiren;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,10 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements LatexHumanoidModelInterface {
+public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements LatexHumanoidModelInterface<LatexSiren, LatexSirenModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_siren"), "main");
     private final ModelPart RightArm;
@@ -30,7 +31,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LatexSiren, LatexSirenModel> animator;
 
     public LatexSirenModel(ModelPart root) {
         super(root);
@@ -41,12 +42,12 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
         this.Tail = LowerAbdomen.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).noLegs(Abdomen, LowerAbdomen)
-                .tailJoints(List.of(
-                        Tail.getChild("Joint"),
-                        Tail.getChild("Joint").getChild("Joint2"),
-                        Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"),
-                        Tail.getChild("Joint").getChild("Joint2").getChild("Joint3").getChild("Joint4"))).legLengthOffset(0.0F).tailAidsInSwim().build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
+                Tail.getChild("Joint"),
+                Tail.getChild("Joint").getChild("Joint2"),
+                Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"),
+                Tail.getChild("Joint").getChild("Joint2").getChild("Joint3").getChild("Joint4")
+        )));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -153,16 +154,16 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
 
     @Override
     public void prepareMobModel(LatexSiren p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull LatexSiren entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
@@ -183,7 +184,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexSiren, LatexSirenModel> getAnimator() {
+        return animator;
     }
 }

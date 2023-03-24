@@ -2,13 +2,17 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implements LatexHumanoidModelInterface {
+import java.util.List;
+
+public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implements LatexHumanoidModelInterface<SpecialLatex, SpecialLatexModel> {
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -18,7 +22,7 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<SpecialLatex, SpecialLatexModel> animator;
 
     public SpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
         super(root);
@@ -29,34 +33,32 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
         this.Tail = form.animationData().hasTail() ? Torso.getChild("Tail") : null;
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        LatexHumanoidModelController.Builder builder = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg);
+        animator = LatexAnimator.of(this); // TODO better configuration for patreon forms
+        animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg));
+        if (Tail != null)
+            animator.addPreset(form.animationData().swimTail() ? AnimatorPresets.aquaticTail(Tail, List.of()) : AnimatorPresets.standardTail(Tail, List.of()));
         if (form.animationData().hasWings()) {
             this.RightWing = Torso.getChild("RightWing");
             this.LeftWing = Torso.getChild("LeftWing");
-            builder.wings(RightWing, LeftWing);
-        }
-        else {
+            animator.addPreset(AnimatorPresets.winged(LeftWing, RightWing));
+        } else {
             this.RightWing = null;
             this.LeftWing = null;
         }
-
-        if (form.animationData().swimTail())
-            builder.tailAidsInSwim();
-        controller = builder.build();
     }
 
     @Override
     public void prepareMobModel(SpecialLatex entity, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, entity, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, entity, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull SpecialLatex entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
@@ -79,7 +81,7 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<SpecialLatex, SpecialLatexModel> getAnimator() {
+        return animator;
     }
 }
