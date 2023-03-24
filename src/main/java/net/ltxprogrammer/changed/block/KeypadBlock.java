@@ -28,6 +28,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,10 @@ import java.util.Random;
 
 public class KeypadBlock extends AbstractCustomShapeEntityBlock {
     public static final BooleanProperty POWERED = LeverBlock.POWERED;
-    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 1.0D, 11.0D, 15.0D, 10.0D, 16.0D);
+    public static final VoxelShape SHAPE_MAIN = Block.box(1.0D, 1.0D, 11.0D, 15.0D, 10.0D, 16.0D);
+    public static final VoxelShape SHAPE_PIPE1 = Block.box(4.0D, 10.0D, 12.0D, 7.0D, 15.0D, 16.0D);
+    public static final VoxelShape SHAPE_PIPE2 = Block.box(9.0D, 10.0D, 12.0D, 12.0D, 15.0D, 16.0D);
+    public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_MAIN, SHAPE_PIPE1, SHAPE_PIPE2);
 
     public KeypadBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.METAL).strength(3.0F, 3.0F));
