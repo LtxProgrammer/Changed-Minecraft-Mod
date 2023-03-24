@@ -91,7 +91,7 @@ public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidMode
 
             p_116951_.pushPose();
             if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface) {
-                p_116951_.translate(0.0D, 0.0D + (modelInterface.getController()).legLength / 8.0f, 0.125D + (modelInterface.getController().forewardOffset / 16.0f));
+                p_116951_.translate(0.0D, 0.0D + ((12.0f - modelInterface.getAnimator().legLength) / 8.0f), 0.125D + (modelInterface.getAnimator().forwardOffset / 16.0f));
             }
 
             else {

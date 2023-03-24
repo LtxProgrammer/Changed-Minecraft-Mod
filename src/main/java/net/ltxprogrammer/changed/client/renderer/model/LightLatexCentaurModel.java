@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,7 +13,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface, TorsoSupplier {
+import java.util.List;
+
+public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface<LightLatexCentaur, LightLatexCentaurModel>, TorsoSupplier {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_centaur"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +28,7 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
     private final ModelPart Torso;
     private final ModelPart LowerTorso;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LightLatexCentaur, LightLatexCentaurModel> animator;
 
     public LightLatexCentaurModel(ModelPart root) {
         super(root);
@@ -38,7 +42,8 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
         this.Tail = LowerTorso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).legs2(LowerTorso, RightLeg2, LeftLeg2).forewardOffset(-7.0f).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
+                .forwardOffset(-7.0f);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -153,16 +158,16 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
 
     @Override
     public void prepareMobModel(LightLatexCentaur p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull LightLatexCentaur entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -197,8 +202,8 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LightLatexCentaur, LightLatexCentaurModel> getAnimator() {
+        return animator;
     }
 
     @Override

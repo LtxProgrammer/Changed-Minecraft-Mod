@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LightLatexWolfFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,7 +13,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolfFemale> implements LatexHumanoidModelInterface {
+import java.util.List;
+
+public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolfFemale> implements LatexHumanoidModelInterface<LightLatexWolfFemale, LightLatexWolfFemaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_wolf_female"), "main");
     private final ModelPart RightLeg;
@@ -21,7 +25,7 @@ public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolf
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LightLatexWolfFemale, LightLatexWolfFemaleModel> animator;
 
     public LightLatexWolfFemaleModel(ModelPart root) {
         super(root);
@@ -32,7 +36,7 @@ public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolf
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -133,16 +137,16 @@ public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolf
 
     @Override
     public void prepareMobModel(LightLatexWolfFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull LightLatexWolfFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
@@ -164,7 +168,7 @@ public class LightLatexWolfFemaleModel extends LatexHumanoidModel<LightLatexWolf
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LightLatexWolfFemale, LightLatexWolfFemaleModel> getAnimator() {
+        return animator;
     }
 }
