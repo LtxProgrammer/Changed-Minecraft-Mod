@@ -6,6 +6,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexRaccoon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -16,8 +18,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @OnlyIn(Dist.CLIENT)
-public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implements LatexHumanoidModelInterface {
+public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implements LatexHumanoidModelInterface<LatexRaccoon, LatexRaccoonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_raccoon"), "main");
     private final ModelPart RightLeg;
@@ -27,7 +31,7 @@ public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implemen
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LatexRaccoon, LatexRaccoonModel> animator;
 
     public LatexRaccoonModel(ModelPart root) {
         super(root);
@@ -38,7 +42,7 @@ public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implemen
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -122,16 +126,16 @@ public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implemen
 
     @Override
     public void prepareMobModel(LatexRaccoon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull LatexRaccoon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
@@ -153,7 +157,7 @@ public class LatexRaccoonModel extends LatexHumanoidModel<LatexRaccoon> implemen
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexRaccoon, LatexRaccoonModel> getAnimator() {
+        return animator;
     }
 }

@@ -6,6 +6,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexPinkYuinDragon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -16,8 +18,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @OnlyIn(Dist.CLIENT)
-public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDragon> implements LatexHumanoidModelInterface {
+public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDragon> implements LatexHumanoidModelInterface<LatexPinkYuinDragon, LatexPinkYuinDragonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_pink_yuin_dragon"), "main");
     private final ModelPart RightLeg;
@@ -29,7 +33,7 @@ public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDr
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<LatexPinkYuinDragon, LatexPinkYuinDragonModel> animator;
 
     public LatexPinkYuinDragonModel(ModelPart root) {
         super(root);
@@ -42,7 +46,7 @@ public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDr
         this.LeftArm = root.getChild("LeftArm");
         this.RightWing = Torso.getChild("rightwing");
         this.LeftWing = Torso.getChild("leftwing");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).wings(RightWing, LeftWing).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -183,18 +187,18 @@ public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDr
 
     @Override
     public void prepareMobModel(LatexPinkYuinDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
 
     @Override
     public void setupAnim(@NotNull LatexPinkYuinDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
 
@@ -221,7 +225,7 @@ public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDr
 
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexPinkYuinDragon, LatexPinkYuinDragonModel> getAnimator() {
+        return animator;
     }
 }

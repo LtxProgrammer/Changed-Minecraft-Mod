@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexStiger;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,7 +12,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements LatexHumanoidModelInterface {
+import java.util.List;
+
+public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements LatexHumanoidModelInterface<LatexStiger, LatexStigerModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_stiger"), "main");
     public final ModelPart Head;
     public final ModelPart Torso;
@@ -22,7 +26,7 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
     public final ModelPart LeftArm3;
     public final ModelPart LeftLeg;
     public final ModelPart RightLeg;
-    public final LatexHumanoidModelController controller;
+    public final LatexAnimator<LatexStiger, LatexStigerModel> animator;
 
     public LatexStigerModel(ModelPart root) {
         super(root);
@@ -36,7 +40,9 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
         this.LeftArm = root.getChild("LeftArm");
         this.LeftArm2 = root.getChild("LeftArm2");
         this.LeftArm3 = root.getChild("LeftArm3");
-        this.controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Torso.getChild("Tail"), RightArm, LeftArm, RightLeg, LeftLeg).arms2(RightArm2, LeftArm2).arms3(RightArm3, LeftArm3).legLengthOffset(1.0F).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Torso.getChild("Tail"), List.of(), LeftLeg, RightLeg))
+                .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2))
+                .addPreset(AnimatorPresets.armSetThree(LeftArm, RightArm, LeftArm3, RightArm3)).legLength(13.0f);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -172,12 +178,12 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
 
     @Override
     public void prepareMobModel(LatexStiger p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     @Override
     public void setupAnim(LatexStiger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -199,12 +205,12 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
 
     @Override
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<LatexStiger, LatexStigerModel> getAnimator() {
+        return animator;
     }
 
     @Override

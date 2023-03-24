@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,20 +13,19 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> implements LatexHumanoidModelInterface, TorsoSupplier {
+import java.util.List;
+
+public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> implements LatexHumanoidModelInterface<HeadlessKnight, HeadlessKnightModel>, TorsoSupplier {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("headless_knight"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightLeg2;
     private final ModelPart LeftLeg2;
-    private final ModelPart RightArm;
-    private final ModelPart LeftArm;
-    private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart LowerTorso;
     private final ModelPart Tail;
-    private final LatexHumanoidModelController controller;
+    private final LatexAnimator<HeadlessKnight, HeadlessKnightModel> animator;
 
     public HeadlessKnightModel(ModelPart root) {
         super(root);
@@ -32,13 +33,11 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         this.LeftLeg = root.getChild("LeftLeg");
         this.RightLeg2 = root.getChild("RightLeg2");
         this.LeftLeg2 = root.getChild("LeftLeg2");
-        this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
         this.LowerTorso = Torso.getChild("LowerTorso");
         this.Tail = LowerTorso.getChild("Tail");
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
-        controller = LatexHumanoidModelController.Builder.of(this, Head, Torso, Tail, RightArm, LeftArm, RightLeg, LeftLeg).legs2(LowerTorso, RightLeg2, LeftLeg2).forewardOffset(-7.0f).build();
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLegs(Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
+                .forwardOffset(-7.0f);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -77,8 +76,6 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
 
         PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(40, 11).addBox(-2.0F, -0.3172F, -0.0274F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.015F)), PartPose.offsetAndRotation(0.25F, 1.0348F, -2.0472F, 0.3054F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, -7.0F));
-
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, 0.0F));
 
         PartDefinition LowerTorso = Torso.addOrReplaceChild("LowerTorso", CubeListBuilder.create(), PartPose.offset(0.0F, 9.0F, -7.0F));
@@ -91,10 +88,6 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(56, 30).addBox(-1.5F, 2.1914F, -2.1983F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.0F, 5.0F, 1.4835F, 0.0F, 0.0F));
 
         PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(68, 30).addBox(-1.5F, 2.0F, -1.0F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.001F)), PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, 1.1781F, 0.0F, 0.0F));
-
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create(), PartPose.offset(-5.0F, 0.0F, -7.0F));
-
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create(), PartPose.offset(5.0F, 0.0F, -7.0F));
 
         PartDefinition LeftLeg2 = partdefinition.addOrReplaceChild("LeftLeg2", CubeListBuilder.create().texOffs(26, 57).addBox(-2.0F, 12.0F, 0.25F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.25F, 10.0F, 8.0F));
 
@@ -133,16 +126,16 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
 
     @Override
     public void prepareMobModel(HeadlessKnight p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(controller, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
     public void setupHand() {
-        controller.setupHand();
+        animator.setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull HeadlessKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        controller.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -153,11 +146,11 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
-        return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
-        return this.Head;
+        return this.LowerTorso;
     }
 
     @Override
@@ -166,15 +159,12 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         LeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
         RightLeg2.render(poseStack, buffer, packedLight, packedOverlay);
         LeftLeg2.render(poseStack, buffer, packedLight, packedOverlay);
-        Head.render(poseStack, buffer, packedLight, packedOverlay);
         Torso.render(poseStack, buffer, packedLight, packedOverlay);
-        RightArm.render(poseStack, buffer, packedLight, packedOverlay);
-        LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
     }
 
     @Override
-    public LatexHumanoidModelController getController() {
-        return controller;
+    public LatexAnimator<HeadlessKnight, HeadlessKnightModel> getAnimator() {
+        return animator;
     }
 
     @Override

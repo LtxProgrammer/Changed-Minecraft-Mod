@@ -76,7 +76,7 @@ public class FormRenderHandler {
 
                         entityModel = latexRenderer.getModel();
                         latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
-                        LatexHumanoidModelController controller = latexHumanoidModel.getController();
+                        var controller = latexHumanoidModel.getAnimator();
 
                         entityModel.attackTime = 0.0F;
                         boolean lastCrouch = controller.crouching;
@@ -94,7 +94,7 @@ public class FormRenderHandler {
                     }
 
                     else {
-                        LatexHumanoidModelController controller = latexHumanoidModel.getController();
+                        var controller = latexHumanoidModel.getAnimator();
 
                         entityModel.attackTime = 0.0F;
                         boolean lastCrouch = controller.crouching;
@@ -120,7 +120,7 @@ public class FormRenderHandler {
                         if (layer instanceof LatexGelLayer<?,?> gelLayer) {
                             LatexHumanoidModel entityModel = gelLayer.getModel();
                             var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
-                            LatexHumanoidModelController controller = latexHumanoidModel.getController();
+                            var controller = latexHumanoidModel.getAnimator();
 
                             entityModel.attackTime = 0.0F;
                             boolean lastCrouch = controller.crouching;

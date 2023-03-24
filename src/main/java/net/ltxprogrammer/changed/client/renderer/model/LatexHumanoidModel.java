@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -30,22 +31,22 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         this.rootModelPart = root;
     }
 
-    public void prepareMobModel(LatexHumanoidModelController controller, T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        super.prepareMobModel(p_102861_, p_102862_, p_102863_, p_102864_);
-        controller.swimAmount = p_102861_.getSwimAmount(p_102864_);
-        controller.crouching = p_102861_.isCrouching();
-        HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(p_102861_, InteractionHand.MAIN_HAND);
-        HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(p_102861_, InteractionHand.OFF_HAND);
+    public void prepareMobModel(LatexAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
+        super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
+        animator.swimAmount = entity.getSwimAmount(partialTicks);
+        animator.crouching = entity.isCrouching();
+        HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
+        HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.OFF_HAND);
         if (humanoidmodel$armpose.isTwoHanded()) {
-            humanoidmodel$armpose1 = p_102861_.getOffhandItem().isEmpty() ? HumanoidModel.ArmPose.EMPTY : HumanoidModel.ArmPose.ITEM;
+            humanoidmodel$armpose1 = entity.getOffhandItem().isEmpty() ? HumanoidModel.ArmPose.EMPTY : HumanoidModel.ArmPose.ITEM;
         }
 
-        if (p_102861_.getMainArm() == HumanoidArm.RIGHT) {
-            controller.rightArmPose = humanoidmodel$armpose;
-            controller.leftArmPose = humanoidmodel$armpose1;
+        if (entity.getMainArm() == HumanoidArm.RIGHT) {
+            animator.rightArmPose = humanoidmodel$armpose;
+            animator.leftArmPose = humanoidmodel$armpose1;
         } else {
-            controller.rightArmPose = humanoidmodel$armpose1;
-            controller.leftArmPose = humanoidmodel$armpose;
+            animator.rightArmPose = humanoidmodel$armpose1;
+            animator.leftArmPose = humanoidmodel$armpose;
         }
     }
 
@@ -54,7 +55,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
         this.getArm(p_102854_).translateAndRotate(p_102855_);
         if (this instanceof LatexHumanoidModelInterface modelInterface)
-            p_102855_.translate(0.0, modelInterface.getController().armLength / 20.0, 0.0);
+            p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
     }
 
     public ModelPart getRandomModelPart(Random random) {
