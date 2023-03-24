@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/microphone",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "changed:block/microphone",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "changed:block/microphone",
+      "y": 0
+    },
+    "facing=west": {
+      "model": "changed:block/microphone",
+      "y": 90
+    }
+  }
+}

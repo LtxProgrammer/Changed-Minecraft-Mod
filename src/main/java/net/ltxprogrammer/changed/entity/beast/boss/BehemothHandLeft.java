@@ -3,6 +3,9 @@ package net.ltxprogrammer.changed.entity.beast.boss;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +15,15 @@ public class BehemothHandLeft extends BehemothHand {
     public BehemothHandLeft(EntityType<? extends BehemothHandLeft> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
+
+    @Override
+    public void knockback(double p_147241_, double p_147242_, double p_147243_) {}
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:microphone"
+    ]
+  },
+  "criteria": {
+    "has_note_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:note_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:microphone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_note_block",
+      "has_the_recipe"
+    ]
+  ]
+}
