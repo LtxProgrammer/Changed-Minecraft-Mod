@@ -36,9 +36,9 @@
   "subtitles.changed.save": "홍채 스캐너가 삐빅거림",
   "subtitles.changed.sword1": "주삿바늘이 찌름",
   "subtitles.changed.paralyze1": "무기로 전기 충격함",
+  "subtitles.changed.paralyze3": "인터콤에서 안내방송이 나옴",
   "subtitles.changed.blow1": "플레이어가 라텍스에 뒤덮힘",
 
-  "item.changed.wolf_gas_bucket": "가스 라텍스 양동이",
   "item.changed.benign_pants": "라텍스 숏팬츠",
   "item.changed.blood_syringe": "혈액이 담긴 주사기",
   "item.changed.dark_latex_crystal_fragment": "검은 라텍스 수정 조각",
@@ -103,6 +103,7 @@
 
   "container.changed.extra_hands": "추가 손 메뉴",
   "container.changed.infuser": "주입기 메뉴",
+  "container.changed.computer_writing": "디스크에 쓰기",
   "container.changed.purifier": "정화기 메뉴",
   "container.changed.keypad_first": "비밀번호 설정",
   "container.changed.keypad": "비밀번호 입력",
@@ -120,7 +121,6 @@
   "effect.changed.hypercoagulation": "과응고",
   "effect.changed.shock": "전기 충격",
 
-  "block.changed.wolf_gas": "가스 라텍스",
   "block.changed.bedside_iv_rack": "링거 스탠드",
   "block.changed.beehive_bed": "벌집 침대",
   "block.changed.beehive_wall": "벌집 벽",
@@ -158,6 +158,7 @@
   "block.changed.light_latex_puddle_female": "밝은 암컷 라텍스 늑대 웅덩이",
   "block.changed.light_latex_puddle_male": "밝은 수컷 라텍스 늑대 웅덩이",
   "block.changed.maintenance_door": "수리용 문",
+  "block.changed.microphone": "마이크",
   "block.changed.note": "쪽지",
   "block.changed.orange_lab_carpeting": "주황색 연구실 카펫",
   "block.changed.orange_tree_sapling": "오렌지 나무 묘목",
@@ -165,6 +166,7 @@
   "block.changed.pipe": "파이프",
   "block.changed.purifier": "정화기",
   "block.changed.retinal_scanner": "홍채 스캐너",
+  "block.changed.speaker": "스피커",
   "block.changed.tiles_blue": "파란색 타일",
   "block.changed.tiles_blue_small": "작은 파란색 타일",
   "block.changed.tiles_caution": "주의 타일",
