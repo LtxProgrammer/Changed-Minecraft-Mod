@@ -30,6 +30,7 @@ public class QuadrupedalInitAnimator<T extends LatexEntity, M extends EntityMode
             swingSpeed = 1.0F;
         }
 
+        torso.xRot = 0.0F;
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / swingSpeed;
         frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / swingSpeed;
         frontRightLeg.yRot = 0.0F;
