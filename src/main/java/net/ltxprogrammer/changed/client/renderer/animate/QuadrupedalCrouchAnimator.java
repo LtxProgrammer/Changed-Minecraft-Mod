@@ -17,9 +17,9 @@ public class QuadrupedalCrouchAnimator<T extends LatexEntity, M extends EntityMo
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        frontRightLeg.y = 12.2F + core.hipOffset;
-        frontLeftLeg.y = 12.2F + core.hipOffset;
-        backRightLeg.y = 12.2F + core.hipOffset;
-        backLeftLeg.y = 12.2F + core.hipOffset;
+        frontRightLeg.y = -2.0F;
+        frontLeftLeg.y = -2.0F;
+        backRightLeg.y = -2.0F;
+        backLeftLeg.y = -2.0F;
     }
 }

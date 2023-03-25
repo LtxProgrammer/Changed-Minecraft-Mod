@@ -25,7 +25,9 @@ public class AnimatorPresets {
                     .addAnimator(new QuadrupedalCrouchAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalInitAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalRideAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
-                    .addAnimator(new QuadrupedalStandAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg));
+                    .addAnimator(new QuadrupedalSwimAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new QuadrupedalStandAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new QuadrupedalSleepAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg));
         };
     }
 
@@ -75,6 +77,16 @@ public class AnimatorPresets {
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> noSwimOrSleepTail(ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator
+                    .addAnimator(new TailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
         };
     }
@@ -184,7 +196,7 @@ public class AnimatorPresets {
                                                                                                            ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator.addPreset(quadrupedal(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
-                    .addPreset(standardTail(tail, tailJoints));
+                    .addPreset(noSwimOrSleepTail(tail, tailJoints));
         };
     }
 
