@@ -40,6 +40,15 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new UpperBodyInitAnimator<>(torso, leftArm, rightArm))
+                    .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new UpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> upperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
@@ -74,6 +83,7 @@ public class AnimatorPresets {
         return animator -> {
             animator
                     .addAnimator(new TailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSwimAnimator<>(tail, tailJoints))
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
@@ -185,7 +195,7 @@ public class AnimatorPresets {
                                                                                                            ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator.addPreset(taurLegs(tail, tailJoints, frontLeftLeg, frontRightLeg, lowerTorso, backLeftLeg, backRightLeg))
-                    .addPreset(upperBody(head, torso, leftArm, rightArm))
+                    .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
                     .addAnimator(new HeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
