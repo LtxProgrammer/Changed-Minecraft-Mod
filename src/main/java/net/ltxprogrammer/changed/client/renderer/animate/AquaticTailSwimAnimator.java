@@ -21,8 +21,9 @@ public class AquaticTailSwimAnimator<T extends LatexEntity, M extends EntityMode
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         tail.xRot = Mth.lerp(core.swimAmount, tail.xRot, -1.1f);
-        tail.yRot = Mth.lerp(core.swimAmount, tail.zRot, 0.0F);
+        float oldZ = tail.zRot;
         tail.zRot = Mth.lerp(core.swimAmount, 0.0F, tail.yRot);
+        tail.yRot = Mth.lerp(core.swimAmount, oldZ, 0.0F);
         tail.zRot = Mth.lerp(core.swimAmount, tail.zRot, 0.25F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
     }
 }
