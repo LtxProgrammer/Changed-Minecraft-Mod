@@ -42,7 +42,7 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
         this.LeftArm3 = root.getChild("LeftArm3");
         animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Torso.getChild("Tail"), List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2))
-                .addPreset(AnimatorPresets.armSetThree(LeftArm, RightArm, LeftArm3, RightArm3)).legLength(13.0f);
+                .addPreset(AnimatorPresets.armSetThree(LeftArm, RightArm, LeftArm3, RightArm3));
     }
 
     public static LayerDefinition createBodyLayer() {

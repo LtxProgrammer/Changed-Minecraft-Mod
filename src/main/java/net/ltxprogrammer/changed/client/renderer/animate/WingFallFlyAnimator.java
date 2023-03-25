@@ -24,7 +24,7 @@ public class WingFallFlyAnimator<T extends LatexEntity, M extends EntityModel<T>
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float fallFlyingTicks = (float)entity.getFallFlyingTicks();
         float fallFlyingAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
-        rightWing.zRot = Mth.lerp(fallFlyingAmount, rightWing.zRot, -0.8f);
-        leftWing.zRot = Mth.lerp(fallFlyingAmount, leftWing.zRot, 0.8f);
+        rightWing.zRot = Mth.lerp(fallFlyingAmount, rightWing.zRot, 0.8f);
+        leftWing.zRot = Mth.lerp(fallFlyingAmount, leftWing.zRot, -0.8f);
     }
 }
