@@ -17,9 +17,9 @@ public class QuadrupedalStandAnimator<T extends LatexEntity, M extends EntityMod
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        frontRightLeg.y = 12.0F + core.hipOffset;
-        frontLeftLeg.y = 12.0F + core.hipOffset;
-        backRightLeg.y = 12.0F + core.hipOffset;
-        backLeftLeg.y = 12.0F + core.hipOffset;
+        frontRightLeg.y = 0.0F;
+        frontLeftLeg.y = 0.0F;
+        backRightLeg.y = 0.0F;
+        backLeftLeg.y = 0.0F;
     }
 }
