@@ -98,11 +98,26 @@ public class LatexVariantInstance<T extends LatexEntity> {
         return entity;
     }
 
+    public <A extends AbstractAbilityInstance> boolean hasAbility(AbstractAbility<A> ability) {
+        return abilityInstances.containsKey(ability);
+    }
+
     public <A extends AbstractAbilityInstance> A getAbilityInstance(AbstractAbility<A> ability) {
         try {
             return (A) abilityInstances.get(ability);
         } catch (Exception unused) {
             return null;
+        }
+    }
+
+    public <A extends AbstractAbilityInstance> boolean ifHasAbility(AbstractAbility<A> ability, Consumer<A> consumer) {
+        try {
+            A instance = (A)abilityInstances.get(ability);
+            if (instance != null)
+                consumer.accept(instance);
+            return instance != null;
+        } catch (Exception unused) {
+            return false;
         }
     }
 
