@@ -20,8 +20,13 @@ public class QuadrupedalSwimAnimator<T extends LatexEntity, M extends EntityMode
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float adjust = core.swimAmount * (float)Math.PI * 0.5F;
         torso.xRot = Mth.lerp(core.swimAmount, torso.xRot, -(float)Math.PI * 0.5f);
-        frontRightLeg.xRot += adjust;
-        frontLeftLeg.xRot += adjust;
+        frontLeftLeg.xRot = Mth.lerp(core.swimAmount, frontLeftLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
+        frontRightLeg.xRot = Mth.lerp(core.swimAmount, frontRightLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
+        backLeftLeg.xRot = Mth.lerp(core.swimAmount, backLeftLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F));
+        backRightLeg.xRot = Mth.lerp(core.swimAmount, backRightLeg.xRot, 0.3F * Mth.cos(limbSwing * 0.33333334F + (float)Math.PI));
+
+        frontRightLeg.xRot += adjust * 0.7f;
+        frontLeftLeg.xRot += adjust * 0.7f;
         backRightLeg.xRot += adjust;
         backLeftLeg.xRot += adjust;
     }
