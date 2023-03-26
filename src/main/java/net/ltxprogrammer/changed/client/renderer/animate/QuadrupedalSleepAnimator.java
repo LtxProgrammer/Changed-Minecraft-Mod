@@ -20,8 +20,8 @@ public class QuadrupedalSleepAnimator<T extends LatexEntity, M extends EntityMod
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float adjust = (float)Math.PI * 0.5F;
         torso.xRot = -(float)Math.PI * 0.5f;
-        frontRightLeg.xRot += adjust;
-        frontLeftLeg.xRot += adjust;
+        frontRightLeg.xRot += adjust * 0.7F;
+        frontLeftLeg.xRot += adjust * 0.7F;
         backRightLeg.xRot += adjust;
         backLeftLeg.xRot += adjust;
     }
