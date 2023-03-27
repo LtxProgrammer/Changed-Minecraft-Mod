@@ -1,6 +1,10 @@
 package net.ltxprogrammer.changed.client.renderer.model.armor;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,26 +13,31 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
 
-public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T> {
+public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorUpperBodyModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
 
-    public ArmorUpperBodyModel(ModelPart modelPart) {
-        super(new Builder(
-                modelPart.getChild("Head"),
-                modelPart.getChild("Torso"),
-                EMPTY_PART,
-                EMPTY_PART,
-                EMPTY_PART,
-                modelPart.getChild("LeftArm"),
-                modelPart.getChild("RightArm")), builder -> {
-            builder.noLegs(new ModelPart(List.of(), Map.of()), new ModelPart(List.of(), Map.of())).legLengthOffset(0.0F).tailAidsInSwim();
-        });
+    private final ModelPart Head;
+    private final ModelPart Torso;
+    private final ModelPart LeftArm;
+    private final ModelPart RightArm;
+    private final LatexAnimator<T, ArmorUpperBodyModel<T>> animator;
+
+    public ArmorUpperBodyModel(ModelPart root) {
+        this.Head = root.getChild("Head");
+        this.Torso = root.getChild("Torso");
+        this.LeftArm = root.getChild("LeftArm");
+        this.RightArm = root.getChild("RightArm");
+
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
+                .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -51,5 +60,19 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
     }
 
     @Override
-    public void prepareForShorts() {}
+    public LatexAnimator<T, ArmorUpperBodyModel<T>> getAnimator() {
+        return animator;
+    }
+
+    @Override
+    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        switch (slot) {
+            case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            case CHEST -> {
+                Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            }
+        }
+    }
 }

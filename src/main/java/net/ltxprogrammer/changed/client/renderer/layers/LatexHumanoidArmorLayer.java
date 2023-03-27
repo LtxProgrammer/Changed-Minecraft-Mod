@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T>> extends RenderLayer<T, M> {
+public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends RenderLayer<T, M> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
     final A innerModel;
     final A outerModel;
@@ -46,97 +46,40 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
     }
 
-    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<T> model) {
+    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<T, ?> model) {
         ItemStack itemstack = entity.getItemBySlot(slot);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() == slot) {
                 this.getParentModel().copyPropertiesTo(model);
-                this.setPartVisibility(entity, model, slot);
                 boolean foil = itemstack.hasFoil();
                 if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
                     int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
                     float red = (float)(i >> 16 & 255) / 255.0F;
                     float green = (float)(i >> 8 & 255) / 255.0F;
                     float blue = (float)(i & 255) / 255.0F;
-                    this.renderModel(pose, buffers, packedLight, foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
-                    this.renderModel(pose, buffers, packedLight, foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
+                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                            foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
+                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
                 } else {
-                    this.renderModel(pose, buffers, packedLight, foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
                 }
 
             }
         }
     }
 
-    protected void setPartVisibility(T entity, LatexHumanoidArmorModel<T> model, EquipmentSlot slot) {
-        model.setAllVisible(false);
-        switch(slot) {
-            case HEAD:
-                model.head.visible = true;
-                break;
-            case CHEST:
-                model.body.visible = true;
-                model.rightArm.visible = true;
-                model.leftArm.visible = true;
-                if (model.rightArm2 != null)
-                    model.rightArm2.visible = true;
-                if (model.leftArm2 != null)
-                    model.leftArm2.visible = true;
-                if (model.rightArm3 != null)
-                    model.rightArm3.visible = true;
-                if (model.leftArm3 != null)
-                    model.leftArm3.visible = true;
-                break;
-            case LEGS:
-                if (entity.getItemBySlot(slot).getItem() instanceof Shorts) {
-                    model.body.getAllParts().forEach(part -> part.visible = false);
-                    model.rightLeg.getAllParts().forEach(part -> part.visible = false);
-                    model.leftLeg.getAllParts().forEach(part -> part.visible = false);
-                    if (model.rightLeg2 != null)
-                        model.rightLeg2.getAllParts().forEach(part -> part.visible = false);
-                    if (model.leftLeg2 != null)
-                        model.leftLeg2.getAllParts().forEach(part -> part.visible = false);
-
-                    model.body.visible = true;
-                    model.rightLeg.visible = true;
-                    model.leftLeg.visible = true;
-                    if (model.rightLeg2 != null)
-                        model.rightLeg2.visible = true;
-                    if (model.leftLeg2 != null)
-                        model.leftLeg2.visible = true;
-
-                    model.prepareForShorts();
-                    break;
-                }
-                model.body.getAllParts().forEach(part -> part.visible = true);
-                model.rightLeg.getAllParts().forEach(part -> part.visible = true);
-                model.leftLeg.getAllParts().forEach(part -> part.visible = true);
-                if (model.lowerTorso != null)
-                    model.lowerTorso.visible = true;
-                if (model.rightLeg2 != null)
-                    model.rightLeg2.getAllParts().forEach(part -> part.visible = true);
-                if (model.leftLeg2 != null)
-                    model.leftLeg2.getAllParts().forEach(part -> part.visible = true);
-                break;
-            case FEET:
-                model.rightLeg.visible = true;
-                model.leftLeg.visible = true;
-                if (model.rightLeg2 != null)
-                    model.rightLeg2.visible = true;
-                if (model.leftLeg2 != null)
-                    model.leftLeg2.visible = true;
-        }
-
-    }
-
-    private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean p_117111_, LatexHumanoidArmorModel<T> model, float red, float green, float blue, ResourceLocation armorResource) {
-        model.renderToBuffer(pose,
-                ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, p_117111_),
+    private void renderModel(T entity, ItemStack stack, EquipmentSlot slot,
+                             PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, LatexHumanoidArmorModel<T, ?> model,
+                             float red, float green, float blue, ResourceLocation armorResource) {
+        model.renderForSlot(entity, stack, slot, pose,
+                ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
-    LatexHumanoidArmorModel<T> getArmorModel(EquipmentSlot slot) {
+    LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
         return this.usesInnerModel(slot) ? this.innerModel : this.outerModel;
     }
 
