@@ -14,7 +14,7 @@ public class LatexMermaidSharkRenderer extends LatexHumanoidRenderer<LatexMermai
         super(context, new LatexMermaidSharkModel(context.bakeLayer(LatexMermaidSharkModel.LAYER_LOCATION)),
                 ArmorUpperBodyModel::new, ArmorUpperBodyModel.INNER_ARMOR, ArmorUpperBodyModel.OUTER_ARMOR,
                 ArmorMermaidSharkAbdomenModel::new, ArmorMermaidSharkAbdomenModel.INNER_ARMOR, ArmorMermaidSharkAbdomenModel.OUTER_ARMOR,
-                AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, LatexSnakeRenderer::setVisibility, 0.5f);
+                AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
     }
 
     @Override

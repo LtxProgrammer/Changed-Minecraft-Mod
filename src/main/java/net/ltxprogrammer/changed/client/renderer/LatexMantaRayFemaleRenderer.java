@@ -14,7 +14,7 @@ public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMant
         super(context, new LatexMantaRayFemaleModel(context.bakeLayer(LatexMantaRayFemaleModel.LAYER_LOCATION)),
                 ArmorUpperBodyModel::new, ArmorUpperBodyModel.INNER_ARMOR, ArmorUpperBodyModel.OUTER_ARMOR,
                 ArmorAbdomenModel::new, ArmorAbdomenModel.INNER_ARMOR, ArmorAbdomenModel.OUTER_ARMOR,
-                AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, LatexSnakeRenderer::setVisibility, 0.5f);
+                AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
     }
 
     @Override
