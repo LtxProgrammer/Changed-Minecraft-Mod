@@ -102,12 +102,12 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         public Builder<M, F> nightVision(boolean v) {
             this.maleBuilder.nightVision = v; this.femaleBuilder.nightVision = v; return this;
         }
-        public Builder<M, F> cannotWalk() {
-            this.maleBuilder.cannotWalk = true; this.femaleBuilder.cannotWalk = true; return this;
+        public Builder<M, F> restrained() {
+            this.maleBuilder.restrained = true; this.femaleBuilder.restrained = true; return this;
         }
 
-        public Builder<M, F> cannotWalk(boolean v) {
-            this.maleBuilder.cannotWalk = v; this.femaleBuilder.cannotWalk = v; return this;
+        public Builder<M, F> restrained(boolean v) {
+            this.maleBuilder.restrained = v; this.femaleBuilder.restrained = v; return this;
         }
         public Builder<M, F> noVision() {
             this.maleBuilder.noVision = true; this.femaleBuilder.noVision = true; return this;
