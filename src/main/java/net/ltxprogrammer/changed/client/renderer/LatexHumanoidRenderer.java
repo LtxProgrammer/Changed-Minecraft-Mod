@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T>> extends MobRenderer<T, M> {
+public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
     private LatexHumanoidHairLayer<T, M> hairLayer;
 
     public LatexHumanoidHairLayer<T, M> getHairLayer() {
@@ -54,15 +54,14 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
         this.addLayers(context, main);
     }
 
-    public <B extends LatexHumanoidArmorModel<T>> LatexHumanoidRenderer(EntityRendererProvider.Context context, M main,
+    public <B extends LatexHumanoidArmorModel<T, ?>> LatexHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                                                         Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter,
                                                                         Function<ModelPart, B> ctorB, ModelLayerLocation armorInnerOther, ModelLayerLocation armorOuterOther,
-                                                                        Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner,
-                                                                        TriConsumer<T, LatexHumanoidArmorModel<T>, EquipmentSlot> setVisibility, float shadowSize) {
+                                                                        Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
         this.addLayer(new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)),
-                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner, setVisibility));
+                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner));
         this.addLayers(context, main);
     }
 

@@ -26,8 +26,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController.findLargestCube;
-
 public class GasCanister extends BlockItem implements SpecializedAnimations {
     private final List<LatexVariant<?>> variants;
     private final ChangedParticles.Color3 color;

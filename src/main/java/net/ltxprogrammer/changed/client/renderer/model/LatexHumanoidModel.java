@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -170,5 +171,21 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         );
 
         return mesh;
+    }
+
+    public static List<ModelPart.Cube> findLargestCube(ModelPart part) {
+        ArrayList<ModelPart.Cube> list = new ArrayList<>(part.cubes);
+
+        for (var entry : part.children.entrySet()) {
+            list.addAll(findLargestCube(entry.getValue()));
+        }
+
+        list.sort((cubeA, cubeB) -> {
+            float massA = (cubeA.maxX - cubeA.minX) * (cubeA.maxY - cubeA.minY) * (cubeA.maxZ - cubeA.minZ);
+            float massB = (cubeB.maxX - cubeB.minX) * (cubeB.maxY - cubeB.minY) * (cubeB.maxZ - cubeB.minZ);
+            return Float.compare(massB, massA);
+        });
+
+        return list;
     }
 }

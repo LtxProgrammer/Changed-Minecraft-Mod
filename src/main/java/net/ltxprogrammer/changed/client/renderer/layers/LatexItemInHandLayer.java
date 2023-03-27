@@ -18,8 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelController.findLargestCube;
-
 public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     private static final float X_ROT_MIN = (-(float)Math.PI / 6F);
     private static final float X_ROT_MAX = ((float)Math.PI / 2F);
@@ -49,7 +47,7 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(p_174521_, false);
         boolean flag = p_174520_ == HumanoidArm.LEFT;
-        var list = findLargestCube(modelpart);
+        var list = LatexHumanoidModel.findLargestCube(modelpart);
         if (list.isEmpty()) {
             p_174521_.popPose();
             return;

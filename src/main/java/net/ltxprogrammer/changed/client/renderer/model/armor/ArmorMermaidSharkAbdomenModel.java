@@ -1,6 +1,10 @@
 package net.ltxprogrammer.changed.client.renderer.model.armor;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,32 +13,32 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends LatexHumanoidArmorModel<T> {
+public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
 
-    protected ArmorMermaidSharkAbdomenModel(ModelPart root, ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail) {
-        super(new Builder(
-                EMPTY_PART,
-                root.getChild("Torso"),
-                tail,
-                EMPTY_PART,
-                EMPTY_PART,
-                EMPTY_PART,
-                EMPTY_PART).noLegs(abdomen, lowerAbdomen), builder -> {
-            builder.noLegs(abdomen, lowerAbdomen)
-                    .tailJoints(List.of(
-                            tail.getChild("Joint"))).legLengthOffset(0.0F).tailAidsInSwim();
-        });
-    }
-    public ArmorMermaidSharkAbdomenModel(ModelPart modelPart) {
-        this(modelPart, modelPart.getChild("Abdomen"), modelPart.getChild("Abdomen").getChild("LowerAbdomen"),
-                modelPart.getChild("Abdomen").getChild("LowerAbdomen").getChild("Tail"));
+    private final ModelPart Torso;
+    private final ModelPart Abdomen;
+    private final ModelPart LowerAbdomen;
+    private final ModelPart Tail;
+    private final LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
+
+    public ArmorMermaidSharkAbdomenModel(ModelPart root) {
+        this.Torso = root.getChild("Torso");
+        this.Abdomen = root.getChild("Abdomen");
+        this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
+        this.Tail = LowerAbdomen.getChild("Tail");
+
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+                        Tail.getChild("Joint"))))
+                .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -67,5 +71,20 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
     }
 
     @Override
-    public void prepareForShorts() {}
+    public LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
+        return animator;
+    }
+
+    @Override
+    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        switch (slot) {
+            case LEGS -> {
+                setAllPartsVisibility(Tail, false);
+                Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                setAllPartsVisibility(Tail, true);
+            }
+            case FEET -> Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        }
+    }
 }
