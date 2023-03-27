@@ -279,6 +279,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexSniperDog>> LATEX_SNIPER_DOG = registerReducedSpawn("latex_sniper_dog", 0xEF8F44, 0x894633,
             EntityType.Builder.of(LatexSniperDog::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<LatexAlien>> LATEX_ALIEN = register("latex_alien", 0x1983A9, 0x2DAAB9,
+            EntityType.Builder.of(LatexAlien::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::desertSpawning);
     public static final RegistryObject<EntityType<LatexSnowLeopardMale>> LATEX_SNOW_LEOPARD_MALE = register("latex_snow_leopard_male", 0x9C9C9C, 0x272727,
             EntityType.Builder.of(LatexSnowLeopardMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::taigaSpawning);
