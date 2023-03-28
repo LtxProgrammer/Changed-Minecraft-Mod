@@ -6,6 +6,7 @@ dark_latex_dragon :Ltx: remodeled and retextured by Bijimio
 dark_latex_wolf_female :Ltx: retextured by KoBOLTA and remodeled by Bijimio
 dark_latex_wolf_male :Ltx: retextured by KoBOLTA and remodeled by Bijimio
 dark_latex_yufeng :Ltx: retextured by KoBOLTA and remodeled by Bijimio
+latex_alien :: modeled by ABTOR and remodeled and textured by Bijimio
 latex_bee :: modeled and textured by Bijimio
 latex_beifeng :Ltx: retextured by KoBOLTA and remodeled by Bijimio
 latex_benign_wolf :: modeled and textured by Bijimio
