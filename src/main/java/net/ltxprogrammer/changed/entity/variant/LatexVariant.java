@@ -154,7 +154,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_otter")));
     public static final LatexVariant<LatexAlien> LATEX_ALIEN = register(Builder.of(ChangedEntities.LATEX_ALIEN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision()
             .build(Changed.modResource("form_latex_alien")));
-    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().cannotWalk()
+    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.05f).noVision().restrained()
             .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.75f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
@@ -294,7 +294,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public final boolean canClimb;
     public final boolean nightVision;
     public final boolean noVision;
-    public final boolean cannotWalk;
+    public final boolean restrained;
     public final boolean hasLegs;
     public final List<Class<? extends PathfinderMob>> scares;
     public final TransfurMode transfurMode;
@@ -307,7 +307,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public LatexVariant(Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
                         boolean reducedFall, boolean canClimb,
-                        boolean nightVision, boolean noVision, boolean cannotWalk, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        boolean nightVision, boolean noVision, boolean restrained, boolean hasLegs, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
                         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Supplier<? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
@@ -318,7 +318,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
         this.noVision = noVision;
-        this.cannotWalk = cannotWalk;
+        this.restrained = restrained;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
@@ -405,7 +405,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         int additionalHealth = 4;
         boolean reducedFall = false;
         boolean noVision = false;
-        boolean cannotWalk = false;
+        boolean restrained = false;
         boolean canClimb = false;
         boolean nightVision = false;
         boolean hasLegs = true;
@@ -434,7 +434,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed).swimSpeed(variant.swimSpeed)
                     .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .abilities(variant.abilities).reducedFall(variant.reducedFall).canClimb(variant.canClimb).nightVision(variant.nightVision).hasLegs(variant.hasLegs).scares(variant.scares)
-                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).cannotWalk(variant.cannotWalk);
+                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).restrained(variant.restrained);
         }
 
         public static <T extends LatexEntity> Builder<T> of(GenderedVariant<?, ?> variant, Supplier<EntityType<T>> entityType) {
@@ -478,11 +478,11 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         public Builder<T> noVision(boolean v) {
             this.noVision = v; return this;
         }
-        public Builder<T> cannotWalk() {
-            this.cannotWalk = true; return this;
+        public Builder<T> restrained() {
+            this.restrained = true; return this;
         }
-        public Builder<T> cannotWalk(boolean v) {
-            this.cannotWalk = v; return this;
+        public Builder<T> restrained(boolean v) {
+            this.restrained = v; return this;
         }
 
         public Builder<T> reducedFall(boolean v) {
@@ -596,7 +596,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
         public LatexVariant<T> build(ResourceLocation formId) {
             var variant = new LatexVariant<>(entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, noVision, cannotWalk, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, nightVision, noVision, restrained, hasLegs, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
             variant.setRegistryName(formId);
             return variant;
         }
@@ -725,7 +725,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 GsonHelper.getAsBoolean(root, "nightVision", false),
                 GsonHelper.getAsBoolean(root, "noVision", false),
-                GsonHelper.getAsBoolean(root, "cannotWalk", false),
+                GsonHelper.getAsBoolean(root, "restrained", false),
                 GsonHelper.getAsBoolean(root, "hasLegs", true),
                 scares,
                 TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),
