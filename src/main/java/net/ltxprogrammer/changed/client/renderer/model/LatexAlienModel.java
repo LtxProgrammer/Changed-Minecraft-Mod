@@ -95,15 +95,15 @@ public class LatexAlienModel extends LatexHumanoidModel<LatexAlien> implements L
 
 		PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 26).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 6.0F, 4.0F, CubeDeformation.NONE)
 				.texOffs(26, 11).addBox(-4.0F, 6.125F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(-0.3F))
-				.texOffs(23, 0).addBox(-4.0F, 10.775F, -2.0F, 8.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
+				.texOffs(23, 0).addBox(-4.0F, 10.525F, -2.0F, 8.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-		PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.75F, 26.325F, 3.225F, 0.2051F, 0.0F, 0.0F));
+		PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 11.5F, 0.0F, 0.2051F, 0.0F, 0.0F));
 
-		PartDefinition cube_r3 = Tail.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(41, 0).addBox(-2.0F, -4.1723F, -2.0206F, 4.0F, 4.0F, 6.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.75F, -8.55F, 6.8F, -0.5236F, 0.0F, 0.0F));
+		PartDefinition cube_r3 = Tail.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(41, 0).addBox(-2.0F, -2.1723F, -4.5206F, 4.0F, 4.0F, 6.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 6.275F, 10.025F, -0.3927F, 0.0F, 0.0F));
 
-		PartDefinition cube_r4 = Tail.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(44, 14).addBox(-2.0F, -4.6756F, -3.0559F, 4.0F, 4.0F, 6.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.75F, -5.35F, 13.075F, -0.1745F, 0.0F, 0.0F));
+		PartDefinition cube_r4 = Tail.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(44, 14).addBox(-2.0F, -4.4256F, -6.3059F, 4.0F, 4.0F, 6.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 9.475F, 16.3F, -0.0873F, 0.0F, 0.0F));
 
-		PartDefinition cube_r5 = Tail.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(17, 29).addBox(-2.0F, -4.0F, -3.0F, 4.0F, 4.0F, 7.0F, new CubeDeformation(0.4F)), PartPose.offsetAndRotation(0.75F, -12.5F, 1.75F, -0.6981F, 0.0F, 0.0F));
+		PartDefinition cube_r5 = Tail.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(17, 29).addBox(-2.0F, -1.0F, -5.0F, 4.0F, 4.0F, 7.0F, new CubeDeformation(0.4F)), PartPose.offsetAndRotation(0.0F, 2.325F, 4.975F, -0.5672F, 0.0F, 0.0F));
 
 		PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(16, 44).addBox(-3.0F, -1.5F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
 				.texOffs(0, 28).addBox(0.0F, 10.25F, -2.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
