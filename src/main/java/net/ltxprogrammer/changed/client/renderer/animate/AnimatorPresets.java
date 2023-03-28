@@ -27,6 +27,7 @@ public class AnimatorPresets {
                     .addAnimator(new QuadrupedalRideAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalSwimAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalStandAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new QuadrupedalFallFlyAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalSleepAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg));
         };
     }
