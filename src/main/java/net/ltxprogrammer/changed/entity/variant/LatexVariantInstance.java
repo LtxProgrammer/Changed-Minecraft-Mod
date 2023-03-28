@@ -506,21 +506,24 @@ public class LatexVariantInstance<T extends LatexEntity> {
         }
 
         // Speed
-        if(parent.swimSpeed != 0F) {
-            var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-            if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
-                attrib.addPermanentModifier(attributeModifierSwimSpeed);
+        if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
+            if (parent.swimSpeed > 1f) {
+                var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
+                if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
+                    attrib.addPermanentModifier(attributeModifierSwimSpeed);
+            }
+            else {
+                multiplyMotion(player, parent.swimSpeed);
+            }
         }
 
-        if(parent.groundSpeed != 0F) {
-            if(!player.isInWaterOrBubble() && player.isOnGround()) {
-                if (parent.groundSpeed > 1f) {
-                    if (!player.isCrouching())
-                        multiplyMotion(player, parent.groundSpeed);
-                }
-                else {
+        if(parent.groundSpeed != 0F && !player.isInWaterOrBubble() && player.isOnGround()) {
+            if (parent.groundSpeed > 1f) {
+                if (!player.isCrouching())
                     multiplyMotion(player, parent.groundSpeed);
-                }
+            }
+            else {
+                multiplyMotion(player, parent.groundSpeed);
             }
         }
 
