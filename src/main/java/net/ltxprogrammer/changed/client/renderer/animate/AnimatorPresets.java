@@ -87,8 +87,7 @@ public class AnimatorPresets {
             animator
                     .addAnimator(new TailInitAnimator<>(tail, tailJoints))
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
-                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
-                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints));
         };
     }
 
