@@ -13,7 +13,7 @@ public class QuadrupedalFallFlyAnimator<T extends LatexEntity, M extends EntityM
 
     @Override
     public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.SWIM;
+        return LatexAnimator.AnimateStage.FALL_FLY;
     }
 
     @Override
