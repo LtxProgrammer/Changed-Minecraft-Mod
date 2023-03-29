@@ -32,6 +32,7 @@
     "AbstractContainerScreenMixin",
     "BlockColorsMixin",
     "CameraMixin",
+    "ClientLevelMixin",
     "ClientRecipeBookMixin",
     "CustomHeadLayerMixin",
     "ForgeIngameGuiMixin",
