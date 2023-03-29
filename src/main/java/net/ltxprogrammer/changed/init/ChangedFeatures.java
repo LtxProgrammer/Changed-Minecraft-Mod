@@ -104,9 +104,9 @@ public class ChangedFeatures {
     }
 
     public static final RegistryObject<Feature<?>> AQUATIC1 = registerLab("aquatic1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
+            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
     public static final RegistryObject<Feature<?>> AQUATIC2 = registerLab("aquatic2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
+            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
     public static final RegistryObject<Feature<?>> HUMAN_RESEARCH_LAB1 = registerLab("human_research_lab1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_treatment"));
     public static final RegistryObject<Feature<?>> LASER_LAB1 = registerLab("laser_lab1",
@@ -115,12 +115,14 @@ public class ChangedFeatures {
             -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
     public static final RegistryObject<Feature<?>> OFFICE_AREA2 = registerLab("office_area2",
             -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
+    public static final RegistryObject<Feature<?>> RESEARCH_TOWER1 = registerLab("research_tower1",
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER2 = registerLab("research_tower2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER3 = registerLab("research_tower3",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER4 = registerLab("research_tower4",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> TREATMENT_1 = registerLab("treatment_1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/high_tier_lab"));
     public static final RegistryObject<Feature<?>> TREATMENT_2 = registerLab("treatment_2",
