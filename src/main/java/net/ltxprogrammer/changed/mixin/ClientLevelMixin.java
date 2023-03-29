@@ -72,7 +72,7 @@ public abstract class ClientLevelMixin extends Level {
             if (!singleListener.compareAndSet(false, true))
                 return;
 
-            this.getBlockStatePairsIfLoaded(new AABB(blockPos).inflate(7.0)).forEach(pair2 -> {
+            this.getBlockStatePairsIfLoaded(new AABB(blockPos).inflate(11.0)).forEach(pair2 -> {
                 if (!pair2.getSecond().is(ChangedBlocks.SPEAKER.get()))
                     return;
                 this.playLocalSound(pair2.getFirst(), event, SoundSource.BLOCKS, volume, pitch, delay);

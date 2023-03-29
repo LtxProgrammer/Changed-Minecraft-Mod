@@ -164,13 +164,6 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
         return this.canSurvive(state, level, pos, false);
     }
 
-    @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherBlockPos) {
-        if (!this.canSurvive(state, level, pos, true))
-            return Blocks.AIR.defaultBlockState();
-        return super.updateShape(state, direction, otherState, level, pos, otherBlockPos);
-    }
-
     protected void preventCreativeDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
         var section = state.getValue(SECTION);
         if (section != QuarterSection.BOTTOM_LEFT) {
