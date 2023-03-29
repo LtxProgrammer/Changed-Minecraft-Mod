@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
+import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -144,12 +145,17 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
         return level.getBlockState(state.getValue(SECTION).getRelative(pos, state.getValue(FACING), otherSect));
     }
 
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos, boolean allCheck) {
-        if (!allCheck && state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos, Either<Boolean, Direction.Axis> allCheckOrAxis) {
+        if (allCheckOrAxis.left().isPresent() && !allCheckOrAxis.left().get() && state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
             return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
 
         var thisSect = state.getValue(SECTION);
-        for (var sect : allCheck ? Arrays.stream(QuarterSection.values()).toList() : thisSect.getOtherValues()) {
+        for (var sect : allCheckOrAxis.left().isPresent() && allCheckOrAxis.left().get() ? Arrays.stream(QuarterSection.values()).toList() : thisSect.getOtherValues()) {
+            if (allCheckOrAxis.right().isPresent()) {
+                if (!thisSect.isOnAxis(sect, state.getValue(FACING), allCheckOrAxis.right().get()))
+                    continue;
+            }
+
             var other = level.getBlockState(thisSect.getRelative(pos, state.getValue(FACING), sect));
             if (other.is(this) && other.getValue(SECTION) == sect)
                 continue;
@@ -161,7 +167,14 @@ public class BoxPile extends HorizontalDirectionalBlock implements NonLatexCover
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return this.canSurvive(state, level, pos, false);
+        return this.canSurvive(state, level, pos, Either.left(false));
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherBlockPos) {
+        if (!this.canSurvive(state, level, pos, Either.right(direction.getAxis())))
+            return Blocks.AIR.defaultBlockState();
+        return super.updateShape(state, direction, otherState, level, pos, otherBlockPos);
     }
 
     protected void preventCreativeDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
