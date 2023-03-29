@@ -20,7 +20,7 @@ public class ArmSetTwoStandAnimator<T extends LatexEntity, M extends EntityModel
 
     @Override
     public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.FINAL;
+        return LatexAnimator.AnimateStage.STAND;
     }
 
     @Override
