@@ -14,8 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
 public abstract class Behemoth extends LatexEntity {
-    private final ServerBossEvent bossEvent = (ServerBossEvent)(new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS));
-
     public Behemoth(EntityType<? extends Behemoth> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.xpReward = 40;
@@ -44,38 +42,11 @@ public abstract class Behemoth extends LatexEntity {
         return LatexVariant.LIGHT_LATEX_WOLF.male();
     }
 
-    public void readAdditionalSaveData(CompoundTag p_31474_) {
-        super.readAdditionalSaveData(p_31474_);
-        if (this.hasCustomName()) {
-            this.bossEvent.setName(this.getDisplayName());
-        }
-    }
-
     public void checkDespawn() {
         if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
             this.discard();
         } else {
             this.noActionTime = 0;
         }
-    }
-
-    protected void customServerAiStep() {
-        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-    }
-
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        this.bossEvent.addPlayer(player);
-    }
-
-    public void stopSeenByPlayer(ServerPlayer player) {
-        super.stopSeenByPlayer(player);
-        this.bossEvent.removePlayer(player);
-    }
-
-    @Override
-    public void remove(RemovalReason reason) {
-        super.remove(reason);
-        this.bossEvent.removeAllPlayers();
     }
 }

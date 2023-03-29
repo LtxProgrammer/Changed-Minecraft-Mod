@@ -5,6 +5,9 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,6 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class BehemothHead extends Behemoth {
+    private final ServerBossEvent bossEvent = (ServerBossEvent)(new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS));
+
     public BehemothHandLeft leftHand;
     public BehemothHandRight rightHand;
 
@@ -105,6 +110,7 @@ public class BehemothHead extends Behemoth {
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
+        this.bossEvent.removeAllPlayers();
         if (leftHand != null)
             leftHand.remove(reason);
         leftHand = null;
@@ -136,5 +142,22 @@ public class BehemothHead extends Behemoth {
             loadedLeftHand = tag.getUUID(LEFT_HAND_ID);
         if (tag.contains(RIGHT_HAND_ID))
             loadedRightHand = tag.getUUID(RIGHT_HAND_ID);
+        if (this.hasCustomName()) {
+            this.bossEvent.setName(this.getDisplayName());
+        }
+    }
+
+    protected void customServerAiStep() {
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+    }
+
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.bossEvent.addPlayer(player);
+    }
+
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
     }
 }
