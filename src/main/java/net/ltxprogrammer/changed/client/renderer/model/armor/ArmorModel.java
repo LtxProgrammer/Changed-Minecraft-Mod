@@ -9,12 +9,12 @@ public enum ArmorModel {
     INNER(new CubeDeformation(-0.25F), LayerDefinitions.OUTER_ARMOR_DEFORMATION, new CubeDeformation(-0.25F), LayerDefinitions.INNER_ARMOR_DEFORMATION, new CubeDeformation(0.45F),
             LayerDefinitions.INNER_ARMOR_DEFORMATION);
 
-    final CubeDeformation deformation;
-    final CubeDeformation inverseDeformation;
-    final CubeDeformation slightDeformation;
-    final CubeDeformation altDeformation;
-    final CubeDeformation slightAltDeformation;
-    final CubeDeformation dualDeformation;
+    public final CubeDeformation deformation;
+    public final CubeDeformation inverseDeformation;
+    public final CubeDeformation slightDeformation;
+    public final CubeDeformation altDeformation;
+    public final CubeDeformation slightAltDeformation;
+    public final CubeDeformation dualDeformation;
     ArmorModel(CubeDeformation deformation, CubeDeformation inverseDeformation, CubeDeformation slightDeformation, CubeDeformation altDeformation, CubeDeformation slightAltDeformation, CubeDeformation dualDeformation) {
         this.deformation = deformation;
         this.inverseDeformation = inverseDeformation;
