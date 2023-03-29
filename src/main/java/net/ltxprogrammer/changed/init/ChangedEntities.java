@@ -428,7 +428,7 @@ public class ChangedEntities {
         SPAWN_EGGS.add(() -> (ForgeSpawnEggItem) spawnEggItem.get());
         SPAWNING_ENTITY.add((event, spawner) -> {
             if (category.test(event.getCategory()))
-                spawner.add(new MobSpawnSettings.SpawnerData(entityType.get(), 12, 1, 3));
+                spawner.add(new MobSpawnSettings.SpawnerData(entityType.get(), 15, 1, 3));
         });
         return entityType;
     }
