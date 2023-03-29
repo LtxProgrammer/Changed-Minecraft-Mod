@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.block.MicrophoneBlock;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -62,11 +63,11 @@ public abstract class ClientLevelMixin extends Level {
             default: return;
         }
 
-        /*AtomicBoolean singleListener = new AtomicBoolean(false);
+        AtomicBoolean singleListener = new AtomicBoolean(false);
         this.getBlockStatePairsIfLoaded(new AABB(new BlockPos(x, y, z)).inflate(3.0)).forEach(pair -> {
             BlockPos blockPos = pair.getFirst();
             BlockState blockState = pair.getSecond();
-            if (!blockState.is(ChangedBlocks.MICROPHONE.get()))
+            if (!blockState.is(ChangedBlocks.MICROPHONE.get()) || !blockState.getValue(MicrophoneBlock.ENABLED))
                 return;
             if (!singleListener.compareAndSet(false, true))
                 return;
@@ -76,6 +77,6 @@ public abstract class ClientLevelMixin extends Level {
                     return;
                 this.playLocalSound(pair2.getFirst(), event, SoundSource.BLOCKS, volume, pitch, delay);
             });
-        });*/
+        });
     }
 }
