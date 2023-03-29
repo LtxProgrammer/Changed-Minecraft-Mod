@@ -109,6 +109,10 @@ public class ChangedFeatures {
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_treatment"));
     public static final RegistryObject<Feature<?>> LASER_LAB1 = registerLab("laser_lab1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/low_tier_lab"));
+    public static final RegistryObject<Feature<?>> OFFICE_AREA1 = registerLab("office_area1",
+            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_dl"));
+    public static final RegistryObject<Feature<?>> OFFICE_AREA2 = registerLab("office_area2",
+            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_dl"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER2 = registerLab("research_tower2",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER3 = registerLab("research_tower3",
@@ -124,6 +128,8 @@ public class ChangedFeatures {
     public static final RegistryObject<Feature<?>> UNDERGROUND_DL_LAB1 = registerLab("underground_dl_lab1",
             -1, Changed.modResource("chests/decayed_lab_dl"));
     public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB1 = registerLab("white_latex_lab1",
+            -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
+    public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2",
             -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
 
     public static final RegistryObject<Feature<?>> BEEHIVE1 = registerBeehive("beehive1",
