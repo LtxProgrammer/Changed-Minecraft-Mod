@@ -20,7 +20,7 @@ public class ArmSetTwoCrouchAnimator<T extends LatexEntity, M extends EntityMode
 
     @Override
     public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.FINAL;
+        return LatexAnimator.AnimateStage.CROUCH;
     }
 
     @Override

@@ -75,50 +75,54 @@ public class ChangedFeatures {
             new ResourceLocation("snowy_plains"));
     public static final Set<ResourceLocation> BEEHIVE_GENERATE_BIOMES = Set.of(
             new ResourceLocation("forest"),
+            new ResourceLocation("dark_forest"),
+            new ResourceLocation("birch_forest"),
+            new ResourceLocation("old_growth_birch_forest"),
+            new ResourceLocation("windswept_forest"),
             new ResourceLocation("flower_forest"));
 
-    private static final RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, ResourceLocation lootTable) {
-        ResourceLocation idRsrc = Changed.modResource(nbtName);
-        return register(nbtName, DecayedLab.feature(idRsrc, yOffset, lootTable, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, DecayedLab.placedFeature(idRsrc)));
+    private static RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, ResourceLocation lootTable) {
+        ResourceLocation nbtResource = Changed.modResource(nbtName);
+        return register(nbtName, DecayedLab.feature(nbtResource, yOffset, lootTable, true),
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, DecayedLab.placedFeature(nbtResource)));
     }
 
-    private static final RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, Set<ResourceLocation> biomes, ResourceLocation lootTable) {
-        ResourceLocation idRsrc = Changed.modResource(nbtName);
-        return register(nbtName, DecayedLab.feature(idRsrc, yOffset, lootTable, false),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(idRsrc)));
+    private static RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, Set<ResourceLocation> biomes, ResourceLocation lootTable) {
+        ResourceLocation nbtResource = Changed.modResource(nbtName);
+        return register(nbtName, DecayedLab.feature(nbtResource, yOffset, lootTable, false),
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(nbtResource)));
     }
 
-    private static final RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset) {
-        ResourceLocation idRsrc = Changed.modResource(nbtName);
-        return register(nbtName, Beehive.feature(idRsrc, yOffset, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, Beehive.placedFeature(idRsrc)));
+    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset) {
+        return registerBeehive(nbtName, yOffset, null);
     }
 
-    private static final RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset, Set<ResourceLocation> biomes) {
-        ResourceLocation idRsrc = Changed.modResource(nbtName);
-        return register(nbtName, Beehive.feature(idRsrc, yOffset, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, Beehive.placedFeature(idRsrc)));
+    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset, Set<ResourceLocation> biomes) {
+        ResourceLocation nbtResource = Changed.modResource(nbtName);
+        return register(nbtName, Beehive.feature(nbtResource, yOffset, false),
+                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, Beehive.placedFeature(nbtResource)));
     }
 
     public static final RegistryObject<Feature<?>> AQUATIC1 = registerLab("aquatic1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
+            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
     public static final RegistryObject<Feature<?>> AQUATIC2 = registerLab("aquatic2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
+            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
     public static final RegistryObject<Feature<?>> HUMAN_RESEARCH_LAB1 = registerLab("human_research_lab1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_treatment"));
     public static final RegistryObject<Feature<?>> LASER_LAB1 = registerLab("laser_lab1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/low_tier_lab"));
     public static final RegistryObject<Feature<?>> OFFICE_AREA1 = registerLab("office_area1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_dl"));
+            -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
     public static final RegistryObject<Feature<?>> OFFICE_AREA2 = registerLab("office_area2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_dl"));
+            -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
+    public static final RegistryObject<Feature<?>> RESEARCH_TOWER1 = registerLab("research_tower1",
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER2 = registerLab("research_tower2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER3 = registerLab("research_tower3",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> RESEARCH_TOWER4 = registerLab("research_tower4",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
+            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
     public static final RegistryObject<Feature<?>> TREATMENT_1 = registerLab("treatment_1",
             -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/high_tier_lab"));
     public static final RegistryObject<Feature<?>> TREATMENT_2 = registerLab("treatment_2",

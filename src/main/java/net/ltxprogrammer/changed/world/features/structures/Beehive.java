@@ -20,7 +20,7 @@ public class Beehive extends BasicNBTStructure {
     private static final Map<ResourceLocation, Beehive> FEATURES = new HashMap<>();
     private static final Map<ResourceLocation, Holder<PlacedFeature>> PLACED_FEATURES = new HashMap<>();
 
-    public static final int LAB_RARITY = 300; // Lower is rarer
+    public static final int BEEHIVE_RARITY = 3000; // Lower is rarer
     private final int yOffset;
     private final boolean underground;
     public Beehive(ResourceLocation structureNBT, int yOffset, boolean underground) {
@@ -46,7 +46,7 @@ public class Beehive extends BasicNBTStructure {
 
     @Override
     public boolean testChance(Random random) {
-        return random.nextInt(1000000) + 1 <= LAB_RARITY;
+        return random.nextInt(1000000) + 1 <= BEEHIVE_RARITY;
     }
 
     @Override
