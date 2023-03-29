@@ -23,7 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MicrophoneBlock extends AbstractCustomShapeBlock {
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
-    public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
 
     public MicrophoneBlock(Properties properties) {
         super(properties);
