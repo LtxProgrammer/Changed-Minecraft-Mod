@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -111,6 +112,8 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 event.player.refreshDimensions();
                 event.player.setSwimming(true);
                 event.player.heal(0.0625F);
+                if (event.player.tickCount % 50 == 0)
+                    event.player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
                 event.player.resetFallDistance();
 
                 multiplyMotion(event.player, 1.05F);
