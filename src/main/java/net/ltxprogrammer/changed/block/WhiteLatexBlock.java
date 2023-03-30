@@ -133,7 +133,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         if (event.latexType != LatexType.WHITE_LATEX)
             return;
 
-        if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(BlockTags.TALL_FLOWERS)) {
+        if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(Blocks.LARGE_FERN) || event.originalState.is(BlockTags.TALL_FLOWERS)) {
             var pillar = PILLAR.get(event.level.random.nextInt(PILLAR.size()));
             switch (event.originalState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
                 case UPPER -> {
