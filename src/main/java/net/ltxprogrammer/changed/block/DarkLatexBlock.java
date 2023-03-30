@@ -56,12 +56,12 @@ public class DarkLatexBlock extends AbstractLatexBlock {
         if (event.latexType != LatexType.DARK_LATEX)
             return;
 
-        if (event.originalState.is(Blocks.GRASS) || event.originalState.is(BlockTags.SMALL_FLOWERS) || event.originalState.is(BlockTags.SAPLINGS)) {
+        if (event.originalState.is(Blocks.GRASS) || event.originalState.is(BlockTags.SMALL_FLOWERS) || event.originalState.is(Blocks.FERN) || event.originalState.is(BlockTags.SAPLINGS)) {
             event.setPlannedState(SMALL_CRYSTALS.get(event.level.random.nextInt(SMALL_CRYSTALS.size())).get().defaultBlockState());
             return;
         }
 
-        if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(BlockTags.TALL_FLOWERS)) {
+        if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(Blocks.LARGE_FERN) || event.originalState.is(BlockTags.TALL_FLOWERS)) {
             var crystal = CRYSTALS.get(event.level.random.nextInt(CRYSTALS.size()));
             switch (event.originalState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
                 case UPPER -> {
