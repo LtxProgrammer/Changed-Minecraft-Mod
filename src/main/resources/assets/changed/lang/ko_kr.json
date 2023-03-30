@@ -93,13 +93,13 @@
 
   "gamerule.changed:keepConscious": "수화시 항상 의식 유지",
   "gamerule.changed:keepForm": "영구적인 수화",
-  "gamerule.changed:latexSpread": "라텍스가 저절로 퍼지도록 허용",
+  "gamerule.changed:latexGrowthRate": "라텍스 성장 비율",
   "gamerule.changed:transfurTolerance": "라텍스 엔티티에게 수화될 시 받는 피해 (틱)",
   "gamerule.changed:npcWantFusePlayer": "라텍스 NPC가 플레이어와 융합하기를 원함",
   "gamerule.changed:doPale": "전염병 활성화",
 
   "key.changed.variant_ability": "변종 능력 활성화",
-  "key.changed.extra_jump": "슈퍼 점프",
+  "key.changed.extra_jump": "더블 점프",
 
   "container.changed.extra_hands": "추가 손 메뉴",
   "container.changed.infuser": "주입기 메뉴",
@@ -119,7 +119,7 @@
   "text.changed.syringe.no_owner": "플레이어 이름을 가져올 수 없습니다",
 
   "effect.changed.hypercoagulation": "과응고",
-  "effect.changed.shock": "전기 충격",
+  "effect.changed.shock": "감전",
 
   "block.changed.bedside_iv_rack": "링거 스탠드",
   "block.changed.beehive_bed": "벌집 침대",
@@ -223,6 +223,7 @@
   "entity.changed.dark_latex_yufeng": "검은 라텍스 용용이",
   "entity.changed.headless_knight": "머리없는 백기사",
   "entity.changed.milk_pudding": "우유 푸딩",
+  "entity.changed.latex_alien": "라텍스 외계 생명체",
   "entity.changed.latex_bee": "라텍스 벌",
   "entity.changed.latex_beifeng": "Beifeng",
   "entity.changed.latex_benign_wolf": "유순한 라텍스 늑대",
@@ -283,6 +284,7 @@
   "item.changed.dark_latex_yufeng_spawn_egg": "검은 라텍스 용용이 생성 알",
   "item.changed.headless_knight_spawn_egg": "머리없는 백기사 생성 알",
   "item.changed.milk_pudding_spawn_egg": "우유 푸딩 생성 알",
+  "item.changed.latex_alien_spawn_egg": "라텍스 외계 생명체 생성 알",
   "item.changed.latex_bee_spawn_egg": "라텍스 벌 생성 알",
   "item.changed.latex_beifeng_spawn_egg": "Beifeng 생성 알",
   "item.changed.latex_benign_wolf_spawn_egg": "유순한 라텍스 늑대 생성 알",
