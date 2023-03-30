@@ -93,7 +93,7 @@
 
   "gamerule.changed:keepConscious": "Alltid holde bevisst etter transpelsmasjon",
   "gamerule.changed:keepForm": "Permanent transpels",
-  "gamerule.changed:latexSpread": "La Lateksen spre seg naturlig",
+  "gamerule.changed:latexSpread": "Lateks vekstprosent",
   "gamerule.changed:transfurTolerance": "Lateks enhet transpels skade (Tikker)",
   "gamerule.changed:npcWantFusePlayer": "Lateks ISKer ønsker å smelte sammen med spilleren",
   "gamerule.changed:doPale": "Er Pale aktivert",
