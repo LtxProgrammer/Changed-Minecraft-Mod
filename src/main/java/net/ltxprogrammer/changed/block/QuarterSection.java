@@ -81,7 +81,7 @@ public enum QuarterSection implements StringRepresentable {
                 case NORTH, SOUTH -> this.isBottom() == other.isBottom();
                 default -> false;
             };
-            case Y -> (this.isBottom() == other.isTop()) && (this.isLeft() == this.isRight());
+            case Y -> (this.isBottom() == other.isTop()) && (this.isLeft() == other.isLeft());
             case Z -> switch (facing) {
                 case EAST, WEST -> this.isBottom() == other.isBottom();
                 default -> false;
