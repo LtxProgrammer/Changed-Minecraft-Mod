@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-@Mod.EventBusSubscriber
 public class TscShield extends TscWeapon implements SpecializedItemRendering {
     public TscShield() {
         super(new Properties().durability(500));
@@ -129,14 +128,17 @@ public class TscShield extends TscWeapon implements SpecializedItemRendering {
         return InteractionResultHolder.consume(itemstack);
     }
 
-    @SubscribeEvent
-    public static void onShieldBlock(ShieldBlockEvent event) {
-        if (event.getEntityLiving().getUseItem().is(ChangedItems.TSC_SHIELD.get())) {
-            event.setShieldTakesDamage(true);
-            if (event.getDamageSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity source) {
-                ChangedItems.TSC_SHIELD.get().applyShock(source);
-                if (LatexVariant.getEntityVariant(source) != null)
-                    source.hurt(DamageSource.mobAttack(event.getEntityLiving()), 1);
+    @Mod.EventBusSubscriber
+    public static class ShieldEvent {
+        @SubscribeEvent
+        public static void onShieldBlock(ShieldBlockEvent event) {
+            if (event.getEntityLiving().getUseItem().is(ChangedItems.TSC_SHIELD.get())) {
+                event.setShieldTakesDamage(true);
+                if (event.getDamageSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity source) {
+                    ChangedItems.TSC_SHIELD.get().applyShock(source);
+                    if (LatexVariant.getEntityVariant(source) != null)
+                        source.hurt(DamageSource.mobAttack(event.getEntityLiving()), 1);
+                }
             }
         }
     }
