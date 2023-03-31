@@ -155,6 +155,14 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
     }
 
     @Override
+    public PoseStack getPlacementCorrectors(CorrectorType type) {
+        var corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        if (type == CorrectorType.HAIR)
+            corrector.translate(0.0f, 0.25f / 16f, 0.0f);
+        return corrector;
+    }
+
+    @Override
     public void prepareMobModel(LatexTigerShark p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }

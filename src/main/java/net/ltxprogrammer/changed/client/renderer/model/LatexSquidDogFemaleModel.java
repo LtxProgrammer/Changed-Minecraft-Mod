@@ -281,8 +281,8 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
         PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
-        if (type.isArm())
-            corrector.translate(0.0f, -6f / 16.0f, 0.0f);
+        /*if (type.isArm())
+            corrector.translate(0.0f, -6f / 16.0f, 0.0f);*/
         return corrector;
     }
 
