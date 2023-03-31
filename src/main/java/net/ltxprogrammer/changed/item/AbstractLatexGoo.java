@@ -65,6 +65,8 @@ public class AbstractLatexGoo extends Item {
                 plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
             else if (originalState.is(BlockTags.SAPLINGS))
                 plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
+            else if (originalState.is(Blocks.FERN))
+                plannedState = Blocks.DEAD_BUSH.defaultBlockState().setValue(COVERED, latexType);
         }
 
         @Override public boolean isCancelable() {
