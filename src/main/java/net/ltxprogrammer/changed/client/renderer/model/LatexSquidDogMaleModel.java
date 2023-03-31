@@ -229,13 +229,11 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
                 .texOffs(77, 40).addBox(-3.1446F, 10.9573F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
                 .texOffs(40, 77).addBox(-3.1446F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(-6.0F, -2.0F, -0.15F, 0.0F, 0.0F, 0.0436F));
 
-        PartDefinition rightArm2 = partdefinition.addOrReplaceChild("rightArm2", CubeListBuilder.create(), PartPose.offset(-6.0F, -4.5F, 0.0F));
-
-        PartDefinition Finger_r1 = rightArm2.addOrReplaceChild("Finger_r1", CubeListBuilder.create().texOffs(45, 69).addBox(-1.5683F, 2.5152F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(60, 70).addBox(-1.5683F, 2.5152F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(70, 66).addBox(-1.5683F, 2.5152F, 1.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(16, 71).addBox(1.6317F, 2.5152F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(0, 26).addBox(-1.4683F, -9.4848F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(-3.2205F, 7.7764F, 0.05F, 0.0F, 0.0F, 0.1745F));
+        PartDefinition rightArm2 = partdefinition.addOrReplaceChild("rightArm2", CubeListBuilder.create().texOffs(0, 26).addBox(-3.0446F, -1.0427F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F))
+                .texOffs(60, 70).addBox(0.0554F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(70, 66).addBox(-3.1446F, 10.9573F, 1.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(16, 71).addBox(-3.1446F, 10.9573F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(45, 69).addBox(-3.1446F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(-6.0F, -5.0F, 0.05F, 0.0F, 0.0F, 0.1745F));
 
         PartDefinition leftArm = partdefinition.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(40, 0).addBox(-0.9554F, -1.0427F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F))
                 .texOffs(77, 78).addBox(-1.0554F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
@@ -243,15 +241,11 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
                 .texOffs(78, 74).addBox(2.1446F, 10.9573F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
                 .texOffs(78, 60).addBox(2.1446F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(6.0F, -2.0F, -0.15F, 0.0F, 0.0F, -0.0436F));
 
-        PartDefinition leftArm2 = partdefinition.addOrReplaceChild("leftArm2", CubeListBuilder.create(), PartPose.offset(6.0F, -4.5F, 0.0F));
-
-        PartDefinition Finger_r2 = leftArm2.addOrReplaceChild("Finger_r2", CubeListBuilder.create().texOffs(68, 71).addBox(-13.9F, 15.75F, 0.9F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(72, 14).addBox(-13.9F, 15.75F, 2.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
-                .texOffs(72, 43).addBox(-13.9F, 15.75F, 4.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(14.954F, -7.7821F, -2.95F, 0.0F, 0.0F, -0.1745F));
-
-        PartDefinition Finger_r3 = leftArm2.addOrReplaceChild("Finger_r3", CubeListBuilder.create().texOffs(72, 45).addBox(-14.1F, 15.75F, 0.9F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(11.954F, -7.7821F, -2.95F, 0.0F, 0.0F, -0.1745F));
-
-        PartDefinition LeftArm_r1 = leftArm2.addOrReplaceChild("LeftArm_r1", CubeListBuilder.create().texOffs(16, 33).addBox(-17.0F, 4.5F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(14.954F, -8.5321F, 0.05F, 0.0F, 0.0F, -0.1745F));
+        PartDefinition leftArm2 = partdefinition.addOrReplaceChild("leftArm2", CubeListBuilder.create().texOffs(16, 33).addBox(-0.9554F, -1.0427F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F))
+                .texOffs(68, 71).addBox(-1.0554F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(72, 14).addBox(2.1446F, 10.9573F, 1.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(72, 43).addBox(2.1446F, 10.9573F, -0.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(72, 45).addBox(2.1446F, 10.9573F, -2.1F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(6.0F, -5.0F, 0.05F, 0.0F, 0.0F, -0.1745F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -281,8 +275,10 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
         PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
-        if (type.isArm())
-            corrector.translate(0.0f, -6f / 16.0f, 0.0f);
+        /*if (type.isArm())
+            corrector.translate(0.0f, -6f / 16.0f, 0.0f);*/
+        if (type == CorrectorType.HAIR)
+            corrector.translate(0.0f, -1f / 16.0f, 0.0f);
         return corrector;
     }
 
