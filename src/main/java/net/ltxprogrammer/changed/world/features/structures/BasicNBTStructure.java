@@ -57,7 +57,7 @@ public abstract class BasicNBTStructure extends Feature<NoneFeatureConfiguration
 
                 BlockPos spawnTo = new BlockPos(i, j + getYOffset(), k);
 
-                if (spawnTo.getY() < context.level().getSeaLevel())
+                if (!underground() && spawnTo.getY() < context.level().getSeaLevel())
                     continue;
 
                 var settings = new StructurePlaceSettings().setMirror(Mirror.values()[context.random().nextInt(2)])

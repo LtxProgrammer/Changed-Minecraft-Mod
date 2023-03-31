@@ -27,9 +27,9 @@ public class ArmSetTwoFinalAnimator<T extends LatexEntity, M extends EntityModel
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightArm2.xRot = rightArm.xRot * 0.88F;
         rightArm2.yRot = rightArm.yRot * 0.88F;
-        rightArm2.zRot = rightArm.zRot * 0.88F;
+        rightArm2.zRot = rightArm.zRot * 0.88F + 0.23f;
         leftArm2.xRot = leftArm.xRot * 0.88F;
         leftArm2.yRot = leftArm.yRot * 0.88F;
-        leftArm2.zRot = leftArm.zRot * 0.88F;
+        leftArm2.zRot = leftArm.zRot * 0.88F - 0.23f;
     }
 }

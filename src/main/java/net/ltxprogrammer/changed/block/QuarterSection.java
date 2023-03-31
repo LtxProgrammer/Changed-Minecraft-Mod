@@ -71,4 +71,21 @@ public enum QuarterSection implements StringRepresentable {
             default -> current;
         };
     }
+
+    public boolean isOnAxis(QuarterSection other, Direction facing, Direction.Axis axis) {
+        if (this == other)
+            return true;
+
+        return switch (axis) {
+            case X -> switch (facing) {
+                case NORTH, SOUTH -> this.isBottom() == other.isBottom();
+                default -> false;
+            };
+            case Y -> (this.isBottom() == other.isTop()) && (this.isLeft() == other.isLeft());
+            case Z -> switch (facing) {
+                case EAST, WEST -> this.isBottom() == other.isBottom();
+                default -> false;
+            };
+        };
+    }
 }
