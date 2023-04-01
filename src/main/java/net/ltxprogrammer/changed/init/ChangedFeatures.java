@@ -136,8 +136,8 @@ public class ChangedFeatures {
     public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2",
             -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
 
-    public static final RegistryObject<Feature<?>> BEEHIVE1 = registerBeehive("beehive1",
-            -1, BEEHIVE_GENERATE_BIOMES);
+    /*public static final RegistryObject<Feature<?>> BEEHIVE1 = registerBeehive("beehive1",
+            -1, BEEHIVE_GENERATE_BIOMES);*/ // TODO: Uncomment when appropriate
 
     private static TreeConfiguration.TreeConfigurationBuilder createStraightBlobTree(BlockStateProvider p_195147_, BlockStateProvider p_195148_, int p_195149_, int p_195150_, int p_195151_, int p_195152_) {
         return new TreeConfiguration.TreeConfigurationBuilder(p_195147_, new StraightTrunkPlacer(p_195149_, p_195150_, p_195151_), p_195148_, new BlobFoliagePlacer(ConstantInt.of(p_195152_), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1));
