@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -45,6 +46,21 @@ public class SpeakerBlock extends AbstractCustomShapeBlock {
         return p_52784_.getBlockState(p_52785_.relative(p_52783_.getValue(FACING).getOpposite())).isFaceSturdy(p_52784_,
                 p_52785_.relative(p_52783_.getValue(FACING).getOpposite()),
                 p_52783_.getValue(FACING));
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+
+            for(Direction direction : Direction.values()) {
+                level.updateNeighborsAt(blockPos.relative(direction), this);
+            }
+
+        }
     }
 
     public VoxelShape getOcclusionShape(BlockState p_54584_, BlockGetter p_54585_, BlockPos p_54586_) {
