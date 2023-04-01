@@ -103,9 +103,9 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
                 }
             }
 
-            if (!ProcessTransfur.ifPlayerLatex(player, variant -> variant.is(LatexVariant.LATEX_BEE), () -> false)) {
+            /*if (!ProcessTransfur.ifPlayerLatex(player, variant -> variant.is(LatexVariant.LATEX_BEE), () -> false)) {
                 return InteractionResult.SUCCESS;
-            }
+            }*/ // TODO: Uncomment when appropriate
 
             if (!canSetSpawn(level)) {
                 return InteractionResult.SUCCESS;

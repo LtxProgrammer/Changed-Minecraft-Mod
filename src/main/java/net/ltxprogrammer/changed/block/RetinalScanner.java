@@ -99,6 +99,7 @@ public class RetinalScanner extends AbstractCustomShapeBlock {
     }
 
     public Optional<Vec3> getRespawnPosition(BlockState state, EntityType<?> type, LevelReader levelReader, BlockPos pos, float orientation, @Nullable LivingEntity entity) {
+        pos = pos.relative(state.getValue(FACING)).below();
         return Optional.of(new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
     }
 
