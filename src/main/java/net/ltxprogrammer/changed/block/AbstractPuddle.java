@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatexCoverableBlock {
-    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.0D, 15.0D);
     protected final LatexVariant<?> variant;
 
     public AbstractPuddle(Properties properties, LatexVariant<?> variant) {
