@@ -37,7 +37,9 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements WhiteLatexTransportInterface {
     public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 30.0D, 14.0D);
+    public static final VoxelShape SHAPE_SMALL = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 1.0D, 14.0D);
     public static final VoxelShape SHAPE_OCC = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 32.0D, 16.0D);
+
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
 
     public WhiteLatexPillar(Properties properties) {
@@ -78,11 +80,19 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
     @Override
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
-        if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
-            return SHAPE_WHOLE;
-        else
-            return SHAPE_WHOLE.move(0, -1, 0);
+        if (p_60547_.getValue(EXTENDED)) {
 
+            if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
+                return SHAPE_WHOLE;
+            else
+                return SHAPE_WHOLE.move(0, -1, 0);
+        }
+        else {
+            if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
+                return SHAPE_SMALL;
+            else
+                return SHAPE_SMALL.move(0, -1, 0);
+        }
     }
 
     @Override

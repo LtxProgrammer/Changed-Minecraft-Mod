@@ -86,6 +86,7 @@
   "death.attack.changed:white_latex": "%s upplöst i vit latex",
   "death.attack.changed:pale": "%s togs av Pale",
   "death.attack.changed:bloodloss": "%s använt främmande plasma",
+  "death.attack.changed:bloodloss.player": "1$s använt främmande plasma, tack vare %2$s",
   "death.attack.changed:fan": "%s hackades upp av en fläkt",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
