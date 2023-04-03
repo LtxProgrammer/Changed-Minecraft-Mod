@@ -73,6 +73,11 @@ public class Note extends AbstractCustomShapeEntityBlock implements TextMenuProv
             BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
             dropResources(blockState, level, blockPos, blockentity);
             level.removeBlock(blockPos, false);
+
+            for(Direction direction : Direction.values()) {
+                level.updateNeighborsAt(blockPos.relative(direction), this);
+            }
+
         }
     }
 
