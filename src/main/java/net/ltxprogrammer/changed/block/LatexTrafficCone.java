@@ -24,7 +24,7 @@ public class LatexTrafficCone extends AbstractCustomShapeBlock implements Wearab
     public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 15.0D, 14.0D);
 
     public LatexTrafficCone() {
-        super(Properties.of(Material.WOOD).sound(SoundType.WOOD));
+        super(Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(0.2F));
     }
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
