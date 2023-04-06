@@ -2,8 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.*;
 import net.ltxprogrammer.changed.client.renderer.model.SpecialLatexModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
@@ -34,7 +33,13 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
         animator = LatexAnimator.of(this); // TODO better configuration for patreon forms
-        animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg));
+        animator.addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm));
+        animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg))
+                .addAnimator(new HeadInitAnimator<>(Head))
+                .addAnimator(new ArmBobAnimator<>(LeftArm, RightArm))
+                .addAnimator(new ArmRideAnimator<>(LeftArm, RightArm));
+        if (form.animationData().swimTail())
+            animator.addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm));
         if (Tail != null)
             animator.addPreset(form.animationData().swimTail() ? AnimatorPresets.aquaticTail(Tail, List.of()) : AnimatorPresets.standardTail(Tail, List.of()));
     }
