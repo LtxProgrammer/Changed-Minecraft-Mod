@@ -81,6 +81,8 @@
   "item.changed.owo_record": "ÒwÓ musikkplate",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
+  "syringe.changed:form_special": "Beskytter tilpasset form sprøyte",
+
   "death.attack.changed:transfur": "%1$s ble transpelsert",
   "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
