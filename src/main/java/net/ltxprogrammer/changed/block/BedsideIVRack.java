@@ -42,8 +42,8 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
 
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
-    public static final VoxelShape SHAPE_STEM = Block.box(7.5D, 4.0D, 7.5D, 8.5D, 28.0D, 8.5D);
-    public static final VoxelShape SHAPE_TOP = Block.box(1.0D, 28.0D, 7.5D, 15.0D, 32.0D, 8.5D);
+    public static final VoxelShape SHAPE_STEM = Block.box(7.5D, 4.0D, 7.5D, 8.5D, 27.0D, 8.5D);
+    public static final VoxelShape SHAPE_TOP = Block.box(2.0D, 27.0D, 7.5D, 14.0D, 32.0D, 8.5D);
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_BASE, SHAPE_STEM, SHAPE_TOP);
 
     public BedsideIVRack() {
