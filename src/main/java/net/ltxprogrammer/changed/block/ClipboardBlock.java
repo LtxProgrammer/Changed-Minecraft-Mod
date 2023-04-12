@@ -32,10 +32,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ClipboardBlock extends AbstractCustomShapeEntityBlock implements TextMenuProvider {
-    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 2.0D, 15.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(2.0D, 0.0D, 0.0D, 14.0D, 1.0D, 15.0D);
 
     public ClipboardBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.CANDLE).strength(0.2F));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -80,14 +81,12 @@ public class ClipboardBlock extends AbstractCustomShapeEntityBlock implements Te
         return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
     }
 
-    @Override
-    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
-        return SHAPE_WHOLE;
+    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return calculateShapes(blockState.getValue(FACING), SHAPE_WHOLE);
     }
 
-    @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
-        return SHAPE_WHOLE;
+    public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
+        return getInteractionShape(blockState, level, blockPos);
     }
 
     @Nullable
