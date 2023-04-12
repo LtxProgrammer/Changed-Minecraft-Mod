@@ -26,7 +26,8 @@
     "SpreadingSnowyDirtBlockMixin",
     "StateDefinitionMixin",
     "TreeFeaturesMixin",
-    "WallBlockMixin"
+    "WallBlockMixin",
+    "PresenceFootsteps.SoundEngineMixin"
   ],
   "client": [
     "AbstractContainerScreenMixin",
