@@ -26,6 +26,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -95,8 +96,9 @@ public class Note extends AbstractCustomShapeEntityBlock implements TextMenuProv
         return getInteractionShape(blockState, level, blockPos);
     }
 
-    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
-        return getInteractionShape(blockState, level, blockPos);
+    @Override
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
+        return Shapes.empty();
     }
 
     public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
