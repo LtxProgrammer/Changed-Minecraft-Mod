@@ -58,7 +58,7 @@ public abstract class ServerPlayerMixin extends Player {
         }
 
         ProcessTransfur.ifPlayerLatex(this, variant -> {
-            if (variant != null && tag.contains("LatexAbilities"))
+            if (tag.contains("LatexAbilities"))
                 variant.loadAbilities(tag.getCompound("LatexAbilities"));
         });
     }
