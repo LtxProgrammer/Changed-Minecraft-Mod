@@ -46,6 +46,8 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         HairStyle style = entity.getHairStyle();
         if (!style.hasModel() || style.textures.length == 0)
             return;
+        if (entity.isInvisible())
+            return;
 
         ModelPart head = this.getParentModel().getHead();
         Model headHair = style.headHair != null ? MODEL_BY_LOCATION.get(style.headHair.get()) : null;
