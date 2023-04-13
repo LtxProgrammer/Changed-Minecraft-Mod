@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,6 +29,7 @@ import java.util.Map;
 public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen implements MenuAccess<T> {
     @Shadow protected abstract void renderSlot(PoseStack p_97800_, Slot p_97801_);
 
+    @Unique
     private static final Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> ABDOMEN_SLOT_OVERRIDES = ImmutableMap.of(
             InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS, ChangedTextures.EMPTY_ARMOR_SLOT_UPPER_ABDOMEN,
             InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS, ChangedTextures.EMPTY_ARMOR_SLOT_LOWER_ABDOMEN
