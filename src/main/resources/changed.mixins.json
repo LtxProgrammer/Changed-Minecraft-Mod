@@ -27,6 +27,7 @@
     "StateDefinitionMixin",
     "TreeFeaturesMixin",
     "WallBlockMixin",
+
     "PresenceFootsteps.SoundEngineMixin"
   ],
   "client": [
