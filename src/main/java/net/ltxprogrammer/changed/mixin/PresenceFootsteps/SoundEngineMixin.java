@@ -2,33 +2,42 @@ package net.ltxprogrammer.changed.mixin.PresenceFootsteps;
 
 import eu.ha3.presencefootsteps.sound.PFIsolator;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
-import eu.ha3.presencefootsteps.util.ResourceUtils;
-import eu.ha3.presencefootsteps.world.Lookup;
-import net.ltxprogrammer.changed.Changed;
-import net.minecraft.resources.ResourceLocation;
+import eu.ha3.presencefootsteps.sound.generator.Locomotion;
+import net.ltxprogrammer.changed.extension.presencefootsteps.ChangedPresenceFootsteps;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
 @Mixin(SoundEngine.class)
 public abstract class SoundEngineMixin implements PreparableReloadListener {
-    @Unique
-    private static final ResourceLocation BLOCK_MAP = Changed.modResource("presencefootsteps/blockmap.json");
-    @Shadow(remap = false)
-    private PFIsolator isolator;
+    @Shadow(remap = false) private PFIsolator isolator;
 
     @Inject(method = "reloadEverything", at = @At("RETURN"), remap = false)
     public void reloadEverything(ResourceManager manager, CallbackInfo callbackInfo) {
-        Lookup<BlockState> lookup = this.isolator.getBlockMap();
-        Objects.requireNonNull(lookup);
-        ResourceUtils.forEach(BLOCK_MAP, manager, lookup::load);
+        var event = new ChangedPresenceFootsteps.LoadModdedFootstepsEvent(manager, isolator);
+        event.loadBlockMap(ChangedPresenceFootsteps.BLOCK_MAP);
+        event.loadLocomotionMap(ChangedPresenceFootsteps.LOCOMOTION_MAP);
+
+        MinecraftForge.EVENT_BUS.post(event);
+    }
+
+    @Inject(method = "getLocomotion", at = @At("HEAD"), remap = false, cancellable = true)
+    public void getLocomotion(LivingEntity entity, CallbackInfoReturnable<Locomotion> callbackInfo) {
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), variant -> {
+            callbackInfo.setReturnValue(this.isolator.getLocomotionMap().lookup(variant.getLatexEntity()));
+        });
     }
 }
