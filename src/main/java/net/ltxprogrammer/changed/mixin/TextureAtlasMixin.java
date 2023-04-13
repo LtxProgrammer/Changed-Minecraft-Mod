@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -29,12 +30,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Mixin(TextureAtlas.class)
 public abstract class TextureAtlasMixin {
+    @Unique
     private static final Logger LOGGER = LogManager.getLogger(TextureAtlasMixin.class);
 
+    @Unique
     private ResourceLocation getResourceLocation(ResourceLocation p_118325_) {
         return new ResourceLocation(p_118325_.getNamespace(), String.format("textures/%s%s", p_118325_.getPath(), ".png"));
     }
 
+    @Unique
     private ResourceLocation getUnderlyingLocation(ResourceLocation location) {
         boolean flag = false;
         for (LatexType value : LatexType.values()) {
@@ -127,7 +131,7 @@ public abstract class TextureAtlasMixin {
                 int attempts = 30; // Corrupt textures may be from a race condition
                 while (attempts > 0 && texture == null) {
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(10);
                     } catch (Exception e) {
                         LOGGER.error("Failed to sleep", e);
                     }

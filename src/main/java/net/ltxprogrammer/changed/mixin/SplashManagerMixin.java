@@ -9,6 +9,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Mixin(SplashManager.class)
 public abstract class SplashManagerMixin extends SimplePreparableReloadListener<List<String>> {
+    @Unique
     private static final ResourceLocation CHANGED_SPLASHES_LOCATION = Changed.modResource("texts/splashes.txt");
 
     @Inject(method = "prepare(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)Ljava/util/List;",

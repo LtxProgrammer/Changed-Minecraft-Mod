@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -49,6 +50,7 @@ public abstract class ModelBakeryMixin {
                     Changed.modResource("blocks/white_latex_block"),
                     Changed.modResource("blocks/white_latex_block")));
 
+    @Unique
     private MultiPart overWriteMultiPart(MultiPart multiPart, ModelResourceLocation model) {
         LatexType type = LatexType.valueOf(model.getVariant().split(COVERED.getName() + "=")[1].split(",")[0].toUpperCase());
         MixedTexture.OverlayBlock overlay = TYPE_OVERLAY.get(type);
@@ -112,6 +114,7 @@ public abstract class ModelBakeryMixin {
         return injected;
     }
 
+    @Unique
     private MultiVariant overWriteMultiVariant(MultiVariant multiVariant, ModelResourceLocation model) {
         LatexType type = LatexType.valueOf(model.getVariant().split(COVERED.getName() + "=")[1].split(",")[0].toUpperCase());
         MixedTexture.OverlayBlock overlay = TYPE_OVERLAY.get(type);
