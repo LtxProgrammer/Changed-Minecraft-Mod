@@ -27,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class GasCanister extends BlockItem implements SpecializedAnimations {
+    public static final int CAPACITY = 400;
+
     private final List<LatexVariant<?>> variants;
     private final ChangedParticles.Color3 color;
 
