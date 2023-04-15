@@ -1,0 +1,18 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:latex_wolf_crystal_fragment"
+    },
+    {
+      "item": "changed:latex_wolf_crystal_fragment"
+    },
+    {
+      "item": "changed:latex_wolf_crystal_fragment"
+    }
+  ],
+  "form": "changed:form_latex_crystal_wolf_horned"
+}

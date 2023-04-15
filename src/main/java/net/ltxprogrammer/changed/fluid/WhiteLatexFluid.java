@@ -15,6 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
+import java.util.List;
+
 public abstract class WhiteLatexFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
             ChangedFluids.WHITE_LATEX::get,
@@ -25,7 +27,7 @@ public abstract class WhiteLatexFluid extends AbstractLatexFluid {
             .explosionResistance(100f)
             .bucket(ChangedItems.WHITE_LATEX_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.WHITE_LATEX_FLUID.get());
 
-    public WhiteLatexFluid() { super(PROPERTIES, LatexVariant.WHITE_LATEX_WOLF); }
+    public WhiteLatexFluid() { super(PROPERTIES, List.of(LatexVariant.WHITE_LATEX_WOLF)); }
 
     @Override
     public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {
