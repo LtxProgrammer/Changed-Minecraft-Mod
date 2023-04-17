@@ -15,6 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 
+import java.util.List;
+
 public abstract class DarkLatexFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
             ChangedFluids.DARK_LATEX::get,
@@ -25,7 +27,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
             .bucket(ChangedItems.DARK_LATEX_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.DARK_LATEX_FLUID.get());
 
     protected DarkLatexFluid() {
-        super(PROPERTIES, LatexVariant.DARK_LATEX_WOLF.male());
+        super(PROPERTIES, List.of(LatexVariant.DARK_LATEX_WOLF.male(), LatexVariant.DARK_LATEX_WOLF.female(), LatexVariant.DARK_LATEX_YUFENG));
     }
 
     @Override
