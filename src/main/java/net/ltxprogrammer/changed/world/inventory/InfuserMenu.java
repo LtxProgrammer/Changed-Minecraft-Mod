@@ -294,17 +294,20 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
 
             ServerPlayer serverplayer = (ServerPlayer)this.entity;
             ItemStack itemstack = ItemStack.EMPTY;
-            Optional<InfuserRecipes.InfuserRecipe> recipe = serverplayer.getLevel().getServer().getRecipeManager()
+            Optional<InfuserRecipes.InfuserRecipe> recipeOptional = serverplayer.getLevel().getServer().getRecipeManager()
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE, copyContainer, serverplayer.level);
-            if (!recipe.isEmpty() && !this.internal.getStackInSlot(1).isEmpty()) {
+            ItemStack input = this.internal.getStackInSlot(1);
+            recipeOptional.ifPresent(recipe -> {
+                if (input.isEmpty())
+                    return;
+
                 Gender gender = getSelectedGender();
-                itemstack = InfuserRecipes.InfuserRecipe.getBaseFor(this.internal.getStackInSlot(1));
-                itemstack = recipe.get().processItem(itemstack, gender);
+                ItemStack newStack = recipe.processItem(InfuserRecipes.InfuserRecipe.getBaseFor(input), gender);
                 lastAssembledGender = gender;
-                if (this.internal.getStackInSlot(1).getTag() != null) {
-                    itemstack.getTag().putUUID("owner", this.internal.getStackInSlot(1).getTag().getUUID("owner"));
+                if (input.getTag() != null && input.getTag().contains("owner")) {
+                    newStack.getOrCreateTag().putUUID("owner", input.getTag().getUUID("owner"));
                 }
-            }
+            });
 
             this.getResultSlot().set(itemstack);
         }
