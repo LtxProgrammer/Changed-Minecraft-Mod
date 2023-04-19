@@ -26,8 +26,8 @@
     "SpreadingSnowyDirtBlockMixin",
     "StateDefinitionMixin",
     "TreeFeaturesMixin",
+    "VillagerHostilesSensorMixin",
     "WallBlockMixin",
-
     "PresenceFootsteps.SoundEngineMixin"
   ],
   "client": [
