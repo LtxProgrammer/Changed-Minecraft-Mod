@@ -17,4 +17,16 @@ public class LatexSnowLeopardFemaleRenderer extends LatexHumanoidRenderer<LatexS
     public ResourceLocation getTextureLocation(LatexSnowLeopardFemale p_114482_) {
         return Changed.modResource("textures/latex_snow_leopard_female.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel.Remodel, ArmorLatexSnowLeopardModel.RemodelFemale<LatexSnowLeopardFemale>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexSnowLeopardFemaleModel.Remodel(context.bakeLayer(LatexSnowLeopardFemaleModel.LAYER_LOCATION)),
+                    ArmorLatexSnowLeopardModel.RemodelFemale::new, ArmorLatexSnowLeopardModel.RemodelFemale.INNER_ARMOR, ArmorLatexSnowLeopardModel.RemodelFemale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexSnowLeopardFemale p_114482_) {
+            return Changed.modResource("textures/remodel/latex_snow_leopard_female.png");
+        }
+    }
 }
