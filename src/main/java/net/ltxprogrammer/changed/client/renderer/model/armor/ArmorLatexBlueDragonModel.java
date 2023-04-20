@@ -124,4 +124,221 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
             }
         }
     }
+
+    public static class RemodelMale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
+        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_dragon_male")).get();
+        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_dragon_male")).get();
+
+        private final ModelPart Head;
+        private final ModelPart Torso;
+        private final ModelPart Tail;
+        private final ModelPart LeftLeg;
+        private final ModelPart RightLeg;
+        private final ModelPart LeftArm;
+        private final ModelPart RightArm;
+        private final LatexAnimator<T, RemodelMale<T>> animator;
+
+        public RemodelMale(ModelPart modelPart) {
+            this.Head = modelPart.getChild("Head");
+            this.Torso = modelPart.getChild("Torso");
+            this.Tail = Torso.getChild("Tail");
+            this.LeftLeg = modelPart.getChild("LeftLeg");
+            this.RightLeg = modelPart.getChild("RightLeg");
+            this.LeftArm = modelPart.getChild("LeftArm");
+            this.RightArm = modelPart.getChild("RightArm");
+
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+        }
+
+        public static LayerDefinition createArmorLayer(ArmorModel layer) {
+            MeshDefinition meshdefinition = new MeshDefinition();
+            PartDefinition partdefinition = meshdefinition.getRoot();
+
+            PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.0F, 0.0F));
+
+            PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(3, 20).addBox(-1.0F, 0.1914F, -0.9483F, 2.0F, 7.0F, 2.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+
+            PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 19).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+            PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+            PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+            PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.25F, 12.0F, 0.0F));
+
+            PartDefinition leg_r1 = RightLeg.addOrReplaceChild("leg_r1", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -6.7987F, -2.9677F, 4.0F, 6.0F, 4.0F, layer.altDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 5.275F, 4.9F, 1.2217F, 0.0F, 0.0F));
+
+            PartDefinition thigh_r1 = RightLeg.addOrReplaceChild("thigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.05F)), PartPose.offsetAndRotation(0.0F, -0.1F, 0.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition RightLower = RightLeg.addOrReplaceChild("RightLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
+
+            PartDefinition leg_r2 = RightLower.addOrReplaceChild("leg_r2", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.25F, 12.0F, 0.0F));
+
+            PartDefinition leg_r3 = LeftLeg.addOrReplaceChild("leg_r3", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -6.7987F, -2.9677F, 4.0F, 6.0F, 4.0F, layer.altDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 5.275F, 4.9F, 1.2217F, 0.0F, 0.0F));
+
+            PartDefinition thigh_r2 = LeftLeg.addOrReplaceChild("thigh_r2", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.05F)).mirror(false), PartPose.offsetAndRotation(0.0F, -0.1F, 0.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition LeftLower = LeftLeg.addOrReplaceChild("LeftLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
+
+            PartDefinition leg_r4 = LeftLower.addOrReplaceChild("leg_r4", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)).mirror(false), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
+
+            return LayerDefinition.create(meshdefinition, 64, 32);
+        }
+
+        @Override
+        public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+            switch (slot) {
+                case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                case CHEST -> {
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+                case LEGS -> {
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, false);
+                        setAllPartsVisibility(RightLeg, false);
+                        LeftLeg.getChild("thigh_r2").visible = true;
+                        RightLeg.getChild("thigh_r1").visible = true;
+                        LeftLeg.visible = true;
+                        RightLeg.visible = true;
+                    }
+
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, true);
+                        setAllPartsVisibility(RightLeg, true);
+                    }
+                }
+                case FEET -> {
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+            }
+        }
+
+        @Override
+        public LatexAnimator<T, RemodelMale<T>> getAnimator() {
+            return animator;
+        }
+    }
+
+    public static class RemodelFemale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
+        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_dragon_female")).get();
+        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_dragon_female")).get();
+
+        private final ModelPart Head;
+        private final ModelPart Torso;
+        private final ModelPart Tail;
+        private final ModelPart LeftLeg;
+        private final ModelPart RightLeg;
+        private final ModelPart LeftArm;
+        private final ModelPart RightArm;
+        private final LatexAnimator<T, RemodelFemale<T>> animator;
+
+        public RemodelFemale(ModelPart modelPart) {
+            this.Head = modelPart.getChild("Head");
+            this.Torso = modelPart.getChild("Torso");
+            this.Tail = Torso.getChild("Tail");
+            this.LeftLeg = modelPart.getChild("LeftLeg");
+            this.RightLeg = modelPart.getChild("RightLeg");
+            this.LeftArm = modelPart.getChild("LeftArm");
+            this.RightArm = modelPart.getChild("RightArm");
+
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+        }
+
+        public static LayerDefinition createArmorLayer(ArmorModel layer) {
+            MeshDefinition meshdefinition = new MeshDefinition();
+            PartDefinition partdefinition = meshdefinition.getRoot();
+
+            PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.0F, 0.0F));
+
+            PartDefinition Base_r1 = Tail.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(3, 20).addBox(-1.0F, 0.1914F, -0.9483F, 2.0F, 7.0F, 2.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 2.0F, 6.0F, 1.4835F, 0.0F, 0.0F));
+
+            PartDefinition Base_r2 = Tail.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 19).addBox(-1.5F, 0.0F, -1.0F, 3.0F, 7.0F, 3.0F, layer.altDeformation), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+            PartDefinition Breasts = Torso.addOrReplaceChild("Breasts", CubeListBuilder.create().texOffs(18, 18).addBox(-4.0F, -2.75F, -1.0F, 8.0F, 3.0F, 2.0F, layer.deformation.extend(-0.5f))
+                    .texOffs(18, 22).addBox(-4.0F, 1.25F, -1.0F, 8.0F, 1.0F, 2.0F, layer.deformation.extend(-0.5f)), PartPose.offsetAndRotation(0.0F, 2.5F, -2.0F, -0.4363F, 0.0F, 0.0F));
+
+            PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+            PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+            PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.25F, 12.0F, 0.0F));
+
+            PartDefinition leg_r1 = RightLeg.addOrReplaceChild("leg_r1", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -6.7987F, -2.9677F, 4.0F, 6.0F, 4.0F, layer.altDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 5.275F, 4.9F, 1.2217F, 0.0F, 0.0F));
+
+            PartDefinition thigh_r1 = RightLeg.addOrReplaceChild("thigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.05F)), PartPose.offsetAndRotation(0.0F, -0.1F, 0.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition RightLower = RightLeg.addOrReplaceChild("RightLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
+
+            PartDefinition leg_r2 = RightLower.addOrReplaceChild("leg_r2", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.25F, 12.0F, 0.0F));
+
+            PartDefinition leg_r3 = LeftLeg.addOrReplaceChild("leg_r3", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -6.7987F, -2.9677F, 4.0F, 6.0F, 4.0F, layer.altDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 5.275F, 4.9F, 1.2217F, 0.0F, 0.0F));
+
+            PartDefinition thigh_r2 = LeftLeg.addOrReplaceChild("thigh_r2", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.05F)).mirror(false), PartPose.offsetAndRotation(0.0F, -0.1F, 0.0F, -0.0873F, 0.0F, 0.0F));
+
+            PartDefinition LeftLower = LeftLeg.addOrReplaceChild("LeftLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
+
+            PartDefinition leg_r4 = LeftLower.addOrReplaceChild("leg_r4", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)).mirror(false), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
+
+            return LayerDefinition.create(meshdefinition, 64, 32);
+        }
+
+        @Override
+        public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+            switch (slot) {
+                case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                case CHEST -> {
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+                case LEGS -> {
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, false);
+                        setAllPartsVisibility(RightLeg, false);
+                        LeftLeg.getChild("thigh_r2").visible = true;
+                        RightLeg.getChild("thigh_r1").visible = true;
+                        LeftLeg.visible = true;
+                        RightLeg.visible = true;
+                    }
+
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, true);
+                        setAllPartsVisibility(RightLeg, true);
+                    }
+                }
+                case FEET -> {
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+            }
+        }
+
+        @Override
+        public LatexAnimator<T, RemodelFemale<T>> getAnimator() {
+            return animator;
+        }
+    }
 }
