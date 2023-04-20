@@ -20,10 +20,10 @@ public class DarkLatexWolfFemaleRenderer extends LatexHumanoidRenderer<DarkLatex
 		return Changed.modResource("textures/dark_latex_wolf_female.png");
 	}
 
-	public static class Remodel extends LatexHumanoidRenderer<DarkLatexWolfFemale, DarkLatexWolfFemaleModel.Remodel, ArmorLatexWolfModel<DarkLatexWolfFemale>> {
+	public static class Remodel extends LatexHumanoidRenderer<DarkLatexWolfFemale, DarkLatexWolfFemaleModel.Remodel, ArmorLatexWolfModel.RemodelFemale<DarkLatexWolfFemale>> {
 		public Remodel(EntityRendererProvider.Context context) {
 			super(context, new DarkLatexWolfFemaleModel.Remodel(context.bakeLayer(DarkLatexWolfFemaleModel.LAYER_LOCATION)),
-					ArmorLatexWolfModel::new, ArmorLatexWolfModel.INNER_ARMOR, ArmorLatexWolfModel.OUTER_ARMOR, 0.5f);
+					ArmorLatexWolfModel.RemodelFemale::new, ArmorLatexWolfModel.RemodelFemale.INNER_ARMOR, ArmorLatexWolfModel.RemodelFemale.OUTER_ARMOR, 0.5f);
 		}
 
 		@Override
