@@ -208,6 +208,7 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
                         RightLeg.getChild("thigh_r1").visible = true;
                         LeftLeg.visible = true;
                         RightLeg.visible = true;
+                        Tail.visible = false;
                     }
 
                     Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -217,6 +218,7 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
                     if (stack.getItem() instanceof Shorts) {
                         setAllPartsVisibility(LeftLeg, true);
                         setAllPartsVisibility(RightLeg, true);
+                        Tail.visible = true;
                     }
                 }
                 case FEET -> {
@@ -318,6 +320,7 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
                         RightLeg.getChild("thigh_r1").visible = true;
                         LeftLeg.visible = true;
                         RightLeg.visible = true;
+                        Tail.visible = false;
                     }
 
                     Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -327,6 +330,7 @@ public class ArmorLatexBlueDragonModel<T extends LatexEntity> extends LatexHuman
                     if (stack.getItem() instanceof Shorts) {
                         setAllPartsVisibility(LeftLeg, true);
                         setAllPartsVisibility(RightLeg, true);
+                        Tail.visible = true;
                     }
                 }
                 case FEET -> {

@@ -99,6 +99,7 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
                     setAllPartsVisibility(RightLeg, false);
                     LeftLeg.getChild("LeftUpperLeg_r1").visible = true;
                     RightLeg.getChild("RightUpperLeg_r1").visible = true;
+                    Tail.visible = false;
                 }
 
                 Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -108,6 +109,7 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
                 if (stack.getItem() instanceof Shorts) {
                     setAllPartsVisibility(LeftLeg, true);
                     setAllPartsVisibility(RightLeg, true);
+                    Tail.visible = true;
                 }
             }
             case FEET -> {
@@ -315,6 +317,7 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
                         RightLeg.getChild("thigh_r1").visible = true;
                         LeftLeg.visible = true;
                         RightLeg.visible = true;
+                        Tail.visible = false;
                     }
 
                     Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -324,6 +327,7 @@ public class ArmorLatexWolfModel<T extends LatexEntity> extends LatexHumanoidArm
                     if (stack.getItem() instanceof Shorts) {
                         setAllPartsVisibility(LeftLeg, true);
                         setAllPartsVisibility(RightLeg, true);
+                        Tail.visible = true;
                     }
                 }
                 case FEET -> {
