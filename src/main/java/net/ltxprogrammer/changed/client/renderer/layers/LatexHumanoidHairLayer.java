@@ -43,6 +43,9 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
     }
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float red, float green, float blue, float alpha) {
+        if (Changed.config.client.useNewModels.get())
+            return;
+
         HairStyle style = entity.getHairStyle();
         if (!style.hasModel() || style.textures.length == 0)
             return;
