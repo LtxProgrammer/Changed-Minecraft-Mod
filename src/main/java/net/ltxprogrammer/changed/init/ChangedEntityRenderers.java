@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -12,14 +13,18 @@ import net.minecraftforge.fml.common.Mod;
 public class ChangedEntityRenderers {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        final boolean useNewModels = Changed.config.client.useNewModels.get();
+
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HEAD.get(), BehemothHeadRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_LEFT.get(), BehemothHandLeftRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_RIGHT.get(), BehemothHandRightRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.AEROSOL_LATEX_WOLF.get(), AerosolLatexWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(),
+                useNewModels ? DarkLatexWolfFemaleRenderer.Remodel::new : DarkLatexWolfFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(),
+                useNewModels ? DarkLatexWolfMaleRenderer.Remodel::new : DarkLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ALIEN.get(), LatexAlienRenderer::new);

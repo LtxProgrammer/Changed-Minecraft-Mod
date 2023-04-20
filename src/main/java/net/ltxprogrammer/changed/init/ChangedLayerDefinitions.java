@@ -32,6 +32,8 @@ public class ChangedLayerDefinitions {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(FMLCommonSetupEvent event) {
+        final boolean useNewModels = Changed.config.client.useNewModels.get();
+
         ForgeHooksClient.registerLayerDefinition(LATEX_COAT, () ->
                 LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.01F), false), 64, 64));
         ForgeHooksClient.registerLayerDefinition(LATEX_COAT_SLIM, () ->
@@ -45,8 +47,10 @@ public class ChangedLayerDefinitions {
 
         ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION, AerosolLatexWolfModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION, DarkLatexDragonModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION, DarkLatexWolfFemaleModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION, DarkLatexWolfMaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION,
+                useNewModels ? DarkLatexWolfFemaleModel.Remodel::createBodyLayer :  DarkLatexWolfFemaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION,
+                useNewModels ? DarkLatexWolfMaleModel.Remodel::createBodyLayer : DarkLatexWolfMaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION, DarkLatexYufengModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(HeadlessKnightModel.LAYER_LOCATION, HeadlessKnightModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexAlienModel.LAYER_LOCATION, LatexAlienModel::createBodyLayer);
