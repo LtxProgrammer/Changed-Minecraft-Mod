@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.blockentity.LatexContainerRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
+import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
 import net.ltxprogrammer.changed.client.renderer.model.hair.Legacy;
 import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.entity.HairStyle;
@@ -208,6 +209,11 @@ public class ChangedLayerDefinitions {
         registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
         registerLayerDefinition(HairStyle.SIDE_TUFTS.headHair, Legacy::createSideTuftsHair);
         registerLayerDefinition(HairStyle.PONYTAIL.headHair, Legacy::createPonytail);
+
+        if (useNewModels) {
+            ForgeHooksClient.registerLayerDefinition(HairRemodel.FEMALE_RIG, HairRemodel::createFemaleHair);
+            ForgeHooksClient.registerLayerDefinition(HairRemodel.FEMALE_RIG_LOWER, HairRemodel::createFemaleLowerHair);
+        }
 
         ForgeHooksClient.registerLayerDefinition(LatexContainerRenderer.LAYER_LOCATION, LatexContainerRenderer::createLatexFill);
     }
