@@ -297,7 +297,7 @@ public class PatreonBenefits {
     private static String FORMS_BASE = REPO_BASE + "forms/";
 
     private static void updatePathStrings() {
-        REPO_BASE = "https://" + Changed.config.githubDomain + "/LtxProgrammer/patreon-benefits/main/";
+        REPO_BASE = "https://" + Changed.config.common.githubDomain.get() + "/LtxProgrammer/patreon-benefits/main/";
         LINKS_DOCUMENT = REPO_BASE + "listing.json";
         VERSION_DOCUMENT = REPO_BASE + "version.txt";
         FORMS_DOCUMENT = REPO_BASE + "forms/index.json";
