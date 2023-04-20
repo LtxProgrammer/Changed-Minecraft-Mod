@@ -52,7 +52,8 @@ public class ChangedLayerDefinitions {
                 useNewModels ? DarkLatexWolfFemaleModel.Remodel::createBodyLayer :  DarkLatexWolfFemaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION,
                 useNewModels ? DarkLatexWolfMaleModel.Remodel::createBodyLayer : DarkLatexWolfMaleModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION, DarkLatexYufengModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION,
+                useNewModels ? DarkLatexYufengModel.Remodel::createBodyLayer : DarkLatexYufengModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(HeadlessKnightModel.LAYER_LOCATION, HeadlessKnightModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexAlienModel.LAYER_LOCATION, LatexAlienModel::createBodyLayer);
         //ForgeHooksClient.registerLayerDefinition(LatexBeeModel.LAYER_LOCATION, LatexBeeModel::createBodyLayer); // TODO: Uncomment when appropriate
@@ -105,8 +106,10 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LightLatexCentaurModel.LAYER_LOCATION, LightLatexCentaurModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LightLatexKnightModel.LAYER_LOCATION, LightLatexKnightModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LightLatexKnightFusionModel.LAYER_LOCATION, LightLatexKnightFusionModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LightLatexWolfFemaleModel.LAYER_LOCATION, LightLatexWolfFemaleModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LightLatexWolfMaleModel.LAYER_LOCATION, LightLatexWolfMaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LightLatexWolfFemaleModel.LAYER_LOCATION,
+                useNewModels ? LightLatexWolfFemaleModel.Remodel::createBodyLayer : LightLatexWolfFemaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LightLatexWolfMaleModel.LAYER_LOCATION,
+                useNewModels ? LightLatexWolfMaleModel.Remodel::createBodyLayer : LightLatexWolfMaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LightLatexWolfOrganicModel.LAYER_LOCATION, LightLatexWolfOrganicModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(MilkPuddingModel.LAYER_LOCATION, MilkPuddingModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
@@ -163,8 +166,20 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(ArmorLatexSquidDogModel.OUTER_ARMOR, () -> ArmorLatexSquidDogModel.createArmorLayer(ArmorModel.OUTER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexTrafficConeDragonModel.INNER_ARMOR, () -> ArmorLatexTrafficConeDragonModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexTrafficConeDragonModel.OUTER_ARMOR, () -> ArmorLatexTrafficConeDragonModel.createArmorLayer(ArmorModel.OUTER));
-        ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.INNER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.INNER));
-        ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.OUTER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.OUTER));
+        if (useNewModels) {
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.RemodelFemale.INNER_ARMOR, () -> ArmorLatexBlueDragonModel.RemodelFemale.createArmorLayer(ArmorModel.INNER));
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.RemodelFemale.OUTER_ARMOR, () -> ArmorLatexBlueDragonModel.RemodelFemale.createArmorLayer(ArmorModel.OUTER));
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.RemodelMale.INNER_ARMOR, () -> ArmorLatexBlueDragonModel.RemodelMale.createArmorLayer(ArmorModel.INNER));
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.RemodelMale.OUTER_ARMOR, () -> ArmorLatexBlueDragonModel.RemodelMale.createArmorLayer(ArmorModel.OUTER));
+
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.INNER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.INNER));
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.OUTER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.OUTER));
+        }
+
+        else {
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.INNER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.INNER));
+            ForgeHooksClient.registerLayerDefinition(ArmorLatexBlueDragonModel.OUTER_ARMOR, () -> ArmorLatexBlueDragonModel.createArmorLayer(ArmorModel.OUTER));
+        }
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexCentaurModel.INNER_ARMOR, () -> ArmorLightLatexCentaurModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexCentaurModel.OUTER_ARMOR, () -> ArmorLightLatexCentaurModel.createArmorLayer(ArmorModel.OUTER));
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightModel.INNER_ARMOR, () -> ArmorLightLatexKnightModel.createArmorLayer(ArmorModel.INNER));

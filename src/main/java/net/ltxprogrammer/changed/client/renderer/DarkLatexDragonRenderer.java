@@ -18,10 +18,10 @@ public class DarkLatexDragonRenderer extends LatexHumanoidRenderer<DarkLatexDrag
         return Changed.modResource("textures/dark_latex_dragon.png");
     }
 
-    public static class Remodel extends LatexHumanoidRenderer<DarkLatexDragon, DarkLatexDragonModel.Remodel, ArmorLatexBlueDragonModel<DarkLatexDragon>> {
+    public static class Remodel extends LatexHumanoidRenderer<DarkLatexDragon, DarkLatexDragonModel.Remodel, ArmorLatexBlueDragonModel.RemodelMale<DarkLatexDragon>> {
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new DarkLatexDragonModel.Remodel(context.bakeLayer(DarkLatexDragonModel.LAYER_LOCATION)),
-                    ArmorLatexBlueDragonModel::new, ArmorLatexBlueDragonModel.INNER_ARMOR, ArmorLatexBlueDragonModel.OUTER_ARMOR, 0.5f);
+                    ArmorLatexBlueDragonModel.RemodelMale::new, ArmorLatexBlueDragonModel.RemodelMale.INNER_ARMOR, ArmorLatexBlueDragonModel.RemodelMale.OUTER_ARMOR, 0.5f);
         }
 
         @Override

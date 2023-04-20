@@ -26,7 +26,8 @@ public class ChangedEntityRenderers {
                 useNewModels ? DarkLatexWolfFemaleRenderer.Remodel::new : DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(),
                 useNewModels ? DarkLatexWolfMaleRenderer.Remodel::new : DarkLatexWolfMaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(),
+                useNewModels ? DarkLatexYufengRenderer.Remodel::new : DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ALIEN.get(), LatexAlienRenderer::new);
         //event.registerEntityRenderer(ChangedEntities.LATEX_BEE.get(), LatexBeeRenderer::new); // TODO: Uncomment when appropriate
@@ -78,8 +79,10 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_CENTAUR.get(), LightLatexCentaurRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_KNIGHT.get(), LightLatexKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION.get(), LightLatexKnightFusionRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_FEMALE.get(), LightLatexWolfFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_MALE.get(), LightLatexWolfMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_FEMALE.get(),
+                useNewModels ? LightLatexWolfFemaleRenderer.Remodel::new : LightLatexWolfFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_MALE.get(),
+                useNewModels ? LightLatexWolfMaleRenderer.Remodel::new : LightLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC.get(), LightLatexWolfOrganicRenderer::new);
         event.registerEntityRenderer(ChangedEntities.MILK_PUDDING.get(), MilkPuddingRenderer::new);
         event.registerEntityRenderer(ChangedEntities.SHARK.get(), SharkRenderer::new);
