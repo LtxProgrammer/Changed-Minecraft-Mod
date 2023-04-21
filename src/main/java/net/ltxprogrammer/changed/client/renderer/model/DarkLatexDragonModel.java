@@ -190,7 +190,7 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
         return animator;
     }
 
-    public static class Remodel extends LatexHumanoidModel<DarkLatexDragon> implements LatexHumanoidModelInterface<DarkLatexDragon, Remodel> {
+    public static class Remodel extends LatexHumanoidModel.LatexRemodel<DarkLatexDragon, Remodel> {
         private final ModelPart RightLeg;
         private final ModelPart LeftLeg;
         private final ModelPart RightArm;
@@ -325,20 +325,6 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
             PartDefinition LeftLowerBeans2 = LeftLower.addOrReplaceChild("LeftLowerBeans2", CubeListBuilder.create(), PartPose.offset(-2.0F, 20.0F, -3.2F));
 
             return LayerDefinition.create(meshdefinition, 128, 128);
-        }
-
-        @Override
-        public void prepareMobModel(DarkLatexDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-            this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
-        }
-
-        public void setupHand() {
-            animator.setupHand();
-        }
-
-        @Override
-        public void setupAnim(@NotNull DarkLatexDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-            animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
 
         public ModelPart getArm(HumanoidArm p_102852_) {
