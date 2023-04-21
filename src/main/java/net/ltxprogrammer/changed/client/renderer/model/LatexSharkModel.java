@@ -198,7 +198,7 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 		LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 
-	public static class Remodel extends LatexHumanoidModel<LatexShark> implements LatexHumanoidModelInterface<LatexShark, Remodel> {
+	public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexShark, Remodel> {
 		private final ModelPart RightLeg;
 		private final ModelPart LeftLeg;
 		private final ModelPart RightArm;
@@ -306,25 +306,6 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 			return LayerDefinition.create(meshdefinition, 128, 128);
 		}
 
-		@Override
-		public void prepareMobModel(LatexShark p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-			this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
-		}
-
-		public void setupHand() {
-			animator.setupHand();
-		}
-
-		@Override
-		public LatexAnimator<LatexShark, Remodel> getAnimator() {
-			return animator;
-		}
-
-		@Override
-		public void setupAnim(LatexShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-			animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		}
-
 		public ModelPart getArm(HumanoidArm p_102852_) {
 			return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
 		}
@@ -341,6 +322,11 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 			Torso.render(poseStack, buffer, packedLight, packedOverlay);
 			RightArm.render(poseStack, buffer, packedLight, packedOverlay);
 			LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
+		}
+
+		@Override
+		public LatexAnimator<LatexShark, Remodel> getAnimator() {
+			return animator;
 		}
 	}
 }
