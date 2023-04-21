@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -16,7 +18,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,5 +191,34 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         });
 
         return list;
+    }
+
+    public static abstract class LatexRemodel<T extends LatexEntity, M extends EntityModel<T>> extends LatexHumanoidModel<T> implements LatexHumanoidModelInterface<T, M> {
+        public LatexRemodel(ModelPart root) {
+            super(root);
+        }
+
+        @Override
+        public final void prepareMobModel(@NotNull T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+            this.prepareMobModel(getAnimator(), p_102861_, p_102862_, p_102863_, p_102864_);
+        }
+
+        @Override
+        public final void setupHand() {
+            getAnimator().setupHand();
+        }
+
+        @Override
+        public final void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
+            getAnimator().setupAnim(p_102618_, p_102619_, p_102620_, p_102621_, p_102622_, p_102623_);
+        }
+
+        @Override
+        public PoseStack getPlacementCorrectors(CorrectorType type) {
+            PoseStack stack = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+            if (type.isArm())
+                stack.translate(0.10 * (type == CorrectorType.RIGHT_ARM ? -1 : 1), -0.20, 0.0);
+            return stack;
+        }
     }
 }
