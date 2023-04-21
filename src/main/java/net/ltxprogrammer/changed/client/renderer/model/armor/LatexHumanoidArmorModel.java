@@ -30,7 +30,7 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
 
         PartDefinition RightLower = RightLeg.addOrReplaceChild("RightLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
 
-        PartDefinition leg_r2 = RightLower.addOrReplaceChild("leg_r2", CubeListBuilder.create()
+        PartDefinition leg_r2 = RightLower.addOrReplaceChild("leg_r2", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 7.775F, -3.0F, 4.0F, 0.0F, 4.0F, layer.dualDeformation.extend(0.025F))
                 .texOffs(0, layer == ArmorModel.OUTER ? 20 : 16).addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
 
         PartDefinition LeftLeg = partDefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.25F, 12.0F, 0.0F));
@@ -41,7 +41,7 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
 
         PartDefinition LeftLower = LeftLeg.addOrReplaceChild("LeftLower", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 4.5F));
 
-        PartDefinition leg_r4 = LeftLower.addOrReplaceChild("leg_r4", CubeListBuilder.create()
+        PartDefinition leg_r4 = LeftLower.addOrReplaceChild("leg_r4", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 7.775F, -3.0F, 4.0F, 0.0F, 4.0F, layer.dualDeformation.extend(0.025F)).mirror(false)
                 .texOffs(0, layer == ArmorModel.OUTER ? 20 : 16).mirror().addBox(-2.0F, -0.225F, -3.0F, 4.0F, 8.0F, 4.0F, layer.dualDeformation.extend(0.025F)).mirror(false), PartPose.offsetAndRotation(0.0F, 0.15F, -1.0F, -0.0873F, 0.0F, 0.0F));
     }
 
