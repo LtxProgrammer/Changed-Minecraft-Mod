@@ -419,7 +419,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
-            this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            this.abilities.add(() -> entityType.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.SWITCH_TRANSFUR_MODE.get());
             this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE);
         }
 

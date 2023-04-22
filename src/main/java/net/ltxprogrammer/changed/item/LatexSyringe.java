@@ -128,13 +128,6 @@ public class LatexSyringe extends Item implements SpecializedAnimations {
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
-        if (stack.getTag() == null)
-            return false;
-        return stack.getTag().contains("form") && stack.getTag().contains("owner");
-    }
-
-    @Override
     public @NotNull Rarity getRarity(ItemStack stack) {
         if (stack.getTag() == null)
             return Rarity.COMMON;
