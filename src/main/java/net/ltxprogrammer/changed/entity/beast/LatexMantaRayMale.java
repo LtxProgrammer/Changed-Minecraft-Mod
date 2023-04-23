@@ -19,8 +19,13 @@ public class LatexMantaRayMale extends AbstractLatexMantaRay {
         return Gender.MALE;
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.BALD;
+    }
+
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+        return HairStyle.Collections.NONE;
     }
 
     @Override
