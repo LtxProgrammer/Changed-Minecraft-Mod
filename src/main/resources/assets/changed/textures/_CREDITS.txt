@@ -63,5 +63,5 @@ light_latex_wolf_organic :: textured by Bijimio
 shark :Ltx: modeled and textured by Bijimio
 white_latex_wolf :Ltx: remodeled by Bijimio
 
-Credits for remodels:
+Credits for new models:
 
