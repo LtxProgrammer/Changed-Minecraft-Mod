@@ -25,11 +25,11 @@ public class LatexDeer extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_BANGS;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+        return HairStyle.Collection.getAll();
     }
 
     @Override

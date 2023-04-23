@@ -32,6 +32,6 @@ public class LatexWatermelonCat extends AbstractWatermelonCat implements PatronO
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

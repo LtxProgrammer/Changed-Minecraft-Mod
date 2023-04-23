@@ -38,6 +38,6 @@ public class LatexYuin extends LatexEntity implements PowderSnowWalkable, Patron
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

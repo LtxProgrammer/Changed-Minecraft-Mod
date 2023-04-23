@@ -27,6 +27,6 @@ public class BehemothHandLeft extends BehemothHand {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

@@ -40,7 +40,7 @@ public class LatexPinkWyvern extends LatexEntity implements PowderSnowWalkable, 
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }
 

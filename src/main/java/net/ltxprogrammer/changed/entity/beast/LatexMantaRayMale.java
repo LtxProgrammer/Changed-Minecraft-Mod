@@ -20,7 +20,7 @@ public class LatexMantaRayMale extends AbstractLatexMantaRay {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

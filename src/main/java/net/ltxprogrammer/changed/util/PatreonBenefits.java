@@ -117,7 +117,7 @@ public class PatreonBenefits {
             if (object.has("hairStyles")) {
                 if (object.get("hairStyles").isJsonArray()) object.get("hairColor").getAsJsonArray().forEach(style -> {
                     try {
-                        styles.add(HairStyle.valueOf(style.getAsString()));
+                        styles.add(ChangedRegistry.HAIR_STYLE.get().getValue(ResourceLocation.tryParse(style.getAsString())));
                     } catch (Exception ex) {
                         LOGGER.warn("Bad hairStyle {}", style);
                     }
@@ -125,7 +125,7 @@ public class PatreonBenefits {
 
                 else {
                     try {
-                        styles.addAll(HairStyle.Collections.getCollection(ResourceLocation.tryParse(object.get("hairStyles").getAsString())));
+                        styles.addAll(Objects.requireNonNull(HairStyle.Collection.byName(object.get("hairStyles").getAsString())).getStyles());
                     } catch (Exception ex) {
                         LOGGER.warn("Bad type {}", object.get("hairStyles"));
                     }
@@ -133,7 +133,7 @@ public class PatreonBenefits {
             }
 
             if (styles.isEmpty())
-                styles.add(HairStyle.BALD);
+                styles.add(HairStyle.BALD.get());
 
             return new EntityData(
                     ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "primaryColor", "WHITE")),

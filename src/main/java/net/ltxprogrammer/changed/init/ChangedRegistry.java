@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.mojang.serialization.Lifecycle;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -43,6 +44,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
 
     public static final RegistryHolder<LatexVariant<?>> LATEX_VARIANT = new RegistryHolder<LatexVariant<?>>(registryKey("latex_variant"));
     public static final RegistryHolder<AbstractAbility<?>> ABILITY = new RegistryHolder<AbstractAbility<?>>(registryKey("ability"));
+    public static final RegistryHolder<HairStyle> HAIR_STYLE = new RegistryHolder<HairStyle>(registryKey("hair_style"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
@@ -50,6 +52,9 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
             builder.missing((key, network) -> LatexVariant.FALLBACK_VARIANT);
         }, null);
         createRegistry(event, ABILITY.key, c(AbstractAbility.class));
+        createRegistry(event, HAIR_STYLE.key, HairStyle.class, builder -> {
+            builder.missing((key, network) -> HairStyle.BALD.get());
+        }, null);
     }
 
     private static <T extends IForgeRegistryEntry<T>> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key, Class<T> type) {

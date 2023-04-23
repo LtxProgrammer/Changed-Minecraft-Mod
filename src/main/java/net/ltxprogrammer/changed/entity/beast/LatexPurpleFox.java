@@ -26,6 +26,6 @@ public class LatexPurpleFox extends AbstractLatexWolf implements PowderSnowWalka
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

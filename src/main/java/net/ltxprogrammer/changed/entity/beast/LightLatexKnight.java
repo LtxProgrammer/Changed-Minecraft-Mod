@@ -33,11 +33,11 @@ public class LightLatexKnight extends AbstractLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_NO_WOLF_EARS;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

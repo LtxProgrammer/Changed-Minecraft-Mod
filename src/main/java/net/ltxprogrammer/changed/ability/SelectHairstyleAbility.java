@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.ability;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.world.inventory.HairStyleRadialMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -26,13 +27,13 @@ public class SelectHairstyleAbility extends SimpleAbility {
     @Override
     public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
         super.saveData(tag, player, variant);
-        tag.putString("HairStyle", variant.getLatexEntity().getHairStyle().name());
+        tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(variant.getLatexEntity().getHairStyle()));
     }
 
     @Override
     public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
         super.readData(tag, player, variant);
         if (tag.contains("HairStyle"))
-            variant.getLatexEntity().setHairStyle(HairStyle.valueOf(tag.getString("HairStyle")));
+            variant.getLatexEntity().setHairStyle(ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle")));
     }
 }

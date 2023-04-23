@@ -23,7 +23,7 @@ public class LatexSquirrel extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD;
+        return HairStyle.BALD.get();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LatexSquirrel extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE;
+        return HairStyle.Collection.getAll();
     }
 
     @Override

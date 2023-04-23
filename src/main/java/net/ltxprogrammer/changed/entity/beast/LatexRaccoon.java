@@ -31,11 +31,11 @@ public class LatexRaccoon extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_SHORT_FRONT_S;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_NO_WOLF_EARS_SHADED;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

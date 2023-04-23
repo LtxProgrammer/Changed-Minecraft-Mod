@@ -46,7 +46,7 @@ public class HeadlessKnight extends LightLatexKnight implements LatexTaur<Headle
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.BALD.get();
     }
 
     @Override
@@ -94,6 +94,6 @@ public class HeadlessKnight extends LightLatexKnight implements LatexTaur<Headle
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

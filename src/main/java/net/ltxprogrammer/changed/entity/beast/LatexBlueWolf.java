@@ -7,6 +7,9 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowWalkable {
     public LatexBlueWolf(EntityType<? extends LatexBlueWolf> p_19870_, Level p_19871_) {
@@ -25,7 +28,12 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE_RIGHT_BANG;
+        return HairStyle.LONG_MESSY.get();
+    }
+
+    @Override
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collection.FEMALE.getStyles();
     }
 
     @Override

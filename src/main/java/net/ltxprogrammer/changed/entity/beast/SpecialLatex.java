@@ -72,7 +72,7 @@ public class SpecialLatex extends LatexEntity {
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         if (specialLatexForm == null)
-            return HairStyle.Collections.NONE;
+            return HairStyle.Collection.EMPTY;
         return getCurrentData().hairStyles();
     }
 
