@@ -14,7 +14,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-public class MilkPudding extends LatexEntity implements Pudding {
+public class MilkPudding extends LatexEntity {
     public MilkPudding(EntityType<? extends MilkPudding> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
