@@ -212,7 +212,7 @@ public abstract class LatexEntity extends Monster {
         super(type, level);
         this.setAttributes(getAttributes());
         this.setHealth((float)this.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue());
-        if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
+        if (!type.is(ChangedTags.EntityTypes.ARMLESS) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
 
         hairStyle = this.getDefaultHairStyle();
@@ -272,7 +272,7 @@ public abstract class LatexEntity extends Monster {
                     return false;
             }
         });
-        if (!(this instanceof Pudding) && GoalUtils.hasGroundPathNavigation(this))
+        if (!this.getType().is(ChangedTags.EntityTypes.ARMLESS) && GoalUtils.hasGroundPathNavigation(this))
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
 
         if (this instanceof WhiteLatexEntity)
