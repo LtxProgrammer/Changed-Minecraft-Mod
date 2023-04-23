@@ -20,11 +20,11 @@ public class LightLatexWolfOrganic extends AbstractLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD_S;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_SHADED;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     public ChangedParticles.Color3 getDripColor() {

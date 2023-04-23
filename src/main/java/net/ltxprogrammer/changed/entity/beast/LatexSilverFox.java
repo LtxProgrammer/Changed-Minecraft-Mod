@@ -24,6 +24,6 @@ public class LatexSilverFox extends AbstractLatexWolf implements PatronOC {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }

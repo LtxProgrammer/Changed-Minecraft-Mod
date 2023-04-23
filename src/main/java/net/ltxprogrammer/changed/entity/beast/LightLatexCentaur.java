@@ -45,12 +45,11 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_NWE_S;
+        return HairStyle.BALD.get();
     }
 
-    @Override
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_FEMALE_SHADED;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -60,11 +61,11 @@ public abstract class LatexEntity extends Monster {
     }
 
     public @NotNull HairStyle getHairStyle() {
-        return hairStyle != null ? hairStyle : HairStyle.BALD;
+        return hairStyle != null ? hairStyle : HairStyle.BALD.get();
     }
 
     public void setHairStyle(HairStyle style) {
-        this.hairStyle = style != null ? style : HairStyle.BALD;
+        this.hairStyle = style != null ? style : HairStyle.BALD.get();
     }
 
     public abstract ChangedParticles.Color3 getHairColor(int layer);
@@ -72,18 +73,15 @@ public abstract class LatexEntity extends Monster {
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
             var styles = this.getValidHairStyles();
-            return styles.get(level.random.nextInt(styles.size()));
+            return styles.isEmpty() ? HairStyle.BALD.get() :  styles.get(level.random.nextInt(styles.size()));
         }
 
         else
-            return HairStyle.BALD;
+            return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        if (this instanceof GenderedEntity gendered)
-            return new ArrayList<>(HairStyle.Sorted.BY_GENDER.get(gendered.getGender()));
-        else
-            return Arrays.stream(HairStyle.values()).toList();
+        return HairStyle.Collection.getAll();
     }
 
     public static @NotNull List<HairStyle> addHairStyle(@Nullable List<HairStyle> list, HairStyle... styles) {
@@ -386,12 +384,12 @@ public abstract class LatexEntity extends Monster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("HairStyle"))
-            hairStyle = HairStyle.valueOf(tag.getString("HairStyle"));
+            hairStyle = ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("HairStyle", hairStyle.name());
+        tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
     }
 }

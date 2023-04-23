@@ -30,6 +30,6 @@ public class LatexBeifeng extends AbstractLatexWolf implements DarkLatexEntity, 
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.getAll();
     }
 }

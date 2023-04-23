@@ -5,9 +5,7 @@ import net.ltxprogrammer.changed.client.renderer.blockentity.LatexContainerRende
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
 import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
-import net.ltxprogrammer.changed.client.renderer.model.hair.Legacy;
 import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
-import net.ltxprogrammer.changed.entity.HairStyle;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -46,7 +44,8 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(BehemothHandLeftModel.LAYER_LOCATION, BehemothHandLeftModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(BehemothHandRightModel.LAYER_LOCATION, BehemothHandRightModel::createBodyLayer);
 
-        ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION, AerosolLatexWolfModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION,
+                useNewModels ? AerosolLatexWolfModel.Remodel::createBodyLayer : AerosolLatexWolfModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION,
                 useNewModels ? DarkLatexDragonModel.Remodel::createBodyLayer : DarkLatexDragonModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION,
@@ -190,29 +189,9 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightFusionModel.INNER_ARMOR, () -> ArmorLightLatexKnightFusionModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLightLatexKnightFusionModel.OUTER_ARMOR, () -> ArmorLightLatexKnightFusionModel.createArmorLayer(ArmorModel.OUTER));
 
-        registerLayerDefinition(HairStyle.LEGACY_MALE.headHair, Legacy::createMaleHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG_L.lowerHair, Legacy::createFemaleLowerHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_RIGHT_BANG.headHair, Legacy::createFemaleRightBangHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_LEFT_BANG.headHair, Legacy::createFemaleLeftBangHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_DUAL_BANGS.headHair, Legacy::createFemaleDualBangHair);
-        registerLayerDefinition(HairStyle.LEGACY_FEMALE_TRIPLE_BANGS.headHair, Legacy::createFemaleTripleBangsHair);
-        registerLayerDefinition(HairStyle.FEMALE_NO_BANGS.headHair, Legacy::createFemaleNoBangsHair);
-        registerLayerDefinition(HairStyle.FEMALE_SIDE_BANGS.headHair, Legacy::createFemaleSideBangsHair);
-        registerLayerDefinition(HairStyle.MOHAWK.headHair, Legacy::createMohawkHair);
-        registerLayerDefinition(HairStyle.HEAD_FUZZ.headHair, Legacy::createHeadFuzzHair);
-        registerLayerDefinition(HairStyle.MALE_STANDARD.headHair, Legacy::createMaleStandardHair);
-        registerLayerDefinition(HairStyle.MALE_NWE.headHair, Legacy::createMaleHairNWE);
-        registerLayerDefinition(HairStyle.MALE_NWE_FULL.headHair, Legacy::createMaleHairFullNWE);
-        registerLayerDefinition(HairStyle.FLARED_MOHAWK.headHair, Legacy::createFlaredMohawk);
-        registerLayerDefinition(HairStyle.MALE_BANGS.headHair, Legacy::createMaleBangHair);
-        registerLayerDefinition(HairStyle.MALE_SHORT_FRONT.headHair, Legacy::createShortFrontHair);
-        registerLayerDefinition(HairStyle.MALE_SIDEBURN.headHair, Legacy::createSideburnHair);
-        registerLayerDefinition(HairStyle.SIDE_TUFTS.headHair, Legacy::createSideTuftsHair);
-        registerLayerDefinition(HairStyle.PONYTAIL.headHair, Legacy::createPonytail);
-
         if (useNewModels) {
-            ForgeHooksClient.registerLayerDefinition(HairRemodel.FEMALE_RIG, HairRemodel::createFemaleHair);
-            ForgeHooksClient.registerLayerDefinition(HairRemodel.FEMALE_RIG_LOWER, HairRemodel::createFemaleLowerHair);
+            ForgeHooksClient.registerLayerDefinition(HairRemodel.RIG_UPPER_LOCATION, HairRemodel::createUpperHair);
+            ForgeHooksClient.registerLayerDefinition(HairRemodel.RIG_LOWER_LOCATION, HairRemodel::createLowerHair);
         }
 
         ForgeHooksClient.registerLayerDefinition(LatexContainerRenderer.LAYER_LOCATION, LatexContainerRenderer::createLatexFill);
