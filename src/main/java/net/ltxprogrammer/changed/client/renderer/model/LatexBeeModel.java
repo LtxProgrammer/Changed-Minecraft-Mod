@@ -120,6 +120,15 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
 
         PartDefinition Head_r6 = Head.addOrReplaceChild("Head_r6", CubeListBuilder.create().texOffs(18, 35).addBox(-2.75F, -13.0F, 2.0F, 1.0F, 5.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, 0.5236F, 0.2182F, 0.0F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(54, 75).addBox(2.0F, -34.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(75, 50).addBox(-3.5F, -34.0F, 3.75F, 7.0F, 5.0F, 1.0F, new CubeDeformation(0.1F))
+                .texOffs(36, 72).addBox(-3.0F, -34.25F, -3.0F, 1.0F, 1.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(1, 80).addBox(-3.0F, -31.0F, 3.5F, 6.0F, 5.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(77, 48).addBox(-4.5F, -30.175F, -0.75F, 1.0F, 4.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(89, 20).addBox(3.5F, -30.175F, -0.75F, 1.0F, 4.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(79, 2).addBox(-2.0F, -34.25F, -4.25F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(70, 31).addBox(-2.0F, -34.75F, -3.75F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
+
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(56, 41).addBox(-4.0F, 0.5F, 1.5F, 8.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(78, 45).addBox(-3.0F, 3.5F, -3.0F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)

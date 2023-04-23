@@ -84,6 +84,20 @@ public class LatexRedPandaModel extends LatexHumanoidModel<LatexRedPanda> implem
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(0, 5).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 26.5F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -34.75F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(24, 0).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(60, 34).addBox(2.0F, -34.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(32, 36).addBox(3.45F, -34.0F, -4.0F, 1.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(0, 48).addBox(-3.5F, -33.25F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(4, 2).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 2).addBox(-4.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 52).addBox(2.65F, -31.0F, -1.0F, 2.0F, 3.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(37, 51).addBox(-4.65F, -31.0F, -1.0F, 2.0F, 3.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(32, 25).addBox(-4.45F, -34.0F, -4.0F, 1.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(0, 60).addBox(-4.0F, -34.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(50, 32).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(42, 36).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 7.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
+
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(58, 25).addBox(-3.0F, 0.5F, -2.75F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(36, 17).addBox(-2.0F, 2.5F, -2.75F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE)
