@@ -97,6 +97,22 @@ public class DarkLatexWolfFemaleModel extends LatexHumanoidModel<DarkLatexWolfFe
                 .texOffs(45, 49).addBox(-1.0F, -2.1F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(38, 52).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0499F)), PartPose.offsetAndRotation(2.6F, -7.375F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition Base_r1 = Hair.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(26, 55).addBox(-4.5F, -6.1F, -4.4F, 9.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(19, 21).addBox(-4.5F, -8.1F, -4.75F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(24, 19).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(7, 20).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(23, 19).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(69, 48).addBox(3.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(58, 48).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(20, 16).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(20, 16).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(20, 16).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(20, 16).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(57, 42).addBox(-4.0F, -0.75F, 2.0F, 8.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(13, 21).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
         PartDefinition Mask = Head.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -7.0F, -5.0F, 2.0F, 5.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(32, 32).addBox(1.0F, -6.0F, -5.0F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(28, 32).addBox(-2.0F, -6.0F, -5.0F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)

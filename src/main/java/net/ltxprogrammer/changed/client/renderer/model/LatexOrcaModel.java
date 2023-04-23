@@ -99,6 +99,20 @@ public class LatexOrcaModel extends LatexHumanoidModel<LatexOrca> implements Lat
                 .texOffs(32, 53).addBox(-1.5F, -1.3434F, 3.5373F, 3.0F, 3.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(16, 32).addBox(-2.5F, -1.3434F, -1.2127F, 4.0F, 4.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -32.5F, -2.0F, 0.2849F, 0.274F, -0.7459F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(14, 21).addBox(-2.0F, -8.75F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(14, 25).addBox(-4.0F, -8.5F, -3.5F, 8.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(18, 23).addBox(2.0F, -8.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(16, 21).addBox(2.5F, -8.0F, -3.0F, 2.0F, 3.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(20, 26).addBox(3.5F, -8.0F, -4.5F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(22, 25).addBox(-4.5F, -8.0F, -4.5F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(18, 23).addBox(2.5F, -5.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(17, 22).addBox(-4.5F, -5.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(15, 21).addBox(-4.5F, -8.0F, -3.0F, 2.0F, 3.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(16, 26).addBox(-4.0F, -8.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(16, 28).addBox(-4.0F, -8.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(17, 24).addBox(-4.0F, -8.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(17, 27).addBox(-3.5F, -7.0F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.5F, 0.0F));
+
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
         PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.5F, 0.0F));

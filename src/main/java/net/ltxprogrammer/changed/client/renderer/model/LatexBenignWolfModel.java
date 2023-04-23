@@ -80,6 +80,20 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
                 .texOffs(20, 17).addBox(-1.5F, -0.5F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(56, 3).addBox(-3.5F, -5.75F, -4.7F, 7.0F, 3.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 8).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(36, 17).addBox(-4.0F, -34.5F, -3.75F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(60, 9).addBox(2.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(16, 33).addBox(2.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(56, 7).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 32).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 16).addBox(-4.5F, -34.0F, -4.5F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(28, 54).addBox(2.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(14, 54).addBox(-4.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(32, 25).addBox(-4.5F, -34.0F, -4.0F, 2.0F, 3.0F, 8.0F, new CubeDeformation(0.025F))
+                .texOffs(0, 60).addBox(-4.0F, -34.95F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(55, 17).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(28, 47).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
+
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(0, 4).addBox(-1.495F, -1.1F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(25, 54).addBox(-0.495F, -1.7F, -0.4F, 2.0F, 4.0F, 1.0F, new CubeDeformation(0.04F))
                 .texOffs(40, 23).addBox(-0.495F, -2.2F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))

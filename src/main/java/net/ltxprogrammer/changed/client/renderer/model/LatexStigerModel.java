@@ -103,6 +103,20 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
 
         PartDefinition leftear_r1 = LeftEar.addOrReplaceChild("leftear_r1", CubeListBuilder.create().texOffs(53, 67).addBox(-4.25F, -35.0F, -1.0F, 2.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, 33.0F, 0.0F, 0.0F, 0.0F, 0.2182F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(16, 31).addBox(-2.0F, -34.75F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(32, 31).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(10, 69).addBox(2.0F, -34.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(48, 16).addBox(2.5F, -34.0F, -3.0F, 2.0F, 3.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(24, 18).addBox(3.5F, -34.0F, -4.5F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(24, 4).addBox(-4.5F, -34.0F, -4.5F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(0, 64).addBox(2.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(32, 63).addBox(-4.5F, -31.0F, -1.0F, 2.0F, 2.0F, 5.0F, CubeDeformation.NONE)
+                .texOffs(45, 45).addBox(-4.5F, -34.0F, -3.0F, 2.0F, 3.0F, 7.0F, new CubeDeformation(0.025F))
+                .texOffs(68, 35).addBox(-4.0F, -34.75F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(56, 50).addBox(-4.0F, -34.0F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(56, 43).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(64, 10).addBox(-3.5F, -33.0F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 26.5F, 0.0F));
+
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(60, 0).addBox(-4.0F, 0.5F, 1.5F, 8.0F, 2.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(68, 61).addBox(-3.0F, 3.25F, -2.5F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
