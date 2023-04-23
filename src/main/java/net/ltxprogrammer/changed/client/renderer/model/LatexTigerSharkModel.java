@@ -100,6 +100,24 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
 
         PartDefinition HeadFin_r4 = Fins.addOrReplaceChild("HeadFin_r4", CubeListBuilder.create().texOffs(28, 52).mirror().addBox(-0.25F, -1.0F, 0.0F, 6.0F, 3.0F, 2.0F, CubeDeformation.NONE).mirror(false), PartPose.offsetAndRotation(3.0F, -33.25F, -2.0F, 1.0263F, -0.733F, -0.9599F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(6, 52).addBox(-3.5F, -34.5F, -3.5F, 7.0F, 1.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(52, 18).addBox(2.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(36, 0).addBox(-3.5F, -33.25F, -4.25F, 7.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(36, 17).addBox(3.5F, -34.0F, -4.45F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(40, 23).addBox(-4.5F, -34.0F, -4.45F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(52, 18).addBox(-4.0F, -35.0F, 0.0F, 2.0F, 1.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(34, 0).addBox(-4.0F, -34.25F, -4.5F, 8.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(12, 57).addBox(-4.0F, -34.0F, 4.0F, 8.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 27.0F, 0.0F));
+
+        PartDefinition HairBase_r1 = Hair.addOrReplaceChild("HairBase_r1", CubeListBuilder.create().texOffs(41, 60).addBox(-8.8F, -2.0F, -1.75F, 9.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, -31.0F, -4.0F, 0.0F, 1.5708F, 0.0F));
+
+        PartDefinition HairBase_r2 = Hair.addOrReplaceChild("HairBase_r2", CubeListBuilder.create().texOffs(30, 57).addBox(-0.5F, -4.75F, -2.0F, 2.0F, 5.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(30, 57).addBox(6.5F, -4.75F, -2.0F, 2.0F, 5.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, -29.0F, 0.0F, -1.5708F, 0.0F, 0.0F));
+
+        PartDefinition HairBase_r3 = Hair.addOrReplaceChild("HairBase_r3", CubeListBuilder.create().texOffs(41, 60).addBox(-0.2F, -2.0F, -1.75F, 9.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, -31.0F, -4.0F, 0.0F, -1.5708F, 0.0F));
+
+        PartDefinition HairBase_r4 = Hair.addOrReplaceChild("HairBase_r4", CubeListBuilder.create().texOffs(46, 48).addBox(-4.0F, -2.0F, 8.0F, 8.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -26.0F, 0.0F, 0.0F, -1.5708F, 1.5708F));
+
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create(), PartPose.offset(0.0F, -2.0F, 0.0F));
 
         PartDefinition BackFin_r1 = Torso.addOrReplaceChild("BackFin_r1", CubeListBuilder.create().texOffs(52, 6).addBox(-1.0F, 0.0F, -4.0F, 2.0F, 6.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.75F, 2.0F, 0.5236F, 0.0F, 0.0F));
