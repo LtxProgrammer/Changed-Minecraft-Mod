@@ -15,12 +15,12 @@ public class AerosolLatexWolf extends AbstractLatexWolf {
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#544742");
+        return ChangedParticles.Color3.BROWN;
     }
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
+        return HairStyle.SHORT_MESSY.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
