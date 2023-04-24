@@ -2,11 +2,19 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
+import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,46 +23,42 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT)
 @OnlyIn(Dist.CLIENT)
 public class TransfurProgressOverlay {
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public static void eventHandler(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null || ProcessTransfur.isPlayerLatex(player))
-                return;
-            var progress = ProcessTransfur.getPlayerTransfurProgress(player);
-            if (progress.ticks() <= 0)
-                return;
+    private static final ResourceLocation GOO_OUTLINE = Changed.modResource("textures/misc/goo_outline.png");
 
-            float tick_progress = (float)progress.ticks() / (float)ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER;
-            int vertSize = (int) (tick_progress * 26);
-
-            int w = event.getWindow().getGuiScaledWidth();
-            int h = event.getWindow().getGuiScaledHeight();
-
-            int posX = w / 2;
-            int posY = h / 2;
-
-            RenderSystem.disableDepthTest();
-            RenderSystem.depthMask(false);
-            RenderSystem.enableBlend();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-                    GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-
-            RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/transfur_overlay.png"));
-            GuiComponent.blit(event.getMatrixStack(), posX + 96, posY + 92, 0, 0, 8, 26, 16, 26);
-            GuiComponent.blit(event.getMatrixStack(), posX + 96, posY + 118 - vertSize, 8, 26 - vertSize, 8, vertSize, 16, 26);
-
-            RenderSystem.depthMask(true);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            RenderSystem.disableBlend();
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-        }
+    public static void renderTextureOverlay(Gui gui, ResourceLocation texture, float zoom, ChangedParticles.Color3 color, float alpha) {
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), alpha);
+        RenderSystem.setShaderTexture(0, texture);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.vertex(-zoom, (double)gui.screenHeight + zoom, -90.0D).uv(0.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)gui.screenWidth + zoom, (double)gui.screenHeight + zoom, -90.0D).uv(1.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)gui.screenWidth + zoom, -zoom, -90.0D).uv(1.0F, 0.0F).endVertex();
+        bufferbuilder.vertex(-zoom, -zoom, -90.0D).uv(0.0F, 0.0F).endVertex();
+        tesselator.end();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    public static void renderGooOverlay(Gui gui) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null || ProcessTransfur.isPlayerLatex(player))
+            return;
+        var progress = ProcessTransfur.getPlayerTransfurProgress(player);
+        if (progress.ticks() <= 0)
+            return;
+
+        float tickProgress = (float)progress.ticks() / (float)ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER;
+        float distance = (1.0f - tickProgress) * 40.0f;
+        var color = TransfurProgressLayer.getProgressColor(progress.type());
+
+        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, 1.0f);
+    }
 }
