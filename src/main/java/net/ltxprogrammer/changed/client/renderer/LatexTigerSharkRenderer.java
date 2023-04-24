@@ -17,4 +17,16 @@ public class LatexTigerSharkRenderer extends LatexHumanoidRenderer<LatexTigerSha
     public ResourceLocation getTextureLocation(LatexTigerShark p_114482_) {
         return Changed.modResource("textures/latex_tiger_shark.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexTigerShark, LatexTigerSharkModel.Remodel, ArmorLatexSharkModel.RemodelMale<LatexTigerShark>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexTigerSharkModel.Remodel(context.bakeLayer(LatexTigerSharkModel.LAYER_LOCATION)),
+                    ArmorLatexSharkModel.RemodelMale::new, ArmorLatexSharkModel.RemodelMale.INNER_ARMOR, ArmorLatexSharkModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexTigerShark p_114482_) {
+            return Changed.modResource("textures/remodel/latex_tiger_shark.png");
+        }
+    }
 }

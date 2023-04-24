@@ -177,8 +177,6 @@ public class LatexRedPandaModel extends LatexHumanoidModel<LatexRedPanda> implem
     }
 
     public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexRedPanda, Remodel> {
-        // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-        public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_red_panda"), "main");
         private final ModelPart RightLeg;
         private final ModelPart LeftLeg;
         private final ModelPart RightArm;
