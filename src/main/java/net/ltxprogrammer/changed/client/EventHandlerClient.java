@@ -4,11 +4,14 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -77,13 +80,25 @@ public class EventHandlerClient {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @Mod.EventBusSubscriber(value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class ForgeEventHandler {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public static void onRenderNameplateEvent(RenderNameplateEvent event) {
             if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
                 event.setContent(PatreonBenefits.getPlayerName(player));
+        }
+
+        @SubscribeEvent
+        public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
+            if (event.oldVariant != null || event.newVariant == null)
+                return; // Only do effect if player was human
+
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1, false, false));
+            if (event.newVariant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+                return; // Only do blindness if variant is goo
+
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 1, false, false));
         }
     }
 }

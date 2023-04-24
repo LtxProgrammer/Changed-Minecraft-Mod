@@ -80,7 +80,7 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 17).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 26.5F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(87, 0).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 6.0F, 1.0F, new CubeDeformation(0.0F))
+        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create().texOffs(87, 0).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 6.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 32).addBox(-0.5F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(27, 53).addBox(0.5F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 14).addBox(-0.499F, -1.0436F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)

@@ -50,7 +50,7 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create().texOffs(46, 55).addBox(-2.0F, 12.0F, -2.75F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.5F, 10.0F, 0.0F));
+        PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create().texOffs(46, 55).addBox(-2.0F, 12.0F, -2.75F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-2.5F, 10.0F, 0.0F));
 
         PartDefinition Toe_r1 = RightLeg.addOrReplaceChild("Toe_r1", CubeListBuilder.create().texOffs(28, 33).addBox(-2.5F, -1.0F, 0.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
                 .texOffs(0, 34).addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(-0.001F))
@@ -221,7 +221,6 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
         }
 
         public static LayerDefinition createBodyLayer() {
-
             MeshDefinition meshdefinition = new MeshDefinition();
             PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -250,7 +249,7 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
 
             PartDefinition WingRoot2 = RightWing.addOrReplaceChild("WingRoot2", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition cube_r1 = WingRoot2.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 57).addBox(-5.75F, -4.5F, 0.475F, 5.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, 0.0F, 0.0F, -0.2182F));
+            PartDefinition cube_r1 = WingRoot2.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 57).addBox(-5.75F, -4.5F, 0.5F, 5.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, -1.0F, 0.0F, 0.0F, -0.2182F));
 
             PartDefinition cube_r2 = WingRoot2.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(56, 45).addBox(-5.6742F, -1.4784F, 0.0F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, -1.0F, -1.0F, 0.0F, 0.0F, 0.7854F));
 
@@ -258,15 +257,15 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
 
             PartDefinition bone = WingRoot2.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(25, 61).addBox(-0.5872F, -1.0038F, -0.5F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-7.3F, -5.8F, -0.5F, 0.0F, 0.0F, 0.5236F));
 
-            PartDefinition cube_r4 = bone.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 48).addBox(-7.25F, -8.5F, 0.525F, 6.0F, 9.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3F, 5.8F, -0.5F, 0.0F, 0.0F, -0.7418F));
+            PartDefinition cube_r4 = bone.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 48).addBox(-7.25F, -8.5F, 0.55F, 6.0F, 9.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3F, 5.8F, -0.5F, 0.0F, 0.0F, -0.7418F));
 
-            PartDefinition cube_r5 = bone.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(28, 52).addBox(-8.25F, -3.75F, 0.475F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(6.9628F, 5.2962F, -0.5F, 0.0F, 0.0F, 0.2182F));
+            PartDefinition cube_r5 = bone.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(28, 52).addBox(-8.25F, -3.75F, 0.5F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(6.9628F, 5.2962F, -0.5F, 0.0F, 0.0F, 0.2182F));
 
             PartDefinition cube_r6 = bone.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(50, 61).addBox(-0.875F, -0.5F, -0.5F, 1.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.4128F, 5.9962F, 0.0F, 0.0F, 0.0F, -0.48F));
 
             PartDefinition bone2 = bone.addOrReplaceChild("bone2", CubeListBuilder.create().texOffs(29, 62).addBox(-0.6609F, -0.9453F, -0.5F, 1.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.4263F, 0.4415F, 0.0F, 0.0F, 0.0F, 0.9599F));
 
-            PartDefinition cube_r7 = bone2.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(12, 54).addBox(-7.15F, -9.175F, 0.525F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3891F, 4.8547F, -0.5F, 0.0F, 0.0F, -0.7418F));
+            PartDefinition cube_r7 = bone2.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(12, 54).addBox(-7.15F, -9.175F, 0.55F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3891F, 4.8547F, -0.5F, 0.0F, 0.0F, -0.7418F));
 
             PartDefinition cube_r8 = bone2.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(38, 60).addBox(-0.875F, -0.5F, -0.5F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.3391F, 5.0547F, 0.0F, 0.0F, 0.0F, -0.48F));
 
@@ -274,7 +273,7 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
 
             PartDefinition WingRoot = LeftWing.addOrReplaceChild("WingRoot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition cube_r9 = WingRoot.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(56, 25).addBox(-5.75F, -4.5F, 0.55F, 5.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.2182F));
+            PartDefinition cube_r9 = WingRoot.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(56, 25).addBox(-5.75F, -4.5F, 0.5F, 5.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.2182F));
 
             PartDefinition cube_r10 = WingRoot.addOrReplaceChild("cube_r10", CubeListBuilder.create().texOffs(56, 42).addBox(-9.2097F, 0.6429F, 0.0F, 6.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.7854F));
 
@@ -282,15 +281,15 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
 
             PartDefinition bone3 = WingRoot.addOrReplaceChild("bone3", CubeListBuilder.create().texOffs(22, 54).addBox(-0.5872F, -1.0038F, -0.5F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-7.3F, -5.8F, 0.5F, 0.0F, 0.0F, 0.5236F));
 
-            PartDefinition cube_r12 = bone3.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(44, 42).addBox(-7.25F, -8.5F, 0.475F, 6.0F, 9.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3F, 5.8F, -0.5F, 0.0F, 0.0F, -0.7418F));
+            PartDefinition cube_r12 = bone3.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(44, 42).addBox(-7.25F, -8.5F, 0.45F, 6.0F, 9.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3F, 5.8F, -0.5F, 0.0F, 0.0F, -0.7418F));
 
-            PartDefinition cube_r13 = bone3.addOrReplaceChild("cube_r13", CubeListBuilder.create().texOffs(48, 32).addBox(-8.25F, -3.75F, 0.525F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(6.9628F, 5.2962F, -0.5F, 0.0F, 0.0F, 0.2182F));
+            PartDefinition cube_r13 = bone3.addOrReplaceChild("cube_r13", CubeListBuilder.create().texOffs(48, 32).addBox(-8.25F, -3.75F, 0.5F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(6.9628F, 5.2962F, -0.5F, 0.0F, 0.0F, 0.2182F));
 
             PartDefinition cube_r14 = bone3.addOrReplaceChild("cube_r14", CubeListBuilder.create().texOffs(46, 61).addBox(-0.875F, -0.5F, -0.5F, 1.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.4128F, 5.9962F, 0.0F, 0.0F, 0.0F, -0.48F));
 
             PartDefinition bone4 = bone3.addOrReplaceChild("bone4", CubeListBuilder.create().texOffs(42, 61).addBox(-0.6609F, -0.9453F, -0.5F, 1.0F, 6.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.4263F, 0.4415F, 0.0F, 0.0F, 0.0F, 0.9599F));
 
-            PartDefinition cube_r15 = bone4.addOrReplaceChild("cube_r15", CubeListBuilder.create().texOffs(44, 51).addBox(-7.15F, -9.175F, 0.475F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3891F, 4.8547F, -0.5F, 0.0F, 0.0F, -0.7418F));
+            PartDefinition cube_r15 = bone4.addOrReplaceChild("cube_r15", CubeListBuilder.create().texOffs(44, 51).addBox(-7.15F, -9.175F, 0.45F, 5.0F, 10.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(7.3891F, 4.8547F, -0.5F, 0.0F, 0.0F, -0.7418F));
 
             PartDefinition cube_r16 = bone4.addOrReplaceChild("cube_r16", CubeListBuilder.create().texOffs(38, 52).addBox(-0.875F, -0.5F, -0.5F, 1.0F, 7.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.3391F, 5.0547F, 0.0F, 0.0F, 0.0F, -0.48F));
 

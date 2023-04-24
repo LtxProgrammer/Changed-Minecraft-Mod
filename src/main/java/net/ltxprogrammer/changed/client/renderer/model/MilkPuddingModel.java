@@ -26,11 +26,11 @@ public class MilkPuddingModel extends HierarchicalModel<MilkPudding> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Root = partdefinition.addOrReplaceChild("Root", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -4.0F, -5.0F, 10.0F, 4.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition Root = partdefinition.addOrReplaceChild("Root", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -4.0F, -5.0F, 10.0F, 4.0F, 10.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition Middle = Root.addOrReplaceChild("Middle", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -5.5F, -4.0F, 8.0F, 3.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition Middle = Root.addOrReplaceChild("Middle", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -5.5F, -4.0F, 8.0F, 3.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition Top = Middle.addOrReplaceChild("Top", CubeListBuilder.create().texOffs(24, 14).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition Top = Middle.addOrReplaceChild("Top", CubeListBuilder.create().texOffs(24, 14).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }

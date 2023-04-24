@@ -18,7 +18,6 @@ import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -237,7 +236,24 @@ public class ProcessTransfur {
                 return false;
             return previousVariant.getEntityType() == originalVariant.getEntityType();
         }
-    }
+
+        public static class ChangedVariant extends Event {
+            public final LivingEntity livingEntity;
+            public final @Nullable LatexVariant<?> oldVariant;
+            public final @Nullable LatexVariant<?> newVariant;
+
+            public ChangedVariant(LivingEntity livingEntity, @Nullable LatexVariant<?> variant) {
+                this.livingEntity = livingEntity;
+                this.oldVariant = LatexVariant.getEntityVariant(livingEntity);
+                this.newVariant = variant;
+            }
+
+            @Override
+            public boolean isCancelable() {
+                return false;
+            }
+        }
+     }
 
     @Contract("_, null -> null; _, !null -> !null")
     public static @Nullable LatexVariantInstance<?> setPlayerLatexVariant(Player player, @Nullable LatexVariant<?> ogVariant) {
@@ -245,6 +261,8 @@ public class ProcessTransfur {
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant);
         MinecraftForge.EVENT_BUS.post(event);
         @Nullable LatexVariant<?> variant = event.variant;
+        if (variant != null && !event.isRedundant())
+            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant));
 
         if (player instanceof ServerPlayer serverPlayer && variant != null)
             ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
