@@ -70,7 +70,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
 
         PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 4.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-        PartDefinition Base_r5 = Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(19, 41).addBox(-3.5F, -9.132F, -4.9203F, 7.0F, 4.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 8.5418F, 4.7984F, 0.1745F, 0.0F, 0.0F));
+        PartDefinition Base_r5 = Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(19, 41).addBox(-3.5F, -9.132F, -4.9203F, 7.0F, 4.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 8.5418F, 4.7984F, 0.1745F, 0.0F, 0.0F));
 
         PartDefinition Joint = Tail.addOrReplaceChild("Joint", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 1.5F));
 
@@ -101,7 +101,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
         PartDefinition Fins = Head.addOrReplaceChild("Fins", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -7.5F, 0.0F, -0.5236F, 0.0F, 0.0F));
 
         PartDefinition Head_r2 = Fins.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(23, 66).addBox(-0.5F, -7.0F, 0.0F, 2.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-                .texOffs(59, 45).addBox(-0.5F, -4.0F, 0.0F, 2.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 2.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
+                .texOffs(59, 45).addBox(-0.5F, -4.0F, 0.0F, 2.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.5F, 2.0F, -2.0F, -0.0873F, 0.0F, 0.0F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 37).addBox(-2.0F, -33.0F, 3.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
                 .texOffs(34, 21).addBox(-4.0F, -32.5F, 4.0F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
