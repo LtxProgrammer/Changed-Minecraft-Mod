@@ -94,4 +94,8 @@ public class HairStyle extends ForgeRegistryEntry<HairStyle> {
             with(Collection.MALE));
     public static final RegistryObject<HairStyle> LONG_MESSY = REGISTRY.register("long_messy",
             with(Collection.FEMALE, Changed.modResource("textures/hair/long_messy.png")));
+    public static final RegistryObject<HairStyle> SHORT_MESSY = REGISTRY.register("short_messy",
+            with(Collection.MALE, Changed.modResource("textures/hair/short_messy.png")));
+    public static final RegistryObject<HairStyle> LONG_KEPT = REGISTRY.register("long_kept",
+            with(Collection.FEMALE, Changed.modResource("textures/hair/long_kept.png")));
 }
