@@ -8,6 +8,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
@@ -311,19 +312,34 @@ public abstract class LatexEntity extends Monster {
 
     public abstract ChangedParticles.Color3 getDripColor();
 
+    public float getDripRate(float damage) {
+        return Mth.lerp(damage, 0.02f, 0.1f); // 1/50 -> 1/10
+    }
+
+    public final float computeHealthRatio() {
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getHealth() / this.underlyingPlayer.getMaxHealth();
+        else
+            return this.getHealth() / this.getMaxHealth();
+    }
+
     public void visualTick(Level level) {
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
-        if (level.isClientSide && level.random.nextInt(25) == 0) {
-            ChangedParticles.Color3 color = getDripColor();
-            if (color != null) {
-                EntityDimensions dimensions = getDimensions(getPose());
-                double dh = level.random.nextDouble(dimensions.height);
-                double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-                double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-                level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-            }
+        if (!level.isClientSide)
+            return;
+
+        if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
+            return;
+
+        ChangedParticles.Color3 color = getDripColor();
+        if (color != null) {
+            EntityDimensions dimensions = getDimensions(getPose());
+            double dh = level.random.nextDouble(dimensions.height);
+            double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
+            double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
+            level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
         }
     }
 
