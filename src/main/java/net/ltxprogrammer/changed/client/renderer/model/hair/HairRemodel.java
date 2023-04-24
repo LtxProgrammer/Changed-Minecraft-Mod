@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.client.renderer.model.hair;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -12,24 +14,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
 public class HairRemodel {
-    public static LayerDefinition createFemaleHair() {
+    public static LayerDefinition createUpperHair() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition FemaleHair = partdefinition.addOrReplaceChild("FemaleHair", CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 12.0F, 8.0F, new CubeDeformation(0.3F))
+        PartDefinition FemaleHair = partdefinition.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 12.0F, 8.0F, new CubeDeformation(0.3F))
                 .texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 12.0F, 8.0F, new CubeDeformation(0.45F)), PartPose.offset(0.0F, -4.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    public static LayerDefinition createFemaleLowerHair() {
+    public static LayerDefinition createLowerHair() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition FemaleLowerHair = partdefinition.addOrReplaceChild("FemaleLowerHair", CubeListBuilder.create().texOffs(0, 20).addBox(-4.0F, 4.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.4F))
+        PartDefinition FemaleLowerHair = partdefinition.addOrReplaceChild("LowerHair", CubeListBuilder.create().texOffs(0, 20).addBox(-4.0F, 4.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.4F))
                 .texOffs(20, 24).addBox(-4.0F, 4.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.65F)), PartPose.offset(0.0F, -4.0F, 0.0F));
 
         PartDefinition hair3_r1 = FemaleLowerHair.addOrReplaceChild("hair3_r1", CubeListBuilder.create().texOffs(40, 22).addBox(-4.0F, -2.25F, -1.0F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.35F)), PartPose.offsetAndRotation(0.0F, 6.5F, -2.0F, -0.4363F, 0.0F, 0.0F));
@@ -44,27 +47,30 @@ public class HairRemodel {
         return new ModelLayerLocation(Changed.modResource("hair/remodel/" + name), "main");
     }
 
-    public static final ModelLayerLocation MALE_RIG = remodelLocation("male_rig");
-    public static final ModelLayerLocation FEMALE_RIG = remodelLocation("female_rig");
-    public static final ModelLayerLocation FEMALE_RIG_LOWER = remodelLocation("female_rig_lower");
+    public static final ModelLayerLocation RIG_UPPER_LOCATION = remodelLocation("rig_upper");
+    public static final ModelLayerLocation RIG_LOWER_LOCATION = remodelLocation("rig_lower");
 
-    private static final Entry F_LONG_MESSY = new Entry(FEMALE_RIG, FEMALE_RIG_LOWER, new ResourceLocation[]{
-            Changed.modResource("textures/remodel/hair/f_long_messy.png")
-    });
+    public static final Function<EntityModelSet, HairModel> RIG_UPPER = new Function<EntityModelSet, HairModel>() {
+        @Nullable HairModel cache = null;
 
-    static {
-        MODEL_OVERRIDES.put(HairStyle.FEMALE_SIDE_BANGS, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.FEMALE_SIDE_BANGS_L, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.FEMALE_SIDE_BANGS_S, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.FEMALE_SIDE_BANGS_S_L, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.LEGACY_FEMALE_RIGHT_BANG, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.LEGACY_FEMALE_RIGHT_BANG_S, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.LEGACY_FEMALE_RIGHT_BANG_L, F_LONG_MESSY);
-        MODEL_OVERRIDES.put(HairStyle.LEGACY_FEMALE_RIGHT_BANG_S_L, F_LONG_MESSY);
-    }
+        @Override
+        public HairModel apply(EntityModelSet entityModelSet) {
+            if (cache != null)
+                return cache;
+            cache = new HairModel(entityModelSet.bakeLayer(RIG_UPPER_LOCATION));
+            return cache;
+        }
+    };
 
-    @Nullable
-    public static Entry getOverride(HairStyle style) {
-        return MODEL_OVERRIDES.getOrDefault(style, null);
-    }
+    public static final Function<EntityModelSet, HairModel> RIG_LOWER = new Function<EntityModelSet, HairModel>() {
+        @Nullable HairModel cache = null;
+
+        @Override
+        public HairModel apply(EntityModelSet entityModelSet) {
+            if (cache != null)
+                return cache;
+            cache = new HairModel(entityModelSet.bakeLayer(RIG_LOWER_LOCATION));
+            return cache;
+        }
+    };
 }

@@ -26,12 +26,8 @@ public class LatexMantaRayFemale extends AbstractLatexMantaRay {
     }
 
     @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
-    }
-
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return addHairStyle(HairStyle.Collection.FEMALE.getStyles(), HairStyle.BALD.get());
     }
 
     @Override

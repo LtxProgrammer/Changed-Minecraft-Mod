@@ -28,11 +28,11 @@ public class LatexTrafficConeDragon extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

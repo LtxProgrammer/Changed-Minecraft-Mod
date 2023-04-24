@@ -32,12 +32,12 @@ public class LatexSnake extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.BALD.get();
     }
 
     @Override

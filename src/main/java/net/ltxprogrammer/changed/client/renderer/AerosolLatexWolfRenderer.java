@@ -17,4 +17,16 @@ public class AerosolLatexWolfRenderer extends LatexHumanoidRenderer<AerosolLatex
     public ResourceLocation getTextureLocation(AerosolLatexWolf p_114482_) {
         return Changed.modResource("textures/aerosol_latex_wolf.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<AerosolLatexWolf, AerosolLatexWolfModel.Remodel, ArmorLatexWolfModel.RemodelMale<AerosolLatexWolf>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new AerosolLatexWolfModel.Remodel(context.bakeLayer(AerosolLatexWolfModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(AerosolLatexWolf p_114482_) {
+            return Changed.modResource("textures/remodel/gas_wolf.png");
+        }
+    }
 }

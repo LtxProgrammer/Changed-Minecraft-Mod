@@ -28,7 +28,12 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE_RIGHT_BANG;
+        return HairStyle.LONG_MESSY.get();
+    }
+
+    @Override
+    public @Nullable List<HairStyle> getValidHairStyles() {
+        return HairStyle.Collection.FEMALE.getStyles();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

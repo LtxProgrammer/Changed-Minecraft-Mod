@@ -38,6 +38,6 @@ public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, Pat
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 }
