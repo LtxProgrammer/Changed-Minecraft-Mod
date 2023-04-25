@@ -191,7 +191,8 @@ dependencies {
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
     // Examples using mod jars from ./libs
-    implementation fg.deobf("eu.ha3:PresenceFootsteps-1.18.2-1.5.1-forge:1.18.2-1.5.1")
+    implementation fg.deobf("eu.ha3:PresenceFootsteps-1.18.2-1.5.1-forge:1.18.2-1.5.1") // Presence Footsteps
+    implementation fg.deobf('me.lucko:spark-1.9.11-forge:1.9.11') // Spark
 
     // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
