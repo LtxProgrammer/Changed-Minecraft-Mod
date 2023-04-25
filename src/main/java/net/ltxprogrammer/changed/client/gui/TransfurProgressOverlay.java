@@ -37,10 +37,11 @@ public class TransfurProgressOverlay {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(-zoom, (double)gui.screenHeight + zoom, -90.0D).uv(0.0F, 1.0F).endVertex();
-        bufferbuilder.vertex((double)gui.screenWidth + zoom, (double)gui.screenHeight + zoom, -90.0D).uv(1.0F, 1.0F).endVertex();
-        bufferbuilder.vertex((double)gui.screenWidth + zoom, -zoom, -90.0D).uv(1.0F, 0.0F).endVertex();
-        bufferbuilder.vertex(-zoom, -zoom, -90.0D).uv(0.0F, 0.0F).endVertex();
+        float aspect = (float)gui.screenWidth / (float)gui.screenHeight;
+        bufferbuilder.vertex(-zoom * aspect, (double)gui.screenHeight + zoom, -90.0D).uv(0.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)gui.screenWidth + (zoom * aspect), (double)gui.screenHeight + zoom, -90.0D).uv(1.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)gui.screenWidth + (zoom * aspect), -zoom, -90.0D).uv(1.0F, 0.0F).endVertex();
+        bufferbuilder.vertex(-zoom * aspect, -zoom, -90.0D).uv(0.0F, 0.0F).endVertex();
         tesselator.end();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
@@ -56,9 +57,9 @@ public class TransfurProgressOverlay {
             return;
 
         float tickProgress = (float)progress.ticks() / (float)ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER;
-        float distance = (1.0f - tickProgress) * 40.0f;
+        float distance = (1.0f - tickProgress) * 20.0f;
         var color = TransfurProgressLayer.getProgressColor(progress.type());
 
-        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, 1.0f);
+        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, tickProgress);
     }
 }
