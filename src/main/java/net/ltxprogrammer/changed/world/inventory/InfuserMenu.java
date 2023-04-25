@@ -296,7 +296,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
             Optional<InfuserRecipes.InfuserRecipe> recipeOptional = serverplayer.getLevel().getServer().getRecipeManager()
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE, copyContainer, serverplayer.level);
             ItemStack input = this.internal.getStackInSlot(1);
-            recipeOptional.ifPresent(recipe -> {
+            recipeOptional.ifPresentOrElse(recipe -> {
                 if (input.isEmpty())
                     return;
 
@@ -307,7 +307,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                     newStack.getOrCreateTag().putUUID("owner", input.getTag().getUUID("owner"));
                 }
                 this.getResultSlot().set(newStack);
-            });
+            }, () -> this.getResultSlot().set(ItemStack.EMPTY));
         }
         super.slotsChanged(container);
     }
