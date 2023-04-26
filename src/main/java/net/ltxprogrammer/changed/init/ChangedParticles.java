@@ -76,6 +76,10 @@ public class ChangedParticles {
         public static final Color3 GREEN = named("green", 0.749f, 0.949f, 0.596f);
 
         public static final Color3 TSC_BLUE = named("tsc_blue", 0.31f, 0.76f, 1.0f);
+
+        public float brightness() {
+            return 0.2126f * red + 0.7152f * green + 0.0722f * blue;
+        }
     }
 
     private static final Map<ResourceLocation, ParticleType<?>> REGISTRY = new HashMap<>();
