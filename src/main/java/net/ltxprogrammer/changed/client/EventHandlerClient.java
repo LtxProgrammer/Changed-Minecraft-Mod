@@ -91,7 +91,10 @@ public class EventHandlerClient {
 
         @SubscribeEvent
         public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
-            if (event.oldVariant != null || event.newVariant == null || event.livingEntity.tickCount < 5)
+            if (event.livingEntity instanceof Player player && player.isCreative())
+                return; // Don't do effect if player is creative mode
+
+            if (event.oldVariant != null || event.newVariant == null || event.livingEntity.tickCount < 20)
                 return; // Only do effect if player was human
 
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1, false, false));
