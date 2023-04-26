@@ -91,6 +91,9 @@ public class EventHandlerClient {
 
         @SubscribeEvent
         public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
+            if (event.livingEntity instanceof Player player && player.isCreative())
+                return; // Don't do effect if player is creative mode
+
             if (event.oldVariant != null || event.newVariant == null || event.livingEntity.tickCount < 20)
                 return; // Only do effect if player was human
 
