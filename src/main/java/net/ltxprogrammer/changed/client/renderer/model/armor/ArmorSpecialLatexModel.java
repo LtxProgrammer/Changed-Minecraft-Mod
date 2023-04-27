@@ -42,6 +42,12 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
             animator.addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm));
         if (Tail != null)
             animator.addPreset(form.animationData().swimTail() ? AnimatorPresets.aquaticTail(Tail, List.of()) : AnimatorPresets.standardTail(Tail, List.of()));
+        animator.hipOffset = form.hipOffset();
+        animator.torsoWidth = form.torsoWidth();
+        animator.forwardOffset = form.forwardOffset();
+        animator.torsoLength = form.torsoLength();
+        animator.armLength = form.armLength();
+        animator.legLength = form.legLength();
     }
 
     @Override

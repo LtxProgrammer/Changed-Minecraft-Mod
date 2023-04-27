@@ -50,6 +50,13 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
             this.RightWing = null;
             this.LeftWing = null;
         }
+
+        animator.hipOffset = form.hipOffset();
+        animator.torsoWidth = form.torsoWidth();
+        animator.forwardOffset = form.forwardOffset();
+        animator.torsoLength = form.torsoLength();
+        animator.armLength = form.armLength();
+        animator.legLength = form.legLength();
     }
 
     @Override

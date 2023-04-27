@@ -63,10 +63,10 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+        return ChangedParticles.Color3.fromInt(0x52596d);
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
+        return List.of(HairStyle.SHORT_MESSY.get());
     }
 }
