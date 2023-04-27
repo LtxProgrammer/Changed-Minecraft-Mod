@@ -19,4 +19,17 @@ public class LatexHypnoCatRenderer extends LatexHumanoidRenderer<LatexHypnoCat, 
     public ResourceLocation getTextureLocation(LatexHypnoCat p_114482_) {
         return Changed.modResource("textures/latex_hypno_cat.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexHypnoCat, LatexHypnoCatModel.Remodel, ArmorLatexWolfModel.RemodelMale<LatexHypnoCat>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexHypnoCatModel.Remodel(context.bakeLayer(LatexHypnoCatModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
+            this.addLayer(new EmissiveBodyLayer<>(this, Changed.modResource("textures/remodel/latex_hypno_cat_emissive.png")));
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexHypnoCat p_114482_) {
+            return Changed.modResource("textures/remodel/latex_hypno_cat.png");
+        }
+    }
 }
