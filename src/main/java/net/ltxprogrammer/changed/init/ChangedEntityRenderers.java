@@ -42,7 +42,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(), LatexCrystalWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(), LatexCrystalWolfHornedRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_DEER.get(), LatexDeerRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(), LatexHypnoCatRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(),
+                useNewModels ? LatexHypnoCatRenderer.Remodel::new : LatexHypnoCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_LEAF.get(), LatexLeafRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_FEMALE.get(), LatexMantaRayFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_MALE.get(), LatexMantaRayMaleRenderer::new);
