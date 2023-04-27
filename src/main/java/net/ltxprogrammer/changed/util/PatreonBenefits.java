@@ -161,7 +161,13 @@ public class PatreonBenefits {
             DelayLoadedModel armorModelInner,
             DelayLoadedModel armorModelOuter,
 
-            float shadowSize
+            float shadowSize,
+            float hipOffset,
+            float torsoWidth,
+            float forwardOffset,
+            float torsoLength,
+            float armLength,
+            float legLength
     ) {
         public static ModelData fromJSON(Function<String, JsonObject> jsonGetter, String fullId, JsonObject object) {
             ResourceLocation textureLocation = Changed.modResource(fullId + "/texture.png");
@@ -183,7 +189,13 @@ public class PatreonBenefits {
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/model.json")),
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_inner.json")),
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_outer.json")),
-                    GsonHelper.getAsFloat(object, "shadowsize", 0.5f)
+                    GsonHelper.getAsFloat(object, "shadowsize", 0.5f),
+                    GsonHelper.getAsFloat(object, "hipOffset", -2.0f),
+                    GsonHelper.getAsFloat(object, "torsoWidth", 5.0f),
+                    GsonHelper.getAsFloat(object, "forwardOffset", 0.0f),
+                    GsonHelper.getAsFloat(object, "torsoLength", 12.0f),
+                    GsonHelper.getAsFloat(object, "armLength", 12.0f),
+                    GsonHelper.getAsFloat(object, "legLength", 12.0f)
             );
         }
 
