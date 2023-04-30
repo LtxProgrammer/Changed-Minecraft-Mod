@@ -97,6 +97,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_purple_fox")));
     public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_latex_crystal_wolf")));
+    public static final LatexVariant<LatexCrystalWolfHorned> LATEX_CRYSTAL_WOLF_HORNED = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_latex_crystal_wolf_horned")));
     public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_SNIPER_DOG).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_latex_sniper_dog")));
     public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC).sound(ChangedSounds.SOUND3.getLocation())
@@ -143,8 +145,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_crocodile")));
     public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
             .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
-            .build(Changed.modResource("form_latex_bee")));
+    /*public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
+            .build(Changed.modResource("form_latex_bee")));*/ // TODO: Uncomment when appropriate
     public static final LatexVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_moth")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
@@ -417,7 +419,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
-            this.abilities.add(ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            this.abilities.add(() -> entityType.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.SWITCH_TRANSFUR_MODE.get());
             this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE);
         }
 

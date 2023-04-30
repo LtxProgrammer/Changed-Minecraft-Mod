@@ -26,10 +26,10 @@ public class LatexBeifeng extends AbstractLatexWolf implements DarkLatexEntity, 
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+        return ChangedParticles.Color3.fromInt(0xffe852);
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.getAll();
     }
 }

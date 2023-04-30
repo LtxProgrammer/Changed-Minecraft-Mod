@@ -15,6 +15,8 @@ public class ChangedTags {
         public static final TagKey<EntityType<?>> PALE_SMALL_EXPOSURE = create("pale_small_exposure");
         public static final TagKey<EntityType<?>> PALE_LARGE_EXPOSURE = create("pale_large_exposure");
         public static final TagKey<EntityType<?>> WHITE_LATEX_SWIMMING = create("white_latex_swimming");
+        public static final TagKey<EntityType<?>> PUDDING = create("pudding");
+        public static final TagKey<EntityType<?>> ARMLESS = create("armless");
 
         private static TagKey<EntityType<?>> create(String name) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, Changed.modResource(name));

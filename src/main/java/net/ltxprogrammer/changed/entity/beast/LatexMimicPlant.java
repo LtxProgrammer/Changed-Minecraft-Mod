@@ -21,11 +21,11 @@ public class LatexMimicPlant extends LatexLeaf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

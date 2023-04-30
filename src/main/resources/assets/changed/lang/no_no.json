@@ -81,11 +81,14 @@
   "item.changed.owo_record": "ÒwÓ musikkplate",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
+  "syringe.changed:form_special": "Beskytter tilpasset form sprøyte",
+
   "death.attack.changed:transfur": "%1$s ble transpelsert",
   "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
   "death.attack.changed:pale": "%s ble tatt av Pale",
   "death.attack.changed:bloodloss": "%s brukt fremmed plasma",
+  "death.attack.changed:bloodloss.player": "1$s brukt fremmed plasma, takk til %2$s",
   "death.attack.changed:fan": "%s ble hakket opp av en vifte",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
@@ -231,6 +234,7 @@
   "entity.changed.latex_blue_wolf": "Lateks blå ulv",
   "entity.changed.latex_crocodile": "Lateks krokodille",
   "entity.changed.latex_crystal_wolf": "Krystall ulv",
+  "entity.changed.latex_crystal_wolf_horned": "Krystall ulv med horn",
   "entity.changed.latex_deer": "Lateks hjort",
   "entity.changed.latex_hypno_cat": "Lateks hypnose katt",
   "entity.changed.latex_leaf": "Lateksblad",
@@ -292,6 +296,7 @@
   "item.changed.latex_blue_wolf_spawn_egg": "Fremkallingsegg for lateks blå ulv",
   "item.changed.latex_crocodile_spawn_egg": "Fremkallingsegg for lateks krokodille",
   "item.changed.latex_crystal_wolf_spawn_egg": "Fremkallingsegg for krystall ulv",
+  "item.changed.latex_crystal_wolf_horned_spawn_egg": "Fremkallingsegg for krystall ulv med horn",
   "item.changed.latex_deer_spawn_egg": "Fremkallingsegg for lateks hjort",
   "item.changed.latex_hypno_cat_spawn_egg": "Fremkallingsegg for lateks hypnose katt",
   "item.changed.latex_leaf_spawn_egg": "Fremkallingsegg for lateksblad",

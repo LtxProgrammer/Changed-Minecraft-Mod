@@ -103,6 +103,24 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
 
         PartDefinition Head_r2 = Head.addOrReplaceChild("Head_r2", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 52).addBox(3.725F, -6.25F, -4.5F, 1.0F, 4.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(24, 14).addBox(-4.725F, -6.25F, -4.5F, 1.0F, 4.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition Hair_r2 = Hair.addOrReplaceChild("Hair_r2", CubeListBuilder.create().texOffs(46, 36).addBox(-1.15F, -5.5F, -4.675F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 19).addBox(-1.15F, -6.5F, -4.675F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(58, 39).addBox(-4.5F, -8.0F, -4.8F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(20, 65).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(67, 0).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(38, 63).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(63, 28).addBox(3.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(67, 61).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(49, 0).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(0, 52).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(51, 28).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(10, 56).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(58, 42).addBox(-4.0F, -0.75F, 2.0F, 8.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(42, 38).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
         PartDefinition Fins = Head.addOrReplaceChild("Fins", CubeListBuilder.create(), PartPose.offset(0.0F, -7.5F, 0.0F));
 
         PartDefinition Base_r11 = Fins.addOrReplaceChild("Base_r11", CubeListBuilder.create().texOffs(69, 69).addBox(-2.1808F, -1.0F, -0.5736F, 3.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(3.5F, 6.75F, -2.0F, -0.5236F, 0.9599F, -3.1416F));
@@ -164,6 +182,15 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     @Override
     public void setupAnim(@NotNull LatexSiren entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
+    public PoseStack getPlacementCorrectors(CorrectorType type) {
+        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        if (type == CorrectorType.HAIR)
+            corrector.translate(0.0f, 0.5f / 15.0f, 0.0f);
+        else if (type == CorrectorType.LOWER_HAIR)
+            corrector.translate(0.0f, -0.5f / 16.0f, -0.025f);
+        return corrector;
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {

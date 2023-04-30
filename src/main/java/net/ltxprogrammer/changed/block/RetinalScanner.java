@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
@@ -62,6 +63,21 @@ public class RetinalScanner extends AbstractCustomShapeBlock {
         return getInteractionShape(p_54577_, p_54578_, p_54579_);
     }
 
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+
+            for(Direction direction : Direction.values()) {
+                level.updateNeighborsAt(blockPos.relative(direction), this);
+            }
+
+        }
+    }
+
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
         return calculateShapes(p_60547_.getValue(FACING), SHAPE_WHOLE);
     }
@@ -83,6 +99,7 @@ public class RetinalScanner extends AbstractCustomShapeBlock {
     }
 
     public Optional<Vec3> getRespawnPosition(BlockState state, EntityType<?> type, LevelReader levelReader, BlockPos pos, float orientation, @Nullable LivingEntity entity) {
+        pos = pos.relative(state.getValue(FACING)).below();
         return Optional.of(new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
     }
 

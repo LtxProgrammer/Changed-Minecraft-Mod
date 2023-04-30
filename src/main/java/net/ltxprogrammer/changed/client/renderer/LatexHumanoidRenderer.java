@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -23,21 +24,25 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends LatexHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
+    @Nullable
     private LatexHumanoidHairLayer<T, M> hairLayer;
 
-    public LatexHumanoidHairLayer<T, M> getHairLayer() {
+    public @Nullable LatexHumanoidHairLayer<T, M> getHairLayer() {
         return hairLayer;
     }
 
     private void addLayers(EntityRendererProvider.Context context, M main) {
-        hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());
+        if (Changed.config.client.useNewModels.get())
+            hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());
         this.addLayer(new LatexItemInHandLayer<>(this));
-        this.addLayer(hairLayer);
+        if (hairLayer != null)
+            this.addLayer(hairLayer);
         this.addLayer(new LatexArrowLayer<>(context, this));
         //this.addLayer(new LatexCapeLayer<>(this));
         this.addLayer(new LatexElytraLayer<>(this, context.getModelSet()));

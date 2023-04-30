@@ -169,15 +169,18 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LightLatexKnightFusion>> LIGHT_LATEX_KNIGHT_FUSION = register("light_latex_knight_fusion", 0xFFFFFF, 0x0072ff,
             EntityType.Builder.of(LightLatexKnightFusion::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<LatexCrystalWolf>> LATEX_CRYSTAL_WOLF = registerReducedSpawn("latex_crystal_wolf", 0x393939, 0xFF014E,
+    public static final RegistryObject<EntityType<LatexCrystalWolf>> LATEX_CRYSTAL_WOLF = registerReducedSpawn("latex_crystal_wolf", 0x393939, 0xCF003E,
             EntityType.Builder.of(LatexCrystalWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<LatexCrystalWolfHorned>> LATEX_CRYSTAL_WOLF_HORNED = registerReducedSpawn("latex_crystal_wolf_horned", 0x393939, 0xFF014E,
+            EntityType.Builder.of(LatexCrystalWolfHorned::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xCFBC9B, 0xF4E5BE,
             EntityType.Builder.of(LatexDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
-    public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
+    /*public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
             EntityType.Builder.of(LatexBee::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::forestSpawning);
+            ChangedEntities::forestSpawning);*/ // TODO: Uncomment when appropriate
     public static final RegistryObject<EntityType<LatexPinkDeer>> LATEX_PINK_DEER = register("latex_pink_deer", 0xF2AFBC, 0xCA636A,
             EntityType.Builder.of(LatexPinkDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
@@ -237,7 +240,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("latex_mermaid_shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexMermaidShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexMoth>> LATEX_MOTH = register("latex_moth", 0xFBE5BC, 0xD8BC99,
+    public static final RegistryObject<EntityType<LatexMoth>> LATEX_MOTH = registerReducedSpawn("latex_moth", 0xFBE5BC, 0xD8BC99,
             EntityType.Builder.of(LatexMoth::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = register("latex_siren", 0x969696, 0xFFFFFF,
@@ -264,7 +267,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexRedDragon>> LATEX_RED_DRAGON = register("latex_red_dragon", 0xa54f58, 0xfcfa4a,
             EntityType.Builder.of(LatexRedDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mesaSpawning);
-    public static final RegistryObject<EntityType<LatexRedPanda>> LATEX_RED_PANDA = register("latex_red_panda", 0xbb2a3b, 0x5a2b49,
+    public static final RegistryObject<EntityType<LatexRedPanda>> LATEX_RED_PANDA = register("latex_red_panda", 0xbd4040, 0x663d53,
             EntityType.Builder.of(LatexRedPanda::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::jungleSpawning);
     public static final RegistryObject<EntityType<LatexShark>> LATEX_SHARK = register("latex_shark", 0x969696, 0xFFFFFF,

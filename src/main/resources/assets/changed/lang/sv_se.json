@@ -81,11 +81,14 @@
   "item.changed.owo_record": "ÒwÓ musikskiva",
   "item.changed.owo_record.desc": "Av Artemka2009",
 
+  "syringe.changed:form_special": "Beskyddare anpassad form spruta",
+
   "death.attack.changed:transfur": "%1$s förpälsvandlades",
   "death.attack.changed:transfur.player": "%1$s förpälsvandlades av %2$s",
   "death.attack.changed:white_latex": "%s upplöst i vit latex",
   "death.attack.changed:pale": "%s togs av Pale",
   "death.attack.changed:bloodloss": "%s använt främmande plasma",
+  "death.attack.changed:bloodloss.player": "1$s använt främmande plasma, tack vare %2$s",
   "death.attack.changed:fan": "%s hackades upp av en fläkt",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
@@ -231,6 +234,7 @@
   "entity.changed.latex_blue_wolf": "Latex blå varg",
   "entity.changed.latex_crocodile": "Latex krokodil",
   "entity.changed.latex_crystal_wolf": "Kristallvarg",
+  "entity.changed.latex_crystal_wolf_horned": "Behornade kristallvarg",
   "entity.changed.latex_deer": "Latex hjort",
   "entity.changed.latex_hypno_cat": "Latex hypno katt",
   "entity.changed.latex_leaf": "Latexlöv",
@@ -292,6 +296,7 @@
   "item.changed.latex_blue_wolf_spawn_egg": "Skapelseägg för latex blå varg",
   "item.changed.latex_crocodile_spawn_egg": "Skapelseägg för latex krokodil",
   "item.changed.latex_crystal_wolf_spawn_egg": "Skapelseägg för kristallvarg",
+  "item.changed.latex_crystal_wolf_horned_spawn_egg": "Skapelseägg för behornade kristallvarg",
   "item.changed.latex_deer_spawn_egg": "Skapelseägg för latex hjort",
   "item.changed.latex_hypno_cat_spawn_egg": "rSkapelseägg för latex hypno katt",
   "item.changed.latex_leaf_spawn_egg": "Skapelseägg för latexlöv",

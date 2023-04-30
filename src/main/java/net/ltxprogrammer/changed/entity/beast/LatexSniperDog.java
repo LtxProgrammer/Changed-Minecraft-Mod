@@ -16,7 +16,7 @@ public class LatexSniperDog extends AbstractLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD_S;
+        return HairStyle.BALD.get();
     }
 
     @Override
@@ -25,7 +25,7 @@ public class LatexSniperDog extends AbstractLatexWolf {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_SHADED;
+        return HairStyle.Collection.getAll();
     }
 
     @Override

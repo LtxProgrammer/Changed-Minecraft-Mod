@@ -10,11 +10,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 @Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
-    private final LatexVariant<?> form;
+    private final List<LatexVariant<?>> form;
 
-    protected AbstractLatexFluid(Properties properties, LatexVariant<?> form) {
+    protected AbstractLatexFluid(Properties properties, List<LatexVariant<?>> form) {
         super(properties);
         this.form = form;
     }
@@ -32,7 +34,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
             fluid = fluidHead;
 
         if (event.getEntityLiving().isAlive() && !event.getEntityLiving().isDeadOrDying() && fluid != null) {
-            ProcessTransfur.progressTransfur(event.getEntityLiving(), 2500, fluid.form.getFormId());
+            ProcessTransfur.progressTransfur(event.getEntityLiving(), 5000, fluid.form.get(level.random.nextInt(fluid.form.size())).getFormId());
         }
     }
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public class SwitchHandsAbility extends SimpleAbility {
     @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return variant.abilityInstances.containsKey(ChangedAbilities.EXTRA_HANDS.getId());
+        return variant.abilityInstances.containsKey(ChangedAbilities.EXTRA_HANDS.get());
     }
 
     @Override

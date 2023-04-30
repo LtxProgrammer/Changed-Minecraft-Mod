@@ -29,11 +29,11 @@ public class LatexAlien extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 
     @Override

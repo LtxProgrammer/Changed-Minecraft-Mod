@@ -21,11 +21,11 @@ public class LatexSquidDogFemale extends AbstractLatexSquidDog {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LEGACY_FEMALE_RIGHT_BANG_S;
+        return HairStyle.LONG_MESSY.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.FEMALE_SHADED;
+        return HairStyle.Collection.FEMALE.getStyles();
     }
 
     @Override

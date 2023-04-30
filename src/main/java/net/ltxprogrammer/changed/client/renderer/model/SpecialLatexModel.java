@@ -2,8 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.*;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
@@ -34,7 +33,13 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
         animator = LatexAnimator.of(this); // TODO better configuration for patreon forms
-        animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg));
+        animator.addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm));
+        animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg))
+                .addAnimator(new HeadInitAnimator<>(Head))
+                .addAnimator(new ArmBobAnimator<>(LeftArm, RightArm))
+                .addAnimator(new ArmRideAnimator<>(LeftArm, RightArm));
+        if (form.animationData().swimTail())
+            animator.addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm));
         if (Tail != null)
             animator.addPreset(form.animationData().swimTail() ? AnimatorPresets.aquaticTail(Tail, List.of()) : AnimatorPresets.standardTail(Tail, List.of()));
         if (form.animationData().hasWings()) {
@@ -45,6 +50,13 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
             this.RightWing = null;
             this.LeftWing = null;
         }
+
+        animator.hipOffset = form.hipOffset();
+        animator.torsoWidth = form.torsoWidth();
+        animator.forwardOffset = form.forwardOffset();
+        animator.torsoLength = form.torsoLength();
+        animator.armLength = form.armLength();
+        animator.legLength = form.legLength();
     }
 
     @Override

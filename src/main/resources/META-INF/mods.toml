@@ -19,7 +19,7 @@ modId="changed" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="0.11b" #mandatory
+version="0.11.2" #mandatory
 # A display name for the mod
 displayName="Changed: Minecraft Mod" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -27,15 +27,13 @@ displayName="Changed: Minecraft Mod" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="changed.png" #optional
+logoFile="icon@400.png" #optional
 # A text field displayed in the mod UI
-credits='''Dragon Snow for the original game, alex_n_italy for the original mod, iChun for open sourcing their morph mod
-
-bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803''' #optional
+credits='''Dragon Snow for the original game, alex_n_italy for the original mod, iChun for open sourcing their morph mod. bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803''' #optional
 # A text field displayed in the mod UI
 authors="LtxProgrammer" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description='''Nothing to be seen here.'''
+description='''Gooey transfur game inspired by Dragon Snow's Changed.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.changed]]
     modId="forge" #mandatory

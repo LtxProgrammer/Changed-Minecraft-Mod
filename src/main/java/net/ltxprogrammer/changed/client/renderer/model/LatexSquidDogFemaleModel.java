@@ -92,6 +92,22 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
                 .texOffs(46, 27).addBox(1.5088F, 7.8159F, -20.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.2F))
                 .texOffs(28, 79).addBox(1.5088F, 6.4159F, -20.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(1.75F, -20.0F, 20.0F, 0.0F, 0.0F, 0.1309F));
 
+        PartDefinition Hair = head.addOrReplaceChild("Hair", CubeListBuilder.create(), PartPose.offset(0.0F, 4.0F, 0.0F));
+
+        PartDefinition Base_r1 = Hair.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(24, 26).addBox(-4.5F, -8.0F, -5.0F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(27, 22).addBox(-4.75F, -6.0F, -5.0F, 2.0F, 7.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(35, 36).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(19, 37).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(56, 55).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(17, 34).addBox(3.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(34, 34).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(28, 33).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(29, 33).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(28, 34).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(28, 33).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(10, 22).addBox(-4.0F, -0.75F, 2.0F, 8.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(1, 16).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, -5.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(22, 22).addBox(-4.0F, 7.0F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.3F))
                 .texOffs(0, 16).addBox(-4.5F, 0.4F, -2.0F, 9.0F, 6.0F, 4.0F, new CubeDeformation(0.3F))
                 .texOffs(0, 73).addBox(-5.0F, 0.75F, -2.0F, 1.0F, 3.0F, 4.0F, new CubeDeformation(0.3F))

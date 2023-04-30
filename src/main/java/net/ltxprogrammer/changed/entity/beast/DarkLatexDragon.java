@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, PatronOC {
@@ -37,7 +38,12 @@ public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, Pat
         return ChangedParticles.Color3.WHITE;
     }
 
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.SHORT_MESSY.get();
+    }
+
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return List.of(HairStyle.SHORT_MESSY.get());
     }
 }

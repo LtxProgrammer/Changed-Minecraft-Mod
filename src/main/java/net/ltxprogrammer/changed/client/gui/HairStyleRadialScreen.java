@@ -78,8 +78,10 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
                         bufferSource.getBuffer(latexRenderer.getModel().renderType(latexRenderer.getTextureLocation(entity))),
                         LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1, 1, 1, alpha
                 );
-                latexRenderer.getHairLayer().render(posestack1,
-                        bufferSource, LightTexture.FULL_BRIGHT, entity, 0, 0, 0, 0, 0, alpha);
+                var hairLayer = latexRenderer.getHairLayer();
+                if (hairLayer != null)
+                    hairLayer.render(posestack1,
+                            bufferSource, LightTexture.FULL_BRIGHT, entity, 0, 0, 0, 0, 0, alpha);
             }
         });
         bufferSource.endBatch();

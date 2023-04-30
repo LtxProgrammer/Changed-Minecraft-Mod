@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
+import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedParticles;
@@ -26,58 +27,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
-    private static final Map<ModelLayerLocation, HairModel> MODEL_BY_LOCATION = new HashMap<>();
+    private final HairModel modelUpper;
+    private final HairModel modelLower;
 
     public LatexHumanoidHairLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
         super(parent);
-        Arrays.stream(HairStyle.values()).filter(style -> !MODEL_BY_LOCATION.containsKey(style)).forEach(style -> {
-            try {
-                if (style.headHair != null)
-                    MODEL_BY_LOCATION.computeIfAbsent(style.headHair.get(), location -> new HairModel(modelSet.bakeLayer(location)));
-                if (style.lowerHair != null)
-                    MODEL_BY_LOCATION.computeIfAbsent(style.lowerHair.get(), location -> new HairModel(modelSet.bakeLayer(location)));
-            } catch (Exception ex) {
-                Changed.LOGGER.error("Failed to load HairStyle model for {}", style.getSerializedName(), ex);
-            }
-        });
+        modelUpper = HairRemodel.RIG_UPPER.apply(modelSet);
+        modelLower = HairRemodel.RIG_LOWER.apply(modelSet);
     }
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float red, float green, float blue, float alpha) {
+        if (entity.isInvisible())
+            return;
         HairStyle style = entity.getHairStyle();
-        if (!style.hasModel() || style.textures.length == 0)
+        if (style.textureLayers.isEmpty())
             return;
 
         ModelPart head = this.getParentModel().getHead();
-        Model headHair = style.headHair != null ? MODEL_BY_LOCATION.get(style.headHair.get()) : null;
-        Model lowerHair = style.lowerHair != null ? MODEL_BY_LOCATION.get(style.lowerHair.get()) : null;
+
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
         if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
             pose.mulPoseMatrix(modelInterface.getPlacementCorrectors(CorrectorType.LOWER_HAIR).last().pose());
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
-        if (lowerHair != null) {
-            for (ResourceLocation layer : style.textures) {
-                ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
-                VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
-                lowerHair.renderToBuffer(pose, buffer, packedLight,
-                        overlay, color.red(), color.green(), color.blue(), alpha);
-                ++colorLayer;
-            }
+        for (ResourceLocation layer : style.textureLayers) {
+            ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
+            VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
+            modelLower.renderToBuffer(pose, buffer, packedLight,
+                    overlay, color.red(), color.green(), color.blue(), alpha);
+            ++colorLayer;
         }
         pose.popPose();
         pose.pushPose();
         head.translateAndRotate(pose);
         if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
             pose.mulPoseMatrix(modelInterface.getPlacementCorrectors(CorrectorType.HAIR).last().pose());
-        if (headHair != null) {
-            for (ResourceLocation layer : style.textures) {
-                ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
-                VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
-                headHair.renderToBuffer(pose, buffer, packedLight,
-                        overlay, color.red(), color.green(), color.blue(), alpha);
-                ++colorLayer;
-            }
+        for (ResourceLocation layer : style.textureLayers) {
+            ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
+            VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
+            modelUpper.renderToBuffer(pose, buffer, packedLight,
+                    overlay, color.red(), color.green(), color.blue(), alpha);
+            ++colorLayer;
         }
         pose.popPose();
     }

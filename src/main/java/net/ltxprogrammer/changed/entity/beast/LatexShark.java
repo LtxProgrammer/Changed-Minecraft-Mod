@@ -14,6 +14,6 @@ public class LatexShark extends AbstractLatexShark {
 
     @Override
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_FEMALE_SHADED;
+        return HairStyle.Collection.getAll();
     }
 }

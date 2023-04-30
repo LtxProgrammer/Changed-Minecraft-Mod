@@ -17,4 +17,16 @@ public class LatexRedPandaRenderer extends LatexHumanoidRenderer<LatexRedPanda, 
     public ResourceLocation getTextureLocation(LatexRedPanda p_114482_) {
         return Changed.modResource("textures/latex_red_panda.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexRedPanda, LatexRedPandaModel.Remodel, ArmorLatexSnowLeopardModel.RemodelMale<LatexRedPanda>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexRedPandaModel.Remodel(context.bakeLayer(LatexRedPandaModel.LAYER_LOCATION)),
+                    ArmorLatexSnowLeopardModel.RemodelMale::new, ArmorLatexSnowLeopardModel.RemodelMale.INNER_ARMOR, ArmorLatexSnowLeopardModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexRedPanda p_114482_) {
+            return Changed.modResource("textures/remodel/latex_red_panda.png");
+        }
+    }
 }

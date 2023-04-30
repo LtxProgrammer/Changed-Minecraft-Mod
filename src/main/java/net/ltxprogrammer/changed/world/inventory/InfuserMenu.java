@@ -293,20 +293,21 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
             this.syncCopyContainer();
 
             ServerPlayer serverplayer = (ServerPlayer)this.entity;
-            ItemStack itemstack = ItemStack.EMPTY;
-            Optional<InfuserRecipes.InfuserRecipe> recipe = serverplayer.getLevel().getServer().getRecipeManager()
+            Optional<InfuserRecipes.InfuserRecipe> recipeOptional = serverplayer.getLevel().getServer().getRecipeManager()
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE, copyContainer, serverplayer.level);
-            if (!recipe.isEmpty() && !this.internal.getStackInSlot(1).isEmpty()) {
-                Gender gender = getSelectedGender();
-                itemstack = InfuserRecipes.InfuserRecipe.getBaseFor(this.internal.getStackInSlot(1));
-                itemstack = recipe.get().processItem(itemstack, gender);
-                lastAssembledGender = gender;
-                if (this.internal.getStackInSlot(1).getTag() != null) {
-                    itemstack.getTag().putUUID("owner", this.internal.getStackInSlot(1).getTag().getUUID("owner"));
-                }
-            }
+            ItemStack input = this.internal.getStackInSlot(1);
+            recipeOptional.ifPresentOrElse(recipe -> {
+                if (input.isEmpty())
+                    return;
 
-            this.getResultSlot().set(itemstack);
+                Gender gender = getSelectedGender();
+                ItemStack newStack = recipe.processItem(InfuserRecipes.InfuserRecipe.getBaseFor(input), gender);
+                lastAssembledGender = gender;
+                if (input.getTag() != null && input.getTag().contains("owner")) {
+                    newStack.getOrCreateTag().putUUID("owner", input.getTag().getUUID("owner"));
+                }
+                this.getResultSlot().set(newStack);
+            }, () -> this.getResultSlot().set(ItemStack.EMPTY));
         }
         super.slotsChanged(container);
     }

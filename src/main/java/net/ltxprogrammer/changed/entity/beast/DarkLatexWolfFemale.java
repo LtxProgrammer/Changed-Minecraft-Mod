@@ -26,12 +26,12 @@ public class DarkLatexWolfFemale extends AbstractDarkLatexWolf {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.FEMALE_SHADED;
+        return HairStyle.Collection.getAll();
     }
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.FEMALE_NO_BANGS_S;
+        return HairStyle.BALD.get();
     }
 
     @Override

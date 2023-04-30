@@ -117,7 +117,7 @@ public class PatreonBenefits {
             if (object.has("hairStyles")) {
                 if (object.get("hairStyles").isJsonArray()) object.get("hairColor").getAsJsonArray().forEach(style -> {
                     try {
-                        styles.add(HairStyle.valueOf(style.getAsString()));
+                        styles.add(ChangedRegistry.HAIR_STYLE.get().getValue(ResourceLocation.tryParse(style.getAsString())));
                     } catch (Exception ex) {
                         LOGGER.warn("Bad hairStyle {}", style);
                     }
@@ -125,7 +125,7 @@ public class PatreonBenefits {
 
                 else {
                     try {
-                        styles.addAll(HairStyle.Collections.getCollection(ResourceLocation.tryParse(object.get("hairStyles").getAsString())));
+                        styles.addAll(Objects.requireNonNull(HairStyle.Collection.byName(object.get("hairStyles").getAsString())).getStyles());
                     } catch (Exception ex) {
                         LOGGER.warn("Bad type {}", object.get("hairStyles"));
                     }
@@ -133,7 +133,7 @@ public class PatreonBenefits {
             }
 
             if (styles.isEmpty())
-                styles.add(HairStyle.BALD);
+                styles.add(HairStyle.BALD.get());
 
             return new EntityData(
                     ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "primaryColor", "WHITE")),
@@ -161,7 +161,13 @@ public class PatreonBenefits {
             DelayLoadedModel armorModelInner,
             DelayLoadedModel armorModelOuter,
 
-            float shadowSize
+            float shadowSize,
+            float hipOffset,
+            float torsoWidth,
+            float forwardOffset,
+            float torsoLength,
+            float armLength,
+            float legLength
     ) {
         public static ModelData fromJSON(Function<String, JsonObject> jsonGetter, String fullId, JsonObject object) {
             ResourceLocation textureLocation = Changed.modResource(fullId + "/texture.png");
@@ -183,7 +189,13 @@ public class PatreonBenefits {
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/model.json")),
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_inner.json")),
                     DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_outer.json")),
-                    GsonHelper.getAsFloat(object, "shadowsize", 0.5f)
+                    GsonHelper.getAsFloat(object, "shadowsize", 0.5f),
+                    GsonHelper.getAsFloat(object, "hipOffset", -2.0f),
+                    GsonHelper.getAsFloat(object, "torsoWidth", 5.0f),
+                    GsonHelper.getAsFloat(object, "forwardOffset", 0.0f),
+                    GsonHelper.getAsFloat(object, "torsoLength", 12.0f),
+                    GsonHelper.getAsFloat(object, "armLength", 12.0f),
+                    GsonHelper.getAsFloat(object, "legLength", 12.0f)
             );
         }
 
@@ -297,7 +309,7 @@ public class PatreonBenefits {
     private static String FORMS_BASE = REPO_BASE + "forms/";
 
     private static void updatePathStrings() {
-        REPO_BASE = "https://" + Changed.config.githubDomain + "/LtxProgrammer/patreon-benefits/main/";
+        REPO_BASE = "https://" + Changed.config.common.githubDomain.get() + "/LtxProgrammer/patreon-benefits/main/";
         LINKS_DOCUMENT = REPO_BASE + "listing.json";
         VERSION_DOCUMENT = REPO_BASE + "version.txt";
         FORMS_DOCUMENT = REPO_BASE + "forms/index.json";

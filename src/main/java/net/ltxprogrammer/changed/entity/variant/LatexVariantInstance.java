@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.LatexBee;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
@@ -76,7 +77,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
         this.transfurMode = parent.transfurMode;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
-        parent.abilities.forEach(ability -> builder.put(ability.get(), ability.get().makeInstance(host, this)));
+        parent.abilities.forEach(abilitySupplier -> {
+            var ability = abilitySupplier.get();
+            if (ability != null)
+                builder.put(ability, ability.makeInstance(host, this));
+        });
         abilityInstances = builder.build();
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -554,16 +559,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
             CompoundTag tagAbility = new CompoundTag();
             ability.saveData(tagAbility);
             if (!tagAbility.isEmpty())
-                tagAbilities.put(name.toString(), tagAbility);
+                tagAbilities.put(Objects.requireNonNull(name.getRegistryName()).toString(), tagAbility);
         });
         return tagAbilities;
     }
 
     public void loadAbilities(CompoundTag tagAbilities) {
         abilityInstances.forEach((name, instance) -> {
-            if (!tagAbilities.contains(name.toString()))
+            String abName = Objects.requireNonNull(name.getRegistryName()).toString();
+            if (!tagAbilities.contains(abName))
                 return;
-            CompoundTag abilityTag = tagAbilities.getCompound(name.toString());
+            CompoundTag abilityTag = tagAbilities.getCompound(abName);
             instance.readData(abilityTag);
         });
     }

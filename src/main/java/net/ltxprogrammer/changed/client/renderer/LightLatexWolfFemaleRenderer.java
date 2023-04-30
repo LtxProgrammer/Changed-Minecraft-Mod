@@ -17,4 +17,16 @@ public class LightLatexWolfFemaleRenderer extends LatexHumanoidRenderer<LightLat
     public ResourceLocation getTextureLocation(LightLatexWolfFemale p_114482_) {
         return Changed.modResource("textures/light_latex_wolf_female.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LightLatexWolfFemale, LightLatexWolfFemaleModel.Remodel, ArmorLatexWolfModel.RemodelFemale<LightLatexWolfFemale>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LightLatexWolfFemaleModel.Remodel(context.bakeLayer(LightLatexWolfFemaleModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelFemale::new, ArmorLatexWolfModel.RemodelFemale.INNER_ARMOR, ArmorLatexWolfModel.RemodelFemale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LightLatexWolfFemale p_114482_) {
+            return Changed.modResource("textures/remodel/light_latex_wolf_female.png");
+        }
+    }
 }

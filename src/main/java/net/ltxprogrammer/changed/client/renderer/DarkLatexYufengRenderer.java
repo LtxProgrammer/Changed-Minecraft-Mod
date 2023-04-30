@@ -17,4 +17,16 @@ public class DarkLatexYufengRenderer extends LatexHumanoidRenderer<DarkLatexYufe
     public ResourceLocation getTextureLocation(DarkLatexYufeng p_114482_) {
         return Changed.modResource("textures/dark_latex_yufeng.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<DarkLatexYufeng, DarkLatexYufengModel.Remodel, ArmorLatexBlueDragonModel.RemodelMale<DarkLatexYufeng>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new DarkLatexYufengModel.Remodel(context.bakeLayer(DarkLatexYufengModel.LAYER_LOCATION)),
+                    ArmorLatexBlueDragonModel.RemodelMale::new, ArmorLatexBlueDragonModel.RemodelMale.INNER_ARMOR, ArmorLatexBlueDragonModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(DarkLatexYufeng p_114482_) {
+            return Changed.modResource("textures/remodel/dark_latex_yufeng.png");
+        }
+    }
 }

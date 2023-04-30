@@ -26,11 +26,11 @@ public class LatexMedusaCat extends LatexEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.FEMALE_SIDE_BANGS;
+        return HairStyle.LONG_MESSY.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.FEMALE;
+        return HairStyle.Collection.FEMALE.getStyles();
     }
 
     @Override

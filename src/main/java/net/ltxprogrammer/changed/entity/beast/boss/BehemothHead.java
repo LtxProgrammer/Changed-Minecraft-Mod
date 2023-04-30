@@ -39,7 +39,7 @@ public class BehemothHead extends Behemoth {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.NONE;
+        return HairStyle.Collection.EMPTY;
     }
 
     protected void setAttributes(AttributeMap attributes) {

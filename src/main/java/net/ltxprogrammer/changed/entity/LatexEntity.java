@@ -3,10 +3,12 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
@@ -60,11 +62,11 @@ public abstract class LatexEntity extends Monster {
     }
 
     public @NotNull HairStyle getHairStyle() {
-        return hairStyle != null ? hairStyle : HairStyle.BALD;
+        return hairStyle != null ? hairStyle : HairStyle.BALD.get();
     }
 
     public void setHairStyle(HairStyle style) {
-        this.hairStyle = style != null ? style : HairStyle.BALD;
+        this.hairStyle = style != null ? style : HairStyle.BALD.get();
     }
 
     public abstract ChangedParticles.Color3 getHairColor(int layer);
@@ -72,18 +74,15 @@ public abstract class LatexEntity extends Monster {
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
             var styles = this.getValidHairStyles();
-            return styles.get(level.random.nextInt(styles.size()));
+            return styles.isEmpty() ? HairStyle.BALD.get() :  styles.get(level.random.nextInt(styles.size()));
         }
 
         else
-            return HairStyle.BALD;
+            return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        if (this instanceof GenderedEntity gendered)
-            return new ArrayList<>(HairStyle.Sorted.BY_GENDER.get(gendered.getGender()));
-        else
-            return Arrays.stream(HairStyle.values()).toList();
+        return HairStyle.Collection.getAll();
     }
 
     public static @NotNull List<HairStyle> addHairStyle(@Nullable List<HairStyle> list, HairStyle... styles) {
@@ -212,7 +211,7 @@ public abstract class LatexEntity extends Monster {
         super(type, level);
         this.setAttributes(getAttributes());
         this.setHealth((float)this.getAttributes().getInstance(Attributes.MAX_HEALTH).getBaseValue());
-        if (!(this instanceof Pudding) && this.getNavigation() instanceof GroundPathNavigation navigation)
+        if (!type.is(ChangedTags.EntityTypes.ARMLESS) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
 
         hairStyle = this.getDefaultHairStyle();
@@ -225,6 +224,7 @@ public abstract class LatexEntity extends Monster {
         if (this instanceof DarkLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(25.0);
         if (this instanceof WhiteLatexWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
         if (this instanceof LatexRaccoon) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
+        if (this instanceof HeadlessKnight) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getLatexLandSpeed());
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getLatexSwimSpeed());
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
@@ -271,7 +271,7 @@ public abstract class LatexEntity extends Monster {
                     return false;
             }
         });
-        if (!(this instanceof Pudding) && GoalUtils.hasGroundPathNavigation(this))
+        if (!this.getType().is(ChangedTags.EntityTypes.ARMLESS) && GoalUtils.hasGroundPathNavigation(this))
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
 
         if (this instanceof WhiteLatexEntity)
@@ -312,19 +312,34 @@ public abstract class LatexEntity extends Monster {
 
     public abstract ChangedParticles.Color3 getDripColor();
 
+    public float getDripRate(float damage) {
+        return Mth.lerp(damage, 0.02f, 0.1f); // 1/50 -> 1/10
+    }
+
+    public final float computeHealthRatio() {
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getHealth() / this.underlyingPlayer.getMaxHealth();
+        else
+            return this.getHealth() / this.getMaxHealth();
+    }
+
     public void visualTick(Level level) {
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
-        if (level.isClientSide && level.random.nextInt(25) == 0) {
-            ChangedParticles.Color3 color = getDripColor();
-            if (color != null) {
-                EntityDimensions dimensions = getDimensions(getPose());
-                double dh = level.random.nextDouble(dimensions.height);
-                double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-                double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-                level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-            }
+        if (!level.isClientSide)
+            return;
+
+        if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
+            return;
+
+        ChangedParticles.Color3 color = getDripColor();
+        if (color != null) {
+            EntityDimensions dimensions = getDimensions(getPose());
+            double dh = level.random.nextDouble(dimensions.height);
+            double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
+            double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
+            level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
         }
     }
 
@@ -385,12 +400,12 @@ public abstract class LatexEntity extends Monster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("HairStyle"))
-            hairStyle = HairStyle.valueOf(tag.getString("HairStyle"));
+            hairStyle = ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("HairStyle", hairStyle.name());
+        tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
     }
 }

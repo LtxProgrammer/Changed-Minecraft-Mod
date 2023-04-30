@@ -23,7 +23,7 @@ public abstract class AbstractLatexMantaRay extends AbstractAquaticGenderedEntit
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD;
+        return HairStyle.BALD.get();
     }
 
     @Override

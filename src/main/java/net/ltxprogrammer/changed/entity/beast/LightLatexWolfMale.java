@@ -22,11 +22,11 @@ public class LightLatexWolfMale extends AbstractLightLatexWolf {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.MALE_STANDARD_S;
+        return HairStyle.SHORT_MESSY.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collections.MALE_SHADED;
+        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

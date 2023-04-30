@@ -81,6 +81,23 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
                 .texOffs(32, 46).addBox(-1.5F, 0.0F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(24, 0).addBox(-2.0F, -2.0F, -6.0F, 4.0F, 2.0F, 2.0F, new CubeDeformation(0.001F)), PartPose.offset(0.0F, -2.0F, 0.0F));
 
+        PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition Hair_r1 = Hair.addOrReplaceChild("Hai_r1", CubeListBuilder.create().texOffs(54, 29).addBox(-4.5F, -8.0F, -4.75F, 9.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(14, 62).addBox(-4.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(20, 62).addBox(2.0F, -8.75F, 3.75F, 2.0F, 11.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(32, 57).addBox(-2.0F, -9.0F, 4.0F, 4.0F, 12.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(54, 62).addBox(3.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(64, 20).addBox(-4.75F, -4.0F, 0.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE)
+                .texOffs(32, 26).addBox(-5.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(8, 70).addBox(3.75F, -4.0F, -3.5F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(70, 47).addBox(-4.75F, -4.0F, -3.5F, 1.0F, 3.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(42, 17).addBox(4.0F, -8.0F, -4.0F, 1.0F, 4.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(42, 30).addBox(-4.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(44, 8).addBox(2.0F, -8.75F, -4.0F, 2.0F, 1.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(54, 32).addBox(-4.0F, -0.75F, 2.0F, 8.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(16, 25).addBox(-2.0F, -9.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+
         PartDefinition leftear_r1 = Head.addOrReplaceChild("leftear_r1", CubeListBuilder.create().texOffs(64, 62).addBox(-7.75F, -34.75F, -1.0F, 2.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 26.0F, 0.0F, 0.0F, 0.0F, 0.3054F));
 
         PartDefinition rightear_r1 = Head.addOrReplaceChild("rightear_r1", CubeListBuilder.create().texOffs(64, 0).addBox(5.75F, -34.75F, -1.0F, 2.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 26.0F, 0.0F, 0.0F, 0.0F, -0.3054F));
@@ -176,6 +193,15 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
         public void setupAnim(@NotNull LatexMedusaCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
             animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
+
+    public PoseStack getPlacementCorrectors(CorrectorType type) {
+        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        if (type == CorrectorType.HAIR)
+            corrector.translate(0.0f, 0.5f / 15.0f, 0.0f);
+        else if (type == CorrectorType.LOWER_HAIR)
+            corrector.translate(0.0f, -0.5f / 16.0f, -0.025f);
+        return corrector;
+    }
 
         public ModelPart getArm(HumanoidArm p_102852_) {
             return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
