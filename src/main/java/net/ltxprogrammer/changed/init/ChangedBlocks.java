@@ -122,7 +122,7 @@ public class ChangedBlocks {
     public static final RegistryObject<ConnectedFloorBlock> TILES_WHITE_CONNECTED = register("tiles_white_connected", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.copy(TILES_WHITE.get())));
     public static final RegistryObject<ConnectedFloorBlock> ORANGE_LAB_CARPETING = register("orange_lab_carpeting", () -> new ConnectedFloorBlock(BlockBehaviour.Properties.copy(Blocks.ORANGE_WOOL)));
     public static final RegistryObject<VentFanBlock> VENT_FAN = register("vent_fan", VentFanBlock::new);
-    public static final RegistryObject<TrapDoorBlock> VENT_HATCH = register("vent_hatch", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).sound(SoundType.METAL).requiresCorrectToolForDrops()), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<VentHatchBlock> VENT_HATCH = register("vent_hatch", () -> new VentHatchBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).sound(SoundType.METAL).requiresCorrectToolForDrops()), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LabBlock> WALL_BLUE_STRIPED = register("wall_blue_striped", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).sound(SoundType.STONE).strength(1.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_BLUE_TILED = register("wall_blue_tiled", () -> new LabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLUE).sound(SoundType.STONE).strength(1.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_CAUTION = register("wall_caution", () -> new LabBlock(BlockBehaviour.Properties.copy(TILES_CAUTION.get())));
