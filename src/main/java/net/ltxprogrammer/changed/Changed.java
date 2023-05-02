@@ -76,6 +76,8 @@ public class Changed {
         //    vvv Last to process vvv
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);
+
+        ChangedEnchantments.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
         ChangedFeatures.REGISTRY.register(modEventBus);
         ChangedBiomes.REGISTRY.register(modEventBus);
