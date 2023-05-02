@@ -21,6 +21,6 @@ public class LeglessCrouchAnimator<T extends LatexEntity, M extends EntityModel<
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         abdomen.y = 12.2F + core.hipOffset;
         abdomen.z = 4.0F + core.forwardOffset;
-        lowerAbdomen.xRot = (float) Math.toRadians(75);
+        lowerAbdomen.xRot = (float) Math.toRadians(60);
     }
 }
