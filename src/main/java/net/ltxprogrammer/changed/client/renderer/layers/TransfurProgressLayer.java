@@ -22,9 +22,9 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
         super(parent);
     }
 
-    public static ResourceLocation getProgressTexture(int ticks) {
-        int num = ticks / (ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER / 10);
-        return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min(num, 10), 1) + ".png");
+    public static ResourceLocation getProgressTexture(float progress) {
+        float num = progress / (Changed.config.server.transfurTolerance.get() / 10.0f);
+        return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min((int)Math.floor(num), 10), 1) + ".png");
     }
 
     public static ChangedParticles.Color3 getProgressColor(ResourceLocation type) {
@@ -33,10 +33,10 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int i, AbstractClientPlayer player, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
         var progress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (progress != null && progress.ticks() > 0) {
+        if (progress != null && progress.progress() > 0) {
             var color = getProgressColor(progress.type());
             this.getParentModel().renderToBuffer(pose,
-                    bufferSource.getBuffer(RenderType.entityCutoutNoCull(getProgressTexture(progress.ticks()))),
+                    bufferSource.getBuffer(RenderType.entityCutoutNoCull(getProgressTexture(progress.progress()))),
                     i,
                     LivingEntityRenderer.getOverlayCoords(player, 0.0F),
                     color.red(),

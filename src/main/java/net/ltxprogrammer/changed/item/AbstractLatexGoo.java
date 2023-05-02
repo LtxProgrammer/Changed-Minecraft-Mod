@@ -36,7 +36,7 @@ public class AbstractLatexGoo extends Item {
             if (variant.getLatexType().isHostileTo(type))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
-        ProcessTransfur.progressTransfur(entity, 10000, variants.get(level.getRandom().nextInt(variants.size())));
+        ProcessTransfur.progressTransfur(entity, 11.0f, variants.get(level.getRandom().nextInt(variants.size())));
         return super.finishUsingItem(itemStack, level, entity);
     }
 

@@ -53,10 +53,10 @@ public class TransfurProgressOverlay {
         if (player == null || ProcessTransfur.isPlayerLatex(player))
             return;
         var progress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (progress.ticks() <= 0)
+        if (progress.progress() <= 0.0f)
             return;
 
-        float tickProgress = (float)progress.ticks() / (float)ProcessTransfur.TRANSFUR_PROGRESSION_TAKEOVER;
+        float tickProgress = progress.progress() / Changed.config.server.transfurTolerance.get();
         float distance = (1.0f - tickProgress) * 20.0f;
         var color = TransfurProgressLayer.getProgressColor(progress.type());
 

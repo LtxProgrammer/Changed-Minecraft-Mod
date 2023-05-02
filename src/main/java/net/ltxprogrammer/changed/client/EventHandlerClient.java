@@ -33,7 +33,7 @@ public class EventHandlerClient {
         if (player == null)
             return;
         var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (Math.abs(oldProgress.ticks() - progress.ticks()) < 20 && oldProgress.type().equals(progress.type())) // Prevent sync shudder
+        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.type().equals(progress.type())) // Prevent sync shudder
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });

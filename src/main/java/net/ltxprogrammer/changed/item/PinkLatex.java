@@ -101,7 +101,7 @@ public class PinkLatex implements ArmorMaterial {
             tag.putInt("age", age);
             if (age < 12000) // Half a minecraft day
                 return;
-            if (ProcessTransfur.progressTransfur(entity, 3000, LatexVariant.LATEX_PINK_WYVERN.getFormId()))
+            if (ProcessTransfur.progressTransfur(entity, 3.0f, LatexVariant.LATEX_PINK_WYVERN.getFormId()))
                 itemStack.shrink(1);
         }
 
