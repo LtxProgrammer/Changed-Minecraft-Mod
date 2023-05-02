@@ -50,7 +50,7 @@ public class DarkLatexMask extends Item implements WearableItem {
         LatexVariant<?> variant = Syringe.getVariant(itemStack);
         if (variant == null)
             variant = LatexVariant.DARK_LATEX_WOLF.male();
-        if (ProcessTransfur.progressTransfur(entity, 2500, variant.getFormId()))
+        if (ProcessTransfur.progressTransfur(entity, 11.0f, variant.getFormId()))
             itemStack.shrink(1);
     }
 
