@@ -28,10 +28,15 @@ public class LatexWatermelonCat extends AbstractWatermelonCat implements PatronO
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+        return ChangedParticles.Color3.fromInt(0xc7ff5a);
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
+        return HairStyle.Collection.FEMALE.getStyles();
+    }
+
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.LONG_KEPT.get();
     }
 }
