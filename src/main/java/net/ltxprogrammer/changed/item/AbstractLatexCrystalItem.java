@@ -24,7 +24,7 @@ public class AbstractLatexCrystalItem extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
-        ProcessTransfur.progressTransfur(entity, 5000,variants.get(source.getRandom().nextInt(variants.size())).getFormId());
+        ProcessTransfur.progressTransfur(entity, 5.0f, variants.get(source.getRandom().nextInt(variants.size())).getFormId());
         return super.hurtEnemy(stack, entity, source);
     }
 }

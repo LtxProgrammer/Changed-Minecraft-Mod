@@ -10,6 +10,8 @@ import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.inventory.SpecialLoadingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.FloatTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -49,10 +51,17 @@ public abstract class ServerPlayerMixin extends Player {
         if (tag.contains("PaleExposure")) {
             Pale.setPaleExposure(this, tag.getInt("PaleExposure"));
         }
-        if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType"))
-            ProcessTransfur.setPlayerTransfurProgress(this,
-                    new ProcessTransfur.TransfurProgress(tag.getInt("TransfurProgress"),
-                            new ResourceLocation(tag.getString("TransfurProgressType"))));
+        if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType")) {
+            if (tag.get("TransfurProgress") instanceof IntTag intTag) { // Adapt to old progress saving method
+                ProcessTransfur.setPlayerTransfurProgress(this,
+                        new ProcessTransfur.TransfurProgress((float)intTag.getAsInt() * 0.001f,
+                                new ResourceLocation(tag.getString("TransfurProgressType"))));
+            } else if (tag.get("TransfurProgress") instanceof FloatTag floatTag) {
+                ProcessTransfur.setPlayerTransfurProgress(this,
+                        new ProcessTransfur.TransfurProgress(floatTag.getAsFloat(),
+                                new ResourceLocation(tag.getString("TransfurProgressType"))));
+            }
+        }
         if (tag.contains("LatexVariant")) {
             ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
         }
@@ -66,7 +75,7 @@ public abstract class ServerPlayerMixin extends Player {
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
-        tag.putInt("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).ticks());
+        tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).progress());
         tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
         ProcessTransfur.ifPlayerLatex(this, variant -> {
             TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());

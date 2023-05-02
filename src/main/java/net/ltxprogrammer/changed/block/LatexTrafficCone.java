@@ -70,7 +70,7 @@ public class LatexTrafficCone extends AbstractCustomShapeBlock implements Wearab
 
     @Override
     public void wearTick(LivingEntity entity, ItemStack itemStack) {
-        if (ProcessTransfur.progressTransfur(entity, 2500, LatexVariant.LATEX_TRAFFIC_CONE_DRAGON.getFormId()))
+        if (ProcessTransfur.progressTransfur(entity, 2.5f, LatexVariant.LATEX_TRAFFIC_CONE_DRAGON.getFormId()))
             itemStack.shrink(1);
     }
 }

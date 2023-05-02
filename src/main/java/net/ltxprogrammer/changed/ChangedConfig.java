@@ -34,10 +34,21 @@ public class ChangedConfig {
         }
     }
 
+    public static class Server {
+        public final ForgeConfigSpec.ConfigValue<Float> transfurTolerance;
+
+        public Server(ForgeConfigSpec.Builder builder) {
+            builder.comment("Replacing gamerule transfurTolerance, this config value acts like setting the max health of the player.");
+            transfurTolerance = builder.define("transfurTolerance", 20.0f);
+        }
+    }
+
     private final Pair<Common, ForgeConfigSpec> commonPair;
     private final Pair<Client, ForgeConfigSpec> clientPair;
+    private final Pair<Server, ForgeConfigSpec> serverPair;
     public final Common common;
     public final Client client;
+    public final Server server;
 
     private static void earlyLoad(ModConfig.Type type, Pair<?, ForgeConfigSpec> specPair) {
         for (var config : ConfigTracker.INSTANCE.configSets().get(type)) {
@@ -54,14 +65,17 @@ public class ChangedConfig {
                 .configure(Common::new);
         clientPair = new ForgeConfigSpec.Builder()
                 .configure(Client::new);
+        serverPair = new ForgeConfigSpec.Builder()
+                .configure(Server::new);
 
         context.registerConfig(ModConfig.Type.COMMON, commonPair.getRight());
         context.registerConfig(ModConfig.Type.CLIENT, clientPair.getRight());
+        context.registerConfig(ModConfig.Type.SERVER, serverPair.getRight());
         common = commonPair.getLeft();
         client = clientPair.getLeft();
+        server = serverPair.getLeft();
 
         // Early load client config
-        earlyLoad(ModConfig.Type.COMMON, commonPair);
         earlyLoad(ModConfig.Type.CLIENT, clientPair);
     }
 }
