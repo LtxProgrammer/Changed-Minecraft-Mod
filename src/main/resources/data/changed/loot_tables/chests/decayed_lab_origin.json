@@ -33,13 +33,26 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "min": 0.0,
+                "max": 1.0
               },
               "add": false
             }
           ],
           "name": "changed:owo_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly",
+              "enchantments": [
+                "changed:latex_protection"
+              ]
+            }
+          ],
+          "name": "minecraft:book"
         },
         {
           "type": "minecraft:item",
@@ -107,7 +120,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 16,
           "name": "minecraft:diamond"
         },
         {
@@ -118,22 +131,16 @@
         {
           "type": "minecraft:empty",
           "weight": 15
-        }
-      ]
-    },
-    {
-      "rolls": 4,
-      "bonus_rolls": 0.0,
-      "entries": [
+        },
         {
           "type": "minecraft:item",
           "weight": 5,
           "functions": [
             {
-              "function": "minecraft:set_count",
-              "count": {
+              "function": "minecraft:set_damage",
+                "damage": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
+                "min": 0.8,
                 "max": 1.0
               },
               "add": false
@@ -172,30 +179,28 @@
             }
           ],
           "name": "changed:dark_latex_goo"
-        }
-      ]
-    },
-    {
-      "rolls": 2,
-      "entries": [
+        },
         {
-          "type": "minecraft:item",
-          "name": "changed:latex_syringe",
-          "functions": [
+          "rolls": 2,
+          "entries": [
             {
-              "function": "changed:random_variant",
-              "variants": [
-                "changed:form_latex_sniper_dog",
-                "changed:form_latex_benign_wolf",
-                "changed:form_light_latex_wolf/male",
-                "changed:form_light_latex_wolf/female",
-                "changed:form_light_latex_wolf_organic",
-                "changed:form_light_latex_knight"
+              "type": "minecraft:item",
+              "name": "changed:latex_syringe",
+              "functions": [
+                {
+                  "function": "changed:random_variant",
+                  "variants": [
+                    "changed:form_latex_sniper_dog",
+                    "changed:form_latex_benign_wolf",
+                    "changed:form_light_latex_wolf/male",
+                    "changed:form_light_latex_wolf/female",
+                    "changed:form_light_latex_wolf_organic",
+                    "changed:form_light_latex_knight"
+                  ]
+                }
               ]
             }
           ]
         }
-      ]
-    }
   ]
 }
