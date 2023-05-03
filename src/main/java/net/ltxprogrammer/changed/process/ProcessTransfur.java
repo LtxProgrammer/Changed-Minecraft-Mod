@@ -17,7 +17,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.util.Util;
-import net.ltxprogrammer.changed.world.enchantments.TransfurResistanceEnchantment;
+import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -96,7 +96,7 @@ public class ProcessTransfur {
             player.hurtTime = player.hurtDuration;
             player.setLastHurtByMob(null);
 
-            amount = TransfurResistanceEnchantment.getTransfurResistance(player, amount);
+            amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
             float next = getPlayerTransfurProgress(player).progress + amount;
             setPlayerTransfurProgress(player, new TransfurProgress(next, type));
             return next >= Changed.config.server.transfurTolerance.get();
@@ -104,7 +104,7 @@ public class ProcessTransfur {
     }
 
     public static boolean willTransfur(LivingEntity entity, float amount) {
-        amount = TransfurResistanceEnchantment.getTransfurResistance(entity, amount);
+        amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
 
         if (entity instanceof Player player) {
             if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
@@ -147,7 +147,7 @@ public class ProcessTransfur {
         if (entity instanceof Player player)
             return progressPlayerTransfur(player, amount, type);
         else {
-            amount = TransfurResistanceEnchantment.getTransfurResistance(entity, amount);
+            amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
             LatexVariant<?> latexVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(type);
 
