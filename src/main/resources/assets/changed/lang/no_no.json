@@ -124,6 +124,8 @@
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   "effect.changed.shock": "Støt",
 
+  "enchantment.changed.latex_protection": "Lateksbeskyttelse",
+
   "block.changed.bedside_iv_rack": "IV stativ",
   "block.changed.beehive_bed": "Bikubeseng",
   "block.changed.beehive_wall": "Bikubevegg",
@@ -141,6 +143,7 @@
   "block.changed.dark_latex_crystal_large": "Stor mørk lateks krystall",
   "block.changed.dark_latex_dragon_crystal": "Mørk lateks dragekrystall",
   "block.changed.dark_latex_ice": "Mørk lateks is",
+  "block.changed.duct": "Ventilasjonskanal",
   "block.changed.infuser": "Tilfører",
   "block.changed.iron_crate": "Jernkasse",
   "block.changed.keypad": "Tastatur",

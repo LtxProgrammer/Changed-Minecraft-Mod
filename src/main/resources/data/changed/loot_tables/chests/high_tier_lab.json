@@ -61,6 +61,19 @@
       ]
     },
     {
+      "type": "minecraft:item",
+      "weight": 5,
+      "functions": [
+        {
+          "function": "minecraft:enchant_randomly",
+          "enchantments": [
+            "changed:latex_protection"
+          ]
+        }
+      ],
+      "name": "minecraft:book"
+    },
+    {
       "rolls": 1,
       "entries": [
         {
