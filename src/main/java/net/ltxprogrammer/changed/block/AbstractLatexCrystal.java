@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.fml.DistExecutor;
@@ -37,6 +39,7 @@ import static net.ltxprogrammer.changed.block.AbstractDoubleLatexCrystal.HALF;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
+    public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
     private final LatexVariant<?> variant;
     private final Supplier<? extends Item> crystal;
 
@@ -52,7 +55,16 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
         this.crystal = crystal;
     }
 
+    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
+        return SHAPE_WHOLE;
+    }
+
     @Override
+    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+        return SHAPE_WHOLE;
+    }
+
+        @Override
     protected boolean mayPlaceOn(BlockState p_51042_, BlockGetter p_51043_, BlockPos p_51044_) {
         return p_51042_.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == LatexType.DARK_LATEX;
     }
