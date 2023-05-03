@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.world.enchantments.TransfurResistanceEnchantment;
+import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,5 +13,5 @@ public class ChangedEnchantments {
     public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, Changed.MODID);
 
     public static final RegistryObject<Enchantment> TRANSFUR_RESISTANCE =
-            REGISTRY.register("transfur_resistance", () -> new TransfurResistanceEnchantment(Enchantment.Rarity.RARE, ARMOR_SLOTS));
+            REGISTRY.register("latex_protection", () -> new LatexProtectionEnchantment(Enchantment.Rarity.RARE, ARMOR_SLOTS));
 }
