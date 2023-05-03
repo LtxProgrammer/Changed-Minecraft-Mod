@@ -46,6 +46,14 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
             this.RightWing = Torso.getChild("RightWing");
             this.LeftWing = Torso.getChild("LeftWing");
             animator.addPreset(AnimatorPresets.winged(LeftWing, RightWing));
+        } else if (form.animationData().hasWingsV2()) {
+            this.RightWing = Torso.getChild("RightWing");
+            this.LeftWing = Torso.getChild("LeftWing");
+            ModelPart leftWingRoot = LeftWing.getChild("WingRoot");
+            ModelPart rightWingRoot = RightWing.getChild("WingRoot2");
+            animator.addPreset(AnimatorPresets.wingedV2(
+                    leftWingRoot, leftWingRoot.getChild("bone3"), leftWingRoot.getChild("bone3").getChild("bone4"),
+                    rightWingRoot, rightWingRoot.getChild("bone"), rightWingRoot.getChild("bone").getChild("bone2")));
         } else {
             this.RightWing = null;
             this.LeftWing = null;
