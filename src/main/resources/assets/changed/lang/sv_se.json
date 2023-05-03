@@ -124,6 +124,8 @@
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
 
+  "enchantment.changed.transfur_resistance": "Latexskydd",
+
   "block.changed.bedside_iv_rack": "IV kuggstång",
   "block.changed.beehive_bed": "Bikupasäng",
   "block.changed.beehive_wall": "Bikupavägg",
@@ -141,6 +143,7 @@
   "block.changed.dark_latex_crystal_large": "Stor mörk latexkristall",
   "block.changed.dark_latex_dragon_crystal": "Mörk latex drakekristall",
   "block.changed.dark_latex_ice": "Mörk latex is",
+  "block.changed.duct": "Ventilationskanal",
   "block.changed.infuser": "Infusionsanordning",
   "block.changed.iron_crate": "järnspjällåda",
   "block.changed.keypad": "Knappsats",

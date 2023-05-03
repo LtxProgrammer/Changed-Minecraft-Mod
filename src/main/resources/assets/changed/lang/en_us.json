@@ -124,6 +124,8 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
 
+  "enchantment.changed.transfur_resistance": "Latex Protection",
+
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.beehive_bed": "Beehive Bed",
   "block.changed.beehive_wall": "Beehive Wall",
@@ -141,6 +143,7 @@
   "block.changed.dark_latex_crystal_large": "Large Dark Latex Crystal",
   "block.changed.dark_latex_dragon_crystal": "Dark Latex Dragon Crystal",
   "block.changed.dark_latex_ice": "Dark Latex Ice",
+  "block.changed.duct": "Ventilation Duct",
   "block.changed.infuser": "Infuser",
   "block.changed.iron_crate": "Iron Crate",
   "block.changed.keypad": "Keypad",
