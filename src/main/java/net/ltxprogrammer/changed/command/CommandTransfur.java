@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.util.ArrayList;
 
@@ -49,15 +51,17 @@ public class CommandTransfur {
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> untransfurPlayer(context.getSource(), EntityArgument.getPlayer(context, "player")))
                 ));
-        event.getDispatcher().register(Commands.literal("specialsyringe").requires(p -> p.hasPermission(3))
-                .then(Commands.argument("uuid", UuidArgument.uuid())
-                        .executes(context -> {
-                            ItemStack stack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
-                            Syringe.setUnpureVariant(stack, Changed.modResource("special/form_" + UuidArgument.getUuid(context, "uuid")));
-                            context.getSource().getPlayerOrException().addItem(stack);
-                            return Command.SINGLE_SUCCESS;
-                        })
-                ));
+        if (SharedConstants.IS_RUNNING_IN_IDE || !FMLLoader.isProduction()) {
+            event.getDispatcher().register(Commands.literal("specialsyringe").requires(p -> p.hasPermission(3))
+                    .then(Commands.argument("uuid", UuidArgument.uuid())
+                            .executes(context -> {
+                                ItemStack stack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
+                                Syringe.setUnpureVariant(stack, Changed.modResource("special/form_" + UuidArgument.getUuid(context, "uuid")));
+                                context.getSource().getPlayerOrException().addItem(stack);
+                                return Command.SINGLE_SUCCESS;
+                            })
+                    ));
+        }
     }
 
     private static int transfurPlayer(CommandSourceStack source, ServerPlayer player, ResourceLocation form) throws CommandSyntaxException {

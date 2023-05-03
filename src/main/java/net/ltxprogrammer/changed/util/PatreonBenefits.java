@@ -76,8 +76,9 @@ public class PatreonBenefits {
     public record AnimationData(
             boolean hasTail,
             boolean swimTail,
-            boolean hasWings) {
-        public static final AnimationData DEFAULT = new AnimationData(true, false, false);
+            boolean hasWings,
+            boolean hasWingsV2) {
+        public static final AnimationData DEFAULT = new AnimationData(true, false, false, false);
 
         public static AnimationData fromJSON(JsonElement object) {
             if (object == null || object.isJsonNull() || !object.isJsonObject()) return DEFAULT;
@@ -86,7 +87,8 @@ public class PatreonBenefits {
                 return new AnimationData(
                         GsonHelper.getAsBoolean(json, "hasTail", GsonHelper.getAsBoolean(json, "hastail", true)),
                         GsonHelper.getAsBoolean(json, "swimTail", GsonHelper.getAsBoolean(json, "swimtail", false)),
-                        GsonHelper.getAsBoolean(json, "hasWings", GsonHelper.getAsBoolean(json, "haswings", false)));
+                        GsonHelper.getAsBoolean(json, "hasWings", GsonHelper.getAsBoolean(json, "haswings", false)),
+                        GsonHelper.getAsBoolean(json, "hasWingsV2", GsonHelper.getAsBoolean(json, "haswingsv2", false)));
             }
         }
     }
