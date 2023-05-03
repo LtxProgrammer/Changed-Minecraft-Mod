@@ -20,8 +20,6 @@
   "ability.changed.select_hairstyle": "Select Hairstyle",
   "ability.changed.select_special_state": "Select Special State",
 
-  "enchantment.changed.latex_protection": "Latex Protection",
-
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open2": "Door won't open",
@@ -126,7 +124,7 @@
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
 
-  "enchantment.changed.transfur_resistance": "Latex Protection",
+  "enchantment.changed.latex_protection": "Latex Protection",
 
   "block.changed.bedside_iv_rack": "IV Rack",
   "block.changed.beehive_bed": "Beehive Bed",
