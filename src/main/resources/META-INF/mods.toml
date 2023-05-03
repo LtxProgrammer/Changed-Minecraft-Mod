@@ -29,11 +29,11 @@ displayName="Changed: Minecraft Mod" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="icon@400.png" #optional
 # A text field displayed in the mod UI
-credits='''Dragon Snow for the original game, alex_n_italy for the original mod, iChun for open sourcing their morph mod. bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803''' #optional
+credits='''Credits to Dragon Snow for creating Changed, and for others aiding in the development of the mod: bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803''' #optional
 # A text field displayed in the mod UI
 authors="LtxProgrammer" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description='''Gooey transfur game inspired by Dragon Snow's Changed.'''
+description='''Gooey transfur mod inspired by Dragon Snow's Changed.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.changed]]
     modId="forge" #mandatory
