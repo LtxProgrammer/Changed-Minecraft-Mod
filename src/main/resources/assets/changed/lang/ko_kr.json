@@ -80,12 +80,15 @@
   "item.changed.latex_dance_record.desc": "LtxProgrammer 작곡",
   "item.changed.owo_record": "ÒwÓ 음악 디스크",
   "item.changed.owo_record.desc": "Artemka2009 작곡",
+  
+  "syringe.changed:form_special": "후원자 전용 커스텀 모델 주사기",
 
   "death.attack.changed:transfur": "%1$s이(가) 수화되었습니다",
   "death.attack.changed:transfur.player": "%1$s이(가) %2$s에게 수화당했습니다",
   "death.attack.changed:white_latex": "%s이(가) 하얀 라텍스에게 녹아버렸습니다",
   "death.attack.changed:pale": "%s이(가) 전염병에 목숨을 잃었습니다",
-  "death.attack.changed:bloodloss": "%s이(가) 다른 플레이어의 혈장을 주사하였습니다",
+  "death.attack.changed:bloodloss": "%s이(가) 다른 사람의 혈장을 사용하였습니다",
+  "death.attack.changed:bloodloss.player": "1$s이(가) %2$s덕분에 다른 사람의 혈장을 사용해버렸습니다",
   "death.attack.changed:fan": "%s이(가) 환풍기 팬에 깍둑썰렸습니다",
 
   "command.changed.error.not_latex_form": "유효하지 않은 라텍스 모델",
@@ -120,6 +123,8 @@
 
   "effect.changed.hypercoagulation": "과응고",
   "effect.changed.shock": "감전",
+  
+  "enchantment.changed.latex_protection": "라텍스 보호",
 
   "block.changed.bedside_iv_rack": "링거 스탠드",
   "block.changed.beehive_bed": "벌집 침대",
@@ -230,7 +235,8 @@
   "entity.changed.latex_blue_dragon": "푸른 라텍스 용",
   "entity.changed.latex_blue_wolf": "푸른 라텍스 늑대",
   "entity.changed.latex_crocodile": "라텍스 악어",
-  "entity.changed.latex_crystal_wolf": "검은 수정 늑대",
+  "entity.changed.latex_crystal_wolf": "수정 늑대",
+  "entity.changed.latex_crystal_wolf_horned": "뿔 달린 수정 늑대",
   "entity.changed.latex_deer": "라텍스 사슴",
   "entity.changed.latex_hypno_cat": "라텍스 최면술사 고양이",
   "entity.changed.latex_leaf": "라텍스 잎사귀",
@@ -291,7 +297,8 @@
   "item.changed.latex_blue_dragon_spawn_egg": "푸른 라텍스 용 생성 알",
   "item.changed.latex_blue_wolf_spawn_egg": "푸른 라텍스 늑대 생성 알",
   "item.changed.latex_crocodile_spawn_egg": "라텍스 악어 생성 알",
-  "item.changed.latex_crystal_wolf_spawn_egg": "검은 수정 늑대 생성 알",
+  "item.changed.latex_crystal_wolf_spawn_egg": "수정 늑대 생성 알",
+  "item.changed.latex_crystal_wolf_horned_spawn_egg": "뿔 달린 수정 늑대 생성 알",
   "item.changed.latex_deer_spawn_egg": "라텍스 사슴 생성 알",
   "item.changed.latex_hypno_cat_spawn_egg": "라텍스 최면술사 고양이 생성 알",
   "item.changed.latex_leaf_spawn_egg": "라텍스 잎사귀 생성 알",
