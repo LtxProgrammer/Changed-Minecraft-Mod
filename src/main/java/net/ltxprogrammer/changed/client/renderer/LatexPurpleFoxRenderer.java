@@ -17,4 +17,16 @@ public class LatexPurpleFoxRenderer extends LatexHumanoidRenderer<LatexPurpleFox
     public ResourceLocation getTextureLocation(LatexPurpleFox p_114482_) {
         return Changed.modResource("textures/latex_purple_fox.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexPurpleFox, LatexPurpleFoxModel.Remodel, ArmorLatexWolfModel.RemodelMale<LatexPurpleFox>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexPurpleFoxModel.Remodel(context.bakeLayer(LatexPurpleFoxModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexPurpleFox p_114482_) {
+            return Changed.modResource("textures/remodel/latex_purple_fox.png");
+        }
+    }
 }
