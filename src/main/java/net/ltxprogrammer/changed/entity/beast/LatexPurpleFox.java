@@ -22,10 +22,11 @@ public class LatexPurpleFox extends AbstractLatexWolf implements PowderSnowWalka
 
     @Override
     public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+        return ChangedParticles.Color3.fromInt(0xfae9fa);
     }
 
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
+    @Override
+    public HairStyle getDefaultHairStyle() {
+        return HairStyle.SHORT_MESSY.get();
     }
 }
