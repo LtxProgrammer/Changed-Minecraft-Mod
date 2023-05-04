@@ -86,11 +86,11 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
                 .texOffs(0, 14).addBox(-0.5F, -1.0F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(24, 14).addBox(-0.5F, 0.0F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-3.1F, -9.5F, 0.0F, 0.0F, 0.0F, -0.1309F));
 
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(87, 14).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 6.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 34).addBox(0.0F, 0.0F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(0, 30).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
-                .texOffs(19, 53).addBox(-1.0F, -3.0F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.6F, -9.5F, 0.0F, 0.0F, 0.0F, 0.1309F));
+        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create().texOffs(87, 14).addBox(-1.0F, -1.035F, -1.0F, 3.0F, 6.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 34).addBox(0.0F, -0.035F, -1.4F, 1.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 18).addBox(-1.0F, -1.035F, 0.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 30).addBox(-1.0F, -2.035F, -1.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(19, 53).addBox(-1.0F, -3.035F, -1.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.6F, -9.525F, 0.0F, 0.0F, 0.0F, 0.1309F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(24, 52).addBox(-2.0F, -35.0F, -4.0F, 4.0F, 1.0F, 8.0F, CubeDeformation.NONE)
                 .texOffs(28, 0).addBox(-4.0F, -34.5F, -3.5F, 8.0F, 1.0F, 3.0F, CubeDeformation.NONE)
