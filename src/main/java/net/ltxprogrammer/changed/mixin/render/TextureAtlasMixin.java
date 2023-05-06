@@ -128,7 +128,7 @@ public abstract class TextureAtlasMixin {
 
             var texture = MixedTexture.findMixedTexture(resourcelocation);
             if (texture == null) {
-                int attempts = 30; // Corrupt textures may be from a race condition
+                int attempts = 60; // Corrupt textures may be from a race condition
                 while (attempts > 0 && texture == null) {
                     try {
                         Thread.sleep(10);
