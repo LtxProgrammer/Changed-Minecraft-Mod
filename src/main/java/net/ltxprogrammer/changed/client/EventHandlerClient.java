@@ -91,17 +91,20 @@ public class EventHandlerClient {
 
         @SubscribeEvent
         public static void onChangedVariant(ProcessTransfur.EntityVariantAssigned.ChangedVariant event) {
+            if (event.livingEntity.level.isClientSide)
+                return;
+
             if (event.livingEntity instanceof Player player && player.isCreative())
                 return; // Don't do effect if player is creative mode
 
             if (event.oldVariant != null || event.newVariant == null || event.livingEntity.tickCount < 20)
                 return; // Only do effect if player was human
 
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 1, false, false));
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 6 * 20, 1, false, false));
             if (event.newVariant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
                 return; // Only do blindness if variant is goo
 
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 1, false, false));
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 2 * 20, 1, false, false));
         }
     }
 }
