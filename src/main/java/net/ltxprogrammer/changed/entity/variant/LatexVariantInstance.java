@@ -406,7 +406,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
                         case LEGS:
                             ItemStack copy = itemStack.copy();
                             itemStack.setCount(0);
-                            player.addItem(copy);
+                            if (!player.addItem(copy))
+                                player.drop(copy, false);
                         default:
                             break;
                     }

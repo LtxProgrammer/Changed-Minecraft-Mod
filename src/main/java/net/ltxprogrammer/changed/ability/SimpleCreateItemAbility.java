@@ -28,7 +28,9 @@ public class SimpleCreateItemAbility extends SimpleAbility {
 
     @Override
     public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        player.addItem(itemSupplier.get());
+        var item = itemSupplier.get();
+        if (!player.addItem(item))
+            player.drop(item, false);
         if (!player.isCreative())
             player.causeFoodExhaustion(exhaustion);
     }

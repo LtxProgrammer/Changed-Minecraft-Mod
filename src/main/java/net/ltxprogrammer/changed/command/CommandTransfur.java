@@ -57,7 +57,8 @@ public class CommandTransfur {
                             .executes(context -> {
                                 ItemStack stack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
                                 Syringe.setUnpureVariant(stack, Changed.modResource("special/form_" + UuidArgument.getUuid(context, "uuid")));
-                                context.getSource().getPlayerOrException().addItem(stack);
+                                if (!context.getSource().getPlayerOrException().addItem(stack))
+                                    context.getSource().getPlayerOrException().drop(stack, false);
                                 return Command.SINGLE_SUCCESS;
                             })
                     ));
