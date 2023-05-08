@@ -75,16 +75,25 @@ public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal im
         level.setBlock(blockPos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), flag);
     }
 
-    public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
-        if (!p_52878_.isClientSide) {
-            if (p_52881_.isCreative()) {
-                preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        if (!level.isClientSide) {
+            if (player.isCreative()) {
+                preventCreativeDropFromBottomPart(level, blockPos, blockState, player);
             } else {
-                dropResources(p_52880_, p_52878_, p_52879_, (BlockEntity)null, p_52881_, p_52881_.getMainHandItem());
+                dropResources(blockState, level, blockPos, null, player, player.getMainHandItem());
+
+                if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                    var otherPos = blockPos.below();
+                    var otherState = level.getBlockState(otherPos);
+
+                    Block.dropResources(level.getBlockState(otherPos), level, otherPos, null, player, player.getMainHandItem());
+                    level.setBlock(otherPos, Blocks.AIR.defaultBlockState(), 35);
+                    level.levelEvent(player, 2001, otherPos, Block.getId(otherState));
+                }
             }
         }
 
-        super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
+        super.playerWillDestroy(level, blockPos, blockState, player);
     }
 
     public void playerDestroy(Level p_52865_, Player p_52866_, BlockPos p_52867_, BlockState p_52868_, @Nullable BlockEntity p_52869_, ItemStack p_52870_) {
