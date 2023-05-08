@@ -98,7 +98,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC.get(), LightLatexWolfOrganicRenderer::new);
         event.registerEntityRenderer(ChangedEntities.MILK_PUDDING.get(), MilkPuddingRenderer::new);
         event.registerEntityRenderer(ChangedEntities.SHARK.get(), SharkRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF.get(), WhiteLatexWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF.get(),
+                useNewModels ? WhiteLatexWolfRenderer.Remodel::new : WhiteLatexWolfRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
 
