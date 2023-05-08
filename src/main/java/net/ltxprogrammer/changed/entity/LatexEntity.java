@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +41,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEntityVariant;
 
@@ -182,8 +180,7 @@ public abstract class LatexEntity extends Monster {
         } else if (world.getBrightness(LightLayer.BLOCK, pos) > 0) {
             return false;
         } else {
-            int i = world.getLevel().isThundering() ? world.getMaxLocalRawBrightness(pos, 10) : world.getMaxLocalRawBrightness(pos);
-            return i <= random.nextInt(10);
+            return getLevelBrightnessAt(world.getLevel(), pos) <= random.nextInt(10);
         }
     }
 
@@ -236,29 +233,37 @@ public abstract class LatexEntity extends Monster {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    protected static int getLevelBrightnessAt(Level level, BlockPos pos) {
+        return level.isThundering() ? level.getMaxLocalRawBrightness(pos, 10) : level.getMaxLocalRawBrightness(pos);
+    }
+
+    protected int getLevelBrightnessAt(BlockPos pos) {
+        return this.level.isThundering() ? this.level.getMaxLocalRawBrightness(pos, 10) : this.level.getMaxLocalRawBrightness(pos);
+    }
+
+    protected boolean targetSelectorTest(LivingEntity livingEntity) {
+        for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS) {
+            if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
+                return true;
+        }
+        if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
+            return false;
+        if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
+            return true;
+        LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
+        if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
+            return false;
+        for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS) {
+            if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
+                return true;
+        }
+
+        return false;
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
-
-        final Predicate<LivingEntity> ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE = livingEntity -> {
-            for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS) {
-                if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
-                    return true;
-            }
-            if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof LatexEntity))
-                return false;
-            if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
-                return true;
-            LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
-            if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
-                return false;
-            for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS) {
-                if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
-                    return true;
-            }
-
-            return false;
-        };
 
         final LatexEntity self = this;
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.36, false));
@@ -279,10 +284,10 @@ public abstract class LatexEntity extends Monster {
         else
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LatexEntity.class, true, this::targetSelectorTest));
         if (!(this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))) {
-            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
-            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, ENEMY_FACTION_OR_NOT_LATEXED_OR_CAN_FUSE));
+            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         if (!(this instanceof AquaticEntity))
