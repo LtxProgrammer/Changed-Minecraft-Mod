@@ -7,7 +7,7 @@ import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractDarkLatexWolf extends LatexEntity implements DarkLatexEntity, GenderedEntity {
+public abstract class AbstractDarkLatexWolf extends AbstractDarkLatexEntity implements GenderedEntity {
     public AbstractDarkLatexWolf(EntityType<? extends AbstractDarkLatexWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
