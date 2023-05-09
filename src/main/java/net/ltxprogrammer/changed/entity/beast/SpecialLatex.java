@@ -5,12 +5,21 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.item.LatexFusingItem;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.minecraft.SharedConstants;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -108,4 +117,20 @@ public class SpecialLatex extends LatexEntity {
     }
 
     public static void init() {}
+
+
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class Event {
+        @SubscribeEvent
+        public static void onVariantAssigned(ProcessTransfur.EntityVariantAssigned event) {
+            if (SharedConstants.IS_RUNNING_IN_IDE || !FMLLoader.isProduction())
+                return; // Ignore
+
+            if (event.variant == null || event.variant.getEntityType() != ChangedEntities.SPECIAL_LATEX.get())
+                return;
+
+            if (event.livingEntity instanceof Player player)
+                event.variant = PatreonBenefits.getPlayerSpecialVariant(player.getUUID()); // Ensure player was assigned correct special variant (or null if none)
+        }
+    }
 }
