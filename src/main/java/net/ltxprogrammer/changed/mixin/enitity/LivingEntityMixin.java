@@ -1,23 +1,35 @@
 package net.ltxprogrammer.changed.mixin.enitity;
 
 import net.ltxprogrammer.changed.block.WearableBlock;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.ltxprogrammer.changed.util.Util;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -134,6 +146,69 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> LocalUtil.mulInputImpulse(player, 0.05F));
 
             --controlDisabledFor;
+        }
+    }
+
+    @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
+    public void canStandOnFluid(FluidState state, CallbackInfoReturnable<Boolean> callback) {
+        if (isCrouching()) return;
+
+        var variant = LatexVariant.getEntityVariant((LivingEntity)(Object)this);
+        if (variant == null) return;
+        if (variant.getLatexType() == LatexType.NEUTRAL) return;
+
+        if (state.getType() instanceof AbstractLatexFluid latexFluid && latexFluid.canEntityStandOn((LivingEntity)(Object)this))
+            callback.setReturnValue(true);
+    }
+
+    @Shadow public abstract boolean canStandOnFluid(FluidState state);
+    @Shadow public abstract boolean isEffectiveAi();
+    @Shadow public abstract boolean hasEffect(MobEffect effect);
+    @Shadow public abstract AttributeInstance getAttribute(Attribute attribute);
+    @Shadow protected abstract boolean isAffectedByFluids();
+    @Shadow public abstract Vec3 getFluidFallingAdjustedMovement(double d0, boolean flag, Vec3 movement);
+    @Shadow @Final private static AttributeModifier SLOW_FALLING;
+
+    @Unique private boolean isInLatex() {
+        return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;
+    }
+
+    @Inject(method = "travel", at = @At("HEAD"))
+    public void travel(Vec3 direction, CallbackInfo callback) {
+        if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
+            double d0 = 0.08D;
+            AttributeInstance gravity = this.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+            boolean flag = this.getDeltaMovement().y <= 0.0D;
+            if (flag && this.hasEffect(MobEffects.SLOW_FALLING)) {
+                if (!gravity.hasModifier(SLOW_FALLING)) gravity.addTransientModifier(SLOW_FALLING);
+                this.resetFallDistance();
+            } else if (gravity.hasModifier(SLOW_FALLING)) {
+                gravity.removeModifier(SLOW_FALLING);
+            }
+            d0 = gravity.getValue();
+
+            FluidState fluidstate = this.level.getFluidState(this.blockPosition());
+            if (this.isInLatex() && this.isAffectedByFluids() && !this.canStandOnFluid(fluidstate)) {
+                double d8 = this.getY();
+                this.moveRelative(0.02F, direction);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                if (this.getFluidHeight(ChangedTags.Fluids.LATEX) <= this.getFluidJumpThreshold()) {
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.5D, (double)0.8F, 0.5D));
+                    Vec3 vec33 = this.getFluidFallingAdjustedMovement(d0, flag, this.getDeltaMovement());
+                    this.setDeltaMovement(vec33);
+                } else {
+                    this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
+                }
+
+                if (!this.isNoGravity()) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -d0 / 4.0D, 0.0D));
+                }
+
+                Vec3 vec34 = this.getDeltaMovement();
+                if (this.horizontalCollision && this.isFree(vec34.x, vec34.y + (double)0.6F - this.getY() + d8, vec34.z)) {
+                    this.setDeltaMovement(vec34.x, (double)0.3F, vec34.z);
+                }
+            }
         }
     }
 }

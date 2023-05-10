@@ -43,6 +43,8 @@ public class ChangedTags {
     }
 
     public static class Fluids {
+        public static final TagKey<Fluid> LATEX = create("latex");
+
         private static TagKey<Fluid> create(String name) {
             return TagKey.create(Registry.FLUID_REGISTRY, Changed.modResource(name));
         }
