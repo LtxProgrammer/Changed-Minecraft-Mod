@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.fluid;
 
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +40,12 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
 
     public BlockState createLegacyBlock(FluidState p_76466_) {
         return ChangedBlocks.DARK_LATEX_FLUID.get().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(p_76466_));
+    }
+
+    @Override
+    public boolean canEntityStandOn(LivingEntity entity) {
+        var variant = LatexVariant.getEntityVariant(entity);
+        return variant != null && variant.getLatexType() == LatexType.DARK_LATEX;
     }
 
     public static class Source extends DarkLatexFluid {
