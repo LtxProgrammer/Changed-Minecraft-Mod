@@ -35,11 +35,6 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
 
     @SubscribeEvent
     public static void onEntityTick(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof Player player && ProcessTransfur.isPlayerLatex(player))
-            return;
-        if (event.getEntityLiving() instanceof LatexEntity)
-            return;
-
         Level level = event.getEntityLiving().level;
         AbstractLatexFluid fluid = null;
         BlockState state = Blocks.AIR.defaultBlockState();
@@ -52,8 +47,22 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
             fluid = fluidHead;
         }
 
+        if (fluid != null) {
+            if (LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+                var living = event.getEntityLiving();
+                var delta = living.getDeltaMovement();
+                living.resetFallDistance();
+                living.setDeltaMovement(living.getDeltaMovement().multiply(1.0, delta.y > 0.0 ? 1.1 : 0.5, 1.0));
+            } else
+                event.getEntityLiving().makeStuckInBlock(state, new Vec3(0.75, 0.75, 0.75));
+        }
+
+        if (event.getEntityLiving() instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+            return;
+        if (event.getEntityLiving() instanceof LatexEntity)
+            return;
+
         if (event.getEntityLiving().isAlive() && !event.getEntityLiving().isDeadOrDying() && fluid != null) {
-            event.getEntityLiving().makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
             ProcessTransfur.progressTransfur(event.getEntityLiving(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())).getFormId());
         }
     }
