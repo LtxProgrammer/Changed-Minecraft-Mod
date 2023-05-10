@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.mixin.enitity;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,6 +20,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityAccess;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -139,5 +143,13 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 }));
             }
         }
+    }
+
+    @Shadow public abstract boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double scale);
+
+    @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("RETURN"), cancellable = true)
+    protected void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> callback) {
+        if (this.updateFluidHeightAndDoFluidPushing(ChangedTags.Fluids.LATEX, 0.007D))
+            callback.setReturnValue(true);
     }
 }
