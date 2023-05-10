@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.fluid;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,9 +20,15 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
     private final List<LatexVariant<?>> form;
-    protected AbstractLatexFluid(Properties properties, List<LatexVariant<?>> form) {
+    private final LatexType latexType;
+    protected AbstractLatexFluid(Properties properties, LatexType latexType, List<LatexVariant<?>> form) {
         super(properties);
+        this.latexType = latexType;
         this.form = form;
+    }
+
+    public LatexType getLatexType() {
+        return latexType;
     }
 
     public abstract boolean canEntityStandOn(LivingEntity entity);
