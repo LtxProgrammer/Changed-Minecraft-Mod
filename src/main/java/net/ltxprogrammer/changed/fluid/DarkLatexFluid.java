@@ -29,7 +29,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
             .bucket(ChangedItems.DARK_LATEX_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.DARK_LATEX_FLUID.get());
 
     protected DarkLatexFluid() {
-        super(PROPERTIES, List.of(LatexVariant.DARK_LATEX_WOLF.male(), LatexVariant.DARK_LATEX_WOLF.female(), LatexVariant.DARK_LATEX_YUFENG));
+        super(PROPERTIES, LatexType.DARK_LATEX, List.of(LatexVariant.DARK_LATEX_WOLF.male(), LatexVariant.DARK_LATEX_WOLF.female(), LatexVariant.DARK_LATEX_YUFENG));
     }
 
     @Override
