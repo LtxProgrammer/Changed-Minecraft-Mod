@@ -27,7 +27,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof IceBlock || ownerBlock instanceof PowderSnowBlock || ownerBlock instanceof SnowLayerBlock ||
                     ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock || ownerBlock instanceof CommandBlock||
                     ownerBlock instanceof JigsawBlock || ownerBlock instanceof StructureBlock || ownerBlock instanceof LightBlock ||
-                    ownerBlock instanceof StructureVoidBlock))
+                    ownerBlock instanceof StructureVoidBlock || ownerBlock instanceof LiquidBlock))
                 self.add(COVERED);
         }
     }
