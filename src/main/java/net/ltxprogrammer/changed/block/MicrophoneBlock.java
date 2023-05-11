@@ -19,11 +19,15 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MicrophoneBlock extends AbstractCustomShapeBlock {
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
-    public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
+    public static final VoxelShape SHAPE_STAND = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
+    public static final VoxelShape SHAPE_MIC1 = Block.box(5.0D, 6.0D, 1.0D, 11.0D, 12.0D, 8.0D);
+    public static final VoxelShape SHAPE_MIC2 = Block.box(5.0D, 6.0D, 8.0D, 11.0D, 10.0D, 12.0D);
+    public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_STAND, SHAPE_MIC1, SHAPE_MIC2);
 
     public MicrophoneBlock(Properties properties) {
         super(properties);
@@ -58,8 +62,8 @@ public class MicrophoneBlock extends AbstractCustomShapeBlock {
         return getInteractionShape(p_54577_, p_54578_, p_54579_);
     }
 
-    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
-        return SHAPE_WHOLE;
+    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return calculateShapes(blockState.getValue(FACING), SHAPE_WHOLE);
     }
 
     public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
