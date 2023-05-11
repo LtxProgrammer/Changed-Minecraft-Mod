@@ -151,8 +151,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
     public void canStandOnFluid(FluidState state, CallbackInfoReturnable<Boolean> callback) {
-        if (isCrouching()) return;
-
         var variant = LatexVariant.getEntityVariant((LivingEntity)(Object)this);
         if (variant == null) return;
         if (variant.getLatexType() == LatexType.NEUTRAL) return;

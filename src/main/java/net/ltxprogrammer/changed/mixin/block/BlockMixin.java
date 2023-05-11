@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
+import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ItemLike;
@@ -43,6 +45,12 @@ public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net
             callbackInfo.cancel();
             AbstractLatexBlock.stepOn(p_152431_, p_152432_, p_152433_, p_152434_, getLatexed(p_152433_));
         }
+    }
+
+    @Inject(method = "fallOn", at = @At("HEAD"), cancellable = true)
+    public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance, CallbackInfo callbackInfo) {
+        if (state.getFluidState().is(ChangedTags.Fluids.LATEX))
+            callbackInfo.cancel();
     }
 
     /*@Inject(method = "canSustainPlant", at = @At("HEAD"), cancellable = true)
