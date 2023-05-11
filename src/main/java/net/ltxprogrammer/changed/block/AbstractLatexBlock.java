@@ -189,7 +189,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             if (checkDir == Direction.UP && random.nextInt(3) > 0) // Reduced chance of spreading up
                 return;
 
-            var event = new AbstractLatexGoo.CoveringBlockEvent(latexType, state, checkPos, level);
+            var event = new AbstractLatexGoo.CoveringBlockEvent(latexType, checkState, checkPos, level);
             if (MinecraftForge.EVENT_BUS.post(event))
                 return;
             if (event.originalState == event.plannedState)
