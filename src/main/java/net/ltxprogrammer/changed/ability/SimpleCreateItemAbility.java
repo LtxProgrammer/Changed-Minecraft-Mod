@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 

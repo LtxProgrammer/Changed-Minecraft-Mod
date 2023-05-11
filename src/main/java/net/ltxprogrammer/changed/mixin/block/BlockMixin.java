@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
-import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.block.entity;
 import net.ltxprogrammer.changed.block.TextEnterable;
 import net.ltxprogrammer.changed.block.TextMenuProvider;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.world.inventory.TextMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

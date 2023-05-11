@@ -1,11 +1,9 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.TextBlockEntity;
 import net.ltxprogrammer.changed.world.inventory.NoteMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
