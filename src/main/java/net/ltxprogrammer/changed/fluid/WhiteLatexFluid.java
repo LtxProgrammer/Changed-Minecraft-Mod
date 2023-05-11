@@ -21,13 +21,14 @@ import java.util.List;
 
 public abstract class WhiteLatexFluid extends AbstractLatexFluid {
     public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
-            ChangedFluids.WHITE_LATEX::get,
-            ChangedFluids.WHITE_LATEX_FLOWING::get,
-            FluidAttributes.builder(ChangedBlocks.textureOf(ChangedBlocks.WHITE_LATEX_BLOCK), ChangedBlocks.textureOf(ChangedBlocks.WHITE_LATEX_BLOCK)))
+            ChangedFluids.WHITE_LATEX,
+            ChangedFluids.WHITE_LATEX_FLOWING,
+            FluidAttributes.builder(ChangedBlocks.textureOf(ChangedBlocks.WHITE_LATEX_BLOCK), ChangedBlocks.textureOf(ChangedBlocks.WHITE_LATEX_BLOCK))
+                    .viscosity(6000).color(0xFFFFFFFF))
             .tickRate(50)
             .levelDecreasePerBlock(3)
             .explosionResistance(100f)
-            .bucket(ChangedItems.WHITE_LATEX_BUCKET).block(() -> (LiquidBlock) ChangedBlocks.WHITE_LATEX_FLUID.get());
+            .bucket(ChangedItems.WHITE_LATEX_BUCKET).block(ChangedBlocks.WHITE_LATEX_FLUID);
 
     public WhiteLatexFluid() { super(PROPERTIES, LatexType.WHITE_LATEX, List.of(LatexVariant.WHITE_LATEX_WOLF)); }
 
