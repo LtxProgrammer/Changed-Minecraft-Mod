@@ -5,11 +5,8 @@ import net.ltxprogrammer.changed.network.packet.MenuUpdatePacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.PacketDistributor;
-
-import java.util.function.Supplier;
 
 public interface UpdateableMenu {
     default void setDirty(CompoundTag tag) {
