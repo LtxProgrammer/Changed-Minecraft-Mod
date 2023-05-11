@@ -113,7 +113,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     @Override
     public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
-                random.nextInt(20000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
+                random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
         if (!targetNearby(level, position))
             return;
