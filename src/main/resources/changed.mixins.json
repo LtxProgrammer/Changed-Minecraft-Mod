@@ -30,7 +30,8 @@
     "item.ItemMixin",
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
-    "PresenceFootsteps.SoundEngineMixin"
+    "PresenceFootsteps.SoundEngineMixin",
+    "PresenceFootsteps.StateLookupMixin"
   ],
   "client": [
     "ClientLevelMixin",
