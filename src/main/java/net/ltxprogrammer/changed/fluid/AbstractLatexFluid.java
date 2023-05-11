@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -77,15 +78,17 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
 
     public VoxelShape getCollisionShape(FluidState state, BlockGetter level, BlockPos blockPos, CollisionContext context) {
         if (context.canStandOnFluid(Blocks.WATER.defaultBlockState().getFluidState(), state)) {
-            if (level.getFluidState(blockPos.above()).is(ChangedTags.Fluids.LATEX)) {
+            if (context.isAbove(Shapes.block(), blockPos, true) && !context.isDescending() && level.getFluidState(blockPos.above()).is(ChangedTags.Fluids.LATEX)) {
                 return Shapes.block();
-            }
-
-            int amount = state.getAmount();
-            if (amount >= 8)
+            } else if (context.isAbove(LiquidBlock.STABLE_SHAPE, blockPos, true) && !context.isDescending() && state.getAmount() >= 8) {
                 return LiquidBlock.STABLE_SHAPE;
+            }
         }
 
         return Shapes.empty();
+    }
+
+    public boolean isScaffolding(FluidState state, LevelReader level, BlockPos pos, LivingEntity entity) {
+        return entity.canStandOnFluid(state);
     }
 }
