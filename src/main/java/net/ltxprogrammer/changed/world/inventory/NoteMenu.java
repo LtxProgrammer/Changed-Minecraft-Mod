@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NoteMenu extends TextMenu {

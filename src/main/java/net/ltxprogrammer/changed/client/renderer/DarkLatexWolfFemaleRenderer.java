@@ -2,10 +2,8 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfFemaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfFemale;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 

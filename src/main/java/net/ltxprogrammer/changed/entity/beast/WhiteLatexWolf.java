@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
 
 public class WhiteLatexWolf extends WhiteLatexEntity {
     public WhiteLatexWolf(EntityType<? extends WhiteLatexWolf> p_19870_, Level p_19871_) {
