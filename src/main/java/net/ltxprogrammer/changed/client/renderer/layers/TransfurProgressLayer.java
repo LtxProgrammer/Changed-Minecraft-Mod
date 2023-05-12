@@ -22,7 +22,7 @@ public class TransfurProgressLayer extends RenderLayer<AbstractClientPlayer, Pla
     }
 
     public static ResourceLocation getProgressTexture(float progress) {
-        float num = progress / (Changed.config.server.transfurTolerance.get() / 10.0f);
+        float num = progress / (Changed.config.server.transfurTolerance.get().floatValue() / 10.0f);
         return Changed.modResource("textures/models/latex_coat/" + Math.max(Math.min((int)Math.floor(num), 10), 1) + ".png");
     }
 

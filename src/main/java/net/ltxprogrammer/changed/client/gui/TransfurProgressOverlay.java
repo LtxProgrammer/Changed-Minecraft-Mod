@@ -50,7 +50,7 @@ public class TransfurProgressOverlay {
         if (progress.progress() <= 0.0f)
             return;
 
-        float tickProgress = progress.progress() / Changed.config.server.transfurTolerance.get();
+        float tickProgress = progress.progress() / Changed.config.server.transfurTolerance.get().floatValue();
         float distance = (1.0f - tickProgress) * 20.0f;
         var color = TransfurProgressLayer.getProgressColor(progress.type());
 
