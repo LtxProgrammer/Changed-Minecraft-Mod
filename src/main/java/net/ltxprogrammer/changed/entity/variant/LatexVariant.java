@@ -370,7 +370,11 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         LatexEntity newEntity = ctor.get().create(entity.level);
         newEntity.finalizeSpawn((ServerLevelAccessor) entity.level, entity.level.getCurrentDifficultyAt(newEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null,
                 null);
-        newEntity.moveTo((entity.getX()), (entity.getY()), (entity.getZ()), entity.getYRot(), 0);
+        newEntity.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
+        if (entity.hasCustomName()) {
+            newEntity.setCustomName(entity.getCustomName());
+            newEntity.setCustomNameVisible(entity.isCustomNameVisible());
+        }
         entity.level.addFreshEntity(newEntity);
         if (newEntity instanceof SpecialLatex specialLatex) {
             specialLatex.setSpecialLatexForm(UUID.fromString(
