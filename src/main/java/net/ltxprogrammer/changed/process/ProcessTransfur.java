@@ -87,7 +87,7 @@ public class ProcessTransfur {
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
         if (player.invulnerableTime > 10 && !justHit) {
-            return getPlayerTransfurProgress(player).progress >= Changed.config.server.transfurTolerance.get();
+            return getPlayerTransfurProgress(player).progress >= Changed.config.server.transfurTolerance.get().floatValue();
         }
 
         else {
@@ -99,7 +99,7 @@ public class ProcessTransfur {
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
             float next = getPlayerTransfurProgress(player).progress + amount;
             setPlayerTransfurProgress(player, new TransfurProgress(next, type));
-            return next >= Changed.config.server.transfurTolerance.get();
+            return next >= Changed.config.server.transfurTolerance.get().floatValue();
         }
     }
 
@@ -112,7 +112,7 @@ public class ProcessTransfur {
             boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
             if (player.invulnerableTime > 10 && !justHit) {
-                return getPlayerTransfurProgress(player).progress >= Changed.config.server.transfurTolerance.get();
+                return getPlayerTransfurProgress(player).progress >= Changed.config.server.transfurTolerance.get().floatValue();
             }
 
             else {
@@ -121,12 +121,12 @@ public class ProcessTransfur {
                 player.hurtTime = player.hurtDuration;
 
                 float next = getPlayerTransfurProgress(player).progress + amount;
-                return next >= Changed.config.server.transfurTolerance.get();
+                return next >= Changed.config.server.transfurTolerance.get().floatValue();
             }
         }
         else {
             float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get());
+            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get().floatValue());
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
                 if (health <= amount * scale && health > 0.0F) {
@@ -150,7 +150,7 @@ public class ProcessTransfur {
         else {
             amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get());
+            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get().floatValue());
             LatexVariant<?> latexVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(type);
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
@@ -188,7 +188,7 @@ public class ProcessTransfur {
         if (isPlayerLatex(player))
             return;
         var progress = getPlayerTransfurProgress(player);
-        if (progress.progress >= Changed.config.server.transfurTolerance.get()) {
+        if (progress.progress >= Changed.config.server.transfurTolerance.get().floatValue()) {
             if (LatexVariant.PUBLIC_LATEX_FORMS.contains(progress.type))
                 transfur(player, player.level, ChangedRegistry.LATEX_VARIANT.get().getValue(progress.type), false);
             else {
