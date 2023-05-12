@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -443,12 +444,24 @@ public class ProcessTransfur {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
     }
 
+    public static float difficultyAdjustTransfurAmount(Difficulty difficulty, float amount) {
+        if (difficulty == Difficulty.EASY) {
+            amount = Math.min(amount / 2.0F + 1.0F, amount);
+        }
+
+        if (difficulty == Difficulty.HARD) {
+            amount = amount * 3.0F / 2.0F;
+        }
+
+        return amount;
+    }
+
     protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
         if (source.transfur == null)
             return;
 
         LivingEntity entity = event.getEntityLiving();
-        float amount = event.getAmount() * (source.isPlayer ? 3.0f : 1.0f);
+        float amount = difficultyAdjustTransfurAmount(entity.level.getDifficulty(), event.getAmount() * (source.isPlayer ? 3.0f : 1.0f));
 
         // First, check for fusion
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(event.getEntityLiving());
