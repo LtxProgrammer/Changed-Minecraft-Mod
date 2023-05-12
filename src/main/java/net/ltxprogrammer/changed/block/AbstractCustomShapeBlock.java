@@ -21,7 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCustomShapeBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;

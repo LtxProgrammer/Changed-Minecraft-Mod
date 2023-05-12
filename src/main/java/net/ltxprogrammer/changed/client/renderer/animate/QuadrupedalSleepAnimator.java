@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client.renderer.animate;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class QuadrupedalSleepAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {

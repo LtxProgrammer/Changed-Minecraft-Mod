@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.ltxprogrammer.changed.util.Util;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -165,7 +164,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow public abstract AttributeInstance getAttribute(Attribute attribute);
     @Shadow protected abstract boolean isAffectedByFluids();
     @Shadow public abstract Vec3 getFluidFallingAdjustedMovement(double d0, boolean flag, Vec3 movement);
-    @Shadow @Final private static AttributeModifier SLOW_FALLING;
+    @Shadow(remap = false) @Final private static AttributeModifier SLOW_FALLING;
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

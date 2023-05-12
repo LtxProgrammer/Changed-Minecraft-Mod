@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.renderer.model.TaurChestPackModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.TaurChestPackModel;
 import net.ltxprogrammer.changed.client.renderer.model.TorsoSupplier;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexTaur;

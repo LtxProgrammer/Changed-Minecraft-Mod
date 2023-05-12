@@ -8,9 +8,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,13 +17,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Objects;
-
-@Mixin(SoundEngine.class)
+@Mixin(value = SoundEngine.class, remap = false)
 public abstract class SoundEngineMixin implements PreparableReloadListener {
-    @Shadow(remap = false) private PFIsolator isolator;
+    @Shadow private PFIsolator isolator;
 
-    @Inject(method = "reloadEverything", at = @At("RETURN"), remap = false)
+    @Inject(method = "reloadEverything", at = @At("RETURN"))
     public void reloadEverything(ResourceManager manager, CallbackInfo callbackInfo) {
         var event = new ChangedPresenceFootsteps.LoadModdedFootstepsEvent(manager, isolator);
         event.loadBlockMap(ChangedPresenceFootsteps.BLOCK_MAP);
@@ -34,7 +30,7 @@ public abstract class SoundEngineMixin implements PreparableReloadListener {
         MinecraftForge.EVENT_BUS.post(event);
     }
 
-    @Inject(method = "getLocomotion", at = @At("HEAD"), remap = false, cancellable = true)
+    @Inject(method = "getLocomotion", at = @At("HEAD"), cancellable = true)
     public void getLocomotion(LivingEntity entity, CallbackInfoReturnable<Locomotion> callbackInfo) {
         ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), variant -> {
             callbackInfo.setReturnValue(this.isolator.getLocomotionMap().lookup(variant.getLatexEntity()));

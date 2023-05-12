@@ -4,13 +4,10 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSnakeModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSnakeAbdomenModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 
 public class LatexSnakeRenderer extends LatexHumanoidRenderer<LatexSnake, LatexSnakeModel, ArmorUpperBodyModel<LatexSnake>> {
     public LatexSnakeRenderer(EntityRendererProvider.Context context) {

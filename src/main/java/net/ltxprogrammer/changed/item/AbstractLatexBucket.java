@@ -7,7 +7,6 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;

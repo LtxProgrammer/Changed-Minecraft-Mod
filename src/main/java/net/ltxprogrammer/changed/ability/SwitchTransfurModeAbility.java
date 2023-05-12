@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
