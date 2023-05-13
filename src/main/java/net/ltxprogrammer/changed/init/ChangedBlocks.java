@@ -72,7 +72,7 @@ public class ChangedBlocks {
     public static final RegistryObject<DuctBlock> DUCT = register("duct", () -> new DuctBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 3.0F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<BoxPile> BOX_PILE = register("box_pile", BoxPile::new);
     public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));
-    public static final RegistryObject<DarkLatexFluid> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluid::new);
+    public static final RegistryObject<DarkLatexFluidBlock> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluidBlock::new);
     public static final RegistryObject<KeypadBlock> KEYPAD = register("keypad", KeypadBlock::new);
     public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3));
     public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
@@ -141,7 +141,7 @@ public class ChangedBlocks {
             () -> new GasCanisterBlock(List.of(LatexVariant.AEROSOL_LATEX_WOLF), ChangedParticles.Color3.fromInt(0x7fbaff)), null,
             canister -> new GasCanister(canister, List.of(LatexVariant.AEROSOL_LATEX_WOLF), ChangedParticles.Color3.fromInt(0x7fbaff)));
 
-    public static final RegistryObject<WhiteLatexFluid> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluid::new);
+    public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.WOOL).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));
 
     public static final RegistryObject<Infuser> INFUSER = register("infuser", () -> new Infuser(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(4.5F, 3.0F)));

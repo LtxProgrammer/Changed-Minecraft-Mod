@@ -12,7 +12,6 @@
     "block.BlockBehaviourMixin",
     "block.BlockMixin",
     "block.BlockStateBaseMixin",
-    "block.LiquidBlockMixin",
     "block.PowderSnowBlockMixin",
     "block.SimpleBlockFeatureMixin",
     "block.SpreadingSnowyDirtBlockMixin",
