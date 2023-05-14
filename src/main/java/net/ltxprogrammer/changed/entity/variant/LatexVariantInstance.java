@@ -325,7 +325,6 @@ public class LatexVariantInstance<T extends LatexEntity> {
         living.setInvulnerable(player.isInvulnerable());
 
         living.setUUID(player.getUUID());
-        living.setLeftHanded(player.getMainArm() == HumanoidArm.LEFT);
 
         living.setGlowingTag(player.isCurrentlyGlowing());
 
