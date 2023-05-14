@@ -312,7 +312,10 @@ public abstract class LatexEntity extends Monster {
 
     @Override
     public HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getMainArm();
+        else
+            return super.getMainArm();
     }
 
     public abstract ChangedParticles.Color3 getDripColor();
