@@ -1,12 +1,16 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -32,5 +36,18 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
         }
 
         return super.use(state, level, pos, player, hand, hitResult);
+    }
+
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        super.entityInside(state, level, pos, entity);
+        if (entity instanceof LatexEntity latexEntity) {
+            if (latexEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                latexEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+        }
+        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), (player, variantInstance) -> {
+            if (variantInstance.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+        });
     }
 }
