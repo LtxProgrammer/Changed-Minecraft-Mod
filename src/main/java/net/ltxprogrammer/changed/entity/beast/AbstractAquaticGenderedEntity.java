@@ -87,11 +87,6 @@ public abstract class AbstractAquaticGenderedEntity extends LatexEntity implemen
     }
 
     @Override
-    public @NotNull HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
-    }
-
-    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag p_20139_) {
         super.addAdditionalSaveData(p_20139_);
     }

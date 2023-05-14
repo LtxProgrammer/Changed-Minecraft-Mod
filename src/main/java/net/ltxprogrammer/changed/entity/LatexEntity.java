@@ -318,6 +318,14 @@ public abstract class LatexEntity extends Monster {
             return super.getMainArm();
     }
 
+    @Override
+    public boolean isLeftHanded() {
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getMainArm() == HumanoidArm.LEFT;
+        else
+            return super.isLeftHanded();
+    }
+
     public abstract ChangedParticles.Color3 getDripColor();
 
     public float getDripRate(float damage) {

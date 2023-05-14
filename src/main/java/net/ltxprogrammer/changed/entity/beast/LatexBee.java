@@ -48,11 +48,6 @@ public class LatexBee extends LatexEntity {
     public TransfurMode getTransfurMode() { return TransfurMode.ABSORPTION; }
 
     @Override
-    public HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
-    }
-
-    @Override
     public ChangedParticles.Color3 getDripColor() {
         return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#ffbf75" : "#ff9e58");
     }
