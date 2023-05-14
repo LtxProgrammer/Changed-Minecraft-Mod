@@ -26,7 +26,7 @@ public class WhiteLatexWolfRenderer extends LatexHumanoidRenderer<WhiteLatexWolf
 
 		@Override
 		public ResourceLocation getTextureLocation(WhiteLatexWolf p_114482_) {
-			return Changed.modResource("textures/remodel/white_latex_creature.png");
+			return Changed.modResource("textures/remodel/white_latex_wolf.png");
 		}
 	}
 }
