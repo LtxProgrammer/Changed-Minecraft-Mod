@@ -43,10 +43,6 @@ public abstract class AbstractLatexWolf extends LatexEntity {
     public SoundEvent getDeathSound() {
         return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
-    @Override
-    public HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
-    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag p_20139_) {

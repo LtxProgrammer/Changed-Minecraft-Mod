@@ -56,10 +56,6 @@ public class LatexStiger extends LatexEntity {
         return MobType.UNDEFINED;
     }
 
-    @Override
-    public HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
-    }
 
     @Override
     public ChangedParticles.Color3 getDripColor() {
