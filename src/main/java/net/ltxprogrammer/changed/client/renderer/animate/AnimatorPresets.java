@@ -120,6 +120,15 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> legacyWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+                                                                                                           ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
+        return animator -> {
+            animator
+                    .addAnimator(new LegacyWingInitAnimator<>(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
+                    .addAnimator(new LegacyWingFallFlyAnimator<>(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> armSetTwo(ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart leftArm2, ModelPart rightArm2) {
         return animator -> {
@@ -184,6 +193,25 @@ public class AnimatorPresets {
                     .addPreset(upperBody(head, torso, leftArm, rightArm))
                     .addPreset(standardTail(tail, tailJoints))
                     .addPreset(wingedV2(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
+                    .addAnimator(new HeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> legacyDragonLike(ModelPart head, ModelPart torso,
+                                                                                                               ModelPart leftArm, ModelPart rightArm,
+                                                                                                               ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                               ModelPart leftLeg, ModelPart rightLeg,
+
+                                                                                                               ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+                                                                                                               ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
+        return animator -> {
+            animator.addPreset(bipedal(leftLeg, rightLeg))
+                    .addPreset(upperBody(head, torso, leftArm, rightArm))
+                    .addPreset(standardTail(tail, tailJoints))
+                    .addPreset(legacyWinged(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
                     .addAnimator(new HeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
