@@ -237,6 +237,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMedusaCat>> LATEX_MEDUSA_CAT = register("latex_medusa_cat", 0xFFDB4F, 0xF398B7,
             EntityType.Builder.of(LatexMedusaCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::savannaSpawning);
+    public static final RegistryObject<EntityType<LatexMingCat>> LATEX_MING_CAT = register("latex_ming_cat", 0xD2A87F, 0x75483F,
+            EntityType.Builder.of(LatexMingCat::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+            ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("latex_mermaid_shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexMermaidShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);

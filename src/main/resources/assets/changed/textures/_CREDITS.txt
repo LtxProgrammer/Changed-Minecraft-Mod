@@ -25,6 +25,7 @@ latex_manta_ray_male :Ltx: modeled and textured by LtxProgrammer
 latex_medusa_cat :: modeled and textured by Bijimio
 latex_mermaid_shark :Ltx: retextured by Bijimio
 latex_mimic_plant :: modeled and textured by KoBOLTA
+latex_ming_cat :: modeled and textured by Bijimio
 latex_moth :: remodeled and retextured by Infanteater42069
 latex_orca :Ltx: :: modeled and textured by LtxProgrammer
 latex_otter :: modeled by Bijimio and retextured by Candnhen
@@ -46,12 +47,12 @@ latex_snow_leopard_female :Ltx: retextured by Artemka2009
 latex_snow_leopard_male :Ltx: retextured by Artemka2009
 latex_squid_dog_female :Ltx: modeled by LtxProgrammer and textured by Bijimio
 latex_squid_dog_male :Ltx: remodeled and retextured by Bijimio
-latex_squirrel :: modeled and textured by KoBOLTA
+latex_squirrel :: modeled by KoBOLTA and retextured by Bijimio
 latex_stiger :: modeled and textured by Bijimio
 latex_tiger_shark :Ltx: retextured by Artemka2009 & KoBOLTA
 latex_traffic_cone_dragon :: modeled and textured by KoBOLTA
 latex_translucent_lizard :: modeled and textured by Bijimio
-latex_watermelon_cat :Ltx: modeled and textured by LtxProgrammer
+latex_watermelon_cat :Ltx: remodeled and retextured by Bijimio
 latex_white_tiger :: modeled and textured by Bijimio
 latex_yuin :: modeled and textured by Bijimio
 light_latex_centaur :Ltx: modeled and textured by LtxProgrammer
@@ -65,3 +66,21 @@ white_latex_wolf :Ltx: remodeled by Bijimio
 
 Credits for new models:
 
+dark_latex_dragon :: modeled and textured by LtxProgrammer
+dark_latex_wolf_female :: modeled and textured by LtxProgrammer
+dark_latex_wolf_male :: modeled and textured by LtxProgrammer
+dark_latex_yufeng :: modeled and textured by LtxProgrammer
+latex_beifeng :: modeled and textured by LtxProgrammer
+latex_blue_wolf :: modeled and textured by LtxProgrammer
+latex_hypno_cat :: modeled and textured by LtxProgrammer
+latex_purple_fox :: modeled and textured by LtxProgrammer
+latex_red_panda :: modeled and textured by LtxProgrammer
+latex_shark :Ltx: modeled and textured by LtxProgrammer
+latex_shark_female :: modeled and textured by LtxProgrammer
+latex_shark_male :: modeled and textured by LtxProgrammer
+latex_snow_leopard_female :: modeled and textured by LtxProgrammer
+latex_snow_leopard_male :: modeled and textured by LtxProgrammer
+latex_watermelon_cat :: modeled and textured by LtxProgrammer
+light_latex_wolf_female :: modeled and textured by LtxProgrammer
+light_latex_wolf_male :: modeled and textured by LtxProgrammer
+white_latex_wolf :: modeled and textured by LtxProgrammer
