@@ -5,7 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:gray_dye"
+    },
+    {
+      "item": "minecraft:sweet_berries"
     }
   ],
   "form": "changed:form_latex_silver_fox"
