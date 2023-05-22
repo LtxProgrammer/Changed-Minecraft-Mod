@@ -28,6 +28,7 @@ public class ChangedTags {
         public static final TagKey<Block> GROWS_LATEX_CRYSTALS = create("grows_latex_crystal");
         public static final TagKey<Block> LASER_TRANSLUCENT = create("laser_translucent");
         public static final TagKey<Block> DUCT_CONNECTOR = create("duct_connector");
+        public static final TagKey<Block> DUCT_EXIT = create("duct_exit");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, Changed.modResource(name));

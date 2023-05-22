@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -145,6 +146,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
                     event.setNewSize(latexEntity.getDimensions(event.getPose()));
                     event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
                 });
+
+                if (player instanceof PlayerDataExtension extension && extension.getPlayerMover() != null) {
+                    event.setNewSize(extension.getPlayerMover().getDimensions(event.getPose(), event.getNewSize()));
+                    event.setNewEyeHeight(extension.getPlayerMover().getEyeHeight(event.getPose(), event.getNewEyeHeight()));
+                }
             }
         }
     }

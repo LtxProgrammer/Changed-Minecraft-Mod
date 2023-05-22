@@ -25,4 +25,7 @@ public interface PlayerDataExtension {
 
     int getPaleExposure();
     void setPaleExposure(int level);
+
+    @Nullable PlayerMoverInstance<?> getPlayerMover();
+    void setPlayerMover(@Nullable PlayerMoverInstance<?> mover);
 }
