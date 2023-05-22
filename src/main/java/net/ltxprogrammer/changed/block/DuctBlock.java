@@ -1,11 +1,27 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.InputWrapper;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -14,9 +30,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fml.LogicalSide;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -170,7 +189,7 @@ public class DuctBlock extends ChangedBlock
     }
 
     public BlockState getStateForPlacement(final BlockPlaceContext context) {
-        return this.getWantedState(super.getStateForPlacement(context), context.getClickedPos(), (BlockGetter)context.getLevel());
+        return this.getWantedState(super.getStateForPlacement(context), context.getClickedPos(), context.getLevel());
     }
 
     public BlockState updateShape(final BlockState blockState, final Direction direction, final BlockState blockStateOther, final LevelAccessor level, final BlockPos blockPos, final BlockPos blockPosOther) {
@@ -192,5 +211,139 @@ public class DuctBlock extends ChangedBlock
     protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, VENTED);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        var direction = hitResult.getDirection(); // TODO isn't the face of the block the player clicked, need to find a better version
+        if (!state.getValue(BY_DIRECTION.get(direction)))
+            return super.use(state, level, blockPos, player, hand, hitResult);
+        if (!level.getBlockState(blockPos.relative(direction)).is(ChangedTags.Blocks.DUCT_EXIT))
+            return super.use(state, level, blockPos, player, hand, hitResult);
+
+        if (player instanceof PlayerDataExtension playerDataExtension && !ProcessTransfur.isPlayerOrganic(player)
+                && playerDataExtension.getPlayerMover() == null) {
+            var instance = PlayerMover.DUCT_MOVER.get().createInstance();
+            instance.ductBlock = this;
+            player.moveTo(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
+
+            playerDataExtension.setPlayerMover(instance);
+        }
+
+        return super.use(state, level, blockPos, player, hand, hitResult);
+    }
+
+    public static class DuctMover extends PlayerMover<DuctMover.DuctMoverInstance> {
+        public static class DuctMoverInstance extends PlayerMoverInstance<DuctMover> {
+            public Block ductBlock;
+            public int coolDown = 0;
+
+            public DuctMoverInstance(DuctMover parent) {
+                super(parent);
+            }
+
+            public static Direction.Axis getClosestAxis(Vec3 vec3) {
+                if (Math.abs(vec3.x) > Math.abs(vec3.y) && Math.abs(vec3.x) > Math.abs(vec3.z))
+                    return Direction.Axis.X;
+                if (Math.abs(vec3.y) > Math.abs(vec3.x) && Math.abs(vec3.y) > Math.abs(vec3.z))
+                    return Direction.Axis.Y;
+                else
+                    return Direction.Axis.Z;
+            }
+
+            public static Direction getClosestDirection(Vec3 vec3) {
+                return switch (getClosestAxis(vec3)) {
+                    case X -> Direction.fromAxisAndDirection(Direction.Axis.X, vec3.x > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+                    case Y -> Direction.fromAxisAndDirection(Direction.Axis.Y, vec3.y > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+                    case Z -> Direction.fromAxisAndDirection(Direction.Axis.Z, vec3.z > 0.0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+                };
+            }
+
+            public static void playDuctSound(BlockPos where) {
+
+            }
+
+            @Override
+            public void saveTo(CompoundTag tag) {
+                super.saveTo(tag);
+                TagUtil.putResourceLocation(tag, "block", Registry.BLOCK.getKey(ductBlock));
+            }
+
+            @Override
+            public void readFrom(CompoundTag tag) {
+                super.readFrom(tag);
+                this.ductBlock = Registry.BLOCK.get(TagUtil.getResourceLocation(tag, "block"));
+            }
+
+            @Override
+            public void aiStep(Player player, InputWrapper input, LogicalSide side) {
+                player.setDeltaMovement(0, 0, 0);
+                player.refreshDimensions();
+                player.noPhysics = true;
+
+                if (coolDown > 0) {
+                    coolDown--;
+                    return;
+                }
+
+                Vec3 lookAngle = player.getLookAngle();
+                Vec3 upAngle = player.getUpVector(0.5f);
+
+                Direction lookDir = getClosestDirection(lookAngle);
+                Direction upDir = getClosestDirection(upAngle);
+                Direction leftDir = getClosestDirection(upAngle.cross(lookAngle));
+
+                Direction moveDir = null;
+                if (Math.abs(input.getForwardImpulse()) > 1.0E-5F)
+                    moveDir = input.getForwardImpulse() > 0.0f ? lookDir : lookDir.getOpposite();
+                else if (Math.abs(input.getLeftImpulse()) > 1.0E-5F)
+                    moveDir = input.getLeftImpulse() > 0.0f ? leftDir : leftDir.getOpposite();
+
+                if (moveDir == null) return;
+
+                BlockPos currentPos = player.blockPosition();
+                BlockPos nextPos = currentPos.relative(moveDir);
+
+                BlockState nextState = player.level.getBlockState(nextPos);
+                if (!nextState.is(ductBlock) && !nextState.is(ChangedTags.Blocks.DUCT_EXIT))
+                    return;
+
+                player.moveTo(nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + 0.5);
+                player.xOld = currentPos.getX() + 0.5;
+                player.yOld = currentPos.getY() + 0.5;
+                player.zOld = currentPos.getZ() + 0.5;
+                player.xo = currentPos.getX() + 0.5;
+                player.yo = currentPos.getY() + 0.5;
+                player.zo = currentPos.getZ() + 0.5;
+                playDuctSound(nextPos);
+
+                coolDown = 5;
+            }
+
+            @Override
+            public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
+
+            }
+
+            @Override
+            public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
+                return !player.level.getBlockState(player.blockPosition()).is(ductBlock);
+            }
+
+            @Override
+            public EntityDimensions getDimensions(Pose pose, EntityDimensions currentDimensions) {
+                return EntityDimensions.scalable(0.5f, 0.5f);
+            }
+
+            @Override
+            public float getEyeHeight(Pose pose, float eyeHeight) {
+                return 0.25f;
+            }
+        }
+
+        @Override
+        public DuctMoverInstance createInstance() {
+            return new DuctMoverInstance(this);
+        }
     }
 }

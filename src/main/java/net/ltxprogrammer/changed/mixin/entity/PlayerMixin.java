@@ -1,7 +1,9 @@
-package net.ltxprogrammer.changed.mixin.enitity;
+package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,6 +36,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
     @Shadow public abstract boolean isSwimming();
+
+    @Nullable
+    @Unique public PlayerMoverInstance<?> playerMover = null;
 
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
@@ -148,5 +154,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
             ci.cancel();
             player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant.getParent()));
         }
+    }
+
+    @Nullable
+    @Override
+    public PlayerMoverInstance<?> getPlayerMover() {
+        return playerMover;
+    }
+
+    @Override
+    public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
+        this.playerMover = playerMover;
     }
 }
