@@ -38,6 +38,8 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
     protected void renderLabels(PoseStack p_98889_, int p_98890_, int p_98891_, CallbackInfo callback) {
         if (this.minecraft == null)
             return;
+        if (!Changed.config.client.useGoopyInventory.get())
+            return;
 
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
@@ -58,6 +60,8 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
     @Inject(method = "renderBg", at = @At("HEAD"), cancellable = true)
     protected void renderBg(PoseStack pose, float p_98871_, int p_98872_, int p_98873_, CallbackInfo callback) {
         if (this.minecraft == null)
+            return;
+        if (!Changed.config.client.useGoopyInventory.get())
             return;
 
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
