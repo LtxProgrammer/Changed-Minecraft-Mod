@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.mixin.enitity;
+package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;

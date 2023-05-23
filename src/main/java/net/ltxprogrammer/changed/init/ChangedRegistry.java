@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,6 +46,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     public static final RegistryHolder<LatexVariant<?>> LATEX_VARIANT = new RegistryHolder<LatexVariant<?>>(registryKey("latex_variant"));
     public static final RegistryHolder<AbstractAbility<?>> ABILITY = new RegistryHolder<AbstractAbility<?>>(registryKey("ability"));
     public static final RegistryHolder<HairStyle> HAIR_STYLE = new RegistryHolder<HairStyle>(registryKey("hair_style"));
+    public static final RegistryHolder<PlayerMover<?>> PLAYER_MOVER = new RegistryHolder<PlayerMover<?>>(registryKey("player_mover"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
@@ -54,6 +56,9 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
         createRegistry(event, ABILITY.key, c(AbstractAbility.class));
         createRegistry(event, HAIR_STYLE.key, HairStyle.class, builder -> {
             builder.missing((key, network) -> HairStyle.BALD.get());
+        }, null);
+        createRegistry(event, PLAYER_MOVER.key, c(PlayerMover.class), builder -> {
+            builder.missing((key, network) -> PlayerMover.DEFAULT_MOVER.get());
         }, null);
     }
 
