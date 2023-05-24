@@ -27,10 +27,16 @@ public class ChangedConfig {
 
     public static class Client {
         public final ForgeConfigSpec.ConfigValue<Boolean> useNewModels;
+        public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyInventory;
+        public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
             useNewModels = builder.define("useNewModels", true);
+            builder.comment("Enable/disable the gooey inventory");
+            useGoopyInventory = builder.define("useGooeyInventory", true);
+            builder.comment("Enable/disable the gooey hearts");
+            useGoopyHearts = builder.define("useGoopyHearts", true);
         }
     }
 

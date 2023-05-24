@@ -41,6 +41,8 @@ public abstract class GuiMixin extends GuiComponent {
 
     @Inject(method = "renderHeart", at = @At("HEAD"), cancellable = true)
     private void renderHeart(PoseStack pose, Gui.HeartType type, int x, int y, int texY, boolean blinking, boolean half, CallbackInfo callback) {
+        if (!Changed.config.client.useGoopyHearts.get())
+            return;
         if (type != Gui.HeartType.CONTAINER && type != Gui.HeartType.NORMAL)
             return;
 
@@ -63,6 +65,8 @@ public abstract class GuiMixin extends GuiComponent {
 
     @Inject(method = "renderEffects", at = @At("HEAD"), cancellable = true)
     protected void renderEffects(PoseStack poseStack, CallbackInfo callback) {
+        if (!Changed.config.client.useGoopyInventory.get())
+            return;
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
                 return;
