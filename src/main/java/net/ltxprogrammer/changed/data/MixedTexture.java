@@ -15,9 +15,14 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @OnlyIn(Dist.CLIENT)
 public class MixedTexture extends AbstractTexture {
@@ -57,7 +62,7 @@ public class MixedTexture extends AbstractTexture {
     }
 
     public static NativeImage findMixedTexture(ResourceLocation name) {
-        return IMAGE_CACHE.getOrDefault(name, null);
+        return findCachedTexture(name).orElse(null);
     }
 
     private record RGBA(float r, float g, float b, float a) {
@@ -109,18 +114,21 @@ public class MixedTexture extends AbstractTexture {
                         (int)(size.getSecond() * frac(v))));
     }
 
-    public static ResourceLocation getResourceLocation(ResourceLocation p_118325_) {
-        return new ResourceLocation(p_118325_.getNamespace(), String.format("textures/%s%s", p_118325_.getPath(), ".png"));
+    public static ResourceLocation getResourceLocation(ResourceLocation location) {
+        return new ResourceLocation(location.getNamespace(), String.format("textures/%s%s", location.getPath(), ".png"));
     }
 
+    private static final AtomicBoolean ATOMIC_LOCK = new AtomicBoolean(false);
     private static final Map<ResourceLocation, AnimationMetadataSection> IMAGE_META_CACHE = new HashMap<>();
     private static final Map<ResourceLocation, NativeImage> IMAGE_SETUP_CACHE = new HashMap<>();
-    private static final Map<ResourceLocation, NativeImage> IMAGE_CACHE = new HashMap<>();
 
-    public static void clearCache() {
+    public static void clearMemoryCache() {
+        while (!ATOMIC_LOCK.compareAndSet(false, true)) {}
+
         IMAGE_META_CACHE.clear();
         IMAGE_SETUP_CACHE.clear();
-        IMAGE_CACHE.clear();
+
+        ATOMIC_LOCK.set(false);
     }
 
     private static final int KERNEL_PASSES = 2;
@@ -147,9 +155,37 @@ public class MixedTexture extends AbstractTexture {
 
     private static final float[][] KERNEL = BLUR;
 
+    public static Optional<NativeImage> findCachedTexture(ResourceLocation mixedName) {
+        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        if (!Files.exists(Path.of(path)))
+            return Optional.empty();
+
+        try {
+            var fileStream = new FileInputStream(path);
+            var nativeImage = NativeImage.read(fileStream);
+            fileStream.close();
+            return Optional.of(nativeImage);
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
+    }
+
+    private static void cacheMixedTexture(ResourceLocation mixedName, NativeImage image) {
+        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+
+        try {
+            Files.createDirectories(Path.of(path).getParent());
+            image.writeToFile(path);
+        } catch (Exception ex) {
+            LOGGER.error("Failed to cache texture {}", mixedName, ex);
+        }
+    }
+
     @Override
     public void load(@NotNull ResourceManager resourceManager) {
         try {
+            while (!ATOMIC_LOCK.compareAndSet(false, true)) {}
+
             AnimationMetadataSection baseMetadata = IMAGE_META_CACHE.computeIfAbsent(getResourceLocation(baseLocation), loc -> {
                 try {
                     return resourceManager.getResource(loc).getMetadata(AnimationMetadataSection.SERIALIZER);
@@ -175,12 +211,20 @@ public class MixedTexture extends AbstractTexture {
                 }
             });
 
+            ATOMIC_LOCK.set(false);
+
             if (baseImage == null) {
                 LOGGER.warn("Unable to load base image {}", getResourceLocation(baseLocation));
                 return;
             }
 
             Pair<Integer, Integer> frameSize = imageSize(baseImage, baseMetadata);
+            var possibleCached = findCachedTexture(name);
+            if (possibleCached.isPresent()) {
+                if (frameSize.getFirst() == possibleCached.get().getWidth() && frameSize.getSecond() == possibleCached.get().getHeight())
+                    return; // Image already cached
+            }
+
             NativeImage newImage = new NativeImage(frameSize.getFirst(), frameSize.getSecond(), false);
             float averageLevel = 0.0f;
             int averageLevelCounter = 0;
@@ -245,9 +289,9 @@ public class MixedTexture extends AbstractTexture {
                 }
             }
 
-            IMAGE_CACHE.put(name, newImage);
+            cacheMixedTexture(name, newImage);
         } catch (Exception exception) {
-            LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation);
+            LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation, exception);
         }
     }
 }
