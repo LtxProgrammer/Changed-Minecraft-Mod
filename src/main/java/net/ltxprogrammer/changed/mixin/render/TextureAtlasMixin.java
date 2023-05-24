@@ -127,22 +127,9 @@ public abstract class TextureAtlasMixin {
                 return;
 
             var texture = MixedTexture.findMixedTexture(resourcelocation);
-            if (texture == null) {
-                int attempts = 60; // Corrupt textures may be from a race condition
-                while (attempts > 0 && texture == null) {
-                    try {
-                        Thread.sleep(10);
-                    } catch (Exception e) {
-                        LOGGER.error("Failed to sleep", e);
-                    }
-                    texture = MixedTexture.findMixedTexture(resourcelocation);
-                    attempts--;
-                }
-                if (texture == null)
-                    LOGGER.error("Missing generated texture for {}", info.name());
-            }
-
-            if (texture != null) {
+            if (texture == null)
+                LOGGER.error("Missing generated texture for {}", info.name());
+            else {
                 try {
                     list.add(new TextureAtlasSprite((TextureAtlas)(Object)this, info, mipLevels, atlasWidth, atlasHeight, x, y, texture));
                 } catch (Exception exception) {
@@ -150,6 +137,8 @@ public abstract class TextureAtlasMixin {
                 }
             }
         });
+
+        MixedTexture.clearMemoryCache();
     }
 
     @Inject(method = "load(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite$Info;IIIII)Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", at = @At("HEAD"), cancellable = true)
