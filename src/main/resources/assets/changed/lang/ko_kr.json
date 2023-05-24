@@ -88,7 +88,7 @@
   "death.attack.changed:white_latex": "%s이(가) 하얀 라텍스에게 녹아버렸습니다",
   "death.attack.changed:pale": "%s이(가) 전염병에 목숨을 잃었습니다",
   "death.attack.changed:bloodloss": "%s이(가) 다른 사람의 혈장을 사용하였습니다",
-  "death.attack.changed:bloodloss.player": "1$s이(가) %2$s덕분에 다른 사람의 혈장을 사용해버렸습니다",
+  "death.attack.changed:bloodloss.player": "%1$s이(가) %2$s덕분에 다른 사람의 혈장을 사용해버렸습니다",
   "death.attack.changed:fan": "%s이(가) 환풍기 팬에 깍둑썰렸습니다",
 
   "command.changed.error.not_latex_form": "유효하지 않은 라텍스 모델",
