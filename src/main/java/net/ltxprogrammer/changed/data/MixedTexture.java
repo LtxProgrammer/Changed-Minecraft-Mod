@@ -126,6 +126,7 @@ public class MixedTexture extends AbstractTexture {
         while (!ATOMIC_LOCK.compareAndSet(false, true)) {}
 
         IMAGE_META_CACHE.clear();
+        IMAGE_SETUP_CACHE.forEach((location, nativeImage) -> nativeImage.close()); // Forgot to actually close the textures
         IMAGE_SETUP_CACHE.clear();
 
         ATOMIC_LOCK.set(false);
@@ -290,6 +291,7 @@ public class MixedTexture extends AbstractTexture {
             }
 
             cacheMixedTexture(name, newImage);
+            newImage.close();
         } catch (Exception exception) {
             LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation, exception);
         }
