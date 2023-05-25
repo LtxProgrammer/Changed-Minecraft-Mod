@@ -26,6 +26,7 @@
     "entity.ServerPlayerMixin",
     "entity.VillagerHostilesSensorMixin",
     "entity.WanderingTraderMixin",
+    "fluid.LavaFluidMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
