@@ -266,13 +266,13 @@ public class DuctBlock extends ChangedBlock
             @Override
             public void saveTo(CompoundTag tag) {
                 super.saveTo(tag);
-                TagUtil.putResourceLocation(tag, "block", Registry.BLOCK.getKey(ductBlock));
+                tag.putInt("block", Registry.BLOCK.getId(ductBlock));
             }
 
             @Override
             public void readFrom(CompoundTag tag) {
                 super.readFrom(tag);
-                this.ductBlock = Registry.BLOCK.get(TagUtil.getResourceLocation(tag, "block"));
+                this.ductBlock = Registry.BLOCK.byId(tag.getInt("block"));
             }
 
             @Override

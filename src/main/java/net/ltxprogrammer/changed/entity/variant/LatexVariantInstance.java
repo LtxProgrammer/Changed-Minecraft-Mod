@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
+import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -199,6 +200,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.getServer().getPlayerList().getPlayers().forEach(builder::addPlayer);
 
             Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builder.build());
+            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new SyncMoverPacket(player));
         }
     }
 
