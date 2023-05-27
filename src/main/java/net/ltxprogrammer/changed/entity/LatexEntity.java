@@ -367,7 +367,7 @@ public abstract class LatexEntity extends Monster {
         return -0.4;
     }
 
-    private <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
+    protected <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
         return variant == null ? def : func.apply(variant);
     }
 

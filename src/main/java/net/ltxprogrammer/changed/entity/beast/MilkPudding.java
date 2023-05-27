@@ -54,4 +54,9 @@ public class MilkPudding extends LatexEntity {
     public ChangedParticles.Color3 getHairColor(int layer) {
         return ChangedParticles.Color3.WHITE;
     }
+
+    @Override
+    public double getLatexMaxHealth() {
+        return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 8.0);
+    }
 }
