@@ -2,9 +2,12 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.client.BlockRenderHelper;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +27,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.IRegistryDelegate;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +40,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.*;
 
@@ -66,6 +75,19 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     public void skipRendering(BlockState state, BlockState otherState, Direction direction, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         // Guaranteed to be client only
 
+        if (!isLatexed(state) && isLatexed(otherState)) {
+            callbackInfoReturnable.setReturnValue(false);
+            return;
+        }
+
+        if (getLatexed(state) != getLatexed(otherState)) {
+            callbackInfoReturnable.setReturnValue(false);
+            return;
+        }
+
+        if (!BlockRenderHelper.canBlockRenderAsSolid(otherState))
+            return;
+
         if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
             return;
         if (!state.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction))
@@ -73,11 +95,6 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
         if (isLatexed(state) && getLatexed(state) == getLatexed(otherState)) {
             callbackInfoReturnable.setReturnValue(true);
-            return;
-        }
-
-        if (!isLatexed(state) && isLatexed(otherState)) {
-            callbackInfoReturnable.setReturnValue(false);
             return;
         }
     }
