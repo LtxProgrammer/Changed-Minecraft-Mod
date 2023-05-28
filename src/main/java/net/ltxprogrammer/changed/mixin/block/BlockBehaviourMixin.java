@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.client.BlockRenderHelper;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -26,7 +27,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.IRegistryDelegate;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,7 +85,7 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
             return;
         }
 
-        if (!ItemBlockRenderTypes.canRenderInLayer(otherState, RenderType.solid()))
+        if (!BlockRenderHelper.canBlockRenderAsSolid(otherState))
             return;
 
         if (!otherState.isFaceSturdy(UniversalDist.getLevel(), BlockPos.ZERO, direction.getOpposite()))
