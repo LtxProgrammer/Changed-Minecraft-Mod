@@ -87,7 +87,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
 
     @Override
     protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState) {
-        if (direction == Direction.DOWN) {
+        if (direction != Direction.UP) {
             FluidState otherState = level.getFluidState(pos);
             if (this.is(ChangedTags.Fluids.LATEX) && otherState.is(FluidTags.LAVA)) {
                 if (blockState.getBlock() instanceof LiquidBlock) {
