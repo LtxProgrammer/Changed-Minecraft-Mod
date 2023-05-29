@@ -92,7 +92,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LATEX_SILVER_FOX, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
     /*public static final LatexVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_PUP)
-            .transfurMode(TransfurMode.NONE).disableItems().build(Changed.modResource("form_dark_latex_pup")));*/
+            .transfurMode(TransfurMode.NONE).holdItemsInMouth().build(Changed.modResource("form_dark_latex_pup")));*/
     public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.WHITE_LATEX_WOLF).faction(LatexType.WHITE_LATEX)
             .build(Changed.modResource("form_white_latex_wolf")));
     public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
@@ -157,7 +157,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .build(Changed.modResource("form_latex_otter")));
     public static final LatexVariant<LatexAlien> LATEX_ALIEN = register(Builder.of(ChangedEntities.LATEX_ALIEN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision()
             .build(Changed.modResource("form_latex_alien")));
-    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.15f).noVision().restrained()
+    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.15f).noVision().disableItems()
             .build(Changed.modResource("form_latex_benign_wolf")));
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
@@ -297,9 +297,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public final boolean canClimb;
     public final boolean nightVision;
     public final boolean noVision;
-    public final boolean restrained;
     public final boolean hasLegs;
-    public final boolean canUseItems;
+    public final UseItemMode itemUseMode;
     public final List<Class<? extends PathfinderMob>> scares;
     public final TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
@@ -311,7 +310,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public LatexVariant(Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
                         boolean reducedFall, boolean canClimb,
-                        boolean nightVision, boolean noVision, boolean restrained, boolean hasLegs, boolean canUseItems, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        boolean nightVision, boolean noVision, boolean hasLegs, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
                         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Supplier<? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
@@ -322,13 +321,12 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
         this.noVision = noVision;
-        this.restrained = restrained;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
         this.nightVision = nightVision;
         this.hasLegs = hasLegs;
-        this.canUseItems = canUseItems;
+        this.itemUseMode = itemUseMode;
         this.abilities = ImmutableList.<Supplier<? extends AbstractAbility<?>>>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
         this.canClimb = canClimb;
@@ -414,11 +412,10 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         int additionalHealth = 4;
         boolean reducedFall = false;
         boolean noVision = false;
-        boolean restrained = false;
         boolean canClimb = false;
         boolean nightVision = false;
         boolean hasLegs = true;
-        boolean canUseItems = true;
+        UseItemMode itemUseMode = UseItemMode.NORMAL;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
@@ -444,7 +441,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed).swimSpeed(variant.swimSpeed)
                     .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .abilities(variant.abilities).reducedFall(variant.reducedFall).canClimb(variant.canClimb).nightVision(variant.nightVision).hasLegs(variant.hasLegs).scares(variant.scares)
-                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).restrained(variant.restrained);
+                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).noVision(variant.noVision).itemUseMode(variant.itemUseMode);
         }
 
         public static <T extends LatexEntity> Builder<T> of(GenderedVariant<?, ?> variant, Supplier<EntityType<T>> entityType) {
@@ -482,17 +479,13 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         public Builder<T> reducedFall() {
             this.reducedFall = true; return this;
         }
+
         public Builder<T> noVision() {
             this.noVision = true; return this;
         }
+
         public Builder<T> noVision(boolean v) {
             this.noVision = v; return this;
-        }
-        public Builder<T> restrained() {
-            this.restrained = true; return this;
-        }
-        public Builder<T> restrained(boolean v) {
-            this.restrained = v; return this;
         }
 
         public Builder<T> reducedFall(boolean v) {
@@ -597,12 +590,17 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         public Builder<T> disableItems() {
-            this.canUseItems = false;
+            this.itemUseMode = UseItemMode.NONE;
             return this;
         }
 
-        public Builder<T> canUseItems(boolean v) {
-            this.canUseItems = v;
+        public Builder<T> holdItemsInMouth() {
+            this.itemUseMode = UseItemMode.MOUTH;
+            return this;
+        }
+
+        public Builder<T> itemUseMode(UseItemMode v) {
+            this.itemUseMode = v;
             return this;
         }
 
@@ -616,7 +614,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
         public LatexVariant<T> build(ResourceLocation formId) {
             var variant = new LatexVariant<>(entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, noVision, restrained, hasLegs, canUseItems, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, nightVision, noVision, hasLegs, itemUseMode, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
             variant.setRegistryName(formId);
             return variant;
         }
@@ -745,9 +743,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 GsonHelper.getAsBoolean(root, "nightVision", false),
                 GsonHelper.getAsBoolean(root, "noVision", false),
-                GsonHelper.getAsBoolean(root, "restrained", false),
                 GsonHelper.getAsBoolean(root, "hasLegs", true),
-                GsonHelper.getAsBoolean(root, "canUseItems", true),
+                UseItemMode.valueOf(GsonHelper.getAsString(root, "itemUseMode", UseItemMode.NORMAL.toString())),
                 scares,
                 TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),
                 fusionOf.size() < 2 ? Optional.empty() : Optional.of(new Pair<>(

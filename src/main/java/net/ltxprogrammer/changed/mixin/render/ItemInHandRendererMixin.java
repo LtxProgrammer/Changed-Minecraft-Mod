@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -68,8 +69,12 @@ public abstract class ItemInHandRendererMixin {
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"), cancellable = true)
     public void renderHandsWithItems(float partialTicks, PoseStack pose, MultiBufferSource.BufferSource bufferSource, LocalPlayer player, int color, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(player, variant -> {
-            if (!variant.getParent().canUseItems)
+            var itemUseMode = variant.getParent().itemUseMode;
+            if (itemUseMode != UseItemMode.NORMAL)
                 callback.cancel();
+            if (itemUseMode == UseItemMode.MOUTH) {
+                // TODO Render main hand item in the center of the screen.
+            }
         });
     }
 }

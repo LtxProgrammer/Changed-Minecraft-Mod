@@ -155,7 +155,7 @@ public abstract class GuiMixin extends GuiComponent {
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     protected void renderHotbar(float partialTicks, PoseStack pose, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
-            if (!variant.getParent().canUseItems)
+            if (!variant.getParent().itemUseMode.showHotbar)
                 callback.cancel();
         });
     }
