@@ -89,8 +89,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 callback.setReturnValue(true);
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(true);
-            if (variant.getParent().restrained && effect.equals(MobEffects.DIG_SLOWDOWN))
-                callback.setReturnValue(true);
         });
     }
 
@@ -103,8 +101,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.BLINDNESS, 300, 1, false, false));
-            if (variant.getParent().restrained && effect.equals(MobEffects.DIG_SLOWDOWN))
-                callback.setReturnValue(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 300, 1, false, false));
         });
     }
 

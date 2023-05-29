@@ -40,8 +40,8 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         super(null,
                 LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
-                false, false, false, false, false,
-                true, null, TransfurMode.REPLICATION, Optional.empty(),
+                false, false, false, false, true,
+                UseItemMode.NORMAL, null, TransfurMode.REPLICATION, Optional.empty(),
                 Optional.empty(), new ArrayList<>(), 0.0F, ChangedSounds.POISON.getLocation());
         this.male = male;
         this.female = female;
@@ -102,13 +102,7 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         public Builder<M, F> nightVision(boolean v) {
             this.maleBuilder.nightVision = v; this.femaleBuilder.nightVision = v; return this;
         }
-        public Builder<M, F> restrained() {
-            this.maleBuilder.restrained = true; this.femaleBuilder.restrained = true; return this;
-        }
 
-        public Builder<M, F> restrained(boolean v) {
-            this.maleBuilder.restrained = v; this.femaleBuilder.restrained = v; return this;
-        }
         public Builder<M, F> noVision() {
             this.maleBuilder.noVision = true; this.femaleBuilder.noVision = true; return this;
         }
@@ -174,6 +168,18 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
 
         public Builder<M, F> fusionOf(LatexVariant<?> variantA, LatexVariant<?> variantB) {
             this.maleBuilder.fusionOf(variantA, variantB); this.femaleBuilder.fusionOf(variantA, variantB); return this;
+        }
+
+        public LatexVariant.Builder<LatexEntity> disableItems() {
+            this.maleBuilder.disableItems(); this.femaleBuilder.disableItems(); return this;
+        }
+
+        public LatexVariant.Builder<LatexEntity> holdItemsInMouth() {
+            this.maleBuilder.holdItemsInMouth(); this.femaleBuilder.holdItemsInMouth(); return this;
+        }
+
+        public LatexVariant.Builder<LatexEntity> itemUseMode(UseItemMode v) {
+            this.maleBuilder.itemUseMode(v); this.femaleBuilder.itemUseMode(v); return this;
         }
 
         public Builder<M, F> split(Consumer<LatexVariant.Builder<M>> maleConsumer, Consumer<LatexVariant.Builder<F>> femaleConsumer) {
