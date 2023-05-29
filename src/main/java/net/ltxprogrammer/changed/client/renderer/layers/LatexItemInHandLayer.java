@@ -58,4 +58,11 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         Minecraft.getInstance().getItemInHandRenderer().renderItem(p_174518_, p_174519_, ItemTransforms.TransformType.HEAD, false, p_174521_, p_174522_, p_174523_);
         p_174521_.popPose();
     }
+
+    @Override
+    public void render(PoseStack pose, MultiBufferSource source, int p_117206_, T entity, float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
+        var self = entity.getSelfVariant();
+        if (self == null || self.canUseItems)
+            super.render(pose, source, p_117206_, entity, p_117208_, p_117209_, p_117210_, p_117211_, p_117212_, p_117213_);
+    }
 }
