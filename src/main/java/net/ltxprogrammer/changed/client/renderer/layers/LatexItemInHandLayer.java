@@ -65,5 +65,11 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         var self = entity.getSelfVariant();
         if (self == null || self.itemUseMode == UseItemMode.NORMAL)
             super.render(pose, bufferSource, packedLight, entity, p_116670_, p_116671_, red, green, blue, alpha);
+        else if (self.itemUseMode == UseItemMode.MOUTH) {
+            /**
+             * TODO make main item render in the mouth of the entity
+             * @see net.minecraft.client.renderer.entity.layers.FoxHeldItemLayer
+             */
+        }
     }
 }
