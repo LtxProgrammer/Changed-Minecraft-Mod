@@ -24,6 +24,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -171,26 +172,11 @@ public abstract class GuiMixin extends GuiComponent {
                 
                 Player player = this.getCameraPlayer();
                 if (player != null) {
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.5F);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.25F);
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
                     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-                    int i = this.screenWidth / 2;
-                    int j = this.getBlitOffset();
                     this.setBlitOffset(-90);
-                    this.blit(pose, i - 91, this.screenHeight - 22, 0, 0, 182, 22);
-
-                    this.setBlitOffset(j);
-                    RenderSystem.enableBlend();
-                    RenderSystem.defaultBlendFunc();
-                    int i1 = 1;
-
-                    for(int j1 = 0; j1 < 9; ++j1) {
-                        int k1 = i - 90 + j1 * 20 + 2;
-                        int l1 = this.screenHeight - 16 - 3;
-                        this.renderSlot(k1, l1, partialTicks, player, player.getInventory().items.get(j1), i1++);
-                    }
-
-                    RenderSystem.disableBlend();
+                    this.blit(pose, (this.screenWidth / 2) - 91, this.screenHeight - 22, 0, 0, 182, 22);
                 }
             }
         });
