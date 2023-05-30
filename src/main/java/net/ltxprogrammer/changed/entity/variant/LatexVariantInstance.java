@@ -148,6 +148,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     @SubscribeEvent
+    public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.breakBlocks)
+                event.setCanceled(true);
+        });
+    }
+
+    @SubscribeEvent
     public static void onLivingFallEvent(LivingFallEvent event) {
         LatexVariant<?> variant = LatexVariant.getEntityVariant(event.getEntityLiving());
         if (variant != null && variant.isReducedFall()) {
