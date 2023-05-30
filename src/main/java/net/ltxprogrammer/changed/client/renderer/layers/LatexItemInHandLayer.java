@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
@@ -38,24 +39,37 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
 
     }
 
-    private void renderArmWithSpyglass(LivingEntity p_174518_, ItemStack p_174519_, HumanoidArm p_174520_, PoseStack p_174521_, MultiBufferSource p_174522_, int p_174523_) {
-        p_174521_.pushPose();
+    private void renderArmWithSpyglass(LivingEntity entity, ItemStack itemStack, HumanoidArm arm, PoseStack pose, MultiBufferSource source, int color) {
+        pose.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
         float f = modelpart.xRot;
         modelpart.xRot = Mth.clamp(modelpart.xRot, (-(float)Math.PI / 6F), ((float)Math.PI / 2F));
-        modelpart.translateAndRotate(p_174521_);
+        modelpart.translateAndRotate(pose);
         modelpart.xRot = f;
-        CustomHeadLayer.translateToHead(p_174521_, false);
-        boolean flag = p_174520_ == HumanoidArm.LEFT;
+        CustomHeadLayer.translateToHead(pose, false);
+        boolean flag = arm == HumanoidArm.LEFT;
         var list = LatexHumanoidModel.findLargestCube(modelpart);
         if (list.isEmpty()) {
-            p_174521_.popPose();
+            pose.popPose();
             return;
         }
         var headCube = list.get(0);
         float dH = 0.5f - headCube.maxY;
-        p_174521_.translate((double)((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(p_174518_, p_174519_, ItemTransforms.TransformType.HEAD, false, p_174521_, p_174522_, p_174523_);
-        p_174521_.popPose();
+        pose.translate((double)((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
+        Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemStack, ItemTransforms.TransformType.HEAD, false, pose, source, color);
+        pose.popPose();
+    }
+
+    @Override
+    public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float red, float green, float blue, float alpha) {
+        var self = entity.getSelfVariant();
+        if (self == null || self.itemUseMode == UseItemMode.NORMAL)
+            super.render(pose, bufferSource, packedLight, entity, p_116670_, p_116671_, red, green, blue, alpha);
+        else if (self.itemUseMode == UseItemMode.MOUTH) {
+            /**
+             * TODO make main item render in the mouth of the entity
+             * @see net.minecraft.client.renderer.entity.layers.FoxHeldItemLayer
+             */
+        }
     }
 }

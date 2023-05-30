@@ -20,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -41,6 +42,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -127,6 +129,30 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public void forEachActiveAbility(Consumer<AbstractAbilityInstance> consumer) {
         activeAbilities.forEach(name -> consumer.accept(abilityInstances.get(name)));
+    }
+
+    @SubscribeEvent
+    public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.canUseHand(event.getHand()))
+                event.setCanceled(true);
+        });
+    }
+
+    @SubscribeEvent
+    public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.interactWithBlocks)
+                event.setCanceled(true);
+        });
+    }
+
+    @SubscribeEvent
+    public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.breakBlocks)
+                event.setCanceled(true);
+        });
     }
 
     @SubscribeEvent

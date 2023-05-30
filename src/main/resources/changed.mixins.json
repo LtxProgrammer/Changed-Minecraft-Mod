@@ -46,7 +46,7 @@
     "gui.RecipeBookTabButtonMixin",
     "gui.RecipeButtonMixin",
     "gui.SplashManagerMixin",
-    "item.ItemInHandRendererMixin",
+    "render.ItemInHandRendererMixin",
     "item.ItemRendererMixin",
     "render.CameraMixin",
     "render.CustomHeadLayerMixin",

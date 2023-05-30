@@ -8,18 +8,23 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.AbstractRadialScreen;
 import net.ltxprogrammer.changed.client.gui.LatexAbilityRadialScreen;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,6 +40,13 @@ import java.util.List;
 public abstract class GuiMixin extends GuiComponent {
     @Final @Shadow protected Minecraft minecraft;
     @Shadow public int screenWidth;
+
+    @Shadow protected abstract Player getCameraPlayer();
+
+    @Shadow @Final protected static ResourceLocation WIDGETS_LOCATION;
+    @Shadow public int screenHeight;
+
+    @Shadow protected abstract void renderSlot(int p_168678_, int p_168679_, float p_168680_, Player p_168681_, ItemStack p_168682_, int p_168683_);
 
     @Unique private static final ResourceLocation GUI_LATEX_HEARTS = Changed.modResource("textures/gui/latex_hearts.png");
     @Unique private static final ResourceLocation LATEX_INVENTORY_LOCATION = Changed.modResource("textures/gui/latex_inventory.png");
@@ -149,6 +161,32 @@ public abstract class GuiMixin extends GuiComponent {
             }
 
             callback.cancel();
+        });
+    }
+
+    @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
+    protected void renderHotbar(float partialTicks, PoseStack pose, CallbackInfo callback) {
+        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+            if (!variant.getParent().itemUseMode.showHotbar) {
+                callback.cancel();
+                
+                Player player = this.getCameraPlayer();
+                if (player != null) {
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.25F);
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+                    this.setBlitOffset(-90);
+                    this.blit(pose, (this.screenWidth / 2) - 91, this.screenHeight - 22, 0, 0, 182, 22);
+                }
+            }
+        });
+    }
+
+    @Inject(method = "renderSelectedItemName", at = @At("HEAD"), cancellable = true)
+    public void renderSelectedItemName(PoseStack pose, CallbackInfo callback) {
+        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+            if (!variant.getParent().itemUseMode.showHotbar)
+                callback.cancel();
         });
     }
 }
