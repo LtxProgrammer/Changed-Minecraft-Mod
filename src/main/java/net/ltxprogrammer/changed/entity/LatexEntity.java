@@ -45,10 +45,19 @@ import java.util.function.Function;
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEntityVariant;
 
 public abstract class LatexEntity extends Monster {
-    @Nullable
-    private Player underlyingPlayer;
-
+    @Nullable private Player underlyingPlayer;
     private HairStyle hairStyle;
+
+    float crouchAmount;
+    float crouchAmountO;
+
+    public float getCrouchAmount(float partialTicks) {
+        return Mth.lerp(partialTicks, this.crouchAmountO, this.crouchAmount);
+    }
+
+    public boolean isFullyCrouched() {
+        return this.crouchAmount == 3.0F;
+    }
 
     @Nullable
     public Player getUnderlyingPlayer() {
@@ -340,6 +349,16 @@ public abstract class LatexEntity extends Monster {
     }
 
     public void visualTick(Level level) {
+        this.crouchAmountO = this.crouchAmount;
+        if (this.isCrouching()) {
+            this.crouchAmount += 0.2F;
+            if (this.crouchAmount > 3.0F) {
+                this.crouchAmount = 3.0F;
+            }
+        } else {
+            this.crouchAmount = 0.0F;
+        }
+
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
 
