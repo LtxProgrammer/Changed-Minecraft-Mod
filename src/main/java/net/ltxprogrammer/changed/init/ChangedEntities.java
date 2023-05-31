@@ -199,9 +199,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = register("dark_latex_wolf_female", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::noSpawning);
-    /*public static final RegistryObject<EntityType<DarkLatexPup>> DARK_LATEX_PUP = register("dark_latex_pup", 0x454545, 0x303030,
-            EntityType.Builder.of(DarkLatexPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.9F),
-            ChangedEntities::noSpawning);*/
+    public static final RegistryObject<EntityType<DarkLatexPup>> DARK_LATEX_PUP = register("dark_latex_pup", 0x454545, 0x303030,
+            EntityType.Builder.of(DarkLatexPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.75F),
+            ChangedEntities::noSpawning);
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mountainSpawning);
