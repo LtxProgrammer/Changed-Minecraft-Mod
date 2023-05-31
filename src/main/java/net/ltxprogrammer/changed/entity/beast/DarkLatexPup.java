@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -55,9 +56,9 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     @Override
     public float getEyeHeightMul() {
         if (this.isCrouching())
-            return 0.5F;
+            return 0.6F;
         else
-            return 0.65F;
+            return 0.75F;
     }
 
     @Override
@@ -69,7 +70,10 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
         var underlyingPlayer = getUnderlyingPlayer();
         if (ProcessTransfur.ifPlayerLatex(underlyingPlayer, variant -> {
             if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
-                ProcessTransfur.setPlayerLatexVariant(underlyingPlayer, LatexVariant.DARK_LATEX_WOLF.randomGender(level.random));
+                var newVariant = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random);
+                ProcessTransfur.setPlayerLatexVariant(underlyingPlayer, newVariant);
+                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
+                underlyingPlayer.heal(12.0f);
             }
         })) return;
 
