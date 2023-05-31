@@ -63,25 +63,19 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
     }
 
     @Override
-    public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float red, float green, float blue, float alpha) {
+    public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var self = entity.getSelfVariant();
         if (self == null || self.itemUseMode == UseItemMode.NORMAL)
-            super.render(pose, bufferSource, packedLight, entity, p_116670_, p_116671_, red, green, blue, alpha);
+            super.render(pose, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         else if (self.itemUseMode == UseItemMode.MOUTH) {
             boolean flag = entity.isSleeping();
             pose.pushPose();
             var head = this.getParentModel().getHead();
-            pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
+            pose.translate(head.x / 16.0F, (head.y) / 16.0F, head.z / 16.0F);
             pose.mulPose(Vector3f.ZP.rotation(0.0F));
-            pose.mulPose(Vector3f.YP.rotationDegrees(blue));
-            pose.mulPose(Vector3f.XP.rotationDegrees(alpha));
-            if (entity.isBaby()) {
-                if (flag) {
-                    pose.translate(0.4F, 0.26F, 0.15F);
-                } else {
-                    pose.translate(0.06F, 0.26F, -0.5D);
-                }
-            } else if (flag) {
+            pose.mulPose(Vector3f.YP.rotationDegrees(netHeadYaw));
+            pose.mulPose(Vector3f.XP.rotationDegrees(headPitch));
+            if (flag) {
                 pose.translate(0.46F, 0.26F, 0.22F);
             } else {
                 pose.translate(0.06F, 0.27F, -0.5D);
@@ -91,6 +85,8 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
             if (flag) {
                 pose.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
             }
+            pose.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            pose.translate(1.0 / 16.0F, -2.0 / 16.0F, 1.0 / 16.0F);
 
             ItemStack itemstack = entity.getItemBySlot(EquipmentSlot.MAINHAND);
             Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemstack, ItemTransforms.TransformType.GROUND, false, pose, bufferSource, packedLight);

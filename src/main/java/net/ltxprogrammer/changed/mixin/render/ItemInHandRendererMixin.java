@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -9,16 +10,27 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
+    @Shadow private ItemStack mainHandItem;
+
+    @Shadow private float mainHandHeight;
+
+    @Shadow private float oMainHandHeight;
+
+    @Shadow public abstract void renderItem(LivingEntity p_109323_, ItemStack p_109324_, ItemTransforms.TransformType p_109325_, boolean p_109326_, PoseStack p_109327_, MultiBufferSource p_109328_, int p_109329_);
+
     @Inject(method = "renderItem", at = @At("HEAD"))
     public void renderItem(LivingEntity entity, ItemStack item, ItemTransforms.TransformType type, boolean leftHand, PoseStack pose, MultiBufferSource buffers, int packedLight, CallbackInfo callback) {
         if (!item.isEmpty() && item.getItem() instanceof SpecializedAnimations specialized) {
@@ -70,11 +82,14 @@ public abstract class ItemInHandRendererMixin {
     public void renderHandsWithItems(float partialTicks, PoseStack pose, MultiBufferSource.BufferSource bufferSource, LocalPlayer player, int color, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(player, variant -> {
             var itemUseMode = variant.getParent().itemUseMode;
-            if (itemUseMode != UseItemMode.NORMAL)
+            if (itemUseMode == UseItemMode.NONE)
                 callback.cancel();
-            if (itemUseMode == UseItemMode.MOUTH) {
-                // TODO Render main hand item in the center of the screen.
-            }
+            else if (itemUseMode == UseItemMode.MOUTH && player.getMainHandItem().isEmpty())
+                callback.cancel();
+            else
+                return;
+
+            bufferSource.endBatch();
         });
     }
 }
