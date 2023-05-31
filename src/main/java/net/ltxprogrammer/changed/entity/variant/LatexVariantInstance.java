@@ -64,6 +64,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
+    public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
     protected float lastSwimMul = 1F;
@@ -418,6 +419,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public void tick(Player player) {
         if (player == null) return;
+
+        ageAsVariant++;
 
         player.refreshDimensions();
         if (player.isOnGround())

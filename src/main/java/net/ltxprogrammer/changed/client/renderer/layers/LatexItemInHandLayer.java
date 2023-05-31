@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -55,7 +57,7 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         }
         var headCube = list.get(0);
         float dH = 0.5f - headCube.maxY;
-        pose.translate((double)((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
+        pose.translate(((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
         Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemStack, ItemTransforms.TransformType.HEAD, false, pose, source, color);
         pose.popPose();
     }
@@ -66,10 +68,33 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         if (self == null || self.itemUseMode == UseItemMode.NORMAL)
             super.render(pose, bufferSource, packedLight, entity, p_116670_, p_116671_, red, green, blue, alpha);
         else if (self.itemUseMode == UseItemMode.MOUTH) {
-            /**
-             * TODO make main item render in the mouth of the entity
-             * @see net.minecraft.client.renderer.entity.layers.FoxHeldItemLayer
-             */
+            boolean flag = entity.isSleeping();
+            pose.pushPose();
+            var head = this.getParentModel().getHead();
+            pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
+            pose.mulPose(Vector3f.ZP.rotation(0.0F));
+            pose.mulPose(Vector3f.YP.rotationDegrees(blue));
+            pose.mulPose(Vector3f.XP.rotationDegrees(alpha));
+            if (entity.isBaby()) {
+                if (flag) {
+                    pose.translate(0.4F, 0.26F, 0.15F);
+                } else {
+                    pose.translate(0.06F, 0.26F, -0.5D);
+                }
+            } else if (flag) {
+                pose.translate(0.46F, 0.26F, 0.22F);
+            } else {
+                pose.translate(0.06F, 0.27F, -0.5D);
+            }
+
+            pose.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+            if (flag) {
+                pose.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+            }
+
+            ItemStack itemstack = entity.getItemBySlot(EquipmentSlot.MAINHAND);
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemstack, ItemTransforms.TransformType.GROUND, false, pose, bufferSource, packedLight);
+            pose.popPose();
         }
     }
 }
