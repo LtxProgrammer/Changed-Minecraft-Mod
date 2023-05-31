@@ -68,6 +68,11 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         }
         if (tag.contains("LatexVariant")) {
             ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
+            if (tag.contains("LatexVariantAge")) {
+                ProcessTransfur.ifPlayerLatex(this, variant -> {
+                    variant.ageAsVariant = tag.getInt("LatexVariantAge");
+                });
+            }
         }
 
         ProcessTransfur.ifPlayerLatex(this, variant -> {
@@ -96,6 +101,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         ProcessTransfur.ifPlayerLatex(this, variant -> {
             TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
             tag.put("LatexAbilities", variant.saveAbilities());
+            tag.putInt("LatexVariantAge", variant.ageAsVariant);
         });
         var mover = getPlayerMover();
         if (mover != null) {
