@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
+import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,7 +129,9 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, builder.getParameter(LootContextParams.TOOL)) > 0)
+            return List.of(new ItemStack(ChangedItems.getBlockItem(this)));
         return List.of(goo.get().getDefaultInstance(), goo.get().getDefaultInstance(), goo.get().getDefaultInstance());
     }
 
