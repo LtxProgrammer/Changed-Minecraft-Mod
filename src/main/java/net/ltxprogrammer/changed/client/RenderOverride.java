@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber
 public abstract class RenderOverride {
     public interface Override {
         boolean wantToOverride(Player player, LatexVariantInstance<?> variant);
