@@ -33,7 +33,9 @@ public class FormRenderHandler {
             variant.sync(player);
             //LatexVariant.syncEntityAndPlayer(variant.getLatexEntity(), player);
             variant.getLatexEntity().setCustomNameVisible(true);
-            renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+
+            if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
+                renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
         });
     }
 
