@@ -14,6 +14,10 @@ public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
         this.parent = parent;
     }
 
+    public boolean is(PlayerMover<?> mover) {
+        return mover == parent;
+    }
+
     public void saveTo(CompoundTag tag) {}
     public void readFrom(CompoundTag tag) {}
 

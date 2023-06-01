@@ -9,6 +9,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -41,7 +42,7 @@ public class DarkLatexMaskLayer<T extends LivingEntity, M extends HumanoidModel<
         ModelPart modelpart = this.getParentModel().getHead();
         modelpart.translateAndRotate(pose);
         pose.translate(0.0D, -25.0D / 16.0D, -4.0D / 16.0D);
-        mask.renderToBuffer(pose, bufferSource.getBuffer(mask.renderType(mask.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+        mask.renderToBuffer(pose, bufferSource.getBuffer(mask.renderType(mask.getTexture())), i, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0f, 1.0f, 1.0f, 1.0f);
         pose.popPose();
     }
 }
