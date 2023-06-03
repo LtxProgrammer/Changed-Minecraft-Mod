@@ -119,6 +119,16 @@
     ],
     "subtitle": "subtitles.changed.open1"
   },
+  "ice2": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:ice2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.ice2"
+  },
   "open2": {
     "category": "block",
     "sounds": [
