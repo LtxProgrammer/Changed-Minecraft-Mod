@@ -188,7 +188,7 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
     public PoseStack getPlacementCorrectors(CorrectorType type) {
         PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type.isArm())
-            corrector.translate(0.0f, 4.0f / 18.0f, 0.1f);
+            corrector.translate(0.0f, 4.0f / 28.0f, 0.02f);
         else if (type == CorrectorType.HAIR)
             corrector.translate(0.0f, -1.5f / 15.0f, 0.0f);
         else if (type == CorrectorType.LOWER_HAIR)
