@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "half=lower,extended=false": {
+      "model": "changed:block/dark_latex_crystal_spike_unextended"
+    },
+    "half=lower,extended=true": {
+      "model": "changed:block/dark_latex_crystal_spike_bottom"
+    },
+    "half=upper,extended=true": {
+      "model": "changed:block/dark_latex_crystal_spike_top"
+    }
+  }
+}
