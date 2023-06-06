@@ -82,7 +82,7 @@ public class ProcessTransfur {
         return ext.getTransfurProgress();
     }
 
-    public static boolean progressPlayerTransfur(Player player, float amount, ResourceLocation type) {
+    public static boolean progressPlayerTransfur(Player player, float amount, LatexVariant<?> latexVariant) {
         if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
             return false;
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
@@ -99,9 +99,13 @@ public class ProcessTransfur {
 
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
             float next = getPlayerTransfurProgress(player).progress + amount;
-            setPlayerTransfurProgress(player, new TransfurProgress(next, type));
+            setPlayerTransfurProgress(player, new TransfurProgress(next, latexVariant.getFormId()));
             return next >= Changed.config.server.transfurTolerance.get().floatValue();
         }
+    }
+
+    public static boolean progressPlayerTransfur(Player player, float amount, ResourceLocation type) {
+        return progressPlayerTransfur(player, amount, ChangedRegistry.LATEX_VARIANT.get().getValue(type));
     }
 
     public static boolean willTransfur(LivingEntity entity, float amount) {
@@ -145,14 +149,13 @@ public class ProcessTransfur {
         }
     }
 
-    public static boolean progressTransfur(LivingEntity entity, float amount, ResourceLocation type) {
+    public static boolean progressTransfur(LivingEntity entity, float amount, LatexVariant<?> latexVariant) {
         if (entity instanceof Player player)
-            return progressPlayerTransfur(player, amount, type);
+            return progressPlayerTransfur(player, amount, latexVariant);
         else {
             amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
             float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get().floatValue());
-            LatexVariant<?> latexVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(type);
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
                 if (health <= amount * scale && health > 0.0F) {
@@ -183,6 +186,10 @@ public class ProcessTransfur {
                 }
             }
         }
+    }
+
+    public static boolean progressTransfur(LivingEntity entity, float amount, ResourceLocation type) {
+        return progressTransfur(entity, amount, ChangedRegistry.LATEX_VARIANT.get().getValue(type));
     }
 
     public static void tickPlayerTransfurProgress(Player player) {
@@ -524,20 +531,20 @@ public class ProcessTransfur {
             doesAbsorption = true;
 
         if (!doesAbsorption) { // Replication
-            if (progressTransfur(event.getEntityLiving(), amount, source.transfur.getFormId()))
+            if (progressTransfur(event.getEntityLiving(), amount, source.transfur))
                 source.entity.heal(8f);
         }
 
         else { // Absorption
             if (!willTransfur(event.getEntityLiving(), amount)) {
-                if (progressTransfur(event.getEntityLiving(), amount, source.transfur.getFormId()))
+                if (progressTransfur(event.getEntityLiving(), amount, source.transfur))
                     throw new RuntimeException("You got your function wrong dev! get gud!");
                 return;
             }
 
             // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
             if (!source.isPlayer && event.getEntityLiving() instanceof Player &&
-                    progressTransfur(event.getEntityLiving(), amount, source.transfur.getFormId())) {
+                    progressTransfur(event.getEntityLiving(), amount, source.transfur)) {
                 source.entity.discard();
                 return;
             }

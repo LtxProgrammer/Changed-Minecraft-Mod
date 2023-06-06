@@ -55,7 +55,7 @@ public class LatexInkball extends ThrowableItemProjectile {
             return;
 
         ProcessTransfur.progressTransfur(livingEntity, 6.0f,
-                LatexVariant.LATEX_SQUID_DOG.randomGender(hitResult.getEntity().level.random).getFormId());
+                LatexVariant.LATEX_SQUID_DOG.randomGender(hitResult.getEntity().level.random));
     }
 
     protected void onHit(HitResult hitResult) {

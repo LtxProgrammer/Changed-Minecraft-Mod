@@ -29,7 +29,7 @@ public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatex
 
     public void entityInside(BlockState p_49314_, Level p_49315_, BlockPos p_49316_, Entity p_49317_) {
         if (!p_49315_.isClientSide && p_49317_ instanceof LivingEntity entity) {
-            if (ProcessTransfur.progressTransfur(entity, 6.0f, variant.getFormId()))
+            if (ProcessTransfur.progressTransfur(entity, 6.0f, variant))
                 p_49315_.removeBlock(p_49316_, false);
         }
     }

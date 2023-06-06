@@ -84,7 +84,7 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
                 return;
             if (!level.isClientSide) {
-                ProcessTransfur.progressTransfur(le, 8.3f, variant.getFormId());
+                ProcessTransfur.progressTransfur(le, 8.3f, variant);
             }
 
         }

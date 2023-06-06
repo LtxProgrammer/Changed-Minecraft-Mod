@@ -370,19 +370,25 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         return latexForm;
     }
 
-    public LatexEntity replaceEntity(@NotNull LivingEntity entity) {
+
+    public LatexEntity spawnAtEntity(@NotNull LivingEntity entity) {
         LatexEntity newEntity = ctor.get().create(entity.level);
         newEntity.finalizeSpawn((ServerLevelAccessor) entity.level, entity.level.getCurrentDifficultyAt(newEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null,
                 null);
         newEntity.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
-        if (entity.hasCustomName()) {
-            newEntity.setCustomName(entity.getCustomName());
-            newEntity.setCustomNameVisible(entity.isCustomNameVisible());
-        }
         entity.level.addFreshEntity(newEntity);
         if (newEntity instanceof SpecialLatex specialLatex) {
             specialLatex.setSpecialLatexForm(UUID.fromString(
                     getFormId().toString().substring(Changed.modResourceStr("special/form_").length())));
+        }
+        return newEntity;
+    }
+
+    public LatexEntity replaceEntity(@NotNull LivingEntity entity) {
+        var newEntity = spawnAtEntity(entity);
+        if (entity.hasCustomName()) {
+            newEntity.setCustomName(entity.getCustomName());
+            newEntity.setCustomNameVisible(entity.isCustomNameVisible());
         }
         if (entity instanceof Player player) {
             ProcessTransfur.killPlayerBy(player, newEntity);
