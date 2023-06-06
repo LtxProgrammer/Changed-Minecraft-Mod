@@ -73,7 +73,7 @@ public class GasParticle extends ThrowableProjectile {
         super.onHitEntity(result);
 
         if (variant != null && result.getEntity() instanceof LivingEntity livingEntity) {
-            ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant.getFormId());
+            ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant);
             this.discard();
         }
     }

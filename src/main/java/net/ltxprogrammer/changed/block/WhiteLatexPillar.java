@@ -117,7 +117,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
                 }
             }
             else if (!(entity instanceof Player)){
-                ProcessTransfur.progressTransfur(le, 4.8f, LatexVariant.WHITE_LATEX_WOLF.getFormId());
+                ProcessTransfur.progressTransfur(le, 4.8f, LatexVariant.WHITE_LATEX_WOLF);
             }
         } else if (entity instanceof LatexEntity latexEntity) {
             if (latexEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
