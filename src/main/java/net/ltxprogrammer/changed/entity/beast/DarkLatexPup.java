@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,5 +86,10 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
             }
             this.discard();
         }
+    }
+
+    @Override
+    protected boolean targetSelectorTest(LivingEntity livingEntity) {
+        return false; // TODO remove when pup puddle is implemented.
     }
 }

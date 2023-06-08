@@ -375,6 +375,14 @@ public class ProcessTransfur {
             return LatexVariant.getEntityVariant(entity) != null || LatexVariant.getEntityTransfur(entity) != null;
         }
 
+        boolean haveTransfurMode() {
+            if (entity instanceof LatexEntity latexEntity)
+                return latexEntity.getTransfurMode() != TransfurMode.NONE;
+            else if (playerVariant != null)
+                return playerVariant.transfurMode != TransfurMode.NONE;
+            return false;
+        }
+
         boolean wantAbsorption() {
             boolean doesAbsorption;
             if (entity instanceof LatexEntity latexEntity)
@@ -466,6 +474,8 @@ public class ProcessTransfur {
     protected static void onLivingAttackedByLatex(LivingAttackEvent event, LatexedEntity source) {
         if (source.transfur == null)
             return;
+        if (!source.haveTransfurMode())
+            return;
 
         LivingEntity entity = event.getEntityLiving();
         float amount = difficultyAdjustTransfurAmount(entity.level.getDifficulty(), event.getAmount() * (source.isPlayer ? 3.0f : 1.0f));
@@ -537,8 +547,7 @@ public class ProcessTransfur {
 
         else { // Absorption
             if (!willTransfur(event.getEntityLiving(), amount)) {
-                if (progressTransfur(event.getEntityLiving(), amount, source.transfur))
-                    throw new RuntimeException("You got your function wrong dev! get gud!");
+                progressTransfur(event.getEntityLiving(), amount, source.transfur);
                 return;
             }
 
