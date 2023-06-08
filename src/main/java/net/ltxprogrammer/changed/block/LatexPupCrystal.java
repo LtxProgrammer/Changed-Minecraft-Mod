@@ -12,23 +12,29 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.function.Supplier;
 
 public class LatexPupCrystal extends AbstractLatexCrystal {
-    private final LatexVariant<?> variant;
-    private final int multiply;
+    public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 25.0D, 12.0D);
+    public static final VoxelShape SHAPE_SMALL = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 4.0D, 12.0D);
 
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
+    private final LatexVariant<?> variant;
+    private final int multiply;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     public LatexPupCrystal(LatexVariant<?> variant, int multiply, Supplier<? extends Item> crystal, Properties properties) {
@@ -37,6 +43,28 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
         this.multiply = multiply;
 
         this.registerDefaultState(getStateDefinition().any().setValue(EXTENDED, false).setValue(HALF, DoubleBlockHalf.LOWER));
+    }
+
+    @Override
+    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
+        if (p_60547_.getValue(EXTENDED)) {
+
+            if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
+                return SHAPE_WHOLE;
+            else
+                return SHAPE_WHOLE.move(0, -1, 0);
+        }
+        else {
+            if (p_60547_.getValue(HALF) == DoubleBlockHalf.LOWER)
+                return SHAPE_SMALL;
+            else
+                return SHAPE_SMALL.move(0, -1, 0);
+        }
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
+        return getInteractionShape(p_54561_, p_54562_, p_54563_);
     }
 
     @Override
