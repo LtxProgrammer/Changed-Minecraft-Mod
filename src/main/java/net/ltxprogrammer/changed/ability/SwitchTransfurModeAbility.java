@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
     public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return true;
+        return variant.transfurMode != TransfurMode.NONE;
     }
 
     @Override
@@ -18,6 +18,9 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
     @Override
     public void startUsing(Player player, LatexVariantInstance<?> variant) {
+        if (variant.transfurMode == TransfurMode.NONE)
+            return;
+
         if (variant.transfurMode == TransfurMode.ABSORPTION)
             variant.transfurMode = TransfurMode.REPLICATION;
         else
@@ -49,6 +52,9 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
     @Override
     public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
+        if (variant.transfurMode == TransfurMode.NONE)
+            return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_replication.png");
+
         return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_" +
                 variant.transfurMode.toString().toLowerCase() + ".png");
     }
