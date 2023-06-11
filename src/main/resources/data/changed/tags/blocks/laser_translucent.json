@@ -3,6 +3,7 @@
   "values": [
     "minecraft:air",
     "minecraft:glass",
+    "minecraft:glass_pane",
     "changed:laser_beam"
   ]
 }
