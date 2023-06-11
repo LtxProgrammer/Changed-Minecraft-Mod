@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.NonLatexCoverableBlock;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +29,13 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof IceBlock || ownerBlock instanceof PowderSnowBlock || ownerBlock instanceof SnowLayerBlock ||
                     ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock || ownerBlock instanceof CommandBlock||
                     ownerBlock instanceof JigsawBlock || ownerBlock instanceof StructureBlock || ownerBlock instanceof LightBlock ||
-                    ownerBlock instanceof StructureVoidBlock || ownerBlock instanceof LiquidBlock))
+                    ownerBlock instanceof StructureVoidBlock || ownerBlock instanceof LiquidBlock || ownerBlock instanceof ConduitBlock ||
+                    ownerBlock instanceof DragonEggBlock || ownerBlock instanceof CropBlock || ownerBlock instanceof TurtleEggBlock ||
+                    ownerBlock instanceof SpawnerBlock || ownerBlock instanceof AbstractCauldronBlock || ownerBlock instanceof AnvilBlock ||
+                    ownerBlock instanceof PistonBaseBlock || ownerBlock instanceof PistonHeadBlock || ownerBlock instanceof ShulkerBoxBlock ||
+                    ownerBlock instanceof BannerBlock || ownerBlock instanceof WetSpongeBlock || ownerBlock instanceof RailBlock || ownerBlock instanceof PoweredRailBlock ||
+                    ownerBlock instanceof DetectorRailBlock || ownerBlock instanceof DaylightDetectorBlock || ownerBlock instanceof RespawnAnchorBlock ||
+                    ownerBlock instanceof RepeaterBlock || ownerBlock instanceof ComparatorBlock || ownerBlock instanceof StemBlock))
                 self.add(COVERED);
         }
     }
