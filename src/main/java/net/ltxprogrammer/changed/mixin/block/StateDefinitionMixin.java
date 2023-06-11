@@ -35,7 +35,8 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof PistonBaseBlock || ownerBlock instanceof PistonHeadBlock || ownerBlock instanceof ShulkerBoxBlock ||
                     ownerBlock instanceof BannerBlock || ownerBlock instanceof WetSpongeBlock || ownerBlock instanceof RailBlock || ownerBlock instanceof PoweredRailBlock ||
                     ownerBlock instanceof DetectorRailBlock || ownerBlock instanceof DaylightDetectorBlock || ownerBlock instanceof RespawnAnchorBlock ||
-                    ownerBlock instanceof RepeaterBlock || ownerBlock instanceof ComparatorBlock || ownerBlock instanceof StemBlock))
+                    ownerBlock instanceof RepeaterBlock || ownerBlock instanceof ComparatorBlock || ownerBlock instanceof StemBlock || ownerBlock instanceof FurnaceBlock ||
+                    ownerBlock instanceof BlastFurnaceBlock || ownerBlock instanceof SmokerBlock))
                 self.add(COVERED);
         }
     }
