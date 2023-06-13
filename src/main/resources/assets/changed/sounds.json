@@ -249,8 +249,7 @@
     ],
     "subtitle": "subtitles.changed.sword1"
   },
-  "latex_dance": {
-    "category": "music",
+  "music_disc.latex_dance": {
     "sounds": [
       {
         "name": "changed:latex_dance",
@@ -258,8 +257,7 @@
       }
     ]
   },
-  "owo": {
-    "category": "music",
+  "music_disc.owo": {
     "sounds": [
       {
         "name": "changed:owo",
