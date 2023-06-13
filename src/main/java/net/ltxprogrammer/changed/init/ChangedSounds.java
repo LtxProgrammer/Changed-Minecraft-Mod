@@ -49,8 +49,8 @@ public class ChangedSounds {
     public static final SoundEvent SWITCH2 = register("switch2");
     public static final SoundEvent SWORD1 = register("sword1");
 
-    public static final SoundEvent LATEX_DANCE = register("latex_dance");
-    public static final SoundEvent OWO = register("owo");
+    public static final SoundEvent LATEX_DANCE = register("music_disc.latex_dance");
+    public static final SoundEvent OWO = register("music_disc.owo");
 
     public static class Types {
         // Represents a sound type that has no sound
