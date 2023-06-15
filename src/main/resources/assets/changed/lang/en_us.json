@@ -423,5 +423,8 @@
   "changed:advancements.main.transfur_legless.description": "Transfur yourself into a legless form",
 
   "changed:advancements.main.beehive_sleep.title": "Sweeter Dreams",
-  "changed:advancements.main.beehive_sleep.description": "Sleep in a beehive bed"
+  "changed:advancements.main.beehive_sleep.description": "Sleep in a beehive bed",
+
+  "changed:advancements.main.tame_a_latex.title": "Unlikely Friend",
+  "changed:advancements.main.tame_a_latex.description": "Tame a latex"
 }
