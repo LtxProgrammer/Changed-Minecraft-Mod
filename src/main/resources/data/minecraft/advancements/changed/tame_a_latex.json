@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:changed/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:lead"
+    },
+    "title": {
+      "translate": "changed:advancements.main.tame_a_latex.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.tame_a_latex.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tamed_latex": {
+      "trigger": "changed:tame_latex",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "tamed_latex"
+    ]
+  ]
+}
