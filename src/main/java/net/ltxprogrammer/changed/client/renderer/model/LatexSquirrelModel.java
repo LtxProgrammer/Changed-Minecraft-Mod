@@ -127,7 +127,7 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
 
         PartDefinition Base_r3 = Tail.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(0, 41).addBox(-6.5F, 3.0F, -2.5F, 8.0F, 4.0F, 6.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.5F, -17.6F, 7.4F, 2.0071F, 0.0F, 0.0F));
 
-        PartDefinition Base_r4 = Tail.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(50, 19).addBox(-6.5F, 4.0F, -2.5F, 8.0F, 4.0F, 6.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(2.5F, -13.4F, 6.6F, 2.4871F, 0.0F, 0.0F));
+        PartDefinition Base_r4 = Tail.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(50, 19).addBox(-6.5F, 3.95F, -2.5F, 8.0F, 4.0F, 6.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(2.5F, -13.4F, 6.6F, 2.4871F, 0.0F, 0.0F));
 
         PartDefinition Base_r5 = Tail.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(0, 30).addBox(-7.5F, 2.0F, -2.5F, 9.0F, 4.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(3.0F, -11.95F, 9.3F, 2.9671F, 0.0F, 0.0F));
 

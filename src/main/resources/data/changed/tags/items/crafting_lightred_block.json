@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "minecraft:red_concrete",
+    "minecraft:orange_concrete",
+    "minecraft:red_terracotta",
+    "minecraft:orange_terracotta",
 	"changed:wall_lightred",
 	"changed:wall_lightred_striped"
   ]
