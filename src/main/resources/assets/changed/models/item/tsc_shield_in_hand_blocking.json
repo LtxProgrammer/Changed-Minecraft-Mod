@@ -70,20 +70,20 @@
 		},
 		"firstperson_righthand": {
 			"rotation": [0, 0, 10],
-			"translation": [-5, 1.5, 5],
-			"scale": [0.68, 0.68, 0.68]
+			"translation": [-5, 2.0, 5],
+			"scale": [0.63, 0.63, 0.63]
 		},
 		"firstperson_lefthand": {
 			"rotation": [0, 0, 10],
-			"translation": [-5, 1.5, 5],
-			"scale": [0.68, 0.68, 0.68]
+			"translation": [-5, 2.0, 5],
+			"scale": [0.63, 0.63, 0.63]
 		},
 		"ground": {
 			"translation": [0, 3, 0],
 			"scale": [0.25, 0.25, 0.25]
 		},
 		"gui": {
-			"rotation": [30, 225, 0],
+			"rotation": [0, 150, 5],
 			"translation": [0, 1, 0],
 			"scale": [0.625, 0.625, 0.625]
 		},
