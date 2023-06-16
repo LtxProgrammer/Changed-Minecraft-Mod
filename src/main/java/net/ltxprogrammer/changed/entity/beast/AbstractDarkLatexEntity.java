@@ -122,10 +122,6 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         return this.entityData.get(DATA_OWNERUUID_ID).orElse(null);
     }
 
-    public boolean canBeLeashed(Player player) {
-        return !this.isLeashed();
-    }
-
     protected void spawnTamingParticles(boolean success) {
         ParticleOptions particleoptions = ParticleTypes.HEART;
         if (!success) {

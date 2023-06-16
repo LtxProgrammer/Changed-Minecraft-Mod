@@ -100,11 +100,12 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
         })) return;
 
         if (age > MAX_AGE) {
-            var wolf = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random).getEntityType().create(level);
+            var newVariant = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random);
+            var wolf = newVariant.getEntityType().create(level);
             if (wolf != null) {
                 wolf.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                 level.addFreshEntity(wolf);
-                ChangedSounds.broadcastSound(this, ChangedSounds.POISON, 1.0f, 1.0f);
+                ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
                 applyCustomizeToAged((AbstractDarkLatexEntity)wolf);
             }
             this.discard();
@@ -113,11 +114,16 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
 
     protected void applyCustomizeToAged(AbstractDarkLatexEntity aged) {
         aged.setOwnerUUID(this.getOwnerUUID());
+        aged.setCustomName(this.getCustomName());
     }
 
     @Override
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
         return false; // TODO remove when pup puddle is implemented.
+    }
+
+    public boolean canBeLeashed(Player player) {
+        return !this.isLeashed();
     }
 
     @Override
