@@ -423,5 +423,8 @@
   "changed:advancements.main.transfur_legless.description": "Förpälsvandla dig själv till en benlös form",
 
   "changed:advancements.main.beehive_sleep.title": "Sötare drömmar",
-  "changed:advancements.main.beehive_sleep.description": "Sova i en bikupasäng"
+  "changed:advancements.main.beehive_sleep.description": "Sova i en bikupasäng",
+
+  "changed:advancements.main.tame_a_latex.title": "Osannolik vän",
+  "changed:advancements.main.tame_a_latex.description": "Tämja ett latex"
 }
