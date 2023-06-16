@@ -41,7 +41,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 1.0D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.42D, 10.0F, 2.0F, false));
     }
 
     @Override
