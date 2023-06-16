@@ -88,7 +88,7 @@ public class ProcessTransfur {
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
         if (player.invulnerableTime > 10 && !justHit) {
-            return getPlayerTransfurProgress(player).progress >= Changed.config.server.transfurTolerance.get().floatValue();
+            return false;
         }
 
         else {
@@ -98,9 +98,11 @@ public class ProcessTransfur {
             player.setLastHurtByMob(null);
 
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
-            float next = getPlayerTransfurProgress(player).progress + amount;
+            float old = getPlayerTransfurProgress(player).progress;
+            float next = old + amount;
+            float max = Changed.config.server.transfurTolerance.get().floatValue();
             setPlayerTransfurProgress(player, new TransfurProgress(next, latexVariant.getFormId()));
-            return next >= Changed.config.server.transfurTolerance.get().floatValue();
+            return next >= max && old < max;
         }
     }
 
