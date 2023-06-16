@@ -98,7 +98,7 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
 
         if (variant == null) return;
 
-        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
+        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity) && !le.isDeadOrDying()) {
             if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
                 return;
             this.extend(state, level, pos);
