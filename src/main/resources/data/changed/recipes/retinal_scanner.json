@@ -2,19 +2,26 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XGX",
-    "QRQ"
+    "GQP",
+    "SRS"
   ],
   "key": {
     "G": {
-      "item": "minecraft:glass_pane"
+      "item": "minecraft:ender_eye"
+    },
+    "P": {
+      "item": "minecraft:paper"
     },
     "X": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:gold_ingot"
     },
     "R": {
+      "item": "minecraft:comparator"
+    },
+    "S": {
       "item": "minecraft:redstone"
     },
+
     "Q": {
       "item": "changed:wall_lightred_striped"
     }

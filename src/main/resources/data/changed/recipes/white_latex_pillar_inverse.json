@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "changed:lab_light"
+      "item": "changed:white_latex_pillar"
     }
   ],
   "result": {
-    "item": "changed:lab_light_small",
-    "count": 2
+    "item": "changed:white_latex_goo",
+    "count": 6
   }
 }

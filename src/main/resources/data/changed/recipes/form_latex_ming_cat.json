@@ -8,13 +8,7 @@
       "item": "minecraft:string"
     },
     {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:gold_nugget"
-    },
-    {
-      "item": "minecraft:cod"
+      "item": "changed:white_latex_goo"
     }
   ],
   "form": "changed:form_latex_ming_cat"

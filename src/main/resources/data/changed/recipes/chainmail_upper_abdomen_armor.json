@@ -1,12 +1,12 @@
+
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "changed:lab_light"
+      "item": "minecraft:chainmail_leggings"
     }
   ],
   "result": {
-    "item": "changed:lab_light_small",
-    "count": 2
+    "item": "changed:chainmail_upper_abdomen_armor"
   }
 }

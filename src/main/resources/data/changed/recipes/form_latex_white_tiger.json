@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:bone"
+      "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:gray_dye"
+      "item": "minecraft:string"
     },
     {
-      "item": "minecraft:cod"
+      "item": "minecraft:light_gray_dye"
     }
   ],
   "form": "changed:form_latex_white_tiger"

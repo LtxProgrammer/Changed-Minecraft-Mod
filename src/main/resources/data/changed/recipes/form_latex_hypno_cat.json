@@ -5,7 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:glowstone"
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
     },
     {
       "item": "minecraft:glow_ink_sac"

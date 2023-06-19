@@ -2,12 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "ICI",
-    "I I",
+    "IAI",
     "III"
   ],
   "key": {
     "I": {
       "item": "minecraft:iron_ingot"
+    },
+    "A": {
+      "item": "changed:latex_base"
     },
     "C": {
       "item": "minecraft:compass"

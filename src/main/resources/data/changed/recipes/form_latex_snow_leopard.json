@@ -5,10 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:snowball"
+      "item": "minecraft:string"
     },
     {
-      "item": "minecraft:cod"
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:snowball"
     }
   ],
   "gendered": true,
