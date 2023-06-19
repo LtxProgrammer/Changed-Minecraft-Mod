@@ -27,6 +27,29 @@
             }
           ],
           "name": "changed:latex_base"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              },
+              "add": false
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "changed:white_latex_goo"
         }
       ]
     },
@@ -65,7 +88,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               },
               "add": false
             },
@@ -74,11 +97,11 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
             }
           ],
-          "name": "minecraft:kelp"
+          "name": "minecraft:phantom_membrane"
         },
 		        {
           "type": "minecraft:item",
