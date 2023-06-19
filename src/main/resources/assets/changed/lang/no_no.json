@@ -77,10 +77,10 @@
   "item.changed.netherite_upper_abdomen_armor": "Netheritt øvre bukrustning",
   "item.changed.netherite_lower_abdomen_armor": "Netheritt nedre bukrustning",
 
-  "item.changed.latex_dance_record": "Lateks dansemusikkplate",
-  "item.changed.latex_dance_record.desc": "Av LtxProgrammer",
-  "item.changed.owo_record": "ÒwÓ musikkplate",
-  "item.changed.owo_record.desc": "Av Artemka2009",
+  "item.changed.latex_dance_record": "Lateksmusikkplate",
+  "item.changed.latex_dance_record.desc": "LtxProgrammer - Latex dance",
+  "item.changed.owo_record": "Lateksmusikkplate",
+  "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
   "syringe.changed:form_special": "Beskytter tilpasset form sprøyte",
 
@@ -423,5 +423,8 @@
   "changed:advancements.main.transfur_legless.description": "Transpels deg selv inn i en benløs form",
 
   "changed:advancements.main.beehive_sleep.title": "Drøm søtere",
-  "changed:advancements.main.beehive_sleep.description": "Sov i en bikubeseng"
+  "changed:advancements.main.beehive_sleep.description": "Sov i en bikubeseng",
+
+  "changed:advancements.main.tame_a_latex.title": "Usannsynlig venn",
+  "changed:advancements.main.tame_a_latex.description": "Tem et lateks"
 }
