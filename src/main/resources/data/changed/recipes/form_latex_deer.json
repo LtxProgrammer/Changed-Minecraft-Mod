@@ -5,10 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:stick"
+      "item": "minecraft:leather"
     },
     {
-      "item": "minecraft:leather"
+      "item": "minecraft:grass"
     }
   ],
   "form": "changed:form_latex_deer"

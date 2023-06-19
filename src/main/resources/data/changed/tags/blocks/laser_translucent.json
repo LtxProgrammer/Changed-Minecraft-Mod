@@ -2,8 +2,12 @@
   "replace": false,
   "values": [
     "minecraft:air",
+    "minecraft:barrier",
+    "minecraft:light",
     "minecraft:glass",
+    "minecraft:red_stained_glass",
     "minecraft:glass_pane",
+    "minecraft:red_stained_glass_pane",
     "changed:laser_beam"
   ]
 }
