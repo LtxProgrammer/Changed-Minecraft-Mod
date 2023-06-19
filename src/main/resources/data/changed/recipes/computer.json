@@ -3,7 +3,7 @@
   "pattern": [
     "XXX",
     "XGX",
-    "QRQ"
+    "CRC"
   ],
   "key": {
     "G": {
@@ -15,8 +15,8 @@
     "R": {
       "item": "minecraft:redstone"
     },
-    "Q": {
-      "item": "minecraft:quartz"
+    "C": {
+      "item": "minecraft:comparator"
     }
   },
   "result": {
