@@ -14,6 +14,7 @@
     }
   },
   "result": {
-    "item": "changed:tiles_greenhouse"
+    "item": "changed:tiles_greenhouse",
+    "count": 2
   }
 }

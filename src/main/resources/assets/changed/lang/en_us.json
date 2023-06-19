@@ -77,10 +77,10 @@
   "item.changed.netherite_upper_abdomen_armor": "Netherite Upper Abdomen Armor",
   "item.changed.netherite_lower_abdomen_armor": "Netherite Lower Abdomen Armor",
 
-  "item.changed.latex_dance_record": "Latex Dance Music Disc",
-  "item.changed.latex_dance_record.desc": "By LtxProgrammer",
-  "item.changed.owo_record": "ÒwÓ Music Disc",
-  "item.changed.owo_record.desc": "By Artemka2009",
+  "item.changed.latex_dance_record": "Latex Music Disc",
+  "item.changed.latex_dance_record.desc": "LtxProgrammer - Latex dance",
+  "item.changed.owo_record": "Latex Music Disc",
+  "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
   "syringe.changed:form_special": "Patron Custom Form Syringe",
 

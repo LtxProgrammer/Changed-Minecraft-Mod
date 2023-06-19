@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "IIB",
-    "INB",
-    "ICR"
+    "III",
+    "INI",
+    "RCR"
   ],
   "key": {
     "R": {
@@ -17,9 +17,6 @@
     },
     "I": {
       "item": "minecraft:iron_ingot"
-    },
-    "B": {
-      "item": "minecraft:iron_bars"
     }
   },
   "result": {
