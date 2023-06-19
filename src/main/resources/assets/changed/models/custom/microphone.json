@@ -103,7 +103,7 @@
 			"translation": [0, 0, -10.5]
 		},
 		"fixed": {
-			"translation": [0, 0, -2.75],
+			"translation": [0, 0, -0.75],
 			"scale": [0.5, 0.5, 0.5]
 		}
 	},
