@@ -1,0 +1,7 @@
+{
+	"parent": "changed:custom/microphone",
+	"textures": {
+		"0": "changed:blocks/microphone_on",
+		"particle": "changed:blocks/microphone_on"
+	}
+}

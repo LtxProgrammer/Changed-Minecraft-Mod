@@ -1,19 +1,35 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,enabled=false": {
       "model": "changed:custom/microphone",
       "y": 0
     },
-    "facing=east": {
+    "facing=east,enabled=false": {
       "model": "changed:custom/microphone",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,enabled=false": {
       "model": "changed:custom/microphone",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,enabled=false": {
       "model": "changed:custom/microphone",
+      "y": 270
+    },
+    "facing=north,enabled=true": {
+      "model": "changed:custom/microphone_on",
+      "y": 0
+    },
+    "facing=east,enabled=true": {
+      "model": "changed:custom/microphone_on",
+      "y": 90
+    },
+    "facing=south,enabled=true": {
+      "model": "changed:custom/microphone_on",
+      "y": 180
+    },
+    "facing=west,enabled=true": {
+      "model": "changed:custom/microphone_on",
       "y": 270
     }
   }
