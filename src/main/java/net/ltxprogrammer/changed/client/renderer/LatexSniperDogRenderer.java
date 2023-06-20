@@ -17,4 +17,16 @@ public class LatexSniperDogRenderer extends LatexHumanoidRenderer<LatexSniperDog
     public ResourceLocation getTextureLocation(LatexSniperDog p_114482_) {
         return Changed.modResource("textures/latex_sniper_dog.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexSniperDog, LatexSniperDogModel.Remodel, ArmorLatexWolfModel.RemodelMale<LatexSniperDog>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexSniperDogModel.Remodel(context.bakeLayer(LatexSniperDogModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexSniperDog p_114482_) {
+            return Changed.modResource("textures/remodel/latex_sniper_dog.png");
+        }
+    }
 }
