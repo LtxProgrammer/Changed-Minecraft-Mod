@@ -1,7 +1,7 @@
 {
   "type": "minecraft:entity",
   "pools": [
-    {
+            {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -13,7 +13,34 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
+              },
+              "add": false
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "changed:dark_latex_goo"
+        }]},
+            {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
               },
               "add": false
             },
@@ -27,8 +54,13 @@
             }
           ],
           "name": "minecraft:phantom_membrane"
-        },
-				        {
+        }]},
+
+	{
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -53,5 +85,9 @@
         }
       ]
     }
+
   ]
 }
+
+
+          

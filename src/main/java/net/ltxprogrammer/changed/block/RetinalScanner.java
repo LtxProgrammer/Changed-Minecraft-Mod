@@ -91,7 +91,7 @@ public class RetinalScanner extends AbstractCustomShapeBlock {
     }
 
     public static boolean canSetSpawn(Level level) {
-        return true;
+        return level.dimensionType().bedWorks();
     }
 
     public boolean isPossibleToRespawnInThis() {

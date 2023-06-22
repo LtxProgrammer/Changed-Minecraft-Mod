@@ -5,7 +5,13 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:string"
     },
     {
       "item": "minecraft:cobweb"

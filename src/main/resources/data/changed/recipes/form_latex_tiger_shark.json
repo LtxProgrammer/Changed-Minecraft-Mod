@@ -5,16 +5,19 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:salmon_bucket"
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:salmon"
     },
     {
       "item": "minecraft:prismarine_crystals"
     },
     {
       "item": "minecraft:prismarine_shard"
-    },
-    {
-      "item": "minecraft:bone"
     }
   ],
   "form": "changed:form_latex_tiger_shark"

@@ -2,7 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " W ",
-    "WBW"
+    " B ",
+    " W "
   ],
   "key": {
     "W": {

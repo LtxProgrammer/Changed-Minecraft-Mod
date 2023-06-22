@@ -1,0 +1,12 @@
+
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:chainmail_leggings"
+    }
+  ],
+  "result": {
+    "item": "changed:chainmail_upper_abdomen_armor"
+  }
+}

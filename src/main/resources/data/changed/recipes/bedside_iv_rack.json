@@ -1,11 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " X ",
+    "AXA",
     " X ",
     "XXX"
   ],
   "key": {
+    "A": {
+      "item": "changed:syringe"
+    },
     "X": {
       "item": "minecraft:iron_bars"
     }

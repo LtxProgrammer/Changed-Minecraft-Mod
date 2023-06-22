@@ -1,7 +1,7 @@
 {
   "type": "minecraft:entity",
   "pools": [
-      {
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -27,8 +27,14 @@
             }
           ],
           "name": "changed:latex_base"
-        },
-		  {
+        }
+      ]
+    },
+	{
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -49,9 +55,20 @@
               }
             }
           ],
-          "name": "changed:white_latex_goo"
-        },
-				  {
+          "name": "changed:orange"
+        }
+      ],
+	   "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        }
+      ]
+    },
+	    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -59,7 +76,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               },
               "add": false
             },
@@ -68,7 +85,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
             }
           ],

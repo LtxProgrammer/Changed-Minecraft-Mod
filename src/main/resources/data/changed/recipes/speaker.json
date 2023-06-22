@@ -2,21 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "III",
-    "INI",
-    "RCR"
+    "BNB",
+    "SRS"
   ],
   "key": {
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "C": {
-      "item": "minecraft:copper_ingot"
-    },
+
     "N": {
       "item": "minecraft:note_block"
     },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "item": "minecraft:redstone"
+    },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:copper_ingot"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
     }
   },
   "result": {
