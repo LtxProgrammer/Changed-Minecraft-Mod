@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
-    final M entityModel;
+    public final M entityModel;
     public float hipOffset = -2.0f;
     public float torsoWidth = 5.0f;
     public float forwardOffset = 0.0f;
@@ -140,7 +140,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         return this;
     }
 
-    protected SpecializedAnimations.AnimationHandler.EntityStateContext entityContextOf(T entity, float partialTicks) {
+    public SpecializedAnimations.AnimationHandler.EntityStateContext entityContextOf(T entity, float partialTicks) {
         LatexAnimator<T, M> tmp = this;
         return new SpecializedAnimations.AnimationHandler.EntityStateContext(entity, entityModel.attackTime, partialTicks) {
             final LatexAnimator<T, M> controller = tmp;
@@ -152,7 +152,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         };
     }
 
-    HumanoidArm getAttackArm(T entity) {
+    public HumanoidArm getAttackArm(T entity) {
         HumanoidArm humanoidarm = entity.getMainArm();
         return entity.swingingArm == InteractionHand.MAIN_HAND ? humanoidarm : humanoidarm.getOpposite();
     }
