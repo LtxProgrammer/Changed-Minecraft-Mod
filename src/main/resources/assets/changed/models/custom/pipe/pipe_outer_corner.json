@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "block/pipe_outer_corner",
-		"particle": "block/pipe_outer_corner"
+		"0": "changed:blocks/pipe/pipe_outer_corner",
+		"particle": "changed:blocks/pipe/pipe_outer_corner"
 	},
 	"elements": [
 		{

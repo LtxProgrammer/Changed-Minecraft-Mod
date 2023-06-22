@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.*;
+import net.ltxprogrammer.changed.block.PipeBlock;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.GasCanister;
@@ -97,6 +98,7 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::translucentRenderer);
     public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_FEMALE = register("light_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.WOOL).sound(SoundType.SLIME_BLOCK).strength(0.1F), LatexVariant.LIGHT_LATEX_WOLF.female()));
     public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_MALE = register("light_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(LIGHT_LATEX_PUDDLE_FEMALE.get()), LatexVariant.LIGHT_LATEX_WOLF.male()));
+    public static final RegistryObject<PipeBlock> PIPE = register("pipe", PipeBlock::new);
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<SpeakerBlock> SPEAKER = register("speaker", () -> new SpeakerBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<MicrophoneBlock> MICROPHONE = register("microphone", () -> new MicrophoneBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())), ChangedBlocks::cutoutRenderer);
