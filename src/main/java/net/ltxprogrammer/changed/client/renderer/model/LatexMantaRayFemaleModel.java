@@ -225,7 +225,7 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
                     Tail.getChild("Joint").getChild("Joint2"),
                     Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"),
                     Tail.getChild("Joint").getChild("Joint2").getChild("Joint3").getChild("Joint4")
-            )));
+            ))).hipOffset(0.0f);
         }
 
         public static LayerDefinition createBodyLayer() {
