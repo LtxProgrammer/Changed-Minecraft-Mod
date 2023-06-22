@@ -13,7 +13,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0
+                "max": 2.0
               },
               "add": false
             },
@@ -26,29 +26,15 @@
               }
             }
           ],
-          "name": "changed:latex_base"
-        },
-					{
-		  "rolls": 1.0,
-		  "bonus_rolls": 0.0,
-		  "entries": [
-			{
-			  "type": "minecraft:item",
-			  "name": "changed:retinal_scanner"
-			}
-		  ],
-		  "conditions": [
-			{
-			  "condition": "minecraft:killed_by_player"
-			},
-			{
-			  "condition": "minecraft:random_chance_with_looting",
-			  "chance": 0.075,
-			  "looting_multiplier": 0.03
-			}
-		  ]
-		},
-		        {
+          "name": "minecraft:black_dye"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -70,6 +56,26 @@
             }
           ],
           "name": "changed:dark_latex_goo"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "changed:benign_pants"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_looting",
+          "chance": 0.05,
+          "looting_multiplier": 0.02
         }
       ]
     }
