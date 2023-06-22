@@ -8,6 +8,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +37,9 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
 
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     int purifyProgress;
-    public static final int PURIFY_PROGRESS_TOTAL = 2 * 60 * 20; // 2 minutes to purify
+    public static final int PURIFY_GOO_PROGRESS_TOTAL_MIN = 20 * 20; // 20 seconds to purify one goo
+    public static final int PURIFY_GOO_PROGRESS_TOTAL_MAX = 4 * 60 * 20; // 4 minutes to purify full go stack
+    public static final int PURIFY_SYRINGE_PROGRESS_TOTAL = 2 * 60 * 20; // 2 minutes to purify
     protected final ContainerData dataAccess = new ContainerData() {
         public int get(int p_58431_) {
             return PurifierBlockEntity.this.purifyProgress;
@@ -105,23 +108,53 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
         ContainerHelper.saveAllItems(p_187452_, this.items);
     }
 
-    public static void serverTick(Level p_155014_, BlockPos p_155015_, BlockState p_155016_, PurifierBlockEntity p_155017_) {
-        ItemStack itemstack = p_155017_.items.get(0);
+    public static boolean isImpureGoo(ItemStack itemStack) {
+        return itemStack.is(ChangedItems.DARK_LATEX_GOO.get()) || itemStack.is(ChangedItems.WHITE_LATEX_GOO.get());
+    }
+
+    public static float getTotalProgress(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (!stack.isEmpty() && stack.is(ChangedItems.LATEX_SYRINGE.get()) && tag != null && !tag.getBoolean("safe")) {
+            return PURIFY_SYRINGE_PROGRESS_TOTAL;
+        } else if (!stack.isEmpty() && isImpureGoo(stack)) {
+            float count = stack.getCount();
+            return Mth.lerp(count / stack.getMaxStackSize(), PURIFY_GOO_PROGRESS_TOTAL_MIN, PURIFY_GOO_PROGRESS_TOTAL_MAX);
+        }
+
+        return Float.MAX_VALUE;
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PurifierBlockEntity blockEntity) {
+        ItemStack itemstack = blockEntity.items.get(0);
         CompoundTag tag = itemstack.getTag();
+        float progressRelative = getTotalProgress(itemstack);
         if (!itemstack.isEmpty() && itemstack.is(ChangedItems.LATEX_SYRINGE.get()) && tag != null) {
             if (!tag.getBoolean("safe")) {
-                ++p_155017_.purifyProgress;
-                if (p_155017_.purifyProgress == PURIFY_PROGRESS_TOTAL) {
-                    p_155017_.purifyProgress = 0;
+                ++blockEntity.purifyProgress;
+                if (blockEntity.purifyProgress >= progressRelative) {
+                    blockEntity.purifyProgress = 0;
                     tag.putBoolean("safe", true);
                 }
 
-                p_155017_.setChanged();
+                blockEntity.setChanged();
             }
 
             else
-                p_155017_.purifyProgress = 0;
+                blockEntity.purifyProgress = 0;
         }
+
+        else if (!itemstack.isEmpty() && isImpureGoo(itemstack)) {
+            ++blockEntity.purifyProgress;
+            if (blockEntity.purifyProgress >= progressRelative) {
+                blockEntity.purifyProgress = 0;
+                blockEntity.items.set(0, new ItemStack(ChangedItems.LATEX_BASE.get(), itemstack.getCount()));
+            }
+
+            blockEntity.setChanged();
+        }
+
+        else
+            blockEntity.purifyProgress = 0;
     }
 
     public boolean stillValid(Player p_58340_) {
