@@ -1,7 +1,7 @@
 {
   "type": "minecraft:entity",
   "pools": [
-      {
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -13,7 +13,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0
+                "max": 2.0
               },
               "add": false
             },
@@ -24,9 +24,23 @@
                 "min": 0.0,
                 "max": 1.0
               }
+            },
+            {
+              "function": "minecraft:furnace_smelt",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "flags": {
+                      "is_on_fire": true
+                    }
+                  },
+                  "entity": "this"
+                }
+              ]
             }
           ],
-          "name": "changed:latex_base"
+          "name": "minecraft:cod"
         }
       ]
     },
@@ -42,7 +56,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 1.0
+                "max": 2.0
               },
               "add": false
             },
@@ -56,29 +70,6 @@
             }
           ],
           "name": "changed:white_latex_goo"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 2.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 2.0
-              }
-            }
-          ],
-          "name": "minecraft:salmon"
         }
       ]
     }

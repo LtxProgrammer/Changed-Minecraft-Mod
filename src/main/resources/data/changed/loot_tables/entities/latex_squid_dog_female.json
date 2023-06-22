@@ -1,59 +1,7 @@
 {
   "type": "minecraft:entity",
   "pools": [
-       {
-      "rolls": 1.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
-            }
-          ],
-          "name": "changed:latex_base"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
-            }
-          ],
-          "name": "changed:white_latex_goo"
-        }
-      ]
-    },
-	    {
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -74,13 +22,33 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
+            },
+            {
+              "function": "minecraft:furnace_smelt",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "flags": {
+                      "is_on_fire": true
+                    }
+                  },
+                  "entity": "this"
+                }
+              ]
             }
           ],
           "name": "minecraft:salmon"
-        },
-		        {
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
           "type": "minecraft:item",
           "functions": [
             {
@@ -97,36 +65,29 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
+            },
+            {
+              "function": "minecraft:furnace_smelt",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "flags": {
+                      "is_on_fire": true
+                    }
+                  },
+                  "entity": "this"
+                }
+              ]
             }
           ],
           "name": "minecraft:cod"
         }
       ]
     },
-					{
-		  "rolls": 1.0,
-		  "bonus_rolls": 0.0,
-		  "entries": [
-			{
-			  "type": "minecraft:item",
-			  "name": "minecraft:nautilus_shell"
-			}
-		  ],
-		  "conditions": [
-			{
-			  "condition": "minecraft:killed_by_player"
-			},
-			{
-			  "condition": "minecraft:random_chance_with_looting",
-			  "chance": 0.025,
-			  "looting_multiplier": 0.01
-			}
-		  ]
-		},
-
-		    {
+    {
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
@@ -137,8 +98,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 3.0
+                "min": 0.0,
+                "max": 2.0
               },
               "add": false
             },
@@ -147,11 +108,40 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               }
             }
           ],
           "name": "minecraft:ink_sac"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              },
+              "add": false
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              }
+            }
+          ],
+          "name": "changed:latex_inkball"
         }
       ]
     }
