@@ -1,5 +1,16 @@
 package net.ltxprogrammer.changed.client.renderer.animate;
 
+import net.ltxprogrammer.changed.client.renderer.animate.arm.AquaticArmSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
+import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
+import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
+import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
+import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
+import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
+import net.ltxprogrammer.changed.client.renderer.animate.wing.*;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
