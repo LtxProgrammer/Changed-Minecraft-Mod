@@ -27,7 +27,7 @@
   "subtitles.changed.close3": "Lab door closes",
   "subtitles.changed.chime2": "Keypad grants access",
   "subtitles.changed.buzzer1": "Keypad denies access",
-  "subtitles.changed.equip3": "Pants rustle",
+  "subtitles.changed.equip3": "Shorts rustle",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.ice2": "Crystal extends",
   "subtitles.changed.key": "Keypad latch clicks",
@@ -60,9 +60,9 @@
   "item.changed.white_latex_goo": "White Latex Goo",
   "item.changed.white_latex_bucket": "White Latex Bucket",
 
-  "item.changed.tsc_staff": "TSC Shock Staff",
-  "item.changed.tsc_baton": "TSC Shock Baton",
-  "item.changed.tsc_shield": "TSC Riot Shield",
+  "item.changed.tsc_staff": "TSC Staff",
+  "item.changed.tsc_baton": "TSC Baton",
+  "item.changed.tsc_shield": "TSC Shield",
 
   "item.changed.leather_upper_abdomen_armor": "Leather Upper Abdomen Armor",
   "item.changed.leather_lower_abdomen_armor": "Leather Lower Abdomen Armor",
