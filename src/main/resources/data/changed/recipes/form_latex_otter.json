@@ -8,10 +8,10 @@
       "item": "minecraft:kelp"
     },
     {
-      "item": "minecraft:cod"
+      "item": "minecraft:leather"
     },
     {
-      "item": "minecraft:water_bucket"
+      "item": "minecraft:salmon"
     }
   ],
   "form": "changed:form_latex_otter"

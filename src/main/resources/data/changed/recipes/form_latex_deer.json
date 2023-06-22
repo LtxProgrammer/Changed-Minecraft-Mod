@@ -5,10 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:leather"
+      "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:grass"
+      "item": "minecraft:beef"
+    },
+    {
+      "item": "minecraft:leather"
     }
   ],
   "form": "changed:form_latex_deer"

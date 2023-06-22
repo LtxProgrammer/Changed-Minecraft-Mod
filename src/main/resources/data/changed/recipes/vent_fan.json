@@ -2,16 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "III",
-    "RPB",
-    "III"
+    "PBP",
+    "RBR"
   ],
   "key": {
     "I": {
       "item": "minecraft:iron_ingot"
     },
     "P": {
-      "item": "minecraft:piston"
+      "item": "minecraft:copper_ingot"
     },
+
     "R": {
       "item": "minecraft:redstone"
     },

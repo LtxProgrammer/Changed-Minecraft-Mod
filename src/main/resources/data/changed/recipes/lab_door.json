@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "IGI",
+    "GII",
     "PDP",
     "IRI"
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:polished_deepslate"
     },
     "G": {
       "item": "minecraft:glass"

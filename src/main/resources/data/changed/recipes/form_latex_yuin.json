@@ -5,10 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:white_wool"
+      "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:purple_dye"
+      "item": "minecraft:mutton"
     }
   ],
   "form": "changed:form_latex_yuin"

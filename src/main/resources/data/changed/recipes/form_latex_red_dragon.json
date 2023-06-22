@@ -5,10 +5,16 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:red_sand"
+      "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:yellow_dye"
+      "item": "minecraft:phantom_membrane"
+    },
+    {
+      "item": "minecraft:red_dye"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
     }
   ],
   "form": "changed:form_latex_red_dragon"

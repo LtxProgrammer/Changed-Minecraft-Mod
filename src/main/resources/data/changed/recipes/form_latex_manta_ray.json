@@ -5,10 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:water_bucket"
+      "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:prismarine_crystals"
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
     }
   ],
   "gendered": true,

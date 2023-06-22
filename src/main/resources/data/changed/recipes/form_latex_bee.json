@@ -5,7 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:honey_block"
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:honey_bottle"
     },
     {
       "item": "minecraft:honeycomb"

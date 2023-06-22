@@ -5,13 +5,16 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:twisting_vines"
     },
     {
       "item": "minecraft:warped_roots"
     },
     {
-      "item": "minecraft:glow_ink_sac"
+      "item": "minecraft:glow_lichen"
     }
   ],
   "form": "changed:form_latex_alien"

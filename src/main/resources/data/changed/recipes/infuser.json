@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    "SCS",
+    "XGX",
+    "ACS",
     "RPR"
   ],
   "key": {
     "C": {
       "item": "minecraft:crafting_table"
+    },
+    "A": {
+      "item": "changed:latex_base"
     },
     "S": {
       "item": "changed:syringe"
@@ -17,6 +20,9 @@
     },
     "X": {
       "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
     },
     "R": {
       "item": "minecraft:redstone"

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "D",
-    "I",
-    "P"
+    "IPI",
+    "I I",
+    "D D"
 
   ],
   "key": {
@@ -11,7 +11,7 @@
       "item": "minecraft:pink_dye"
     },
     "I": {
-      "item": "minecraft:leather_leggings"
+      "item": "changed:white_latex_goo"
     },
     "P": {
       "item": "changed:latex_base"
