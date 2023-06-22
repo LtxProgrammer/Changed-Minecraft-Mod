@@ -5,9 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "minecraft:bone"
+      "item": "changed:white_latex_goo"
     },
-    { "item": "minecraft:orange_dye"
+    {
+      "item": "minecraft:orange_dye"
     }
   ],
   "form": "changed:form_latex_sniper_dog"

@@ -8,7 +8,13 @@
       "item": "changed:dark_latex_goo"
     },
     {
-      "item": "minecraft:feather"
+      "item": "changed:dark_latex_crystal_fragment"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
     }
   ],
   "form": "changed:form_dark_latex_yufeng"

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "CIC",
-    "RHR",
-    "III"
+    " I ",
+    "HBL",
+    "RCR"
   ],
   "key": {
     "I": {
@@ -11,6 +11,12 @@
     },
     "C": {
       "item": "minecraft:copper_ingot"
+    },
+    "L": {
+      "item": "minecraft:lever"
+    },
+    "B": {
+      "item": "minecraft:polished_deepslate_slab"
     },
     "R": {
       "item": "minecraft:redstone"

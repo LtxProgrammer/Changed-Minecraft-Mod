@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "DRD",
+    "RDR",
     "IAI",
     "IGI"
   ],
   "key": {
     "D": {
-      "item": "minecraft:daylight_detector"
+      "item": "minecraft:repeater"
     },
     "R": {
-      "item": "minecraft:redstone"
-    },
-    "A": {
-      "item": "minecraft:amethyst_block"
-    },
-    "I": {
       "item": "minecraft:iron_ingot"
     },
+    "A": {
+      "item": "changed:latex_wolf_crystal_fragment"
+    },
+    "I": {
+      "item": "minecraft:polished_deepslate"
+    },
     "G": {
-      "item": "minecraft:glass"
+      "item": "minecraft:red_stained_glass"
     }
   },
   "result": {

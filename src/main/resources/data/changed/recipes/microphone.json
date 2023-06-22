@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_bars"
     },
     "N": {
       "item": "minecraft:note_block"
@@ -16,7 +16,7 @@
       "item": "minecraft:copper_ingot"
     },
     "B": {
-      "item": "minecraft:iron_bars"
+      "item": "minecraft:polished_deepslate_slab"
     }
   },
   "result": {

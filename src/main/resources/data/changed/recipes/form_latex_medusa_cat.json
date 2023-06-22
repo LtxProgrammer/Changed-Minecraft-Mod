@@ -5,13 +5,16 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:string"
     },
     {
-      "item": "minecraft:cod"
+      "item": "minecraft:yellow_dye"
     },
     {
-      "item": "minecraft:yellow_dye"
+      "item": "minecraft:acacia_sapling"
     }
   ],
   "form": "changed:form_latex_medusa_cat"

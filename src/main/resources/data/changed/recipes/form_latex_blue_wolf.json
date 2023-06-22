@@ -5,10 +5,13 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "changed:orange"
     },
     {
-      "item": "minecraft:lapis_lazuli"
+      "item": "minecraft:light_blue_dye"
     }
   ],
   "form": "changed:form_latex_blue_wolf"

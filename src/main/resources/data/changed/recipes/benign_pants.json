@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "D",
-    "I",
-    "P"
+    "DPD",
+    "D D",
+    "X X"
 
   ],
   "key": {
-    "D": {
+    "X": {
       "item": "minecraft:black_dye"
     },
-    "I": {
-      "item": "minecraft:leather_leggings"
+    "D": {
+      "item": "changed:dark_latex_goo"
     },
     "P": {
       "item": "changed:latex_base"

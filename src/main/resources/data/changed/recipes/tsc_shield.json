@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ILI",
-    "IRI",
-    " I "
+    "RLR",
+    "IAI",
+    " S "
   ],
   "key": {
     "L": {
@@ -11,6 +11,12 @@
     },
     "I": {
       "item": "minecraft:iron_ingot"
+    },
+    "A": {
+      "item": "minecraft:shield"
+    },
+    "S": {
+      "item": "minecraft:redstone_torch"
     },
     "R": {
       "item": "minecraft:redstone"

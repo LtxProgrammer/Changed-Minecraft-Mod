@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "RLR",
-    "RLR",
-    " I "
+    "BI ",
+    " A "
   ],
   "key": {
     "L": {
@@ -11,6 +11,12 @@
     },
     "I": {
       "item": "minecraft:iron_ingot"
+    },
+    "A": {
+      "item": "minecraft:redstone_torch"
+    },
+    "B": {
+      "item": "minecraft:stone_button"
     },
     "R": {
       "item": "minecraft:redstone"
