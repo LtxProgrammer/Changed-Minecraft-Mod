@@ -26,7 +26,7 @@ public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMant
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new LatexMantaRayFemaleModel.Remodel(context.bakeLayer(LatexMantaRayFemaleModel.LAYER_LOCATION)),
                     ArmorUpperBodyModel.RemodelFemale::new, ArmorUpperBodyModel.RemodelFemale.INNER_ARMOR, ArmorUpperBodyModel.RemodelFemale.OUTER_ARMOR,
-                    ArmorAbdomenModel::new, ArmorAbdomenModel.INNER_ARMOR, ArmorAbdomenModel.OUTER_ARMOR,
+                    ArmorAbdomenModel.Remodel::new, ArmorAbdomenModel.Remodel.INNER_ARMOR, ArmorAbdomenModel.Remodel.OUTER_ARMOR,
                     AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
         }
 
