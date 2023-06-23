@@ -5,13 +5,16 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:feather"
     },
     {
       "item": "minecraft:paper"
     },
     {
-      "item": "minecraft:string"
+      "item": "minecraft:phantom_membrane"
     }
   ],
   "form": "changed:form_latex_moth"

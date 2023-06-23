@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:ink_sac"
     },
     {
-      "item": "minecraft:cod_bucket"
-    },
-    {
-      "item": "changed:latex_inkball"
+      "item": "minecraft:nautilus_shell"
     }
   ],
   "gendered": true,

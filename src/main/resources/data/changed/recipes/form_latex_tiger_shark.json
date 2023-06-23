@@ -5,6 +5,9 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:salmon_bucket"
     },
     {
@@ -15,9 +18,6 @@
     },
     {
       "item": "minecraft:black_dye"
-    },
-    {
-      "item": "minecraft:cod"
     }
   ],
   "form": "changed:form_latex_tiger_shark"
