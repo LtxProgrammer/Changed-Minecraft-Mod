@@ -1,21 +1,15 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "changed:dark_latex_crystal_fragment"
-    },
-    {
-      "item": "changed:dark_latex_crystal_fragment"
-    },
-    {
-      "item": "changed:dark_latex_crystal_fragment"
-    },
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
       "item": "changed:dark_latex_crystal_fragment"
     }
-  ],
+  },
   "result": {
-    "item": "changed:dark_latex_ice",
-    "count": 1
+    "item": "changed:dark_latex_ice"
   }
 }

@@ -8,10 +8,10 @@
       "item": "minecraft:kelp"
     },
     {
-      "item": "minecraft:leather"
+      "item": "minecraft:salmon"
     },
     {
-      "item": "minecraft:salmon"
+      "item": "minecraft:string"
     }
   ],
   "form": "changed:form_latex_otter"

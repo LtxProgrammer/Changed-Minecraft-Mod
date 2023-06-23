@@ -2,21 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "IPI",
-    "ADR",
+    "RDR",
     "IPI"
   ],
   "key": {
     "I": {
-      "item": "minecraft:polished_deepslate"
+      "item": "minecraft:iron_ingot"
     },
     "P": {
       "item": "minecraft:piston"
     },
     "D": {
       "item": "minecraft:iron_door"
-    },
-    "A": {
-      "item": "changed:wall_caution"
     },
     "R": {
       "item": "minecraft:redstone"

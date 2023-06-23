@@ -5,13 +5,10 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:benign_pants"
+    },
+    {
       "item": "minecraft:redstone"
-    },
-    {
-      "item": "minecraft:bone_meal"
-    },
-    {
-      "item": "changed:dark_latex_goo"
     }
   ],
   "form": "changed:form_latex_benign_wolf"

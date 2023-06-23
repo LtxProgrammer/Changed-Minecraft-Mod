@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
+      "item": "minecraft:ink_sac"
     },
     {
       "item": "minecraft:nautilus_shell"
     },
     {
-      "item": "minecraft:ink_sac"
+      "item": "changed:latex_inkball"
     }
   ],
   "gendered": true,

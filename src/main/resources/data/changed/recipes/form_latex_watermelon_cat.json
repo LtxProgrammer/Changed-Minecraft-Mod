@@ -5,13 +5,10 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
-    },
-    {
       "item": "minecraft:string"
     },
     {
-      "item": "minecraft:melon_slice"
+      "item": "minecraft:melon"
     }
   ],
   "form": "changed:form_latex_watermelon_cat"

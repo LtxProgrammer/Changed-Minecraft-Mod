@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
+      "item": "changed:orange_tree_leaves"
     },
     {
-      "item": "minecraft:grass"
+      "item": "changed:orange"
     },
     {
-      "item": "minecraft:rotten_flesh"
+      "tag": "minecraft:leaves"
     }
   ],
   "form": "changed:form_latex_leaf"

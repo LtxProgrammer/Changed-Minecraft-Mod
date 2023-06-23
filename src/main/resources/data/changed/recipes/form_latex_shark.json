@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
-    },
-    {
-      "item": "minecraft:cod"
+      "item": "minecraft:salmon_bucket"
     },
     {
       "item": "minecraft:prismarine_shard"
+    },
+    {
+      "item": "minecraft:prismarine_crystals"
     }
   ],
   "form": "changed:form_latex_shark"

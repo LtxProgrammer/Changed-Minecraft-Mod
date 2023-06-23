@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
-    },
-    {
       "item": "minecraft:gray_dye"
     },
     {
       "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:cod"
     }
   ],
   "form": "changed:form_latex_raccoon"

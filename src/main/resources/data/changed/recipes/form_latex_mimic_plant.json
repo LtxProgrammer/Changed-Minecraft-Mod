@@ -5,13 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
+      "item": "minecraft:grass"
     },
     {
       "item": "minecraft:big_dripleaf"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:moss_block"
     }
   ],
   "form": "changed:form_latex_mimic_plant"
