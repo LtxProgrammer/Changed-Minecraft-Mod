@@ -21,4 +21,18 @@ public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMant
     public ResourceLocation getTextureLocation(LatexMantaRayFemale p_114482_) {
         return Changed.modResource("textures/latex_manta_ray_female.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexMantaRayFemale, LatexMantaRayFemaleModel.Remodel, ArmorUpperBodyModel.RemodelFemale<LatexMantaRayFemale>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexMantaRayFemaleModel.Remodel(context.bakeLayer(LatexMantaRayFemaleModel.LAYER_LOCATION)),
+                    ArmorUpperBodyModel.RemodelFemale::new, ArmorUpperBodyModel.RemodelFemale.INNER_ARMOR, ArmorUpperBodyModel.RemodelFemale.OUTER_ARMOR,
+                    ArmorAbdomenModel.Remodel::new, ArmorAbdomenModel.Remodel.INNER_ARMOR, ArmorAbdomenModel.Remodel.OUTER_ARMOR,
+                    AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexMantaRayFemale p_114482_) {
+            return Changed.modResource("textures/remodel/latex_manta_ray_female.png");
+        }
+    }
 }

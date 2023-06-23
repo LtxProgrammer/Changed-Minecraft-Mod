@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "pipe_ending_2",
-		"particle": "pipe_ending_2"
+		"0": "changed:blocks/pipe/pipe_ending_2",
+		"particle": "changed:blocks/pipe/pipe_ending_2"
 	},
 	"elements": [
 		{
