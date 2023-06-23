@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.world.inventory;
 
+import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.network.FriendlyByteBuf;
@@ -49,7 +50,7 @@ public class PurifierMenu extends AbstractContainerMenu implements Supplier<Map<
         this.customSlots.put(0, this.addSlot(new Slot(p_38971_, 0, 79, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return (ChangedItems.LATEX_SYRINGE.get() == stack.getItem());
+                return (ChangedItems.LATEX_SYRINGE.get() == stack.getItem()) || PurifierBlockEntity.isImpureGoo(stack);
             }
         }));
 
