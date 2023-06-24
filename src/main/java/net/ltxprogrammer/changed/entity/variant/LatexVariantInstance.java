@@ -20,12 +20,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -266,95 +262,41 @@ public class LatexVariantInstance<T extends LatexEntity> {
         player.setDeltaMovement(dP.multiply(mul, mul, mul));
     }
 
-    private static void syncEntityPosRotWithPlayer(LatexEntity living, Player player) {
-        living.tickCount = player.tickCount;
+    public static void syncEntityPosRotWithEntity(LivingEntity set, LivingEntity get) {
+        set.setPos(get.getX(), get.getY(), get.getZ());
+        set.setXRot(get.getXRot());
+        set.setYRot(get.getYRot());
 
-        living.setPos(player.getX(), player.getY(), player.getZ());
-        living.setXRot(player.getXRot());
-        living.setYRot(player.getYRot());
-
-        living.xRotO = player.xRotO;
-        living.yRotO = player.yRotO;
-        living.xOld = player.xOld;
-        living.yOld = player.yOld;
-        living.zOld = player.zOld;
-        living.yBodyRot = player.yBodyRot;
-        living.yBodyRotO = player.yBodyRotO;
-        living.yHeadRot = player.yHeadRot;
-        living.yHeadRotO = player.yHeadRotO;
-        living.xo = player.xo;
-        living.yo = player.yo;
-        living.zo = player.zo;
-        living.xxa = player.xxa;
-        living.yya = player.yya;
-        living.zza = player.zza;
-        living.walkDist = player.walkDist;
-        living.walkDistO = player.walkDistO;
-        living.moveDist = player.moveDist;
-
-        living.getActiveEffectsMap().clear();
+        set.xRotO = get.xRotO;
+        set.yRotO = get.yRotO;
+        set.xOld = get.xOld;
+        set.yOld = get.yOld;
+        set.zOld = get.zOld;
+        set.yBodyRot = get.yBodyRot;
+        set.yBodyRotO = get.yBodyRotO;
+        set.yHeadRot = get.yHeadRot;
+        set.yHeadRotO = get.yHeadRotO;
+        set.xo = get.xo;
+        set.yo = get.yo;
+        set.zo = get.zo;
+        set.xxa = get.xxa;
+        set.yya = get.yya;
+        set.zza = get.zza;
+        set.walkDist = get.walkDist;
+        set.walkDistO = get.walkDistO;
+        set.moveDist = get.moveDist;
     }
 
     public static void syncEntityAndPlayer(LatexEntity living, Player player) {
-        syncEntityPosRotWithPlayer(living, player); //re-sync with the player position in case the entity moved whilst ticking.
-
+        living.tickCount = player.tickCount;
+        living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
 
-        //Others
-        living.swingingArm = player.swingingArm;
-        living.swinging = player.swinging;
-        living.swingTime = player.swingTime;
-
-        living.setDeltaMovement(player.getDeltaMovement());
+        living.mirrorPlayer(player);
 
         //Entity stuff
-        living.horizontalCollision = player.horizontalCollision;
-        living.verticalCollision = player.verticalCollision;
-        living.setOnGround(player.isOnGround());
-        living.setShiftKeyDown(player.isCrouching());
-        if (living.isSprinting() != player.isSprinting())
-            living.setSprinting(player.isSprinting());
-        living.setSwimming(player.isSwimming());
-
         living.setHealth(living.getMaxHealth() * (player.getHealth() / player.getMaxHealth()));
         living.setAirSupply(player.getAirSupply());
-        living.hurtTime = player.hurtTime;
-        living.deathTime = player.deathTime;
-        living.animationPosition = player.animationPosition;
-        living.animationSpeed = player.animationSpeed;
-        living.animationSpeedOld = player.animationSpeedOld;
-        living.attackAnim = player.attackAnim;
-        living.oAttackAnim = player.oAttackAnim;
-        living.flyDist = player.flyDist;
-        living.flyingSpeed = player.flyingSpeed;
-
-        living.wasTouchingWater = player.wasTouchingWater;
-        living.swimAmount = player.swimAmount;
-        living.swimAmountO = player.swimAmountO;
-
-        living.fallFlyTicks = player.fallFlyTicks;
-
-        living.setSharedFlag(7, player.isFallFlying());
-
-        living.vehicle = player.vehicle;
-
-        living.useItemRemaining = player.useItemRemaining;
-
-        Pose pose = living.getPose();
-        living.setPose(player.getPose());
-
-        if(pose != living.getPose()) {
-            living.refreshDimensions();
-        }
-
-        if(player.getSleepingPos().isPresent())
-        {
-            living.setSleepingPos(player.getSleepingPos().get());
-        }
-        else
-        {
-            living.clearSleepingPos();
-        }
 
         living.setInvisible(player.isInvisible());
         living.setInvulnerable(player.isInvulnerable());

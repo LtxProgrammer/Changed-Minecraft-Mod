@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -27,8 +28,9 @@ import java.util.stream.Collectors;
 @OnlyIn(Dist.CLIENT)
 public abstract class RenderOverride {
     public interface Override {
+        boolean requireVariant();
         boolean wantToOverride(Player player, LatexVariantInstance<?> variant);
-        void render(Player player, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int packedLight, float partialTick);
+        void render(Player player, @Nullable LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int packedLight, float partialTick);
     }
 
     private static int EXPECTED_SIZE = 0;
@@ -49,10 +51,12 @@ public abstract class RenderOverride {
         EXPECTED_SIZE = OVERRIDES_PRE_INIT.size();
     }
     
-    public static boolean renderOverrides(Player player, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int packedLight, float partialTick) {
+    public static boolean renderOverrides(Player player, @Nullable LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int packedLight, float partialTick) {
         checkOverrides();
 
         for (var override : OVERRIDES) {
+            if (override.requireVariant() == (variant == null))
+                continue;
             if (!override.wantToOverride(player, variant))
                 continue;
             
@@ -72,13 +76,17 @@ public abstract class RenderOverride {
             this.playerModel = new DuctPlayerModel(modelSet.bakeLayer(DuctPlayerModel.LAYER_LOCATION));
         }
 
+        public boolean requireVariant() {
+            return true;
+        }
+
         public boolean wantToOverride(Player player, LatexVariantInstance<?> variant) {
             return player instanceof PlayerDataExtension ext && // Mixin worked
                     ext.getPlayerMover() != null && // Has player mover
                     ext.getPlayerMover().is(PlayerMover.DUCT_MOVER.get());
         }
 
-        public void render(Player player, LatexVariantInstance<?> variant, PoseStack pose, MultiBufferSource buffer, int packedLight, float partialTick) {
+        public void render(Player player, @Nullable LatexVariantInstance<?> variant, PoseStack pose, MultiBufferSource buffer, int packedLight, float partialTick) {
             var look = DuctBlock.DuctMover.DuctMoverInstance.getClosestDirection(player.getLookAngle());
 
             pose.pushPose();
@@ -90,8 +98,30 @@ public abstract class RenderOverride {
             pose.popPose();
         }
     }
+
+    public static class LockToPlayerOverride implements Override {
+        public LockToPlayerOverride(EntityModelSet modelSet) {
+
+        }
+
+        @java.lang.Override
+        public boolean requireVariant() {
+            return false;
+        }
+
+        public boolean wantToOverride(Player player, LatexVariantInstance<?> variant) {
+            return player instanceof PlayerDataExtension ext && // Mixin worked
+                    ext.getPlayerMover() != null && // Has player mover
+                    ext.getPlayerMover().is(PlayerMover.LOCK_TO_PLAYER.get());
+        }
+
+        public void render(Player player, @Nullable LatexVariantInstance<?> variant, PoseStack pose, MultiBufferSource buffer, int packedLight, float partialTick) {
+            // render nothing
+        }
+    }
     
     static {
         registerOverride(DuctPlayerOverride::new);
+        registerOverride(LockToPlayerOverride::new);
     }
 }
