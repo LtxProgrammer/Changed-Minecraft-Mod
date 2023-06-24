@@ -115,6 +115,7 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     protected void applyCustomizeToAged(AbstractDarkLatexEntity aged) {
         aged.setOwnerUUID(this.getOwnerUUID());
         aged.setCustomName(this.getCustomName());
+        aged.setUnderlyingPlayer(this.getUnderlyingPlayer());
     }
 
     @Override
