@@ -11,7 +11,7 @@
       "item": "minecraft:string"
     },
     {
-      "item": "minecraft:melon_slice"
+      "item": "minecraft:melon"
     }
   ],
   "form": "changed:form_latex_watermelon_cat"

@@ -5,10 +5,16 @@
       "item": "changed:latex_base"
     },
     {
+      "item": "changed:white_latex_goo"
+    },
+    {
       "item": "minecraft:string"
     },
     {
-      "item": "changed:white_latex_goo"
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:gold_nugget"
     }
   ],
   "form": "changed:form_latex_ming_cat"

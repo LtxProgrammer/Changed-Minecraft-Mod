@@ -1,28 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    "GQP",
-    "SRS"
+    "III",
+    "WQW",
+    "RBR"
   ],
   "key": {
-    "G": {
-      "item": "minecraft:ender_eye"
+    "Q": {
+      "item": "minecraft:quartz"
     },
-    "P": {
-      "item": "minecraft:paper"
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "X": {
-      "item": "minecraft:gold_ingot"
+    "B": {
+      "item": "minecraft:writable_book"
     },
     "R": {
-      "item": "minecraft:comparator"
-    },
-    "S": {
       "item": "minecraft:redstone"
     },
-
-    "Q": {
+    "W": {
       "item": "changed:wall_lightred_striped"
     }
   },

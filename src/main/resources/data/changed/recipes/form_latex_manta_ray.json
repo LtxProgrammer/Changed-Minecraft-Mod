@@ -8,10 +8,13 @@
       "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:cod"
+      "item": "minecraft:kelp"
     },
     {
-      "item": "minecraft:phantom_membrane"
+      "item": "minecraft:prismarine_crystals"
+    },
+    {
+      "item": "minecraft:tropical_fish_bucket"
     }
   ],
   "gendered": true,
