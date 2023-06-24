@@ -1,27 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "TXT",
-    "XGX",
-    "SRQ"
+    "III",
+    "IGI",
+    "CLC"
   ],
   "key": {
     "G": {
       "item": "minecraft:glass_pane"
     },
-    "X": {
-      "item": "minecraft:polished_deepslate"
-    },
-    "T": {
+    "I": {
       "item": "minecraft:iron_ingot"
     },
-    "S": {
-      "item": "minecraft:repeater"
+    "L": {
+      "item": "minecraft:redstone_lamp"
     },
-    "R": {
-      "item": "minecraft:redstone_torch"
-    },
-    "Q": {
+    "C": {
       "item": "minecraft:comparator"
     }
   },

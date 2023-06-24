@@ -3,9 +3,6 @@
   "ingredients": [
     {
       "item": "changed:latex_base"
-    }，
-      {
-      "item": "changed:white_latex_goo"
     }
   ],
   "gendered": true,

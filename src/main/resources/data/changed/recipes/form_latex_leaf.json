@@ -8,10 +8,13 @@
       "item": "changed:white_latex_goo"
     },
     {
-      "item": "minecraft:grass"
+      "item": "changed:orange_tree_leaves"
     },
     {
-      "item": "minecraft:rotten_flesh"
+      "item": "changed:orange"
+    },
+    {
+      "tag": "minecraft:leaves"
     }
   ],
   "form": "changed:form_latex_leaf"

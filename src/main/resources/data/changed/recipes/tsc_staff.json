@@ -1,19 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "RAR",
-    "BI ",
-    " L "
+    "RLR",
+    " I ",
+    " I "
   ],
   "key": {
     "L": {
       "item": "minecraft:lightning_rod"
-    },
-    "B": {
-      "item": "minecraft:stone_button"
-    },
-    "A": {
-      "item": "changed:tsc_baton"
     },
     "I": {
       "item": "minecraft:iron_ingot"

@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "IRI",
+    "III",
     "PGP",
-    "IGI"
+    "RGR"
   ],
   "key": {
     "I": {
-      "item": "minecraft:polished_deepslate"
+      "item": "minecraft:iron_ingot"
     },
     "G": {
-      "item": "minecraft:glass_pane"
+      "item": "minecraft:glass"
     },
     "P": {
       "item": "minecraft:piston"

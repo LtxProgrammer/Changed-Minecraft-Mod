@@ -3,14 +3,13 @@
   "pattern": [
     "NP",
     "II"
-
   ],
   "key": {
     "N": {
       "item": "minecraft:iron_nugget"
     },
     "I": {
-      "item": "minecraft:polished_deepslate_slab"
+      "item": "minecraft:iron_ingot"
     },
     "P": {
       "item": "minecraft:paper"

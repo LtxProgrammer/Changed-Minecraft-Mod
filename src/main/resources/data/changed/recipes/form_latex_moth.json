@@ -11,7 +11,10 @@
       "item": "minecraft:feather"
     },
     {
-      "item": "minecraft:string"
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
     }
   ],
   "form": "changed:form_latex_moth"

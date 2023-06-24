@@ -1,36 +1,16 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
-      "item": "changed:latex_wolf_crystal_fragment"
-    },
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
       "item": "changed:latex_wolf_crystal_fragment"
     }
-  ],
+  },
   "result": {
-    "item": "changed:latex_wolf_crystal_block",
-    "count": 1
+    "item": "changed:latex_wolf_crystal_block"
   }
 }

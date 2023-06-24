@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:polished_deepslate_slab"
+      "item": "minecraft:iron_ingot"
     },
     "B": {
       "item": "minecraft:iron_bars"
@@ -15,6 +15,6 @@
   },
   "result": {
     "item": "changed:lab_table",
-    "count": 2
+    "count": 3
   }
 }

@@ -1,21 +1,15 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "changed:white_latex_goo"
-    },
-    {
-      "item": "changed:white_latex_goo"
-    },
-    {
-      "item": "changed:white_latex_goo"
-    },
-    {
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
       "item": "changed:white_latex_goo"
     }
-  ],
+  },
   "result": {
-    "item": "changed:white_latex_block",
-    "count": 1
+    "item": "changed:white_latex_block"
   }
 }
