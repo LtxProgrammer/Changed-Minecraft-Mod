@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "BNB",
-    "SRS"
+    "IBI",
+    "CNC",
+    "RCR"
   ],
   "key": {
 
     "N": {
       "item": "minecraft:note_block"
     },
-    "R": {
-      "item": "minecraft:repeater"
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "S": {
+    "R": {
       "item": "minecraft:redstone"
     },
-    "I": {
+    "C": {
       "item": "minecraft:copper_ingot"
     },
     "B": {

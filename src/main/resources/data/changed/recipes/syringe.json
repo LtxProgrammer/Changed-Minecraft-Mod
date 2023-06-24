@@ -1,18 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
     "pattern": [
-    "X",
-    "A",
-    "#"
+    "B",
+    "N"
   ],
   "key": {
-    "X": {
-      "tag": "minecraft:wooden_buttons"
-    },
-    "A": {
+    "B": {
       "item": "minecraft:glass_bottle"
     },
-    "#": {
+    "N": {
       "item": "minecraft:iron_nugget"
     }
   },

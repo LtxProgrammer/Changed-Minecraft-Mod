@@ -1,16 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XGX",
-    "ACS",
+    "IGI",
+    "SCS",
     "RPR"
   ],
   "key": {
     "C": {
       "item": "minecraft:crafting_table"
-    },
-    "A": {
-      "item": "changed:latex_base"
     },
     "S": {
       "item": "changed:syringe"
@@ -18,7 +15,7 @@
     "P": {
       "item": "minecraft:piston"
     },
-    "X": {
+    "I": {
       "item": "minecraft:iron_ingot"
     },
     "G": {

@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " X ",
-    "XLX",
-    " X "
+    "III",
+    "GLG",
+    " G "
   ],
   "key": {
-    "X": {
-      "item": "minecraft:polished_deepslate_slab"
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
     },
     "L": {
       "item": "minecraft:redstone_lamp"
