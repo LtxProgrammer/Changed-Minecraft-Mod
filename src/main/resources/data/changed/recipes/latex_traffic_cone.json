@@ -7,10 +7,10 @@
 	],
 	"key": {
 		"P": {
-			"item": "changed:white_latex_goo"
+			"item": "minecraft:paper"
 		},
 		"L": {
-			"item": "changed:latex_base"
+			"item": "changed:white_latex_goo"
 		},
 		"B": {
 			"item": "minecraft:black_dye"
@@ -20,6 +20,7 @@
 		}
 	},
 	"result": {
-		"item": "changed:latex_traffic_cone"
+		"item": "changed:latex_traffic_cone",
+		"count": 2
 	}
 }

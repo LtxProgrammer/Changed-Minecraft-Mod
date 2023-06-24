@@ -5,16 +5,13 @@
       "item": "changed:latex_base"
     },
     {
-      "item": "changed:white_latex_goo"
+      "item": "minecraft:bone"
     },
     {
       "item": "minecraft:white_dye"
     },
     {
-      "item": "minecraft:sugar"
-    },
-    {
-      "item": "minecraft:bone_meal"
+      "item": "changed:syringe"
     }
   ],
   "form": "changed:form_light_latex_wolf_organic"

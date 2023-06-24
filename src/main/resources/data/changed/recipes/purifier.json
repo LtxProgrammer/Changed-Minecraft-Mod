@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XSX",
-    "XFX",
-    "RDR"
+    "SDS",
+    "IFI",
+    "IPI"
   ],
   "key": {
     "F": {
@@ -15,11 +15,11 @@
     "D": {
       "item": "minecraft:diamond"
     },
-    "X": {
+    "I": {
       "item": "minecraft:iron_ingot"
     },
-    "R": {
-      "item": "minecraft:redstone"
+    "P": {
+      "item": "minecraft:piston"
     }
   },
   "result": {

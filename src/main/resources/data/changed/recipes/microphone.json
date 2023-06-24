@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "INI",
-    "ICI",
-    " B "
+    "IBI",
+    "NCN",
+    " I "
   ],
   "key": {
-    "I": {
-      "item": "minecraft:iron_bars"
-    },
     "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "B": {
       "item": "minecraft:note_block"
     },
     "C": {
       "item": "minecraft:copper_ingot"
     },
-    "B": {
-      "item": "minecraft:polished_deepslate_slab"
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "result": {

@@ -1,22 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "NY",
-    "P "
-
-  ],
-  "key": {
-    "N": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "item": "minecraft:iron_nugget"
     },
-    "P": {
+    {
       "item": "minecraft:paper"
     },
-    "Y": {
+    {
       "item": "minecraft:yellow_dye"
     }
-  },
+  ],
   "result": {
-    "item": "changed:note"
+    "item": "changed:note",
+    "count": 1
   }
 }
