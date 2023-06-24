@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -309,6 +310,12 @@ public abstract class LatexEntity extends Monster {
     public void tick() {
         super.tick();
         visualTick(this.level);
+
+        var player = getUnderlyingPlayer();
+        if (player != null) { // ticking whilst hosting a player, mirror players inputs
+            mirrorPlayer(player);
+        }
+
         if (this instanceof UniqueEffect unique)
             unique.effectTick(this.level, this);
 
@@ -317,6 +324,56 @@ public abstract class LatexEntity extends Monster {
 
         if (this.vehicle != null && (variant.rideable() || !variant.hasLegs))
             this.stopRiding();
+    }
+    
+    public void mirrorPlayer(Player player) {
+        LatexVariantInstance.syncEntityPosRotWithEntity(this, player);
+        
+        this.swingingArm = player.swingingArm;
+        this.swinging = player.swinging;
+        this.swingTime = player.swingTime;
+
+        this.setDeltaMovement(player.getDeltaMovement());
+        
+        this.horizontalCollision = player.horizontalCollision;
+        this.verticalCollision = player.verticalCollision;
+        this.setOnGround(player.isOnGround());
+        this.setShiftKeyDown(player.isCrouching());
+        if (this.isSprinting() != player.isSprinting())
+            this.setSprinting(player.isSprinting());
+        this.setSwimming(player.isSwimming());
+
+        this.hurtTime = player.hurtTime;
+        this.deathTime = player.deathTime;
+        this.animationPosition = player.animationPosition;
+        this.animationSpeed = player.animationSpeed;
+        this.animationSpeedOld = player.animationSpeedOld;
+        this.attackAnim = player.attackAnim;
+        this.oAttackAnim = player.oAttackAnim;
+        this.flyDist = player.flyDist;
+        this.flyingSpeed = player.flyingSpeed;
+
+        this.wasTouchingWater = player.wasTouchingWater;
+        this.swimAmount = player.swimAmount;
+        this.swimAmountO = player.swimAmountO;
+
+        this.fallFlyTicks = player.fallFlyTicks;
+
+        this.setSharedFlag(7, player.isFallFlying());
+
+        this.vehicle = player.vehicle;
+
+        this.useItemRemaining = player.useItemRemaining;
+
+        Pose pose = this.getPose();
+        this.setPose(player.getPose());
+
+        if (pose != this.getPose())
+            this.refreshDimensions();
+        if(player.getSleepingPos().isPresent())
+            this.setSleepingPos(player.getSleepingPos().get());
+        else
+            this.clearSleepingPos();
     }
 
     @Override
