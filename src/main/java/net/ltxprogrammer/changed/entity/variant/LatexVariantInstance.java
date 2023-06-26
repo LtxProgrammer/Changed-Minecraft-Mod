@@ -43,6 +43,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -56,8 +57,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
     private final LatexVariant<T> parent;
     private final T entity;
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
-    private final List<AbstractAbility<?>> activeAbilities = new ArrayList<>();
 
+    public AbstractAbility<?> selectedAbility = null;
+    public boolean abilityKeyState = false;
     private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
     public int ageAsVariant = 0;
@@ -81,6 +83,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 builder.put(ability, ability.makeInstance(host, this));
         });
         abilityInstances = builder.build();
+        if (abilityInstances.size() > 0)
+            selectedAbility = parent.abilities.get(0).get();
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
     }
@@ -122,10 +126,6 @@ public class LatexVariantInstance<T extends LatexEntity> {
         } catch (Exception unused) {
             return false;
         }
-    }
-
-    public void forEachActiveAbility(Consumer<AbstractAbilityInstance> consumer) {
-        activeAbilities.forEach(name -> consumer.accept(abilityInstances.get(name)));
     }
 
     @SubscribeEvent
@@ -515,17 +515,15 @@ public class LatexVariantInstance<T extends LatexEntity> {
         else
             player.maxUpStep = parent.stepSize;
 
-        List<AbstractAbility<?>> toRemove = new ArrayList<>();
-        forEachActiveAbility(instance -> {
-            if (!instance.canKeepUsing()) {
-                instance.stopUsing();
-                toRemove.add(instance.ability);
-                return;
+        if (selectedAbility != null) {
+            var instance = abilityInstances.get(selectedAbility);
+            if (instance != null) {
+                var controller = instance.getController();
+                boolean oldState = controller.exchangeKeyState(abilityKeyState);
+                if (player.containerMenu == player.inventoryMenu && !player.isUsingItem())
+                    selectedAbility.getUseType(player, this).check(abilityKeyState, oldState, controller);
             }
-
-            instance.tick();
-        });
-        toRemove.forEach(activeAbilities::remove);
+        }
 
         sync(player);
     }
@@ -551,19 +549,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
         });
     }
 
-    public void activateAbility(Player player, AbstractAbility<?> ability) {
-        if (abilityInstances.containsKey(ability)) {
-            var instance = abilityInstances.get(ability);
-            if (instance.canUse()) {
-                activeAbilities.add(ability);
-                instance.startUsing();
-            }
-        }
-    }
-
     public void unhookAll(Player player) {
-        forEachActiveAbility(AbstractAbilityInstance::stopUsing);
-        activeAbilities.clear();
         abilityInstances.forEach((name, ability) -> {
             ability.onRemove();
         });
@@ -580,5 +566,15 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public boolean is(LatexVariant<?> variant) {
         return parent.is(variant);
+    }
+
+    @Nullable
+    public AbstractAbilityInstance getSelectedAbility() {
+        return abilityInstances.get(this.selectedAbility);
+    }
+
+    public void setSelectedAbility(AbstractAbility<?> ability) {
+        if (abilityInstances.containsKey(ability))
+            this.selectedAbility = ability;
     }
 }

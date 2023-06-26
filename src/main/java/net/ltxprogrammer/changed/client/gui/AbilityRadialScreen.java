@@ -90,7 +90,9 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         close.run();
-        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(ChangedRegistry.ABILITY.get().getID(abilities.get(section))));
+        var ability = abilities.get(section);
+        variant.setSelectedAbility(ability);
+        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(variant.abilityKeyState, ability));
         return false;
     }
 }
