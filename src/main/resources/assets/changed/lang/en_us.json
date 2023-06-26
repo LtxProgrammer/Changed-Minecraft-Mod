@@ -104,7 +104,8 @@
   "gamerule.changed:npcWantFusePlayer": "Latex NPCs Want to Fuse With Player",
   "gamerule.changed:doPale": "Is Pale Enabled",
 
-  "key.changed.variant_ability": "Active Variant Ability",
+  "key.changed.variant_ability": "Select Variant Ability",
+  "key.changed.use_ability": "Use Variant Ability",
   "key.changed.extra_jump": "Extra Jump",
 
   "container.changed.extra_hands": "Extra Hands Menu",
