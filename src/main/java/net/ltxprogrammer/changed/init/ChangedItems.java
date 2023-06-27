@@ -21,7 +21,7 @@ public class ChangedItems {
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Changed.MODID);
     public static final RegistryObject<Benign.Pants> BENIGN_PANTS = register("benign_pants", Benign.Pants::new);
     public static final RegistryObject<PinkLatex.Pants> PINK_PANTS = register("pink_pants", PinkLatex.Pants::new);
-    public static final RegistryObject<AbstractLatexItem> DARK_LATEX_CRYSTAL_FRAGMENT = register("dark_latex_crystal_fragment", AbstractLatexItem::new);
+    public static final RegistryObject<AbstractLatexItem> DARK_LATEX_CRYSTAL_SHARD = register("dark_latex_crystal_shard", AbstractLatexItem::new);
     public static final RegistryObject<AbstractLatexGoo> DARK_LATEX_GOO = register("dark_latex_goo", () -> new AbstractLatexGoo(LatexType.DARK_LATEX));
     public static final RegistryObject<DarkLatexMask> DARK_LATEX_MASK = register("dark_latex_mask", DarkLatexMask::new);
     public static final RegistryObject<AbstractLatexBucket> DARK_LATEX_BUCKET = register("dark_latex_bucket", AbstractLatexBucket.from(ChangedFluids.DARK_LATEX));
@@ -32,14 +32,14 @@ public class ChangedItems {
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new Item((new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
+    public static final RegistryObject<AbstractLatexCrystalItem> BEIFENG_CRYSTAL_SHARD = register("beifeng_crystal_shard",
             () -> new AbstractLatexCrystalItem(LatexVariant.LATEX_BEIFENG));
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
     public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
-    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment",
+    public static final RegistryObject<AbstractLatexCrystalItem> WOLF_CRYSTAL_SHARD = register("wolf_crystal_shard",
             () -> new AbstractLatexCrystalItem(LatexVariant.LATEX_CRYSTAL_WOLF));
-    public static final RegistryObject<AbstractLatexCrystalItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment",
+    public static final RegistryObject<AbstractLatexCrystalItem> DARK_DRAGON_CRYSTAL_SHARD = register("dark_dragon_crystal_shard",
             () -> new AbstractLatexCrystalItem(LatexVariant.DARK_LATEX_DRAGON));
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexGoo(LatexType.WHITE_LATEX));
     public static final RegistryObject<AbstractLatexBucket> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));

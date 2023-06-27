@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_latex_wolf_crystal_fragment": {
+    "has_wolf_crystal_shard": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:latex_wolf_crystal_fragment"
+              "changed:wolf_crystal_shard"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_latex_wolf_crystal_fragment",
+      "has_wolf_crystal_shard",
       "has_the_recipe"
     ]
   ]

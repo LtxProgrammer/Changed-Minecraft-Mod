@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:dark_latex_ice"
+      "changed:chainmail_upper_abdomen_armor_smithing"
     ]
   },
   "criteria": {
-    "has_dark_latex_crystal_shard": {
+    "has_chainmail_leggings": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:dark_latex_crystal_shard"
+              "minecraft:chainmail_leggings"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:dark_latex_ice"
+        "recipe": "minecraft:chaimail_upper_abdomen_armor_smithing"
       }
     }
   },
   "requirements": [
     [
-      "has_dark_latex_crystal_shard",
+      "has_chainmail_leggings",
       "has_the_recipe"
     ]
   ]
