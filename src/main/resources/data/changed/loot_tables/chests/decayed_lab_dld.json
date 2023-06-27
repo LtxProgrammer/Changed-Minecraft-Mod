@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:dark_dragon_crystal_shard"
+          "name": "changed:dark_latex_dragon_crystal_fragment"
         }
       ]
     },
@@ -69,7 +69,7 @@
               "add": false
             }
           ],
-          "name": "changed:beifeng_crystal_shard"
+          "name": "changed:latex_beifeng_crystal_fragment"
         },
         {
           "type": "minecraft:item",
@@ -85,7 +85,7 @@
               "add": false
             }
           ],
-          "name": "changed:wolf_crystal_shard"
+          "name": "changed:latex_wolf_crystal_fragment"
         }
       ]
     },
