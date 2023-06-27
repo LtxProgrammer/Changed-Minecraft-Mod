@@ -65,7 +65,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:wolf_crystal_shard"
+          "name": "changed:latex_wolf_crystal_fragment"
         }
       ],
       "conditions": [

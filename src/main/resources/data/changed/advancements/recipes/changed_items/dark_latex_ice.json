@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_dark_latex_crystal_shard": {
+    "has_dark_latex_crystal_fragment": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:dark_latex_crystal_shard"
+              "changed:dark_latex_crystal_fragment"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_dark_latex_crystal_shard",
+      "has_dark_latex_crystal_fragment",
       "has_the_recipe"
     ]
   ]
