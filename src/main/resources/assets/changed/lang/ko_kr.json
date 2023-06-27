@@ -77,10 +77,10 @@
   "item.changed.netherite_upper_abdomen_armor": "상복부 네더라이트 갑옷",
   "item.changed.netherite_lower_abdomen_armor": "하복부 네더라이트 갑옷",
   
-  "item.changed.latex_dance_record": "Latex Dance 음악 디스크",
-  "item.changed.latex_dance_record.desc": "LtxProgrammer 작곡",
-  "item.changed.owo_record": "ÒwÓ 음악 디스크",
-  "item.changed.owo_record.desc": "Artemka2009 작곡",
+  "item.changed.latex_dance_record": "라텍스 음악 디스크",
+  "item.changed.latex_dance_record.desc": "LtxProgrammer - Latex dance",
+  "item.changed.owo_record": "라텍스 음악 디스크",
+  "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
   
   "syringe.changed:form_special": "후원자 전용 커스텀 모델 주사기",
 
@@ -389,7 +389,7 @@
   "changed.compact_disc.title.white_latex_creature": "모양이 갖춰진 점액",
   "changed.compact_disc.content.white_latex_creature": "이 실험은 지금까지 했던 것 중에 가장 기괴하다. 이 생물의 유전적 구성은 자신과 같은 물질에 녹아들어 그 속에서 헤엄칠수 있도록 해준다. 추가적인 실험이 필요해 보인다.",
 
-  "changed.compact_disc.title.special_latex": "독특한 개체들",
+  "changed.compact_disc.title.special_latex": "독특한 변종들",
   "changed.compact_disc.content.special_latex": "기여해 주신 분들 덕분에, 우리는 매우 변덕스러운 변종을 실험하기에 충분한 금액이 모였다. 이 변종은 피험자마다 고유한 특성이 나타나는 것으로 보인다.",
 
   "changed:advancements.main.root.title": "체인지드",
