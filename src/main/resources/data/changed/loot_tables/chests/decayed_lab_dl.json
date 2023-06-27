@@ -109,7 +109,7 @@
         {
           "type": "minecraft:item",
           "weight": 7,
-          "name": "changed:dark_latex_crystal_shard"
+          "name": "changed:dark_latex_crystal_fragment"
         },
         {
           "type": "minecraft:item",
