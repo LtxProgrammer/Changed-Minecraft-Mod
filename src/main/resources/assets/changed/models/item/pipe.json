@@ -1,3 +1,42 @@
 {
-  "parent": "changed:custom/pipe/pipe_0"
+  "parent": "changed:custom/pipe/pipe_0",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [75, 320, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 130, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 50, 0],
+      "translation": [0, 1.0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 230, 0],
+      "translation": [0, 1.0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "ground": {
+      "translation": [0, 3, -1.75],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "gui": {
+      "rotation": [30, 130, 0],
+      "translation": [2.75, -1.5, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "head": {
+      "translation": [0, 0, -10.5]
+    },
+    "fixed": {
+      "rotation": [0, -90, 0],
+      "translation": [0, 0, -3.0],
+      "scale": [0.6, 0.6, 0.6]
+    }
+  }
 }
