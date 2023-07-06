@@ -32,7 +32,7 @@ public class ChangedEntityRenderers {
                 useNewModels ? DarkLatexYufengRenderer.Remodel::new : DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ALIEN.get(), LatexAlienRenderer::new);
-        //event.registerEntityRenderer(ChangedEntities.LATEX_BEE.get(), LatexBeeRenderer::new); // TODO: Uncomment when appropriate
+        event.registerEntityRenderer(ChangedEntities.LATEX_BEE.get(), LatexBeeRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BEIFENG.get(),
                 useNewModels ? LatexBeifengRenderer.Remodel::new : LatexBeifengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BENIGN_WOLF.get(), LatexBenignWolfRenderer::new);
