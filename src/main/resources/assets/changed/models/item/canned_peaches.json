@@ -1,22 +1,6 @@
 {
-  "parent": "changed:block/canned_peaches",
-  "display": {
-    "thirdperson": {
-      "rotation": [
-        10,
-        -45,
-        170
-      ],
-      "translation": [
-        0,
-        1.5,
-        -2.75
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
-      ]
-    }
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed:items/canned_peaches"
   }
 }
