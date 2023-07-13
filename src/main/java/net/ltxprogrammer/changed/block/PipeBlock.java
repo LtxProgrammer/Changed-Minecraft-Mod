@@ -9,6 +9,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -50,7 +51,7 @@ public class PipeBlock extends Block {
     private final Map<BlockState, Boolean> STATE_VALID_CACHE = new HashMap<>();
 
     public PipeBlock() {
-        super(Properties.of(Material.METAL, MaterialColor.WOOL));
+        super(Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.COPPER));
         this.registerDefaultState(this.getStateDefinition().any()
                 .setValue(NORTH, ConnectState.AIR).setValue(EAST, ConnectState.AIR)
                 .setValue(SOUTH, ConnectState.AIR).setValue(WEST, ConnectState.AIR));
