@@ -185,18 +185,11 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    // Real mod deobf dependency examples - these get remapped to your current mappings
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-
-    // Examples using mod jars from ./libs
     implementation fg.deobf("eu.ha3:PresenceFootsteps-1.18.2-1.5.1-forge:1.18.2-1.5.1") // Presence Footsteps
     implementation fg.deobf('me.lucko:spark-1.9.11-forge:1.9.11') // Spark
+    implementation fg.deobf('org.embeddedt:modernfix-forge-5.2.5+mc1.18.2:5.2.5') // ModernFix
 
-    // compile against the JEI API but do not include it at runtime
     compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
-    // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
 
     // For more info...
