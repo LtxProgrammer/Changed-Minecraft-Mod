@@ -178,9 +178,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xCFBC9B, 0xF4E5BE,
             EntityType.Builder.of(LatexDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
-    /*public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
+    public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
             EntityType.Builder.of(LatexBee::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::forestSpawning);*/ // TODO: Uncomment when appropriate
+            ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexPinkDeer>> LATEX_PINK_DEER = register("latex_pink_deer", 0xF2AFBC, 0xCA636A,
             EntityType.Builder.of(LatexPinkDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
@@ -193,12 +193,12 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = registerReducedSpawn("dark_latex_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::mountainSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = register("dark_latex_wolf_male", 0x393939, 0x303030,
+    public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = registerReducedSpawn("dark_latex_wolf_male", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::noSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = register("dark_latex_wolf_female", 0x393939, 0x303030,
+            ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = registerReducedSpawn("dark_latex_wolf_female", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
-            ChangedEntities::noSpawning);
+            ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<DarkLatexPup>> DARK_LATEX_PUP = register("dark_latex_pup", 0x454545, 0x303030,
             EntityType.Builder.of(DarkLatexPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.85F),
             ChangedEntities::noSpawning);
