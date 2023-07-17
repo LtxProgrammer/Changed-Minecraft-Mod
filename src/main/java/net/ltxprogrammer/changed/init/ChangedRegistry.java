@@ -51,6 +51,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
         createRegistry(event, LATEX_VARIANT.key, c(LatexVariant.class), builder -> {
+            builder.hasTags();
             builder.missing((key, network) -> LatexVariant.FALLBACK_VARIANT);
         }, null);
         createRegistry(event, ABILITY.key, c(AbstractAbility.class));
