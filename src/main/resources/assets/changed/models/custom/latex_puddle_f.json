@@ -74,6 +74,10 @@
 		},
 		"head": {
 			"translation": [0, 14.25, 0]
+		},
+		"fixed": {
+			"translation": [0, 3, 0],
+			"scale": [0.51, 0.51, 0.51]
 		}
 	},
 	"groups": [

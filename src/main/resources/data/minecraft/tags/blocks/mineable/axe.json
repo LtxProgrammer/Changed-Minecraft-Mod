@@ -1,6 +1,11 @@
 {
   "replace": false,
   "values": [
+    "changed:beehive_bed",
+    "changed:beehive_wall",
+    "changed:beehive_corner",
+    "changed:beehive_floor",
+    "changed:beehive_roof",
     "changed:box_pile",
     "changed:cardboard_box",
     "changed:tiles_greenhouse",

@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SpeakerBlock extends AbstractCustomShapeBlock {
     public static final VoxelShape SHAPE_MAIN = Block.box(2.0D, 4.0D, 11.0D, 14.0D, 13.0D, 16.0D);
-    public static final VoxelShape SHAPE_ANTENNA = Block.box(0.0D, 5.0D, 13.0D, 1.0D, 13.0D, 14.0D);
+    public static final VoxelShape SHAPE_ANTENNA = Block.box(0.0D, 5.0D, 13.0D, 2.0D, 13.0D, 14.0D);
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_MAIN, SHAPE_ANTENNA);
     public static final BooleanProperty BOOM = BooleanProperty.create("boom");
 
