@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.nbt.CompoundTag;
@@ -20,8 +21,8 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
 
     public static class Instance extends PlayerMoverInstance<LockToPlayerMover> {
         public Player host = null;
-        public boolean voluntarilyLeave = false;
         public boolean renderHost = true;
+        public GrabEntityPacket.GrabType grabType;
 
         public Instance(LockToPlayerMover parent) {
             super(parent);
@@ -31,16 +32,16 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
         public void saveTo(CompoundTag tag) {
             super.saveTo(tag);
             tag.putUUID("player", host.getUUID());
-            tag.putBoolean("voluntarilyLeave", voluntarilyLeave);
             tag.putBoolean("renderHost", renderHost);
+            tag.putString("grabType", grabType.toString());
         }
 
         @Override
         public void readFrom(CompoundTag tag) {
             super.readFrom(tag);
             this.host = UniversalDist.getLevel().getPlayerByUUID(tag.getUUID("player"));
-            this.voluntarilyLeave = tag.getBoolean("voluntarilyLeave");
             this.renderHost = tag.getBoolean("renderHost");
+            this.grabType = GrabEntityPacket.GrabType.valueOf(tag.getString("grabType"));
         }
 
         @Override
@@ -58,7 +59,7 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
 
         @Override
         public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
-            return host == null || host.isDeadOrDying() || (voluntarilyLeave && player.isCrouching());
+            return host == null || host.isDeadOrDying() /* TODO Escape function */;
         }
 
         @Override
@@ -83,13 +84,12 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
         var instance = createInstance();
         instance.host = human;
         instance.renderHost = false;
-        instance.voluntarilyLeave = true;
         return instance;
     }
 
-    public static void setupLatexHoldHuman(Player latexPlayer, Player human, boolean voluntarilyLeave) {
+    public static void setupLatexHoldHuman(Player latexPlayer, Player human, GrabEntityPacket.GrabType grabType) {
         var instance = PlayerMover.LOCK_TO_PLAYER.get().latexPlayerHoldHuman(latexPlayer);
-        instance.voluntarilyLeave = voluntarilyLeave;
+        instance.grabType = grabType;
 
         if (human instanceof PlayerDataExtension ext)
             ext.setPlayerMover(instance);
@@ -97,6 +97,7 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
 
     public static void setupHumanControlLatex(Player latexPlayer, Player human) {
         var instance = PlayerMover.LOCK_TO_PLAYER.get().humanControlLatexPlayer(human);
+        instance.grabType = GrabEntityPacket.GrabType.SUIT;
 
         if (latexPlayer instanceof PlayerDataExtension ext)
             ext.setPlayerMover(instance);

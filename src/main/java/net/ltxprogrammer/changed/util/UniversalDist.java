@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -24,6 +25,9 @@ public class UniversalDist {
         }
         public static Entity getCameraEntity() {
             return Minecraft.getInstance().cameraEntity;
+        }
+        public static HitResult getLocalHitResult() {
+            return Minecraft.getInstance().hitResult;
         }
     }
 
@@ -53,5 +57,9 @@ public class UniversalDist {
 
     public static boolean isLocalPlayer(Player player) {
         return player == getLocalPlayer();
+    }
+
+    public static HitResult getLocalHitResult() {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> ClientDist::getLocalHitResult);
     }
 }

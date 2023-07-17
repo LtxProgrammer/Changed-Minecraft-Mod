@@ -35,6 +35,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             abilityInstance.tick();
         }
 
+        public void tickCharge() {
+            abilityInstance.ability.tickCharge(abilityInstance.player, abilityInstance.variant,
+                    (float)chargeTicks);
+        }
+
         public void deactivateAbility() {
             abilityInstance.stopUsing();
         }
@@ -91,6 +96,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
          * Indicates the ability activates when the key is released
          */
         CHARGE_RELEASE((keyState, oldState, controller) -> {
+            if (keyState) {
+                controller.tickCharge();
+            }
+
             if (!keyState && oldState) {
                 controller.activateAbility();
                 controller.deactivateAbility();
@@ -143,6 +152,8 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public void startUsing(Player player, LatexVariantInstance<?> variant) {}
     public void tick(Player player, LatexVariantInstance<?> variant) {}
     public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
+
+    public void tickCharge(Player player, LatexVariantInstance<?> variant, float ticks) {}
 
     // Called when the player loses the variant (death or untransfur)
     public void onRemove(Player player, LatexVariantInstance<?> variant) {}

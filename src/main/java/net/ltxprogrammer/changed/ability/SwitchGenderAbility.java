@@ -27,4 +27,14 @@ public class SwitchGenderAbility extends SimpleAbility {
         }
         player.setHealth(beforeHealth);
     }
+
+    @Override
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+        return UseType.CHARGE_TIME;
+    }
+
+    @Override
+    public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
+        return 60;
+    }
 }
