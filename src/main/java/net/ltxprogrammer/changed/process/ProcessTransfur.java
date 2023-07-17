@@ -62,7 +62,11 @@ import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static record TransfurProgress(float progress, ResourceLocation type) {}
+    public static record TransfurProgress(float progress, ResourceLocation type) {
+        public LatexVariant<?> getVariant() {
+            return ChangedRegistry.LATEX_VARIANT.get().getValue(type);
+        }
+    }
 
     public static void setPlayerTransfurProgress(Player player, @NotNull TransfurProgress progress) {
         if (!(player instanceof PlayerDataExtension ext))

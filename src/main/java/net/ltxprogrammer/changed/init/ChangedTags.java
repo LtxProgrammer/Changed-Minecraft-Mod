@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -48,6 +49,14 @@ public class ChangedTags {
 
         private static TagKey<Fluid> create(String name) {
             return TagKey.create(Registry.FLUID_REGISTRY, Changed.modResource(name));
+        }
+    }
+
+    public static class LatexVariants {
+        public static final TagKey<LatexVariant<?>> WOLF_LIKE = create("wolf_like");
+
+        private static TagKey<LatexVariant<?>> create(String name) {
+            return TagKey.create(ChangedRegistry.LATEX_VARIANT.key, Changed.modResource(name));
         }
     }
 }

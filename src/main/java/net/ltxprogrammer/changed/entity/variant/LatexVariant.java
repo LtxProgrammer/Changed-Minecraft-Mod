@@ -13,8 +13,10 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +46,6 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<LatexVariant<?>> {
     public static final String NBT_PLAYER_ID = "changed:player_id";
-
     public static final ResourceLocation SPECIAL_LATEX = Changed.modResource("form_special");
     private static final Map<ResourceLocation, LatexVariant<?>> ALL_LATEX_FORMS = new HashMap<>();
     public static final List<ResourceLocation> PUBLIC_LATEX_FORMS = new ArrayList<>();
@@ -252,6 +253,10 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         if (variant == null)
             return false;
         return getEntityType() == variant.getEntityType();
+    }
+
+    public boolean is(TagKey<LatexVariant<?>> tagKey) {
+        return ChangedRegistry.LATEX_VARIANT.get().tags().getTag(tagKey).contains(this);
     }
 
     public enum BreatheMode {
