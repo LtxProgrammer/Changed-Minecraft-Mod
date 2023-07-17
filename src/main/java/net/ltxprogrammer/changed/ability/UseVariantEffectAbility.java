@@ -38,4 +38,9 @@ public class UseVariantEffectAbility extends SimpleAbility {
             return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + uniqueEffect.getEffectName() + ".png");
         return super.getTexture(player, variant);
     }
+
+    @Override
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+        return UseType.HOLD;
+    }
 }

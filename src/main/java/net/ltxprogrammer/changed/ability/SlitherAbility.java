@@ -40,4 +40,9 @@ public class SlitherAbility extends SimpleAbility {
         super.readData(tag, player, variant);
         variant.getLatexEntity().overrideVisuallySwimming = tag.getBoolean("overrideSwimming");
     }
+
+    @Override
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+        return UseType.HOLD;
+    }
 }

@@ -33,4 +33,14 @@ public class SimpleCreateItemAbility extends SimpleAbility {
         if (!player.isCreative())
             player.causeFoodExhaustion(exhaustion);
     }
+
+    @Override
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+        return UseType.CHARGE_TIME;
+    }
+
+    @Override
+    public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
+        return 30;
+    }
 }
