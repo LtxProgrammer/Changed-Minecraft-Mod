@@ -54,6 +54,9 @@ public class ChangedTags {
 
     public static class LatexVariants {
         public static final TagKey<LatexVariant<?>> WOLF_LIKE = create("wolf_like");
+        public static final TagKey<LatexVariant<?>> SHARK_LIKE = create("shark_like");
+        public static final TagKey<LatexVariant<?>> CAT_LIKE = create("cat_like");
+        public static final TagKey<LatexVariant<?>> LEOPARD_LIKE = create("leopard_like");
 
         private static TagKey<LatexVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.LATEX_VARIANT.key, Changed.modResource(name));

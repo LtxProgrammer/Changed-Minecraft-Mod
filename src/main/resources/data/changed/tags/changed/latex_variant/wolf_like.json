@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_latex_silver_fox",
+    "changed:form_dark_latex_wolf/male",
+    "changed:form_dark_latex_wolf/female",
+    "changed:form_light_latex_wolf/male",
+    "changed:form_light_latex_wolf/female",
+    "changed:form_latex_blue_wolf",
+    "changed:form_aerosol_latex_wolf",
+    "changed:form_latex_purple_fox",
+    "changed:form_latex_crystal_wolf",
+    "changed:form_latex_crystal_wolf_horned",
+    "changed:form_latex_sniper_dog",
+    "changed:form_light_latex_wolf_organic",
+    "changed:form_latex_squid_dog/male",
+    "changed:form_latex_squid_dog/female",
+    "changed:form_latex_benign_wolf"
+  ]
+}
