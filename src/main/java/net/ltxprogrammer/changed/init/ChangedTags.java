@@ -54,7 +54,7 @@ public class ChangedTags {
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> HAS_BEEHIVES = create("has_beehives");
+        public static final TagKey<Biome> HAS_BEEHIVES = create("has_structure/beehives");
 
         private static TagKey<Biome> create(String name) {
             return TagKey.create(Registry.BIOME_REGISTRY, Changed.modResource(name));
