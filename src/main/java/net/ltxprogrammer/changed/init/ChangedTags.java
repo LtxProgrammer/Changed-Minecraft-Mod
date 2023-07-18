@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -49,6 +50,14 @@ public class ChangedTags {
 
         private static TagKey<Fluid> create(String name) {
             return TagKey.create(Registry.FLUID_REGISTRY, Changed.modResource(name));
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> HAS_BEEHIVES = create("has_beehives");
+
+        private static TagKey<Biome> create(String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, Changed.modResource(name));
         }
     }
 
