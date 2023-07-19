@@ -62,7 +62,11 @@ import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static record TransfurProgress(float progress, ResourceLocation type) {}
+    public static record TransfurProgress(float progress, ResourceLocation type) {
+        public LatexVariant<?> getVariant() {
+            return ChangedRegistry.LATEX_VARIANT.get().getValue(type);
+        }
+    }
 
     public static void setPlayerTransfurProgress(Player player, @NotNull TransfurProgress progress) {
         if (!(player instanceof PlayerDataExtension ext))
@@ -488,18 +492,17 @@ public class ProcessTransfur {
         if (playerVariant != null) {
             var possibleFusion = LatexVariant.getFusionCompatible(source.variant, playerVariant);
             if (possibleFusion.size() > 0) {
-                LatexVariant<?> randomFusion = possibleFusion.get(source.entity.getRandom().nextInt(possibleFusion.size()));
                 event.setCanceled(true);
                 if (source.isPlayer) {
                     if (event.getEntityLiving() instanceof Player pvpLoser) {
-                        transfur(source.entity, source.entity.level, randomFusion, true);
+                        transfur(source.entity, source.entity.level, source.variant, true);
                         killPlayerBy(pvpLoser, source.entity);
                     } else {
-                        transfur(event.getEntityLiving(), source.entity.level, randomFusion, true);
+                        transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                         event.getEntityLiving().discard();
                     }
                 } else {
-                    transfur(event.getEntityLiving(), source.entity.level, randomFusion, true);
+                    transfur(event.getEntityLiving(), source.entity.level, source.variant, true);
                     source.entity.discard();
                 }
 

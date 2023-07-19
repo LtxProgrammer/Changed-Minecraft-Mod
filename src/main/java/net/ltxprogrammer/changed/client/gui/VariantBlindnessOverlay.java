@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -35,7 +36,8 @@ public class VariantBlindnessOverlay {
             var variant = ProcessTransfur.getPlayerLatexVariant(player);
             if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
                 return;
-            if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && darkLatex.isMaskless())
+            if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && (darkLatex.isMaskless()
+                || player.hasEffect(MobEffects.NIGHT_VISION)))
                 return;
             float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
             float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;

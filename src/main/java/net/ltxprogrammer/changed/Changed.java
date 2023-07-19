@@ -82,6 +82,10 @@ public class Changed {
 
         ChangedEnchantments.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
+        ChangedStructureSets.REGISTRY.register(modEventBus);
+        ChangedStructures.CONFIGURED_REGISTRY.register(modEventBus);
+        ChangedStructures.REGISTRY.register(modEventBus);
+        ChangedStructurePieceTypes.REGISTRY.register(modEventBus);
         ChangedFeatures.REGISTRY.register(modEventBus);
         ChangedBiomes.REGISTRY.register(modEventBus);
         ChangedBlockEntities.REGISTRY.register(modEventBus);

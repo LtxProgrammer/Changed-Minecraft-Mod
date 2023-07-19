@@ -9,11 +9,14 @@ public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
     public final Player player;
     public final LatexVariantInstance<?> variant;
+    private final AbstractAbility.Controller controller;
 
     public AbstractAbilityInstance(AbstractAbility<?> ability, Player player, LatexVariantInstance<?> variant) {
         this.ability = ability;
         this.player = player;
         this.variant = variant;
+
+        this.controller = new AbstractAbility.Controller(this);
     }
 
     public abstract boolean canUse();
@@ -32,5 +35,9 @@ public abstract class AbstractAbilityInstance {
 
     public final ResourceLocation getTexture() {
         return ability.getTexture(player, variant);
+    }
+
+    public AbstractAbility.Controller getController() {
+        return controller;
     }
 }

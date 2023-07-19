@@ -8,11 +8,127 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.function.TriFunction;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.function.BiConsumer;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
+    @Mod.EventBusSubscriber
+    public static class Controller {
+        private final AbstractAbilityInstance abilityInstance;
+        private int chargeTicks = 0;
+        private boolean keyStateO = false;
+
+        public Controller(AbstractAbilityInstance abilityInstance) {
+            this.abilityInstance = abilityInstance;
+        }
+
+        public void activateAbility() {
+            abilityInstance.startUsing();
+        }
+
+        public void tickAbility() {
+            abilityInstance.tick();
+        }
+
+        public void tickCharge() {
+            abilityInstance.ability.tickCharge(abilityInstance.player, abilityInstance.variant,
+                    (float)chargeTicks);
+        }
+
+        public void deactivateAbility() {
+            abilityInstance.stopUsing();
+        }
+
+        public boolean exchangeKeyState(boolean keyState) {
+            boolean oState = keyStateO;
+            keyStateO = keyState;
+            return oState;
+        }
+
+        public boolean chargeAbility() {
+            chargeTicks++;
+            return chargeTicks >= abilityInstance.ability.getChargeTime(abilityInstance.player, abilityInstance.variant);
+        }
+
+        public void resetCharge() {
+            chargeTicks = 0;
+        }
+    }
+
+    public interface UseTypeI {
+        void check(boolean currentKeyState, boolean oldKeyState, Controller controller);
+    }
+
+    public enum UseType implements UseTypeI {
+        /**
+         * Indicates the ability should activate upon keypress
+         */
+        INSTANT((keyState, oldState, controller) -> {
+            if (!oldState && keyState) {
+                controller.activateAbility();
+                controller.deactivateAbility();
+            }
+        }),
+        /**
+         * Indicates the ability needs to charge while key is pressed for some time, then activates
+         */
+        CHARGE_TIME((keyState, oldState, controller) -> {
+            if (keyState) {
+                if (!controller.chargeAbility())
+                    return;
+
+                controller.activateAbility();
+                controller.deactivateAbility();
+
+                controller.resetCharge();
+            }
+
+            else {
+                controller.resetCharge();
+            }
+        }),
+        /**
+         * Indicates the ability activates when the key is released
+         */
+        CHARGE_RELEASE((keyState, oldState, controller) -> {
+            if (keyState) {
+                controller.tickCharge();
+            }
+
+            if (!keyState && oldState) {
+                controller.activateAbility();
+                controller.deactivateAbility();
+            }
+        }),
+        /**
+         * Indicates the ability activates upon keypress, and continues to fire per tick while key is down
+         */
+        HOLD((keyState, oldState, controller) -> {
+            if (keyState && !oldState)
+                controller.activateAbility();
+            else if (keyState)
+                controller.tickAbility();
+            else
+                controller.deactivateAbility();
+        });
+
+        private final UseTypeI fn;
+
+        UseType(UseTypeI fn) {
+            this.fn = fn;
+        }
+
+        @Override
+        public void check(boolean keyState, boolean oldKeyState, Controller controller) {
+            fn.check(keyState, oldKeyState, controller);
+        }
+    }
+
     private final TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor;
 
     public AbstractAbility(TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor) {
@@ -27,12 +143,17 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
     }
 
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) { return UseType.INSTANT; }
+    public int getChargeTime(Player player, LatexVariantInstance<?> variant) { return 0; }
+
     public boolean canUse(Player player, LatexVariantInstance<?> variant) { return false; }
     public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }
 
     public void startUsing(Player player, LatexVariantInstance<?> variant) {}
     public void tick(Player player, LatexVariantInstance<?> variant) {}
     public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
+
+    public void tickCharge(Player player, LatexVariantInstance<?> variant, float ticks) {}
 
     // Called when the player loses the variant (death or untransfur)
     public void onRemove(Player player, LatexVariantInstance<?> variant) {}

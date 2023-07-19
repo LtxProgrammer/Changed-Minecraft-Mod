@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.world.features.structures.DecayedLab;
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -68,76 +70,6 @@ public class ChangedFeatures {
 
     public static StructureProcessorType<ChestLootTableProcessor> CHEST_LOOT_TABLE_PROCESSOR = registerProcessorType(
             Changed.modResource("chest_loot_table_processor"), ChestLootTableProcessor.CODEC);
-
-    public static final Set<ResourceLocation> LAB_GENERATE_BIOMES = Set.of(
-            new ResourceLocation("plains"),
-            new ResourceLocation("meadow"),
-            new ResourceLocation("snowy_plains"));
-    public static final Set<ResourceLocation> BEEHIVE_GENERATE_BIOMES = Set.of(
-            new ResourceLocation("forest"),
-            new ResourceLocation("dark_forest"),
-            new ResourceLocation("birch_forest"),
-            new ResourceLocation("old_growth_birch_forest"),
-            new ResourceLocation("windswept_forest"),
-            new ResourceLocation("flower_forest"));
-
-    private static RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, ResourceLocation lootTable) {
-        ResourceLocation nbtResource = Changed.modResource(nbtName);
-        return register(nbtName, DecayedLab.feature(nbtResource, yOffset, lootTable, true),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, null, DecayedLab.placedFeature(nbtResource)));
-    }
-
-    private static RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, Set<ResourceLocation> biomes, ResourceLocation lootTable) {
-        ResourceLocation nbtResource = Changed.modResource(nbtName);
-        return register(nbtName, DecayedLab.feature(nbtResource, yOffset, lootTable, false),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(nbtResource)));
-    }
-
-    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset) {
-        return registerBeehive(nbtName, yOffset, null);
-    }
-
-    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset, Set<ResourceLocation> biomes) {
-        ResourceLocation nbtResource = Changed.modResource(nbtName);
-        return register(nbtName, Beehive.feature(nbtResource, yOffset, false),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, Beehive.placedFeature(nbtResource)));
-    }
-
-    public static final RegistryObject<Feature<?>> AQUATIC1 = registerLab("aquatic1",
-            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
-    public static final RegistryObject<Feature<?>> AQUATIC2 = registerLab("aquatic2",
-            -2, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_aqua"));
-    public static final RegistryObject<Feature<?>> HUMAN_RESEARCH_LAB1 = registerLab("human_research_lab1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_treatment"));
-    public static final RegistryObject<Feature<?>> LASER_LAB1 = registerLab("laser_lab1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/low_tier_lab"));
-    public static final RegistryObject<Feature<?>> OFFICE_AREA1 = registerLab("office_area1",
-            -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
-    public static final RegistryObject<Feature<?>> OFFICE_AREA2 = registerLab("office_area2",
-            -1, Set.of(ChangedBiomes.DARK_LATEX_PLAINS.getId()), Changed.modResource("chests/decayed_lab_dl"));
-    public static final RegistryObject<Feature<?>> RESEARCH_TOWER1 = registerLab("research_tower1",
-            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
-    public static final RegistryObject<Feature<?>> RESEARCH_TOWER2 = registerLab("research_tower2",
-            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
-    public static final RegistryObject<Feature<?>> RESEARCH_TOWER3 = registerLab("research_tower3",
-            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
-    public static final RegistryObject<Feature<?>> RESEARCH_TOWER4 = registerLab("research_tower4",
-            0, LAB_GENERATE_BIOMES, Changed.modResource("chests/decayed_lab_origin"));
-    public static final RegistryObject<Feature<?>> TREATMENT_1 = registerLab("treatment_1",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/high_tier_lab"));
-    public static final RegistryObject<Feature<?>> TREATMENT_2 = registerLab("treatment_2",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/high_tier_lab"));
-    public static final RegistryObject<Feature<?>> TREATMENT_3 = registerLab("treatment_3",
-            -1, LAB_GENERATE_BIOMES, Changed.modResource("chests/high_tier_lab"));
-    public static final RegistryObject<Feature<?>> UNDERGROUND_DL_LAB1 = registerLab("underground_dl_lab1",
-            -1, Changed.modResource("chests/decayed_lab_dl"));
-    public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB1 = registerLab("white_latex_lab1",
-            -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
-    public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2",
-            -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
-
-    /*public static final RegistryObject<Feature<?>> BEEHIVE1 = registerBeehive("beehive1",
-            -1, BEEHIVE_GENERATE_BIOMES);*/ // TODO: Uncomment when appropriate
 
     private static TreeConfiguration.TreeConfigurationBuilder createStraightBlobTree(BlockStateProvider p_195147_, BlockStateProvider p_195148_, int p_195149_, int p_195150_, int p_195151_, int p_195152_) {
         return new TreeConfiguration.TreeConfigurationBuilder(p_195147_, new StraightTrunkPlacer(p_195149_, p_195150_, p_195151_), p_195148_, new BlobFoliagePlacer(ConstantInt.of(p_195152_), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1));

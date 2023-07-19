@@ -18,6 +18,9 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
     @Override
     public void startUsing(Player player, LatexVariantInstance<?> variant) {
+        if (player.level.isClientSide)
+            return;
+
         if (variant.transfurMode == TransfurMode.NONE)
             return;
 

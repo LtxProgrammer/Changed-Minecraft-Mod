@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -48,6 +50,28 @@ public class ChangedTags {
 
         private static TagKey<Fluid> create(String name) {
             return TagKey.create(Registry.FLUID_REGISTRY, Changed.modResource(name));
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> HAS_BEEHIVES = create("has_structure/beehives");
+        public static final TagKey<Biome> HAS_DECAYED_LABS = create("has_structure/decayed_labs");
+        public static final TagKey<Biome> HAS_DARK_DECAYED_LABS = create("has_structure/dark_decayed_labs");
+        public static final TagKey<Biome> HAS_WHITE_DECAYED_LABS = create("has_structure/white_decayed_labs");
+
+        private static TagKey<Biome> create(String name) {
+            return TagKey.create(Registry.BIOME_REGISTRY, Changed.modResource(name));
+        }
+    }
+
+    public static class LatexVariants {
+        public static final TagKey<LatexVariant<?>> WOLF_LIKE = create("wolf_like");
+        public static final TagKey<LatexVariant<?>> SHARK_LIKE = create("shark_like");
+        public static final TagKey<LatexVariant<?>> CAT_LIKE = create("cat_like");
+        public static final TagKey<LatexVariant<?>> LEOPARD_LIKE = create("leopard_like");
+
+        private static TagKey<LatexVariant<?>> create(String name) {
+            return TagKey.create(ChangedRegistry.LATEX_VARIANT.key, Changed.modResource(name));
         }
     }
 }

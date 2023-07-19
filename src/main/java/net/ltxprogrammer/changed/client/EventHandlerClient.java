@@ -54,7 +54,9 @@ public class EventHandlerClient {
         }
 
         if (!player.isRemoved() && !player.isSpectator()) {
-            if (ProcessTransfur.isPlayerLatex(player)) {
+            if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
+                event.setCanceled(true);
+            else if (ProcessTransfur.isPlayerLatex(player)) {
                 event.setCanceled(true);
                 FormRenderHandler.renderForm(player, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
             }
