@@ -22,7 +22,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BasicNBTPiece extends ScatteredFeaturePiece {
+public class SurfaceNBTPiece extends ScatteredFeaturePiece {
     private ResourceLocation nbt;
     @Nullable private final ResourceLocation lootTable;
     private final StructureTemplate template;
@@ -31,27 +31,29 @@ public class BasicNBTPiece extends ScatteredFeaturePiece {
         return ServerLifecycleHooks.getCurrentServer().getStructureManager().get(name).orElseThrow();
     }
 
-    private BasicNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context, int x, int z) {
+    private SurfaceNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context, int x, int z) {
         super(ChangedStructurePieceTypes.NBT.get(),
-                x, context.chunkGenerator().getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), z,
+                x, context.chunkGenerator().getBaseHeight(
+                        x + template.getSize().getX() / 2,
+                        z + template.getSize().getZ() / 2, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), z,
                 template.getSize().getX(), template.getSize().getY(), template.getSize().getZ(),
                 getRandomHorizontalDirection(context.random()));
         this.template = template;
         this.lootTable = lootTable;
     }
 
-    private BasicNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
+    private SurfaceNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
         this(template, lootTable, context,
                 context.chunkPos().getMinBlockX() + context.random().nextInt(16),
                 context.chunkPos().getMinBlockZ() + context.random().nextInt(16));
     }
 
-    public BasicNBTPiece(ResourceLocation structureNBT, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
+    public SurfaceNBTPiece(ResourceLocation structureNBT, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
         this(findStructureTemplate(structureNBT), lootTable, context);
         this.nbt = structureNBT;
     }
 
-    public BasicNBTPiece(CompoundTag tag) {
+    public SurfaceNBTPiece(CompoundTag tag) {
         super(ChangedStructurePieceTypes.NBT.get(), tag);
         this.nbt = TagUtil.getResourceLocation(tag, "nbt");
         this.template = findStructureTemplate(nbt);
