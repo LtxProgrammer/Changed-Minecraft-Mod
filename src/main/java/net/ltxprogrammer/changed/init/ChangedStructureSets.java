@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Vec3i;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -20,7 +21,8 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber
 public class ChangedStructureSets { // TODO finish
     public static final DeferredRegister<StructureSet> REGISTRY = DeferredRegister.create(BuiltinRegistries.STRUCTURE_SETS.key(), Changed.MODID);
-    public static final Holder<StructureSet> BEEHIVES = register("beehives", ChangedStructures.BEEHIVE1, new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357619));
+    public static final Holder<StructureSet> BEEHIVES = register("beehives", ChangedStructures.BEEHIVE1,
+            new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 0xBEE00, Vec3i.ZERO));
     public static final Holder<StructureSet> DECAYED_LABS = register("decayed_labs", () -> new StructureSet(List.of(
             StructureSet.entry(ChangedStructures.AQUATIC1),
             StructureSet.entry(ChangedStructures.AQUATIC2),
@@ -38,7 +40,7 @@ public class ChangedStructureSets { // TODO finish
             //StructureSet.entry(ChangedStructures.UNDERGROUND_DL_LAB1),
             StructureSet.entry(ChangedStructures.WHITE_LATEX_LAB1),
             StructureSet.entry(ChangedStructures.WHITE_LATEX_LAB2)
-    ), new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357619)));
+    ), new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 0xFEED00, Vec3i.ZERO)));
 
     private static Holder<StructureSet> register(String name, Supplier<StructureSet> set) {
         RegistryObject<StructureSet> registered = REGISTRY.register(name, set);
