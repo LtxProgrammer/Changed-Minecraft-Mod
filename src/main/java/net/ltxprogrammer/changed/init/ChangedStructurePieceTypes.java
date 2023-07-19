@@ -12,7 +12,7 @@ import java.util.Locale;
 public class ChangedStructurePieceTypes {
     public static final DeferredRegister<StructurePieceType> REGISTRY = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, Changed.MODID);
 
-    public static final RegistryObject<StructurePieceType> NBT = setPieceId(BasicNBTPiece::new, "nbt");
+    public static final RegistryObject<StructurePieceType> NBT = setPieceId(SurfaceNBTPiece::new, "nbt");
 
     private static RegistryObject<StructurePieceType> setFullContextPieceId(StructurePieceType type, String name) {
         return REGISTRY.register(name.toLowerCase(Locale.ROOT), () -> type);
