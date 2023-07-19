@@ -48,7 +48,7 @@ public class Beehive extends StructureFeature<NoneFeatureConfiguration> {
 
     private static PieceGenerator<NoneFeatureConfiguration> generatePieces(ResourceLocation nbt) {
         return (builder, context) -> {
-            builder.addPiece(new BasicNBTPiece(nbt, null, context.random()));
+            builder.addPiece(new BasicNBTPiece(nbt, null, context));
         };
     }
 
