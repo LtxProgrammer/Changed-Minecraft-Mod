@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.world.features.structures.DecayedLab;
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -73,13 +75,6 @@ public class ChangedFeatures {
             new ResourceLocation("plains"),
             new ResourceLocation("meadow"),
             new ResourceLocation("snowy_plains"));
-    public static final Set<ResourceLocation> BEEHIVE_GENERATE_BIOMES = Set.of(
-            new ResourceLocation("forest"),
-            new ResourceLocation("dark_forest"),
-            new ResourceLocation("birch_forest"),
-            new ResourceLocation("old_growth_birch_forest"),
-            new ResourceLocation("windswept_forest"),
-            new ResourceLocation("flower_forest"));
 
     private static RegistryObject<Feature<?>> registerLab(String nbtName, int yOffset, ResourceLocation lootTable) {
         ResourceLocation nbtResource = Changed.modResource(nbtName);
@@ -91,16 +86,6 @@ public class ChangedFeatures {
         ResourceLocation nbtResource = Changed.modResource(nbtName);
         return register(nbtName, DecayedLab.feature(nbtResource, yOffset, lootTable, false),
                 new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, DecayedLab.placedFeature(nbtResource)));
-    }
-
-    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset) {
-        return registerBeehive(nbtName, yOffset, null);
-    }
-
-    private static RegistryObject<Feature<?>> registerBeehive(String nbtName, int yOffset, Set<ResourceLocation> biomes) {
-        ResourceLocation nbtResource = Changed.modResource(nbtName);
-        return register(nbtName, Beehive.feature(nbtResource, yOffset, false),
-                new FeatureRegistration(GenerationStep.Decoration.SURFACE_STRUCTURES, biomes, Beehive.placedFeature(nbtResource)));
     }
 
     public static final RegistryObject<Feature<?>> AQUATIC1 = registerLab("aquatic1",
@@ -135,9 +120,6 @@ public class ChangedFeatures {
             -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
     public static final RegistryObject<Feature<?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2",
             -1, Set.of(ChangedBiomes.WHITE_LATEX_FOREST.getId()), Changed.modResource("chests/decayed_lab_wl"));
-
-    public static final RegistryObject<Feature<?>> BEEHIVE1 = registerBeehive("beehive1",
-            -1, BEEHIVE_GENERATE_BIOMES);
 
     private static TreeConfiguration.TreeConfigurationBuilder createStraightBlobTree(BlockStateProvider p_195147_, BlockStateProvider p_195148_, int p_195149_, int p_195150_, int p_195151_, int p_195152_) {
         return new TreeConfiguration.TreeConfigurationBuilder(p_195147_, new StraightTrunkPlacer(p_195149_, p_195150_, p_195151_), p_195148_, new BlobFoliagePlacer(ConstantInt.of(p_195152_), ConstantInt.of(0), 3), new TwoLayersFeatureSize(1, 0, 1));
