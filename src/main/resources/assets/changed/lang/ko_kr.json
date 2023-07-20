@@ -104,7 +104,8 @@
   "gamerule.changed:npcWantFusePlayer": "라텍스 NPC가 플레이어와 융합하기를 원함",
   "gamerule.changed:doPale": "전염병 활성화",
 
-  "key.changed.variant_ability": "변종 능력 활성화",
+  "key.changed.variant_ability": "변종 능력 선택",
+  "key.changed.use_ability": "변종 능력 사용",
   "key.changed.extra_jump": "더블 점프",
 
   "container.changed.extra_hands": "추가 손 메뉴",
