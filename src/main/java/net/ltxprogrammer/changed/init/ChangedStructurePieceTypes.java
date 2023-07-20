@@ -13,6 +13,8 @@ public class ChangedStructurePieceTypes {
     public static final DeferredRegister<StructurePieceType> REGISTRY = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, Changed.MODID);
 
     public static final RegistryObject<StructurePieceType> NBT = setTemplatePieceId(SurfaceNBTPiece::new, "nbt");
+    public static final RegistryObject<StructurePieceType> FACILITY_ENTRANCE = setTemplatePieceId(FacilityPieces.FacilityEntrance::new, "facility_entrance");
+    public static final RegistryObject<StructurePieceType> FACILITY_STAIRCASE = setTemplatePieceId(FacilityPieces.FacilityStaircase::new, "facility_staircase");
 
     private static RegistryObject<StructurePieceType> setFullContextPieceId(StructurePieceType type, String name) {
         return REGISTRY.register(name.toLowerCase(Locale.ROOT), () -> type);
