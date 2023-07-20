@@ -27,7 +27,7 @@ public class LatexCrystal extends AbstractLatexCrystal {
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         super.randomTick(state, level, position, random);
         if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
-                random.nextInt(1000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
+                random.nextInt(2000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
 
         spawnable.get(random.nextInt(spawnable.size())).get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
