@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
@@ -26,6 +27,10 @@ public class UpperBodyAttackAnimator<T extends LatexEntity, M extends EntityMode
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightArm.yRot = 0.0F;
         leftArm.yRot = 0.0F;
+        var self = entity.getSelfVariant();
+        if (self.itemUseMode != UseItemMode.NORMAL)
+            return;
+
         boolean mainHandRight = entity.getMainArm() == HumanoidArm.RIGHT;
         if (entity.isUsingItem()) {
             boolean usingMainHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
@@ -120,6 +125,10 @@ public class UpperBodyAttackAnimator<T extends LatexEntity, M extends EntityMode
     }
 
     protected void setupAttackAnimation(T entity, float ageInTicks) {
+        var self = entity.getSelfVariant();
+        if (self.itemUseMode != UseItemMode.NORMAL)
+            return;
+
         var entityContext = core.entityContextOf(entity, ageInTicks - entity.tickCount);
         var upperModelContext = upperModelContext();
 
