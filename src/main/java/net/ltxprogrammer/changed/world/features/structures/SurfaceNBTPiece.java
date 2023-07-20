@@ -15,54 +15,50 @@ import net.minecraft.world.level.levelgen.structure.ScatteredFeaturePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class SurfaceNBTPiece extends ScatteredFeaturePiece {
-    private ResourceLocation nbt;
+    private final ResourceLocation templateName;
     @Nullable private final ResourceLocation lootTable;
     private final StructureTemplate template;
 
-    private static StructureTemplate findStructureTemplate(ResourceLocation name) {
-        return ServerLifecycleHooks.getCurrentServer().getStructureManager().get(name).orElseThrow();
-    }
-
-    private SurfaceNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context, int x, int z) {
+    private SurfaceNBTPiece(StructureTemplate template, ResourceLocation structureNBT, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context, int x, int z) {
         super(ChangedStructurePieceTypes.NBT.get(),
                 x, context.chunkGenerator().getBaseHeight(
                         x + template.getSize().getX() / 2,
                         z + template.getSize().getZ() / 2, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), z,
                 template.getSize().getX(), template.getSize().getY(), template.getSize().getZ(),
                 getRandomHorizontalDirection(context.random()));
+        this.templateName = structureNBT;
         this.template = template;
         this.lootTable = lootTable;
     }
 
-    private SurfaceNBTPiece(StructureTemplate template, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
-        this(template, lootTable, context,
+    private SurfaceNBTPiece(StructureTemplate template, ResourceLocation structureNBT, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
+        this(template, structureNBT, lootTable, context,
                 context.chunkPos().getMinBlockX() + context.random().nextInt(16),
                 context.chunkPos().getMinBlockZ() + context.random().nextInt(16));
     }
 
     public SurfaceNBTPiece(ResourceLocation structureNBT, @Nullable ResourceLocation lootTable, PieceGenerator.Context<?> context) {
-        this(findStructureTemplate(structureNBT), lootTable, context);
-        this.nbt = structureNBT;
+        this(context.structureManager().getOrCreate(structureNBT), structureNBT, lootTable, context);
     }
 
-    public SurfaceNBTPiece(CompoundTag tag) {
+    public SurfaceNBTPiece(StructureManager manager, CompoundTag tag) {
         super(ChangedStructurePieceTypes.NBT.get(), tag);
-        this.nbt = TagUtil.getResourceLocation(tag, "nbt");
-        this.template = findStructureTemplate(nbt);
+        this.templateName = TagUtil.getResourceLocation(tag, "nbt");
+        this.template = manager.get(templateName).orElseThrow();
         this.lootTable = tag.contains("lootTable") ? TagUtil.getResourceLocation(tag, "lootTable") : null;
     }
 
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
-        TagUtil.putResourceLocation(tag, "nbt", nbt);
+        TagUtil.putResourceLocation(tag, "nbt", templateName);
         if (lootTable != null)
             TagUtil.putResourceLocation(tag, "lootTable", lootTable);
     }
