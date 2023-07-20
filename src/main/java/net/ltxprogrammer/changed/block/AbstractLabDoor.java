@@ -15,10 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -299,5 +296,19 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         }
 
         super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return super.rotate(state, rotation);
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        if (mirror == Mirror.NONE)
+            return super.mirror(state, mirror);
+        else {
+            return super.mirror(state, mirror).setValue(SECTION, state.getValue(SECTION).getHorizontalNeighbor());
+        }
     }
 }

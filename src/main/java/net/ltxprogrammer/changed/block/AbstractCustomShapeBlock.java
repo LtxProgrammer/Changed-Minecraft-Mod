@@ -22,9 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class AbstractCustomShapeBlock extends Block {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
+public abstract class AbstractCustomShapeBlock extends HorizontalDirectionalBlock {
     public AbstractCustomShapeBlock(BlockBehaviour.Properties properties) {
         super(properties.dynamicShape());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
@@ -76,24 +74,5 @@ public abstract class AbstractCustomShapeBlock extends Block {
 
     public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
         return getInteractionShape(p_54577_, p_54578_, p_54579_);
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
-        return switch (direction) {
-            case CLOCKWISE_90 -> state.setValue(FACING, state.getValue(FACING).getClockWise());
-            case CLOCKWISE_180 -> state.setValue(FACING, state.getValue(FACING).getOpposite());
-            case COUNTERCLOCKWISE_90 -> state.setValue(FACING, state.getValue(FACING).getCounterClockWise());
-            default -> state;
-        };
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
-        return switch (mirror) {
-            case FRONT_BACK -> state.getValue(FACING).getAxis() == Direction.Axis.Z ? state.setValue(FACING, state.getValue(FACING).getOpposite()) : state;
-            case LEFT_RIGHT -> state.getValue(FACING).getAxis() == Direction.Axis.X ? state.setValue(FACING, state.getValue(FACING).getOpposite()) : state;
-            default -> state;
-        };
     }
 }
