@@ -87,4 +87,13 @@ public enum QuarterSection implements StringRepresentable {
             };
         };
     }
+
+    public QuarterSection getHorizontalNeighbor() {
+        return switch (this) {
+            case TOP_LEFT -> TOP_RIGHT;
+            case TOP_RIGHT -> TOP_LEFT;
+            case BOTTOM_LEFT -> BOTTOM_RIGHT;
+            case BOTTOM_RIGHT -> BOTTOM_LEFT;
+        };
+    }
 }
