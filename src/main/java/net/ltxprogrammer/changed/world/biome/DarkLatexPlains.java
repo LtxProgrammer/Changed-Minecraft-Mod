@@ -80,7 +80,7 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
                                 BiomeFilter.biome())));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 PlacementUtils.register(Changed.modResourceStr("dark_latex_plains_latex_pup_crystal"), PATCH_LATEX_PUP_CRYSTAL,
-                        List.of(NoiseThresholdCountPlacement.of(-0.8D, 2, 1), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
+                        List.of(NoiseThresholdCountPlacement.of(-0.8D, 3, 2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                                 BiomeFilter.biome())));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
                 PlacementUtils.register(Changed.modResourceStr("dark_latex_plains_dark_latex_dragon_crystal"), PATCH_DARK_LATEX_DRAGON_CRYSTAL,
