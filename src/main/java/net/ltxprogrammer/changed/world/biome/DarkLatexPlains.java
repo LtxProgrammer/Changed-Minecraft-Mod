@@ -44,7 +44,7 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
             FeatureUtils.register(Changed.modResourceStr("patch_dark_latex_dragon_crystal"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.DARK_LATEX_DRAGON_CRYSTAL), 2));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_LATEX_PUP_CRYSTAL =
-            FeatureUtils.register(Changed.modResourceStr("patch_dark_latex_pup_crystal"), Feature.RANDOM_PATCH,
+            FeatureUtils.register(Changed.modResourceStr("patch_latex_pup_crystal"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_PUP_CRYSTAL), 1));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_WOLF_CRYSTAL =
             FeatureUtils.register(Changed.modResourceStr("patch_wolf_crystal"), Feature.RANDOM_PATCH,
