@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TextureManager.class)
 public abstract class TextureManagerMixin implements PreparableReloadListener, Tickable, AutoCloseable {
-    @Inject(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At("HEAD"), cancellable = true)
+    /*@Inject(method = "getTexture(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/texture/AbstractTexture;", at = @At("HEAD"), cancellable = true)
     public void getTexture(ResourceLocation p_118507_, CallbackInfoReturnable<AbstractTexture> ci) {
         TextureManager self = (TextureManager)(Object)this;
 
@@ -27,5 +27,5 @@ public abstract class TextureManagerMixin implements PreparableReloadListener, T
                 ci.cancel();
             }
         }
-    }
+    }*/
 }

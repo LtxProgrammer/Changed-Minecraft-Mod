@@ -4,10 +4,14 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleResource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -55,10 +60,17 @@ public class MixedTexture extends AbstractTexture {
     private final ResourceLocation overlayLocation;
     private final ResourceLocation name;
 
+    public static final MixedTexture MISSING =
+            new MixedTexture(MissingTextureAtlasSprite.getLocation(), MissingTextureAtlasSprite.getLocation(), MissingTextureAtlasSprite.getLocation());
+
     public MixedTexture(ResourceLocation base, ResourceLocation overlay, ResourceLocation name) {
         this.baseLocation = base;
         this.overlayLocation = overlay;
         this.name = name;
+    }
+
+    public ResourceLocation getBaseLocation() {
+        return baseLocation;
     }
 
     public static NativeImage findMixedTexture(ResourceLocation name) {
@@ -156,6 +168,11 @@ public class MixedTexture extends AbstractTexture {
 
     private static final float[][] KERNEL = BLUR;
 
+    public static boolean cacheExists(ResourceLocation mixedName) {
+        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        return Files.exists(Path.of(path));
+    }
+
     public static Optional<NativeImage> findCachedTexture(ResourceLocation mixedName) {
         String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
         if (!Files.exists(Path.of(path)))
@@ -166,6 +183,18 @@ public class MixedTexture extends AbstractTexture {
             var nativeImage = NativeImage.read(fileStream);
             fileStream.close();
             return Optional.of(nativeImage);
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<Resource> findCachedTextureAsResource(ResourceLocation mixedName) {
+        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        if (!Files.exists(Path.of(path)))
+            return Optional.empty();
+
+        try {
+            return Optional.of(new SimpleResource(mixedName.getPath(), mixedName, new FileInputStream(path), null));
         } catch (Exception ex) {
             return Optional.empty();
         }
@@ -290,7 +319,7 @@ public class MixedTexture extends AbstractTexture {
                 }
             }
 
-            cacheMixedTexture(name, newImage);
+            cacheMixedTexture(getResourceLocation(name), newImage);
             newImage.close();
         } catch (Exception exception) {
             LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation, exception);
