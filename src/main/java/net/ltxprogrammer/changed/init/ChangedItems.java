@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.*;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -77,17 +78,9 @@ public class ChangedItems {
         return REGISTRY.register(name, item);
     }
 
-    public static Item getByRegistry(ResourceLocation location) {
-        for (RegistryObject<Item> registeredItem : REGISTRY.getEntries()) {
-            if (registeredItem.get().getRegistryName().equals(location)) {
-                return registeredItem.get();
-            }
-        }
-
+    public static BlockItem getBlockItem(Block block) {
+        if (Registry.ITEM.get(block.getRegistryName()) instanceof BlockItem blockItem)
+            return blockItem;
         return null;
-    }
-
-    public static Item getBlockItem(Block block) {
-        return getByRegistry(block.getRegistryName());
     }
 }
