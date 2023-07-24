@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.data;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
@@ -12,6 +13,7 @@ import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleResource;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.logging.log4j.LogManager;
@@ -104,6 +106,10 @@ public class MixedTexture extends AbstractTexture {
         public RGBA mul(float s) {
             return new RGBA(r * s, g * s, b * s, a * s);
         }
+
+        public RGBA lerp(float s, RGBA rgba) {
+            return new RGBA(Mth.lerp(s, r, rgba.r), Mth.lerp(s, g, rgba.g), Mth.lerp(s, b, rgba.b), Mth.lerp(s, a, rgba.a));
+        }
     }
 
     private static float frac(float fraction) {
@@ -126,6 +132,34 @@ public class MixedTexture extends AbstractTexture {
                         (int)(size.getSecond() * frac(v))));
     }
 
+    public RGBA sampleLinear(NativeImage image, @Nullable AnimationMetadataSection metadataSection, float u, float v) {
+        var size = imageSize(image, metadataSection);
+        float actualX = size.getFirst() * frac(u);
+        float actualY = size.getFirst() * frac(v);
+        int floorX = Mth.floor(actualX);
+        int ceilX = Mth.ceil(actualX);
+        int floorY = Mth.floor(actualY);
+        int ceilY = Mth.ceil(actualY);
+
+        float lerpX = actualX - floorX;
+        float lerpY = actualY - floorY;
+
+        int safeWrapFloorX = floorX < 0 ? floorX + size.getFirst() : floorX;
+        int safeWrapFloorY = floorY < 0 ? floorY + size.getSecond() : floorY;
+        int safeWrapCeilX = ceilX >= size.getFirst() ? ceilX - size.getFirst() : ceilX;
+        int safeWrapCeilY = ceilY >= size.getSecond() ? ceilY - size.getSecond() : ceilY;
+
+        var corner1 = RGBA.of(image.getPixelRGBA(safeWrapFloorX, safeWrapFloorY));
+        var corner2 = RGBA.of(image.getPixelRGBA(safeWrapCeilX, safeWrapFloorY));
+        var corner3 = RGBA.of(image.getPixelRGBA(safeWrapFloorX, safeWrapCeilY));
+        var corner4 = RGBA.of(image.getPixelRGBA(safeWrapCeilX, safeWrapCeilY));
+
+        var left = corner1.lerp(lerpY, corner3);
+        var right = corner2.lerp(lerpY, corner4);
+
+        return left.lerp(lerpX, right);
+    }
+
     public static ResourceLocation getResourceLocation(ResourceLocation location) {
         return new ResourceLocation(location.getNamespace(), String.format("textures/%s%s", location.getPath(), ".png"));
     }
@@ -133,6 +167,7 @@ public class MixedTexture extends AbstractTexture {
     private static final AtomicBoolean ATOMIC_LOCK = new AtomicBoolean(false);
     private static final Map<ResourceLocation, AnimationMetadataSection> IMAGE_META_CACHE = new HashMap<>();
     private static final Map<ResourceLocation, NativeImage> IMAGE_SETUP_CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, NativeImage> IMAGE_FINAL_CACHE = new HashMap<>();
 
     public static void clearMemoryCache() {
         while (!ATOMIC_LOCK.compareAndSet(false, true)) {}
@@ -140,6 +175,8 @@ public class MixedTexture extends AbstractTexture {
         IMAGE_META_CACHE.clear();
         IMAGE_SETUP_CACHE.forEach((location, nativeImage) -> nativeImage.close()); // Forgot to actually close the textures
         IMAGE_SETUP_CACHE.clear();
+        IMAGE_FINAL_CACHE.forEach((location, nativeImage) -> nativeImage.close()); // Forgot to actually close the textures
+        IMAGE_FINAL_CACHE.clear();
 
         ATOMIC_LOCK.set(false);
     }
@@ -169,11 +206,17 @@ public class MixedTexture extends AbstractTexture {
     private static final float[][] KERNEL = BLUR;
 
     public static boolean cacheExists(ResourceLocation mixedName) {
+        if (!Changed.config.client.cacheGeneratedTextures.get())
+            return IMAGE_FINAL_CACHE.containsKey(mixedName);
+
         String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
         return Files.exists(Path.of(path));
     }
 
     public static Optional<NativeImage> findCachedTexture(ResourceLocation mixedName) {
+        if (!Changed.config.client.cacheGeneratedTextures.get())
+            return cacheExists(mixedName) ? Optional.of(IMAGE_FINAL_CACHE.get(mixedName)) : Optional.empty();
+
         String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
         if (!Files.exists(Path.of(path)))
             return Optional.empty();
@@ -188,19 +231,12 @@ public class MixedTexture extends AbstractTexture {
         }
     }
 
-    public static Optional<Resource> findCachedTextureAsResource(ResourceLocation mixedName) {
-        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
-        if (!Files.exists(Path.of(path)))
-            return Optional.empty();
-
-        try {
-            return Optional.of(new SimpleResource(mixedName.getPath(), mixedName, new FileInputStream(path), null));
-        } catch (Exception ex) {
-            return Optional.empty();
-        }
-    }
-
     private static void cacheMixedTexture(ResourceLocation mixedName, NativeImage image) {
+        if (!Changed.config.client.cacheGeneratedTextures.get()) {
+            IMAGE_FINAL_CACHE.put(mixedName, image);
+            return;
+        }
+
         String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
 
         try {
@@ -209,6 +245,8 @@ public class MixedTexture extends AbstractTexture {
         } catch (Exception ex) {
             LOGGER.error("Failed to cache texture {}", mixedName, ex);
         }
+
+        image.close();
     }
 
     @Override
@@ -302,7 +340,7 @@ public class MixedTexture extends AbstractTexture {
                 float v = (float)y / (float)newImage.getHeight();
 
                 RGBA currentColor = sampleNearest(newImage, null, u, v);
-                RGBA overlayColor = sampleNearest(overlayImage, null, u, v);
+                RGBA overlayColor = sampleLinear(overlayImage, null, u, v);
 
                 if (currentColor.a > 0.000001f) {
                     float delta = (((currentColor.r + currentColor.g + currentColor.b) / 3.0f) - averageLevel) * DELTA_SCALE;
@@ -320,7 +358,6 @@ public class MixedTexture extends AbstractTexture {
             }
 
             cacheMixedTexture(getResourceLocation(name), newImage);
-            newImage.close();
         } catch (Exception exception) {
             LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation, exception);
         }

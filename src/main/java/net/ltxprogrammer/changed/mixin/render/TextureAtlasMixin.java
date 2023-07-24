@@ -1,37 +1,20 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
-import net.ltxprogrammer.changed.data.MixedTexture;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
 @Mixin(TextureAtlas.class)
 public abstract class TextureAtlasMixin {
-    @Redirect(
-            method = "lambda$getBasicSpriteInfos$2",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/packs/resources/ResourceManager;getResource(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/server/packs/resources/Resource;"
-            ))
-    private Resource getPossiblyMixedTexture(ResourceManager manager, ResourceLocation name) throws IOException {
-        return MixedTexture.findCachedTextureAsResource(name).orElse(manager.getResource(name));
-    }
-
     @Inject(method = "getBasicSpriteInfos", at = @At("HEAD"), cancellable = true)
     private void getBasicSpriteInfos(ResourceManager resources, Set<ResourceLocation> sprites, CallbackInfoReturnable<Collection<TextureAtlasSprite.Info>> callback) {
         if (((Object)this) instanceof LatexCoveredBlocks.LatexAtlas atlas) {

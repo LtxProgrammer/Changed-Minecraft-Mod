@@ -29,6 +29,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> useNewModels;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyInventory;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
+        public final ForgeConfigSpec.ConfigValue<Boolean> cacheGeneratedTextures;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
@@ -37,6 +38,8 @@ public class ChangedConfig {
             useGoopyInventory = builder.define("useGooeyInventory", true);
             builder.comment("Enable/disable the gooey hearts");
             useGoopyHearts = builder.define("useGoopyHearts", true);
+            builder.comment("Caching generated latex covering textures will decrease load time, but will disable recreating the cache if you change resource packs.");
+            cacheGeneratedTextures = builder.define("cacheGeneratedTextures", true);
         }
     }
 
