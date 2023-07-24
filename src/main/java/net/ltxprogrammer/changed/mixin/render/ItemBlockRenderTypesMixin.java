@@ -4,8 +4,6 @@ import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +15,7 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 @Mixin(value = ItemBlockRenderTypes.class, remap = false)
 public abstract class ItemBlockRenderTypesMixin {
     @Inject(method = "canRenderInLayer(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/RenderType;)Z", at = @At("HEAD"), cancellable = true)
-    private static void canRenderInLayer(BlockState state, RenderType type, CallbackInfoReturnable<Boolean> callback) {
+    private static void canCoveredBlockRenderInLayer(BlockState state, RenderType type, CallbackInfoReturnable<Boolean> callback) {
         if (!state.getProperties().contains(COVERED) || state.getValue(COVERED) == LatexType.NEUTRAL)
             return;
 

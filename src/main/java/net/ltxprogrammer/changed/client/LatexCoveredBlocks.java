@@ -27,9 +27,9 @@ import net.minecraft.client.resources.metadata.animation.AnimationMetadataSectio
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.InactiveProfiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,7 +46,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -162,8 +161,9 @@ public abstract class LatexCoveredBlocks {
     }
 
     // Not really much of a preparable reload listener
-    public static class LatexBlockUploader implements PreparableReloadListener, AutoCloseable {
+    public static class LatexBlockUploader implements AutoCloseable {
         private final Map<ResourceLocation, MixedTexture> registeredSprites = new HashMap<>();
+        private @Nullable TextureAtlas.Preparations preparations = null;
         private final LatexAtlas textureAtlas = new LatexAtlas(LATEX_COVER_ATLAS, this::getUnderlyingTexture);
 
         public LatexAtlas getTextureAtlas() {
@@ -182,24 +182,22 @@ public abstract class LatexCoveredBlocks {
             registeredSprites.put(name, texture);
         }
 
-        protected void upload(ResourceManager resources, ProfilerFiller profiler) {
+        public void stitchIfPossible(ResourceManager resources, ProfilerFiller profiler) {
+            if (preparations == null)
+                preparations = this.textureAtlas.prepareToStitch(resources, registeredSprites.keySet().stream(), profiler, 4);
+        }
+
+        public void upload(ResourceManager resources, ProfilerFiller profiler) {
             profiler.startTick();
             profiler.push("upload");
-            TextureAtlas.Preparations prep = this.textureAtlas.prepareToStitch(resources, registeredSprites.keySet().stream(), profiler, 4);
-            this.textureAtlas.reload(prep);
+            this.stitchIfPossible(resources, profiler);
+            if (preparations == null)
+                throw new IllegalStateException("Expected preparations");
+            this.textureAtlas.reload(preparations);
+            preparations = null;
             MixedTexture.clearMemoryCache();
             profiler.pop();
             profiler.endTick();
-        }
-
-        @Override
-        public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager resources,
-                                              ProfilerFiller profilerPre, ProfilerFiller profilerPost,
-                                              Executor executorPre, Executor executorPost) {
-            return CompletableFuture
-                    .supplyAsync(() -> this, executorPre)
-                    .thenCompose(barrier::wait)
-                    .thenAcceptAsync(uploader -> uploader.upload(resources, profilerPost), executorPost);
         }
 
         @Override
@@ -235,6 +233,25 @@ public abstract class LatexCoveredBlocks {
             var model = event.getModelLoader().getModel(name);
             return model != event.getModelLoader().getModel(ModelBakery.MISSING_MODEL_LOCATION) ? model : models.get(name);
         }
+
+        private TextureAtlasSprite getSprite(Material material) {
+            return event.getModelManager().getAtlas(material.atlasLocation()).getSprite(material.texture());
+        }
+
+        public void bakeAll() {
+            ((BakeryExtender)(Object)event.getModelLoader()).removeFromCacheIf(
+                    triple -> models.containsKey(triple.getLeft())
+            );
+            models.forEach((name, model) -> {
+                // Force model parent chain to generate, so materials resolve correctly
+                model.getMaterials(this::getModel, new HashSet<>());
+                event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+            });
+        }
+    }
+
+    private static Material getLatexedMaterial(ResourceLocation name) {
+        return new Material(LATEX_COVER_ATLAS, name);
     }
 
     private static Function<ResourceLocation, UnbakedModel> createLatexModel(Registrar registrar, BlockModel blockModel, MixedTexture.OverlayBlock overlay, String nameAppend) {
@@ -243,16 +260,16 @@ public abstract class LatexCoveredBlocks {
 
             blockModel.textureMap.forEach((refName, either) -> {
                 either.ifLeft(material -> {
-                    injectedTextures.put(refName, Either.left(new Material(LATEX_COVER_ATLAS, new ResourceLocation(material.texture() + nameAppend))));
-                    ResourceLocation saveLocation = new ResourceLocation(material.texture() + nameAppend);
-                    registrar.registerTexture(saveLocation, new MixedTexture(
-                            material.texture(), overlay.guessSide(refName), saveLocation
+                    var newMaterial = getLatexedMaterial(new ResourceLocation(material.texture() + nameAppend));
+                    injectedTextures.put(refName, Either.left(newMaterial));
+                    registrar.registerTexture(newMaterial.texture(), new MixedTexture(
+                            material.texture(), overlay.guessSide(refName), newMaterial.texture()
                     ));
                 }).ifRight(string -> {
-                    injectedTextures.put(refName, Either.left(new Material(LATEX_COVER_ATLAS, new ResourceLocation(string + nameAppend))));
-                    ResourceLocation saveLocation = new ResourceLocation(string + nameAppend);
-                    registrar.registerTexture(saveLocation, new MixedTexture(
-                            new ResourceLocation(string), overlay.guessSide(refName), saveLocation
+                    var newMaterial = getLatexedMaterial(new ResourceLocation(string + nameAppend));
+                    injectedTextures.put(refName, Either.left(newMaterial));
+                    registrar.registerTexture(newMaterial.texture(), new MixedTexture(
+                            new ResourceLocation(string), overlay.guessSide(refName), newMaterial.texture()
                     ));
                 });
             });
@@ -325,7 +342,7 @@ public abstract class LatexCoveredBlocks {
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         uploader = new LatexBlockUploader(minecraft.textureManager);
-        event.registerReloadListener(uploader);
+        //event.registerReloadListener(uploader);
     }
 
     @SubscribeEvent
@@ -346,6 +363,9 @@ public abstract class LatexCoveredBlocks {
                     coverBlock(registrar, state, state.getValue(COVERED));
             });
         });
+
+        uploader.upload(Minecraft.getInstance().getResourceManager(), InactiveProfiler.INSTANCE);
+        registrar.bakeAll();
 
         timer.stop();
         LOGGER.info("Finished model generation of {} models in {}", MODEL_CACHE.size(), timer);
