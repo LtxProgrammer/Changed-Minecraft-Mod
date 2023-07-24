@@ -29,6 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class LatexPupCrystal extends AbstractLatexCrystal {
@@ -76,6 +77,15 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
         builder.add(EXTENDED, HALF);
     }
 
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+        super.tick(state, level, pos, random);
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER)
+            this.retract(level.getBlockState(pos.below()), level, pos.below());
+        else
+            this.retract(state, level, pos);
+    }
+
     public void extend(BlockState state, Level level, BlockPos pos) {
         if (state.getValue(EXTENDED)) { // Check if both blocks are used
             if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
@@ -92,6 +102,25 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
             var upState = level.getBlockState(pos.above());
             if (upState.isAir())
                 level.setBlockAndUpdate(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(EXTENDED, true));
+
+            level.scheduleTick(pos, this, level.getRandom().nextInt(/* 30 seconds */ 30 * 20, /* 5 minutes */ 300 * 20));
+        }
+    }
+
+    public void retract(BlockState state, Level level, BlockPos pos) {
+        if (!state.getValue(EXTENDED)) { // Check if both blocks are used
+            if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+                var upState = level.getBlockState(pos.above());
+                if (upState.is(this))
+                    level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
+            }
+        }
+
+        else {
+            level.setBlockAndUpdate(pos, state.setValue(EXTENDED, false));
+            var upState = level.getBlockState(pos.above());
+            if (upState.is(this))
+                level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
         }
     }
 
@@ -152,7 +181,7 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
         DoubleBlockHalf doubleblockhalf = state.getValue(HALF);
-        if (direction.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (direction == Direction.UP) || otherState.is(this) && otherState.getValue(HALF) != doubleblockhalf) {
+        if (direction.getAxis() != Direction.Axis.Y || (doubleblockhalf == DoubleBlockHalf.LOWER) != (direction == Direction.UP) || otherState.is(this) && otherState.getValue(HALF) != doubleblockhalf || otherState.isAir() && direction == Direction.UP) {
             return doubleblockhalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, otherState, level, pos, otherPos);
         } else {
             return Blocks.AIR.defaultBlockState();
