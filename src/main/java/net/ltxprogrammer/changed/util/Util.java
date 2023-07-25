@@ -11,11 +11,11 @@ public class Util {
     }
 
     public static boolean isRecursive() {
-        return isRecursive(Integer.MAX_VALUE, 2);
+        return isRecursive(300000, 3);
     }
 
     public static boolean isRecursive(int stackDistance) {
-        return isRecursive(stackDistance, 2);
+        return isRecursive(stackDistance, 3);
     }
 
     /**

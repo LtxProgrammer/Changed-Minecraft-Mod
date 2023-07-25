@@ -1,9 +1,16 @@
 package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
+import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -50,6 +57,23 @@ public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net
     public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance, CallbackInfo callbackInfo) {
         if (state.getFluidState().is(ChangedTags.Fluids.LATEX))
             callbackInfo.cancel();
+        else if (getLatexed(state) != LatexType.NEUTRAL && !Util.isRecursive(10)) {
+            getLatexed(state).block.get().fallOn(level, state, blockPos, entity, distance);
+            callbackInfo.cancel();
+        }
+
+        if (!(entity instanceof LivingEntity livingEntity) || (getLatexed(state) != LatexType.WHITE_LATEX && state.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()))) {
+            return;
+        }
+
+        LatexVariant<?> variant = LatexVariant.getEntityVariant(livingEntity);
+        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX && distance > 3.0f) {
+            if (livingEntity instanceof Player player) {
+                player.moveTo(blockPos.below(), entity.getYRot(), entity.getXRot());
+                WhiteLatexTransportInterface.entityEnterLatex(player, blockPos);
+            }
+            callbackInfo.cancel();
+        }
     }
 
     /*@Inject(method = "canSustainPlant", at = @At("HEAD"), cancellable = true)
