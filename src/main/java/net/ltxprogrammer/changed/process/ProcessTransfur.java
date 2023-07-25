@@ -447,6 +447,15 @@ public class ProcessTransfur {
     public static void onLivingDamaged(LivingDamageEvent event) {
         if (LatexVariant.getEntityVariant(event.getEntityLiving()) == null)
             return;
+
+        if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
+            if (event.getEntityLiving() instanceof LatexEntity latexEntity)
+                latexEntity.onDamagedBy(latexEntity, livingEntity);
+            ifPlayerLatex(Util.playerOrNull(event.getEntityLiving()), (player, variant) -> {
+                variant.getLatexEntity().onDamagedBy(player, livingEntity);
+            });
+        }
+
         if (isOrganicLatex(event.getEntityLiving()))
             return;
 
