@@ -35,9 +35,14 @@ public class FurnaceFuel {
     }
 
     static {
+        addBlockBurnTime(ChangedBlocks.BEEHIVE_CORNER, 200);
+        addBlockBurnTime(ChangedBlocks.BEEHIVE_FLOOR, 200);
+        addBlockBurnTime(ChangedBlocks.BEEHIVE_ROOF, 200);
+        addBlockBurnTime(ChangedBlocks.BEEHIVE_WALL, 200);
         addBlockBurnTime(ChangedBlocks.BOOK_STACK, 150);
         addBlockBurnTime(ChangedBlocks.BOX_PILE, 300);
         addBlockBurnTime(ChangedBlocks.CARDBOARD_BOX, 200);
+        addBlockBurnTime(ChangedBlocks.ORANGE_LAB_CARPETING, 100);
         addBlockBurnTime(ChangedBlocks.ORANGE_TREE_SAPLING, 100);
         addBlockBurnTime(ChangedBlocks.TILES_GREENHOUSE, 300);
         addBlockBurnTime(ChangedBlocks.TILES_GREENHOUSE_CONNECTED, 300);
