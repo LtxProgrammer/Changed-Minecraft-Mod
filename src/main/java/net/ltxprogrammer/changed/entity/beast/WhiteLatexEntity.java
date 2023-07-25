@@ -5,13 +5,15 @@ import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
@@ -24,7 +26,18 @@ public abstract class WhiteLatexEntity extends LightLatexWolfMale {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, WhiteLatexEntity.class)).setAlertOthers());
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, WhiteLatexEntity.class)));
+    }
+
+    @Override
+    public void onDamagedBy(LivingEntity self, LivingEntity source) {
+        super.onDamagedBy(self, source);
+        double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
+        AABB aabb = AABB.unitCubeFromLowerCorner(self.position()).inflate(d0, 10.0D, d0);
+        this.level.getEntitiesOfClass(this.getClass(), aabb, EntitySelector.NO_SPECTATORS).forEach(whiteLatexEntity -> {
+            if (whiteLatexEntity.getTarget() == null && !whiteLatexEntity.isAlliedTo(source))
+                whiteLatexEntity.setTarget(source);
+        });
     }
 
     @Override
