@@ -57,7 +57,6 @@
     "render.ItemInHandRendererMixin",
     "render.LevelRendererMixin",
     "render.ModelBakeryMixin",
-    "render.MultiPartMixin",
     "render.PlayerRendererMixin",
     "render.RenderTypeMixin",
     "render.TextureAtlasMixin",
