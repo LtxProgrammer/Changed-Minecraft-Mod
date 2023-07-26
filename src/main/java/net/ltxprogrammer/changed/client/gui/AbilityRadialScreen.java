@@ -48,8 +48,12 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     @Override
     public void renderSectionForeground(PoseStack pose, int section, double x, double y, float partialTicks, int mouseX, int mouseY, float red, float green, float blue, float alpha) {
         boolean enabled = false;
+        boolean selected = false;
         if (menu.variant.abilityInstances.containsKey(abilities.get(section))) {
-            enabled = menu.variant.abilityInstances.get(abilities.get(section)).canUse();
+            var ability = menu.variant.abilityInstances.get(abilities.get(section));
+            if (ability != null) {
+                enabled = ability.canUse();
+            }
         }
 
         var ability = abilities.get(section);
@@ -93,6 +97,18 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         var ability = abilities.get(section);
         variant.setSelectedAbility(ability);
         Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(variant.abilityKeyState, ability));
+        return false;
+    }
+
+    @Override
+    public boolean isSelected(int section) {
+        if (abilities.size() > section && menu.variant.abilityInstances.containsKey(abilities.get(section))) {
+            var ability = menu.variant.abilityInstances.get(abilities.get(section));
+            if (ability != null) {
+                return menu.variant.selectedAbility == ability.ability;
+            }
+        }
+
         return false;
     }
 }

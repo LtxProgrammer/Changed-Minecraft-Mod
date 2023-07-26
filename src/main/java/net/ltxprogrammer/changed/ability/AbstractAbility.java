@@ -12,12 +12,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.apache.commons.lang3.function.TriFunction;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.function.BiConsumer;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
-    @Mod.EventBusSubscriber
     public static class Controller {
         private final AbstractAbilityInstance abilityInstance;
         private int chargeTicks = 0;
@@ -115,7 +111,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.tickAbility();
             else
                 controller.deactivateAbility();
-        });
+        }),
+        /**
+         * Indicates the ability should activate upon selecting in the ability menu, and does not overwrite selected ability
+         */
+        MENU(INSTANT);
 
         private final UseTypeI fn;
 
