@@ -75,7 +75,6 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
         return section % 2 == 0 ? 0.04 : -0.04;
     }
 
-    @Nullable
     public Optional<Integer> getSectionAt(int mouseX, int mouseY) {
         double off = getViewOffset();
         int offFloor = (int)Math.floor(getViewOffset());

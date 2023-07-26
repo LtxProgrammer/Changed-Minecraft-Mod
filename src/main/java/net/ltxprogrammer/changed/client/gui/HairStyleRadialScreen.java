@@ -125,4 +125,9 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(this.menu.player, this.variant);
         return true;
     }
+
+    @Override
+    public boolean isSelected(int section) {
+        return styles.size() > section && variant.getLatexEntity().getHairStyle() == styles.get(section);
+    }
 }
