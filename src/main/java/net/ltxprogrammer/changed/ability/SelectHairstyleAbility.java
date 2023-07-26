@@ -33,4 +33,9 @@ public class SelectHairstyleAbility extends SimpleAbility {
         if (tag.contains("HairStyle"))
             variant.getLatexEntity().setHairStyle(ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle")));
     }
+
+    @Override
+    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+        return UseType.MENU;
+    }
 }

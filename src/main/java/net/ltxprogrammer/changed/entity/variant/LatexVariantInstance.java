@@ -56,6 +56,7 @@ import java.util.function.Consumer;
 public class LatexVariantInstance<T extends LatexEntity> {
     private final LatexVariant<T> parent;
     private final T entity;
+    private final Player host;
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
 
     public AbstractAbility<?> selectedAbility = null;
@@ -73,6 +74,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public LatexVariantInstance(LatexVariant<T> parent, Player host) {
         this.parent = parent;
         this.entity = parent.generateForm(host, host.level);
+        this.host = host;
 
         this.transfurMode = parent.transfurMode;
 
@@ -574,7 +576,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
-        if (abilityInstances.containsKey(ability))
-            this.selectedAbility = ability;
+        if (abilityInstances.containsKey(ability)) {
+            if (ability.getUseType(this.host, this) != AbstractAbility.UseType.MENU)
+                this.selectedAbility = ability;
+            else {
+                ability.startUsing(this.host, this);
+                ability.stopUsing(this.host, this);
+            }
+        }
     }
 }

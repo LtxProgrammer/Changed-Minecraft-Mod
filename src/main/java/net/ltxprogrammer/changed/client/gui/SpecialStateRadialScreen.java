@@ -61,4 +61,9 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
         ChangedAbilities.getAbility(ChangedAbilities.SELECT_SPECIAL_STATE.getId()).setDirty(this.menu.player, this.menu.variant);
         return true;
     }
+
+    @Override
+    public boolean isSelected(int section) {
+        return states.size() > section && special.wantedState.equals(states.get(section));
+    }
 }
