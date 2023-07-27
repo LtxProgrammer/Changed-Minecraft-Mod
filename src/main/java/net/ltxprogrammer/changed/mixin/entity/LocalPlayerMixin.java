@@ -33,8 +33,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     }
 
     @Shadow public Input input;
-    @Shadow @Final public Minecraft minecraft;
-    @Shadow public int autoJumpTime;
+    @Shadow @Final protected Minecraft minecraft;
+    @Shadow private int autoJumpTime;
     @Shadow @Final public ClientPacketListener connection;
     @Shadow public abstract boolean isMovingSlowly();
 

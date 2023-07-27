@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.UniversalDist;

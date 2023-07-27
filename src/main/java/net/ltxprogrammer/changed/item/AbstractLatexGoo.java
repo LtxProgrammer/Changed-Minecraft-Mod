@@ -22,7 +22,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;

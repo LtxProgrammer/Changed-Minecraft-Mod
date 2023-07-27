@@ -1,13 +1,10 @@
 package net.ltxprogrammer.changed.entity.ai;
 
-import java.util.EnumSet;
-
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -17,6 +14,8 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+
+import java.util.EnumSet;
 
 public class LatexFollowOwnerGoal<T extends LatexEntity & OwnableEntity> extends Goal {
     public static final int TELEPORT_WHEN_DISTANCE_IS = 12;

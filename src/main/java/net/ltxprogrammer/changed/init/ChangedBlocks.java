@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.init;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.*;
 import net.ltxprogrammer.changed.block.PipeBlock;
+import net.ltxprogrammer.changed.block.*;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.GasCanister;

@@ -34,11 +34,16 @@ import java.util.List;
 
 @Mixin(RecipeButton.class)
 public abstract class RecipeButtonMixin extends AbstractWidget {
-    @Shadow public RecipeCollection collection;
-    @Shadow public float time;
-    @Shadow public int currentIndex;
-    @Shadow public RecipeBook book;
-    @Shadow public RecipeBookMenu<?> menu;
+    @Shadow
+    private RecipeCollection collection;
+    @Shadow
+    private float time;
+    @Shadow
+    private int currentIndex;
+    @Shadow
+    private RecipeBook book;
+    @Shadow
+    private RecipeBookMenu<?> menu;
     @Unique
     private static final ResourceLocation RECIPE_BOOK_LOCATION = new ResourceLocation("textures/gui/recipe_book.png");
     @Unique
