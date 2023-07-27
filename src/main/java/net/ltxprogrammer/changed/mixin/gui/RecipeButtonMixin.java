@@ -14,12 +14,16 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeButton;
+import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.RecipeBookMenu;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,6 +34,11 @@ import java.util.List;
 
 @Mixin(RecipeButton.class)
 public abstract class RecipeButtonMixin extends AbstractWidget {
+    @Shadow public RecipeCollection collection;
+    @Shadow public float time;
+    @Shadow public int currentIndex;
+    @Shadow public RecipeBook book;
+    @Shadow public RecipeBookMenu<?> menu;
     @Unique
     private static final ResourceLocation RECIPE_BOOK_LOCATION = new ResourceLocation("textures/gui/recipe_book.png");
     @Unique
@@ -41,18 +50,17 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     public void renderButton(PoseStack p_100484_, int p_100485_, int p_100486_, float p_100487_, CallbackInfo ci) {
-        RecipeButton self = (RecipeButton)(Object)this;
-        if (self.collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
+        if (collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
             if (!Screen.hasControlDown()) {
-                self.time += p_100487_;
+                time += p_100487_;
             }
 
             Minecraft minecraft = Minecraft.getInstance();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, RECIPE_BOOK_LOCATION);
 
-            self.currentIndex = 0;
-            activeGender = Gender.values()[Mth.floor(self.time / 30.0F) % (infuserRecipe.gendered ? 2 : 1)];
+            currentIndex = 0;
+            activeGender = Gender.values()[Mth.floor(time / 30.0F) % (infuserRecipe.gendered ? 2 : 1)];
             ResourceLocation formId = infuserRecipe.form;
             if (infuserRecipe.gendered)
                 formId = new ResourceLocation(formId + "/" + activeGender.toString().toLowerCase());
@@ -60,9 +68,9 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
             if (variant == null)
                 return;
             LatexEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());
-            entity.tickCount = (int)self.time;
+            entity.tickCount = (int)time;
 
-            InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, self.isHoveredOrFocused() ? 40 : 10, (float) (Math.sin(self.time / 60.0f) * 60.0f), 0.0f, entity);
+            InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, isHoveredOrFocused() ? 40 : 10, (float) (Math.sin(time / 60.0f) * 60.0f), 0.0f, entity);
 
             ci.cancel();
         }
@@ -71,12 +79,11 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
     private static final Component MORE_RECIPES_TOOLTIP = new TranslatableComponent("gui.recipebook.moreRecipes");
     @Inject(method = "getTooltipText", at = @At("HEAD"), cancellable = true)
     public void getTooltipText(Screen p_100478_, CallbackInfoReturnable<List<Component>> ci) {
-        RecipeButton self = (RecipeButton)(Object)this;
-        if (self.collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
+        if (collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
             ci.cancel();
             List<Component> list = Lists.newArrayList(infuserRecipe.getNameFor(Minecraft.getInstance().level, activeGender));
 
-            if (self.collection.getRecipes(self.book.isFiltering(self.menu)).size() > 1)
+            if (collection.getRecipes(book.isFiltering(menu)).size() > 1)
                 list.add(MORE_RECIPES_TOOLTIP);
 
             ci.setReturnValue(list);

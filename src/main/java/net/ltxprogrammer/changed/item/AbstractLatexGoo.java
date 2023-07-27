@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,10 +15,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
@@ -38,6 +44,26 @@ public class AbstractLatexGoo extends Item {
         });
         ProcessTransfur.progressTransfur(entity, 11.0f, variants.get(level.getRandom().nextInt(variants.size())));
         return super.finishUsingItem(itemStack, level, entity);
+    }
+
+    public static class GatherNonCoverableBlocksEvent extends Event {
+        private final HashSet<ResourceLocation> set;
+
+        public GatherNonCoverableBlocksEvent(HashSet<ResourceLocation> set) {
+            this.set = set;
+        }
+
+        public void addBlock(Block block) {
+            set.add(block.getRegistryName());
+        }
+
+        public void addBlock(Supplier<? extends Block> block) {
+            set.add(block.get().getRegistryName());
+        }
+
+        public void addBlock(ResourceLocation registryName) {
+            set.add(registryName);
+        }
     }
 
     public static class CoveringBlockEvent extends Event {

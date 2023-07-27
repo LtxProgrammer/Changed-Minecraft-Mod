@@ -24,22 +24,6 @@ import java.util.function.Supplier;
 public class DynamicClient {
     @OnlyIn(Dist.CLIENT)
     private static class Internal {
-        public static <T extends Entity> void lateRegisterEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider) {
-            EntityRenderers.register(entityType, entityRendererProvider);
-
-            Minecraft minecraft = Minecraft.getInstance();
-            EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
-            EntityRendererProvider.Context context = new EntityRendererProvider.Context(dispatcher, dispatcher.itemRenderer,
-                    minecraft.getResourceManager(), dispatcher.entityModels, dispatcher.font);
-            ImmutableMap.Builder<EntityType<?>, EntityRenderer<?>> builder = ImmutableMap.builder();
-            dispatcher.renderers.forEach((type, renderer) -> {
-                if (!type.equals(entityType))
-                    builder.put(type, renderer);
-            });
-            builder.put(entityType, entityRendererProvider.create(context));
-            dispatcher.renderers = builder.build();
-        }
-
         public static void lateRegisterLayerDefinition(ModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
             ForgeHooksClient.registerLayerDefinition(layerLocation, supplier);
 
@@ -53,10 +37,6 @@ public class DynamicClient {
             builder.put(layerLocation, supplier.get());
             dispatcher.entityModels.roots = builder.build();
         }
-    }
-
-    public static <T extends Entity> void lateRegisterEntityRenderer(EntityType<? extends T> entityType, EntityRendererProvider<T> entityRendererProvider) {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Internal.lateRegisterEntityRenderer(entityType, entityRendererProvider));
     }
 
     public static void lateRegisterLayerDefinition(DeferredModelLayerLocation layerLocation, Supplier<LayerDefinition> supplier) {
