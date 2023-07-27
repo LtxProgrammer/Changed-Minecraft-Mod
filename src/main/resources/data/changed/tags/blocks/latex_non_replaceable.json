@@ -1,8 +1,6 @@
 {
   "replace": false,
   "values": [
-    "minecraft:air",
-    "changed:dark_latex_block",
-    "changed:white_latex_block"
+
   ]
 }

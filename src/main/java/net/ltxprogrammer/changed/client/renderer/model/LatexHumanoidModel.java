@@ -123,6 +123,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     protected static final Vector3f TORSO_OFFSET = new Vector3f(0.0f, 25.5f, 0.0f);
     protected static final Vector3f RIGHT_ARM_OFFSET = new Vector3f(5.0f, 24.5f, 0.0f);
     protected static final Vector3f LEFT_ARM_OFFSET = new Vector3f(-5.0f, 24.5f, 0.0f);
+    @Deprecated
     public static MeshDefinition process(MeshDefinition mesh) {
         var root = mesh.getRoot();
         var head = root.getChild("Head");
