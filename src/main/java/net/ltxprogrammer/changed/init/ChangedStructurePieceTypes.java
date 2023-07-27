@@ -1,7 +1,8 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.world.features.structures.*;
+import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
+import net.ltxprogrammer.changed.world.features.structures.SurfaceNBTPiece;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.registries.DeferredRegister;

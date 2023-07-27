@@ -41,7 +41,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
         }
     }
 
-    @Inject(method = "renderHand", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "renderHand", at = @At("RETURN"))
     private void renderHandEnd(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart armwear, CallbackInfo ci) {
         if (!ProcessTransfur.isPlayerLatex(player)) {
             var progress = ProcessTransfur.getPlayerTransfurProgress(player);

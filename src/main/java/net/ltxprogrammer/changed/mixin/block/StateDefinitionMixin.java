@@ -21,7 +21,7 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 @Mixin(StateDefinition.Builder.class)
 public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
-    @Shadow @Final public O owner;
+    @Shadow @Final private O owner;
     @Shadow public abstract StateDefinition.Builder<O, S> add(Property<?>... p_61105_);
 
     @Inject(method = "create", at = @At("HEAD"))
