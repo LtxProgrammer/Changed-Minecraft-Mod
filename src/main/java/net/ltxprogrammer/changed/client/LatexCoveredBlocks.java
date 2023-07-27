@@ -265,6 +265,8 @@ public abstract class LatexCoveredBlocks {
             Map<String, Either<Material, String>> injectedTextures = new HashMap<>();
 
             blockModel.textureMap.forEach((refName, either) -> {
+                if (refName.equals("particle"))
+                    return;
                 either.ifLeft(material -> {
                     var newMaterial = getLatexedMaterial(new ResourceLocation(material.texture() + nameAppend));
                     injectedTextures.put(refName, Either.left(newMaterial));
@@ -279,6 +281,8 @@ public abstract class LatexCoveredBlocks {
                     ));
                 });
             });
+
+            injectedTextures.put("particle", Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, overlay.top())));
 
             BlockModel injected = new BlockModel(
                     blockModel.getParentLocation(),
