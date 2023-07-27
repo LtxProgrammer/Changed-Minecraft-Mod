@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -13,8 +12,6 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implements LatexHumanoidModelInterface<DarkLatexPup, DarkLatexPupModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor

@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.block.DuctBlock;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.LockToPlayerMover;
 import net.ltxprogrammer.changed.util.InputWrapper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.DeferredRegister;
