@@ -224,7 +224,6 @@
 
   "entity.changed.special": "Special Latex",
   "entity.changed.aerosol_latex_wolf": "Gas Wolf",
-
   "entity.changed.behemoth_head": "Behemoth Head",
   "entity.changed.behemoth_hand_left": "Left Behemoth Hand",
   "entity.changed.behemoth_hand_right": "Right Behemoth Hand",
@@ -245,6 +244,7 @@
   "entity.changed.latex_crystal_wolf": "Crystal Wolf",
   "entity.changed.latex_crystal_wolf_horned": "Horned Crystal Wolf",
   "entity.changed.latex_deer": "Latex Deer",
+  "entity.changed.gas_particle": "Latex Gas Particle",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
   "entity.changed.latex_leaf": "Latex Leaf",
   "entity.changed.latex_manta_ray_female": "Female Latex Manta Ray",
