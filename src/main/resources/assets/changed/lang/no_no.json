@@ -223,7 +223,6 @@
 
   "entity.changed.special": "Spesiell lateks",
   "entity.changed.aerosol_latex_wolf": "Gass lateks ulv",
-
   "entity.changed.behemoth_head": "Behemoth hode",
   "entity.changed.behemoth_hand_left": "Venstre behemoth hånd",
   "entity.changed.behemoth_hand_right": "Høyre behemoth hånd",
@@ -244,6 +243,7 @@
   "entity.changed.latex_crystal_wolf": "Krystall ulv",
   "entity.changed.latex_crystal_wolf_horned": "Krystall ulv med horn",
   "entity.changed.latex_deer": "Lateks hjort",
+  "entity.changed.gas_particle": "Lateks gasspartikkel",
   "entity.changed.latex_hypno_cat": "Lateks hypnose katt",
   "entity.changed.latex_leaf": "Lateksblad",
   "entity.changed.latex_manta_ray_female": "Kvinnelig lateks manta ray",
