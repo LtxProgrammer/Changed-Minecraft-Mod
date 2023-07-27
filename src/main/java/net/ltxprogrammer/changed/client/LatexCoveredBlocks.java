@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.block.NonLatexCoverableBlock;
 import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.Util;
@@ -31,11 +32,15 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.InactiveProfiler;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +56,6 @@ import java.util.stream.Collectors;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public abstract class LatexCoveredBlocks {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final ImmutableMap<LatexType, MixedTexture.OverlayBlock> TYPE_OVERLAY = ImmutableMap.of(
@@ -334,40 +338,65 @@ public abstract class LatexCoveredBlocks {
     }
 
     private static @Nullable LatexBlockUploader uploader = null;
-    public static LatexBlockUploader getUploader() {
+    public static @NotNull LatexBlockUploader getUploader() {
+        if (uploader == null)
+            throw new IllegalStateException("Uploader not created, a dependency for another mod may be missing.");
         return uploader;
     }
 
-    @SubscribeEvent
-    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        uploader = new LatexBlockUploader(minecraft.textureManager);
-        //event.registerReloadListener(uploader);
+    public static class ShouldBeCovered extends Event {
+        private final Block block;
+
+        public ShouldBeCovered(Block block) {
+            this.block = block;
+        }
+
+        public Block getBlock() {
+            return block;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
     }
 
-    @SubscribeEvent
-    public static void onModelBake(ModelBakeEvent event) {
-        if (uploader == null)
-            throw new IllegalStateException("Uploader not created!");
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModEvents {
+        @SubscribeEvent
+        public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+            Minecraft minecraft = Minecraft.getInstance();
+            uploader = new LatexBlockUploader(minecraft.textureManager);
+        }
 
-        MODEL_CACHE.clear();
-        final Registrar registrar = new Registrar(event, MODEL_CACHE, uploader);
-        List<Block> toCover = Registry.BLOCK.stream().filter(block -> block.getStateDefinition().getProperties().contains(COVERED)).toList();
-        LOGGER.info("Starting latex cover generation for {} blocks", toCover.size());
-        Stopwatch timer = Stopwatch.createStarted();
+        @SubscribeEvent
+        public static void onRegisterBlockEvent(RegistryEvent<Block> event) {
 
-        toCover.forEach(block -> {
-            LOGGER.trace("Processing block {}", block);
-            block.getStateDefinition().getPossibleStates().forEach((state) -> {
-                if (state.getValue(COVERED) != LatexType.NEUTRAL)
-                    coverBlock(registrar, state, state.getValue(COVERED));
+        }
+
+        @SubscribeEvent
+        public static void onModelBake(ModelBakeEvent event) {
+            LatexBlockUploader uploader = getUploader();
+
+            MODEL_CACHE.clear();
+            final Registrar registrar = new Registrar(event, MODEL_CACHE, uploader);
+            List<Block> toCover = Registry.BLOCK.stream().filter(block -> block.getStateDefinition().getProperties().contains(COVERED)).toList();
+            LOGGER.info("Starting latex cover generation for {} blocks", toCover.size());
+            Stopwatch timer = Stopwatch.createStarted();
+
+            toCover.forEach(block -> {
+                LOGGER.trace("Processing block {}", block);
+                block.getStateDefinition().getPossibleStates().forEach((state) -> {
+                    if (state.getValue(COVERED) != LatexType.NEUTRAL)
+                        coverBlock(registrar, state, state.getValue(COVERED));
+                });
             });
-        });
 
-        uploader.upload(Minecraft.getInstance().getResourceManager(), InactiveProfiler.INSTANCE);
-        registrar.bakeAll();
+            uploader.upload(Minecraft.getInstance().getResourceManager(), InactiveProfiler.INSTANCE);
+            registrar.bakeAll();
 
-        timer.stop();
-        LOGGER.info("Finished model generation of {} models in {}", MODEL_CACHE.size(), timer);
+            timer.stop();
+            LOGGER.info("Finished model generation of {} models in {}", MODEL_CACHE.size(), timer);
+        }
     }
 }

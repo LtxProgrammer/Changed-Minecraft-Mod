@@ -7,7 +7,9 @@
   "mixins": [
     "EnchantmentHelperMixin",
     "ForgeHooksClientMixin",
+    "GameDataMixin",
     "PrimaryLevelDataMixin",
+    "StateHolderMixin",
     "TreeFeaturesMixin",
     "block.BlockBehaviourMixin",
     "block.BlockMixin",
@@ -59,8 +61,7 @@
     "render.ModelBakeryMixin",
     "render.PlayerRendererMixin",
     "render.RenderTypeMixin",
-    "render.TextureAtlasMixin",
-    "render.TextureManagerMixin"
+    "render.TextureAtlasMixin"
   ],
   "injectors": {
     "defaultRequire": 1
