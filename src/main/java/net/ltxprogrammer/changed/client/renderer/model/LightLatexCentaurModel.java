@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface<LightLatexCentaur, LightLatexCentaurModel>, TorsoSupplier {
+public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur> implements LatexHumanoidModelInterface<LightLatexCentaur, LightLatexCentaurModel>, LowerTorsoedModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_centaur"), "main");
     private final ModelPart RightLeg;
@@ -204,6 +204,10 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
         return this.Head;
     }
 
+    public ModelPart getTorso() {
+        return Torso;
+    }
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -219,7 +223,7 @@ public class LightLatexCentaurModel extends LatexHumanoidModel<LightLatexCentaur
     }
 
     @Override
-    public ModelPart getTorso() {
+    public ModelPart getLowerTorso() {
         return LowerTorso;
     }
 }

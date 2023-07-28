@@ -318,4 +318,8 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
     public ModelPart getHead() {
         return Head;
     }
+
+    public ModelPart getTorso() {
+        return Torso;
+    }
 }

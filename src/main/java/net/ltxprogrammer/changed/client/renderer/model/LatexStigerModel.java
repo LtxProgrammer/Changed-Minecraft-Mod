@@ -231,4 +231,8 @@ public class LatexStigerModel extends LatexHumanoidModel<LatexStiger> implements
     public ModelPart getHead() {
         return Head;
     }
+
+    public ModelPart getTorso() {
+        return Torso;
+    }
 }
