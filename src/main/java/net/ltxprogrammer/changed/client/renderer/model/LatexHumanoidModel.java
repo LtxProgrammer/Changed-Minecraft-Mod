@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.RenderUtil;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.ArmedModel;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel {
+public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
     public static final CubeDeformation TEXTURE_DEFORMATION = new CubeDeformation(-0.01F);
 
@@ -50,6 +51,16 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             animator.rightArmPose = humanoidmodel$armpose1;
             animator.leftArmPose = humanoidmodel$armpose;
         }
+
+        if (RenderUtil.isFirstPerson(entity)) {
+            getHead().visible = false;
+            getTorso().visible = !entity.isSwimming();
+        }
+
+        else {
+            getHead().visible = true;
+            getTorso().visible = true;
+        }
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);
@@ -63,60 +74,6 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     public ModelPart getRandomModelPart(Random random) {
         List<ModelPart> partList = rootModelPart.getAllParts().toList();
         return partList.get(random.nextInt(partList.size()));
-    }
-
-    public static PartDefinition addHair(PartDefinition Head) {
-        return Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(40, 55).addBox(-2.0F, -35.0F + 26.5F, -4.0F, 4.0F, 1.0F, 8.0F, NO_DEFORMATION)
-                .texOffs(42, 58).addBox(-4.0F, -34.5F + 26.5F, -3.5F, 8.0F, 1.0F, 3.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(2.0F, -35.0F + 26.5F, 0.0F, 2.0F, 1.0F, 4.0F, NO_DEFORMATION)
-                .texOffs(42, 52).addBox(2.5F, -34.0F + 26.5F, -4.25F, 2.0F, 3.0F, 9.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(-3.5F, -33.25F + 26.5F, -4.25F, 7.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(3.5F, -34.0F + 26.5F, -4.5F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(-4.5F, -34.0F + 26.5F, -4.5F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(2.5F, -31.0F + 26.5F, -1.0F, 2.0F, 2.0F, 5.0F, NO_DEFORMATION)
-                .texOffs(43, 53).addBox(-4.5F, -31.0F + 26.5F, -1.0F, 2.0F, 2.0F, 5.0F, NO_DEFORMATION)
-                .texOffs(42, 52).addBox(-4.5F, -34.0F + 26.5F, -4.25F, 2.0F, 3.0F, 9.0F, NO_DEFORMATION)
-                .texOffs(52, 53).addBox(-4.0F, -35.0F + 26.5F, 0.0F, 2.0F, 1.0F, 4.0F, NO_DEFORMATION)
-                .texOffs(46, 60).addBox(-4.0F, -34.25F + 26.5F, -4.5F, 8.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(45, 57).addBox(-4.0F, -34.0F + 26.5F, 4.0F, 8.0F, 6.0F, 1.0F, NO_DEFORMATION), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-    }
-
-    public static PartDefinition addNeckFluff(PartDefinition Torso) {
-        PartDefinition NeckFluff = Torso.addOrReplaceChild("NeckFluff", CubeListBuilder.create().texOffs(1, 16).addBox(-3.0F, -26.25F + 25.5F, -2.5F, 6.0F, 3.0F, 4.0F, NO_DEFORMATION)
-                .texOffs(14, 23).addBox(-2.0F, -26.25F + 25.5F, 1.5F, 4.0F, 3.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(15, 20).addBox(-3.75F, -26.25F + 25.5F, 1.5F, 2.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(15, 20).addBox(1.75F, -26.25F + 25.5F, 1.5F, 2.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(3, 21).mirror().addBox(-2.0F, -26.25F + 25.5F, -2.75F, 4.0F, 3.0F, 1.0F, NO_DEFORMATION).mirror(false)
-                .texOffs(3, 21).mirror().addBox(-3.0F, -26.25F + 25.5F, -2.75F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION).mirror(false)
-                .texOffs(3, 21).mirror().addBox(2.0F, -26.25F + 25.5F, -2.75F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION).mirror(false)
-                .texOffs(1, 21).addBox(-3.0F, -23.25F + 25.5F, -2.5F, 6.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(3, 16).mirror().addBox(2.75F, -26.25F + 25.5F, -2.5F, 1.0F, 3.0F, 4.0F, NO_DEFORMATION).mirror(false)
-                .texOffs(3, 16).addBox(-3.75F, -26.25F + 25.5F, -2.5F, 1.0F, 3.0F, 4.0F, NO_DEFORMATION), PartPose.offset(0.0F, 1.0F, 0.0F));
-
-        PartDefinition Fluff_r1 = NeckFluff.addOrReplaceChild("Fluff_r1", CubeListBuilder.create().texOffs(27, 16).addBox(-0.5F, -0.5F, -2.0F, 1.0F, 1.0F, 4.0F, NO_DEFORMATION)
-                .texOffs(15, 20).addBox(-0.5F, -0.5F, 1.75F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(-3.75F, -26.25F + 25.5F, -0.25F, 0.0F, 0.0F, 0.7854F));
-
-        PartDefinition Fluff_r2 = NeckFluff.addOrReplaceChild("Fluff_r2", CubeListBuilder.create().texOffs(3, 32).mirror().addBox(-0.5F, -0.5F, -2.0F, 1.0F, 1.0F, 4.0F, NO_DEFORMATION).mirror(false)
-                .texOffs(15, 20).addBox(-0.5F, -0.5F, 1.75F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION), PartPose.offsetAndRotation(3.75F, -26.25F + 25.5F, -0.25F, 0.0F, 0.0F, -0.7854F));
-
-        return NeckFluff;
-    }
-
-    public static PartDefinition addDarkLatexMask(PartDefinition Head) {
-        return Head.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -34.0F, -5.0F, 2.0F, 5.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(12, 32).addBox(-2.0F, -33.0F, -5.0F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(32, 0).addBox(1.0F, -33.0F, -5.0F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(32, 32).addBox(2.0F, -32.0F, -5.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(28, 32).addBox(-3.0F, -32.0F, -5.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(0, 32).addBox(-4.0F, -31.0F, -5.0F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(0, 16).addBox(3.0F, -31.0F, -5.0F, 1.0F, 2.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(16, 32).addBox(2.0F, -29.0F, -5.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(32, 13).addBox(-3.0F, -29.0F, -5.0F, 1.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(24, 4).addBox(-4.0F, -28.0F, -5.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(0, 6).addBox(2.0F, -28.0F, -5.0F, 2.0F, 1.0F, 1.0F, NO_DEFORMATION)
-                .texOffs(44, 30).addBox(-2.0F, -29.0F, -7.0F, 4.0F, 2.0F, 3.0F, NO_DEFORMATION), PartPose.offset(0.0F, 0.0F + 26.5F, 0.0F));
-
     }
 
     protected static final Vector3f HEAD_OFFSET = new Vector3f(0.0f, 26.5f, 0.0f);
