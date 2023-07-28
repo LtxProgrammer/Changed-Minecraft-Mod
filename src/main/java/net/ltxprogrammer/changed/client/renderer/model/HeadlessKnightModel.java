@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> implements LatexHumanoidModelInterface<HeadlessKnight, HeadlessKnightModel>, TorsoSupplier {
+public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> implements LatexHumanoidModelInterface<HeadlessKnight, HeadlessKnightModel>, LowerTorsoedModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("headless_knight"), "main");
     private final ModelPart RightLeg;
@@ -150,6 +150,10 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         return this.LowerTorso;
     }
 
+    public ModelPart getTorso() {
+        return LowerTorso;
+    }
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         LowerTorso.render(poseStack, buffer, packedLight, packedOverlay);
@@ -161,7 +165,7 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
     }
 
     @Override
-    public ModelPart getTorso() {
+    public ModelPart getLowerTorso() {
         return LowerTorso;
     }
 }
