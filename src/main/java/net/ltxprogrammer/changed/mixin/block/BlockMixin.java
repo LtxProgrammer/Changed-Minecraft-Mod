@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTags;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.StackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,7 +57,7 @@ public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net
     public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance, CallbackInfo callbackInfo) {
         if (state.getFluidState().is(ChangedTags.Fluids.LATEX))
             callbackInfo.cancel();
-        else if (getLatexed(state) != LatexType.NEUTRAL && !Util.isRecursive(10)) {
+        else if (getLatexed(state) != LatexType.NEUTRAL && !StackUtil.isRecursive(10)) {
             getLatexed(state).block.get().fallOn(level, state, blockPos, entity, distance);
             callbackInfo.cancel();
         }
