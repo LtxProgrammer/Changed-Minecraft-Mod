@@ -42,10 +42,13 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.innerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
         this.outerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
         this.outerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST));
+        boolean firstPerson = RenderUtil.isFirstPerson(entity);
+
+        if (!firstPerson || !entity.isSwimming()) // Don't render chest-plate if swimming in first person
+            this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST));
         this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.LEGS, packedLight, this.getArmorModel(EquipmentSlot.LEGS));
         this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.FEET, packedLight, this.getArmorModel(EquipmentSlot.FEET));
-        if (!RenderUtil.isFirstPerson(entity)) // Don't render helmet if first person; only really applies to first person mods
+        if (!firstPerson) // Don't render helmet if first person; only really applies to first person mods
             this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
     }
 
