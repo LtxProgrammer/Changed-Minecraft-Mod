@@ -32,6 +32,11 @@ public class DeferredSpecialLatexModel extends LatexHumanoidModel<SpecialLatex> 
     }
 
     @Override
+    public ModelPart getTorso() {
+        return null;
+    }
+
+    @Override
     public void renderToBuffer(PoseStack p_103111_, VertexConsumer p_103112_, int p_103113_, int p_103114_, float p_103115_, float p_103116_, float p_103117_, float p_103118_) {
 
     }

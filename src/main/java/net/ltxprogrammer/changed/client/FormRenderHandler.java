@@ -28,14 +28,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class FormRenderHandler {
+    public static boolean isRenderingForm = false;
+
     public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         ProcessTransfur.ifPlayerLatex(player, variant -> {
+            isRenderingForm = true;
             variant.sync(player);
-            //LatexVariant.syncEntityAndPlayer(variant.getLatexEntity(), player);
             variant.getLatexEntity().setCustomNameVisible(true);
 
             if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
                 renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+            isRenderingForm = false;
         });
     }
 

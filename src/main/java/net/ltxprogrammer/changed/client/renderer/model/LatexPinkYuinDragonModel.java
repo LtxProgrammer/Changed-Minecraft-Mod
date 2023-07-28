@@ -254,6 +254,10 @@ public class LatexPinkYuinDragonModel extends LatexHumanoidModel<LatexPinkYuinDr
         return this.Head;
     }
 
+    public ModelPart getTorso() {
+        return Torso;
+    }
+
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

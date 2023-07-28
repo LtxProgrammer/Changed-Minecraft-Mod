@@ -12,7 +12,7 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
     public LatexTranslucentLizardRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
                 ArmorLatexBlueDragonModel::new, ArmorLatexBlueDragonModel.INNER_ARMOR, ArmorLatexBlueDragonModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new LatexGelLayer<>(this, new LatexTranslucentLizardModel((context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER)))));
+        this.addLayer(new LatexGelLayer<>(this, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
     }
 
     @Override

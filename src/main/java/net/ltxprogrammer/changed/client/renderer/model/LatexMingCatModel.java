@@ -18,28 +18,28 @@ import java.util.List;
 ;
 
 public class LatexMingCatModel extends LatexHumanoidModel<LatexMingCat> implements LatexHumanoidModelInterface<LatexMingCat, LatexMingCatModel> {
-        // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-        public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_ming_cat"), "main");
-        private final ModelPart RightLeg;
-        private final ModelPart LeftLeg;
-        private final ModelPart RightArm;
-        private final ModelPart LeftArm;
-        private final ModelPart Head;
-        private final ModelPart Torso;
-        private final ModelPart Tail;
-        private final LatexAnimator<LatexMingCat, LatexMingCatModel> animator;
+    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_ming_cat"), "main");
+    private final ModelPart RightLeg;
+    private final ModelPart LeftLeg;
+    private final ModelPart RightArm;
+    private final ModelPart LeftArm;
+    private final ModelPart Head;
+    private final ModelPart Torso;
+    private final ModelPart Tail;
+    private final LatexAnimator<LatexMingCat, LatexMingCatModel> animator;
 
-        public LatexMingCatModel(ModelPart root) {
-            super(root);
-            this.RightLeg = root.getChild("RightLeg");
-            this.LeftLeg = root.getChild("LeftLeg");
-            this.Head = root.getChild("Head");
-            this.Torso = root.getChild("Torso");
-            this.Tail = Torso.getChild("Tail");
-            this.RightArm = root.getChild("RightArm");
-            this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
-        }
+    public LatexMingCatModel(ModelPart root) {
+        super(root);
+        this.RightLeg = root.getChild("RightLeg");
+        this.LeftLeg = root.getChild("LeftLeg");
+        this.Head = root.getChild("Head");
+        this.Torso = root.getChild("Torso");
+        this.Tail = Torso.getChild("Tail");
+        this.RightArm = root.getChild("RightArm");
+        this.LeftArm = root.getChild("LeftArm");
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+    }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -126,19 +126,19 @@ public class LatexMingCatModel extends LatexHumanoidModel<LatexMingCat> implemen
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-        @Override
-        public void prepareMobModel(LatexMingCat p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-            this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
-        }
+    @Override
+    public void prepareMobModel(LatexMingCat p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
+    }
 
-        public void setupHand() {
-            animator.setupHand();
-        }
+    public void setupHand() {
+        animator.setupHand();
+    }
 
-        @Override
-        public void setupAnim(@NotNull LatexMingCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-            animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        }
+    @Override
+    public void setupAnim(@NotNull LatexMingCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
         PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
@@ -149,26 +149,30 @@ public class LatexMingCatModel extends LatexHumanoidModel<LatexMingCat> implemen
         return corrector;
     }
 
-        public ModelPart getArm(HumanoidArm p_102852_) {
-            return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
-        }
+    public ModelPart getArm(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
 
-        public ModelPart getHead() {
-            return this.Head;
-        }
+    public ModelPart getHead() {
+        return this.Head;
+    }
 
-        @Override
-        public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-            RightLeg.render(poseStack, buffer, packedLight, packedOverlay);
-            LeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-            Head.render(poseStack, buffer, packedLight, packedOverlay);
-            Torso.render(poseStack, buffer, packedLight, packedOverlay);
-            RightArm.render(poseStack, buffer, packedLight, packedOverlay);
-            LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
-        }
+    public ModelPart getTorso() {
+        return Torso;
+    }
 
-        @Override
-        public LatexAnimator<LatexMingCat, LatexMingCatModel> getAnimator() {
-            return animator;
-        }
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        RightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        LeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        Head.render(poseStack, buffer, packedLight, packedOverlay);
+        Torso.render(poseStack, buffer, packedLight, packedOverlay);
+        RightArm.render(poseStack, buffer, packedLight, packedOverlay);
+        LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
+    }
+
+    @Override
+    public LatexAnimator<LatexMingCat, LatexMingCatModel> getAnimator() {
+        return animator;
+    }
 }

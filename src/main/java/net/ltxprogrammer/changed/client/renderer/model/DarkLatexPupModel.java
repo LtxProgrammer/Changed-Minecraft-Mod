@@ -197,6 +197,10 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
         return this.Head;
     }
 
+    public ModelPart getTorso() {
+        return Body;
+    }
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         RightLegBack.render(poseStack, buffer, packedLight, packedOverlay);
