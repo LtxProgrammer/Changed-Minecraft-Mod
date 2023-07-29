@@ -29,21 +29,24 @@ public class StackUtil {
         return false;
     }
 
-    public static boolean callStackContainsClass(String name) {
-        return callStackContainsClass(300000, name);
+    public static boolean callStackContainsClass(Class<?> clazz) {
+        return callStackContainsClass(clazz, 300000);
     }
 
     /**
      * I know its not recommended to change function output depending on caller, but im doing it anyways
      * @param stackDistance how far back to check for a class
-     * @param name partial class name
+     * @param clazz class or parent class to check for
      * @return true - if the stack contains the given class name. false otherwise.
      */
-    public static boolean callStackContainsClass(int stackDistance, String name) {
+    public static boolean callStackContainsClass(Class<?> clazz, int stackDistance) {
         var trace = Thread.currentThread().getStackTrace();
         for (var element : trace) {
-            if (element.getClassName().contains(name))
-                return true;
+            try {
+                Class<?> elementClass = Class.forName(element.getClassName());
+                if (clazz.isAssignableFrom(elementClass))
+                    return true;
+            } catch (ClassNotFoundException ignored) {}
             stackDistance--;
             if (stackDistance <= 0)
                 return false;
