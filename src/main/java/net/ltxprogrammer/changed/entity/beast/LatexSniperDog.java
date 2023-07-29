@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -29,12 +29,12 @@ public class LatexSniperDog extends AbstractLatexWolf {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return layer == 0 ? ChangedParticles.Color3.getColor("#eb8c44") : ChangedParticles.Color3.getColor("#894633");
+    public Color3 getHairColor(int layer) {
+        return layer == 0 ? Color3.getColor("#eb8c44") : Color3.getColor("#894633");
     }
 
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#ef8f44");
+    public Color3 getDripColor() {
+        return Color3.getColor("#ef8f44");
     }
 
 }

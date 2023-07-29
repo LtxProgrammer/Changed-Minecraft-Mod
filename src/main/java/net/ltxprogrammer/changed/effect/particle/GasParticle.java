@@ -1,14 +1,14 @@
 package net.ltxprogrammer.changed.effect.particle;
 
 
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GasParticle extends TextureSheetParticle {
-    protected GasParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprite, ChangedParticles.Color3 color) {
+    protected GasParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet sprite, Color3 color) {
         super(level, x, y, z, vx, vy, vz);
         this.setSize(0.07f, 0.07f);
         this.quadSize *= 0.7f;

@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,8 +34,8 @@ public class LatexBee extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#4d334d");
+    public Color3 getHairColor(int layer) {
+        return Color3.getColor("#4d334d");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class LatexBee extends LatexEntity {
     public TransfurMode getTransfurMode() { return TransfurMode.ABSORPTION; }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#ffbf75" : "#ff9e58");
+    public Color3 getDripColor() {
+        return Color3.getColor(this.random.nextInt(4) < 3 ? "#ffbf75" : "#ff9e58");
     }
 }

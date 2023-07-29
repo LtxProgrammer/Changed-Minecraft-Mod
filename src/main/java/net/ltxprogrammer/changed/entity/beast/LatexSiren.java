@@ -6,8 +6,8 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.UniqueEffect;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,8 +36,8 @@ public class LatexSiren extends AbstractGenderedLatexShark implements UniqueEffe
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return layer == 0 ? ChangedParticles.Color3.getColor("#ffffff") : ChangedParticles.Color3.getColor("#f3df60");
+    public Color3 getHairColor(int layer) {
+        return layer == 0 ? Color3.getColor("#ffffff") : Color3.getColor("#f3df60");
     }
 
     @Override

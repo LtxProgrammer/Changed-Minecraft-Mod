@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -24,7 +24,7 @@ public class VentHatchBlock extends TrapDoorBlock {
             if (entity != null) {
                 if (entity.getType().is(ChangedTags.EntityTypes.PUDDING))
                     return Shapes.empty();
-                return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), variant -> {
+                return ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
                     if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.PUDDING))
                         return Shapes.empty();
                     else

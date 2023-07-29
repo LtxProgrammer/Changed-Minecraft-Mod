@@ -16,7 +16,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
@@ -429,7 +429,7 @@ public class ProcessTransfur {
                 return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
         }
 
-        else return ifPlayerLatex(Util.playerOrNull(entity), variant -> {
+        else return ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
             if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
                 return true;
             else if (variant.getLatexEntity() instanceof SpecialLatex special &&
@@ -451,7 +451,7 @@ public class ProcessTransfur {
         if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
             if (event.getEntityLiving() instanceof LatexEntity latexEntity)
                 latexEntity.onDamagedBy(latexEntity, livingEntity);
-            ifPlayerLatex(Util.playerOrNull(event.getEntityLiving()), (player, variant) -> {
+            ifPlayerLatex(EntityUtil.playerOrNull(event.getEntityLiving()), (player, variant) -> {
                 variant.getLatexEntity().onDamagedBy(player, livingEntity);
             });
         }

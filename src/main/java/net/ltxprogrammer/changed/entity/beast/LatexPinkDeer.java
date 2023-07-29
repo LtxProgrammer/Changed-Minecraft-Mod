@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -15,8 +15,8 @@ public class LatexPinkDeer extends LatexPinkWyvern {
 
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#d1626d");
+    public Color3 getDripColor() {
+        return Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#d1626d");
     }
 
 

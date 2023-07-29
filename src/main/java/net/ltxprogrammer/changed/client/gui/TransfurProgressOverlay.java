@@ -7,8 +7,8 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TransfurProgressOverlay {
     private static final ResourceLocation GOO_OUTLINE = Changed.modResource("textures/misc/goo_outline.png");
 
-    public static void renderTextureOverlay(Gui gui, ResourceLocation texture, float zoom, ChangedParticles.Color3 color, float alpha, int screenWidth, int screenHeight) {
+    public static void renderTextureOverlay(Gui gui, ResourceLocation texture, float zoom, Color3 color, float alpha, int screenWidth, int screenHeight) {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.defaultBlendFunc();

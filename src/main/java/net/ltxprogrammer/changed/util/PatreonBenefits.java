@@ -13,7 +13,6 @@ import net.ltxprogrammer.changed.data.OnlineResource;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -94,26 +93,26 @@ public class PatreonBenefits {
     }
 
     public record EntityData(
-            ChangedParticles.Color3 primaryColor,
-            ChangedParticles.Color3 secondaryColor,
-            List<ChangedParticles.Color3> dripColors,
-            List<ChangedParticles.Color3> hairColors,
+            Color3 primaryColor,
+            Color3 secondaryColor,
+            List<Color3> dripColors,
+            List<Color3> hairColors,
             List<HairStyle> hairStyles,
             EntityDimensions dimensions,
             boolean organic
     ) {
         public static EntityData fromJSON(UUID uuid, JsonObject object) {
-            List<ChangedParticles.Color3> dripColors = new ArrayList<>();
+            List<Color3> dripColors = new ArrayList<>();
             try {
-                object.get("particles").getAsJsonArray().forEach(color -> dripColors.add(ChangedParticles.Color3.getColor(color.getAsString())));
+                object.get("particles").getAsJsonArray().forEach(color -> dripColors.add(Color3.getColor(color.getAsString())));
             } catch (Exception ignored) {}
 
-            List<ChangedParticles.Color3> hairColors = new ArrayList<>();
+            List<Color3> hairColors = new ArrayList<>();
             try {
-                object.get("hairColor").getAsJsonArray().forEach(color -> hairColors.add(ChangedParticles.Color3.getColor(color.getAsString())));
+                object.get("hairColor").getAsJsonArray().forEach(color -> hairColors.add(Color3.getColor(color.getAsString())));
             } catch (Exception ignored) {}
             if (hairColors.isEmpty())
-                hairColors.add(ChangedParticles.Color3.WHITE);
+                hairColors.add(Color3.WHITE);
 
             List<HairStyle> styles = new ArrayList<>();
             if (object.has("hairStyles")) {
@@ -138,8 +137,8 @@ public class PatreonBenefits {
                 styles.add(HairStyle.BALD.get());
 
             return new EntityData(
-                    ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "primaryColor", "WHITE")),
-                    ChangedParticles.Color3.getColor(GsonHelper.getAsString(object, "secondaryColor", "WHITE")),
+                    Color3.getColor(GsonHelper.getAsString(object, "primaryColor", "WHITE")),
+                    Color3.getColor(GsonHelper.getAsString(object, "secondaryColor", "WHITE")),
                     dripColors,
                     hairColors,
                     styles,

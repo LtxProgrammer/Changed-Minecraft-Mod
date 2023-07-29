@@ -3,8 +3,8 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -47,8 +47,8 @@ public abstract class WhiteLatexEntity extends LightLatexWolfMale {
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getDripColor() {
+        return Color3.WHITE;
     }
 
     public static final Predicate<WhiteLatexEntity> IS_STANDING_ON_WHITE_LATEX = whiteLatexEntity -> {

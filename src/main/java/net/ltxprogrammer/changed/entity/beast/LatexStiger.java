@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -38,8 +38,8 @@ public class LatexStiger extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return layer == 0 ? ChangedParticles.Color3.getColor("#7b4251") : ChangedParticles.Color3.getColor("#512742");
+    public Color3 getHairColor(int layer) {
+        return layer == 0 ? Color3.getColor("#7b4251") : Color3.getColor("#512742");
     }
 
     @Override
@@ -57,8 +57,8 @@ public class LatexStiger extends LatexEntity {
 
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#7b4251");
+    public Color3 getDripColor() {
+        return Color3.getColor("#7b4251");
     }
 
     protected void defineSynchedData() {
