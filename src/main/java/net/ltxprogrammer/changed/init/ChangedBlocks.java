@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.block.*;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.GasCanister;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -138,8 +139,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LabBlock> WALL_VENT = register("wall_vent", () -> new LabBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(2.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_WHITE = register("wall_white", () -> new LabBlock(BlockBehaviour.Properties.copy(WALL_GRAY.get()).color(MaterialColor.WOOL)));
     public static final RegistryObject<GasCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
-            () -> new GasCanisterBlock(List.of(LatexVariant.AEROSOL_LATEX_WOLF), ChangedParticles.Color3.fromInt(0x7fbaff)), null,
-            canister -> new GasCanister(canister, List.of(LatexVariant.AEROSOL_LATEX_WOLF), ChangedParticles.Color3.fromInt(0x7fbaff)));
+            () -> new GasCanisterBlock(List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)), null,
+            canister -> new GasCanister(canister, List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)));
 
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.WOOL).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));

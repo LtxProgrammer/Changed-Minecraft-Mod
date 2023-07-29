@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterfa
 import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -45,7 +45,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
         for (ResourceLocation layer : style.textureLayers) {
-            ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
+            Color3 color = entity.getHairColor(colorLayer);
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
             modelLower.renderToBuffer(pose, buffer, packedLight,
                     overlay, color.red(), color.green(), color.blue(), alpha);
@@ -57,7 +57,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
             pose.mulPoseMatrix(modelInterface.getPlacementCorrectors(CorrectorType.HAIR).last().pose());
         for (ResourceLocation layer : style.textureLayers) {
-            ChangedParticles.Color3 color = entity.getHairColor(colorLayer);
+            Color3 color = entity.getHairColor(colorLayer);
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(layer));
             modelUpper.renderToBuffer(pose, buffer, packedLight,
                     overlay, color.red(), color.green(), color.blue(), alpha);

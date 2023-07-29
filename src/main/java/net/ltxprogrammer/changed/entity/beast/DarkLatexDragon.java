@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -28,13 +28,13 @@ public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, Pat
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.DARK : ChangedParticles.Color3.GRAY;
+    public Color3 getDripColor() {
+        return level.random.nextInt(10) > 3 ? Color3.DARK : Color3.GRAY;
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getHairColor(int layer) {
+        return Color3.WHITE;
     }
 
     @Override

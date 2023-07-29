@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
@@ -106,8 +106,8 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getHairColor(int layer) {
+        return Color3.WHITE;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.GRAY : ChangedParticles.Color3.WHITE;
+    public Color3 getDripColor() {
+        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
     }
 }

@@ -6,8 +6,8 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.SharedConstants;
 import net.minecraft.world.entity.EntityDimensions;
@@ -64,16 +64,16 @@ public class SpecialLatex extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
+    public Color3 getHairColor(int layer) {
         if (specialLatexForm == null)
-            return ChangedParticles.Color3.WHITE;
+            return Color3.WHITE;
         try {
             return getCurrentData().hairColors().get(layer);
         } catch (Exception ignored) {
             if (!getCurrentData().hairColors().isEmpty())
                 return getCurrentData().hairColors().get(0);
             else
-                return ChangedParticles.Color3.WHITE;
+                return Color3.WHITE;
         }
     }
 
@@ -102,7 +102,7 @@ public class SpecialLatex extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
+    public Color3 getDripColor() {
         if (specialLatexForm == null)
             return null;
         return getCurrentData().dripColors().isEmpty() ? null :

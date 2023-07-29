@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -36,12 +36,12 @@ public class LatexOtter extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#5d4743");
+    public Color3 getHairColor(int layer) {
+        return Color3.getColor("#5d4743");
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor(this.random.nextInt(4) < 3 ? "#5d4743" : "#b6957c");
+    public Color3 getDripColor() {
+        return Color3.getColor(this.random.nextInt(4) < 3 ? "#5d4743" : "#b6957c");
     }
 }

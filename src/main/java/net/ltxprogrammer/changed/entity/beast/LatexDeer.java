@@ -5,7 +5,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +19,8 @@ public class LatexDeer extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#cfbc9b");
+    public Color3 getDripColor() {
+        return Color3.getColor("#cfbc9b");
     }
 
     @Override
@@ -33,8 +33,8 @@ public class LatexDeer extends LatexEntity {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.getColor("#ac967d");
+    public Color3 getHairColor(int layer) {
+        return Color3.getColor("#ac967d");
     }
 
     @Override

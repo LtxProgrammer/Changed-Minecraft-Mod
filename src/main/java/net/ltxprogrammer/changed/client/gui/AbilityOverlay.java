@@ -6,10 +6,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +32,7 @@ public class AbilityOverlay {
         Gui.blit(stack, left, up, u0, v0, width, height, textureWidth, textureHeight);
     }
 
-    public static void renderBackground(int x, int y, PoseStack stack, ChangedParticles.Color3 primary, ChangedParticles.Color3 secondary, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
+    public static void renderBackground(int x, int y, PoseStack stack, Color3 primary, Color3 secondary, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
         RenderSystem.setShaderTexture(0, ABILITY_BACKGROUNDS);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(primary.red(), primary.green(), primary.blue(), 1.0F);
@@ -54,7 +54,7 @@ public class AbilityOverlay {
         }
     }
 
-    public static void renderForeground(int x, int y, PoseStack stack, ChangedParticles.Color3 back, ChangedParticles.Color3 fore, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
+    public static void renderForeground(int x, int y, PoseStack stack, Color3 back, Color3 fore, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
         RenderSystem.setShaderTexture(0, selected.ability.getTexture(player, variant));
         RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
         blit(stack, x, y + 4, 0, 0, 32, 32, 32, 32);
@@ -66,7 +66,7 @@ public class AbilityOverlay {
     }
 
     public static void renderSelectedAbility(Gui gui, PoseStack stack, int screenWidth, int screenHeight) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
             var ability = variant.getSelectedAbility();
             if (ability == null)
                 return;

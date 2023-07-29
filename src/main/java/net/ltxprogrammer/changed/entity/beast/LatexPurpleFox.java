@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PatronOC;
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
@@ -13,13 +13,13 @@ public class LatexPurpleFox extends AbstractLatexWolf implements PowderSnowWalka
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#cebbe8");
+    public Color3 getDripColor() {
+        return Color3.getColor("#cebbe8");
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.fromInt(0xfae9fa);
+    public Color3 getHairColor(int layer) {
+        return Color3.fromInt(0xfae9fa);
     }
 
     @Override

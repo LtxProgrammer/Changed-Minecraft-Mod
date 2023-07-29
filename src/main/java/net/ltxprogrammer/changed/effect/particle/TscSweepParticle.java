@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.effect.particle;
 
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -14,9 +14,9 @@ public class TscSweepParticle extends TextureSheetParticle {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.sprites = sprites;
         this.lifetime = 4;
-        this.rCol = ChangedParticles.Color3.TSC_BLUE.red();
-        this.gCol = ChangedParticles.Color3.TSC_BLUE.green();
-        this.bCol = ChangedParticles.Color3.TSC_BLUE.blue();
+        this.rCol = Color3.TSC_BLUE.red();
+        this.gCol = Color3.TSC_BLUE.green();
+        this.bCol = Color3.TSC_BLUE.blue();
         this.quadSize = 1.0F - (float)size * 0.5F;
         this.setSpriteFromAge(sprites);
     }

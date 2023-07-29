@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.entity.beast.boss;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,8 +34,8 @@ public class BehemothHead extends Behemoth {
         this.xpReward = 50;
     }
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getHairColor(int layer) {
+        return Color3.WHITE;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

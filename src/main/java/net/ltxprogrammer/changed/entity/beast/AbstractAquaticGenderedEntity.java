@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -98,8 +98,8 @@ public abstract class AbstractAquaticGenderedEntity extends LatexEntity implemen
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.GRAY : ChangedParticles.Color3.WHITE;
+    public Color3 getDripColor() {
+        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
     }
 
     public void travel(@NotNull Vec3 p_32394_) {

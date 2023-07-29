@@ -3,8 +3,8 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,9 +27,9 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
     public static final int CAPACITY = 400;
 
     private final List<LatexVariant<?>> variants;
-    private final ChangedParticles.Color3 color;
+    private final Color3 color;
 
-    public GasCanister(Block block, List<LatexVariant<?>> variants, ChangedParticles.Color3 color) {
+    public GasCanister(Block block, List<LatexVariant<?>> variants, Color3 color) {
         super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(400));
         this.variants = variants;
         this.color = color;

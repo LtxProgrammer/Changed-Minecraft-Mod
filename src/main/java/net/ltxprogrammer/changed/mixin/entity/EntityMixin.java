@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
@@ -43,7 +43,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
     @Inject(method = "getTicksRequiredToFreeze", at = @At("HEAD"), cancellable = true)
     public void getTicksRequiredToFreeze(CallbackInfoReturnable<Integer> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getTicksRequiredToFreeze());
         });
     }
@@ -74,35 +74,35 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             callback.setReturnValue(dimensions.height * le.getEyeHeightMul());
         }
 
-        else ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+        else ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getEyeHeight(pose));
         });
     }
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     public void interact(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
             callback.setReturnValue(variant.getLatexEntity().interact(player, hand));
         });
     }
 
     @Inject(method = "getPassengersRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getPassengersRidingOffset(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getPassengersRidingOffset());
         });
     }
 
     @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), variant -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
         });
     }
 
     @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), (player, variant) -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = variant.getParent().cameraZOffset;
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
@@ -114,7 +114,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
     @Inject(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(float v, CallbackInfoReturnable<Vec3> callback) {
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(asEntity()), (player, variant) -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = variant.getParent().cameraZOffset;
             if (Math.abs(z) < 0.0001f) return;
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();

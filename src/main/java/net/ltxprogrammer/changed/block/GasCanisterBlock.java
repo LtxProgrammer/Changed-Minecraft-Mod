@@ -6,8 +6,8 @@ import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.item.GasCanister;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -46,9 +46,9 @@ public class GasCanisterBlock extends AbstractCustomShapeTallEntityBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 28.0D, 12.0D);
     private final List<LatexVariant<?>> variants;
-    private final ChangedParticles.Color3 color;
+    private final Color3 color;
 
-    public GasCanisterBlock(List<LatexVariant<?>> variants, ChangedParticles.Color3 color) {
+    public GasCanisterBlock(List<LatexVariant<?>> variants, Color3 color) {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).color(MaterialColor.WOOL).strength(0.7F));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
         this.variants = variants;

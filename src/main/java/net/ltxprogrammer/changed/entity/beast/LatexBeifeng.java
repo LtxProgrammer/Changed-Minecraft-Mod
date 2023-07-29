@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PatronOC;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -15,8 +15,8 @@ public class LatexBeifeng extends AbstractLatexWolf implements DarkLatexEntity, 
     }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.BLUE : ChangedParticles.Color3.WHITE;
+    public Color3 getDripColor() {
+        return level.random.nextInt(10) > 3 ? Color3.BLUE : Color3.WHITE;
     }
 
     @Override
@@ -25,8 +25,8 @@ public class LatexBeifeng extends AbstractLatexWolf implements DarkLatexEntity, 
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.fromInt(0xffe852);
+    public Color3 getHairColor(int layer) {
+        return Color3.fromInt(0xffe852);
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

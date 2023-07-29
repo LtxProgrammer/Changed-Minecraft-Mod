@@ -10,8 +10,9 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -683,7 +684,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     }
 
     public static LatexVariant<?> getEntityTransfur(LivingEntity entity) {
-        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+        return ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity),
                 variant -> variant.getLatexEntity().getTransfurVariant(), () -> {
             if (entity instanceof LatexEntity latexEntity)
                 return latexEntity.getTransfurVariant();
@@ -692,7 +693,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     }
 
     public static LatexVariant<?> getEntityVariant(LivingEntity entity) {
-        return ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity),
+        return ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity),
                 LatexVariantInstance::getParent,
                 () -> {
                     if (entity instanceof LatexEntity latexEntity)
@@ -768,10 +769,10 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     }
 
 
-    public Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors() {
+    public Pair<Color3, Color3> getColors() {
         var ints = ChangedEntities.getEntityColor(getEntityType().getRegistryName());
         return new Pair<>(
-                ChangedParticles.Color3.fromInt(ints.getFirst()),
-                ChangedParticles.Color3.fromInt(ints.getSecond()));
+                Color3.fromInt(ints.getFirst()),
+                Color3.fromInt(ints.getSecond()));
     }
 }

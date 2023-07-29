@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -37,7 +37,7 @@ public class AbstractLatexGoo extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
         var variants = LatexVariant.VARIANTS_BY_TYPE.get(type);
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), (player, variant) -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), (player, variant) -> {
             if (variant.getLatexType().isHostileTo(type))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
