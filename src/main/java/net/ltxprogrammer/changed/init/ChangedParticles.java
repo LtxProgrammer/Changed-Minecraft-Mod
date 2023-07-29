@@ -79,6 +79,14 @@ public class ChangedParticles {
         public float brightness() {
             return 0.2126f * red + 0.7152f * green + 0.0722f * blue;
         }
+
+        public Color3 add(float v) {
+            return new Color3(red + v, green + v, blue + v);
+        }
+
+        public Color3 mul(float v) {
+            return new Color3(red * v, green * v, blue * v);
+        }
     }
 
     private static final Map<ResourceLocation, ParticleType<?>> REGISTRY = new HashMap<>();

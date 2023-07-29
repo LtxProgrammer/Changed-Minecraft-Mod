@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TransfurProgressOverlay {
     private static final ResourceLocation GOO_OUTLINE = Changed.modResource("textures/misc/goo_outline.png");
 
-    public static void renderTextureOverlay(Gui gui, ResourceLocation texture, float zoom, ChangedParticles.Color3 color, float alpha) {
+    public static void renderTextureOverlay(Gui gui, ResourceLocation texture, float zoom, ChangedParticles.Color3 color, float alpha, int screenWidth, int screenHeight) {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.defaultBlendFunc();
@@ -31,10 +31,10 @@ public class TransfurProgressOverlay {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferbuilder = tesselator.getBuilder();
         bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        float aspect = (float)gui.screenWidth / (float)gui.screenHeight;
-        bufferbuilder.vertex(-zoom * aspect, (double)gui.screenHeight + zoom, -90.0D).uv(0.0F, 1.0F).endVertex();
-        bufferbuilder.vertex((double)gui.screenWidth + (zoom * aspect), (double)gui.screenHeight + zoom, -90.0D).uv(1.0F, 1.0F).endVertex();
-        bufferbuilder.vertex((double)gui.screenWidth + (zoom * aspect), -zoom, -90.0D).uv(1.0F, 0.0F).endVertex();
+        float aspect = (float)screenWidth / (float)screenHeight;
+        bufferbuilder.vertex(-zoom * aspect, (double)screenHeight + zoom, -90.0D).uv(0.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)screenWidth + (zoom * aspect), (double)screenHeight + zoom, -90.0D).uv(1.0F, 1.0F).endVertex();
+        bufferbuilder.vertex((double)screenWidth + (zoom * aspect), -zoom, -90.0D).uv(1.0F, 0.0F).endVertex();
         bufferbuilder.vertex(-zoom * aspect, -zoom, -90.0D).uv(0.0F, 0.0F).endVertex();
         tesselator.end();
         RenderSystem.depthMask(true);
@@ -42,7 +42,7 @@ public class TransfurProgressOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderGooOverlay(Gui gui) {
+    public static void renderGooOverlay(Gui gui, int screenWidth, int screenHeight) {
         Player player = Minecraft.getInstance().player;
         if (player == null || ProcessTransfur.isPlayerLatex(player))
             return;
@@ -54,6 +54,6 @@ public class TransfurProgressOverlay {
         float distance = (1.0f - tickProgress) * 20.0f;
         var color = TransfurProgressLayer.getProgressColor(progress.type());
 
-        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, tickProgress);
+        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, tickProgress, screenWidth, screenHeight);
     }
 }
