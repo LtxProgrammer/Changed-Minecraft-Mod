@@ -36,6 +36,9 @@ public abstract class AbstractAbilityInstance {
     public final ResourceLocation getTexture() {
         return ability.getTexture(player, variant);
     }
+    public final AbstractAbility.UseType getUseType() {
+        return ability.getUseType(player, variant);
+    }
 
     public AbstractAbility.Controller getController() {
         return controller;

@@ -16,6 +16,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public static class Controller {
         private final AbstractAbilityInstance abilityInstance;
         private int chargeTicks = 0;
+        private int useTicks = 0;
         private boolean keyStateO = false;
 
         public Controller(AbstractAbilityInstance abilityInstance) {
@@ -27,6 +28,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void tickAbility() {
+            useTicks++;
             abilityInstance.tick();
         }
 
@@ -53,13 +55,41 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         public void resetCharge() {
             chargeTicks = 0;
         }
+
+        public float chargePercent() {
+            return (float)chargeTicks / (float)abilityInstance.ability.getChargeTime(abilityInstance.player, abilityInstance.variant);
+        }
+
+        public float getProgressReady() {
+            return abilityInstance.getUseType().readyPercent(keyStateO, this);
+        }
+
+        public float getProgressActive() {
+            return abilityInstance.getUseType().activePercent(keyStateO, this);
+        }
     }
 
-    public interface UseTypeI {
+    public interface UseActivate {
         void check(boolean currentKeyState, boolean oldKeyState, Controller controller);
     }
 
-    public enum UseType implements UseTypeI {
+    public interface UseProgressReady {
+        float readyPercent(boolean currentKeyState, Controller controller);
+
+        static UseProgressReady ofConstant(float val) {
+            return (currentKeyState, controller) -> val;
+        }
+    }
+
+    public interface UseProgressActive {
+        float activePercent(boolean currentKeyState, Controller controller);
+
+        static UseProgressActive ofConstant(float val) {
+            return (currentKeyState, controller) -> val;
+        }
+    }
+
+    public enum UseType implements UseActivate, UseProgressReady, UseProgressActive {
         /**
          * Indicates the ability should activate upon keypress
          */
@@ -68,7 +98,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.activateAbility();
                 controller.deactivateAbility();
             }
-        }),
+        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability needs to charge while key is pressed for some time, then activates
          */
@@ -86,7 +116,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             else {
                 controller.resetCharge();
             }
-        }),
+        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> controller.chargePercent()),
         /**
          * Indicates the ability activates when the key is released
          */
@@ -99,7 +129,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.activateAbility();
                 controller.deactivateAbility();
             }
-        }),
+        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability activates upon keypress, and continues to fire per tick while key is down
          */
@@ -110,21 +140,35 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.tickAbility();
             else
                 controller.deactivateAbility();
-        }),
+        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability should activate upon selecting in the ability menu, and does not overwrite selected ability
          */
-        MENU(INSTANT);
+        MENU(INSTANT, INSTANT, INSTANT);
 
-        private final UseTypeI fn;
+        private final UseActivate activate;
+        private final UseProgressReady progressReady;
+        private final UseProgressActive progressActive;
 
-        UseType(UseTypeI fn) {
-            this.fn = fn;
+        UseType(UseActivate activate, UseProgressReady progressReady, UseProgressActive progressActive) {
+            this.activate = activate;
+            this.progressReady = progressReady;
+            this.progressActive = progressActive;
         }
 
         @Override
         public void check(boolean keyState, boolean oldKeyState, Controller controller) {
-            fn.check(keyState, oldKeyState, controller);
+            activate.check(keyState, oldKeyState, controller);
+        }
+
+        @Override
+        public float readyPercent(boolean currentKeyState, Controller controller) {
+            return progressReady.readyPercent(currentKeyState, controller);
+        }
+
+        @Override
+        public float activePercent(boolean currentKeyState, Controller controller) {
+            return progressActive.activePercent(currentKeyState, controller);
         }
     }
 
