@@ -54,7 +54,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
 
         if (RenderUtil.isFirstPerson(entity)) {
             getHead().visible = false;
-            getTorso().visible = !entity.isSwimming();
+            getTorso().visible = !entity.isVisuallySwimming();
         }
 
         else {
