@@ -39,8 +39,6 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
-            var primary = colorPair.getFirst();
-            var secondary = colorPair.getSecond();
 
             RenderSystem.setShaderTexture(0, LATEX_INVENTORY_LOCATION);
             int i = this.topPos;
@@ -54,7 +52,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
                     blit(poseStack, x, i, 512, 198, 32, 32, 768, 256);
 
                 // Foreground
-                RenderSystem.setShaderColor(primary.red(), primary.green(), primary.blue(), 1.0F);
+                RenderSystem.setShaderColor(colorPair.background().red(), colorPair.background().green(), colorPair.background().blue(), 1.0F);
                 if (wide)
                     blit(poseStack, x, i, 0, 166, 120, 32, 768, 256);
                 else

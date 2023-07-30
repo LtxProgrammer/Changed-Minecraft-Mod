@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -80,13 +81,10 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
             RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(menu.player, menu.variant));
             if (enabled) {
                 RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
-                this.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
+                GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
             }
-            float minRed = Math.max(red, 0.125f);
-            float minGreen = Math.max(green, 0.125f);
-            float minBlue = Math.max(blue, 0.125f);
-            RenderSystem.setShaderColor(minRed, minGreen, minBlue, (enabled ? 1 : 0.5f) * alpha);
-            this.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
+            RenderSystem.setShaderColor(red, green, blue, (enabled ? 1 : 0.5f) * alpha);
+            GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
         }
     }
 

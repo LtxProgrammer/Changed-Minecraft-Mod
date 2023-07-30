@@ -58,15 +58,34 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public abstract int getCount();
 
-    public static Pair<Color3, Color3> getColors(LatexVariantInstance<?> variant) {
+    public record ColorScheme(Color3 background, Color3 foreground) {
+        ColorScheme setForegroundToBright() {
+            var newBack = background;
+            var newFore = foreground;
+
+            if (background.brightness() > foreground.brightness()) {
+                newBack = foreground;
+                newFore = background;
+            }
+
+            if (newFore.brightness() - newBack.brightness() < 0.125f) {
+                newFore = newFore.add(0.125f);
+            }
+
+            return new ColorScheme(newBack, newFore);
+        }
+    }
+
+    public static ColorScheme getColors(LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
-            return new Pair<>(
+            return new ColorScheme(
                     specialLatex.getCurrentData().primaryColor(),
                     specialLatex.getCurrentData().secondaryColor()
             );
         }
 
-        return variant.getParent().getColors();
+        var colors = variant.getParent().getColors();
+        return new ColorScheme(colors.getFirst(), colors.getSecond());
     }
 
     private static final double RADIAL_DISTANCE = 90.0;

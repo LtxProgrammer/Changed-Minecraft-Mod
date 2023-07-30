@@ -32,10 +32,10 @@ public class AbilityOverlay {
         Gui.blit(stack, left, up, u0, v0, width, height, textureWidth, textureHeight);
     }
 
-    public static void renderBackground(int x, int y, PoseStack stack, Color3 primary, Color3 secondary, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
+    public static void renderBackground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
         RenderSystem.setShaderTexture(0, ABILITY_BACKGROUNDS);
         RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(primary.red(), primary.green(), primary.blue(), 1.0F);
+        RenderSystem.setShaderColor(scheme.background().red(), scheme.background().green(), scheme.background().blue(), 1.0F);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -49,19 +49,16 @@ public class AbilityOverlay {
         if (ready > 0)
             blit(stack, x, y + (ready - 32), gooOrNot, 32, 32, ready, 64, 96); // ready
         if (active > 0) {
-            RenderSystem.setShaderColor(secondary.red(), secondary.green(), secondary.blue(), 1.0F);
+            RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
             blit(stack, x, y + (active - 32), gooOrNot, 64, 32, active, 64, 96); // active
         }
     }
 
-    public static void renderForeground(int x, int y, PoseStack stack, Color3 back, Color3 fore, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
+    public static void renderForeground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
         RenderSystem.setShaderTexture(0, selected.ability.getTexture(player, variant));
         RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
         blit(stack, x, y + 4, 0, 0, 32, 32, 32, 32);
-        float minRed = Math.max(fore.red(), 0.125f);
-        float minGreen = Math.max(fore.green(), 0.125f);
-        float minBlue = Math.max(fore.blue(), 0.125f);
-        RenderSystem.setShaderColor(minRed, minGreen, minBlue, 1.0F);
+        RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
         blit(stack, x, y, 0, 0, 32, 32, 32, 32);
     }
 
@@ -70,21 +67,10 @@ public class AbilityOverlay {
             var ability = variant.getSelectedAbility();
             if (ability == null)
                 return;
-            var color = AbstractRadialScreen.getColors(variant);
-            var backgroundColor = color.getFirst();
-            var foregroundColor = color.getSecond();
+            var color = AbstractRadialScreen.getColors(variant).setForegroundToBright();
 
-            if (backgroundColor.brightness() > foregroundColor.brightness()) {
-                backgroundColor = color.getSecond();
-                foregroundColor = color.getFirst();
-            }
-
-            if (foregroundColor.brightness() - backgroundColor.brightness() < 0.125f) {
-                foregroundColor = foregroundColor.add(0.125f);
-            }
-
-            renderBackground(10, screenHeight - 42, stack, backgroundColor, foregroundColor, player, variant, ability);
-            renderForeground(15, screenHeight - 47, stack, backgroundColor, foregroundColor, player, variant, ability);
+            renderBackground(10, screenHeight - 42, stack, color, player, variant, ability);
+            renderForeground(15, screenHeight - 47, stack, color, player, variant, ability);
         });
     }
 }
