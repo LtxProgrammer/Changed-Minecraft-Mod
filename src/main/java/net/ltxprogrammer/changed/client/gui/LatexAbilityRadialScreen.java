@@ -17,7 +17,8 @@ import javax.annotation.Nullable;
 
 public abstract class LatexAbilityRadialScreen<T extends AbstractContainerMenu> extends AbstractRadialScreen<T> {
     public LatexAbilityRadialScreen(T menu, Inventory inventory, Component text, LatexVariantInstance<?> variant) {
-        super(menu, inventory, text, getColors(variant).getFirst(), getColors(variant).getSecond(), variant.getLatexEntity());
+        super(menu, inventory, text, getColors(variant).setForegroundToBright().background(),
+                getColors(variant).setForegroundToBright().foreground(), variant.getLatexEntity());
     }
 
     private static final String PATH_ORGANIC = "textures/gui/radial/organic/";
