@@ -6,7 +6,6 @@
   "refmap": "changed.refmap.json",
   "mixins": [
     "EnchantmentHelperMixin",
-    "ForgeHooksClientMixin",
     "GameDataMixin",
     "PrimaryLevelDataMixin",
     "StateHolderMixin",
@@ -19,6 +18,7 @@
     "block.SpreadingSnowyDirtBlockMixin",
     "block.StateDefinitionMixin",
     "block.WallBlockMixin",
+    "client.ForgeHooksClientMixin",
     "entity.ArrowMixin",
     "entity.EntityMixin",
     "entity.IronGolemMixin",
@@ -36,8 +36,10 @@
     "PresenceFootsteps.StateLookupMixin"
   ],
   "client": [
-    "ClientLevelMixin",
     "block.BlockColorsMixin",
+    "client.ClientLevelMixin",
+    "client.OptionsMixin",
+    "client.TutorialMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",
