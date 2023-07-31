@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -41,16 +40,16 @@ public class AbilityOverlay {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         var controller = selected.getController();
-        int ready = (int)(controller.getProgressReady() * 32);
-        int active = ready >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
+        int cool = (int)(controller.coolDownPercent() * 32);
+        int active = cool >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
 
         int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? 32 : 0;
         blit(stack, x, y, gooOrNot, 0, 32, 32, 64, 96); // back
-        if (ready > 0)
-            blit(stack, x, y + (ready - 32), gooOrNot, 32, 32, ready, 64, 96); // ready
+        if (cool > 0)
+            blit(stack, x, y, gooOrNot, 32, 32, cool, 64, 96); // ready
         if (active > 0) {
             RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
-            blit(stack, x, y + (active - 32), gooOrNot, 64, 32, active, 64, 96); // active
+            blit(stack, x, y, gooOrNot, 64, 32, active, 64, 96); // active
         }
     }
 

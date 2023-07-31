@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(StateHolder.class)
-public class StateHolderMixin<O, S> implements StateHolderHelper<O, S> {
+public abstract class StateHolderMixin<O, S> implements StateHolderHelper<O, S> {
     @Shadow @Final private ImmutableMap<Property<?>, Comparable<?>> values;
     @Shadow private Table<Property<?>, Comparable<?>, S> neighbours;
 

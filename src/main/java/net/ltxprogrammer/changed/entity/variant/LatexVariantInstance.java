@@ -518,12 +518,16 @@ public class LatexVariantInstance<T extends LatexEntity> {
         else
             player.maxUpStep = parent.stepSize;
 
+        for (var instance : abilityInstances.values()) {
+            instance.getController().tickCoolDown();
+        }
+
         if (selectedAbility != null) {
             var instance = abilityInstances.get(selectedAbility);
             if (instance != null) {
                 var controller = instance.getController();
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
-                if (player.containerMenu == player.inventoryMenu && !player.isUsingItem())
+                if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
                     selectedAbility.getUseType(player, this).check(abilityKeyState, oldState, controller);
             }
         }
