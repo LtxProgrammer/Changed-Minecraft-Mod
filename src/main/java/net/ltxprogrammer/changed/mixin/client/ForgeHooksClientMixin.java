@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.mixin;
+package net.ltxprogrammer.changed.mixin.client;
 
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.minecraft.client.resources.model.Material;

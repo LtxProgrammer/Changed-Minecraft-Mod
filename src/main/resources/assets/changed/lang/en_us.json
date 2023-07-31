@@ -427,5 +427,10 @@
   "changed:advancements.main.beehive_sleep.description": "Sleep in a beehive bed",
 
   "changed:advancements.main.tame_a_latex.title": "Unlikely Friend",
-  "changed:advancements.main.tame_a_latex.description": "Tame a latex"
+  "changed:advancements.main.tame_a_latex.description": "Tame a latex",
+
+  "changed.tutorial.select_ability.title": "Select your ability",
+  "changed.tutorial.select_ability.description": "Press %s",
+  "changed.tutorial.use_ability.title": "Use your ability",
+  "changed.tutorial.use_ability.description": "Press or hold %s"
 }

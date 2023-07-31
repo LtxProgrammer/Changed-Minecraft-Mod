@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.tutorial.ChangedTutorial;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -41,6 +42,7 @@ public class ChangedKeyMappings {
                 ProcessTransfur.ifPlayerLatex(local, variant -> {
                     var newState = event.getAction() != GLFW.GLFW_RELEASE;
                     if (newState != variant.abilityKeyState) {
+                        ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
                         variant.abilityKeyState = newState;
                         Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(newState, variant.selectedAbility));
                     }
@@ -50,7 +52,10 @@ public class ChangedKeyMappings {
             if (Minecraft.getInstance().screen == null) {
                 if (event.getKey() == SELECT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     SELECT_ABILITY.consumeClick();
-                    Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
+                    ProcessTransfur.ifPlayerLatex(local, variant -> {
+                        Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
+                        ChangedTutorial.triggerOnOpenRadial();
+                    });
                 }
 
                 if (event.getKey() == options.keyJump.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
