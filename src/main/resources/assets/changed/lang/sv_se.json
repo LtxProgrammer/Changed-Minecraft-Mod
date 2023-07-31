@@ -143,6 +143,7 @@
   "block.changed.clipboard": "Skrivplatta",
   "block.changed.cardboard_box": "Kartong låda",
   "block.changed.dark_latex_block": "Mörk latexblock",
+  "block.changed.dark_latex_bubble": "Mörk latexbubbla",
   "block.changed.dark_latex_crystal_large": "Stor mörk latexkristall",
   "block.changed.dark_latex_dragon_crystal": "Mörk latex drakekristall",
   "block.changed.dark_latex_ice": "Mörk latex is",
@@ -426,5 +427,10 @@
   "changed:advancements.main.beehive_sleep.description": "Sova i en bikupasäng",
 
   "changed:advancements.main.tame_a_latex.title": "Osannolik vän",
-  "changed:advancements.main.tame_a_latex.description": "Tämja ett latex"
+  "changed:advancements.main.tame_a_latex.description": "Tämja ett latex",
+
+  "changed.tutorial.select_ability.title": "Välj din förmåga",
+  "changed.tutorial.select_ability.description": "Tryck %s",
+  "changed.tutorial.use_ability.title": "Använda din förmåga",
+  "changed.tutorial.use_ability.description": "Tryck eller håll ned %s"
 }
