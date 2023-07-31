@@ -16,11 +16,24 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public static class Controller {
         private final AbstractAbilityInstance abilityInstance;
         private int chargeTicks = 0;
-        private int useTicks = 0;
+        private int holdTicks = 0;
+        private int coolDownTicksRemaining = 0;
         private boolean keyStateO = false;
 
         public Controller(AbstractAbilityInstance abilityInstance) {
             this.abilityInstance = abilityInstance;
+        }
+
+        public void saveData(CompoundTag tag) {
+            tag.putInt("Charge", chargeTicks);
+            tag.putInt("Hold", holdTicks);
+            tag.putInt("CoolDown", coolDownTicksRemaining);
+        }
+
+        public void readData(CompoundTag tag) {
+            chargeTicks = tag.getInt("Charge");
+            holdTicks = tag.getInt("Hold");
+            coolDownTicksRemaining = tag.getInt("CoolDown");
         }
 
         public void activateAbility() {
@@ -28,7 +41,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void tickAbility() {
-            useTicks++;
+            holdTicks++;
             abilityInstance.tick();
         }
 
@@ -39,6 +52,15 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
         public void deactivateAbility() {
             abilityInstance.stopUsing();
+        }
+
+        public void applyCoolDown() {
+            coolDownTicksRemaining = abilityInstance.ability.getCoolDown(abilityInstance.player, abilityInstance.variant);
+        }
+
+        public void tickCoolDown() {
+            if (coolDownTicksRemaining > 0)
+                coolDownTicksRemaining--;
         }
 
         public boolean exchangeKeyState(boolean keyState) {
@@ -60,12 +82,17 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             return (float)chargeTicks / (float)abilityInstance.ability.getChargeTime(abilityInstance.player, abilityInstance.variant);
         }
 
-        public float getProgressReady() {
-            return abilityInstance.getUseType().readyPercent(keyStateO, this);
+        public float coolDownPercent() {
+            var ttl = abilityInstance.ability.getCoolDown(abilityInstance.player, abilityInstance.variant);
+            return ttl > 0 ? 1.0f - ((float)coolDownTicksRemaining / (float)ttl) : 1.0f;
         }
 
         public float getProgressActive() {
             return abilityInstance.getUseType().activePercent(keyStateO, this);
+        }
+
+        public boolean isCoolingDown() {
+            return coolDownTicksRemaining > 0;
         }
     }
 
@@ -73,23 +100,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         void check(boolean currentKeyState, boolean oldKeyState, Controller controller);
     }
 
-    public interface UseProgressReady {
-        float readyPercent(boolean currentKeyState, Controller controller);
-
-        static UseProgressReady ofConstant(float val) {
-            return (currentKeyState, controller) -> val;
-        }
-    }
-
     public interface UseProgressActive {
         float activePercent(boolean currentKeyState, Controller controller);
-
-        static UseProgressActive ofConstant(float val) {
-            return (currentKeyState, controller) -> val;
-        }
     }
 
-    public enum UseType implements UseActivate, UseProgressReady, UseProgressActive {
+    public enum UseType implements UseActivate, UseProgressActive {
         /**
          * Indicates the ability should activate upon keypress
          */
@@ -97,8 +112,9 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             if (!oldState && keyState) {
                 controller.activateAbility();
                 controller.deactivateAbility();
+                controller.applyCoolDown();
             }
-        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
+        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability needs to charge while key is pressed for some time, then activates
          */
@@ -111,12 +127,13 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.deactivateAbility();
 
                 controller.resetCharge();
+                controller.applyCoolDown();
             }
 
             else {
                 controller.resetCharge();
             }
-        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> controller.chargePercent()),
+        }, (keyState, controller) -> controller.chargePercent()),
         /**
          * Indicates the ability activates when the key is released
          */
@@ -128,8 +145,9 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             if (!keyState && oldState) {
                 controller.activateAbility();
                 controller.deactivateAbility();
+                controller.applyCoolDown();
             }
-        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
+        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability activates upon keypress, and continues to fire per tick while key is down
          */
@@ -138,32 +156,27 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.activateAbility();
             else if (keyState)
                 controller.tickAbility();
-            else
+            else {
                 controller.deactivateAbility();
-        }, UseProgressReady.ofConstant(1.0F), (keyState, controller) -> keyState ? 1.0F : 0.0F),
+                controller.applyCoolDown();
+            }
+        }, (keyState, controller) -> keyState ? 1.0F : 0.0F),
         /**
          * Indicates the ability should activate upon selecting in the ability menu, and does not overwrite selected ability
          */
-        MENU(INSTANT, INSTANT, INSTANT);
+        MENU(INSTANT, INSTANT);
 
         private final UseActivate activate;
-        private final UseProgressReady progressReady;
         private final UseProgressActive progressActive;
 
-        UseType(UseActivate activate, UseProgressReady progressReady, UseProgressActive progressActive) {
+        UseType(UseActivate activate, UseProgressActive progressActive) {
             this.activate = activate;
-            this.progressReady = progressReady;
             this.progressActive = progressActive;
         }
 
         @Override
         public void check(boolean keyState, boolean oldKeyState, Controller controller) {
             activate.check(keyState, oldKeyState, controller);
-        }
-
-        @Override
-        public float readyPercent(boolean currentKeyState, Controller controller) {
-            return progressReady.readyPercent(currentKeyState, controller);
         }
 
         @Override
@@ -188,6 +201,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
     public UseType getUseType(Player player, LatexVariantInstance<?> variant) { return UseType.INSTANT; }
     public int getChargeTime(Player player, LatexVariantInstance<?> variant) { return 0; }
+    public int getCoolDown(Player player, LatexVariantInstance<?> variant) { return 0; }
 
     public boolean canUse(Player player, LatexVariantInstance<?> variant) { return false; }
     public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }

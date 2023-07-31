@@ -68,6 +68,10 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
                 newFore = background;
             }
 
+            if (newBack.brightness() < 0.0625f) {
+                newBack = newBack.add(0.0625f);
+            }
+
             if (newFore.brightness() - newBack.brightness() < 0.125f) {
                 newFore = newFore.add(0.125f);
             }

@@ -61,4 +61,9 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
         return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_" +
                 variant.transfurMode.toString().toLowerCase() + ".png");
     }
+
+    @Override
+    public int getCoolDown(Player player, LatexVariantInstance<?> variant) {
+        return 10;
+    }
 }
