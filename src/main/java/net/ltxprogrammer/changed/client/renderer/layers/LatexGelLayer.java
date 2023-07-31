@@ -39,13 +39,13 @@ public class LatexGelLayer<T extends LatexEntity, M extends LatexHumanoidModel<T
             boolean firstPerson = RenderUtil.isFirstPerson(entity);
             if (firstPerson) {
                 this.model.getHead().visible = false;
-                if (entity.isSwimming())
+                if (entity.isVisuallySwimming())
                     this.model.getTorso().visible = false;
             }
             this.model.renderToBuffer(p_117470_, vertexconsumer, p_117472_, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             if (firstPerson) {
                 this.model.getHead().visible = true;
-                if (entity.isSwimming())
+                if (entity.isVisuallySwimming())
                     this.model.getTorso().visible = true;
             }
         }

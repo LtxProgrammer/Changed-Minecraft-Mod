@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -78,7 +79,7 @@ public abstract class LatexEntity extends Monster {
         this.hairStyle = style != null ? style : HairStyle.BALD.get();
     }
 
-    public abstract ChangedParticles.Color3 getHairColor(int layer);
+    public abstract Color3 getHairColor(int layer);
 
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
@@ -396,7 +397,7 @@ public abstract class LatexEntity extends Monster {
             return super.isLeftHanded();
     }
 
-    public abstract ChangedParticles.Color3 getDripColor();
+    public abstract Color3 getDripColor();
 
     public float getDripRate(float damage) {
         return Mth.lerp(damage, 0.02f, 0.1f); // 1/50 -> 1/10
@@ -429,7 +430,7 @@ public abstract class LatexEntity extends Monster {
         if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
             return;
 
-        ChangedParticles.Color3 color = getDripColor();
+        Color3 color = getDripColor();
         if (color != null) {
             EntityDimensions dimensions = getDimensions(getPose());
             double dh = level.random.nextDouble(dimensions.height);

@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -62,8 +62,8 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements UniqueEffect
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.fromInt(0x52596d);
+    public Color3 getHairColor(int layer) {
+        return Color3.fromInt(0x52596d);
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

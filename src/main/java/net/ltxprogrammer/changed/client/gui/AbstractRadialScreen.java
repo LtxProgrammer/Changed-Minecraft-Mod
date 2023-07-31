@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -38,15 +38,15 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
         return Mth.lerp((float)viewTransitionTicksLeft / (float)VIEW_TRANSITION_LENGTH, (float)viewOffset, (float)viewOffsetO);
     }
 
-    private final ChangedParticles.Color3 primaryColor;
-    private final ChangedParticles.Color3 secondaryColor;
+    private final Color3 primaryColor;
+    private final Color3 secondaryColor;
     public final LivingEntity centerEntity;
 
-    public AbstractRadialScreen(T menu, Inventory inventory, Component text, ChangedParticles.Color3 primary, ChangedParticles.Color3 secondary) {
+    public AbstractRadialScreen(T menu, Inventory inventory, Component text, Color3 primary, Color3 secondary) {
         this(menu, inventory, text, primary, secondary, Minecraft.getInstance().player);
     }
 
-    public AbstractRadialScreen(T menu, Inventory inventory, Component text, ChangedParticles.Color3 primary, ChangedParticles.Color3 secondary, LivingEntity centerEntity) {
+    public AbstractRadialScreen(T menu, Inventory inventory, Component text, Color3 primary, Color3 secondary, LivingEntity centerEntity) {
         super(menu, inventory, text);
         this.imageWidth = 0;
         this.imageHeight = 0;
@@ -58,15 +58,38 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     public abstract int getCount();
 
-    public static Pair<ChangedParticles.Color3, ChangedParticles.Color3> getColors(LatexVariantInstance<?> variant) {
+    public record ColorScheme(Color3 background, Color3 foreground) {
+        ColorScheme setForegroundToBright() {
+            var newBack = background;
+            var newFore = foreground;
+
+            if (background.brightness() > foreground.brightness()) {
+                newBack = foreground;
+                newFore = background;
+            }
+
+            if (newBack.brightness() < 0.0625f) {
+                newBack = newBack.add(0.0625f);
+            }
+
+            if (newFore.brightness() - newBack.brightness() < 0.125f) {
+                newFore = newFore.add(0.125f);
+            }
+
+            return new ColorScheme(newBack, newFore);
+        }
+    }
+
+    public static ColorScheme getColors(LatexVariantInstance<?> variant) {
         if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
-            return new Pair<>(
+            return new ColorScheme(
                     specialLatex.getCurrentData().primaryColor(),
                     specialLatex.getCurrentData().secondaryColor()
             );
         }
 
-        return variant.getParent().getColors();
+        var colors = variant.getParent().getColors();
+        return new ColorScheme(colors.getFirst(), colors.getSecond());
     }
 
     private static final double RADIAL_DISTANCE = 90.0;

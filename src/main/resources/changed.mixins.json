@@ -6,7 +6,6 @@
   "refmap": "changed.refmap.json",
   "mixins": [
     "EnchantmentHelperMixin",
-    "ForgeHooksClientMixin",
     "GameDataMixin",
     "PrimaryLevelDataMixin",
     "StateHolderMixin",
@@ -36,8 +35,11 @@
     "PresenceFootsteps.StateLookupMixin"
   ],
   "client": [
-    "ClientLevelMixin",
     "block.BlockColorsMixin",
+    "client.ClientLevelMixin",
+    "client.ForgeHooksClientMixin",
+    "client.OptionsMixin",
+    "client.TutorialMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",

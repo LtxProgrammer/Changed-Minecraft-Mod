@@ -46,8 +46,8 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
-            var primary = colorPair.getFirst();
-            var secondary = colorPair.getSecond();
+            var primary = colorPair.background();
+            var secondary = colorPair.foreground();
             int textColor = primary.brightness() > 0.5f ? 0x0 : 0xffffff;
             if (Mth.abs(secondary.brightness() - primary.brightness()) > 0.1f)
                 textColor = secondary.toInt();
@@ -72,8 +72,8 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
             int j = this.topPos;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
-            var primary = colorPair.getFirst();
-            var secondary = colorPair.getSecond();
+            var primary = colorPair.background();
+            var secondary = colorPair.foreground();
 
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, LATEX_INVENTORY_LOCATION);

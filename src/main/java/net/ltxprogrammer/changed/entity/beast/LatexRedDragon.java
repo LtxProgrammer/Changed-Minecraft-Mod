@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -17,8 +17,8 @@ public class LatexRedDragon extends LatexEntity implements PatronOC {
 
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return ChangedParticles.Color3.getColor("#a54f58");
+    public Color3 getDripColor() {
+        return Color3.getColor("#a54f58");
     }
 
     @Override
@@ -35,8 +35,8 @@ public class LatexRedDragon extends LatexEntity implements PatronOC {
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getHairColor(int layer) {
+        return Color3.WHITE;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

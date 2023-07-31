@@ -41,6 +41,11 @@ public class SimpleCreateItemAbility extends SimpleAbility {
 
     @Override
     public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
-        return 30;
+        return 20;
+    }
+
+    @Override
+    public int getCoolDown(Player player, LatexVariantInstance<?> variant) {
+        return 20;
     }
 }

@@ -60,7 +60,7 @@ public abstract class GuiMixin extends GuiComponent {
                 return;
             ProcessTransfur.ifPlayerLatex(player, variant -> {
                 var colors = LatexAbilityRadialScreen.getColors(variant);
-                var color = type == Gui.HeartType.NORMAL ? colors.getFirst() : colors.getSecond();
+                var color = type == Gui.HeartType.NORMAL ? colors.background() : colors.foreground();
                 RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
                 RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1);
                 this.blit(pose, x, y, type.getX(half, blinking), texY, 9, 9);
@@ -81,8 +81,6 @@ public abstract class GuiMixin extends GuiComponent {
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
-            var primary = colorPair.getFirst();
-            var secondary = colorPair.getSecond();
 
             Collection<MobEffectInstance> collection = this.minecraft.player.getActiveEffects();
             if (!collection.isEmpty()) {
@@ -127,11 +125,11 @@ public abstract class GuiMixin extends GuiComponent {
                         float f = 1.0F;
                         if (mobeffectinstance.isAmbient()) {
                             blit(poseStack, i, j, 165 + 512, 166, 24, 24, 768, 256);
-                            RenderSystem.setShaderColor(primary.red(), primary.green(), primary.blue(), 1.0F);
+                            RenderSystem.setShaderColor(colorPair.background().red(), colorPair.background().green(), colorPair.background().blue(), 1.0F);
                             blit(poseStack, i, j, 165, 166, 24, 24, 768, 256);
                         } else {
                             blit(poseStack, i, j, 141 + 512, 166, 24, 24, 768, 256);
-                            RenderSystem.setShaderColor(primary.red(), primary.green(), primary.blue(), 1.0F);
+                            RenderSystem.setShaderColor(colorPair.background().red(), colorPair.background().green(), colorPair.background().blue(), 1.0F);
                             blit(poseStack, i, j, 141, 166, 24, 24, 768, 256);
                             if (mobeffectinstance.getDuration() <= 200) {
                                 int k = 10 - mobeffectinstance.getDuration() / 20;

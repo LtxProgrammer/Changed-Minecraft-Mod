@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Util;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,7 +45,7 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
             if (latexEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                 latexEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         }
-        ProcessTransfur.ifPlayerLatex(Util.playerOrNull(entity), (player, variantInstance) -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), (player, variantInstance) -> {
             if (variantInstance.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                 player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         });

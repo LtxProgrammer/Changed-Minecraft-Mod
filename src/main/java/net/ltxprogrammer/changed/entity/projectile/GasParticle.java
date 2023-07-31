@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.entity.projectile;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,7 +31,7 @@ public class GasParticle extends ThrowableProjectile {
         this.variant = variant; return this;
     }
 
-    public GasParticle setColor(ChangedParticles.Color3 color) {
+    public GasParticle setColor(Color3 color) {
         this.entityData.set(COLOR, color.toInt()); return this;
     }
 
@@ -80,10 +80,10 @@ public class GasParticle extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(COLOR, ChangedParticles.Color3.WHITE.toInt());
+        this.entityData.define(COLOR, Color3.WHITE.toInt());
     }
 
-    public ChangedParticles.Color3 getColor() {
-        return ChangedParticles.Color3.fromInt(this.getEntityData().get(COLOR));
+    public Color3 getColor() {
+        return Color3.fromInt(this.getEntityData().get(COLOR));
     }
 }

@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.init.ChangedParticles;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -20,13 +20,13 @@ public abstract class AbstractSnowLeopard extends LatexEntity implements Gendere
     public int getTicksRequiredToFreeze() { return 420; }
 
     @Override
-    public ChangedParticles.Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? ChangedParticles.Color3.GRAY : ChangedParticles.Color3.WHITE;
+    public Color3 getDripColor() {
+        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
     }
 
     @Override
-    public ChangedParticles.Color3 getHairColor(int layer) {
-        return ChangedParticles.Color3.WHITE;
+    public Color3 getHairColor(int layer) {
+        return Color3.WHITE;
     }
 
     public LatexType getLatexType() {

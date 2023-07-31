@@ -30,11 +30,21 @@ public abstract class AbstractAbilityInstance {
     public void onRemove() {}
 
     // A unique tag for the ability is provided when saving/reading data. If no data is saved to the tag, then readData does not run
-    public void saveData(CompoundTag tag) {}
-    public void readData(CompoundTag tag) {}
+    public void saveData(CompoundTag tag) {
+        var controllerTag = new CompoundTag();
+        controller.saveData(controllerTag);
+        tag.put("Controller", controllerTag);
+    }
+    public void readData(CompoundTag tag) {
+        if (tag.contains("Controller"))
+            controller.readData(tag.getCompound("Controller"));
+    }
 
     public final ResourceLocation getTexture() {
         return ability.getTexture(player, variant);
+    }
+    public final AbstractAbility.UseType getUseType() {
+        return ability.getUseType(player, variant);
     }
 
     public AbstractAbility.Controller getController() {

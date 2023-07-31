@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.util.StackUtil;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,8 +21,8 @@ public class RenderUtil {
         var camEnt = Minecraft.getInstance().cameraEntity;
         if (renderSubject != camEnt && renderSubject.getUnderlyingPlayer() != camEnt)
             return false;
-        if (StackUtil.callStackContainsClass(50, "InventoryScreen"))
+        if (StackUtil.callStackContainsClass(Screen.class, 50))
             return false;
-        return Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON && FormRenderHandler.isRenderingForm;
+        return Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON;
     }
 }

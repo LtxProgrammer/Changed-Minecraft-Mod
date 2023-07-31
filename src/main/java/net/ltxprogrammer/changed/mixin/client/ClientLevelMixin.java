@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.mixin;
+package net.ltxprogrammer.changed.mixin.client;
 
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.block.MicrophoneBlock;
