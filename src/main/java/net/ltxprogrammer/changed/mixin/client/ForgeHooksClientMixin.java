@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Set;
 
-@Mixin(ForgeHooksClient.class)
+@Mixin(value = ForgeHooksClient.class, remap = false)
 public abstract class ForgeHooksClientMixin {
-    @Inject(method = "gatherFluidTextures", at = @At("HEAD"), remap = false)
+    @Inject(method = "gatherFluidTextures", at = @At("HEAD"))
     private static void gatherFluidTextures(Set<Material> textures, CallbackInfo callback) {
         textures.addAll(ChangedTextures.MATERIAL_MAP.values());
         // Bruh the things I gotta do for this
