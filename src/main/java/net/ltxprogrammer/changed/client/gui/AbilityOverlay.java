@@ -46,10 +46,10 @@ public class AbilityOverlay {
         int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? 32 : 0;
         blit(stack, x, y, gooOrNot, 0, 32, 32, 64, 96); // back
         if (cool > 0)
-            blit(stack, x, y, gooOrNot, 32, 32, cool, 64, 96); // ready
+            blit(stack, x, y + (32 - cool), gooOrNot, 32 + (32 - cool), 32, cool, 64, 96); // ready
         if (active > 0) {
             RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
-            blit(stack, x, y, gooOrNot, 64, 32, active, 64, 96); // active
+            blit(stack, x, y + (32 - active), gooOrNot, 64 + (32 - active), 32, active, 64, 96); // active
         }
     }
 
