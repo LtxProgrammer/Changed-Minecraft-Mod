@@ -18,7 +18,6 @@
     "block.SpreadingSnowyDirtBlockMixin",
     "block.StateDefinitionMixin",
     "block.WallBlockMixin",
-    "client.ForgeHooksClientMixin",
     "entity.ArrowMixin",
     "entity.EntityMixin",
     "entity.IronGolemMixin",
@@ -38,6 +37,7 @@
   "client": [
     "block.BlockColorsMixin",
     "client.ClientLevelMixin",
+    "client.ForgeHooksClientMixin",
     "client.OptionsMixin",
     "client.TutorialMixin",
     "entity.LocalPlayerMixin",

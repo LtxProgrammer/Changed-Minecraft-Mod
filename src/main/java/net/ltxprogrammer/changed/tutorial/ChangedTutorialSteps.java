@@ -9,8 +9,8 @@ import net.minecraft.client.tutorial.TutorialSteps;
 import java.util.function.Function;
 
 public enum ChangedTutorialSteps {
-    SELECT_ABILITY(Changed.modResourceStr("select_ability"), SelectAbilityTutorialStep::new),
-    USE_ABILITY(Changed.modResourceStr("use_ability"), UseAbilityTutorialStep::new),
+    SELECT_ABILITY("select_ability", SelectAbilityTutorialStep::new),
+    USE_ABILITY("use_ability", UseAbilityTutorialStep::new),
     NONE(TutorialSteps.NONE.getName(), CompletedTutorialStepInstance::new);
 
     private final String name;
