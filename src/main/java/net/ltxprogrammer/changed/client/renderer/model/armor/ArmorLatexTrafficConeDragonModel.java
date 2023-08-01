@@ -122,4 +122,97 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
     public LatexAnimator<T, ArmorLatexTrafficConeDragonModel<T>> getAnimator() {
         return animator;
     }
+
+    public static class RemodelMale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
+        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon_male")).get();
+        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon_male")).get();
+
+        private final ModelPart Head;
+        private final ModelPart Torso;
+        private final ModelPart Tail;
+        private final ModelPart LeftLeg;
+        private final ModelPart RightLeg;
+        private final ModelPart LeftArm;
+        private final ModelPart RightArm;
+        private final LatexAnimator<T, RemodelMale<T>> animator;
+
+        public RemodelMale(ModelPart modelPart) {
+            this.Head = modelPart.getChild("Head");
+            this.Torso = modelPart.getChild("Torso");
+            this.Tail = Torso.getChild("Tail");
+            this.LeftLeg = modelPart.getChild("LeftLeg");
+            this.RightLeg = modelPart.getChild("RightLeg");
+            this.LeftArm = modelPart.getChild("LeftArm");
+            this.RightArm = modelPart.getChild("RightArm");
+
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+        }
+
+        public static LayerDefinition createArmorLayer(ArmorModel layer) {
+            MeshDefinition meshdefinition = new MeshDefinition();
+            PartDefinition partdefinition = meshdefinition.getRoot();
+
+            PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 11.0F, 0.0F));
+
+            PartDefinition TailBase_r1 = Tail.addOrReplaceChild("TailBase_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 4.5F, 11.0F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.225F)), PartPose.offsetAndRotation(0.0F, 15.0F, 0.0F, 1.2217F, 0.0F, 0.0F));
+
+            PartDefinition TailBase_r2 = Tail.addOrReplaceChild("TailBase_r2", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, -6.25F, 12.0F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.56F)), PartPose.offsetAndRotation(0.0F, 15.0F, 0.0F, 0.9163F, 0.0F, 0.0F));
+
+            PartDefinition TailBase_r3 = Tail.addOrReplaceChild("TailBase_r3", CubeListBuilder.create().texOffs(17, 22).addBox(-2.5F, -8.25F, 11.9F, 5.0F, 4.0F, 5.0F, layer.altDeformation.extend(0.335F)), PartPose.offsetAndRotation(0.0F, 15.0F, 0.0F, 1.0036F, 0.0F, 0.0F));
+
+            PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+            PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+            LatexHumanoidArmorModel.addV2Legs(partdefinition, layer);
+
+            return LayerDefinition.create(meshdefinition, 64, 32);
+        }
+
+        @Override
+        public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+            switch (slot) {
+                case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                case CHEST -> {
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+                case LEGS -> {
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, false);
+                        setAllPartsVisibility(RightLeg, false);
+                        LeftLeg.getChild("thigh_r2").visible = true;
+                        RightLeg.getChild("thigh_r1").visible = true;
+                        LeftLeg.visible = true;
+                        RightLeg.visible = true;
+                        Tail.visible = false;
+                    }
+
+                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+
+                    if (stack.getItem() instanceof Shorts) {
+                        setAllPartsVisibility(LeftLeg, true);
+                        setAllPartsVisibility(RightLeg, true);
+                        Tail.visible = true;
+                    }
+                }
+                case FEET -> {
+                    LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                    RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+            }
+        }
+
+        @Override
+        public LatexAnimator<T, RemodelMale<T>> getAnimator() {
+            return animator;
+        }
+    }
 }

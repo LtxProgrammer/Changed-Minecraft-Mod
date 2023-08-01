@@ -48,7 +48,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_LEAF.get(), LatexLeafRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_FEMALE.get(),
                 useNewModels ? LatexMantaRayFemaleRenderer.Remodel::new : LatexMantaRayFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_MALE.get(), LatexMantaRayMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_MALE.get(),
+                useNewModels ? LatexMantaRayMaleRenderer.Remodel::new : LatexMantaRayMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MEDUSA_CAT.get(), LatexMedusaCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MIMIC_PLANT.get(), LatexMimicPlantRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MING_CAT.get(), LatexMingCatRenderer::new);
@@ -86,7 +87,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_STIGER.get(), LatexStigerRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_TIGER_SHARK.get(),
                 useNewModels ? LatexTigerSharkRenderer.Remodel::new : LatexTigerSharkRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON.get(), LatexTrafficConeDragonRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON.get(),
+                useNewModels ? LatexTrafficConeDragonRenderer.Remodel::new :  LatexTrafficConeDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_TRANSLUCENT_LIZARD.get(), LatexTranslucentLizardRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_WATERMELON_CAT.get(),
                 useNewModels ? LatexWatermelonCatRenderer.Remodel::new : LatexWatermelonCatRenderer::new);
