@@ -17,4 +17,16 @@ public class LatexTrafficConeDragonRenderer extends LatexHumanoidRenderer<LatexT
 	public ResourceLocation getTextureLocation(LatexTrafficConeDragon p_114482_) {
 		return Changed.modResource("textures/latex_traffic_cone_dragon.png");
 	}
+
+	public static class Remodel extends LatexHumanoidRenderer<LatexTrafficConeDragon, LatexTrafficConeDragonModel.Remodel, ArmorLatexTrafficConeDragonModel.RemodelMale<LatexTrafficConeDragon>> {
+		public Remodel(EntityRendererProvider.Context context) {
+			super(context, new LatexTrafficConeDragonModel.Remodel(context.bakeLayer(LatexTrafficConeDragonModel.LAYER_LOCATION)),
+					ArmorLatexTrafficConeDragonModel.RemodelMale::new, ArmorLatexTrafficConeDragonModel.RemodelMale.INNER_ARMOR, ArmorLatexTrafficConeDragonModel.RemodelMale.OUTER_ARMOR, 0.5f);
+		}
+
+		@Override
+		public ResourceLocation getTextureLocation(LatexTrafficConeDragon p_114482_) {
+			return Changed.modResource("textures/remodel/latex_traffic_cone_dragon.png");
+		}
+	}
 }
