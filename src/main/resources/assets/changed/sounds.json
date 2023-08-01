@@ -204,7 +204,7 @@
     "sounds": [
       {
         "name": "changed:shot1",
-        "stream": true
+        "stream": false
       }
     ],
     "subtitle": "subtitles.changed.shot1"
@@ -214,7 +214,7 @@
     "sounds": [
       {
         "name": "changed:switch1",
-        "stream": true
+        "stream": false
       }
     ],
     "subtitle": "subtitles.changed.switch1"
@@ -224,7 +224,7 @@
     "sounds": [
       {
         "name": "changed:switch2",
-        "stream": true
+        "stream": false
       }
     ],
     "subtitle": "subtitles.changed.switch2"
@@ -244,10 +244,20 @@
     "sounds": [
       {
         "name": "changed:sword1",
-        "stream": true
+        "stream": false
       }
     ],
     "subtitle": "subtitles.changed.sword1"
+  },
+  "monster2": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:monster2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.monster2"
   },
   "music_disc.latex_dance": {
     "sounds": [

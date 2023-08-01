@@ -40,7 +40,7 @@ public class AbilityOverlay {
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         var controller = selected.getController();
-        int cool = (int)(controller.coolDownPercent() * 32);
+        int cool = selected.canUse() ? (int)(controller.coolDownPercent() * 32) : 0;
         int active = cool >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
 
         int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? 32 : 0;
