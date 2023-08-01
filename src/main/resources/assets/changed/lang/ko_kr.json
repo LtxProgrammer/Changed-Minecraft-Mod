@@ -224,7 +224,6 @@
 
   "entity.changed.special": "특수 라텍스",
   "entity.changed.aerosol_latex_wolf": "가스 늑대",
-
   "entity.changed.behemoth_head": "거대한 짐승 머리",
   "entity.changed.behemoth_hand_left": "거대한 짐승 왼쪽 손",
   "entity.changed.behemoth_hand_right": "거대한 짐승 오른쪽 손",
@@ -428,5 +427,10 @@
   "changed:advancements.main.beehive_sleep.description": "벌집 침대에서 자세요",
 
   "changed:advancements.main.tame_a_latex.title": "뜻밖의 친구",
-  "changed:advancements.main.tame_a_latex.description": "라텍스를 길들이세요"
+  "changed:advancements.main.tame_a_latex.description": "라텍스를 길들이세요",
+  
+  "changed.tutorial.select_ability.title": "능력을 선택하세요",
+  "changed.tutorial.select_ability.description": "%s을(를) 누르세요",
+  "changed.tutorial.use_ability.title": "능력을 사용하세요",
+  "changed.tutorial.use_ability.description": "%s을(를)한 번만 누르거나 계속 누르고 있으세요"
 }
