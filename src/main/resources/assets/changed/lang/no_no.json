@@ -143,6 +143,7 @@
   "block.changed.clipboard": "Utklippstavle",
   "block.changed.cardboard_box": "Pappeske",
   "block.changed.dark_latex_block": "Mørk lateksblokk",
+  "block.changed.dark_latex_bubble": "Mørk lateksboble",
   "block.changed.dark_latex_crystal_large": "Stor mørk latekskrystall",
   "block.changed.dark_latex_dragon_crystal": "Mørk lateks dragekrystall",
   "block.changed.dark_latex_ice": "Mørk lateks is",
@@ -426,5 +427,10 @@
   "changed:advancements.main.beehive_sleep.description": "Sov i en bikubeseng",
 
   "changed:advancements.main.tame_a_latex.title": "Usannsynlig venn",
-  "changed:advancements.main.tame_a_latex.description": "Tem et lateks"
+  "changed:advancements.main.tame_a_latex.description": "Tem et lateks",
+
+  "changed.tutorial.select_ability.title": "Velge din evne",
+  "changed.tutorial.select_ability.description": "Trykk på %s",
+  "changed.tutorial.use_ability.title": "Bruke din evne",
+  "changed.tutorial.use_ability.description": "Trykk på eller hold %s"
 }
