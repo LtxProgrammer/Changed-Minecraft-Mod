@@ -59,6 +59,6 @@ public class SummonSharksAbility extends SimpleAbility {
 
     @Override
     public int getCoolDown(Player player, LatexVariantInstance<?> variant) {
-        return 300;
+        return 2 * 60 * 20; // 2 Minutes
     }
 }
