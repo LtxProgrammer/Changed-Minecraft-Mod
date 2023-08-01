@@ -15,7 +15,7 @@ public class LatexTigerShark extends AbstractAquaticEntity {
 
     @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
+        return HairStyle.SHORT_MESSY.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

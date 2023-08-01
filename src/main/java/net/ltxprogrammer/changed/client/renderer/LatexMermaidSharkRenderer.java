@@ -21,4 +21,18 @@ public class LatexMermaidSharkRenderer extends LatexHumanoidRenderer<LatexMermai
     public ResourceLocation getTextureLocation(LatexMermaidShark p_114482_) {
         return Changed.modResource("textures/latex_mermaid_shark.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexMermaidShark, LatexMermaidSharkModel.Remodel, ArmorUpperBodyModel.RemodelMale<LatexMermaidShark>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexMermaidSharkModel.Remodel(context.bakeLayer(LatexMermaidSharkModel.LAYER_LOCATION)),
+                    ArmorUpperBodyModel.RemodelMale::new, ArmorUpperBodyModel.RemodelMale.INNER_ARMOR, ArmorUpperBodyModel.RemodelMale.OUTER_ARMOR,
+                    ArmorMermaidSharkAbdomenModel::new, ArmorMermaidSharkAbdomenModel.INNER_ARMOR, ArmorMermaidSharkAbdomenModel.OUTER_ARMOR,
+                    AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexMermaidShark p_114482_) {
+            return Changed.modResource("textures/remodel/latex_mermaid_shark.png");
+        }
+    }
 }
