@@ -149,13 +149,12 @@ public abstract class LatexCoveredBlocks {
         @Nullable
         public TextureAtlasSprite load(ResourceManager resources, TextureAtlasSprite.Info info, int atlasWidth, int atlasHeight, int mipLevels, int x, int y) {
             ResourceLocation fullPath = MixedTexture.getResourceLocation(info.name());
-            if (!MixedTexture.cacheExists(fullPath))
-                textureFunction.apply(info.name()).load(resources);
-
-            Optional<NativeImage> cached = MixedTexture.findCachedTexture(fullPath);
-            if (cached.isPresent())
-                return new TextureAtlasSprite(this, info, mipLevels, atlasWidth, atlasHeight, x, y, cached.get());
-            LOGGER.error("Using missing texture, unable to find {} in cache", fullPath);
+            NativeImage image = MixedTexture.findCachedTexture(fullPath).orElse(null);
+            if (image == null)
+                image = textureFunction.apply(info.name()).load(resources);
+            if (image != null)
+                return new TextureAtlasSprite(this, info, mipLevels, atlasWidth, atlasHeight, x, y, image);
+            LOGGER.error("Using missing texture, unable to load {}", fullPath);
             return null;
         }
 

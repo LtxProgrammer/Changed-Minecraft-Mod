@@ -30,6 +30,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyInventory;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
         public final ForgeConfigSpec.ConfigValue<Boolean> cacheGeneratedTextures;
+        public final ForgeConfigSpec.ConfigValue<Boolean> memCacheBaseImages;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
@@ -38,8 +39,10 @@ public class ChangedConfig {
             useGoopyInventory = builder.define("useGooeyInventory", true);
             builder.comment("Enable/disable the gooey hearts");
             useGoopyHearts = builder.define("useGoopyHearts", true);
-            builder.comment("Caching generated latex covering textures will decrease load time, but will disable recreating the cache if you change resource packs.");
+            builder.comment("Caching generated latex covering textures will decrease load time, but will disable recreating the cache if you change resource packs. This cache is stored on your disk. It's recommended to enable this while loading large modpacks");
             cacheGeneratedTextures = builder.define("cacheGeneratedTextures", true);
+            builder.comment("While generating textures, the generator will store all used block textures in memory until all textures are generated. It's recommended to disable this while loading large modpacks");
+            memCacheBaseImages = builder.define("memCacheBaseImages", true);
         }
     }
 

@@ -77,7 +77,8 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LatexMantaRayMaleModel.LAYER_LOCATION,
                 useNewModels ? LatexMantaRayMaleModel.Remodel::createBodyLayer : LatexMantaRayMaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexMedusaCatModel.LAYER_LOCATION, LatexMedusaCatModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexMermaidSharkModel.LAYER_LOCATION, LatexMermaidSharkModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexMermaidSharkModel.LAYER_LOCATION,
+                useNewModels ? LatexMermaidSharkModel.Remodel::createBodyLayer : LatexMermaidSharkModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexMimicPlantModel.LAYER_LOCATION, LatexMimicPlantModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexMingCatModel.LAYER_LOCATION, LatexMingCatModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexMothModel.LAYER_LOCATION, LatexMothModel::createBodyLayer);
@@ -178,7 +179,9 @@ public class ChangedLayerDefinitions {
             ForgeHooksClient.registerLayerDefinition(ArmorUpperBodyModel.RemodelMale.OUTER_ARMOR, () -> ArmorUpperBodyModel.RemodelMale.createArmorLayer(ArmorModel.OUTER));
 
             ForgeHooksClient.registerLayerDefinition(ArmorAbdomenModel.Remodel.INNER_ARMOR, () -> ArmorAbdomenModel.Remodel.createArmorLayer(ArmorModel.INNER));
-            ForgeHooksClient.registerLayerDefinition(ArmorAbdomenModel.Remodel.OUTER_ARMOR, () -> ArmorAbdomenModel.Remodel.createArmorLayer(ArmorModel.OUTER));
+            ForgeHooksClient.registerLayerDefinition(ArmorAbdomenModel.Remodel.OUTER_ARMOR, () -> ArmorAbdomenModel.Remodel.createArmorLayer(ArmorModel.OUTER));;
+            ForgeHooksClient.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.Remodel.INNER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.Remodel.createArmorLayer(ArmorModel.INNER));
+            ForgeHooksClient.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.Remodel.OUTER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.Remodel.createArmorLayer(ArmorModel.OUTER));
         }
 
         else { // Old model exclusive
