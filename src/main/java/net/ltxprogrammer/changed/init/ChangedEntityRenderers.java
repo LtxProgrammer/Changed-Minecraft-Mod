@@ -74,7 +74,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_SHARK_MALE.get(),
                 /*useNewModels ? LatexSharkMaleRenderer.Remodel::new :*/ LatexSharkMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SILVER_FOX.get(), LatexSilverFoxRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_SIREN.get(), LatexSirenRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_SIREN.get(),
+                useNewModels ? LatexSirenRenderer.Remodel::new : LatexSirenRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNAKE.get(), LatexSnakeRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNIPER_DOG.get(),
                 useNewModels ? LatexSniperDogRenderer.Remodel::new : LatexSniperDogRenderer::new);
