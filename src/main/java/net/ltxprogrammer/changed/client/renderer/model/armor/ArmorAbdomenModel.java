@@ -120,8 +120,7 @@ public class ArmorAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmor
             this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
                             Joint,
                             Joint.getChild("Joint2"),
-                            Joint.getChild("Joint2").getChild("Joint3"),
-                            Joint.getChild("Joint2").getChild("Joint3").getChild("Joint4"))))
+                            Joint.getChild("Joint2").getChild("Joint3"))))
                     .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART)).hipOffset(0.0f);
         }
 
