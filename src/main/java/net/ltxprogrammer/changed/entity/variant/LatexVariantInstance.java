@@ -159,7 +159,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public static void onLivingFallEvent(LivingFallEvent event) {
         LatexVariant<?> variant = LatexVariant.getEntityVariant(event.getEntityLiving());
         if (variant != null && variant.isReducedFall()) {
-            event.setDamageMultiplier(0.5f * event.getDamageMultiplier());
+            event.setDistance(0.4f * event.getDistance());
         }
     }
 
