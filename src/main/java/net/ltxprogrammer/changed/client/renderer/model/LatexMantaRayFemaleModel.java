@@ -224,7 +224,7 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
             this.Tail = LowerAbdomen.getChild("Tail");
             this.RightArm = root.getChild("RightArm");
             this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
+            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLikeV2(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                     Tail.getChild("Joint"),
                     Tail.getChild("Joint").getChild("Joint2"),
                     Tail.getChild("Joint").getChild("Joint2").getChild("Joint3")

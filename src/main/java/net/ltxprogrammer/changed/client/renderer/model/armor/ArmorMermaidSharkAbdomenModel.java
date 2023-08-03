@@ -37,7 +37,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
                         Tail.getChild("Joint"))))
                 .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART));
     }
