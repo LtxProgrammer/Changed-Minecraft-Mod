@@ -47,6 +47,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     }
 
     @Override
+    public double getMyRidingOffset() {
+        return 0.2;
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         age = tag.getInt("age");
