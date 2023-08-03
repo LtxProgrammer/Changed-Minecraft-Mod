@@ -1,9 +1,14 @@
 package net.ltxprogrammer.changed.entity;
 
+import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -39,20 +44,24 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEntityVariant;
 
 public abstract class LatexEntity extends Monster {
     @Nullable private Player underlyingPlayer;
     private HairStyle hairStyle;
+    private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
     float crouchAmount;
     float crouchAmountO;
+
+    protected <A extends AbstractAbilityInstance> A registerAbility(Predicate<A> predicate, A instance) {
+        return (A) latexAbilities.computeIfAbsent(instance.ability, type -> new Pair<>(
+                inst -> predicate.test((A)inst), instance)).getSecond();
+    }
 
     public float getCrouchAmount(float partialTicks) {
         return Mth.lerp(partialTicks, this.crouchAmountO, this.crouchAmount);
@@ -69,6 +78,20 @@ public abstract class LatexEntity extends Monster {
 
     public void setUnderlyingPlayer(@Nullable Player player) {
         this.underlyingPlayer = player;
+        if (player != null)
+            latexAbilities.clear();
+    }
+
+    public <A extends AbstractAbilityInstance> A getAbilityInstance(AbstractAbility<A> ability) {
+        try {
+            if (this.underlyingPlayer != null) {
+                return ProcessTransfur.getPlayerLatexVariant(this.underlyingPlayer).getAbilityInstance(ability);
+            }
+
+            return (A) latexAbilities.get(ability).getSecond();
+        } catch (Exception unused) {
+            return null;
+        }
     }
 
     public @NotNull HairStyle getHairStyle() {
@@ -293,6 +316,7 @@ public abstract class LatexEntity extends Monster {
         });
         if (!this.getType().is(ChangedTags.EntityTypes.ARMLESS) && GoalUtils.hasGroundPathNavigation(this))
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(4, new UseAbilityGoal(latexAbilities, this));
 
         if (this instanceof WhiteLatexEntity)
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers());
@@ -320,9 +344,6 @@ public abstract class LatexEntity extends Monster {
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
             mirrorPlayer(player);
         }
-
-        if (this instanceof UniqueEffect unique)
-            unique.effectTick(this.level, this);
 
         var variant = getSelfVariant();
         if (variant == null) return;

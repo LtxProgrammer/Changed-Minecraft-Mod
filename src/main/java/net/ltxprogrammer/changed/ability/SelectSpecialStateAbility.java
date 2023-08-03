@@ -9,28 +9,28 @@ import net.minecraft.world.entity.player.Player;
 
 public class SelectSpecialStateAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return variant.getLatexEntity() instanceof SpecialLatex;
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.getLatexEntity() instanceof SpecialLatex;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        super.startUsing(player, variant);
-        player.openMenu(new SimpleMenuProvider((id, inv, plr) ->
+    public void startUsing(IAbstractLatex entity) {
+        super.startUsing(entity);
+        entity.openMenu(new SimpleMenuProvider((id, inv, plr) ->
                 new SpecialStateRadialMenu(id, inv, null), SpecialStateRadialMenu.CONTAINER_TITLE));
     }
 
     @Override
-    public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.saveData(tag, player, variant);
-        if (variant.getLatexEntity() instanceof SpecialLatex specialLatex)
+    public void saveData(CompoundTag tag, IAbstractLatex entity) {
+        super.saveData(tag, entity);
+        if (entity.getLatexEntity() instanceof SpecialLatex specialLatex)
             tag.putString("State", specialLatex.wantedState);
     }
 
     @Override
-    public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.readData(tag, player, variant);
-        if (tag.contains("State") && variant.getLatexEntity() instanceof SpecialLatex specialLatex)
+    public void readData(CompoundTag tag, IAbstractLatex entity) {
+        super.readData(tag, entity);
+        if (tag.contains("State") && entity.getLatexEntity() instanceof SpecialLatex specialLatex)
             specialLatex.wantedState = tag.getString("State");
     }
 }

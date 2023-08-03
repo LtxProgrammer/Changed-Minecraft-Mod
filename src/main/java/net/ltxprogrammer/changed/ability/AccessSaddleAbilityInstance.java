@@ -11,34 +11,35 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
     public ItemStack saddle = ItemStack.EMPTY;
     public ItemStack chest = ItemStack.EMPTY;
 
-    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
-        super(ability, player, variant);
+    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, IAbstractLatex entity) {
+        super(ability, entity);
     }
 
     @Override
     public boolean canUse() {
-        return ability.canUse(player, variant);
+        return ability.canUse(entity);
     }
 
     @Override
     public boolean canKeepUsing() {
-        return ability.canKeepUsing(player, variant);
+        return ability.canKeepUsing(entity);
     }
 
     @Override
     public void startUsing() {
-        ability.startUsing(player, variant);
+        ability.startUsing(entity);
     }
 
     @Override
     public void tick() {
-        if (((TaurSaddleMenu)player.containerMenu).tick(this))
-            ability.setDirty(this);
+        if (entity.getContainerMenu() instanceof TaurSaddleMenu taurSaddleMenu)
+            if (taurSaddleMenu.tick(this))
+                ability.setDirty(this);
     }
 
     @Override
     public void stopUsing() {
-        ability.stopUsing(player, variant);
+        ability.stopUsing(entity);
     }
 
     @Override
@@ -62,13 +63,13 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void onRemove() {
         super.onRemove();
-        if (player.isDeadOrDying() && player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
+        if (entity.isDeadOrDying() && entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
             return;
 
         if (saddle != null)
-            player.drop(saddle, true);
+            entity.drop(saddle, true);
         if (chest != null)
-            player.drop(chest, true);
+            entity.drop(chest, true);
         saddle = null;
         chest = null;
     }

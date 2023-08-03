@@ -23,10 +23,11 @@ public class ChangedAbilities {
     public static RegistryObject<SwitchHandsAbility> SWITCH_HANDS = REGISTRY.register("switch_hands", SwitchHandsAbility::new);
     public static RegistryObject<AccessChestAbility> ACCESS_CHEST = REGISTRY.register("access_chest", AccessChestAbility::new);
     public static RegistryObject<SwitchGenderAbility> SWITCH_GENDER = REGISTRY.register("switch_gender", SwitchGenderAbility::new);
-    public static RegistryObject<UseVariantEffectAbility> USE_VARIANT_EFFECT = REGISTRY.register("use_variant_ability", UseVariantEffectAbility::new);
     public static RegistryObject<SlitherAbility> SLITHER = REGISTRY.register("slither", SlitherAbility::new);
     public static RegistryObject<SelectHairstyleAbility> SELECT_HAIRSTYLE = REGISTRY.register("select_hairstyle", SelectHairstyleAbility::new);
     public static RegistryObject<SummonSharksAbility> SUMMON_SHARKS = REGISTRY.register("summon_sharks", SummonSharksAbility::new);
+    public static RegistryObject<HypnosisAbility> HYPNOSIS = REGISTRY.register("hypnosis", HypnosisAbility::new);
+    public static RegistryObject<SirenSingAbility> SIREN_SING = REGISTRY.register("siren_sing", SirenSingAbility::new);
     public static RegistryObject<HoldEntityAbility> HOLD_ENTITY_ABILITY = REGISTRY.register("hold_entity", HoldEntityAbility::new);
 
     public static RegistryObject<SelectSpecialStateAbility> SELECT_SPECIAL_STATE = REGISTRY.register("select_special_state", SelectSpecialStateAbility::new);

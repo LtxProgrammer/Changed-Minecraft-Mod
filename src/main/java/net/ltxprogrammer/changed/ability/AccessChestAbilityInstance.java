@@ -22,26 +22,26 @@ import org.jetbrains.annotations.Nullable;
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
     final NonNullList<ItemStack> itemStacks = NonNullList.withSize(2 * 9, ItemStack.EMPTY);
 
-    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
-        super(ability, player, variant);
+    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, IAbstractLatex entity) {
+        super(ability, entity);
     }
 
     @Override
     public boolean canUse() {
-        var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
+        var ability = entity.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
         return !(ability == null || ability.chest == null || ability.chest.isEmpty());
     }
 
     @Override
     public boolean canKeepUsing() {
-        if (!ProcessTransfur.isPlayerLatex(player))
+        if (!entity.isStillLatex())
             return false;
-        return !variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get()).chest.isEmpty();
+        return !entity.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get()).chest.isEmpty();
     }
 
     @Override
     public void startUsing() {
-        player.openMenu(this);
+        entity.openMenu(this);
     }
 
     @Override
@@ -65,13 +65,13 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
     @Override
     public void onRemove() {
         super.onRemove();
-        if (player.isDeadOrDying() && player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
+        if (entity.isDeadOrDying() && entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM)) {
             clearContent();
             return;
         }
 
         itemStacks.forEach(itemStack -> {
-            player.drop(itemStack, true);
+            entity.drop(itemStack, true);
         });
         clearContent();
     }

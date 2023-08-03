@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.world.inventory;
 
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -250,8 +251,8 @@ public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Ma
         return customSlots;
     }
 
-    public void tick(Player player) {
-        CompoundTag tag = player.getPersistentData();
+    public void tick(IAbstractLatex entity) {
+        CompoundTag tag = entity.getPersistentData();
         tag.put("changed:extra_hands_rh", internal.getStackInSlot(0).serializeNBT());
         tag.put("changed:extra_hands_lh", internal.getStackInSlot(1).serializeNBT());
     }
