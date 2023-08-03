@@ -37,7 +37,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
                         Tail.getChild("Joint"))))
                 .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART));
     }
@@ -108,7 +108,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
             this.Tail = LowerAbdomen.getChild("Tail");
             this.Joint = Tail.getChild("Joint");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
                             Joint,
                             Joint.getChild("Joint2"))))
                     .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART)).hipOffset(0.0f);
@@ -122,12 +122,12 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
             PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(40, 1).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 11.0F, 4.0F, layer.deformation.extend(deformationOffset))
                     .texOffs(0, 0).addBox(-4.0F, 11.0F, -2.5F, 8.0F, 2.0F, 5.0F, layer.deformation.extend(deformationOffset)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
             PartDefinition Base_r1 = Abdomen.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -1.0701F, -1.9097F, 8.0F, 2.0F, 5.0F, layer.deformation.extend(0.55F + deformationOffset))
-                    .texOffs(0, 7).addBox(-4.5F, 2.6799F, -2.3597F, 9.0F, 6.0F, 6.0F, layer.deformation.extend(0.45F + deformationOffset)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.6297F, 0.0F, 0.0F, 0.0F));
+                    .texOffs(0, 7).addBox(-4.5F, 2.6799F, -2.3597F, 9.0F, 6.0F, 6.0F, layer.deformation.extend(0.45F + deformationOffset)), PartPose.offsetAndRotation(0.0F, 2.0478F, -0.6297F, 0.0F, 0.0F, 0.0F));
 
-            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 9.0F, -1.0F, 0.0F, 0.0F, 0.0F));
+            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 11.0F, -1.0F, 0.0F, 0.0F, 0.0F));
 
             PartDefinition Base_r2 = LowerAbdomen.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 20).addBox(-4.5F, -0.6616F, -3.0281F, 9.0F, 6.0F, 6.0F, layer.dualDeformation.extend(deformationOffset)), PartPose.offsetAndRotation(0.0F, -1.0025F, 1.0529F, 0.0F, 0.0F, 0.0F));
 
