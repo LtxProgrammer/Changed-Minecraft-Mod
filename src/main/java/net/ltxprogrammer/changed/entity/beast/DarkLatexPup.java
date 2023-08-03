@@ -47,8 +47,8 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
             if (!this.isPuddle())
                 this.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
             this.setPuddle(true);
-            ticksLeftAsPuddle = 100;
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 4, false, false, false)); // Slowness 4 for 2 seconds
+            ticksLeftAsPuddle = 120;
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, false, false, false)); // Slowness 2 for 5 seconds
         }
         return true;
     }
