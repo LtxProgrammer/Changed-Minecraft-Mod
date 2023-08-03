@@ -81,14 +81,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
         this.transfurMode = parent.transfurMode;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
-        parent.abilities.forEach(abilitySupplier -> {
-            var ability = abilitySupplier.get();
+        parent.abilities.forEach(abilityFunction -> {
+            var ability = abilityFunction.apply(this.parent.getEntityType());
             if (ability != null)
                 builder.put(ability, ability.makeInstance(IAbstractLatex.forPlayer(host)));
         });
         abilityInstances = builder.build();
         if (abilityInstances.size() > 0)
-            selectedAbility = parent.abilities.get(0).get();
+            selectedAbility = abilityInstances.keySet().asList().get(0);
 
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
     }
