@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.SingleRunnable;
@@ -58,7 +59,7 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         this.special.wantedState = states.get(section);
-        ChangedAbilities.getAbility(ChangedAbilities.SELECT_SPECIAL_STATE.getId()).setDirty(this.menu.player, this.menu.variant);
+        ChangedAbilities.getAbility(ChangedAbilities.SELECT_SPECIAL_STATE.getId()).setDirty(IAbstractLatex.forPlayer(menu.player));
         return true;
     }
 

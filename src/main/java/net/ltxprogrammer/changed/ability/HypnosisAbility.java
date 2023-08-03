@@ -40,4 +40,9 @@ public class HypnosisAbility extends SimpleAbility {
             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 2, false, false), self);
         });
     }
+
+    @Override
+    public UseType getUseType(IAbstractLatex entity) {
+        return UseType.HOLD;
+    }
 }

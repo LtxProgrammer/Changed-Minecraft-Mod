@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -12,18 +13,20 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class UseAbilityGoal extends Goal {
-    private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> abilities;
+    private final Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilitiesCache;
     private final LatexEntity latex;
     private final IAbstractLatex abstractLatex;
     private AbstractAbility<?> selectedAbility = null;
 
-    public UseAbilityGoal(Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> abilities, LatexEntity latex) {
-        this.abilities = abilities;
+    public UseAbilityGoal(
+            Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilities, LatexEntity latex) {
+        this.abilitiesCache = abilities;
         this.latex = latex;
         this.abstractLatex = IAbstractLatex.forLatex(latex);
     }
 
     public AbstractAbilityInstance getSelectedAbility() {
+        var abilities = abilitiesCache.get();
         if (abilities.containsKey(selectedAbility))
             return abilities.get(selectedAbility).getSecond();
         return null;
@@ -31,10 +34,11 @@ public class UseAbilityGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return true;
+        return !abilitiesCache.get().isEmpty();
     }
 
     public AbstractAbilityInstance reselectNewAbility() {
+        var abilities = abilitiesCache.get();
         var selected = getSelectedAbility();
         if (selected != null && (selected.getController().isCoolingDown() || !abilities.get(selectedAbility).getFirst().test(selected))) {
             selectedAbility = null;
@@ -60,11 +64,13 @@ public class UseAbilityGoal extends Goal {
     @Override
     public void tick() {
         super.tick();
-        abilities.forEach((ability, instance) -> instance.getSecond().getController().tickCoolDown());
+        abilitiesCache.get().forEach((ability, instance) -> instance.getSecond().getController().tickCoolDown());
 
         var selected = reselectNewAbility();
 
-        if (selected != null)
-            selected.getUseType().check(true, selected.getController().exchangeKeyState(true), selected.getController());
+        if (selected != null) {
+            var controller = selected.getController();
+            selected.getUseType().check(true, controller.exchangeKeyState(true), controller);
+        }
     }
 }

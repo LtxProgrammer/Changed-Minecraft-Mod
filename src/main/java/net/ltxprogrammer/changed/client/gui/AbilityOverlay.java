@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -54,7 +55,7 @@ public class AbilityOverlay {
     }
 
     public static void renderForeground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
-        RenderSystem.setShaderTexture(0, selected.ability.getTexture(player, variant));
+        RenderSystem.setShaderTexture(0, selected.ability.getTexture(IAbstractLatex.forPlayer(player)));
         RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
         blit(stack, x, y + 4, 0, 0, 32, 32, 32, 32);
         RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
