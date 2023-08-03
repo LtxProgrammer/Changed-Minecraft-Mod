@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -56,11 +57,9 @@ public interface IAbstractLatex {
     void causeFoodExhaustion(float exhaustion);
 
     static IAbstractLatex forPlayer(Player player) {
-        var instance = ProcessTransfur.getPlayerLatexVariant(player);
-        if (instance == null)
-            throw new IllegalStateException("Player must be transfurred");
-        var latex = instance.getLatexEntity();
-        
+        Cacheable<LatexVariantInstance<?>> instance = Cacheable.of(() -> ProcessTransfur.getPlayerLatexVariant(player));
+        Cacheable<LatexEntity> latex = Cacheable.of(() -> instance.get().getLatexEntity());
+
         return new IAbstractLatex() {
             @Override
             public @NotNull LivingEntity getEntity() {
@@ -69,7 +68,7 @@ public interface IAbstractLatex {
 
             @Override
             public @NotNull LatexEntity getLatexEntity() {
-                return latex;
+                return latex.get();
             }
 
             @Override
@@ -79,7 +78,7 @@ public interface IAbstractLatex {
 
             @Override
             public @NotNull LatexVariantInstance<?> getLatexVariantInstance() {
-                return instance;
+                return instance.get();
             }
 
             @Override
@@ -94,13 +93,13 @@ public interface IAbstractLatex {
 
             @Override
             public @NotNull TransfurMode getTransfurMode() {
-                return instance.transfurMode;
+                return ProcessTransfur.getPlayerLatexVariant(player).transfurMode;
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public <T extends AbstractAbilityInstance> T getAbilityInstance(AbstractAbility<T> ability) {
-                return instance.getAbilityInstance(ability);
+                return instance.get().getAbilityInstance(ability);
             }
 
             @Override
@@ -116,12 +115,12 @@ public interface IAbstractLatex {
             @org.jetbrains.annotations.Nullable
             @Override
             public List<HairStyle> getValidHairStyles() {
-                return latex.getValidHairStyles();
+                return latex.get().getValidHairStyles();
             }
 
             @Override
             public @NotNull HairStyle getHairStyle() {
-                return latex.getHairStyle();
+                return latex.get().getHairStyle();
             }
 
             @Override
@@ -166,7 +165,7 @@ public interface IAbstractLatex {
 
             @Override
             public void setTransfurMode(TransfurMode mode) {
-                instance.transfurMode = mode;
+                instance.get().transfurMode = mode;
             }
 
             @Override
@@ -191,7 +190,7 @@ public interface IAbstractLatex {
 
             @Override
             public void setHairStyle(HairStyle style) {
-                latex.setHairStyle(style);
+                latex.get().setHairStyle(style);
             }
 
             @Override

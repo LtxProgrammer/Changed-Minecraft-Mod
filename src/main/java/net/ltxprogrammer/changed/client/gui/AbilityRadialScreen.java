@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
@@ -30,7 +31,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         this.menu = menu;
         this.variant = menu.variant;
         this.abilities = menu.variant.abilityInstances.keySet().stream().filter(ability ->
-                ability != ChangedAbilities.SELECT_HAIRSTYLE.get() || ability.canUse(menu.player, variant))
+                ability != ChangedAbilities.SELECT_HAIRSTYLE.get() || ability.canUse(IAbstractLatex.forPlayer(menu.player)))
                 .collect(Collectors.toList());
     }
 
@@ -42,7 +43,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
     @Nullable
     @Override
     public List<Component> tooltipsFor(int section) {
-        return List.of(abilities.get(section).getDisplayName(menu.player, menu.variant));
+        return List.of(abilities.get(section).getDisplayName(IAbstractLatex.forPlayer(menu.player)));
     }
 
     @Override
@@ -78,7 +79,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         }
 
         else {
-            RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(menu.player, menu.variant));
+            RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(IAbstractLatex.forPlayer(menu.player)));
             if (enabled) {
                 RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
                 GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);

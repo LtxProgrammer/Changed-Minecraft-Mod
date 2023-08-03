@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -126,7 +127,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         this.variant.getLatexEntity().setHairStyle(styles.get(section));
-        ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(this.menu.player, this.variant);
+        ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(IAbstractLatex.forPlayer(menu.player));
         return true;
     }
 
