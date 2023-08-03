@@ -1,16 +1,15 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import org.apache.commons.lang3.function.TriFunction;
+
+import java.util.function.BiFunction;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
     public static class Controller {
@@ -46,7 +45,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void tickCharge() {
-            abilityInstance.ability.tickCharge(abilityInstance.player, abilityInstance.variant,
+            abilityInstance.ability.tickCharge(abilityInstance.entity,
                     (float)chargeTicks);
         }
 
@@ -55,7 +54,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void applyCoolDown() {
-            coolDownTicksRemaining = abilityInstance.ability.getCoolDown(abilityInstance.player, abilityInstance.variant);
+            coolDownTicksRemaining = abilityInstance.ability.getCoolDown(abilityInstance.entity);
         }
 
         public void tickCoolDown() {
@@ -71,7 +70,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
         public boolean chargeAbility() {
             chargeTicks++;
-            return chargeTicks >= abilityInstance.ability.getChargeTime(abilityInstance.player, abilityInstance.variant);
+            return chargeTicks >= abilityInstance.ability.getChargeTime(abilityInstance.entity);
         }
 
         public void resetCharge() {
@@ -79,11 +78,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public float chargePercent() {
-            return (float)chargeTicks / (float)abilityInstance.ability.getChargeTime(abilityInstance.player, abilityInstance.variant);
+            return (float)chargeTicks / (float)abilityInstance.ability.getChargeTime(abilityInstance.entity);
         }
 
         public float coolDownPercent() {
-            var ttl = abilityInstance.ability.getCoolDown(abilityInstance.player, abilityInstance.variant);
+            var ttl = abilityInstance.ability.getCoolDown(abilityInstance.entity);
             return ttl > 0 ? 1.0f - ((float)coolDownTicksRemaining / (float)ttl) : 1.0f;
         }
 
@@ -185,54 +184,54 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
     }
 
-    private final TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor;
+    private final BiFunction<AbstractAbility<Instance>, IAbstractLatex, Instance> ctor;
 
-    public AbstractAbility(TriFunction<AbstractAbility<Instance>, Player, LatexVariantInstance<?>, Instance> ctor) {
+    public AbstractAbility(BiFunction<AbstractAbility<Instance>, IAbstractLatex, Instance> ctor) {
         this.ctor = ctor;
     }
 
-    public Instance makeInstance(Player player, LatexVariantInstance<?> variant) {
-        return ctor.apply(this, player, variant);
+    public Instance makeInstance(IAbstractLatex entity) {
+        return ctor.apply(this, entity);
     }
 
-    public TranslatableComponent getDisplayName(Player player, LatexVariantInstance<?> variant) {
+    public TranslatableComponent getDisplayName(IAbstractLatex entity) {
         return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
     }
 
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) { return UseType.INSTANT; }
-    public int getChargeTime(Player player, LatexVariantInstance<?> variant) { return 0; }
-    public int getCoolDown(Player player, LatexVariantInstance<?> variant) { return 0; }
+    public UseType getUseType(IAbstractLatex entity) { return UseType.INSTANT; }
+    public int getChargeTime(IAbstractLatex entity) { return 0; }
+    public int getCoolDown(IAbstractLatex entity) { return 0; }
 
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) { return false; }
-    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }
+    public boolean canUse(IAbstractLatex entity) { return false; }
+    public boolean canKeepUsing(IAbstractLatex entity) { return false; }
 
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {}
-    public void tick(Player player, LatexVariantInstance<?> variant) {}
-    public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
+    public void startUsing(IAbstractLatex entity) {}
+    public void tick(IAbstractLatex entity) {}
+    public void stopUsing(IAbstractLatex entity) {}
 
-    public void tickCharge(Player player, LatexVariantInstance<?> variant, float ticks) {}
+    public void tickCharge(IAbstractLatex entity, float ticks) {}
 
-    // Called when the player loses the variant (death or untransfur)
-    public void onRemove(Player player, LatexVariantInstance<?> variant) {}
+    // Called when the entity loses the variant (death or untransfur)
+    public void onRemove(IAbstractLatex entity) {}
 
     // A unique tag for the ability is provided when saving/reading data. If no data is saved to the tag, then readData does not run
-    public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {}
-    public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {}
+    public void saveData(CompoundTag tag, IAbstractLatex entity) {}
+    public void readData(CompoundTag tag, IAbstractLatex entity) {}
 
-    public ResourceLocation getTexture(Player player, LatexVariantInstance<?> variant) {
+    public ResourceLocation getTexture(IAbstractLatex entity) {
         return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + ".png");
     }
 
     // Broadcast changes to clients
-    public final void setDirty(Player player, LatexVariantInstance<?> variant) {
+    public final void setDirty(IAbstractLatex entity) {
         CompoundTag data = new CompoundTag();
-        saveData(data, player, variant);
+        saveData(data, entity);
 
         int id = ChangedRegistry.ABILITY.get().getID(this);
-        if (player.level.isClientSide)
+        if (entity.getLevel().isClientSide)
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, player.getUUID()));
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, entity.getUUID()));
     }
 
     public final void setDirty(AccessSaddleAbilityInstance instance) {
@@ -240,9 +239,9 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         instance.saveData(data);
 
         int id = ChangedRegistry.ABILITY.get().getID(this);
-        if (instance.player.level.isClientSide)
+        if (instance.entity.getLevel().isClientSide)
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.player.getUUID()));
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.entity.getUUID()));
     }
 }

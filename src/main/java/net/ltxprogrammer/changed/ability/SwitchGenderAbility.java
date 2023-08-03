@@ -6,35 +6,38 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.world.entity.player.Player;
 
 public class SwitchGenderAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return variant.getLatexEntity() instanceof GenderedEntity;
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.getLatexEntity() instanceof GenderedEntity && entity.getEntity() instanceof Player;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        super.startUsing(player, variant);
+    public void startUsing(IAbstractLatex entity) {
+        super.startUsing(entity);
 
-        float beforeHealth = player.getHealth();
-        var newVariantId = Gender.switchGenderedForm(variant.getFormId());
-        if (!newVariantId.equals(variant.getFormId())) {
-            var newVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(newVariantId);
-            ProcessTransfur.setPlayerLatexVariant(player, newVariant);
-            ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
-        }
-        player.setHealth(beforeHealth);
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity.getEntity()), (player, variant) -> {
+            float beforeHealth = player.getHealth();
+            var newVariantId = Gender.switchGenderedForm(variant.getFormId());
+            if (!newVariantId.equals(variant.getFormId())) {
+                var newVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(newVariantId);
+                ProcessTransfur.setPlayerLatexVariant(player, newVariant);
+                ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
+            }
+            player.setHealth(beforeHealth);
+        });
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.CHARGE_TIME;
     }
 
     @Override
-    public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
+    public int getChargeTime(IAbstractLatex entity) {
         return 60;
     }
 }

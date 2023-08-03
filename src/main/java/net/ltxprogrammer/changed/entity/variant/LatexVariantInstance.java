@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
@@ -83,7 +84,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
         parent.abilities.forEach(abilitySupplier -> {
             var ability = abilitySupplier.get();
             if (ability != null)
-                builder.put(ability, ability.makeInstance(host, this));
+                builder.put(ability, ability.makeInstance(IAbstractLatex.forPlayer(host)));
         });
         abilityInstances = builder.build();
         if (abilityInstances.size() > 0)
@@ -528,7 +529,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 var controller = instance.getController();
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
                 if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
-                    selectedAbility.getUseType(player, this).check(abilityKeyState, oldState, controller);
+                    selectedAbility.getUseType(IAbstractLatex.forPlayer(player)).check(abilityKeyState, oldState, controller);
             }
         }
 
@@ -582,11 +583,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
-            if (ability.getUseType(this.host, this) != AbstractAbility.UseType.MENU)
+            var abstractLatex = IAbstractLatex.forPlayer(this.host);
+
+            if (ability.getUseType(abstractLatex) != AbstractAbility.UseType.MENU)
                 this.selectedAbility = ability;
             else {
-                ability.startUsing(this.host, this);
-                ability.stopUsing(this.host, this);
+                ability.startUsing(abstractLatex);
+                ability.stopUsing(abstractLatex);
             }
         }
     }

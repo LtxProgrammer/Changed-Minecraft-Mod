@@ -3,18 +3,17 @@ package net.ltxprogrammer.changed.ability;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+
+import javax.annotation.Nullable;
 
 public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
-    public final Player player;
-    public final LatexVariantInstance<?> variant;
+    public final IAbstractLatex entity;
     private final AbstractAbility.Controller controller;
 
-    public AbstractAbilityInstance(AbstractAbility<?> ability, Player player, LatexVariantInstance<?> variant) {
+    public AbstractAbilityInstance(AbstractAbility<?> ability, IAbstractLatex entity) {
         this.ability = ability;
-        this.player = player;
-        this.variant = variant;
+        this.entity = entity;
 
         this.controller = new AbstractAbility.Controller(this);
     }
@@ -41,10 +40,10 @@ public abstract class AbstractAbilityInstance {
     }
 
     public final ResourceLocation getTexture() {
-        return ability.getTexture(player, variant);
+        return ability.getTexture(entity);
     }
     public final AbstractAbility.UseType getUseType() {
-        return ability.getUseType(player, variant);
+        return ability.getUseType(entity);
     }
 
     public AbstractAbility.Controller getController() {

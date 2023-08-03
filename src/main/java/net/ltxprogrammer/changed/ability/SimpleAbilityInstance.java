@@ -2,50 +2,50 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 
 public class SimpleAbilityInstance extends AbstractAbilityInstance {
-    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, Player player, LatexVariantInstance<?> variant) {
-        super(ability, player, variant);
+    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, IAbstractLatex entity) {
+        super(ability, entity);
     }
 
     @Override
     public boolean canUse() {
-        return ability.canUse(player, variant);
+        return ability.canUse(entity);
     }
 
     @Override
     public boolean canKeepUsing() {
-        return ability.canKeepUsing(player, variant);
+        return ability.canKeepUsing(entity);
     }
 
     @Override
     public void startUsing() {
-        ability.startUsing(player, variant);
+        ability.startUsing(entity);
     }
 
     @Override
     public void tick() {
-        ability.tick(player, variant);
+        ability.tick(entity);
     }
 
     @Override
     public void stopUsing() {
-        ability.stopUsing(player, variant);
+        ability.stopUsing(entity);
     }
 
     @Override
     public void onRemove() {
-        ability.onRemove(player, variant);
+        ability.onRemove(entity);
     }
 
     @Override
     public void saveData(CompoundTag tag) {
-        ability.saveData(tag, player, variant);
+        ability.saveData(tag, entity);
     }
 
     @Override
     public void readData(CompoundTag tag) {
-        ability.readData(tag, player, variant);
+        ability.readData(tag, entity);
     }
 }

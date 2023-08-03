@@ -14,7 +14,10 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
         super(SimpleAbilityInstance::new);
     }
 
-    public LivingEntity getHoveredEntity(Player player) {
+    public LivingEntity getHoveredEntity(IAbstractLatex entity) {
+        if (!(entity.getEntity() instanceof Player player))
+            return null;
+
         if (!UniversalDist.isLocalPlayer(player))
             return null;
 
@@ -25,29 +28,29 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
     }
 
     @Override
-    public void tickCharge(Player player, LatexVariantInstance<?> variant, float ticks) {
-        var entity = this.getHoveredEntity(player);
-        if (entity != null) {
-            player.xxa = (float)player.getLookAngle().x;
-            player.zza = (float)player.getLookAngle().z;
+    public void tickCharge(IAbstractLatex entity, float ticks) {
+        var enemy = this.getHoveredEntity(entity);
+        if (enemy != null) {
+            entity.getEntity().xxa = (float)entity.getEntity().getLookAngle().x;
+            entity.getEntity().zza = (float)entity.getEntity().getLookAngle().z;
         }
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.INSTANT;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        if (player instanceof PlayerDataExtension ext) {
-            var entity = this.getHoveredEntity(player);
-            Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab(player, entity));
+    public void startUsing(IAbstractLatex entity) {
+        if (entity.getEntity() instanceof PlayerDataExtension ext) {
+            var enemy = this.getHoveredEntity(entity);
+            Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), enemy));
         }
     }
 
     @Override
-    public void stopUsing(Player player, LatexVariantInstance<?> variant) {
-        super.stopUsing(player, variant);
+    public void stopUsing(IAbstractLatex entity) {
+        super.stopUsing(entity);
     }
 }

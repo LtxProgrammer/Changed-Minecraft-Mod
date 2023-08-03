@@ -1,7 +1,5 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
@@ -18,34 +16,34 @@ public class SimpleCreateItemAbility extends SimpleAbility {
     private final float minimumHunger;
 
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return player.getFoodData().getFoodLevel() > minimumHunger || player.isCreative();
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.getFoodLevel() > minimumHunger || entity.isCreative();
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) { return false; }
+    public boolean canKeepUsing(IAbstractLatex entity) { return false; }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
+    public void startUsing(IAbstractLatex entity) {
         var item = itemSupplier.get();
-        if (!player.addItem(item))
-            player.drop(item, false);
-        if (!player.isCreative())
-            player.causeFoodExhaustion(exhaustion);
+        if (!entity.addItem(item))
+            entity.drop(item, false);
+        if (!entity.isCreative())
+            entity.causeFoodExhaustion(exhaustion);
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.CHARGE_TIME;
     }
 
     @Override
-    public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
+    public int getChargeTime(IAbstractLatex entity) {
         return 20;
     }
 
     @Override
-    public int getCoolDown(Player player, LatexVariantInstance<?> variant) {
+    public int getCoolDown(IAbstractLatex entity) {
         return 20;
     }
 }
