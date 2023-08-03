@@ -117,7 +117,7 @@ public class ArmorAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmor
             this.Tail = LowerAbdomen.getChild("Tail");
             this.Joint = Tail.getChild("Joint");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
                             Joint,
                             Joint.getChild("Joint2"),
                             Joint.getChild("Joint2").getChild("Joint3"))))

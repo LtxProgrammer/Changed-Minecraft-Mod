@@ -54,6 +54,17 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> leglessV2(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSwimAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSleepAnimator<>(abdomen, lowerAbdomen, tail, tailJoints));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
@@ -250,6 +261,20 @@ public class AnimatorPresets {
                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addPreset(legless(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addPreset(upperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new AquaticHeadInitAnimator<>(head))
+                    .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> snakeLikeV2(ModelPart head, ModelPart torso,
+                                                                                                            ModelPart leftArm, ModelPart rightArm,
+                                                                                                            ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                            ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints))
                     .addPreset(upperBody(head, torso, leftArm, rightArm))
                     .addAnimator(new AquaticHeadInitAnimator<>(head))
                     .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
