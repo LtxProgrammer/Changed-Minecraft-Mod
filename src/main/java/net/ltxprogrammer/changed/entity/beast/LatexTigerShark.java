@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.SimpleAbilityInstance;
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -9,8 +12,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LatexTigerShark extends AbstractAquaticEntity {
-    public LatexTigerShark(EntityType<? extends LatexTigerShark> p_19870_, Level p_19871_) {
-        super(p_19870_, p_19871_);
+    protected final SimpleAbilityInstance summonSharks;
+
+    public LatexTigerShark(EntityType<? extends LatexTigerShark> type, Level level) {
+        super(type, level);
+        summonSharks = registerAbility(ability -> this.wantToSummon(), new SimpleAbilityInstance(ChangedAbilities.SUMMON_SHARKS.get(), IAbstractLatex.forLatex(this)));
+    }
+
+    public boolean wantToSummon() {
+        return getTarget() != null;
     }
 
     @Override
