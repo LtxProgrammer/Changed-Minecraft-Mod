@@ -98,30 +98,30 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
         PartDefinition cube_r8 = LeftHindLeg.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(30, 34).addBox(1.25F, -6.0F, -0.5F, 2.0F, 2.0F, 3.0F, new CubeDeformation(-0.005F)), PartPose.offsetAndRotation(-2.0F, 6.0F, -3.0F, -0.5236F, 0.0F, 0.0F));
 
 
-        PartDefinition Puddle = partdefinition.addOrReplaceChild("Puddle", CubeListBuilder.create().texOffs(0, 18).addBox(-7.0F, -4.0F, -8.0F, 14.0F, 2.0F, 16.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 36).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 1.0F, 12.0F, new CubeDeformation(0.0F))
-                .texOffs(30, 36).addBox(7.0F, -4.0F, -7.0F, 1.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 49).addBox(-6.0F, -5.0F, -5.0F, 1.0F, 1.0F, 10.0F, new CubeDeformation(0.0F))
-                .texOffs(44, 18).addBox(-8.0F, -4.0F, -7.0F, 1.0F, 2.0F, 14.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 0).addBox(8.0F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, new CubeDeformation(0.0F))
-                .texOffs(12, 50).addBox(5.0F, -5.0F, -5.0F, 1.0F, 1.0F, 10.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 16.0F, new CubeDeformation(0.0F))
-                .texOffs(50, 52).addBox(-6.0F, -3.0F, -9.0F, 12.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(24, 52).addBox(-6.0F, -3.0F, 8.0F, 12.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 34).addBox(-9.0F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition Puddle = partdefinition.addOrReplaceChild("Puddle", CubeListBuilder.create().texOffs(0, 18).addBox(-7.0F, -4.0F, -8.0F, 14.0F, 2.0F, 16.0F, CubeDeformation.NONE)
+                .texOffs(0, 36).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 1.0F, 12.0F, CubeDeformation.NONE)
+                .texOffs(30, 36).addBox(7.0F, -4.0F, -7.0F, 1.0F, 2.0F, 14.0F, CubeDeformation.NONE)
+                .texOffs(0, 49).addBox(-6.0F, -5.0F, -5.0F, 1.0F, 1.0F, 10.0F, CubeDeformation.NONE)
+                .texOffs(44, 18).addBox(-8.0F, -4.0F, -7.0F, 1.0F, 2.0F, 14.0F, CubeDeformation.NONE)
+                .texOffs(48, 0).addBox(8.0F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, CubeDeformation.NONE)
+                .texOffs(12, 50).addBox(5.0F, -5.0F, -5.0F, 1.0F, 1.0F, 10.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-8.0F, -2.0F, -8.0F, 16.0F, 2.0F, 16.0F, CubeDeformation.NONE)
+                .texOffs(50, 52).addBox(-6.0F, -3.0F, -9.0F, 12.0F, 3.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(24, 52).addBox(-6.0F, -3.0F, 8.0F, 12.0F, 3.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(48, 34).addBox(-9.0F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition PuddleMask = Puddle.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(10, 0).addBox(-1.0F, -5.75F, 9.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 7).addBox(-2.0F, -5.75F, 8.0F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 5).addBox(-3.0F, -5.75F, 7.0F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(8, 7).addBox(-1.0F, -5.75F, 5.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(10, 11).addBox(3.0F, -5.75F, 5.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(6, 10).addBox(-4.0F, -5.75F, 5.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(-2.0F, -7.75F, 3.0F, 4.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 9).addBox(-1.5F, -6.75F, 2.0F, 3.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(10, 14).addBox(3.0F, -5.75F, 3.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(12, 2).addBox(-4.0F, -5.75F, 3.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 12).addBox(-3.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(4, 13).addBox(2.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -6.0F));
+        PartDefinition PuddleMask = Puddle.addOrReplaceChild("Mask", CubeListBuilder.create().texOffs(10, 0).addBox(-1.0F, -5.75F, 9.0F, 2.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 7).addBox(-2.0F, -5.75F, 8.0F, 4.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 5).addBox(-3.0F, -5.75F, 7.0F, 6.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(8, 7).addBox(-1.0F, -5.75F, 5.0F, 2.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(10, 11).addBox(3.0F, -5.75F, 5.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(6, 10).addBox(-4.0F, -5.75F, 5.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-2.0F, -7.75F, 3.0F, 4.0F, 3.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(0, 9).addBox(-1.5F, -6.75F, 2.0F, 3.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(10, 14).addBox(3.0F, -5.75F, 3.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(12, 2).addBox(-4.0F, -5.75F, 3.0F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 12).addBox(-3.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(4, 13).addBox(2.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, -6.0F));
 
         return LayerDefinition.create(meshdefinition, 76, 76);
     }
