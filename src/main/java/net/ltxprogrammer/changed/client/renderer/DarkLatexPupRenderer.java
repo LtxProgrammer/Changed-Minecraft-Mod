@@ -17,7 +17,7 @@ public class DarkLatexPupRenderer extends LatexHumanoidRenderer<DarkLatexPup, Da
 
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexPup entity) {
-		return Changed.modResource("textures/dark_latex_pup.png");
+		return entity.isPuddle() ? Changed.modResource("textures/dark_latex_pup_puddle.png") : Changed.modResource("textures/dark_latex_pup.png");
 	}
 
 	@Override

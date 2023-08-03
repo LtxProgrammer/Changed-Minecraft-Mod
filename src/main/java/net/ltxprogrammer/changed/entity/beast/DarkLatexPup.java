@@ -47,6 +47,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     }
 
     @Override
+    public void setSharedFlag(int p_20116_, boolean p_20117_) {
+        super.setSharedFlag(p_20116_, p_20117_);
+    }
+
+    @Override
     public double getMyRidingOffset() {
         return 0.2;
     }
