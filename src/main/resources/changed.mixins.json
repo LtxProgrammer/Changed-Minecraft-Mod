@@ -41,6 +41,7 @@
     "compatibility.Oculus.WorldRenderingPhaseMixin",
     "compatibility.PresenceFootsteps.SoundEngineMixin",
     "compatibility.PresenceFootsteps.StateLookupMixin",
+    "compatibility.Rubidium.BlockRenderPassManagerMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",
