@@ -18,10 +18,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +37,7 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -308,7 +306,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public final TransfurMode transfurMode;
     public final Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf;
     public final Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
-    public final ImmutableList<Supplier<? extends AbstractAbility<?>>> abilities;
+    public final ImmutableList<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities;
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
@@ -317,7 +315,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                         boolean reducedFall, boolean canClimb,
                         boolean nightVision, boolean noVision, boolean hasLegs, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
-                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Supplier<? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
+                        Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
         this.groundSpeed = groundSpeed;
@@ -332,7 +330,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         this.nightVision = nightVision;
         this.hasLegs = hasLegs;
         this.itemUseMode = itemUseMode;
-        this.abilities = ImmutableList.<Supplier<? extends AbstractAbility<?>>>builder().addAll(abilities).build();
+        this.abilities = ImmutableList.<Function<EntityType<?>, ? extends AbstractAbility<?>>>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
         this.canClimb = canClimb;
         this.scares = scares;
@@ -431,16 +429,16 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         TransfurMode transfurMode = TransfurMode.REPLICATION;
         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf = Optional.empty();
         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
-        List<Supplier<? extends AbstractAbility<?>>> abilities = new ArrayList<>();
+        List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities = new ArrayList<>();
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.POISON.getLocation();
 
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
-            this.abilities.add(() -> entityType.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.SWITCH_TRANSFUR_MODE.get());
-            //this.abilities.add(() -> entityType.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.HOLD_ENTITY_ABILITY.get());
-            this.abilities.add(ChangedAbilities.SELECT_HAIRSTYLE);
+            this.abilities.add(type -> type.is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.SWITCH_TRANSFUR_MODE.get());
+            //this.abilities.add(type -> type.is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.HOLD_ENTITY_ABILITY.get());
+            this.abilities.add(type -> ChangedAbilities.SELECT_HAIRSTYLE.get());
         }
 
         private void ignored() {}
@@ -544,13 +542,19 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             this.additionalHealth = value; return this;
         }
         
-        public Builder<T> addAbility(Supplier<? extends AbstractAbility<?>> ability) {
+        public Builder<T> addAbility(Function<EntityType<?>, ? extends AbstractAbility<?>> ability) {
             if (ability != null)
                 this.abilities.add(ability);
             return this;
         }
         
-        public Builder<T> abilities(List<Supplier<? extends AbstractAbility<?>>> abilities) {
+        public Builder<T> addAbility(Supplier<? extends AbstractAbility<?>> ability) {
+            if (ability != null)
+                this.abilities.add(type -> ability.get());
+            return this;
+        }
+        
+        public Builder<T> abilities(List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities) {
             this.abilities = new ArrayList<>(abilities); return this;
         }
 
@@ -738,7 +742,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             abilities.add(ChangedRegistry.ABILITY.get().getValue(ResourceLocation.tryParse(element.getAsString())));
         });
 
-        List<Supplier<? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Supplier<AbstractAbility<?>>) () -> a).collect(Collectors.toList());
+        List<Function<EntityType<?>, ? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Function<EntityType<?>, AbstractAbility<?>>) type -> a).collect(Collectors.toList());
 
         return new LatexVariant<>(
                 () -> (EntityType<LatexEntity>) Registry.ENTITY_TYPE.get(entityType),
