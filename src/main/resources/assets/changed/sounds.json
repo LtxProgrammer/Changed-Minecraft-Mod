@@ -99,6 +99,16 @@
     ],
     "subtitle": "subtitles.changed.evasion"
   },
+  "goo": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:goo",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.goo"
+  },
   "key": {
     "category": "neutral",
     "sounds": [
