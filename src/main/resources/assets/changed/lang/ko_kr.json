@@ -19,6 +19,7 @@
   "ability.changed.slither": "미끄러지기",
   "ability.changed.select_hairstyle": "헤어스타일 선택하기",
   "ability.changed.select_special_state": "특수 상태 선택",
+  "ability.changed.summon_sharks": "상어 소환",
 
   "subtitles.changed.sound3": "유기적으로 수화함",
   "subtitles.changed.poison": "수화함",
@@ -31,6 +32,7 @@
   "subtitles.changed.bow2": "종이박스가 열림",
   "subtitles.changed.ice2": "수정이 솟아오름",
   "subtitles.changed.key": "키패드 걸쇠가 찰칵거림",
+  "subtitles.changed.monster2": "호랑이상어가 포효함",
   "subtitles.changed.switch1": "키패드 버튼이 딸깍거림",
   "subtitles.changed.shot1": "레이저가 작동함",
   "subtitles.changed.siren": "Siren이 노래함",
@@ -144,6 +146,7 @@
   "block.changed.clipboard": "클립보드",
   "block.changed.cardboard_box": "종이박스",
   "block.changed.dark_latex_block": "검은 라텍스 블록",
+  "block.changed.dark_latex_bubble": "검은 라텍스 거품",
   "block.changed.dark_latex_crystal_large": "큰 검은 라텍스 수정",
   "block.changed.dark_latex_dragon_crystal": "검은 라텍스 용 수정",
   "block.changed.dark_latex_ice": "검은 라텍스 얼음",
