@@ -1,21 +1,17 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SummonSharksAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return player.isInWaterOrBubble();
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.isInWaterOrBubble();
     }
 
     protected Stream<BlockPos> findWaterNearby(BlockGetter level, BlockPos near) {
@@ -25,14 +21,14 @@ public class SummonSharksAbility extends SimpleAbility {
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        var level = player.level;
+    public void startUsing(IAbstractLatex entity) {
+        var level = entity.getLevel();
         if (level.isClientSide)
             return;
 
-        ChangedSounds.broadcastSound(player, ChangedSounds.MONSTER2, 1.0f, 1.0f);
+        ChangedSounds.broadcastSound(entity.getEntity(), ChangedSounds.MONSTER2, 1.0f, 1.0f);
 
-        var list = findWaterNearby(level, player.blockPosition()).toList();
+        var list = findWaterNearby(level, entity.getBlockPosition()).toList();
         int attempts = Math.min(list.size(), 2);
 
         while (attempts > 0) {
@@ -40,7 +36,7 @@ public class SummonSharksAbility extends SimpleAbility {
 
             var shark = ChangedEntities.SHARK.get().create(level);
             level.addFreshEntity(shark);
-            shark.setTarget(player.getLastHurtByMob());
+            shark.setTarget(entity.getEntity().getLastHurtByMob());
             shark.moveTo(blockPos, 0.0f, 0.0f);
 
             attempts--;
@@ -48,17 +44,17 @@ public class SummonSharksAbility extends SimpleAbility {
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.CHARGE_TIME;
     }
 
     @Override
-    public int getChargeTime(Player player, LatexVariantInstance<?> variant) {
+    public int getChargeTime(IAbstractLatex entity) {
         return 40;
     }
 
     @Override
-    public int getCoolDown(Player player, LatexVariantInstance<?> variant) {
+    public int getCoolDown(IAbstractLatex entity) {
         return 2 * 60 * 20; // 2 Minutes
     }
 }

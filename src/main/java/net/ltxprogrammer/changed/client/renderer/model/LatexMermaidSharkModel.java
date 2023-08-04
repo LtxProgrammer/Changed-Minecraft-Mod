@@ -212,7 +212,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
             this.Tail = LowerAbdomen.getChild("Tail");
             this.RightArm = root.getChild("RightArm");
             this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
+            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLikeV2(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                     Tail.getChild("Joint"),
                     Tail.getChild("Joint").getChild("Joint2")
             ))).hipOffset(0.0f);
@@ -257,18 +257,18 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
             PartDefinition Spike_r2 = LeftArm.addOrReplaceChild("Spike_r2", CubeListBuilder.create().texOffs(24, 29).addBox(-0.125F, -0.5F, -0.5F, 1.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
                     .texOffs(16, 44).addBox(0.875F, -1.5F, -0.5F, 1.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.6568F, 2.0711F, 1.6568F, -0.4796F, -0.6979F, 0.7102F));
 
-            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 14.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
-            PartDefinition TailFin_r1 = Abdomen.addOrReplaceChild("TailFin_r1", CubeListBuilder.create().texOffs(51, 4).addBox(-1.0F, 2.125F, -2.7429F, 2.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.1297F, 1.0036F, 0.0F, 0.0F));
+            PartDefinition TailFin_r1 = Abdomen.addOrReplaceChild("TailFin_r1", CubeListBuilder.create().texOffs(51, 4).addBox(-1.0F, 2.125F, -2.7429F, 2.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 2.0478F, -0.1297F, 1.0036F, 0.0F, 0.0F));
 
             PartDefinition Base_r5 = Abdomen.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(24, 29).addBox(-4.5F, -0.3201F, -1.9097F, 9.0F, 3.0F, 5.0F, new CubeDeformation(0.35F))
-                    .texOffs(0, 16).addBox(-5.0F, 2.6799F, -2.8597F, 10.0F, 6.0F, 7.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 0.0478F, -0.6297F, 0.0F, 0.0F, 0.0F));
+                    .texOffs(0, 16).addBox(-5.0F, 2.6799F, -2.8597F, 10.0F, 6.0F, 7.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 2.0478F, -0.6297F, 0.0F, 0.0F, 0.0F));
 
-            PartDefinition Base_r6 = Abdomen.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(34, 21).addBox(-7.0F, -0.3201F, -0.8597F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.0F, 4.0478F, -1.6297F, 0.0F, 0.0F, -0.5236F));
+            PartDefinition Base_r6 = Abdomen.addOrReplaceChild("Base_r6", CubeListBuilder.create().texOffs(34, 21).addBox(-7.0F, -0.3201F, -0.8597F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-5.0F, 6.0478F, -1.6297F, 0.0F, 0.0F, -0.5236F));
 
-            PartDefinition Base_r7 = Abdomen.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(47, 27).addBox(-1.0F, -0.3201F, -0.8597F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 4.0478F, -1.6297F, 0.0F, 0.0F, 0.5236F));
+            PartDefinition Base_r7 = Abdomen.addOrReplaceChild("Base_r7", CubeListBuilder.create().texOffs(47, 27).addBox(-1.0F, -0.3201F, -0.8597F, 8.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 6.0478F, -1.6297F, 0.0F, 0.0F, 0.5236F));
 
-            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 9.0F, -1.0F, 0.0F, 0.0F, 0.0F));
+            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 11.0F, -1.0F, 0.0F, 0.0F, 0.0F));
 
             PartDefinition Base_r8 = LowerAbdomen.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(27, 10).addBox(-4.5F, 0.3384F, -3.0281F, 9.0F, 5.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0025F, 1.0529F, 0.0F, 0.0F, 0.0F));
 

@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.mixin.PresenceFootsteps;
+package net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps;
 
 import eu.ha3.presencefootsteps.sound.PFIsolator;
 import eu.ha3.presencefootsteps.sound.SoundEngine;

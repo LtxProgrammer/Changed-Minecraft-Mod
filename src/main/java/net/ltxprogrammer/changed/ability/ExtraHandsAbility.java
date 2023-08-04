@@ -9,38 +9,39 @@ import net.minecraft.world.item.ItemStack;
 
 public class ExtraHandsAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
+    public boolean canUse(IAbstractLatex entity) {
         return true;
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) {
-        return player.containerMenu instanceof ExtraHandsMenu;
+    public boolean canKeepUsing(IAbstractLatex entity) {
+        return entity.getContainerMenu() instanceof ExtraHandsMenu;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        player.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
+    public void startUsing(IAbstractLatex entity) {
+        entity.openMenu(new SimpleMenuProvider((p_52229_, p_52230_, p_52231_) ->
                 new ExtraHandsMenu(p_52229_, p_52230_, null), ExtraHandsMenu.CONTAINER_TITLE));
     }
 
     @Override
-    public void tick(Player player, LatexVariantInstance<?> variant) {
-        ((ExtraHandsMenu)player.containerMenu).tick(player);
+    public void tick(IAbstractLatex entity) {
+        if (entity.getContainerMenu() instanceof ExtraHandsMenu extraHandsMenu)
+            extraHandsMenu.tick(entity);
     }
 
     @Override
-    public void stopUsing(Player player, LatexVariantInstance<?> variant) {
-        player.closeContainer();
+    public void stopUsing(IAbstractLatex entity) {
+        entity.closeContainer();
     }
 
     @Override
-    public void onRemove(Player player, LatexVariantInstance<?> variant) {
-        CompoundTag tag = player.getPersistentData();
+    public void onRemove(IAbstractLatex entity) {
+        CompoundTag tag = entity.getPersistentData();
         if (tag.contains("changed:extra_hands_rh"))
-            player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_rh")), true);
+            entity.drop(ItemStack.of(tag.getCompound("changed:extra_hands_rh")), true);
         if (tag.contains("changed:extra_hands_lh"))
-            player.drop(ItemStack.of(tag.getCompound("changed:extra_hands_lh")), true);
+            entity.drop(ItemStack.of(tag.getCompound("changed:extra_hands_lh")), true);
         tag.remove("changed:extra_hands_rh");
         tag.remove("changed:extra_hands_lh");
     }

@@ -13,8 +13,8 @@
   "ability.changed.access_chest": "使用箱子",
   "ability.changed.switch_hands": "切换手",
   "ability.changed.switch_gender": "更改性别",
-  "ability.changed.use_variant_ability.hypnosis": "催眠",
-  "ability.changed.use_variant_ability.siren_sing": "唱歌",
+  "ability.changed.hypnosis": "催眠",
+  "ability.changed.siren_sing": "唱歌",
   "ability.changed.slither": "爬行",
 
   "subtitles.changed.sound3": "毛毛Transfur",

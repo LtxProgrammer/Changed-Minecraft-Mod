@@ -9,35 +9,35 @@ import net.minecraft.world.item.ItemStack;
 
 public class SwitchHandsAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return variant.abilityInstances.containsKey(ChangedAbilities.EXTRA_HANDS.get());
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.getAbilityInstance(ChangedAbilities.EXTRA_HANDS.get()) != null;
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) {
+    public boolean canKeepUsing(IAbstractLatex entity) {
         return false;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        ItemStack mainHand = player.getMainHandItem();
-        ItemStack offHand = player.getOffhandItem();
+    public void startUsing(IAbstractLatex entity) {
+        ItemStack mainHand = entity.getEntity().getMainHandItem();
+        ItemStack offHand = entity.getEntity().getOffhandItem();
 
-        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-        player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-        CompoundTag tag = player.getPersistentData();
+        entity.getEntity().setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        entity.getEntity().setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        CompoundTag tag = entity.getPersistentData();
         if (tag.contains("changed:extra_hands_rh"))
-            player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.of(tag.getCompound("changed:extra_hands_rh")));
+            entity.getEntity().setItemInHand(InteractionHand.MAIN_HAND, ItemStack.of(tag.getCompound("changed:extra_hands_rh")));
         if (tag.contains("changed:extra_hands_lh"))
-            player.setItemInHand(InteractionHand.OFF_HAND, ItemStack.of(tag.getCompound("changed:extra_hands_lh")));
+            entity.getEntity().setItemInHand(InteractionHand.OFF_HAND, ItemStack.of(tag.getCompound("changed:extra_hands_lh")));
 
         tag.put("changed:extra_hands_rh", mainHand.serializeNBT());
         tag.put("changed:extra_hands_lh", offHand.serializeNBT());
     }
 
     @Override
-    public void tick(Player player, LatexVariantInstance<?> variant) {}
+    public void tick(IAbstractLatex entity) {}
 
     @Override
-    public void stopUsing(Player player, LatexVariantInstance<?> variant) {}
+    public void stopUsing(IAbstractLatex entity) {}
 }

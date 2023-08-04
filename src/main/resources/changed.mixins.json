@@ -30,9 +30,7 @@
     "fluid.LavaFluidMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
-    "item.ShovelItemMixin",
-    "PresenceFootsteps.SoundEngineMixin",
-    "PresenceFootsteps.StateLookupMixin"
+    "item.ShovelItemMixin"
   ],
   "client": [
     "block.BlockColorsMixin",
@@ -40,6 +38,10 @@
     "client.ForgeHooksClientMixin",
     "client.OptionsMixin",
     "client.TutorialMixin",
+    "compatibility.Oculus.WorldRenderingPhaseMixin",
+    "compatibility.PresenceFootsteps.SoundEngineMixin",
+    "compatibility.PresenceFootsteps.StateLookupMixin",
+    "compatibility.Rubidium.BlockRenderPassManagerMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",

@@ -224,7 +224,7 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
             this.Tail = LowerAbdomen.getChild("Tail");
             this.RightArm = root.getChild("RightArm");
             this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
+            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLikeV2(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                     Tail.getChild("Joint"),
                     Tail.getChild("Joint").getChild("Joint2"),
                     Tail.getChild("Joint").getChild("Joint2").getChild("Joint3")
@@ -280,10 +280,10 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
 
             PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(38, 52).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 2.0F, 0.0F));
 
-            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(0, 37).addBox(-5.0F, 0.0F, -3.0F, 10.0F, 3.0F, 6.0F, new CubeDeformation(-0.05F))
-                    .texOffs(25, 24).addBox(-5.0F, 1.0F, -3.5F, 10.0F, 6.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 13.0F, 0.0F));
+            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(0, 37).addBox(-5.0F, 1.0F, -3.0F, 10.0F, 3.0F, 6.0F, new CubeDeformation(-0.05F))
+                    .texOffs(25, 24).addBox(-5.0F, 2.0F, -3.5F, 10.0F, 6.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 12.0F, 0.0F));
 
-            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, 0.0F, -4.0F, 10.0F, 7.0F, 8.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 5.0F, 0.0F));
+            PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, 0.0F, -4.0F, 10.0F, 7.0F, 8.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 6.0F, 0.0F));
 
             PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(29, 8).addBox(-4.5F, 0.0F, -3.5F, 9.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 5.0F, 0.0F));
 

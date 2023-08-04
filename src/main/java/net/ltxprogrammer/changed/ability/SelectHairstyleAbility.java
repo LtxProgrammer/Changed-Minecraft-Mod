@@ -9,33 +9,33 @@ import net.minecraft.world.entity.player.Player;
 
 public class SelectHairstyleAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
-        return variant.getLatexEntity() != null && variant.getLatexEntity().getValidHairStyles() != null &&
-                variant.getLatexEntity().getValidHairStyles().size() > 1;
+    public boolean canUse(IAbstractLatex entity) {
+        return entity.getValidHairStyles() != null &&
+                entity.getValidHairStyles().size() > 1;
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        super.startUsing(player, variant);
-        player.openMenu(new SimpleMenuProvider((id, inv, plr) ->
+    public void startUsing(IAbstractLatex entity) {
+        super.startUsing(entity);
+        entity.openMenu(new SimpleMenuProvider((id, inv, plr) ->
                 new HairStyleRadialMenu(id, inv, null), HairStyleRadialMenu.CONTAINER_TITLE));
     }
 
     @Override
-    public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.saveData(tag, player, variant);
-        tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(variant.getLatexEntity().getHairStyle()));
+    public void saveData(CompoundTag tag, IAbstractLatex entity) {
+        super.saveData(tag, entity);
+        tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(entity.getHairStyle()));
     }
 
     @Override
-    public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.readData(tag, player, variant);
+    public void readData(CompoundTag tag, IAbstractLatex entity) {
+        super.readData(tag, entity);
         if (tag.contains("HairStyle"))
-            variant.getLatexEntity().setHairStyle(ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle")));
+            entity.setHairStyle(ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle")));
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.MENU;
     }
 }

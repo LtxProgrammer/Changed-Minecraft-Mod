@@ -6,43 +6,43 @@ import net.minecraft.world.entity.player.Player;
 
 public class SlitherAbility extends SimpleAbility {
     @Override
-    public boolean canUse(Player player, LatexVariantInstance<?> variant) {
+    public boolean canUse(IAbstractLatex entity) {
         return true;
     }
 
     @Override
-    public boolean canKeepUsing(Player player, LatexVariantInstance<?> variant) {
-        return !player.isCrouching() && !player.isSleeping();
+    public boolean canKeepUsing(IAbstractLatex entity) {
+        return !entity.isCrouching() && !entity.isSleeping();
     }
 
     @Override
-    public void startUsing(Player player, LatexVariantInstance<?> variant) {
-        super.startUsing(player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming = true;
-        setDirty(player, variant);
+    public void startUsing(IAbstractLatex entity) {
+        super.startUsing(entity);
+        entity.getLatexEntity().overrideVisuallySwimming = true;
+        setDirty(entity);
     }
 
     @Override
-    public void stopUsing(Player player, LatexVariantInstance<?> variant) {
-        super.stopUsing(player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming = false;
-        setDirty(player, variant);
+    public void stopUsing(IAbstractLatex entity) {
+        super.stopUsing(entity);
+        entity.getLatexEntity().overrideVisuallySwimming = false;
+        setDirty(entity);
     }
 
     @Override
-    public void saveData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.saveData(tag, player, variant);
-        tag.putBoolean("overrideSwimming", variant.getLatexEntity().overrideVisuallySwimming);
+    public void saveData(CompoundTag tag, IAbstractLatex entity) {
+        super.saveData(tag, entity);
+        tag.putBoolean("overrideSwimming", entity.getLatexEntity().overrideVisuallySwimming);
     }
 
     @Override
-    public void readData(CompoundTag tag, Player player, LatexVariantInstance<?> variant) {
-        super.readData(tag, player, variant);
-        variant.getLatexEntity().overrideVisuallySwimming = tag.getBoolean("overrideSwimming");
+    public void readData(CompoundTag tag, IAbstractLatex entity) {
+        super.readData(tag, entity);
+        entity.getLatexEntity().overrideVisuallySwimming = tag.getBoolean("overrideSwimming");
     }
 
     @Override
-    public UseType getUseType(Player player, LatexVariantInstance<?> variant) {
+    public UseType getUseType(IAbstractLatex entity) {
         return UseType.HOLD;
     }
 }

@@ -1,15 +1,13 @@
 package net.ltxprogrammer.changed.util;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class CollectionUtil {
     @Nullable
@@ -63,5 +61,11 @@ public class CollectionUtil {
         reverseList.addAll(collection);
         Collections.reverse(reverseList);
         reverseList.forEach(consumer);
+    }
+
+    public static <T> Stream<T> shuffle(Stream<T> stream, Random random) {
+        return stream.sorted((elemA, elemB) -> {
+            return random.nextInt();
+        });
     }
 }
