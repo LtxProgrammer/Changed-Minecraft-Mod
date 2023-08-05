@@ -42,6 +42,7 @@
     "compatibility.PresenceFootsteps.SoundEngineMixin",
     "compatibility.PresenceFootsteps.StateLookupMixin",
     "compatibility.Rubidium.BlockRenderPassManagerMixin",
+    "compatibility.Vivecraft.VRArmRendererMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",
     "gui.ClientRecipeBookMixin",
