@@ -85,13 +85,13 @@ public class LatexTrafficConeDragonModel extends LatexHumanoidModel<LatexTraffic
                 .texOffs(52, 18).addBox(-2.0F, -2.5F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(20, 16).addBox(-1.5F, -0.5F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
-        PartDefinition Horn_r1 = Head.addOrReplaceChild("Horn_r1", CubeListBuilder.create().texOffs(45, 52).addBox(-2.9F, -9.0F, -4.25F, 1.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.8727F, -0.3927F, -0.3054F));
+        PartDefinition Horn_r1 = Head.addOrReplaceChild("Horn_r1", CubeListBuilder.create().texOffs(45, 52).addBox(-2.7F, -9.0F, -5.25F, 1.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.9599F, -0.3927F, -0.3054F));
 
         PartDefinition Horn_r2 = Head.addOrReplaceChild("Horn_r2", CubeListBuilder.create().texOffs(14, 53).addBox(-0.25F, -11.0F, -6.0F, 2.0F, 6.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.6981F, 0.0F, 0.3054F));
 
         PartDefinition Horn_r3 = Head.addOrReplaceChild("Horn_r3", CubeListBuilder.create().texOffs(0, 0).addBox(-1.75F, -11.0F, -6.0F, 2.0F, 6.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.6981F, 0.0F, -0.3054F));
 
-        PartDefinition Horn_r4 = Head.addOrReplaceChild("Horn_r4", CubeListBuilder.create().texOffs(52, 9).addBox(1.9F, -9.0F, -4.25F, 1.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.8727F, 0.3927F, 0.3054F));
+        PartDefinition Horn_r4 = Head.addOrReplaceChild("Horn_r4", CubeListBuilder.create().texOffs(52, 9).addBox(1.7F, -9.0F, -5.25F, 1.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, -0.9599F, 0.3927F, 0.3054F));
 
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.5F, 0.0F));
 
