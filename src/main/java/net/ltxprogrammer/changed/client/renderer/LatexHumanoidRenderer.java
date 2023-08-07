@@ -68,10 +68,15 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
         this.addLayers(context, main);
     }
 
-    protected void setupRotations(@NotNull T entity, PoseStack poseStack, float p_117804_, float bodyYRot, float partialTicks) {
+    protected boolean isEntityUprightType(@NotNull T entity) {
+        return true;
+    }
+
+    protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
         float swimAmount = entity.getSwimAmount(partialTicks);
-        if (entity.isFallFlying()) {
-            super.setupRotations(entity, poseStack, p_117804_, bodyYRot, partialTicks);
+        boolean upright = isEntityUprightType(entity);
+        if (upright && entity.isFallFlying()) {
+            super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
             float f1 = (float)entity.getFallFlyingTicks() + partialTicks;
             float f2 = Mth.clamp(f1 * f1 / 100.0F, 0.0F, 1.0F);
             if (!entity.isAutoSpinAttack()) {
@@ -87,8 +92,8 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
                 double d3 = vec31.x * vec3.z - vec31.z * vec3.x;
                 poseStack.mulPose(Vector3f.YP.rotation((float)(Math.signum(d3) * Math.acos(d2))));
             }
-        } else if (swimAmount > 0.0F) {
-            super.setupRotations(entity, poseStack, p_117804_, bodyYRot, partialTicks);
+        } else if (upright && swimAmount > 0.0F) {
+            super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
             float f3 = entity.isInWater() ? -90.0F - entity.getXRot() : -90.0F;
             float f4 = Mth.lerp(swimAmount, 0.0F, f3);
             poseStack.mulPose(Vector3f.XP.rotationDegrees(f4));
@@ -99,13 +104,13 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
             if (getModel() instanceof LatexHumanoidModelInterface<?, ?> modelInterface) {
                 poseStack.translate(0.0D, 0.0D, (-modelInterface.getAnimator().forwardOffset * swimAmount) / 16.0);
             }
-        } else if (entity.isSleeping()) {
-            super.setupRotations(entity, poseStack, p_117804_, bodyYRot, partialTicks);
+        } else if (upright && entity.isSleeping()) {
+            super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
             if (getModel() instanceof LatexHumanoidModelInterface<?, ?> modelInterface) {
                 poseStack.translate(0.0D, -modelInterface.getAnimator().forwardOffset / 16.0, -modelInterface.getAnimator().forwardOffset / 16.0);
             }
         } else {
-            super.setupRotations(entity, poseStack, p_117804_, bodyYRot, partialTicks);
+            super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
         }
     }
 
