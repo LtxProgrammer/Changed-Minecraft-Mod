@@ -17,11 +17,20 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "renderChunkLayer", at = @At("RETURN"))
     public void postRenderLayer(RenderType type, PoseStack pose, double x, double y, double z, Matrix4f matrix, CallbackInfo callback) {
-        if (type == RenderType.solid())
+        if (type == RenderType.solid()) {
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
             renderChunkLayer(LatexCoveredBlocks.latexSolid(), pose, x, y, z, matrix);
-        else if (type == RenderType.cutoutMipped())
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+        }
+        else if (type == RenderType.cutoutMipped()) {
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
             renderChunkLayer(LatexCoveredBlocks.latexCutoutMipped(), pose, x, y, z, matrix);
-        else if (type == RenderType.cutout())
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+        }
+        else if (type == RenderType.cutout()) {
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
             renderChunkLayer(LatexCoveredBlocks.latexCutout(), pose, x, y, z, matrix);
+            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+        }
     }
 }

@@ -10,6 +10,7 @@
     "PresenceFootsteps.SoundEngineMixin",
     "PresenceFootsteps.StateLookupMixin",
     "Rubidium.BlockRenderPassManagerMixin",
+    "Rubidium.BlockRenderPassMixin",
     "Vivecraft.VRArmRendererMixin"
   ],
   "injectors": {
