@@ -304,7 +304,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexStiger>> LATEX_STIGER = register("latex_stiger", 0x7b4251, 0xe0cfd9,
             EntityType.Builder.of(LatexStiger::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::undergroundSpawning);
-    public static final RegistryObject<EntityType<LatexTigerShark>> LATEX_TIGER_SHARK = register("latex_tiger_shark", 0x969696, 0x0,
+    public static final RegistryObject<EntityType<LatexTigerShark>> LATEX_TIGER_SHARK = registerReducedSpawn("latex_tiger_shark", 0x969696, 0x0,
             EntityType.Builder.of(LatexTigerShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<LatexTrafficConeDragon>> LATEX_TRAFFIC_CONE_DRAGON = register("latex_traffic_cone_dragon", 0xFFD201, 0x0,
