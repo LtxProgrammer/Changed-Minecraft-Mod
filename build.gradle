@@ -175,6 +175,7 @@ mixin {
     add sourceSets.main, "changed.refmap.json"
 
     config "changed.mixins.json"
+    config "changed.compatibility.mixins.json"
 }
 
 dependencies {
