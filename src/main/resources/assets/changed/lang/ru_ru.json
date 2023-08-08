@@ -5,7 +5,7 @@
   "itemGroup.tab_changed_combat": "Боёвка Changed",
   
   "ability.changed.access_saddle": "Сидение",
-  "ability.changed.extra_hands": "Доп. руки",
+  "ability.changed.extra_hands": "Дополнительные руки",
   "ability.changed.switch_transfur_mode": "Смена режима трансфурмации",
   "ability.changed.switch_transfur_mode.select": "Режим трансфурмации теперь: %s",
   "ability.changed.create_cobweb": "Создать паутину",
@@ -17,7 +17,7 @@
   "ability.changed.hypnosis": "Гипноз",
   "ability.changed.siren_sing": "Петь",
   "ability.changed.slither": "Скольжение",
-  "ability.changed.puddle": "Лужа",
+  "ability.changed.puddle": "Становление лужей",
   "ability.changed.select_hairstyle": "Выбрать прическу",
   "ability.changed.select_special_state": "Выбор особого состояния",
   "ability.changed.summon_sharks": "Призыв акул",
