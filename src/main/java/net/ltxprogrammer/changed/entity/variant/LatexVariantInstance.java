@@ -5,13 +5,10 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
-import net.ltxprogrammer.changed.item.AbdomenArmor;
+import net.ltxprogrammer.changed.item.WearableItem;
 import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
@@ -363,6 +360,30 @@ public class LatexVariantInstance<T extends LatexEntity> {
         //latexForm.getDataManager().setClean(); //we don't want to flood the client with packets for an entity it can't find.
     }
 
+    public boolean canWear(Player player, ItemStack itemStack) {
+        if (itemStack.getItem() instanceof WearableItem wearableItem)
+            return wearableItem.allowedToKeepWearing(player);
+
+        if (parent == LatexVariant.DARK_LATEX_PUP)
+            return false;
+
+        if (itemStack.getItem() instanceof ArmorItem armorItem) {
+            if (parent.hasLegs)
+                return true;
+            else {
+                switch (armorItem.getSlot()) {
+                    case FEET:
+                    case LEGS:
+                        return false;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public void tick(Player player) {
         if (player == null) return;
 
@@ -375,25 +396,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (parent.rideable() || !parent.hasLegs)
             player.stopRiding();
 
-        if (!parent.hasLegs) {
-            player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
-                if (itemStack.getItem() instanceof ArmorItem armorItem) {
-                    if (armorItem instanceof AbdomenArmor)
-                        return; // Allowed
-
-                    switch (armorItem.getSlot()) {
-                        case FEET:
-                        case LEGS:
-                            ItemStack copy = itemStack.copy();
-                            itemStack.setCount(0);
-                            if (!player.addItem(copy))
-                                player.drop(copy, false);
-                        default:
-                            break;
-                    }
-                }
-            });
-        }
+        player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
+            if (!canWear(player, itemStack)) {
+                ItemStack copy = itemStack.copy();
+                itemStack.setCount(0);
+                if (!player.addItem(copy))
+                    player.drop(copy, false);
+            }
+        });
 
         if(!player.level.isClientSide) {
             final double distance = 8D;

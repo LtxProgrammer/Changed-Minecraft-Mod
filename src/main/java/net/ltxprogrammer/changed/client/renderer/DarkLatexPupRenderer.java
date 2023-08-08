@@ -21,9 +21,7 @@ public class DarkLatexPupRenderer extends LatexHumanoidRenderer<DarkLatexPup, Da
 	}
 
 	@Override
-	protected void setupRotations(@NotNull DarkLatexPup entity, PoseStack poseStack, float p_117804_, float bodyYRot, float partialTicks) {
-		if (entity.isSleeping() || entity.isFallFlying() || entity.getSwimAmount(partialTicks) > 0.0f)
-			return;
-		super.setupRotations(entity, poseStack, p_117804_, bodyYRot, partialTicks);
+	protected boolean isEntityUprightType(@NotNull DarkLatexPup entity) {
+		return false;
 	}
 }
