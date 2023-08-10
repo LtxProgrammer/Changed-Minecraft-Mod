@@ -67,7 +67,7 @@
   "item.changed.tsc_baton": "TSC Дубинка",
   "item.changed.tsc_shield": "TSC Щит",
 
-"item.changed.leather_upper_abdomen_armor": "Кожаный Набрюшник",
+  "item.changed.leather_upper_abdomen_armor": "Кожаный Набрюшник",
   "item.changed.leather_lower_abdomen_armor": "Кожаная хвостовая броня",
   "item.changed.chainmail_upper_abdomen_armor": "Кольчужный Набрюшник",
   "item.changed.chainmail_lower_abdomen_armor": "Кольчужная хвостовая броня",
@@ -268,7 +268,7 @@
   "entity.changed.latex_red_dragon": "Латексный красный дракон",
   "entity.changed.latex_red_panda": "Латексная красная панда",
   "entity.changed.latex_shark": "Латексная акула",
-  "entity.changed.latex_shark_female": Латексная акула - самка",
+  "entity.changed.latex_shark_female": "Латексная акула - самка",
   "entity.changed.latex_shark_male": "Латексная акула - самец",
   "entity.changed.latex_snow_leopard_female": "Латексный снежный барс - самка",
   "entity.changed.latex_snow_leopard_male": "Латексный снежный барс - самец",
