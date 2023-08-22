@@ -23,6 +23,10 @@ public class AbdomenArmor extends ArmorItem implements WearableItem {
         super(material, slot, new Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT));
     }
 
+    public AbdomenArmor(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+        super(material, slot, properties);
+    }
+
     @Override
     public void wearTick(LivingEntity entity, ItemStack itemStack) {}
 

@@ -68,9 +68,9 @@ public class ChangedItems {
     public static final RegistryObject<AbdomenArmor> DIAMOND_LOWER_ABDOMEN_ARMOR = register("diamond_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.DIAMOND, EquipmentSlot.FEET));
     public static final RegistryObject<AbdomenArmor> NETHERITE_UPPER_ABDOMEN_ARMOR = register("netherite_upper_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS));
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
     public static final RegistryObject<AbdomenArmor> NETHERITE_LOWER_ABDOMEN_ARMOR = register("netherite_lower_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET));
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);
