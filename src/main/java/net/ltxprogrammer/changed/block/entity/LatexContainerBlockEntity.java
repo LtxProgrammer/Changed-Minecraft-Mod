@@ -12,6 +12,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import javax.annotation.Nullable;
+
 public class LatexContainerBlockEntity extends BlockEntity {
     private LatexType currentType = LatexType.NEUTRAL;
     private byte fillLevel = 0;
@@ -50,22 +52,26 @@ public class LatexContainerBlockEntity extends BlockEntity {
         return tag;
     }
 
+    @Nullable
     public ItemStack tryUse(ItemStack itemStack) {
         // Remove goo
         if (itemStack.isEmpty()) {
             if (currentType == LatexType.NEUTRAL || fillLevel == 0)
-                return itemStack;
+                return null;
             else {
                 fillLevel--;
                 this.markUpdated();
+
                 return new ItemStack(currentType.goo.get());
             }
         } else if (itemStack.is(Items.BUCKET)) {
             if (currentType == LatexType.NEUTRAL || fillLevel < 4)
-                return itemStack;
+                return null;
             else {
                 fillLevel -= 4;
                 this.markUpdated();
+
+                itemStack.shrink(1);
                 return new ItemStack(currentType.gooBucket.get());
             }
         }
@@ -74,23 +80,25 @@ public class LatexContainerBlockEntity extends BlockEntity {
         if (itemStack.getItem() instanceof AbstractLatexGoo goo) {
             var type = goo.getLatexType();
             if (type == LatexType.NEUTRAL || fillLevel >= 16)
-                return itemStack;
+                return null;
             if (currentType == LatexType.NEUTRAL || currentType == type || fillLevel == 0) {
-                ItemStack nStack = itemStack.copy();
-                nStack.shrink(1);
                 currentType = type;
                 fillLevel++;
                 this.markUpdated();
-                return nStack;
+
+                itemStack.shrink(1);
+                return ItemStack.EMPTY;
             }
         } else if (itemStack.getItem() instanceof AbstractLatexBucket latexBucket) {
             var type = latexBucket.getLatexType();
             if (type == null || type == LatexType.NEUTRAL || fillLevel > 12)
-                return itemStack;
+                return null;
             if (currentType == LatexType.NEUTRAL || currentType == type || fillLevel == 0) {
                 currentType = type;
                 fillLevel += 4;
                 this.markUpdated();
+
+                itemStack.shrink(1);
                 return new ItemStack(Items.BUCKET);
             }
         }

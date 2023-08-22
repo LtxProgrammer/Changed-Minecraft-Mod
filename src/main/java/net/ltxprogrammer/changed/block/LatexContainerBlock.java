@@ -52,8 +52,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
 
         ItemStack itemStack = player.getItemInHand(hand);
         var nStack = blockEntity.tryUse(itemStack);
-        if (nStack != itemStack) {
-            player.setItemInHand(hand, nStack);
+        if (nStack != null) {
+            player.addItem(nStack);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
