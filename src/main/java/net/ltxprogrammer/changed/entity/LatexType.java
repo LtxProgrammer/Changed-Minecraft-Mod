@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL(),
     DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, Color3.DARK, MaterialColor.COLOR_GRAY),
-    WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedItems.WHITE_LATEX_BUCKET, ChangedBlocks.WHITE_LATEX_BLOCK, Color3.WHITE, MaterialColor.WOOL);
+    WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedItems.WHITE_LATEX_BUCKET, ChangedBlocks.WHITE_LATEX_BLOCK, Color3.WHITE, MaterialColor.QUARTZ);
 
     public final Supplier<? extends AbstractLatexGoo> goo;
     public final Supplier<? extends AbstractLatexBucket> gooBucket;
