@@ -26,23 +26,25 @@ public abstract class BlockPropertiesMixin {
 
     @Inject(method = "<init>(Lnet/minecraft/world/level/material/Material;Lnet/minecraft/world/level/material/MaterialColor;)V", at = @At("RETURN"))
     public void initDirectColor(Material material, MaterialColor color, CallbackInfo ci) {
+        var oldFunc = materialColor;
         materialColor = blockState -> {
             var latex = getTypeOrNeutral(blockState);
             if (latex != LatexType.NEUTRAL)
                 return latex.materialColor; // override color
             else
-                return color;
+                return oldFunc.apply(blockState);
         };
     }
 
     @Inject(method = "<init>(Lnet/minecraft/world/level/material/Material;Ljava/util/function/Function;)V", at = @At("RETURN"))
-    public void initDirectColor(Material material, Function<BlockState, MaterialColor> fn, CallbackInfo ci) {
+    public void initDirectColor(Material material, Function<BlockState, MaterialColor> color, CallbackInfo ci) {
+        var oldFunc = materialColor;
         materialColor = blockState -> {
             var latex = getTypeOrNeutral(blockState);
             if (latex != LatexType.NEUTRAL)
                 return latex.materialColor; // override color
             else
-                return fn.apply(blockState);
+                return oldFunc.apply(blockState);
         };
     }
 }
