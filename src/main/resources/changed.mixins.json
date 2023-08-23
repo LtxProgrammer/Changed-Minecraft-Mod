@@ -12,6 +12,7 @@
     "TreeFeaturesMixin",
     "block.BlockBehaviourMixin",
     "block.BlockMixin",
+    "block.BlockPropertiesMixin",
     "block.BlockStateBaseMixin",
     "block.PowderSnowBlockMixin",
     "block.SimpleBlockFeatureMixin",
