@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public abstract class LatexCoveredBlocks {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     private static final ImmutableMap<LatexType, MixedTexture.OverlayBlock> TYPE_OVERLAY = ImmutableMap.of(
             LatexType.DARK_LATEX, new MixedTexture.OverlayBlock(
                     Changed.modResource("blocks/dark_latex_block_top"),
@@ -181,7 +181,7 @@ public abstract class LatexCoveredBlocks {
             return registeredSprites.getOrDefault(name, MixedTexture.MISSING);
         }
 
-        public LatexBlockUploader(TextureManager manager) {
+        public void attachToManager(TextureManager manager) {
             manager.register(this.textureAtlas.location(), this.textureAtlas);
         }
 
@@ -344,10 +344,12 @@ public abstract class LatexCoveredBlocks {
         return MODEL_CACHE.get(name);
     }
 
-    private static @Nullable LatexBlockUploader uploader = null;
+    private static @Nullable LatexBlockUploader uploader = new LatexBlockUploader();
     public static @NotNull LatexBlockUploader getUploader() {
-        if (uploader == null)
+        if (uploader == null) {
             throw new IllegalStateException("Uploader not created, a dependency for another mod may be missing.");
+        }
+
         return uploader;
     }
 
@@ -372,13 +374,7 @@ public abstract class LatexCoveredBlocks {
     public static class ModEvents {
         @SubscribeEvent
         public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
-            Minecraft minecraft = Minecraft.getInstance();
-            uploader = new LatexBlockUploader(minecraft.textureManager);
-        }
-
-        @SubscribeEvent
-        public static void onRegisterBlockEvent(RegistryEvent<Block> event) {
-
+            getUploader().attachToManager(Minecraft.getInstance().textureManager);
         }
 
         @SubscribeEvent
