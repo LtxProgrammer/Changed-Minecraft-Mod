@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
+import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
 @Mixin(BlockBehaviour.Properties.class)
@@ -21,7 +23,15 @@ public abstract class BlockPropertiesMixin {
 
     @Unique
     private static LatexType getTypeOrNeutral(BlockState state) {
-        return state.getProperties().contains(AbstractLatexBlock.COVERED) ? state.getValue(AbstractLatexBlock.COVERED) : LatexType.NEUTRAL;
+        @Nullable var properties = state.getValues();
+        if (properties != null && properties.containsKey(AbstractLatexBlock.COVERED))
+            return state.getValue(AbstractLatexBlock.COVERED);
+        else {
+            if (properties == null)
+                LatexCoveredBlocks.LOGGER.warn("BlockState has null properties! {}", state.getBlock().getClass());
+
+            return LatexType.NEUTRAL;
+        }
     }
 
     @Inject(method = "<init>(Lnet/minecraft/world/level/material/Material;Lnet/minecraft/world/level/material/MaterialColor;)V", at = @At("RETURN"))
