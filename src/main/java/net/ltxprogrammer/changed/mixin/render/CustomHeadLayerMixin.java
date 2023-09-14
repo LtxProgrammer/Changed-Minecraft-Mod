@@ -22,9 +22,9 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     }
 
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("HEAD"), cancellable = true)
-    public void render(PoseStack p_116731_, MultiBufferSource p_116732_, int p_116733_, T p_116734_, float p_116735_, float p_116736_, float p_116737_, float p_116738_, float p_116739_, float p_116740_,
+    public void render(PoseStack stack, MultiBufferSource bufferSource, int p_116733_, T entity, float p_116735_, float p_116736_, float p_116737_, float p_116738_, float p_116739_, float p_116740_,
                        CallbackInfo callbackInfo) {
-        if (p_116734_.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof WearableItem wearableItem && wearableItem.customWearRenderer())
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof WearableItem wearableItem && wearableItem.customWearRenderer())
             callbackInfo.cancel();
     }
 }
