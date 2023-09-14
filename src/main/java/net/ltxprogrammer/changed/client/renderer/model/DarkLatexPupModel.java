@@ -214,7 +214,7 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
 
     @Override
     public void setupAnim(@NotNull DarkLatexPup entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!entity.isSleeping() && !entity.isCrouching()) {
+        if (!entity.isSleeping()) {
             this.Head.xRot = headPitch * ((float)Math.PI / 180F);
             this.Head.yRot = netHeadYaw * ((float)Math.PI / 180F);
             this.Head.zRot = 0.0F;
