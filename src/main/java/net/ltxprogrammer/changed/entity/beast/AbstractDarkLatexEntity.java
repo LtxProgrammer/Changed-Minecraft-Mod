@@ -172,6 +172,13 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
     }
 
+    @Override
+    public void checkDespawn() {
+        if (isTame())
+            return;
+        super.checkDespawn();
+    }
+
     public boolean isTame() {
         return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
     }
