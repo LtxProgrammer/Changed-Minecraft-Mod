@@ -634,9 +634,8 @@ public class ProcessTransfur {
         if (event.getEntityLiving().isDamageSourceBlocked(event.getSource()))
             return;
         if (event.getSource() == DamageSource.CACTUS && LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
-            if (isOrganicLatex(event.getEntityLiving()))
-                return;
-            event.setCanceled(true);
+            if (!isOrganicLatex(event.getEntityLiving()))
+                event.setCanceled(true);
             return;
         }
 
