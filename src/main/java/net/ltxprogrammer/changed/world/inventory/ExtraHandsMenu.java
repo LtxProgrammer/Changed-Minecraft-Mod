@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.world.inventory;
 
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.init.ChangedMenus;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -109,7 +110,7 @@ public class ExtraHandsMenu extends AbstractContainerMenu implements Supplier<Ma
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return ProcessTransfur.isPlayerLatex(player);
     }
 
     @Override
