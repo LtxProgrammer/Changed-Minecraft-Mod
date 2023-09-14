@@ -75,6 +75,7 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
                 this.navigation.stop();
                 this.navigation = this.dudNavigator;
             }
+            this.setDeltaMovement(0, Math.min(this.getDeltaMovement().y, 0), 0);
             ticksLeftAsPuddle--;
             if (ticksLeftAsPuddle <= 0)
                 setPuddle(false);
