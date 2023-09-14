@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": [
+    {
+      "item": "changed:chainmail_upper_abdomen_armor"
+    },
+    {
+      "item": "changed:chainmail_lower_abdomen_armor"
+    },
+    {
+      "item": "changed:iron_upper_abdomen_armor"
+    },
+    {
+      "item": "changed:iron_lower_abdomen_armor"
+    }
+  ],
+  "result": "minecraft:iron_nugget",
+  "experience": 0.1,
+  "cookingtime": 100
+}
