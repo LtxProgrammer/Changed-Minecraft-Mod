@@ -297,8 +297,10 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE, copyContainer, serverplayer.level);
             ItemStack input = this.internal.getStackInSlot(1);
             recipeOptional.ifPresentOrElse(recipe -> {
-                if (input.isEmpty())
+                if (input.isEmpty()) {
+                    this.getResultSlot().set(ItemStack.EMPTY);
                     return;
+                }
 
                 Gender gender = getSelectedGender();
                 ItemStack newStack = recipe.processItem(InfuserRecipes.InfuserRecipe.getBaseFor(input), gender);
