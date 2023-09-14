@@ -661,6 +661,8 @@ public class ProcessTransfur {
         if (!getEntityAttackItem(sourceEntity).isEmpty())
             return;
 
+        if (event.getEntityLiving() instanceof Player player && (player.isCreative() || player.isSpectator()))
+            return;
         onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));
     }
 
