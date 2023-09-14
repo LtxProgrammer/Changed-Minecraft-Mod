@@ -36,20 +36,21 @@ public class ChangedKeyMappings {
             Options options = Minecraft.getInstance().options;
             if (local == null)
                 return;
-            if (event.getKey() == USE_ABILITY.getKey().getValue()) {
-                USE_ABILITY.consumeClick();
-
-                ProcessTransfur.ifPlayerLatex(local, variant -> {
-                    var newState = event.getAction() != GLFW.GLFW_RELEASE;
-                    if (newState != variant.abilityKeyState) {
-                        ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
-                        variant.abilityKeyState = newState;
-                        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(newState, variant.selectedAbility));
-                    }
-                });
-            }
 
             if (Minecraft.getInstance().screen == null) {
+                if (event.getKey() == USE_ABILITY.getKey().getValue()) {
+                    USE_ABILITY.consumeClick();
+
+                    ProcessTransfur.ifPlayerLatex(local, variant -> {
+                        var newState = event.getAction() != GLFW.GLFW_RELEASE;
+                        if (newState != variant.abilityKeyState) {
+                            ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
+                            variant.abilityKeyState = newState;
+                            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(newState, variant.selectedAbility));
+                        }
+                    });
+                }
+
                 if (event.getKey() == SELECT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     SELECT_ABILITY.consumeClick();
                     ProcessTransfur.ifPlayerLatex(local, variant -> {
