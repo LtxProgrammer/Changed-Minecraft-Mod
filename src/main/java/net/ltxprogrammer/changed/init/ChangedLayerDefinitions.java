@@ -66,8 +66,10 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LatexBlueWolfModel.LAYER_LOCATION,
                 useNewModels ? LatexBlueWolfModel.Remodel::createBodyLayer : LatexBlueWolfModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexCrocodileModel.LAYER_LOCATION, LatexCrocodileModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexCrystalWolfModel.LAYER_LOCATION, LatexCrystalWolfModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexCrystalWolfHornedModel.LAYER_LOCATION, LatexCrystalWolfHornedModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexCrystalWolfModel.LAYER_LOCATION,
+                useNewModels ? LatexCrystalWolfModel.Remodel::createBodyLayer : LatexCrystalWolfModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexCrystalWolfHornedModel.LAYER_LOCATION,
+                useNewModels ? LatexCrystalWolfHornedModel.Remodel::createBodyLayer : LatexCrystalWolfHornedModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexDeerModel.LAYER_LOCATION, LatexDeerModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexHypnoCatModel.LAYER_LOCATION,
                 useNewModels ? LatexHypnoCatModel.Remodel::createBodyLayer : LatexHypnoCatModel::createBodyLayer);
