@@ -17,10 +17,12 @@ public class PuddleAbility extends SimpleAbility {
 
     @Override
     public void tick(IAbstractLatex entity) {
-        entity.getEntity().setDeltaMovement(0, entity.getEntity().getDeltaMovement().y, 0);
+        entity.getEntity().setDeltaMovement(0, Math.min(entity.getEntity().getDeltaMovement().y, 0), 0);
         entity.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 5, false, false, false));
 
         entity.getLevel().getEntitiesOfClass(LivingEntity.class, entity.getLatexEntity().getBoundingBox().inflate(0.25, 0, 0.25)).forEach(caught -> {
+            if (caught == entity.getEntity())
+                return;
             caught.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, false, false, false));
         });
     }

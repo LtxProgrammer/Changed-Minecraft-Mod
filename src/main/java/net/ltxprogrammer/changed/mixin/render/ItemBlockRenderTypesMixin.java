@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
-@Mixin(value = ItemBlockRenderTypes.class, remap = false)
+@Mixin(value = ItemBlockRenderTypes.class, remap = false, priority = 500)
 public abstract class ItemBlockRenderTypesMixin {
     @Inject(method = "canRenderInLayer(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/RenderType;)Z", at = @At("HEAD"), cancellable = true)
     private static void canCoveredBlockRenderInLayer(BlockState state, RenderType type, CallbackInfoReturnable<Boolean> callback) {
