@@ -1,13 +1,17 @@
 {
   "replace": false,
   "values": [
+    "changed:blue_lab_door",
     "changed:infuser",
     "changed:iron_crate",
+    "changed:lab_door",
     "changed:lab_light",
     "changed:lab_light_small",
     "changed:lab_table",
     "changed:latex_container",
     "changed:laser_emitter",
+    "changed:library_door",
+    "changed:maintenance_door",
     "changed:purifier",
     "changed:vent_fan",
     "changed:vent_hatch"
