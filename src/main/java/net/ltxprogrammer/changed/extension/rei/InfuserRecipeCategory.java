@@ -17,24 +17,18 @@ import me.shedaniel.rei.api.common.display.DisplayMerger;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.InputIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.item.VariantHoldingBase;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDisplay> {
@@ -77,8 +71,9 @@ public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDispl
             slots.get(ingredient.getIndex()).entries(ingredient.get());
         }
         widgets.addAll(slots);
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 95, startPoint.y + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
-        widgets.add(createGenderToggle(new Point(startPoint.x + 93, startPoint.y + 41)).entries(display.getOutputEntries().get(0)));
+        var resultSlot = Widgets.createSlot(new Point(startPoint.x + 95, startPoint.y + 19)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput();
+        widgets.add(resultSlot);
+        widgets.add(createGenderToggle(new Point(startPoint.x + 93, startPoint.y + 41), resultSlot));
         if (display.isShapeless()) {
             widgets.add(Widgets.createShapelessIcon(bounds));
         }
@@ -87,21 +82,12 @@ public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDispl
 
     private static class GenderToggle extends WidgetWithBounds {
         private static final ResourceLocation GENDER_SWITCH_LOCATION = Changed.modResource("textures/gui/gender_switch.png");
-        private List<EntryStack<?>> entryStacks = List.of();
+        private final Slot hostSlot;
         private final Rectangle bounds;
 
-        private GenderToggle(Point location) {
+        private GenderToggle(Point location, Slot hostSlot) {
             this.bounds = new Rectangle(location.x, location.y, 20, 10);
-        }
-
-        GenderToggle entries(Collection<? extends EntryStack<?>> stacks) {
-            if (!stacks.isEmpty()) {
-                if (!(entryStacks instanceof ArrayList)) {
-                    entryStacks = new ArrayList<>(entryStacks);
-                }
-                entryStacks.addAll(stacks);
-            }
-            return this;
+            this.hostSlot = hostSlot;
         }
 
         @Override
@@ -109,21 +95,12 @@ public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDispl
             return bounds;
         }
 
-        protected EntryStack<?> getCurrentEntry() {
-            int size = entryStacks.size();
-            if (size == 0)
-                return EntryStack.empty();
-            if (size == 1)
-                return entryStacks.get(0);
-            return entryStacks.get(Mth.floor(((System.currentTimeMillis() + EntryWidget.stackDisplayOffset) / getCyclingInterval() % (double) size)));
-        }
-
-        protected long getCyclingInterval() {
-            return 1000;
+        public EntryStack<?> getCurrentEntry() {
+            return hostSlot.getCurrentEntry();
         }
 
         @Override
-        public void render(PoseStack pose, int mouseX, int mouseY, float delta) { // TODO widget doesn't always sync with result item
+        public void render(PoseStack pose, int mouseX, int mouseY, float delta) {
             RenderSystem.setShaderTexture(0, GENDER_SWITCH_LOCATION);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.enableDepthTest();
@@ -154,24 +131,12 @@ public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDispl
         }
     }
 
-    private static GenderToggle createGenderToggle(Point where) {
-        return new GenderToggle(where);
+    private static GenderToggle createGenderToggle(Point where, Slot hostSlot) {
+        return new GenderToggle(where, hostSlot);
     }
 
     @Override
     public @Nullable DisplayMerger<InfuserRecipeDisplay> getDisplayMerger() {
         return DisplayCategory.getContentMerger();
     }
-
-    /*@Override
-    public void setRecipe(IRecipeLayoutBuilder builder, InfuserRecipes.InfuserRecipe recipe, IFocusGroup focuses) {
-        var ingredients = recipe.getIngredients();
-        List<List<ItemStack>> grid = new ArrayList<>();
-
-        for (int idx = 0; idx < ingredients.size(); ++idx)
-            grid.add(Arrays.asList(ingredients.get(idx).getItems()));
-
-        craftingGridHelper.setInputs(builder, VanillaTypes.ITEM_STACK, grid, 3, 3);
-        craftingGridHelper.setOutputs(builder, VanillaTypes.ITEM_STACK, recipe.getPossibleResults());
-    }*/
 }

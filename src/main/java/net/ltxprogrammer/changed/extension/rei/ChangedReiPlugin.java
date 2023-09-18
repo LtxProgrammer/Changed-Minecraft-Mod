@@ -13,7 +13,6 @@ import me.shedaniel.rei.api.common.entry.comparison.ItemComparatorRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.impl.Internals;
-import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.ltxprogrammer.changed.client.gui.InfuserScreen;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -22,9 +21,7 @@ import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 import net.ltxprogrammer.changed.world.inventory.InfuserMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.inventory.CraftingMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 @REIPluginClient
 public class ChangedReiPlugin implements REIClientPlugin {
@@ -37,8 +34,7 @@ public class ChangedReiPlugin implements REIClientPlugin {
 
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        // TODO specify a different location for click area (title?)
-        registry.registerContainerClickArea(new Rectangle(88, 32, 28, 23), InfuserScreen.class, INFUSER);
+        registry.registerContainerClickArea(new Rectangle(103, 33, 22, 15), InfuserScreen.class, INFUSER);
     }
 
     @Override
