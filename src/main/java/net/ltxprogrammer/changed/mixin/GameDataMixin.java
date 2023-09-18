@@ -23,7 +23,19 @@ public abstract class GameDataMixin {
     private static ResourceLocation r(String s) { return new ResourceLocation(s); }
     private static final Set<ResourceLocation> FIXED_BLOCKS = Set.of(
             r("bedrock"),
-            r("integrateddynamics:cable")
+            r("integrateddynamics:cable"),
+            r("dragonsurvival:oak_dragon_door"),
+            r("dragonsurvival:spruce_dragon_door"),
+            r("dragonsurvival:acacia_dragon_door"),
+            r("dragonsurvival:birch_dragon_door"),
+            r("dragonsurvival:jungle_dragon_door"),
+            r("dragonsurvival:dark_oak_dragon_door"),
+            r("dragonsurvival:warped_dragon_door"),
+            r("dragonsurvival:crimson_dragon_door"),
+            r("dragonsurvival:cave_dragon_door"),
+            r("dragonsurvival:forest_dragon_door"),
+            r("dragonsurvival:sea_dragon_door"),
+            r("dragonsurvival:iron_dragon_door")
     );
 
     @Inject(method = "freezeData", at = @At("HEAD"))

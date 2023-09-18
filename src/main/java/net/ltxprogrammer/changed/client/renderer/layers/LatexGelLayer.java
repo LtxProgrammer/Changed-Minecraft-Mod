@@ -2,10 +2,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.RenderUtil;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.CameraType;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -36,7 +35,7 @@ public class LatexGelLayer<T extends LatexEntity, M extends LatexHumanoidModel<T
             this.model.prepareMobModel(entity, p_117474_, p_117475_, p_117476_);
             this.model.setupAnim(entity, p_117474_, p_117475_, p_117477_, p_117478_, p_117479_);
 
-            boolean firstPerson = RenderUtil.isFirstPerson(entity);
+            boolean firstPerson = ChangedCompatibility.isFirstPersonRendering();
             if (firstPerson) {
                 this.model.getHead().visible = false;
                 if (entity.isVisuallySwimming())
