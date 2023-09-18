@@ -19,4 +19,17 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
     public ResourceLocation getTextureLocation(LatexTranslucentLizard p_114482_) {
         return Changed.modResource("textures/latex_translucent_lizard.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexTranslucentLizard, LatexTranslucentLizardModel.Remodel, ArmorLatexBlueDragonModel.RemodelMale<LatexTranslucentLizard>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexTranslucentLizardModel.Remodel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
+                    ArmorLatexBlueDragonModel.RemodelMale::new, ArmorLatexBlueDragonModel.RemodelMale.INNER_ARMOR, ArmorLatexBlueDragonModel.RemodelMale.OUTER_ARMOR, 0.5f);
+            this.addLayer(new LatexGelLayer<>(this, new LatexTranslucentLizardModel.Remodel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexTranslucentLizard p_114482_) {
+            return Changed.modResource("textures/remodel/latex_translucent_lizard.png");
+        }
+    }
 }
