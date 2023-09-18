@@ -35,9 +35,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class LatexSyringe extends Item implements SpecializedAnimations {
+public class LatexSyringe extends Item implements SpecializedAnimations, VariantHoldingBase {
     public LatexSyringe(Properties p_41383_) {
         super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
+    }
+
+    @Override
+    public Item getOriginalItem() {
+        return ChangedItems.BLOOD_SYRINGE.get();
     }
 
     @OnlyIn(Dist.CLIENT)
