@@ -114,17 +114,17 @@ public class InfuserScreen extends AbstractContainerScreen<InfuserMenu> implemen
         this.widthTooNarrow = this.width < 379;
         this.recipeBookComponent.init(this.width, this.height, this.minecraft, this.widthTooNarrow, this.menu);
         this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
-        this.addRenderableWidget(new ImageButton(this.leftPos + 23, this.height / 2 - 25, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_98484_) -> {
+        this.addRenderableWidget(new ImageButton(this.leftPos + 16, this.height / 2 - 25, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (p_98484_) -> {
             this.recipeBookComponent.toggleVisibility();
             this.leftPos = this.recipeBookComponent.updateScreenPosition(this.width, this.imageWidth);
-            ((ImageButton)p_98484_).setPosition(this.leftPos + 23, this.height / 2 - 25);
-            maleFemaleSwitch.setPosition(this.leftPos + 131, this.topPos + 61);
+            ((ImageButton)p_98484_).setPosition(this.leftPos + 16, this.height / 2 - 25);
+            maleFemaleSwitch.setPosition(this.leftPos + 135, this.topPos + 61);
         }));
         this.addWidget(this.recipeBookComponent);
         this.setInitialFocus(this.recipeBookComponent);
         this.titleLabelX = 29;
 
-        maleFemaleSwitch = new Switch(this, Changed.modResource("male_female_switch"), this.leftPos + 131, this.topPos + 61, 20, 10, TextComponent.EMPTY, false,
+        maleFemaleSwitch = new Switch(this, Changed.modResource("male_female_switch"), this.leftPos + 135, this.topPos + 61, 20, 10, TextComponent.EMPTY, false,
                 GENDER_SWITCH_LOCATION);
         this.addRenderableWidget(maleFemaleSwitch);
     }
