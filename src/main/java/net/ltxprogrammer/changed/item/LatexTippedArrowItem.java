@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber
-public class LatexTippedArrowItem extends TippedArrowItem {
+public class LatexTippedArrowItem extends TippedArrowItem implements VariantHoldingBase {
     public static final String FORM_LOCATION = Changed.modResourceStr("form");
 
     public LatexTippedArrowItem() {
@@ -88,5 +88,10 @@ public class LatexTippedArrowItem extends TippedArrowItem {
         if (stack.getTag() == null)
             return Rarity.COMMON;
         return stack.getTag().contains("safe") ? (stack.getTag().getBoolean("safe") ? Rarity.RARE : Rarity.UNCOMMON) : Rarity.UNCOMMON;
+    }
+
+    @Override
+    public Item getOriginalItem() {
+        return Items.ARROW;
     }
 }
