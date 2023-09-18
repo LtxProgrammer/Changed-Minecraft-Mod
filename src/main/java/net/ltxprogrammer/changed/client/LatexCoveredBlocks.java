@@ -13,6 +13,8 @@ import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -250,8 +252,11 @@ public abstract class LatexCoveredBlocks {
                     triple -> models.containsKey(triple.getLeft())
             );
             models.forEach((name, model) -> {
-                // Force model parent chain to generate, so materials resolve correctly
-                model.getMaterials(this::getModel, new HashSet<>());
+                try {
+                    // Force model parent chain to generate, so materials resolve correctly
+                    model.getMaterials(this::getModel, new HashSet<>());
+                } catch (Exception ignored) {}
+
                 event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
             });
         }

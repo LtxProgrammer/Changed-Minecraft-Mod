@@ -2,12 +2,10 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.renderer.RenderUtil;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.CameraType;
-import net.minecraft.client.Minecraft;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -42,7 +40,7 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.innerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
         this.outerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
         this.outerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        boolean firstPerson = RenderUtil.isFirstPerson(entity);
+        boolean firstPerson = ChangedCompatibility.isFirstPersonRendering();
 
         if (!firstPerson || !entity.isVisuallySwimming()) // Don't render chest-plate if swimming in first person
             this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST));
