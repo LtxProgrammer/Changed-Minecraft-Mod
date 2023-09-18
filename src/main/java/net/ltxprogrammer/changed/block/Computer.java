@@ -17,10 +17,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +30,14 @@ import javax.annotation.Nullable;
 
 public class Computer extends AbstractCustomShapeBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final VoxelShape SHAPE_WHOLE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 12.0D, 13.0D);
+    public static final VoxelShape SHAPE_SCREEN = Block.box(0.0D, 3.0D, 11.0D, 16.0D, 14.0D, 13.0D);
+    public static final VoxelShape SHAPE_STAND = Block.box(6.0D, 1.0D, 13.0D, 10.0D, 8.0D, 14.0D);
+    public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 3.0D, 15.0D, 1.0D, 15.0D);
+    public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_SCREEN, SHAPE_STAND, SHAPE_BASE);
 
     public Computer(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
@@ -40,6 +46,16 @@ public class Computer extends AbstractCustomShapeBlock {
 
     public void setPlacedBy(Level p_52749_, BlockPos p_52750_, BlockState p_52751_, LivingEntity p_52752_, ItemStack p_52753_) {
         super.setPlacedBy(p_52749_, p_52750_, p_52751_, p_52752_, p_52753_);
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+        }
     }
 
     public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
@@ -54,16 +70,12 @@ public class Computer extends AbstractCustomShapeBlock {
         return getInteractionShape(p_54584_, p_54585_, p_54586_);
     }
 
-    public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
-        return getInteractionShape(p_54577_, p_54578_, p_54579_);
+    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return calculateShapes(blockState.getValue(FACING), SHAPE_WHOLE);
     }
 
-    public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
-        return SHAPE_WHOLE;
-    }
-
-    public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
-        return getInteractionShape(p_54561_, p_54562_, p_54563_);
+    public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
+        return getInteractionShape(blockState, level, blockPos);
     }
 
     public BlockState updateShape(BlockState p_52796_, Direction p_52797_, BlockState p_52798_, LevelAccessor p_52799_, BlockPos p_52800_, BlockPos p_52801_) {

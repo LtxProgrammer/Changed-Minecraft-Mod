@@ -132,6 +132,8 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     public float getEyeHeightMul() {
         if (this.isCrouching())
             return 0.55F;
+        if (this.isPuddle())
+            return 0.35F;
         else
             return 0.8F;
     }
