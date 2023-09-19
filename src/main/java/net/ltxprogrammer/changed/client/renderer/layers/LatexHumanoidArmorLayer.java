@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorM
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -23,6 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
@@ -59,8 +61,9 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
             if (armoritem.getSlot() == slot) {
                 this.getParentModel().copyPropertiesTo(model);
                 boolean foil = itemstack.hasFoil();
-                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, null);
-                if (altModel != null) {
+                var propModel = model.getAnimator().getPropertyModel(slot);
+                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
+                if (altModel != propModel) {
                     pose.pushPose();
                     pose.translate(0, -2.0f / 16.0f, 0);
 
