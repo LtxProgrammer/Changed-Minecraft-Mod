@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 
@@ -34,5 +35,13 @@ public abstract class AbstractUpperBodyAnimator<T extends LatexEntity, M extends
         this.torso = torso;
         this.leftArm = leftArm;
         this.rightArm = rightArm;
+    }
+
+    @Override
+    public void copyTo(HumanoidModel<?> humanoidModel) {
+        super.copyTo(humanoidModel);
+        humanoidModel.body.copyFrom(this.torso);
+        humanoidModel.leftArm.copyFrom(this.leftArm);
+        humanoidModel.rightArm.copyFrom(this.rightArm);
     }
 }
