@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.block;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +28,7 @@ public abstract class BlockPropertiesMixin {
             return state.getValue(AbstractLatexBlock.COVERED);
         else {
             if (properties == null)
-                LatexCoveredBlocks.LOGGER.warn("BlockState has null properties! {}", state.getBlock().getClass());
+                Changed.LOGGER.warn("BlockState has null properties! {}", state.getBlock().getClass());
 
             return LatexType.NEUTRAL;
         }
