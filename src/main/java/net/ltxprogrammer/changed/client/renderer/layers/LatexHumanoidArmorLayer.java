@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -21,6 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
@@ -57,20 +61,44 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
             if (armoritem.getSlot() == slot) {
                 this.getParentModel().copyPropertiesTo(model);
                 boolean foil = itemstack.hasFoil();
-                if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
-                    int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
-                    float red = (float)(i >> 16 & 255) / 255.0F;
-                    float green = (float)(i >> 8 & 255) / 255.0F;
-                    float blue = (float)(i & 255) / 255.0F;
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
-                } else {
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                var propModel = model.getAnimator().getPropertyModel(slot);
+                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
+                if (altModel != propModel) {
+                    pose.pushPose();
+                    pose.translate(0, -2.0f / 16.0f, 0);
+
+                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
+                        int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
+                        float red = (float)(i >> 16 & 255) / 255.0F;
+                        float green = (float)(i >> 8 & 255) / 255.0F;
+                        float blue = (float)(i & 255) / 255.0F;
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
+                    } else {
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                    }
+
+                    pose.popPose();
                 }
 
+                else {
+                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
+                        int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
+                        float red = (float)(i >> 16 & 255) / 255.0F;
+                        float green = (float)(i >> 8 & 255) / 255.0F;
+                        float blue = (float)(i & 255) / 255.0F;
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
+                    } else {
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                    }
+                }
             }
         }
     }
@@ -81,6 +109,11 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         model.renderForSlot(entity, stack, slot, pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    }
+
+    private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, net.minecraft.client.model.Model model, float red, float green, float blue, ResourceLocation armorResource) {
+        VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil);
+        model.renderToBuffer(pose, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
