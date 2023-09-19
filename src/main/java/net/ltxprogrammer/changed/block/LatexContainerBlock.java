@@ -61,6 +61,11 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     private int processBreak(Level level, BlockPos blockPos, LatexType type, int remaining, AtomicBoolean placedFluid) {
+        if (remaining == 16) {
+            // TODO spawn pup of type
+            return 16;
+        }
+
         switch (level.getRandom().nextInt(6)) {
             case 0:
                 return 1; // Destroy goo
