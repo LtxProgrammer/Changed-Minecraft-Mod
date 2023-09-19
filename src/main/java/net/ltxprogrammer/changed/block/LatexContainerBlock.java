@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -61,6 +62,18 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     private int processBreak(Level level, BlockPos blockPos, LatexType type, int remaining, AtomicBoolean placedFluid) {
+        if (remaining == 16) {
+            var pupType = type.pup.get();
+            if (pupType != null) {
+                var pup = pupType.create(level);
+                if (pup != null) {
+                    pup.moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                    level.addFreshEntity(pup);
+                    return 16;
+                }
+            }
+        }
+
         switch (level.getRandom().nextInt(6)) {
             case 0:
                 return 1; // Destroy goo
