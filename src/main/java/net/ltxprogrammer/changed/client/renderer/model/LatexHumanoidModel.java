@@ -3,9 +3,9 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.RenderUtil;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -13,9 +13,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +50,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             animator.leftArmPose = humanoidmodel$armpose;
         }
 
-        if (RenderUtil.isFirstPerson(entity)) {
+        if (ChangedCompatibility.isFirstPersonRendering()) {
             getHead().visible = false;
             getTorso().visible = !entity.isVisuallySwimming();
         }

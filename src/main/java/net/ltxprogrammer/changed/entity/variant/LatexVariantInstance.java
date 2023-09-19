@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -185,6 +186,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (event.phase == TickEvent.Phase.END) {
             Pale.tickPaleExposure(event.player);
             ProcessTransfur.ifPlayerLatex(event.player, instance -> {
+                if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
+                    ProcessTransfur.setPlayerLatexVariant(event.player, null);
+                    return;
+                }
+
                 try {
                     instance.tick(event.player);
                     if (!event.player.isSpectator()) {

@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -279,6 +280,9 @@ public abstract class LatexEntity extends Monster {
     }
 
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
+        if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
+            return false;
+
         if ((livingEntity.hasEffect(MobEffects.INVISIBILITY) || livingEntity.isInvisible()) && !livingEntity.isCurrentlyGlowing())
             return false;
 
