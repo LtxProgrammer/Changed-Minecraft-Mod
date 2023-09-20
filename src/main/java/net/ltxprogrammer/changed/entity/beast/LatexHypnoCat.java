@@ -2,7 +2,10 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.ability.SimpleAbilityInstance;
-import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.PatronOC;
+import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;

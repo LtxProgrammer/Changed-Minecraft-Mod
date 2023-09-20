@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.util;
 
 import com.mojang.serialization.Codec;
-import net.ltxprogrammer.changed.init.ChangedParticles;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
