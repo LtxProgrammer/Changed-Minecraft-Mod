@@ -103,7 +103,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
             }
         }
 
-        return itemStack;
+        return null;
     }
 
     public int getFillLevel() {
