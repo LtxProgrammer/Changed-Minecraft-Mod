@@ -1,5 +1,5 @@
 # Changed: Minecraft Mod
-This repository holds the source code for the Changed: Minecraft Mod. Releases are compiled and published to our [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod).
+This repository holds the source code for the Changed: Minecraft Mod. Releases are compiled and published to our [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod) and [Modrinth page](https://modrinth.com/mod/changed-minecraft-mod).
 
 # How can I help?
 Any aspiring developer is welcome to fork and create a pull request to submit their content. Programmers, texture artists, and 3D modelers all have a place here.
