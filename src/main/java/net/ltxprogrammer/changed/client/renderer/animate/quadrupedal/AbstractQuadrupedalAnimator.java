@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 
 public abstract class AbstractQuadrupedalAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
@@ -18,5 +19,12 @@ public abstract class AbstractQuadrupedalAnimator<T extends LatexEntity, M exten
         this.frontRightLeg = frontRightLeg;
         this.backLeftLeg = backLeftLeg;
         this.backRightLeg = backRightLeg;
+    }
+
+    @Override
+    public void copyTo(HumanoidModel<?> humanoidModel) {
+        super.copyTo(humanoidModel);
+        humanoidModel.leftLeg.copyFrom(this.frontLeftLeg);
+        humanoidModel.rightLeg.copyFrom(this.frontRightLeg);
     }
 }

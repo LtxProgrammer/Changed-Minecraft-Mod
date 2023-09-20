@@ -65,7 +65,7 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
                 var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
                 if (altModel != propModel) {
                     pose.pushPose();
-                    pose.translate(0, -2.0f / 16.0f, 0);
+                    //pose.translate(0, -2.0f / 16.0f, 0);
 
                     if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
                         int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);

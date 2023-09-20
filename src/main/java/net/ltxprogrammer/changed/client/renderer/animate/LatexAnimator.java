@@ -70,6 +70,10 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
                 break;
         }
 
+        for (var anim : animators.get(AnimateStage.INIT)) {
+            anim.copyTo(propertyModel);
+        }
+
         return propertyModel;
     }
 
@@ -150,6 +154,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
 
         public abstract AnimateStage preferredStage();
         public abstract void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch);
+        public void copyTo(HumanoidModel<?> humanoidModel) {}
     }
 
     public LatexAnimator<T, M> addAnimator(Animator<T, M> animator) {
