@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.tutorial;
 
-import net.ltxprogrammer.changed.Changed;
 import net.minecraft.client.tutorial.CompletedTutorialStepInstance;
 import net.minecraft.client.tutorial.Tutorial;
 import net.minecraft.client.tutorial.TutorialStepInstance;

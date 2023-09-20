@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
 
 public class SimpleAbilityInstance extends AbstractAbilityInstance {
     public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, IAbstractLatex entity) {

@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.extension.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import me.shedaniel.rei.plugin.common.displays.crafting.*;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
 import net.ltxprogrammer.changed.recipe.InfuserRecipes;
 
 import java.util.Collections;
