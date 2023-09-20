@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+// TODO refactor to registry
 public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL(),
     DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedEntities.DARK_LATEX_PUP, Color3.DARK, MaterialColor.COLOR_GRAY),
@@ -90,7 +91,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         return toString().toLowerCase();
     }
 
-    public static LatexType create(String name, Supplier<? extends Item> goo, Supplier<? extends Item> gooBucket, Supplier<Block> block, Color3 color, MaterialColor materialColor)
+    public static LatexType create(String name, Supplier<? extends Item> goo, Supplier<? extends Item> gooBucket, Supplier<Block> block, Supplier<? extends EntityType<?>> pup, Color3 color, MaterialColor materialColor)
     {
         throw new IllegalStateException("Enum not extended");
     }
