@@ -122,6 +122,12 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         return this.entityData.get(DATA_OWNERUUID_ID).orElse(null);
     }
 
+    public boolean isPreventingPlayerRest(Player player) {
+        if (isTame() && player.getUUID().equals(getOwnerUUID()))
+            return false;
+        return super.isPreventingPlayerRest(player);
+    }
+
     protected void spawnTamingParticles(boolean success) {
         ParticleOptions particleoptions = ParticleTypes.HEART;
         if (!success) {
