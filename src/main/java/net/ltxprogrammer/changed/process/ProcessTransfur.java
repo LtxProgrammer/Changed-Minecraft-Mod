@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
@@ -102,6 +103,12 @@ public class ProcessTransfur {
             player.setLastHurtByMob(null);
 
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
+            if (ChangedCompatibility.isPlayerUsedByOtherMod(player)) {
+                setPlayerTransfurProgress(player, new TransfurProgress(0, latexVariant.getFormId()));
+                player.hurt(DamageSource.mobAttack(latexVariant.getEntityType().create(player.level)), amount);
+                return false;
+            }
+
             float old = getPlayerTransfurProgress(player).progress;
             float next = old + amount;
             float max = Changed.config.server.transfurTolerance.get().floatValue();
@@ -281,6 +288,9 @@ public class ProcessTransfur {
         @Nullable LatexVariant<?> variant = event.variant;
         if (variant != null && !event.isRedundant())
             MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant));
+
+        if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
+            variant = null;
 
         if (player instanceof ServerPlayer serverPlayer && variant != null)
             ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
