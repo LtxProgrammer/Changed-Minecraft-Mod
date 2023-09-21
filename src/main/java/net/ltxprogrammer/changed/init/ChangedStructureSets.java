@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
-public class ChangedStructureSets { // TODO finish
+public class ChangedStructureSets {
     public static final DeferredRegister<StructureSet> REGISTRY = DeferredRegister.create(BuiltinRegistries.STRUCTURE_SETS.key(), Changed.MODID);
     public static final Holder<StructureSet> BEEHIVES = register("beehives", ChangedStructures.BEEHIVE1,
             new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 0xBEE00, Vec3i.ZERO));

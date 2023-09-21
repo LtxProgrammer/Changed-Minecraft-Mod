@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.world.entity.LivingEntity;

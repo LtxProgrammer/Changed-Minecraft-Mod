@@ -7,8 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -24,7 +22,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
@@ -39,11 +36,13 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.outerModel = outerModel;
     }
 
-    public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limgSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.innerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
-        this.innerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        this.outerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
-        this.outerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.getParentModel().copyPropertiesTo(this.innerModel);
+        this.getParentModel().copyPropertiesTo(this.outerModel);
+        this.innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        this.innerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.outerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        this.outerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         boolean firstPerson = ChangedCompatibility.isFirstPersonRendering();
 
         if (!firstPerson || !entity.isVisuallySwimming()) // Don't render chest-plate if swimming in first person
@@ -64,9 +63,6 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
                 var propModel = model.getAnimator().getPropertyModel(slot);
                 var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
                 if (altModel != propModel) {
-                    pose.pushPose();
-                    //pose.translate(0, -2.0f / 16.0f, 0);
-
                     if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
                         int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
                         float red = (float)(i >> 16 & 255) / 255.0F;
@@ -80,8 +76,6 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
                         this.renderModel(pose, buffers, packedLight,
                                 foil, altModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
                     }
-
-                    pose.popPose();
                 }
 
                 else {

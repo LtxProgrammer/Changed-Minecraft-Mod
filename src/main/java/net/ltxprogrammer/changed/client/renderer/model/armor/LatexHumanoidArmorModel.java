@@ -16,9 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Collections;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends EntityModel<T>> extends EntityModel<T> implements LatexHumanoidModelInterface<T, M> {
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
@@ -68,13 +66,13 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
     }
 
     @Override
-    public void prepareMobModel(T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(getAnimator(), p_102861_, p_102862_, p_102863_, p_102864_);
+    public void prepareMobModel(@NotNull T entity, float p_102862_, float p_102863_, float partialTicks) {
+        this.prepareMobModel(getAnimator(), entity, p_102862_, p_102863_, partialTicks);
     }
 
     @Override
-    public void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
-        getAnimator().setupAnim(p_102618_, p_102619_, p_102620_, p_102621_, p_102622_, p_102623_);
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        getAnimator().setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public static void setAllPartsVisibility(ModelPart part, boolean visible) {

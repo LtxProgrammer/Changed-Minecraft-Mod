@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 
 public class SlitherAbility extends SimpleAbility {
     @Override
