@@ -236,8 +236,11 @@ public abstract class LatexCoveredBlocks {
         }
 
         public UnbakedModel getModel(ResourceLocation name) {
-            var model = event.getModelLoader().getModel(name);
-            return model != event.getModelLoader().getModel(ModelBakery.MISSING_MODEL_LOCATION) ? model : models.get(name);
+            var model = event.getModelLoader().getModelOrMissing(name);
+            var missing = event.getModelLoader().getModelOrMissing(ModelBakery.MISSING_MODEL_LOCATION);
+            if (model != missing)
+                return model;
+            else return models.getOrDefault(name, missing);
         }
 
         private TextureAtlasSprite getSprite(Material material) {
@@ -305,7 +308,14 @@ public abstract class LatexCoveredBlocks {
             MixedTexture.OverlayBlock overlay = TYPE_OVERLAY.get(type);
 
             ResourceLocation modelLocation = variant.getModelLocation();
-            BlockModel blockModel = (BlockModel)registrar.getModel(modelLocation);
+            UnbakedModel unbakedModel = registrar.getModel(modelLocation);
+            if (!(unbakedModel instanceof BlockModel blockModel)) {
+                throw new IllegalStateException("Expected block model, got " + unbakedModel);
+            }
+
+            else if (blockModel == registrar.getModel(ModelBakery.MISSING_MODEL_LOCATION)) {
+                LOGGER.warn("Missing block model {}", modelLocation);
+            }
 
             String nameAppend = "/" + type.getSerializedName();
             ResourceLocation newName = new ResourceLocation(modelLocation.getNamespace(), modelLocation.getPath() + nameAppend);
