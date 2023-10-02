@@ -15,7 +15,7 @@ public class AerosolLatexWolfRenderer extends LatexHumanoidRenderer<AerosolLatex
 
     @Override
     public ResourceLocation getTextureLocation(AerosolLatexWolf p_114482_) {
-        return Changed.modResource("textures/aerosol_latex_wolf.png");
+        return Changed.modResource("textures/latex_gas_wolf.png");
     }
 
     public static class Remodel extends LatexHumanoidRenderer<AerosolLatexWolf, AerosolLatexWolfModel.Remodel, ArmorLatexWolfModel.RemodelMale<AerosolLatexWolf>> {
