@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.ai.DudNavigator;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -189,14 +190,25 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
                     itemstack.shrink(1);
                 }
 
-                if (this.random.nextInt(3) == 0) {
-                    this.tame(player);
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    this.level.broadcastEntityEvent(this, (byte)7);
-                } else {
-                    this.level.broadcastEntityEvent(this, (byte)6);
-                }
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    if (variant.getLatexType() == LatexType.DARK_LATEX && this.random.nextInt(3) == 0) { // One in 3 chance
+                        this.tame(player);
+                        this.navigation.stop();
+                        this.setTarget(null);
+                        this.level.broadcastEntityEvent(this, (byte)7);
+                    } else {
+                        this.level.broadcastEntityEvent(this, (byte)6);
+                    }
+                }, () -> {
+                    if (this.random.nextInt(10) == 0) { // One in 10 chance
+                        this.tame(player);
+                        this.navigation.stop();
+                        this.setTarget(null);
+                        this.level.broadcastEntityEvent(this, (byte)7);
+                    } else {
+                        this.level.broadcastEntityEvent(this, (byte)6);
+                    }
+                });
 
                 return InteractionResult.SUCCESS;
             }
