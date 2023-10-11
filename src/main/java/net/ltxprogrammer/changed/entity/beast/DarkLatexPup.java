@@ -196,6 +196,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
                         this.navigation.stop();
                         this.setTarget(null);
                         this.level.broadcastEntityEvent(this, (byte)7);
+                    } else if (!variant.getLatexType().isHostileTo(LatexType.DARK_LATEX) && this.random.nextInt(10) == 0) {
+                        this.tame(player);
+                        this.navigation.stop();
+                        this.setTarget(null);
+                        this.level.broadcastEntityEvent(this, (byte)7);
                     } else {
                         this.level.broadcastEntityEvent(this, (byte)6);
                     }
