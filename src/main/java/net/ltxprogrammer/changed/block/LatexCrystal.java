@@ -1,15 +1,19 @@
 package net.ltxprogrammer.changed.block;
 
 import com.google.common.collect.ImmutableList;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
@@ -30,6 +34,9 @@ public class LatexCrystal extends AbstractLatexCrystal {
                 random.nextInt(2000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
 
+        if (level.getNearbyEntities(LatexEntity.class, TargetingConditions.forNonCombat(), null, AABB.of(
+                BoundingBox.fromCorners(position.offset(-10, -10, -10), position.offset(10, 10, 10)))).size() > 2)
+            return;
         spawnable.get(random.nextInt(spawnable.size())).get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
         level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
     }
