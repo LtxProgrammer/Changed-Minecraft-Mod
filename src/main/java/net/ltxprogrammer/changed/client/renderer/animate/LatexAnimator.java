@@ -24,7 +24,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
 
     private final HumanoidModel<?> propertyModel;
     private final Map<Integer, Runnable> setupHandsRunnable = new HashMap<>();
-    private final EnumMap<AnimateStage, List<Animator<T, M>>> animators = new EnumMap<>(AnimateStage.class);
+    private final EnumMap<AnimateStage, List<Animator<T, M>>> animators;
     public HumanoidModel.ArmPose leftArmPose = HumanoidModel.ArmPose.EMPTY;
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
@@ -32,6 +32,9 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
 
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
+        this.animators = new EnumMap<>(AnimateStage.class);
+        Arrays.stream(AnimateStage.values()).forEach(stage -> animators.put(stage, new ArrayList<>())); // Populate array
+
         this.propertyModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
                 Map.of("head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body",
                         new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm",
