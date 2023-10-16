@@ -20,7 +20,7 @@ public class LatexDeer extends LatexEntity {
 
     @Override
     public Color3 getDripColor() {
-        return Color3.getColor("#cfbc9b");
+        return Color3.getColor(this.random.nextInt(4) < 3 ? "#d8bc99" : "#fbe5bc");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LatexDeer extends LatexEntity {
 
     @Override
     public Color3 getHairColor(int layer) {
-        return Color3.getColor("#ac967d");
+        return Color3.getColor("#b6957c");
     }
 
     @Override
