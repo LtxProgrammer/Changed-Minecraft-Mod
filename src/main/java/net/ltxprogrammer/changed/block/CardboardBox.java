@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,15 +40,15 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
     }
 
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CardboardBoxBlockEntity(pos, state);
-    }
-
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    protected BlockEntity getBlockEntityForBlock(BlockGetter level, BlockPos pos, BlockState state) {
         if (state.getValue(HALF).equals(DoubleBlockHalf.LOWER))
             pos = pos.above();
-        if (level.getBlockEntity(pos) instanceof CardboardBoxBlockEntity blockEntity) {
+        return level.getBlockEntity(pos);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxBlockEntity blockEntity) {
             return blockEntity.hideEntity(player) ?
                     InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.FAIL;
         }
@@ -54,28 +56,46 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
         return InteractionResult.FAIL;
     }
 
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxBlockEntity blockEntity)
+            if (blockEntity.entity != null && blockEntity.entity.is(player))
+                return false;
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+    }
+
+    @Override
     public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-        if (level.getBlockEntity(pos) instanceof CardboardBoxBlockEntity blockEntity) {
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxBlockEntity blockEntity) {
             blockEntity.forceOutEntity();
             blockEntity.entityHolder.remove(Entity.RemovalReason.DISCARDED);
         }
-        var player = level.getNearestPlayer(TargetingConditions.forNonCombat(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        /*var player = level.getNearestPlayer(TargetingConditions.forNonCombat(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         if (player != null && player.isInvisible())
-            player.setInvisible(false);
+            player.setInvisible(false);*/
         super.destroy(level, pos, state);
     }
 
     @Override
-    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
-        if (level.getBlockEntity(pos) instanceof CardboardBoxBlockEntity blockEntity)
-            if (blockEntity.entity == null || !blockEntity.entity.is(entity))
-                return super.canEntityDestroy(state, level, pos, entity);
-        return false;
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxBlockEntity blockEntity) {
+            blockEntity.forceOutEntity();
+            blockEntity.entityHolder.remove(Entity.RemovalReason.DISCARDED);
+        }
+        super.onBlockExploded(state, level, pos, explosion);
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
-        super.createBlockStateDefinition(p_52901_);
-        p_52901_.add(OPEN);
+    @Override
+    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxBlockEntity blockEntity)
+            if (blockEntity.entity != null && blockEntity.entity.is(entity))
+                return false;
+        return super.canEntityDestroy(state, level, pos, entity);
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(OPEN);
     }
 
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
@@ -83,6 +103,13 @@ public class CardboardBox extends AbstractCustomShapeTallEntityBlock {
             return Block.box(2.0, 0.0, 2.0, 14.0, 24.0, 14.0);
         else
             return Block.box(2.0, -16.0, 2.0, 14.0, 24.0 - 16.0, 14.0);
+    }
+
+    @Override
+    @Nullable
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return state.getValue(HALF).equals(DoubleBlockHalf.LOWER) ? null :
+                new CardboardBoxBlockEntity(pos, state);
     }
 
     @Nullable
