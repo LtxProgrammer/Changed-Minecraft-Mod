@@ -5,10 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
@@ -71,24 +68,15 @@ public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomS
         p_153174_.setBlock(blockpos, p_153175_.setValue(HALF, DoubleBlockHalf.UPPER), p_153177_);
     }
 
-    protected static void preventCreativeDropFromBottomPart(Level p_52904_, BlockPos p_52905_, BlockState p_52906_, Player p_52907_) {
-        DoubleBlockHalf doubleblockhalf = p_52906_.getValue(HALF);
-        if (doubleblockhalf == DoubleBlockHalf.UPPER) {
-            BlockPos blockpos = p_52905_.below();
-            BlockState blockstate = p_52904_.getBlockState(blockpos);
-            if (blockstate.is(p_52906_.getBlock()) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                BlockState blockstate1 = blockstate.hasProperty(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                p_52904_.setBlock(blockpos, blockstate1, 35);
-                p_52904_.levelEvent(p_52907_, 2001, blockpos, Block.getId(blockstate));
-            }
-        }
-
+    @Override
+    public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+        return state.getValue(HALF) != DoubleBlockHalf.UPPER && super.canDropFromExplosion(state, level, pos, explosion);
     }
 
     public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
         if (!p_52878_.isClientSide) {
             if (p_52881_.isCreative()) {
-                preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
+                AbstractCustomShapeTallBlock.preventCreativeDropFromBottomPart(p_52878_, p_52879_, p_52880_, p_52881_);
             }
         }
 
