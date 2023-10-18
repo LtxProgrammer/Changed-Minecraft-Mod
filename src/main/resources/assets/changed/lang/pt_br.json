@@ -104,8 +104,8 @@
   "gamerule.changed:keepForm": "Transfur Permanente",
   "gamerule.changed:latexGrowthRate": "Taxa de Crescimento de Látex",
   "gamerule.changed:transfurTolerance": "Dano de Transfur das Entidades de Látex (Ticks)",
-  "gamerule.changed:npcWantFusePlayer": "NPCs de Látex Querem Se Fundir com o Jogador",
-  "gamerule.changed:doPale": "O Pale Está Ativado",
+  "gamerule.changed:npcWantFusePlayer": "NPCs de Látex Querem/Podem Se Fundir com o Jogador",
+  "gamerule.changed:doPale": "Ative O Virus Pale",
 
   "key.changed.variant_ability": "Selecionar Habilidade de Variante",
   "key.changed.use_ability": "Usar Habilidade de Variante",
@@ -409,7 +409,7 @@
   "changed:advancements.main.aquatic_swimming.title": "Fui Nadar",
   "changed:advancements.main.aquatic_swimming.description": "Passe um dia completo debaixo d'água como uma forma aquática",
 
-  "changed:advancements.main.transfur_white.title": "Um Só",
+  "changed:advancements.main.transfur_white.title": "Um dos Mesmos",
   "changed:advancements.main.transfur_white.description": "Se Transfurme em uma forma de látex branco",
 
   "changed:advancements.main.transfur_dark.title": "Irmandade",
