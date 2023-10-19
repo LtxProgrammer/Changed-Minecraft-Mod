@@ -202,6 +202,9 @@ dependencies {
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${clothVersion}")
     implementation fg.deobf("dev.architectury:architectury-forge:${archVersion}")
 
+    implementation fg.deobf("net.blay09.mods:balm:3.2.6")
+    implementation fg.deobf("net.blay09.mods:hardcorerevival-forge-1.18.2:8.0.1")
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
