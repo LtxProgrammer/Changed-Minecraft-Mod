@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.MultiVariant;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.client.renderer.block.model.multipart.MultiPart;
@@ -52,6 +53,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -215,16 +218,39 @@ public abstract class LatexCoveredBlocks {
     protected static class Registrar {
         private final ModelBakeEvent event;
         private final Map<ResourceLocation, UnbakedModel> models;
+        private final Map<ResourceLocation, UnbakedModel> earlyBakeModels;
+        private final Map<ResourceLocation, ModelResourceLocation> referencePreBaked;
         private final LatexBlockUploader uploader;
+        public final boolean mixTextures;
 
-        public Registrar(ModelBakeEvent event, Map<ResourceLocation, UnbakedModel> models, LatexBlockUploader uploader) {
+        public Registrar(ModelBakeEvent event,
+                         Map<ResourceLocation, UnbakedModel> models,
+                         Map<ResourceLocation, UnbakedModel> earlyBakeModels,
+                         Map<ResourceLocation, ModelResourceLocation> referencePreBaked,
+                         LatexBlockUploader uploader, boolean mixTextures) {
             this.event = event;
             this.models = models;
+            if (!mixTextures) {
+                this.earlyBakeModels = earlyBakeModels;
+                this.referencePreBaked = referencePreBaked;
+            } else {
+                this.earlyBakeModels = Map.of();
+                this.referencePreBaked = Map.of();
+            }
             this.uploader = uploader;
+            this.mixTextures = mixTextures;
         }
 
         public void register(ModelResourceLocation name, UnbakedModel model) {
             models.put(name, model);
+        }
+
+        public void registerEarlyBake(ModelResourceLocation name, UnbakedModel model) {
+            earlyBakeModels.put(name, model);
+        }
+
+        public void registerPreBaked(ResourceLocation name, ModelResourceLocation prebaked) {
+            referencePreBaked.put(name, prebaked);
         }
 
         public void registerIfAbsent(ResourceLocation name, Function<ResourceLocation, UnbakedModel> fn) {
@@ -236,11 +262,9 @@ public abstract class LatexCoveredBlocks {
         }
 
         public UnbakedModel getModel(ResourceLocation name) {
-            var model = event.getModelLoader().getModelOrMissing(name);
-            var missing = event.getModelLoader().getModelOrMissing(ModelBakery.MISSING_MODEL_LOCATION);
-            if (model != missing)
-                return model;
-            else return models.getOrDefault(name, missing);
+            if (models.containsKey(name))
+                return models.get(name);
+            return event.getModelLoader().getModelOrMissing(name);
         }
 
         private TextureAtlasSprite getSprite(Material material) {
@@ -248,17 +272,55 @@ public abstract class LatexCoveredBlocks {
         }
 
         public void bakeAll() {
+            LOGGER.info("The chef has started baking the models, with {} early bake, {} reference bake, {} normal bake",
+                    earlyBakeModels.size(), referencePreBaked.size(), models.size());
             ((BakeryExtender)(Object)event.getModelLoader()).removeFromCacheIf(
                     triple -> models.containsKey(triple.getLeft())
             );
-            models.forEach((name, model) -> {
+
+            LOGGER.info("Removed already baked models from ModelBakery");
+            AtomicInteger index = new AtomicInteger(0);
+            final int modelCount = earlyBakeModels.size() + models.size();
+            for (var entry : earlyBakeModels.entrySet()) {
+                var name = entry.getKey();
+                var model = entry.getValue();
+
+                try {
+                    // Force model parent chain to generate, so materials resolve correctly
+                    model.getMaterials(this::getModel, new HashSet<>());
+                } catch (Exception ignored) {}
+
+                event.getModelRegistry().put(entry.getKey(), model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+
+                int currentIndex = index.incrementAndGet();
+                if (currentIndex % 50000 == 0) {
+                    LOGGER.info("Hit {}/{} baked models", currentIndex, modelCount);
+                }
+            }
+
+            for (var entry : referencePreBaked.entrySet()) {
+                event.getModelRegistry().put(entry.getKey(), event.getModelRegistry().get(entry.getValue()));
+            }
+
+            for (var it = models.entrySet().iterator(); it.hasNext();) {
+                var entry = it.next();
+                var name = entry.getKey();
+                var model = entry.getValue();
+
                 try {
                     // Force model parent chain to generate, so materials resolve correctly
                     model.getMaterials(this::getModel, new HashSet<>());
                 } catch (Exception ignored) {}
 
                 event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
-            });
+
+                int currentIndex = index.incrementAndGet();
+                if (currentIndex % 50000 == 0) {
+                    LOGGER.info("Hit {}/{} baked models", currentIndex, modelCount);
+                }
+
+                //it.remove();
+            }
         }
     }
 
@@ -266,7 +328,57 @@ public abstract class LatexCoveredBlocks {
         return new Material(LATEX_COVER_ATLAS, name);
     }
 
-    private static Function<ResourceLocation, UnbakedModel> createLatexModel(Registrar registrar, BlockModel blockModel, MixedTexture.OverlayBlock overlay, String nameAppend) {
+    private static ResourceLocation getDefaultLatexCover(LatexType type) {
+        return Changed.modResource("builtin/" + type.getSerializedName());
+    }
+
+    private static ModelResourceLocation getDefaultLatexModel(LatexType type) {
+        return new ModelResourceLocation(getDefaultLatexCover(type), "block");
+    }
+
+    private static boolean qualifiesForCheap(Registrar registrar, String sourceNamespace, BlockModel blockModel) {
+        if (sourceNamespace.equals("minecraft"))
+            return false;
+        if (sourceNamespace.equals("changed"))
+            return false;
+
+        if (Changed.config.client.fastAndCheapLatexBlocks.get())
+            return true;
+
+        var parentName = blockModel.getParentLocation();
+        var elements = blockModel.getElements();
+
+        if (parentName == null) {
+            if (elements.size() == 1) { // Model has one element
+                var elem = elements.get(0);
+                if (elem.from.x() != 0.0f || elem.from.y() != 0.0f || elem.from.z() != 0.0f)
+                    return false;
+                if (Math.abs(elem.to.x() - 16.0f) < 0.000001f ||
+                        Math.abs(elem.to.y() - 16.0f) < 0.000001f ||
+                        Math.abs(elem.to.z() - 16.0f) < 0.000001f)
+                    return false;
+                return true;
+            }
+
+            return false;
+        }
+        if (parentName.equals(new ResourceLocation("block/cube")))
+            return true;
+        if (parentName.equals(new ResourceLocation("block/cube_mirrored")))
+            return true;
+        if (parentName.equals(new ResourceLocation("block/cube_all")))
+            return true;
+        if (parentName.equals(new ResourceLocation("block/cube_column")))
+            return true;
+        if (parentName.equals(new ResourceLocation("block/block")))
+            return true;
+        var parentModel = registrar.getModel(blockModel.getParentLocation());
+        if (!(parentModel instanceof BlockModel parentBlockModel))
+            return false;
+        return qualifiesForCheap(registrar, sourceNamespace, parentBlockModel);
+    }
+
+    private static Function<ResourceLocation, UnbakedModel> createLatexModel(Registrar registrar, BlockModel blockModel, MixedTexture.OverlayBlock overlay, LatexType type, String nameAppend) {
         return name -> {
             Map<String, Either<Material, String>> injectedTextures = new HashMap<>();
 
@@ -288,7 +400,7 @@ public abstract class LatexCoveredBlocks {
                 });
             });
 
-            injectedTextures.put("particle", Either.left(new Material(TextureAtlas.LOCATION_BLOCKS, overlay.top())));
+            injectedTextures.put("particle", Either.left(overlay.particleMaterial));
 
             BlockModel injected = new BlockModel(
                     blockModel.getParentLocation(),
@@ -303,7 +415,7 @@ public abstract class LatexCoveredBlocks {
         };
     }
 
-    private static Function<Variant, Variant> createLatexVariant(Registrar registrar, LatexType type) {
+    private static Function<Variant, Variant> createLatexVariant(Registrar registrar, LatexType type, AtomicBoolean allGeneric) {
         return variant -> {
             MixedTexture.OverlayBlock overlay = TYPE_OVERLAY.get(type);
 
@@ -319,25 +431,39 @@ public abstract class LatexCoveredBlocks {
 
             String nameAppend = "/" + type.getSerializedName();
             ResourceLocation newName = new ResourceLocation(modelLocation.getNamespace(), modelLocation.getPath() + nameAppend);
-            registrar.registerIfAbsent(newName, createLatexModel(registrar, blockModel, overlay, nameAppend));
+
+            if (registrar.mixTextures || !qualifiesForCheap(registrar, modelLocation.getNamespace(), blockModel)) {
+                allGeneric.set(false);
+                registrar.registerIfAbsent(newName, createLatexModel(registrar, blockModel, overlay, type, nameAppend));
+            }
+
+            else {
+                registrar.registerPreBaked(newName, getDefaultLatexModel(type));
+            }
 
             return new Variant(newName, variant.getRotation(), variant.isUvLocked(), variant.getWeight());
         };
     }
 
+    @Nullable
     private static UnbakedModel overWriteMultiPart(Registrar registrar, MultiPart multiPart, ModelResourceLocation model, BlockState state, LatexType type) {
-        return new MultiPart(state.getBlock().getStateDefinition(),
-                multiPart.getSelectors().stream().map(selector ->
-                        new Selector(selector::getPredicate, new MultiVariant(
-                                selector.getVariant().getVariants().stream().map(createLatexVariant(registrar, type)).collect(Collectors.toList())
-                        ))
-                ).collect(Collectors.toList()));
+        AtomicBoolean allGeneric = new AtomicBoolean(true);
+        var newSelectors = multiPart.getSelectors().stream().map(selector -> {
+            var newVariants = selector.getVariant().getVariants().stream().map(createLatexVariant(registrar, type, allGeneric)).collect(Collectors.toList());
+            var newMultiVariant = new MultiVariant(newVariants);
+
+            return new Selector(selector::getPredicate, newMultiVariant);
+        }).toList();
+
+        return allGeneric.get() ? null : new MultiPart(state.getBlock().getStateDefinition(), newSelectors);
     }
 
+    @Nullable
     private static UnbakedModel overWriteMultiVariant(Registrar registrar, MultiVariant multiVariant, ModelResourceLocation model, BlockState state, LatexType type) {
-        return new MultiVariant(
-                multiVariant.getVariants().stream().map(createLatexVariant(registrar, type)).collect(Collectors.toList())
-        );
+        AtomicBoolean allGeneric = new AtomicBoolean(true);
+        var newVariants = multiVariant.getVariants().stream().map(createLatexVariant(registrar, type, allGeneric)).toList();
+
+        return allGeneric.get() ? null : new MultiVariant(newVariants);
     }
 
     protected static void coverBlock(Registrar registrar, BlockState state, LatexType type) {
@@ -345,14 +471,25 @@ public abstract class LatexCoveredBlocks {
         var baseModelName = BlockModelShaper.stateToModelLocation(state.setValue(COVERED, LatexType.NEUTRAL));
 
         var baseModel = registrar.getModel(baseModelName);
+        UnbakedModel newModel = null;
+
         if (baseModel instanceof MultiPart multiPart)
-            registrar.register(coveredModelName, overWriteMultiPart(registrar, multiPart, coveredModelName, state, type));
+            newModel = overWriteMultiPart(registrar, multiPart, coveredModelName, state, type);
         else if (baseModel instanceof MultiVariant multiVariant)
-            registrar.register(coveredModelName, overWriteMultiVariant(registrar, multiVariant, coveredModelName, state, type));
+            newModel = overWriteMultiVariant(registrar, multiVariant, coveredModelName, state, type);
+
+        if (newModel != null)
+            registrar.register(coveredModelName, newModel);
+        else
+            registrar.registerPreBaked(coveredModelName, getDefaultLatexModel(type)); // Register a generic 1x1x1 block reference
     }
 
     private static final Map<ResourceLocation, UnbakedModel> MODEL_CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, UnbakedModel> EARLY_CACHE = new HashMap<>();
+    private static final Map<ResourceLocation, ModelResourceLocation> MODEL_REF_CACHE = new HashMap<>();
     public static @Nullable UnbakedModel getCachedModel(ResourceLocation name) {
+        if (MODEL_REF_CACHE.containsKey(name))
+            return EARLY_CACHE.get(MODEL_REF_CACHE.get(name));
         return MODEL_CACHE.get(name);
     }
 
@@ -394,24 +531,70 @@ public abstract class LatexCoveredBlocks {
             LatexBlockUploader uploader = getUploader();
 
             MODEL_CACHE.clear();
-            final Registrar registrar = new Registrar(event, MODEL_CACHE, uploader);
+            final Registrar registrar = new Registrar(event, MODEL_CACHE, EARLY_CACHE, MODEL_REF_CACHE, uploader, Changed.config.client.generateUniqueTexturesForAllBlocks.get());
+            LOGGER.info("Gathering blocks to cover");
             List<Block> toCover = Registry.BLOCK.stream().filter(block -> block.getStateDefinition().getProperties().contains(COVERED)).toList();
             LOGGER.info("Starting latex cover generation for {} blocks", toCover.size());
-            Stopwatch timer = Stopwatch.createStarted();
+            Stopwatch timerFull = Stopwatch.createStarted();
+            Stopwatch timerPart = Stopwatch.createStarted();
 
+            if (!registrar.mixTextures) { // Register default textures
+                if (Changed.config.client.fastAndCheapLatexBlocks.get()) {
+                    LOGGER.info("Fast and cheap block generation selected!");
+                }
+
+                Arrays.stream(LatexType.values()).forEach(type -> {
+                    if (type == LatexType.NEUTRAL)
+                        return;
+
+                    var name = getDefaultLatexCover(type);
+                    var overlay = TYPE_OVERLAY.get(type);
+
+                    registrar.registerTexture(name, new MixedTexture(Changed.modResource("blocks/dark_latex_block_top"), overlay.top, name));
+                    registrar.registerEarlyBake(getDefaultLatexModel(type), new BlockModel(
+                            new ResourceLocation("minecraft", "block/cube_all"),
+                            List.of(),
+                            Map.of("all", Either.left(getLatexedMaterial(name)),
+                                    "particle", Either.left(overlay.particleMaterial)),
+                            true,
+                            BlockModel.GuiLight.SIDE,
+                            ItemTransforms.NO_TRANSFORMS,
+                            List.of()
+                    ));
+                });
+            }
+
+            AtomicInteger index = new AtomicInteger(0);
             toCover.forEach(block -> {
-                LOGGER.trace("Processing block {}", block);
                 block.getStateDefinition().getPossibleStates().forEach((state) -> {
                     if (state.getValue(COVERED) != LatexType.NEUTRAL)
                         coverBlock(registrar, state, state.getValue(COVERED));
                 });
+                int currentIndex = index.incrementAndGet();
+                if (currentIndex % 500 == 0) {
+                    LOGGER.info("Hit {}/{} generated blocks ({} sprites)", currentIndex, toCover.size(), uploader.registeredSprites.size());
+                }
             });
 
+            timerPart.stop();
+            LOGGER.info("Finished model generation of {} latex models in {}", MODEL_CACHE.size(), timerPart);
+            timerPart.reset().start();
+
             uploader.upload(Minecraft.getInstance().getResourceManager(), InactiveProfiler.INSTANCE);
+            uploader.registeredSprites.clear();
+
+            timerPart.stop();
+            LOGGER.info("Uploaded generated textures in {}", timerPart);
+            timerPart.reset().start();
+
             registrar.bakeAll();
 
-            timer.stop();
-            LOGGER.info("Finished model generation of {} models in {}", MODEL_CACHE.size(), timer);
+            timerFull.stop();
+            LOGGER.info("Finished baking of {} latex models in {}", MODEL_CACHE.size() + registrar.earlyBakeModels.size(), timerFull);
+
+            EARLY_CACHE.clear();
+            MODEL_CACHE.clear();
+            MODEL_REF_CACHE.clear();
         }
     }
 }
