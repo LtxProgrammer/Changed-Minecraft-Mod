@@ -31,6 +31,8 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
         public final ForgeConfigSpec.ConfigValue<Boolean> cacheGeneratedTextures;
         public final ForgeConfigSpec.ConfigValue<Boolean> memCacheBaseImages;
+        public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
+        public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
@@ -43,6 +45,10 @@ public class ChangedConfig {
             cacheGeneratedTextures = builder.define("cacheGeneratedTextures", true);
             builder.comment("While generating textures, the generator will store all used block textures in memory until all textures are generated. It's recommended to disable this while loading large modpacks");
             memCacheBaseImages = builder.define("memCacheBaseImages", true);
+            builder.comment("Large modpacks will eat up all your memory if unique textures are generated for every block, this will apply a generic texture for all cube like models");
+            generateUniqueTexturesForAllBlocks = builder.define("generateUniqueTexturesForAllBlocks", true);
+            builder.comment("Got a lot of mods? Unique model generation will be limited to minecraft and changed");
+            fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
         }
     }
 
