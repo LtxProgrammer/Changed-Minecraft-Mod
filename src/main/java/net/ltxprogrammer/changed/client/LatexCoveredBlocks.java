@@ -332,14 +332,25 @@ public abstract class LatexCoveredBlocks {
         return Changed.modResource("builtin/" + type.getSerializedName());
     }
 
+    private static final Function<LatexType, ResourceLocation> getDefaultLatexCoverCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexCover);
+
     private static ModelResourceLocation getDefaultLatexModel(LatexType type) {
-        return new ModelResourceLocation(getDefaultLatexCover(type), "block");
+        return new ModelResourceLocation(getDefaultLatexCoverCached.apply(type), "block");
     }
 
-    private static boolean qualifiesForCheap(Registrar registrar, String sourceNamespace, BlockModel blockModel) {
+    private static final Function<LatexType, ModelResourceLocation> getDefaultLatexModelCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexModel);
+
+    private static boolean namespaceQualifiesForCheap(String sourceNamespace) { // Maybe allow configuring preserved namespaces
         if (sourceNamespace.equals("minecraft"))
             return false;
         if (sourceNamespace.equals("changed"))
+            return false;
+
+        return true;
+    }
+
+    private static boolean qualifiesForCheap(Registrar registrar, String sourceNamespace, BlockModel blockModel) {
+        if (!namespaceQualifiesForCheap(sourceNamespace))
             return false;
 
         if (Changed.config.client.fastAndCheapLatexBlocks.get())
@@ -438,7 +449,7 @@ public abstract class LatexCoveredBlocks {
             }
 
             else {
-                registrar.registerPreBaked(newName, getDefaultLatexModel(type));
+                registrar.registerPreBaked(newName, getDefaultLatexModelCached.apply(type));
             }
 
             return new Variant(newName, variant.getRotation(), variant.isUvLocked(), variant.getWeight());
@@ -468,8 +479,13 @@ public abstract class LatexCoveredBlocks {
 
     protected static void coverBlock(Registrar registrar, BlockState state, LatexType type) {
         var coveredModelName = BlockModelShaper.stateToModelLocation(state);
-        var baseModelName = BlockModelShaper.stateToModelLocation(state.setValue(COVERED, LatexType.NEUTRAL));
 
+        if (Changed.config.client.fastAndCheapLatexBlocks.get() && namespaceQualifiesForCheap(coveredModelName.getNamespace())) {
+            registrar.registerPreBaked(coveredModelName, getDefaultLatexModelCached.apply(type)); // Register a generic 1x1x1 block reference
+            return;
+        }
+
+        var baseModelName = BlockModelShaper.stateToModelLocation(state.setValue(COVERED, LatexType.NEUTRAL));
         var baseModel = registrar.getModel(baseModelName);
         UnbakedModel newModel = null;
 
@@ -481,7 +497,7 @@ public abstract class LatexCoveredBlocks {
         if (newModel != null)
             registrar.register(coveredModelName, newModel);
         else
-            registrar.registerPreBaked(coveredModelName, getDefaultLatexModel(type)); // Register a generic 1x1x1 block reference
+            registrar.registerPreBaked(coveredModelName, getDefaultLatexModelCached.apply(type)); // Register a generic 1x1x1 block reference
     }
 
     private static final Map<ResourceLocation, UnbakedModel> MODEL_CACHE = new HashMap<>();
@@ -547,11 +563,11 @@ public abstract class LatexCoveredBlocks {
                     if (type == LatexType.NEUTRAL)
                         return;
 
-                    var name = getDefaultLatexCover(type);
+                    var name = getDefaultLatexCoverCached.apply(type);
                     var overlay = TYPE_OVERLAY.get(type);
 
                     registrar.registerTexture(name, new MixedTexture(Changed.modResource("blocks/dark_latex_block_top"), overlay.top, name));
-                    registrar.registerEarlyBake(getDefaultLatexModel(type), new BlockModel(
+                    registrar.registerEarlyBake(getDefaultLatexModelCached.apply(type), new BlockModel(
                             new ResourceLocation("minecraft", "block/cube_all"),
                             List.of(),
                             Map.of("all", Either.left(getLatexedMaterial(name)),
