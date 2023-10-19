@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.world.inventory.PurifierMenu;
@@ -38,8 +39,9 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
     public NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     int purifyProgress;
     public static final int PURIFY_GOO_PROGRESS_TOTAL_MIN = 20 * 20; // 20 seconds to purify one goo
-    public static final int PURIFY_GOO_PROGRESS_TOTAL_MAX = 4 * 60 * 20; // 4 minutes to purify full go stack
+    public static final int PURIFY_GOO_PROGRESS_TOTAL_MAX = 4 * 60 * 20; // 4 minutes to purify full goo stack
     public static final int PURIFY_SYRINGE_PROGRESS_TOTAL = 2 * 60 * 20; // 2 minutes to purify
+    public static final int PURIFY_UNIVERSAL_SYRINGE_PROGRESS_TOTAL = 4 * 60 * 20; // 2 minutes to purify
     protected final ContainerData dataAccess = new ContainerData() {
         public int get(int p_58431_) {
             return PurifierBlockEntity.this.purifyProgress;
@@ -109,13 +111,19 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
     }
 
     public static boolean isImpureGoo(ItemStack itemStack) {
-        return itemStack.is(ChangedItems.DARK_LATEX_GOO.get()) || itemStack.is(ChangedItems.WHITE_LATEX_GOO.get());
+        for (var type : LatexType.values()) {
+            if (type == LatexType.NEUTRAL)
+                continue;
+            if (itemStack.is(type.goo.get()))
+                return true;
+        }
+        return false;
     }
 
     public static float getTotalProgress(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (!stack.isEmpty() && stack.is(ChangedItems.LATEX_SYRINGE.get()) && tag != null && !tag.getBoolean("safe")) {
-            return PURIFY_SYRINGE_PROGRESS_TOTAL;
+            return tag.contains("owner") ? PURIFY_SYRINGE_PROGRESS_TOTAL : PURIFY_UNIVERSAL_SYRINGE_PROGRESS_TOTAL;
         } else if (!stack.isEmpty() && isImpureGoo(stack)) {
             float count = stack.getCount();
             return Mth.lerp(count / stack.getMaxStackSize(), PURIFY_GOO_PROGRESS_TOTAL_MIN, PURIFY_GOO_PROGRESS_TOTAL_MAX);
