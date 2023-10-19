@@ -32,6 +32,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class BedsideIVRackBlockEntity extends BlockEntity implements Container, StackedContentsCompatible {
@@ -71,17 +72,16 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
             level.setBlockAndUpdate(pos.above(), state.setValue(BedsideIVRack.FULL, true).setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER));
         }
 
-        Boolean success = false;
+        boolean success = false;
         CompoundTag tag = ivRack.items.get(0).getOrCreateTag();
-        if (!tag.contains("owner")) return;
-        UUID owner = tag.getUUID("owner");
+        Optional<UUID> owner = tag.contains("owner") ? Optional.of(tag.getUUID("owner")) : Optional.empty();
         if (!ivRack.items.get(0).isEmpty() && ivRack.items.get(0).is(ChangedItems.LATEX_SYRINGE.get())) {
             for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
                 BlockPos adjacent = pos.relative(direction);
                 for (Player player : level.getEntities(EntityTypeTest.forClass(Player.class), new AABB(adjacent), EntitySelector.NO_SPECTATORS)) {
                     if (!player.isSleeping())
                         continue;
-                    if (!player.getUUID().equals(owner))
+                    if (owner.isPresent() && !player.getUUID().equals(owner.get()))
                         continue;
 
                     if (ProcessTransfur.isPlayerLatex(player))
