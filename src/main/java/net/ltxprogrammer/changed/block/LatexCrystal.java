@@ -17,6 +17,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class LatexCrystal extends AbstractLatexCrystal {
@@ -27,6 +28,12 @@ public class LatexCrystal extends AbstractLatexCrystal {
         this.spawnable = spawnable;
     }
 
+    private Predicate<LatexEntity> matchesType(EntityType<?> type) {
+        return latexEntity -> {
+            return latexEntity.getType() == type;
+        };
+    }
+
     @Override
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         super.randomTick(state, level, position, random);
@@ -34,10 +41,12 @@ public class LatexCrystal extends AbstractLatexCrystal {
                 random.nextInt(2000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
             return;
 
+        var entityType = spawnable.get(random.nextInt(spawnable.size())).get();
         if (level.getNearbyEntities(LatexEntity.class, TargetingConditions.forNonCombat(), null, AABB.of(
-                BoundingBox.fromCorners(position.offset(-10, -10, -10), position.offset(10, 10, 10)))).size() > 2)
+                BoundingBox.fromCorners(position.offset(-50, -50, -50), position.offset(50, 50, 50)))).stream()
+                .filter(matchesType(entityType)).toList().size() > 35)
             return;
-        spawnable.get(random.nextInt(spawnable.size())).get().spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
+        entityType.spawn(level, null, null, null, position, MobSpawnType.NATURAL, true, true);
         level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
     }
 }
