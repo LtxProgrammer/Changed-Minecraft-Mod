@@ -175,7 +175,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexCrystalWolfHorned>> LATEX_CRYSTAL_WOLF_HORNED = registerReducedSpawn("latex_crystal_wolf_horned", 0x393939, 0xFF014E,
             EntityType.Builder.of(LatexCrystalWolfHorned::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xCFBC9B, 0xF4E5BE,
+    public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xD8BC99, 0xFBE5BC,
             EntityType.Builder.of(LatexDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
