@@ -263,10 +263,10 @@
     "category": "entity",
     "subtitle": "subtitles.changed.latex_drip",
     "sounds": [
-      "changed:drip/slime1",
-      "changed:drip/slime2",
-      "changed:drip/slime3",
-      "changed:drip/slime4"
+      "minecraft:mob/slime/small1",
+      "minecraft:mob/slime/small2",
+      "minecraft:mob/slime/small3",
+      "minecraft:mob/slime/small4"
     ]
   },
   "monster2": {
