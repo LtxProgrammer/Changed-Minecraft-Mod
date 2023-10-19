@@ -259,6 +259,16 @@
     ],
     "subtitle": "subtitles.changed.sword1"
   },
+  "latex_drip": {
+    "category": "entity",
+    "subtitle": "subtitles.changed.latex_drip",
+    "sounds": [
+      "minecraft:mob/slime/small1",
+      "minecraft:mob/slime/small2",
+      "minecraft:mob/slime/small3",
+      "minecraft:mob/slime/small4"
+    ]
+  },
   "monster2": {
     "category": "entity",
     "sounds": [

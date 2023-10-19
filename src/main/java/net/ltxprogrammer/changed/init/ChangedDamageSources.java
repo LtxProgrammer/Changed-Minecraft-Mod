@@ -12,6 +12,7 @@ public class ChangedDamageSources {
         public TransfurDamageSource(String name, LivingEntity entity) {
             super(name);
             this.entity = entity;
+            this.bypassArmor();
         }
 
         public Entity getEntity() {
@@ -24,10 +25,10 @@ public class ChangedDamageSources {
     }
 
     public static DamageSource entityTransfur(LivingEntity source) {
-        return new TransfurDamageSource(Changed.modResourceStr("transfur"), source).bypassArmor();
+        return new TransfurDamageSource(Changed.modResourceStr("transfur"), source);
     }
 
-    public static final DamageSource BLOODLOSS = (new DamageSource("changed:bloodloss")).bypassArmor();
+    public static final DamageSource BLOODLOSS = (new DamageSource(Changed.modResourceStr("bloodloss"))).bypassArmor();
     public static final DamageSource WHITE_LATEX = (new DamageSource(Changed.modResourceStr("white_latex"))).bypassArmor().bypassMagic();
     public static final DamageSource PALE = (new DamageSource(Changed.modResourceStr("pale"))).bypassArmor().bypassMagic();
     public static final DamageSource FAN = new DamageSource(Changed.modResourceStr("fan"));
