@@ -11,6 +11,7 @@
     "StateHolderMixin",
     "TreeFeaturesMixin",
     "block.BlockBehaviourMixin",
+    "block.BlockBehaviourMixinFixer",
     "block.BlockMixin",
     "block.BlockPropertiesMixin",
     "block.BlockStateBaseMixin",
