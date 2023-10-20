@@ -18,20 +18,6 @@
       ]
     },
     {
-      "rolls": 2,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "changed:latex_syringe",
-          "functions": [
-            {
-              "function": "changed:random_variant"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "rolls": 4,
       "entries": [
         {
@@ -72,6 +58,29 @@
         {
           "condition": "minecraft:random_chance",
           "chance": 0.25
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "changed:random_variant"
+            },
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 2.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_syringe"
         }
       ]
     }
