@@ -1,68 +1,179 @@
 {
   "pools": [
     {
-      "rolls": 1,
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 3.0
+      },
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:bedside_iv_rack"
+          "weight": 5,
+          "name": "changed:latex_dance_record"
         },
         {
           "type": "minecraft:item",
-          "name": "changed:infuser"
+          "weight": 5,
+          "name": "changed:owo_record"
         },
         {
           "type": "minecraft:item",
-          "name": "changed:purifier"
+          "weight": 10,
+          "name": "changed:pink_pants"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "changed:benign_pants"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:tsc_staff"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:tsc_baton"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:wolf_gas_canister"
         }
       ]
     },
     {
-      "rolls": 4,
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 4.0
+      },
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 16,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              },
+              "add": false
+            }
+          ],
           "name": "changed:syringe"
         },
         {
           "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:canned_peaches"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:gold_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:compact_disc"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:diamond"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 7.0
+              },
+              "add": false
+            }
+          ],
           "name": "changed:latex_base"
         }
       ]
     },
     {
       "rolls": {
-        "min": 6,
-        "max": 10
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 2.0
       },
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_ingot"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:gold_ingot"
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:diamond"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.25
-        }
-      ]
-    },
-    {
-      "rolls": 1,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -75,7 +186,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 0.0,
-                "max": 2.0
+                "max": 1.0
               },
               "add": false
             }
