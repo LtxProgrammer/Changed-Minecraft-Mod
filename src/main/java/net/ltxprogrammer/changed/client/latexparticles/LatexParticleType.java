@@ -13,5 +13,5 @@ public class LatexParticleType<T extends LatexParticle> extends ForgeRegistryEnt
 
     }
 
-    public static final RegistryObject<LatexParticleType<LatexDripParticle>> LATEX_DRIP_PARTICLE = REGISTRY.register("dripping_latex", LatexParticleType::new);
+    public static final RegistryObject<LatexParticleType<LatexDripParticle>> LATEX_DRIP_PARTICLE = REGISTRY.register("dripping_latex_new", LatexParticleType::new);
 }
