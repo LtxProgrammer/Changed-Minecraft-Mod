@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
@@ -67,6 +68,10 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         this.getArm(p_102854_).translateAndRotate(p_102855_);
         if (this instanceof LatexHumanoidModelInterface modelInterface)
             p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+    }
+
+    public Stream<ModelPart> getAllParts() {
+        return rootModelPart.getAllParts();
     }
 
     public ModelPart getRandomModelPart(Random random) {
