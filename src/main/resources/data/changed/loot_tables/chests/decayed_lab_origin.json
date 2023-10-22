@@ -170,11 +170,10 @@
       ]
     },
     {
-      "rolls": 2,
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:latex_syringe",
           "functions": [
             {
               "function": "changed:random_variant",
@@ -186,8 +185,18 @@
                 "changed:form_light_latex_wolf_organic",
                 "changed:form_light_latex_knight"
               ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 3.0
+              },
+              "add": false
             }
-          ]
+          ],
+          "name": "changed:latex_syringe"
         }
       ]
     }
