@@ -53,7 +53,7 @@ public class Changed {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         // Initialize packet types
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
@@ -111,9 +111,13 @@ public class Changed {
         });
     }
 
+    private void registerClientEventListeners() {
+        MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient());
+    }
+
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(RecipeCategories::registerCategories);
-        MinecraftForge.EVENT_BUS.addListener(ChangedClient::onClientTick);
+        ChangedClient.registerEventListeners();
     }
 
     private static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

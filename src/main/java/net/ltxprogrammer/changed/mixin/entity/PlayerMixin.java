@@ -83,7 +83,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public LatexVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
+    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT);
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique

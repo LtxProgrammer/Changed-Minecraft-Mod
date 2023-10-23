@@ -59,11 +59,11 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             if (tag.get("TransfurProgress") instanceof IntTag intTag) { // Adapt to old progress saving method
                 ProcessTransfur.setPlayerTransfurProgress(this,
                         new ProcessTransfur.TransfurProgress((float)intTag.getAsInt() * 0.001f,
-                                new ResourceLocation(tag.getString("TransfurProgressType"))));
+                                ChangedRegistry.LATEX_VARIANT.get().getValue(new ResourceLocation(tag.getString("TransfurProgressType")))));
             } else if (tag.get("TransfurProgress") instanceof FloatTag floatTag) {
                 ProcessTransfur.setPlayerTransfurProgress(this,
                         new ProcessTransfur.TransfurProgress(floatTag.getAsFloat(),
-                                new ResourceLocation(tag.getString("TransfurProgressType"))));
+                                ChangedRegistry.LATEX_VARIANT.get().getValue(new ResourceLocation(tag.getString("TransfurProgressType")))));
             }
         }
         if (tag.contains("LatexVariant")) {
@@ -97,7 +97,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).progress());
-        tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).type().toString());
+        tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).variant().getFormId().toString());
         ProcessTransfur.ifPlayerLatex(this, variant -> {
             TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
             tag.put("LatexAbilities", variant.saveAbilities());

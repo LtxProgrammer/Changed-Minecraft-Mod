@@ -31,7 +31,7 @@ public class EventHandlerClient {
         if (player == null)
             return;
         var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.type().equals(progress.type())) // Prevent sync shudder
+        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.variant() == progress.variant()) // Prevent sync shudder
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
@@ -98,6 +98,12 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(ChangedClient.particleSystem);
     }
 
     @OnlyIn(Dist.CLIENT)

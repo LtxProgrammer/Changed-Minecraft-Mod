@@ -42,7 +42,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexParticleEngine {
+public class LatexParticleEngine implements PreparableReloadListener {
     private final Minecraft minecraft;
     private final TextureManager textureManager;
     private final Map<ResourceLocation, MutableSpriteSet> spriteSets = Maps.newHashMap();
@@ -84,7 +84,7 @@ public class LatexParticleEngine {
         return result;
     }
 
-    public void render(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource, LightTexture lightTexture, Camera camera, float partialTicks, @Nullable Frustum clippingHelper) {
+    public void render(PoseStack poseStack, LightTexture lightTexture, Camera camera, float partialTicks, @Nullable Frustum clippingHelper) {
         lightTexture.turnOnLightLayer();
         RenderSystem.enableDepthTest();
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
@@ -129,12 +129,11 @@ public class LatexParticleEngine {
         lightTexture.turnOffLightLayer();
     }
 
-    public CompletableFuture<Void> reload(CompletableFuture<Void> host,
-            PreparableReloadListener.PreparationBarrier prepBarrier, ResourceManager resourceManager,
+    public CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier prepBarrier, ResourceManager resourceManager,
                                           ProfilerFiller profilerA, ProfilerFiller profilerB, Executor execA, Executor execB) {
         Map<ResourceLocation, List<ResourceLocation>> map = Maps.newConcurrentMap();
         CompletableFuture<?>[] completablefuture = ChangedRegistry.LATEX_PARTICLE_TYPE.get().getKeys().stream().map((particleKey) -> {
-            return host.thenRunAsync(() -> {
+            return CompletableFuture.runAsync(() -> {
                 this.spriteSets.put(particleKey, new MutableSpriteSet());
                 this.loadParticleDescription(resourceManager, particleKey, map);
             }, execA);
