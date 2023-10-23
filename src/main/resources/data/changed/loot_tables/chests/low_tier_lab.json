@@ -24,20 +24,25 @@
       ]
     },
     {
-      "type": "minecraft:item",
-      "weight": 4,
-      "functions": [
+      "rolls": 1,
+      "entries": [
         {
-          "function": "minecraft:set_count",
-          "count": {
-            "type": "minecraft:uniform",
-            "min": 1.0,
-            "max": 4.0
-          },
-          "add": false
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:syringe"
         }
-      ],
-      "name": "changed:syringe"
+      ]
     },
     {
       "rolls": {
