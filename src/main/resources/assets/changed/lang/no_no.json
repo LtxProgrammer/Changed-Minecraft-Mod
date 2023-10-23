@@ -99,6 +99,7 @@
   "death.attack.changed:fan.player": "%1$s ble hakket opp av en vifte i kamp med %2$s",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
+  "command.changed.error.used_by_other_mod": "Spiller er allerede en form fra en annen mod",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Alltid holde bevisst etter transpelsmasjon",
