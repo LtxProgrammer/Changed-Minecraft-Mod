@@ -99,6 +99,7 @@
   "death.attack.changed:fan.player": "%1$s játékost felkockázta egy ventilátor, miközben vele harcolt: %2$s",
 
   "command.changed.error.not_latex_form": "Érvénytelen latex forma",
+  "command.changed.error.used_by_other_mod": "A játékost már használja egy másik mod",
   "command.changed.error.no_special_form": "Nincs hozzárendelve speciális forma, látogasson el a https://www.patreon.com/ltxprogrammer oldalra",
 
   "gamerule.changed:keepConscious": "Transzfurban mindig legyen eszméletben",
