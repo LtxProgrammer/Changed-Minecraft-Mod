@@ -68,7 +68,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
-                    .addAnimator(new UpperBodyInitAnimator<>(torso, leftArm, rightArm))
+                    .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
         };
@@ -77,7 +77,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> upperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
-                    .addAnimator(new UpperBodyInitAnimator<>(torso, leftArm, rightArm))
+                    .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyStandAnimator<>(head, torso, leftArm, rightArm));

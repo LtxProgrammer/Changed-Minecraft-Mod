@@ -7,15 +7,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class UpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
-    public final ModelPart torso;
-    public final ModelPart leftArm;
-    public final ModelPart rightArm;
-
-    public UpperBodyInitAnimator(ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
-        this.torso = torso;
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
+public class UpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+    public UpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        super(head, torso, leftArm, rightArm);
     }
 
     @Override
