@@ -258,14 +258,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     protected void multiplyMotion(Player player, double mul) {
         var dP = player.getDeltaMovement();
-
-        if (mul > 1f) {
+        if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
                 float friction = player.getLevel().getBlockState(player.blockPosition().below())
                         .getFriction(player.getLevel(), player.blockPosition(), player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
             }
         }
 
