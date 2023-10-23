@@ -47,7 +47,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             var progress = ProcessTransfur.getPlayerTransfurProgress(player);
             if (progress == null || progress.progress() <= 0)
                 return;
-            var color = TransfurProgressLayer.getProgressColor(progress.type());
+            var color = TransfurProgressLayer.getProgressColor(progress.variant());
 
             arm.xRot = 0.0F;
             arm.render(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);

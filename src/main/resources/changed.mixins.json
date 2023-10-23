@@ -40,7 +40,6 @@
     "client.ClientLevelMixin",
     "client.ForgeHooksClientMixin",
     "client.OptionsMixin",
-    "client.ParticleEngineMixin",
     "client.TutorialMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",

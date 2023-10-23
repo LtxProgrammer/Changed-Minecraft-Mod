@@ -99,6 +99,7 @@
   "death.attack.changed:fan.player": "%1$s was diced by a fan whilst fighting %2$s",
 
   "command.changed.error.not_latex_form": "Invalid latex form",
+  "command.changed.error.used_by_other_mod": "Player is already used by another mod",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Always Keep Conscious on Transfur",
