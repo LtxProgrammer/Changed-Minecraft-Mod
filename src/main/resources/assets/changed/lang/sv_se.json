@@ -99,6 +99,7 @@
   "death.attack.changed:fan.player": "%1$s hackades upp av en fläkt i strid med %2$s",
 
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
+  "command.changed.error.used_by_other_mod": "Spelare är redan en form från en annan mod",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Alltid vara medveten med förpälsvandling",
