@@ -1,5 +1,5 @@
 {
-  "parent": "changed:block/tiles_greenhouse_connected/0",
+  "parent": "changed:block/tiles_greenhouse/0",
   "display": {
     "thirdperson": {
       "rotation": [

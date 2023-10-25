@@ -1,10 +1,11 @@
 {
   "parent": "changed:block/connected_floor",
   "textures": {
-    "north_east": "changed:blocks/tiles_white/ne1",
-    "north_west": "changed:blocks/tiles_white/nw_c",
-    "south_east": "changed:blocks/tiles_white/se_c",
-    "south_west": "changed:blocks/tiles_white/sw_c",
+    "north_east": "changed:blocks/tiles_white/1",
+    "north_west": "changed:blocks/tiles_white/4",
+    "south_east": "changed:blocks/tiles_white/4",
+    "south_west": "changed:blocks/tiles_white/4",
+    "bottom": "changed:blocks/tiles_white/bottom",
     "sides": "changed:blocks/tiles_white/side"
   }
 }
