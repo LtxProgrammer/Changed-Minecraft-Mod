@@ -34,6 +34,7 @@
   "subtitles.changed.buzzer1": "Näppäimistö estää pääsyn",
   "subtitles.changed.shot1": "Laser aktivoituu",
   "subtitles.changed.key": "Näppäimistön salpa naksahtaa",
+  "subtitles.changed.latex_drip": "Lateksi tippuu",
   "subtitles.changed.monster2": "Tiikerihain karjunta",
   "subtitles.changed.switch1": "Näppäimistön painikkeiden napsautukset",
   "subtitles.changed.siren": "Seireeni laulaa",
@@ -97,6 +98,7 @@
   "death.attack.changed:fan.player": "Tuuletin leikkasi %1$s:n kun hän hyökkkäsi %2$s kanssa samaan aikaan",
 
   "command.changed.error.not_latex_form": "Virheellinen lateksilomake",
+  "command.changed.error.used_by_other_mod": "Pelaaja on jo toisen modin käytössä",
   "command.changed.error.no_special_form": "Ei erityistä lomaketta, käy https://www.patreon.com/ltxprogrammer sivulla",
 
   "gamerule.changed:keepConscious": "Pysy aina tietoisena transfurmaatiosta",
@@ -264,7 +266,7 @@
   "entity.changed.latex_shark_male": "Fuusiotunut lateksinen mieshai",
   "entity.changed.latex_snow_leopard_female": "Lateksinen naislumileopardi",
   "entity.changed.latex_snow_leopard_male": "Lateksinen mieslumileopardi",
-  "entity.changed.latex_silver_fox": "Lateksinen hopeakettu",
+  "entity.changed.latex_silver_fox": "Lateksi keon",
   "entity.changed.latex_siren": "Lateksinen seireeni",
   "entity.changed.latex_sniper_dog": "Lateksinen tarkka-ampuja koira",
   "entity.changed.latex_squid_dog_female": "Naaras latex kalmari koira",
@@ -327,7 +329,7 @@
   "item.changed.latex_squid_dog_male_spawn_egg": "Uros latex kalmari koira kutumuna",
   "item.changed.latex_squirrel_spawn_egg": "Lateksi orava",
   "item.changed.latex_stiger_spawn_egg": "Lateksisen hämähäkkitiikerin kutumuna",
-  "item.changed.latex_silver_fox_spawn_egg": "Lateksisen hopeketun kutumuna",
+  "item.changed.latex_silver_fox_spawn_egg": "Lateksi keon kutumuna",
   "item.changed.latex_siren_spawn_egg": "Lateksisen seireenin kutumuna",
   "item.changed.latex_sniper_dog_spawn_egg": "Lateksisen tarkka-ampuja koiran kutumuna",
   "item.changed.latex_tiger_shark_spawn_egg": "Lateksisen tiikerihain kutumuna",

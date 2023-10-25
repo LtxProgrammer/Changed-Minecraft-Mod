@@ -33,6 +33,7 @@
   "subtitles.changed.ice2": "Cristal s'étend",
   "subtitles.changed.chime2": "Le clavier permet l'accès",
   "subtitles.changed.key": "Le verrou du clavier clique",
+  "subtitles.changed.latex_drip": "La latex s'égoutte",
   "subtitles.changed.monster2": "Le requin tigre rugit",
   "subtitles.changed.switch1": "Clics des boutons du clavier",
   "subtitles.changed.shot1": "Le laser s'active",
@@ -98,6 +99,7 @@
   "death.attack.changed:fan.player": "%1$s a été découpé par un fan alors qu'il combattait %2$s",
 
   "command.changed.error.not_latex_form": "Form latex invalide",
+  "command.changed.error.used_by_other_mod": "Le joueur est déjà utilisé par un autre mod",
   "command.changed.error.no_special_form": "Aucun formulaire spécial n'est attribué, visitez https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Toujours rester conscient sur transfur",
@@ -264,7 +266,7 @@
   "entity.changed.latex_shark_male": "Requin homme fusion latex",
   "entity.changed.latex_snow_leopard_female": "Léopard des neiges femelle latex",
   "entity.changed.latex_snow_leopard_male": "Léopard des neiges homme latex",
-  "entity.changed.latex_silver_fox": "Renard argenté latex",
+  "entity.changed.latex_silver_fox": "Keon latex",
   "entity.changed.latex_siren": "Siren latex",
   "entity.changed.latex_sniper_dog": "Chien de sniper latex",
   "entity.changed.latex_squid_dog_female": "Chien calamar femelle latex",
@@ -327,7 +329,7 @@
   "item.changed.latex_squid_dog_male_spawn_egg": "Oeuf d'apparition de chien de calmar homme latex",
   "item.changed.latex_squirrel_spawn_egg": "Oeuf d'apparition de ecureuil latex",
   "item.changed.latex_stiger_spawn_egg": "Oeuf d'apparition de tignrée latex",
-  "item.changed.latex_silver_fox_spawn_egg": "Oeuf d'apparition de renard argenté latex",
+  "item.changed.latex_silver_fox_spawn_egg": "Oeuf d'apparition de keon latex",
   "item.changed.latex_siren_spawn_egg": "Oeuf d'apparition de siren latex",
   "item.changed.latex_sniper_dog_spawn_egg": "Oeuf d'apparition de chien de sniper latex",
   "item.changed.latex_tiger_shark_spawn_egg": "Oeuf d'apparition de requin-tigre latex",
