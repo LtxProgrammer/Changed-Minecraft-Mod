@@ -1,0 +1,11 @@
+{
+  "parent": "changed:block/connected_floor",
+  "textures": {
+    "north_east": "changed:blocks/tiles_greenhouse/2",
+    "north_west": "changed:blocks/tiles_greenhouse/4",
+    "south_east": "changed:blocks/tiles_greenhouse/2",
+    "south_west": "changed:blocks/tiles_greenhouse/1",
+    "bottom": "changed:blocks/tiles_greenhouse/bottom",
+    "sides": "changed:blocks/tiles_greenhouse/side"
+  }
+}
