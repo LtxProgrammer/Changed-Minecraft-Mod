@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,6 +43,8 @@ public class ChangedItems {
             () -> new AbstractLatexCrystalItem(LatexVariant.DARK_LATEX_DRAGON));
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexGoo(LatexType.WHITE_LATEX));
     public static final RegistryObject<AbstractLatexBucket> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
+
+    public static final RegistryObject<GameMasterBlockItem> GLU = register("glu", () -> new GameMasterBlockItem(ChangedBlocks.GLU_BLOCK.get(), (new Item.Properties()).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
     public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);

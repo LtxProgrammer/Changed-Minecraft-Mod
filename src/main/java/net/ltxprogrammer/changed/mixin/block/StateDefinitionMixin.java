@@ -36,8 +36,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof MagmaBlock || ownerBlock instanceof EndPortalFrameBlock || ownerBlock instanceof NetherPortalBlock ||
                     ownerBlock instanceof EndPortalBlock || ownerBlock instanceof EndGatewayBlock || ownerBlock instanceof BeaconBlock ||
                     ownerBlock instanceof IceBlock || ownerBlock instanceof PowderSnowBlock || ownerBlock instanceof SnowLayerBlock ||
-                    ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock || ownerBlock instanceof CommandBlock||
-                    ownerBlock instanceof JigsawBlock || ownerBlock instanceof StructureBlock || ownerBlock instanceof LightBlock ||
+                    ownerBlock instanceof AbstractCandleBlock || ownerBlock instanceof BarrierBlock || ownerBlock instanceof GameMasterBlock ||
                     ownerBlock instanceof StructureVoidBlock || ownerBlock instanceof LiquidBlock || ownerBlock instanceof ConduitBlock ||
                     ownerBlock instanceof DragonEggBlock || ownerBlock instanceof CropBlock || ownerBlock instanceof TurtleEggBlock ||
                     ownerBlock instanceof SpawnerBlock || ownerBlock instanceof AbstractCauldronBlock || ownerBlock instanceof AnvilBlock ||
@@ -45,7 +44,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
                     ownerBlock instanceof BannerBlock || ownerBlock instanceof WetSpongeBlock || ownerBlock instanceof RailBlock || ownerBlock instanceof PoweredRailBlock ||
                     ownerBlock instanceof DetectorRailBlock || ownerBlock instanceof DaylightDetectorBlock || ownerBlock instanceof RespawnAnchorBlock ||
                     ownerBlock instanceof RepeaterBlock || ownerBlock instanceof ComparatorBlock || ownerBlock instanceof StemBlock || ownerBlock instanceof FurnaceBlock ||
-                    ownerBlock instanceof BlastFurnaceBlock || ownerBlock instanceof SmokerBlock))
+                    ownerBlock instanceof BlastFurnaceBlock || ownerBlock instanceof SmokerBlock || ownerBlock instanceof LightBlock))
                 add(COVERED);
         }
     }
