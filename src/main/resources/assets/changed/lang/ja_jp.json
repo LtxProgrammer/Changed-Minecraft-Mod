@@ -34,6 +34,7 @@
   "subtitles.changed.buzzer1": "キーパッドがアクセスを拒否する",
   "subtitles.changed.shot1": "レーザー起動",
   "subtitles.changed.key": "キーパッドのラッチクリック",
+  "subtitles.changed.latex_drip": "ラテックス液",
   "subtitles.changed.monster2": "イタチザメの咆哮",
   "subtitles.changed.switch1": "キーパッドのボタンクリック",
   "subtitles.changed.siren": "セイレーンの歌声",
@@ -96,6 +97,7 @@
   "death.attack.changed:fan.player": "%1$sは %2$sと戦っているときにファンにサイコロで切られた。",
 
   "command.changed.error.not_latex_form": "無効なラテックスフォーム",
+  "command.changed.error.used_by_other_mod": "プレイヤーはすでに他のMODで使用されている",
   "command.changed.error.no_special_form": "特別な用紙は指定せず、visit https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "トランスファーに常に意識を向ける",
@@ -260,7 +262,7 @@
   "entity.changed.latex_shark": "ラテックス鮫",
   "entity.changed.latex_shark_female": "女性ラテックス鮫のフュージョン",
   "entity.changed.latex_shark_male": "男性ラテックス鮫のフュージョン",
-  "entity.changed.latex_silver_fox": "ラテックス銀狐",
+  "entity.changed.latex_silver_fox": "ラテックス・キオン",
   "entity.changed.latex_siren": "ラテックスサイレン",
   "entity.changed.latex_sniper_dog": "ラテックススナイパー犬",
   "entity.changed.latex_snow_leopard_female": "女性ラテックス雪豹スポーンエッグ",
@@ -318,7 +320,7 @@
   "item.changed.latex_red_panda_spawn_egg": "ラテックスレッサーパンダスポーンエッグ",
   "item.changed.latex_shark_spawn_egg": "ラテックス鮫スポーンエッグ",
   "item.changed.latex_shark_female_spawn_egg": "女性ラテックス鮫のフュージョンスポーンエッグ",
-  "item.changed.latex_silver_fox_spawn_egg": "ラテックス銀狐スポーンエッグ",
+  "item.changed.latex_silver_fox_spawn_egg": "スポーンエッグのラテックス・キオン",
   "item.changed.latex_siren_spawn_egg": "ラテックスサイレンスポーンエッグ",
   "item.changed.latex_shark_male_spawn_egg": "男性ラテックス鮫のフュージョンスポーンエッグ",
   "item.changed.latex_sniper_dog_spawn_egg": "ラテックススナイパー犬スポーンエッグ",
