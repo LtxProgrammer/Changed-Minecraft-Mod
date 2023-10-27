@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:plains",
+    "minecraft:meadow",
+    "minecraft:snowy_plains",
+    "changed:dark_latex_plains",
+    "changed:white_latex_forest"
+  ]
+}
