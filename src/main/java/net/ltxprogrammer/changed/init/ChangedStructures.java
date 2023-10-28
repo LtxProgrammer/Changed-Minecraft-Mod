@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.features.structures.Beehive;
 import net.ltxprogrammer.changed.world.features.structures.DecayedLab;
+import net.ltxprogrammer.changed.world.features.structures.Facility;
 import net.ltxprogrammer.changed.world.features.structures.LootTables;
 import net.minecraft.core.Holder;
 import net.minecraft.data.BuiltinRegistries;
@@ -45,6 +46,8 @@ public class ChangedStructures {
     public static final Holder<ConfiguredStructureFeature<?, ?>> WHITE_LATEX_LAB1 = registerLab("white_latex_lab1", LootTables.DECAYED_LAB_WL, ChangedTags.Biomes.HAS_WHITE_DECAYED_LABS);
     public static final Holder<ConfiguredStructureFeature<?, ?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2", LootTables.DECAYED_LAB_WL, ChangedTags.Biomes.HAS_WHITE_DECAYED_LABS);
 
+    public static final Holder<ConfiguredStructureFeature<?, ?>> FACILITY = registerFacility("facility");
+
     private static Holder<ConfiguredStructureFeature<?, ?>> registerLab(String nbt, ResourceLocation lootTable) {
         return registerLab(nbt, lootTable, ChangedTags.Biomes.HAS_DECAYED_LABS);
     }
@@ -63,6 +66,13 @@ public class ChangedStructures {
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 Changed.modResource(nbt)));
         return registerConfigured(nbt, () -> beehive.get().configured(NoneFeatureConfiguration.INSTANCE, ChangedTags.Biomes.HAS_BEEHIVES));
+    }
+
+    private static Holder<ConfiguredStructureFeature<?, ?>> registerFacility(String name) {
+        RegistryObject<StructureFeature<NoneFeatureConfiguration>> facility = registerFeature(name, new Facility(
+                NoneFeatureConfiguration.CODEC,
+                GenerationStep.Decoration.SURFACE_STRUCTURES));
+        return registerConfigured(name, () -> facility.get().configured(NoneFeatureConfiguration.INSTANCE, ChangedTags.Biomes.HAS_FACILITY));
     }
 
     private static <F extends StructureFeature<?>> RegistryObject<F> registerFeature(String name, F feature) {
