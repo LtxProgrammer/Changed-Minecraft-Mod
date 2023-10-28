@@ -42,26 +42,26 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedSounds.OPEN2;
 
-public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
-    public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
+public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
+    public static final EnumProperty<NineSection> SECTION = EnumProperty.create("section", NineSection.class);
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    public static final VoxelShape SHAPE_FRAME1 = Block.box(14.0D, 0.0D, 2.0D, 16.0D, 32.0D, 14.0D);
-    public static final VoxelShape SHAPE_FRAME2 = Block.box(-16.0D, 0.0D, 2.0D, -14.0D, 32.0D, 14.0D);
-    public static final VoxelShape SHAPE_FRAME3 = Block.box(-16.0D, 30.0D, 2.0D, 16.0D, 32.0D, 14.0D);
+    public static final VoxelShape SHAPE_FRAME1 = Block.box(30.0D, 0.0D, 2.0D, 32.0D, 48.0D, 14.0D);
+    public static final VoxelShape SHAPE_FRAME2 = Block.box(-16.0D, 0.0D, 2.0D, -14.0D, 48.0D, 14.0D);
+    public static final VoxelShape SHAPE_FRAME3 = Block.box(-16.0D, 46.0D, 2.0D, 32.0D, 48.0D, 14.0D);
     public static final VoxelShape SHAPE_FRAME = Shapes.or(SHAPE_FRAME1, SHAPE_FRAME2, SHAPE_FRAME3);
-    public static final VoxelShape SHAPE_DOOR = Block.box(-16.0D, 0.0D, 4.0D, 16.0D, 32.0D, 12.0D);
+    public static final VoxelShape SHAPE_DOOR = Block.box(-16.0D, 0.0D, 4.0D, 32.0D, 48.0D, 12.0D);
     public static final VoxelShape SHAPE_COLLISION_CLOSED = Shapes.or(SHAPE_FRAME, SHAPE_DOOR);
 
     private final SoundEvent open, close;
 
-    public AbstractLabDoor(SoundEvent open, SoundEvent close) {
+    public AbstractLargeLabDoor(SoundEvent open, SoundEvent close) {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(6.5F, 9.0F));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(POWERED, Boolean.FALSE)
-                .setValue(SECTION, QuarterSection.BOTTOM_LEFT)
+                .setValue(SECTION, NineSection.BOTTOM_MIDDLE)
                 .setValue(OPEN, Boolean.FALSE));
         this.open = open;
         this.close = close;
@@ -101,10 +101,17 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         }
 
         switch (state.getValue(SECTION)) {
-            case BOTTOM_LEFT -> { return shape; }
-            case TOP_LEFT -> { return shape.move(0, -1.0D, 0); }
-            case TOP_RIGHT -> { return shape.move(x, -1.0D, z); }
+            case BOTTOM_LEFT -> { return shape.move(-x, 0.0D, -z); }
+            case MIDDLE_LEFT -> { return shape.move(-x, -1.0D, -z); }
+            case TOP_LEFT -> { return shape.move(-x, -2.0D, -z); }
+
+            case BOTTOM_MIDDLE -> { return shape.move(0, 0.0D, 0); }
+            case CENTER -> { return shape.move(0, -1.0D, 0); }
+            case TOP_MIDDLE -> { return shape.move(0, -2.0D, 0); }
+
             case BOTTOM_RIGHT -> { return shape.move(x, 0.0D, z); }
+            case MIDDLE_RIGHT -> { return shape.move(x, -1.0D, z); }
+            case TOP_RIGHT -> { return shape.move(x, -2.0D, z); }
         }
 
         return shape;
@@ -129,18 +136,13 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
         Direction direction = context.getHorizontalDirection();
-        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context)) {
-            boolean place;
-            switch (direction) {
-                case NORTH -> place = level.getBlockState(blockpos.east()).canBeReplaced(context) && level.getBlockState(blockpos.east().above()).canBeReplaced(context);
-                case EAST -> place = level.getBlockState(blockpos.south()).canBeReplaced(context) && level.getBlockState(blockpos.south().above()).canBeReplaced(context);
-                case SOUTH -> place = level.getBlockState(blockpos.west()).canBeReplaced(context) && level.getBlockState(blockpos.west().above()).canBeReplaced(context);
-                case WEST -> place = level.getBlockState(blockpos.north()).canBeReplaced(context) && level.getBlockState(blockpos.north().above()).canBeReplaced(context);
-                default -> place = false;
+        if (blockpos.getY() < level.getMaxBuildHeight() - 2) {
+            for (var sect : NineSection.BOTTOM_MIDDLE.getOtherValues()) {
+                if (!level.getBlockState(NineSection.BOTTOM_MIDDLE.getRelative(blockpos, direction.getOpposite(), sect)).canBeReplaced(context))
+                    return null;
             }
 
-            if (!place) return null;
-            return this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(OPEN, Boolean.FALSE);
+            return this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(OPEN, Boolean.FALSE).setValue(SECTION, NineSection.BOTTOM_MIDDLE);
         } else {
             return null;
         }
@@ -154,7 +156,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        return state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT ?
+        return state.getValue(SECTION) == NineSection.BOTTOM_MIDDLE ?
                 new ArrayList<>(Collections.singleton(this.asItem().getDefaultInstance())) :
                 List.of();
     }
@@ -182,7 +184,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         if (wantOn != state.getValue(POWERED)) {
             if (!wantOn && state.getValue(OPEN)) {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, Boolean.FALSE).setValue(OPEN, Boolean.FALSE));
-                if (state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
+                if (state.getValue(SECTION) == NineSection.CENTER)
                     level.playSound(null, pos, close, SoundSource.BLOCKS, 1, 1);
                 level.gameEvent(GameEvent.BLOCK_CLOSE, pos);
             } else
@@ -209,13 +211,13 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         if (state.getValue(OPEN) && player.getDimensions(player.getPose()).makeBoundingBox(player.position()).intersects(new AABB(
-                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.BOTTOM_LEFT),
-                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.TOP_RIGHT))))
+                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), NineSection.BOTTOM_LEFT),
+                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), NineSection.TOP_RIGHT))))
             return InteractionResult.FAIL;
 
         var wantState = !state.getValue(OPEN);
         var thisSect = state.getValue(SECTION);
-        for (var sect : QuarterSection.values()) {
+        for (var sect : NineSection.values()) {
             var nPos = thisSect.getRelative(pos, state.getValue(FACING), sect);
             var nBlock = level.getBlockState(nPos);
             if (nBlock.getBlock() != this)
@@ -223,7 +225,8 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
             level.setBlockAndUpdate(nPos, nBlock.setValue(OPEN, wantState));
             level.gameEvent(wantState ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
         }
-        level.playSound(null, pos, wantState ? open : close, SoundSource.BLOCKS, 1, 1);
+        level.playSound(null, thisSect.getRelative(pos, state.getValue(FACING), NineSection.CENTER),
+                wantState ? open : close, SoundSource.BLOCKS, 1, 1);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -235,18 +238,18 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
             level.setBlockAndUpdate(thisSect.getRelative(pos, state.getValue(FACING), sect), state.setValue(SECTION, sect));
     }
 
-    protected BlockState getBlockState(BlockState state, LevelReader level, BlockPos pos, QuarterSection otherSect) {
+    protected BlockState getBlockState(BlockState state, LevelReader level, BlockPos pos, NineSection otherSect) {
         if (state.getValue(SECTION) == otherSect)
             return state;
         return level.getBlockState(state.getValue(SECTION).getRelative(pos, state.getValue(FACING), otherSect));
     }
 
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos, Either<Boolean, Direction.Axis> allCheckOrAxis) {
-        if (allCheckOrAxis.left().isPresent() && !allCheckOrAxis.left().get() && state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
+        if (allCheckOrAxis.left().isPresent() && !allCheckOrAxis.left().get() && state.getValue(SECTION) == NineSection.BOTTOM_MIDDLE)
             return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
 
         var thisSect = state.getValue(SECTION);
-        for (var sect : allCheckOrAxis.left().isPresent() && allCheckOrAxis.left().get() ? Arrays.stream(QuarterSection.values()).toList() : thisSect.getOtherValues()) {
+        for (var sect : allCheckOrAxis.left().isPresent() && allCheckOrAxis.left().get() ? Arrays.stream(NineSection.values()).toList() : thisSect.getOtherValues()) {
             if (allCheckOrAxis.right().isPresent()) {
                 if (!thisSect.isOnAxis(sect, state.getValue(FACING), allCheckOrAxis.right().get()))
                     continue;
@@ -275,10 +278,10 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
 
     protected void preventCreativeDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
         var section = state.getValue(SECTION);
-        if (section != QuarterSection.BOTTOM_LEFT) {
-            BlockPos blockpos = section.getRelative(pos, state.getValue(FACING), QuarterSection.BOTTOM_LEFT);
+        if (section != NineSection.BOTTOM_MIDDLE) {
+            BlockPos blockpos = section.getRelative(pos, state.getValue(FACING), NineSection.BOTTOM_MIDDLE);
             BlockState blockstate = level.getBlockState(blockpos);
-            if (blockstate.is(state.getBlock()) && blockstate.getValue(SECTION) == QuarterSection.BOTTOM_LEFT) {
+            if (blockstate.is(state.getBlock()) && blockstate.getValue(SECTION) == NineSection.BOTTOM_MIDDLE) {
                 BlockState blockstate1 = blockstate.hasProperty(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
                 level.setBlock(blockpos, blockstate1, 35);
                 level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
@@ -291,7 +294,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         if (!level.isClientSide) {
             if (player.isCreative()) {
                 preventCreativeDropFromBottomPart(level, pos, state, player);
-            } else if (state.getValue(SECTION) != QuarterSection.BOTTOM_LEFT) {
+            } else if (state.getValue(SECTION) != NineSection.BOTTOM_MIDDLE) {
                 dropResources(state, level, pos, null, player, player.getMainHandItem());
             }
         }
