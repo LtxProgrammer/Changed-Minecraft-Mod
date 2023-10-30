@@ -52,11 +52,16 @@ public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements 
     public static final VoxelShape SHAPE_FRAME3 = Block.box(-16.0D, 46.0D, 2.0D, 32.0D, 48.0D, 14.0D);
     public static final VoxelShape SHAPE_FRAME = Shapes.or(SHAPE_FRAME1, SHAPE_FRAME2, SHAPE_FRAME3);
     public static final VoxelShape SHAPE_DOOR = Block.box(-16.0D, 0.0D, 4.0D, 32.0D, 48.0D, 12.0D);
+    public static final VoxelShape SHAPE_DOOR_SLIM = Block.box(-16.0D, 0.0D, 7.0D, 32.0D, 48.0D, 9.0D);
     public static final VoxelShape SHAPE_COLLISION_CLOSED = Shapes.or(SHAPE_FRAME, SHAPE_DOOR);
+    public static final VoxelShape SHAPE_COLLISION_CLOSED_SLIM = Shapes.or(SHAPE_FRAME, SHAPE_DOOR_SLIM);
 
     private final SoundEvent open, close;
 
-    public AbstractLargeLabDoor(SoundEvent open, SoundEvent close) {
+    private final VoxelShape shapeFrame;
+    private final VoxelShape shapeCollisionClosed;
+
+    public AbstractLargeLabDoor(SoundEvent open, SoundEvent close, boolean slim) {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(6.5F, 9.0F));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -65,6 +70,9 @@ public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements 
                 .setValue(OPEN, Boolean.FALSE));
         this.open = open;
         this.close = close;
+
+        this.shapeFrame = SHAPE_FRAME;
+        this.shapeCollisionClosed = slim ? SHAPE_COLLISION_CLOSED_SLIM : SHAPE_COLLISION_CLOSED;
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
@@ -76,13 +84,13 @@ public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements 
     }
 
     public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        VoxelShape shape = SHAPE_FRAME;
+        VoxelShape shape = shapeFrame;
 
         double x = 0.0D;
         double z = 0.0D;
 
         if (state.getValue(OPEN)) {
-            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), SHAPE_FRAME);
+            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), shapeFrame);
             switch (state.getValue(FACING)) {
                 case NORTH -> x = 1.0D;
                 case EAST -> z = 1.0D;
@@ -91,7 +99,7 @@ public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements 
             }
         }
         else {
-            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), SHAPE_COLLISION_CLOSED);
+            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), shapeCollisionClosed);
             switch (state.getValue(FACING)) {
                 case NORTH -> x = 1.0D;
                 case EAST -> z = 1.0D;
