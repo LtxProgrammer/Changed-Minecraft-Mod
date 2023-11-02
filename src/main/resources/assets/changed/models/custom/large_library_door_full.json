@@ -230,9 +230,11 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
+			"translation": [0, 2.0, 0],
 			"scale": [0.13, 0.13, 0.13]
 		},
 		"thirdperson_lefthand": {
+			"translation": [0, 2.0, 0],
 			"scale": [0.13, 0.13, 0.13]
 		},
 		"firstperson_righthand": {
@@ -244,6 +246,7 @@
 			"scale": [0.2, 0.2, 0.2]
 		},
 		"ground": {
+			"translation": [0, 4.5, 0],
 			"scale": [0.13, 0.13, 0.13]
 		},
 		"gui": {
