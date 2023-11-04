@@ -443,5 +443,11 @@
   "changed.tutorial.select_ability.title": "Válassza ki képességét",
   "changed.tutorial.select_ability.description": "Nyomd meg a %s gombot",
   "changed.tutorial.use_ability.title": "Használja ki képességét",
-  "changed.tutorial.use_ability.description": "Nyomd meg vagy megnyomva tartani a %s gombot"
+  "changed.tutorial.use_ability.description": "Nyomd meg vagy megnyomva tartani a %s gombot",
+
+  "glu_block.size": "Méret: %1$sx%1$s",
+  "glu_block.has_door": "Ajtaja van",
+  "glu_block.joint_type": "Ajtócsukó típusa",
+  "glu_block.joint.entrance": "Bejárat",
+  "glu_block.joint.exit": "Kijárat"
 }
