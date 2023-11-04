@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,7 +37,7 @@ public abstract class FacilityPieceInstance extends StructurePiece {
 
     public abstract void addSteps(FacilityPiece parent, List<GenStep> steps);
 
-    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, BlockPos jigsawPos, BlockState jigsawState);
+    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu);
     public abstract void setupBoundingBox(BlockPos minimum);
 
     public void setupBoundingBoxOnBottomCenter(BlockPos center) {

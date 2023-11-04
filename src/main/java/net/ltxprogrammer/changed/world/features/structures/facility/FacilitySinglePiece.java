@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.world.features.structures.facility;
 
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.GluBlock;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
@@ -9,7 +8,6 @@ import net.ltxprogrammer.changed.world.features.structures.ChestLootTableProcess
 import net.ltxprogrammer.changed.world.features.structures.GluReplacementProcessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -101,34 +99,29 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .setRotation(this.getRotation())
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
-            template.filterBlocks(getGenerationPosition(), settings, Blocks.JIGSAW).forEach(blockInfo -> {
-                steps.add(new GenStep(blockInfo.pos, blockInfo.state, parent.getValidNeighbors()));
+            template.filterBlocks(getGenerationPosition(), settings, ChangedBlocks.GLU_BLOCK.get()).forEach(blockInfo -> {
+                steps.add(new GenStep(blockInfo, parent.getValidNeighbors()));
             });
         }
 
-        private static BlockPos jigsawNeighbor(BlockPos jigsawPos, BlockState jigsawState) {
-            return jigsawPos.relative(jigsawState.getValue(GluBlock.ORIENTATION).front());
+        private static BlockPos gluNeighbor(BlockPos gluPos, BlockState gluState) {
+            return gluPos.relative(gluState.getValue(GluBlock.ORIENTATION).front());
         }
 
         @Override
-        public boolean setupBoundingBox(StructurePiecesBuilder builder, BlockPos jigsawPos, BlockState jigsawState) {
+        public boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu) {
             var settings = new StructurePlaceSettings()
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
 
-            var gluBlockPos = jigsawNeighbor(jigsawPos, jigsawState);
+            var gluBlockPos = gluNeighbor(exitGlu.pos, exitGlu.state);
             for (Direction dir : Direction.Plane.HORIZONTAL) { // TODO randomly sort
                 this.setRotation(dir);
-                settings.setMirror(this.getMirror()).setRotation(this.getRotation());
+                settings.setRotation(this.getRotation());
                 for (var blockInfo : template.filterBlocks(BlockPos.ZERO, settings, ChangedBlocks.GLU_BLOCK.get())) {
-                    if (!GluBlock.canConnect(jigsawState, blockInfo.state))
+                    if (!GluBlock.canConnect(exitGlu.state, blockInfo.state))
                         continue;
                     this.setupBoundingBox(gluBlockPos.subtract(blockInfo.pos));
-
-                    if (template.filterBlocks(getGenerationPosition(), settings, ChangedBlocks.GLU_BLOCK.get()).stream().noneMatch(check -> check.pos.equals(gluBlockPos))) {
-                        Changed.LOGGER.debug("Target glu position: {}", gluBlockPos);
-                        throw new RuntimeException("Incorrect code");
-                    }
 
                     if (builder.findCollisionPiece(this.boundingBox) == null)
                         return true;
