@@ -438,5 +438,11 @@
   "changed.tutorial.select_ability.title": "Select your ability",
   "changed.tutorial.select_ability.description": "Press %s",
   "changed.tutorial.use_ability.title": "Use your ability",
-  "changed.tutorial.use_ability.description": "Press or hold %s"
+  "changed.tutorial.use_ability.description": "Press or hold %s",
+
+  "glu_block.size": "Size %1$sx%1$s",
+  "glu_block.has_door": "Has Door",
+  "glu_block.joint_type": "Joint Type",
+  "glu_block.joint.entrance": "Entrance",
+  "glu_block.joint.exit": "Exit"
 }
