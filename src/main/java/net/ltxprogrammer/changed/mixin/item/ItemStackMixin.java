@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +26,9 @@ public abstract class ItemStackMixin implements IForgeItemStack {
     public boolean canEquip(EquipmentSlot armorType, Entity entity) {
         ItemStack self = (ItemStack)(IForgeItemStack)this;
         Player player = EntityUtil.playerOrNull(entity);
+        boolean canEquipToSlot = this.getItem().canEquip(self, armorType, entity);
         return ProcessTransfur.ifPlayerLatex(player, variant -> {
-            return variant.canWear(player, self);
-        }, () -> this.getItem().canEquip(self, armorType, entity));
+            return variant.canWear(player, self) && canEquipToSlot;
+        }, () -> canEquipToSlot);
     }
 }
