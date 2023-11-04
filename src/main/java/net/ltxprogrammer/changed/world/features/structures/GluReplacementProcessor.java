@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.world.features.structures;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFeatures;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
@@ -31,8 +32,7 @@ public class GluReplacementProcessor extends StructureProcessor {
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader p_74127_, BlockPos p_74128_, BlockPos p_74129_, StructureTemplate.StructureBlockInfo p_74130_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings p_74132_) {
         BlockState blockstate = blockInfo.state;
         if (blockstate.is(ChangedBlocks.GLU_BLOCK.get())) {
-            // TODO
-            /*String s = blockInfo.nbt.getString("final_state");
+            String s = blockInfo.nbt.getString(GluBlockEntity.FINAL_STATE);
             BlockStateParser blockstateparser = new BlockStateParser(new StringReader(s), false);
 
             try {
@@ -41,8 +41,7 @@ public class GluReplacementProcessor extends StructureProcessor {
                 throw new RuntimeException(commandsyntaxexception);
             }
 
-            return blockstateparser.getState().is(Blocks.STRUCTURE_VOID) ? null : new StructureTemplate.StructureBlockInfo(blockInfo.pos, blockstateparser.getState(), (CompoundTag)null);*/
-            return null;
+            return blockstateparser.getState().is(Blocks.STRUCTURE_VOID) ? null : new StructureTemplate.StructureBlockInfo(blockInfo.pos, blockstateparser.getState(), null);
         } else {
             return blockInfo;
         }
