@@ -48,7 +48,7 @@ public class FacilityPieces {
                 continue;
             }
             var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-            if (!nextStructure.setupBoundingBox(builder, start.position(), start.blockState())) {
+            if (!nextStructure.setupBoundingBox(builder, start.blockInfo())) {
                 reroll--;
                 continue;
             }
