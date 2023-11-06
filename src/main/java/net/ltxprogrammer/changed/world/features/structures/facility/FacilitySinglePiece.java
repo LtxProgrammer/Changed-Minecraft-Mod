@@ -119,7 +119,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                 this.setRotation(dir);
                 settings.setRotation(this.getRotation());
                 for (var blockInfo : template.filterBlocks(BlockPos.ZERO, settings, ChangedBlocks.GLU_BLOCK.get())) {
-                    if (!GluBlock.canConnect(exitGlu.state, blockInfo.state))
+                    if (!GluBlock.canConnect(exitGlu.state, exitGlu.nbt, blockInfo.state, blockInfo.nbt))
                         continue;
                     this.setupBoundingBox(gluBlockPos.subtract(blockInfo.pos));
 

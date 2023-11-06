@@ -114,5 +114,9 @@ public class GluBlockEntity extends BlockEntity {
                 nextOrdinal = 0;
             return values()[nextOrdinal];
         }
+
+        public boolean canConnectTo(JointType other) {
+            return this != other;
+        }
     }
 }
