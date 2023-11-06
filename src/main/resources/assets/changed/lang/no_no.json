@@ -442,5 +442,11 @@
   "changed.tutorial.select_ability.title": "Velge din evne",
   "changed.tutorial.select_ability.description": "Trykk på %s",
   "changed.tutorial.use_ability.title": "Bruke din evne",
-  "changed.tutorial.use_ability.description": "Trykk på eller hold %s"
+  "changed.tutorial.use_ability.description": "Trykk på eller hold %s",
+
+  "glu_block.size": "Størrelse %1$sx%1$s",
+  "glu_block.has_door": "Har dør",
+  "glu_block.joint_type": "Strukturskjøt type",
+  "glu_block.joint.entrance": "Inngang",
+  "glu_block.joint.exit": "Utgang"
 }

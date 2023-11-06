@@ -1,13 +1,28 @@
 {
   "replace": false,
   "values": [
+    "changed:keypad",
+    "changed:laser_beam",
+    "changed:note",
+    "changed:retinal_scanner",
+    "changed:speaker",
     "minecraft:air",
     "minecraft:barrier",
-    "minecraft:light",
+    "minecraft:cobweb",
     "minecraft:glass",
-    "minecraft:red_stained_glass",
     "minecraft:glass_pane",
+    "minecraft:glow_lichen",
+    "minecraft:honey_block",
+    "minecraft:ice",
+    "minecraft:ladder",
+    "minecraft:light",
+    "minecraft:red_stained_glass",
     "minecraft:red_stained_glass_pane",
-    "changed:laser_beam"
+    "minecraft:tripwire",
+    "minecraft:tripwire_hook",
+    "minecraft:vine",
+    "minecraft:water",
+    "minecraft:white_stained_glass",
+    "minecraft:white_stained_glass_pane"
   ]
 }
