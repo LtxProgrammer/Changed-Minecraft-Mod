@@ -10,7 +10,7 @@ public class FacilityStaircaseStart extends FacilitySinglePiece {
             WeightedEntry.wrap(PieceType.STAIRCASE_SECTION, 1));
 
     public FacilityStaircaseStart(Zone zone, ResourceLocation templateName) {
-        super(PieceType.STAIRCASE_SECTION, zone, templateName, LootTables.LOW_TIER_LAB);
+        super(PieceType.STAIRCASE_START, zone, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override
