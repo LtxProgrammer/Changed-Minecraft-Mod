@@ -20,11 +20,11 @@ public class FacilityPieces {
     public static final FacilityPiece ENTRANCE_BLUE = new FacilityEntrance(Zone.BLUE_ZONE, Changed.modResource("facility/entrance_blue"));
     public static final FacilityPieceCollection ENTRANCES = FacilityPieceCollection.of(ENTRANCE_RED, ENTRANCE_BLUE);
 
-    public static final FacilityPiece STAIRCASE_START_RED = new FacilityStaircaseSection(Zone.RED_ZONE, Changed.modResource("facility/staircase_start_red"));
+    public static final FacilityPiece STAIRCASE_START_RED = new FacilityStaircaseStart(Zone.RED_ZONE, Changed.modResource("facility/staircase_start_red"));
     public static final FacilityPieceCollection STAIRCASE_STARTS = FacilityPieceCollection.of(STAIRCASE_START_RED);
     public static final FacilityPiece STAIRCASE_SECTION_RED = new FacilityStaircaseSection(Zone.RED_ZONE, Changed.modResource("facility/staircase_section_red"));
     public static final FacilityPieceCollection STAIRCASE_SECTIONS = FacilityPieceCollection.of(STAIRCASE_SECTION_RED);
-    public static final FacilityPiece STAIRCASE_END_RED = new FacilityStaircaseSection(Zone.RED_ZONE, Changed.modResource("facility/staircase_end_red"));
+    public static final FacilityPiece STAIRCASE_END_RED = new FacilityStaircaseEnd(Zone.RED_ZONE, Changed.modResource("facility/staircase_end_red"));
     public static final FacilityPieceCollection STAIRCASE_ENDS = FacilityPieceCollection.of(STAIRCASE_END_RED);
 
     public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
