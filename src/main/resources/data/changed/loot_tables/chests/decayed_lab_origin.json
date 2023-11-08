@@ -4,69 +4,72 @@
     {
       "rolls": {
         "type": "minecraft:uniform",
-        "min": 2.0,
+        "min": 1.0,
+        "max": 3.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "changed:benign_pants"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "changed:pink_pants"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:latex_dance_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:owo_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "changed:tsc_baton"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.7,
+                "max": 1.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:tsc_baton"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
         "max": 4.0
       },
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 5,
+          "weight": 10,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1.0,
-                "max": 3.0
-              },
-              "add": false
-            }
-          ],
-          "name": "changed:benign_pants"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 3,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            }
-          ],
-          "name": "changed:owo_record"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 15,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2.0,
-                "max": 7.0
-              },
-              "add": false
-            }
-          ],
-          "name": "changed:syringe"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 15,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 3.0,
-                "max": 6.0
+                "max": 4.0
               },
               "add": false
             }
@@ -81,59 +84,29 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
+                "min": 1.0,
+                "max": 3.0
               },
               "add": false
             }
           ],
-          "name": "changed:pink_pants"
+          "name": "changed:canned_peaches"
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 3.0,
-                "max": 7.0
+                "min": 1.0,
+                "max": 5.0
               },
               "add": false
             }
           ],
-          "name": "changed:latex_base"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 16,
-          "name": "minecraft:diamond"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 2,
-          "name": "changed:infuser"
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 5,
-          "functions": [
-            {
-              "function": "minecraft:set_damage",
-                "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.8,
-                "max": 1.0
-              },
-              "add": false
-            }
-          ],
-          "name": "changed:tsc_baton"
+          "name": "changed:syringe"
         },
         {
           "type": "minecraft:item",
@@ -143,8 +116,62 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
+                "min": 1.0,
+                "max": 3.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:compact_disc"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
                 "max": 4.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_base"
+        }
+      ]
+    },
+    {
+      "rolls": 3,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:dark_latex_goo"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
               },
               "add": false
             }
@@ -159,22 +186,26 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 4.0
+                "min": 1.0,
+                "max": 8.0
               },
               "add": false
             }
           ],
-          "name": "changed:dark_latex_goo"
+          "name": "changed:orange"
         }
       ]
     },
     {
-      "rolls": 2,
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 3.0
+      },
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:latex_syringe",
           "functions": [
             {
               "function": "changed:random_variant",
@@ -186,8 +217,18 @@
                 "changed:form_light_latex_wolf_organic",
                 "changed:form_light_latex_knight"
               ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              },
+              "add": false
             }
-          ]
+          ],
+          "name": "changed:latex_syringe"
         }
       ]
     }

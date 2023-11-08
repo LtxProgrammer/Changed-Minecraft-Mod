@@ -17,4 +17,16 @@ public class LatexCrystalWolfRenderer extends LatexHumanoidRenderer<LatexCrystal
     public ResourceLocation getTextureLocation(LatexCrystalWolf p_114482_) {
         return Changed.modResource("textures/latex_crystal_wolf.png");
     }
+
+    public static class Remodel extends LatexHumanoidRenderer<LatexCrystalWolf, LatexCrystalWolfModel.Remodel, ArmorLatexWolfModel.RemodelMale<LatexCrystalWolf>> {
+        public Remodel(EntityRendererProvider.Context context) {
+            super(context, new LatexCrystalWolfModel.Remodel(context.bakeLayer(LatexCrystalWolfModel.LAYER_LOCATION)),
+                    ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(LatexCrystalWolf p_114482_) {
+            return Changed.modResource("textures/remodel/latex_crystal_wolf.png");
+        }
+    }
 }

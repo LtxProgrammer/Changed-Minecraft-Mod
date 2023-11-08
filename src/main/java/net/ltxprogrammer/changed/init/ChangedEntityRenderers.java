@@ -40,8 +40,10 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_WOLF.get(),
                 useNewModels ? LatexBlueWolfRenderer.Remodel::new : LatexBlueWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CROCODILE.get(), LatexCrocodileRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(), LatexCrystalWolfRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(), LatexCrystalWolfHornedRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(),
+                useNewModels ? LatexCrystalWolfRenderer.Remodel::new : LatexCrystalWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(),
+                useNewModels ? LatexCrystalWolfHornedRenderer.Remodel::new : LatexCrystalWolfHornedRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_DEER.get(), LatexDeerRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(),
                 useNewModels ? LatexHypnoCatRenderer.Remodel::new : LatexHypnoCatRenderer::new);
@@ -90,8 +92,9 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_TIGER_SHARK.get(),
                 useNewModels ? LatexTigerSharkRenderer.Remodel::new : LatexTigerSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON.get(),
-                useNewModels ? LatexTrafficConeDragonRenderer.Remodel::new :  LatexTrafficConeDragonRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_TRANSLUCENT_LIZARD.get(), LatexTranslucentLizardRenderer::new);
+                useNewModels ? LatexTrafficConeDragonRenderer.Remodel::new : LatexTrafficConeDragonRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_TRANSLUCENT_LIZARD.get(),
+                useNewModels ? LatexTranslucentLizardRenderer.Remodel::new : LatexTranslucentLizardRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_WATERMELON_CAT.get(),
                 useNewModels ? LatexWatermelonCatRenderer.Remodel::new : LatexWatermelonCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_WHITE_TIGER.get(), LatexWhiteTigerRenderer::new);

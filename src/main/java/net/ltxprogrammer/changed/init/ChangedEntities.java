@@ -175,7 +175,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexCrystalWolfHorned>> LATEX_CRYSTAL_WOLF_HORNED = registerReducedSpawn("latex_crystal_wolf_horned", 0x393939, 0xFF014E,
             EntityType.Builder.of(LatexCrystalWolfHorned::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xCFBC9B, 0xF4E5BE,
+    public static final RegistryObject<EntityType<LatexDeer>> LATEX_DEER = register("latex_deer", 0xD8BC99, 0xFBE5BC,
             EntityType.Builder.of(LatexDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexBee>> LATEX_BEE = register("latex_bee", 0xFFBF75, 0xFF9E58,
@@ -247,7 +247,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMoth>> LATEX_MOTH = registerReducedSpawn("latex_moth", 0xFBE5BC, 0xD8BC99,
             EntityType.Builder.of(LatexMoth::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
-    public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = register("latex_siren", 0x969696, 0xFFFFFF,
+    public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = registerReducedSpawn("latex_siren", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexSiren::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<LatexSnake>> LATEX_SNAKE = register("latex_snake", 0xFFFFFF, 0x7E7E7E,

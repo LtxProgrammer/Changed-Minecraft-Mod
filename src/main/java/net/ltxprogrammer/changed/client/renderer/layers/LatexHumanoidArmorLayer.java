@@ -2,12 +2,11 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.renderer.RenderUtil;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.CameraType;
-import net.minecraft.client.Minecraft;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -37,12 +36,14 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         this.outerModel = outerModel;
     }
 
-    public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limgSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.innerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
-        this.innerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        this.outerModel.prepareMobModel(entity, limbSwing, limgSwingAmount, partialTicks);
-        this.outerModel.setupAnim(entity, limbSwing, limgSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        boolean firstPerson = RenderUtil.isFirstPerson(entity);
+    public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.getParentModel().copyPropertiesTo(this.innerModel);
+        this.getParentModel().copyPropertiesTo(this.outerModel);
+        this.innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        this.innerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.outerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        this.outerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        boolean firstPerson = ChangedCompatibility.isFirstPersonRendering();
 
         if (!firstPerson || !entity.isVisuallySwimming()) // Don't render chest-plate if swimming in first person
             this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.CHEST, packedLight, this.getArmorModel(EquipmentSlot.CHEST));
@@ -59,20 +60,39 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
             if (armoritem.getSlot() == slot) {
                 this.getParentModel().copyPropertiesTo(model);
                 boolean foil = itemstack.hasFoil();
-                if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
-                    int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
-                    float red = (float)(i >> 16 & 255) / 255.0F;
-                    float green = (float)(i >> 8 & 255) / 255.0F;
-                    float blue = (float)(i & 255) / 255.0F;
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
-                } else {
-                    this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
-                            foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                var propModel = model.getAnimator().getPropertyModel(slot);
+                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
+                if (altModel != propModel) {
+                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
+                        int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
+                        float red = (float)(i >> 16 & 255) / 255.0F;
+                        float green = (float)(i >> 8 & 255) / 255.0F;
+                        float blue = (float)(i & 255) / 255.0F;
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
+                    } else {
+                        this.renderModel(pose, buffers, packedLight,
+                                foil, altModel, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                    }
                 }
 
+                else {
+                    if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
+                        int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
+                        float red = (float)(i >> 16 & 255) / 255.0F;
+                        float green = (float)(i >> 8 & 255) / 255.0F;
+                        float blue = (float)(i & 255) / 255.0F;
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, red, green, blue, this.getArmorResource(entity, itemstack, slot, null));
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, "overlay"));
+                    } else {
+                        this.renderModel(entity, itemstack, slot, pose, buffers, packedLight,
+                                foil, model, 1.0F, 1.0F, 1.0F, this.getArmorResource(entity, itemstack, slot, null));
+                    }
+                }
             }
         }
     }
@@ -83,6 +103,11 @@ public class LatexHumanoidArmorLayer<T extends LatexEntity, M extends LatexHuman
         model.renderForSlot(entity, stack, slot, pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+    }
+
+    private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, net.minecraft.client.model.Model model, float red, float green, float blue, ResourceLocation armorResource) {
+        VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil);
+        model.renderToBuffer(pose, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {

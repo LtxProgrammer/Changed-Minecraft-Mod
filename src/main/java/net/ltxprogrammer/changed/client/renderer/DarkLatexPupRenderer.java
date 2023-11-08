@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexPupModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorNoneModel;

@@ -9,13 +9,16 @@ import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -80,7 +83,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public LatexVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId());
+    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT);
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique
@@ -153,6 +156,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
             ci.cancel();
             player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant.getParent()));
         }
+    }
+
+    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
+    public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
+        if (ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
+        }));
     }
 
     @Nullable

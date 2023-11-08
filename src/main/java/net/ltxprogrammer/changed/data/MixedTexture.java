@@ -5,7 +5,9 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -28,7 +30,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @OnlyIn(Dist.CLIENT)
 public class MixedTexture {
-    public record OverlayBlock(ResourceLocation top, ResourceLocation side, ResourceLocation bottom) {
+    public static class OverlayBlock {
+        public final ResourceLocation top, side, bottom;
+        public final Material particleMaterial;
+
         private static final Map<String, Direction> NAME_TO_SIDE = ImmutableMap.<String, Direction>builder()
                 .put("top", Direction.UP)
                 .put("end", Direction.UP)
@@ -49,6 +54,14 @@ public class MixedTexture {
                 default -> side;
             };
         }
+
+        public OverlayBlock(ResourceLocation top, ResourceLocation side, ResourceLocation bottom) {
+            this.top = top;
+            this.side = side;
+            this.bottom = bottom;
+
+            this.particleMaterial = new Material(TextureAtlas.LOCATION_BLOCKS, top);
+        }
     }
 
     private static final Logger LOGGER = LogManager.getLogger(MixedTexture.class);
@@ -68,10 +81,6 @@ public class MixedTexture {
 
     public ResourceLocation getBaseLocation() {
         return baseLocation;
-    }
-
-    public static NativeImage findMixedTexture(ResourceLocation name) {
-        return findCachedTexture(name).orElse(null);
     }
 
     private record RGBA(float r, float g, float b, float a) {

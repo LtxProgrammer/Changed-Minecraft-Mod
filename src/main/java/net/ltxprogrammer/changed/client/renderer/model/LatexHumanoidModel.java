@@ -3,9 +3,9 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.RenderUtil;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -13,9 +13,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
@@ -52,7 +51,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             animator.leftArmPose = humanoidmodel$armpose;
         }
 
-        if (RenderUtil.isFirstPerson(entity)) {
+        if (ChangedCompatibility.isFirstPersonRendering()) {
             getHead().visible = false;
             getTorso().visible = !entity.isVisuallySwimming();
         }
@@ -69,6 +68,10 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         this.getArm(p_102854_).translateAndRotate(p_102855_);
         if (this instanceof LatexHumanoidModelInterface modelInterface)
             p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+    }
+
+    public Stream<ModelPart> getAllParts() {
+        return rootModelPart.getAllParts();
     }
 
     public ModelPart getRandomModelPart(Random random) {

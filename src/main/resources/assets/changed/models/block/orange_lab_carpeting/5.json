@@ -1,10 +1,11 @@
 {
   "parent": "changed:block/connected_floor",
   "textures": {
-    "north_east": "changed:blocks/orange_lab_carpeting/ne0",
-    "north_west": "changed:blocks/orange_lab_carpeting/nw_x",
-    "south_east": "changed:blocks/orange_lab_carpeting/se_y",
-    "south_west": "changed:blocks/orange_lab_carpeting/sw_c",
+    "north_east": "changed:blocks/orange_lab_carpeting/0",
+    "north_west": "changed:blocks/orange_lab_carpeting/3",
+    "south_east": "changed:blocks/orange_lab_carpeting/2",
+    "south_west": "changed:blocks/orange_lab_carpeting/4",
+    "bottom": "changed:blocks/orange_lab_carpeting/bottom",
     "sides": "changed:blocks/orange_lab_carpeting/side"
   }
 }

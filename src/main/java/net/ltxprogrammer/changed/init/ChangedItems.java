@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,6 +44,8 @@ public class ChangedItems {
     public static final RegistryObject<AbstractLatexGoo> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexGoo(LatexType.WHITE_LATEX));
     public static final RegistryObject<AbstractLatexBucket> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 
+    public static final RegistryObject<GameMasterBlockItem> GLU = register("glu", () -> new GameMasterBlockItem(ChangedBlocks.GLU_BLOCK.get(), (new Item.Properties()).rarity(Rarity.EPIC)));
+
     public static final RegistryObject<TscStaff> TSC_STAFF = register("tsc_staff", TscStaff::new);
     public static final RegistryObject<TscBaton> TSC_BATON = register("tsc_baton", TscBaton::new);
     public static final RegistryObject<TscShield> TSC_SHIELD = register("tsc_shield", TscShield::new);
@@ -68,9 +71,9 @@ public class ChangedItems {
     public static final RegistryObject<AbdomenArmor> DIAMOND_LOWER_ABDOMEN_ARMOR = register("diamond_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.DIAMOND, EquipmentSlot.FEET));
     public static final RegistryObject<AbdomenArmor> NETHERITE_UPPER_ABDOMEN_ARMOR = register("netherite_upper_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS));
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
     public static final RegistryObject<AbdomenArmor> NETHERITE_LOWER_ABDOMEN_ARMOR = register("netherite_lower_abdomen_armor",
-            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET));
+            () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);

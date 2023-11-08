@@ -5,12 +5,13 @@ issueTrackerURL="https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues" 
 
 [[mods]]
 modId="changed"
-version="0.12"
+version="0.13"
 displayName="Changed: Minecraft Mod"
 updateJSONURL="https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/update.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod"
 logoFile="icon@400.png"
-credits='''Credits to Dragon Snow for creating Changed, and for others aiding in the development of the mod: bijimio#3940, Artemka2009, KoBOLTA, ÒwÓ#0256, Twix#5803'''
+credits='''Credits to Dragon Snow for creating Changed, and for others aiding in the development of the mod: bijimio: Assistant Developer, Texture Artist, Modeler, Translator, Playtester | Valurio9683: Assistant Developer, Texture Artist, Translator | KoBOLTA: Texture Artist, Modeler, Translator |
+poptartiguess: Structure Designer | N1CO785: Modeler | BaiTian6641: Texture Artist, Translator | Artemka2009: Texture Artist, Music Composer | Foxyas: Translator, Playtester | Crepe2806: Translator | xxXMinionXxx: Translator | Sel7D4: Translator | Candnhen: Texture Artist | ABTOR: Texture Artist | Twix#5803: Texture Artist'''
 authors="LtxProgrammer"
 description='''Gooey transfur mod inspired by Dragon Snow's Changed.'''
 [[dependencies.changed]]

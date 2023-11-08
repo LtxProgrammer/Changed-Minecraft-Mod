@@ -125,7 +125,7 @@ public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Ma
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return ProcessTransfur.isPlayerLatex(player);
     }
 
     @Override

@@ -52,8 +52,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
 
         ItemStack itemStack = player.getItemInHand(hand);
         var nStack = blockEntity.tryUse(itemStack);
-        if (nStack != itemStack) {
-            player.setItemInHand(hand, nStack);
+        if (nStack != null) {
+            player.addItem(nStack);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
@@ -61,6 +61,18 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     private int processBreak(Level level, BlockPos blockPos, LatexType type, int remaining, AtomicBoolean placedFluid) {
+        if (remaining == 16) {
+            var pupType = type.pup.get();
+            if (pupType != null) {
+                var pup = pupType.create(level);
+                if (pup != null) {
+                    pup.moveTo(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                    level.addFreshEntity(pup);
+                    return 16;
+                }
+            }
+        }
+
         switch (level.getRandom().nextInt(6)) {
             case 0:
                 return 1; // Destroy goo

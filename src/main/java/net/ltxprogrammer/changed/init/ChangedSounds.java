@@ -36,6 +36,7 @@ public class ChangedSounds {
     public static final SoundEvent GOO = register("goo");
     public static final SoundEvent ICE2 = register("ice2");
     public static final SoundEvent KEY = register("key");
+    public static final SoundEvent LATEX_DRIP = register("latex_drip");
     public static final SoundEvent MONSTER2 = register("monster2");
     public static final SoundEvent OPEN1 = register("open1");
     public static final SoundEvent OPEN2 = register("open2");

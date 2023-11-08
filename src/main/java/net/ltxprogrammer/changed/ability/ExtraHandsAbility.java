@@ -1,10 +1,8 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.world.inventory.ExtraHandsMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ExtraHandsAbility extends SimpleAbility {

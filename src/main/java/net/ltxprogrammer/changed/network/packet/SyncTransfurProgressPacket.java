@@ -21,13 +21,13 @@ public class SyncTransfurProgressPacket implements ChangedPacket {
 
     public SyncTransfurProgressPacket(FriendlyByteBuf buffer) {
         this.uuid = buffer.readUUID();
-        this.progress = new ProcessTransfur.TransfurProgress(buffer.readFloat(), ChangedRegistry.LATEX_VARIANT.get().getKey(buffer.readInt()).location());
+        this.progress = new ProcessTransfur.TransfurProgress(buffer.readFloat(), ChangedRegistry.LATEX_VARIANT.get().getValue(buffer.readInt()));
     }
 
     public void write(FriendlyByteBuf buffer) {
         buffer.writeUUID(uuid);
         buffer.writeFloat(progress.progress());
-        buffer.writeInt(ChangedRegistry.LATEX_VARIANT.get().getID(progress.type()));
+        buffer.writeInt(ChangedRegistry.LATEX_VARIANT.get().getID(progress.variant()));
     }
 
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {

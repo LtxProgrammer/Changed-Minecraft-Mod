@@ -54,6 +54,6 @@ public class SpecialStateRadialMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return true;
+        return ProcessTransfur.isPlayerLatex(player);
     }
 }

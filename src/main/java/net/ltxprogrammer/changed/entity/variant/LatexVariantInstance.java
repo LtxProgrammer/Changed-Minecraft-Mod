@@ -5,7 +5,11 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -185,6 +189,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (event.phase == TickEvent.Phase.END) {
             Pale.tickPaleExposure(event.player);
             ProcessTransfur.ifPlayerLatex(event.player, instance -> {
+                if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
+                    ProcessTransfur.setPlayerLatexVariant(event.player, null);
+                    return;
+                }
+
                 try {
                     instance.tick(event.player);
                     if (!event.player.isSpectator()) {
@@ -249,14 +258,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     protected void multiplyMotion(Player player, double mul) {
         var dP = player.getDeltaMovement();
-
-        if (mul > 1f) {
+        if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
                 float friction = player.getLevel().getBlockState(player.blockPosition().below())
                         .getFriction(player.getLevel(), player.blockPosition(), player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
             }
         }
 
@@ -411,7 +423,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             final double nearRunSpeed = 0.6666D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+                if (entityClass.isAssignableFrom(AbstractVillager.class) && parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator())
                     continue;
 
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), Objects::nonNull);

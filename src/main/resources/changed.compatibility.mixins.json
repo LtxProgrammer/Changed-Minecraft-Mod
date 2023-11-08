@@ -6,6 +6,7 @@
   "refmap": "changed.refmap.json",
   "mixins": [],
   "client": [
+    "HardcoreRevival.KnockoutHandlerMixin",
     "Oculus.WorldRenderingPhaseMixin",
     "PresenceFootsteps.SoundEngineMixin",
     "PresenceFootsteps.StateLookupMixin",

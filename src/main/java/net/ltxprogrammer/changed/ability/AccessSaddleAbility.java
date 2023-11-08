@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.world.inventory.TaurSaddleMenu;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
 
 public class AccessSaddleAbility extends AbstractAbility<AccessSaddleAbilityInstance> {
     public AccessSaddleAbility() {

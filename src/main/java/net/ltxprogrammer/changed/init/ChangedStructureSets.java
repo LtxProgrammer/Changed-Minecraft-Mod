@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
-public class ChangedStructureSets { // TODO finish
+public class ChangedStructureSets {
     public static final DeferredRegister<StructureSet> REGISTRY = DeferredRegister.create(BuiltinRegistries.STRUCTURE_SETS.key(), Changed.MODID);
     public static final Holder<StructureSet> BEEHIVES = register("beehives", ChangedStructures.BEEHIVE1,
             new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 0xBEE00, Vec3i.ZERO));
@@ -40,6 +40,8 @@ public class ChangedStructureSets { // TODO finish
             StructureSet.entry(ChangedStructures.WHITE_LATEX_LAB1),
             StructureSet.entry(ChangedStructures.WHITE_LATEX_LAB2)
     ), new RandomSpreadStructurePlacement(24, 8, RandomSpreadType.LINEAR, 0xFEED00, Vec3i.ZERO)));
+    public static final Holder<StructureSet> FACILITIES = register("facilities", ChangedStructures.FACILITY,
+            new RandomSpreadStructurePlacement(20, 8, RandomSpreadType.LINEAR, 0xFAC00, Vec3i.ZERO));
 
     private static Holder<StructureSet> register(String name, Supplier<StructureSet> set) {
         RegistryObject<StructureSet> registered = REGISTRY.register(name, set);
