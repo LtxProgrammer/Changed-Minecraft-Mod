@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -60,10 +62,10 @@ public class GluBlock extends Block implements EntityBlock, GameMasterBlock {
         builder.add(ORIENTATION);
     }
 
-    public static boolean canConnect(BlockState stateA, BlockState stateB) {
-        if (!(stateA.getBlock() instanceof GluBlock) && !(stateA.getBlock() instanceof JigsawBlock))
+    public static boolean canConnect(BlockState stateA, CompoundTag nbtA, BlockState stateB, CompoundTag nbtB) {
+        if (stateA.getBlock() != stateB.getBlock())
             return false;
-        if (!(stateB.getBlock() instanceof GluBlock) && !(stateB.getBlock() instanceof JigsawBlock))
+        if (stateA.getBlock() != ChangedBlocks.GLU_BLOCK.get())
             return false;
 
         FrontAndTop orientA = stateA.getValue(ORIENTATION);
@@ -74,7 +76,15 @@ public class GluBlock extends Block implements EntityBlock, GameMasterBlock {
             return false;
         if (orientA.front().getAxis() != Direction.Axis.Y && orientA.front() != orientB.front().getOpposite())
             return false;
-        return true;
+
+        var jointA = GluBlockEntity.JointType.byName(nbtA.getString(GluBlockEntity.JOINT)).orElseThrow();
+        var jointB = GluBlockEntity.JointType.byName(nbtB.getString(GluBlockEntity.JOINT)).orElseThrow();
+        if (!jointA.canConnectTo(jointB))
+            return false;
+        if (nbtA.getBoolean(GluBlockEntity.HAS_DOOR) && nbtB.getBoolean(GluBlockEntity.HAS_DOOR))
+            return false;
+
+        return nbtA.getInt(GluBlockEntity.SIZE) == nbtB.getInt(GluBlockEntity.SIZE);
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {

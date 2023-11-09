@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.world.features.structures;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.block.GluBlock;
 import net.ltxprogrammer.changed.world.features.structures.facility.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -17,18 +19,32 @@ public class FacilityPieces {
     public static final FacilityPiece ENTRANCE_RED = new FacilityEntrance(Zone.RED_ZONE, Changed.modResource("facility/entrance_red"));
     public static final FacilityPiece ENTRANCE_BLUE = new FacilityEntrance(Zone.BLUE_ZONE, Changed.modResource("facility/entrance_blue"));
     public static final FacilityPieceCollection ENTRANCES = FacilityPieceCollection.of(ENTRANCE_RED, ENTRANCE_BLUE);
-    public static final FacilityPiece CORRIDOR_RED = new FacilityStaircase(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
-    public static final FacilityPiece CORRIDOR_RED_2 = new FacilityStaircase(Zone.RED_ZONE, Changed.modResource("facility/corridor_red_2"));
-    public static final FacilityPieceCollection STAIRCASES = FacilityPieceCollection.of(CORRIDOR_RED, CORRIDOR_RED_2);
-    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of();
+
+    public static final FacilityPiece STAIRCASE_START_RED = new FacilityStaircaseStart(Zone.RED_ZONE, Changed.modResource("facility/staircase_start_red"));
+    public static final FacilityPieceCollection STAIRCASE_STARTS = FacilityPieceCollection.of(STAIRCASE_START_RED);
+    public static final FacilityPiece STAIRCASE_SECTION_RED = new FacilityStaircaseSection(Zone.RED_ZONE, Changed.modResource("facility/staircase_section_red"));
+    public static final FacilityPieceCollection STAIRCASE_SECTIONS = FacilityPieceCollection.of(STAIRCASE_SECTION_RED);
+    public static final FacilityPiece STAIRCASE_END_RED = new FacilityStaircaseEnd(Zone.RED_ZONE, Changed.modResource("facility/staircase_end_red"));
+    public static final FacilityPieceCollection STAIRCASE_ENDS = FacilityPieceCollection.of(STAIRCASE_END_RED);
+
+    public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
+    public static final FacilityPiece CORRIDOR_RED_2 = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red_2"));
+    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED, CORRIDOR_RED_2);
+
     public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of();
 
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
-        map.put(PieceType.STAIRCASE, STAIRCASES);
+        map.put(PieceType.STAIRCASE_START, STAIRCASE_STARTS);
+        map.put(PieceType.STAIRCASE_SECTION, STAIRCASE_SECTIONS);
+        map.put(PieceType.STAIRCASE_END, STAIRCASE_ENDS);
         map.put(PieceType.CORRIDOR, CORRIDORS);
         map.put(PieceType.ROOM, ROOMS);
     });
+
+    private static BlockPos gluNeighbor(BlockPos gluPos, BlockState gluState) {
+        return gluPos.relative(gluState.getValue(GluBlock.ORIENTATION).front());
+    }
 
     private static void treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
                                      FacilityPiece parent, StructurePiece parentStructure,
@@ -53,11 +69,13 @@ public class FacilityPieces {
                 continue;
             }
 
+            var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
             builder.addPiece(nextStructure);
 
             if (span > 0) {
                 List<GenStep> starts = new ArrayList<>();
                 nextStructure.addSteps(nextPiece, starts);
+                starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
                 starts.forEach(next -> {
                     treeGenerate(builder, context, nextPiece, nextStructure, next, genDepth, span - 1);
