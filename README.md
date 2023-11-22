@@ -42,19 +42,25 @@ You'll now have access to **all the tools** within the Changed: Minecraft Mod, g
 ## General FAQ
 
 **Will there be a Fabric/Quilt version?**
+
 There are no current plans to port to another modloader, this is subject to change.
 
 **Can you port the mod to 1.xx.x?**
+
 We will not be porting the mod until it is deemed complete.
 
 **Can you make the mod for Pocket Edition?**
+
 If you're asking this, you're probably too young to be getting into Changed...
 
 **What mods are compatible?**
+
 There (hopefully) shouldn't be too many mods that are incompatible. If you do find a mod which behaves weird with Changed:MC, feel free to report it.
 
 **What are the special forms for?**
+
 Anyone who is a Tier 4 Patron get to design their own transfur variant exclusive to them, otherwise, the special syringe doesn't do anything.
 
 **Will I lose my special form when I'm no longer a patron?**
+
 No, but you will lose the in-game title and access to some discord channels.
