@@ -63,6 +63,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
 
     public AbstractAbility<?> selectedAbility = null;
+    public AbstractAbility<?> menuAbility = null;
     public boolean abilityKeyState = false;
     private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
@@ -555,6 +556,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
             }
         }
 
+        if (menuAbility != null) {
+            var instance = abilityInstances.get(menuAbility);
+            if (instance != null && player.containerMenu != player.inventoryMenu)
+                instance.tick();
+            else {
+                if (instance != null)
+                    instance.stopUsing();
+                menuAbility = null;
+            }
+        }
+
         sync(player);
     }
 
@@ -611,7 +623,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 this.selectedAbility = ability;
             else {
                 ability.startUsing(abstractLatex);
-                ability.stopUsing(abstractLatex);
+                this.menuAbility = ability;
             }
         }
     }
