@@ -36,7 +36,8 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void activateAbility() {
-            abilityInstance.startUsing();
+            if (abilityInstance.canUse())
+                abilityInstance.startUsing();
         }
 
         public void tickAbility() {
