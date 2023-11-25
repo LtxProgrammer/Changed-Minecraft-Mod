@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +17,14 @@ public abstract class EnchantmentHelperMixin {
         ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(le), variant -> {
             if (variant.getParent().breatheMode.hasAquaAffinity())
                 callback.setReturnValue(true);
+        });
+    }
+
+    @Inject(method = "getRespiration", at = @At("RETURN"), cancellable = true)
+    private static void getRespirationOrIfStrong(LivingEntity le, CallbackInfoReturnable<Integer> callback) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(le), variant -> {
+            if (variant.getParent().breatheMode == LatexVariant.BreatheMode.STRONG)
+                callback.setReturnValue(Math.max(callback.getReturnValue(), 4));
         });
     }
 }

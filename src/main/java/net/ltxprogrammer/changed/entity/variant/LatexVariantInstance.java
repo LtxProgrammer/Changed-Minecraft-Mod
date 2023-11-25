@@ -504,16 +504,6 @@ public class LatexVariantInstance<T extends LatexEntity> {
             }
         }
 
-        else if (player.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == LatexVariant.BreatheMode.STRONG) {
-            //if the player is in water, add 1 air every other tick
-            if (player.isEyeInFluid(FluidTags.WATER)) {
-                int air = player.getAirSupply();
-                if (air > -10 && player.tickCount % 2 == 0)
-                    player.setAirSupply(air+1);
-                this.ticksBreathingUnderwater = 0;
-            }
-        }
-
         // Speed
         if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
             if (parent.swimSpeed > 1f) {
