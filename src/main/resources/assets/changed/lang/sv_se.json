@@ -442,5 +442,11 @@
   "changed.tutorial.select_ability.title": "Välj din förmåga",
   "changed.tutorial.select_ability.description": "Tryck %s",
   "changed.tutorial.use_ability.title": "Använda din förmåga",
-  "changed.tutorial.use_ability.description": "Tryck eller håll ned %s"
+  "changed.tutorial.use_ability.description": "Tryck eller håll ned %s",
+
+  "glu_block.size": "Storlek %1$sx%1$s",
+  "glu_block.has_door": "Har dörr",
+  "glu_block.joint_type": "Strukturfog typ",
+  "glu_block.joint.entrance": "Ingång",
+  "glu_block.joint.exit": "Utgång"
 }
