@@ -20,6 +20,7 @@
     "block.SpreadingSnowyDirtBlockMixin",
     "block.StateDefinitionMixin",
     "block.WallBlockMixin",
+    "entity.ProjectileUtilMixin",
     "entity.ArrowMixin",
     "entity.EntityMixin",
     "entity.IronGolemMixin",
