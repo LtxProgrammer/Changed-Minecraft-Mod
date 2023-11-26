@@ -33,6 +33,7 @@
   "subtitles.changed.bow2": "Коробка открылась",
   "subtitles.changed.ice2": "Кристал разросся",
   "subtitles.changed.key": "Щелчок защелки кейпада",
+  "subtitles.changed.latex_drip": "Латекс капает",
   "subtitles.changed.monster2": "Тигровая акула рычит",
   "subtitles.changed.switch1": "Нажатие кнопки кейпада",
   "subtitles.changed.shot1": "Лазер активировался",
@@ -98,11 +99,12 @@
   "death.attack.changed:fan.player": "%1$s был изрезан лопастсями вентилятора, отбиваясь от %2$s",
   
   "command.changed.error.not_latex_form": "Недоступная латкс. форма",
+  "command.changed.error.used_by_other_mod": "Игрок уже использует другой мод",
   "command.changed.error.no_special_form": "У вас нет доступа к особой форме, если вы хотите её получить поддержите автора на патреон и свяжитесь с ним https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Вы не расстанитесь со своим разумом после трансфурмации",
   "gamerule.changed:keepForm": "Перма-трансфур",
-  "gamerule.changed:latexSpread": "Позволяет латексу распростронятся",
+  "gamerule.changed:latexGrowthRate": "Позволяет латексу распростронятся",
   "gamerule.changed:transfurTolerance": "Урон латексных существ по шкале трансфурмации (В тиках)",
   "gamerule.changed:npcWantFusePlayer": "Латексные НПС намеренно сливаются с игроком",
   "gamerule.changed:doPale": "Будет ли в мире Бледный вирус",
@@ -152,9 +154,14 @@
   "block.changed.dark_latex_dragon_crystal": "Кристалл драконьего латекса",
   "block.changed.dark_latex_ice": "Лёд из тёмного латекса",
   "block.changed.duct": "Вентиляционный воздуховод",
+  "block.changed.glu": "Глю Блок (note: Im not sure what it for)",
   "block.changed.infuser": "Смешиватель",
   "block.changed.iron_crate": "Железная коробка",
   "block.changed.keypad": "Кейпад",
+  "block.changed.large_blue_lab_door": "Большая синия лабораторная дверь",
+  "block.changed.large_maintenance_door": "Большая служебная дверь",
+  "block.changed.large_lab_door": "Большая лабораторная дверь",
+  "block.changed.large_library_door": "Большая дверь библеотеки",
   "block.changed.laser_emitter": "Лазерный излучатель",
   "block.changed.latex_container": "Контейнер с латексом",
   "block.changed.latex_beifeng_crystal": "Зеленый кристалл",
@@ -236,6 +243,7 @@
   "entity.changed.dark_latex_dragon": "Дракон из тёмного латекса",
   "entity.changed.dark_latex_pup": "Щенок из тёмного латекса",
   "entity.changed.dark_latex_yufeng": "ЮФэн из тёмного латекса",
+  "entity.changed.gas_particle": "Частичка латексного газа",
   "entity.changed.headless_knight": "Безголовый рыцарь",
   "entity.changed.milk_pudding": "Молочный пудинг",
   "entity.changed.latex_alien": "Латексный пришелец",
@@ -248,7 +256,6 @@
   "entity.changed.latex_crystal_wolf": "Кристалльный волк",
   "entity.changed.latex_crystal_wolf_horned": "Рогатый кристалльный волк",
   "entity.changed.latex_deer": "Латексный олень",
-  "entity.changed.gas_particle": "Частичка латексного газа",
   "entity.changed.latex_hypno_cat": "Латексный гипно-кот",
   "entity.changed.latex_leaf": "Латексный листянная рептилия",
   "entity.changed.latex_manta_ray_female": "Латексный манта - самка",
@@ -383,7 +390,7 @@
   "changed.compact_disc.content.latex_beifeng": "Смешав синий пигмент/ краску с первичным латексом было создано ящероподобное существо, немного более быстрое чем обычное латексное существо, как на суше так и в воде.",
 
   "changed.compact_disc.title.latex_shark": "Первый взгляд на акул",
-  "changed.compact_disc.content.latex_shark": "Акул что мы создали, действительно могут дышать подводой. А ценой мобильности на суше их скорость в воде невероятна.",
+  "changed.compact_disc.content.latex_shark": "Акул что мы создали, они действительно могут дышать подводой. Их скорость в воде невероятна, Но ценой мобильности на суше.",
   "changed.compact_disc.title.latex_tiger_shark": "Акулы с полосками",
   "changed.compact_disc.content.latex_tiger_shark": "Мы создали другой вариант акулы основываясь на обычной , этот вариант акулы немного быстрей на суше, но медленней в воде.",
   "changed.compact_disc.title.latex_orca": "Косатка",
@@ -407,7 +414,7 @@
   "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой аква латекс.",
 
   "changed:advancements.main.aquatic_swimming.title": "Я искал монетку!",
-  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи в аква латексом.",
+  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи аква латексом.",
 
   "changed:advancements.main.transfur_white.title": "Единый разум",
   "changed:advancements.main.transfur_white.description": "Трансфурмируйтесь в любой светлый латекс.",
@@ -436,5 +443,11 @@
   "changed.tutorial.select_ability.title": "Выберите способность",
   "changed.tutorial.select_ability.description": "Нажмите клавишу %s",
   "changed.tutorial.use_ability.title": "Используйте способность",
-  "changed.tutorial.use_ability.description": "Нажмите или Зажмите %s"
+  "changed.tutorial.use_ability.description": "Нажмите или Зажмите %s",
+
+  "glu_block.size": "Размер %1$sx%1$s",
+  "glu_block.has_door": "Имеется дверь",
+  "glu_block.joint_type": "Тип подключения",
+  "glu_block.joint.entrance": "Вход",
+  "glu_block.joint.exit": "Выход"
 }
