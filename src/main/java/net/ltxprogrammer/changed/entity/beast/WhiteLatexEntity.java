@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -33,6 +34,9 @@ public abstract class WhiteLatexEntity extends LightLatexWolfMale {
     @Override
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
         super.onDamagedBy(self, source);
+        if (source instanceof Player player && player.isCreative())
+            return;
+
         double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
         AABB aabb = AABB.unitCubeFromLowerCorner(self.position()).inflate(d0, 10.0D, d0);
         this.level.getEntitiesOfClass(this.getClass(), aabb, EntitySelector.NO_SPECTATORS).forEach(whiteLatexEntity -> {
