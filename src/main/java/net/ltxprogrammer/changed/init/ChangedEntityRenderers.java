@@ -25,8 +25,7 @@ public class ChangedEntityRenderers {
                 useNewModels ? DarkLatexDragonRenderer.Remodel::new : DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(),
                 useNewModels ? DarkLatexWolfFemaleRenderer.Remodel::new : DarkLatexWolfFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(),
-                useNewModels ? DarkLatexWolfMaleRenderer.Remodel::new : DarkLatexWolfMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_PUP.get(), DarkLatexPupRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(),
                 useNewModels ? DarkLatexYufengRenderer.Remodel::new : DarkLatexYufengRenderer::new);

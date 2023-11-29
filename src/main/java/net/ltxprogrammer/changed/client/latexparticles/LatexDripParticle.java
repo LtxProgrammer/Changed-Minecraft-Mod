@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Camera;
@@ -42,7 +43,7 @@ public class LatexDripParticle extends LatexParticle {
     private final int maxTicksAttached;
 
     private final LivingEntity attachedEntity;
-    private final ModelPart attachedPart;
+    private final ModelPartStem attachedPart;
     private final SurfacePoint surface;
     protected final Color3 color;
     protected final float alpha;
@@ -50,7 +51,7 @@ public class LatexDripParticle extends LatexParticle {
     private boolean prepped = false;
 
     public LatexDripParticle(SpriteSet spriteSet,
-                             LivingEntity attachedEntity, ModelPart attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+                             LivingEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         super(attachedEntity.level, lifespan);
         this.maxTicksAttached = attachedEntity.level.random.nextInt(80, 2400);
 
@@ -292,7 +293,7 @@ public class LatexDripParticle extends LatexParticle {
         return LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE;
     }
 
-    public static LatexParticleProvider<LatexDripParticle> of(LivingEntity attachedEntity, ModelPart attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+    public static LatexParticleProvider<LatexDripParticle> of(LivingEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         return new LatexParticleProvider<>() {
             @Override
             public LatexParticleType<LatexDripParticle> getParticleType() {

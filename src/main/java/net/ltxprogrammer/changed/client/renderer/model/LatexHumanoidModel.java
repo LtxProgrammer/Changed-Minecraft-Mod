@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -70,8 +71,12 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
     }
 
-    public Stream<ModelPart> getAllParts() {
-        return rootModelPart.getAllParts();
+    private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {
+        return Stream.concat(Stream.of(new ModelPartStem(root)), root.children.values().stream().flatMap(this::getAllPartsFor).map(stem -> stem.withParent(root)));
+    }
+
+    public Stream<ModelPartStem> getAllParts() {
+        return getAllPartsFor(rootModelPart);
     }
 
     public ModelPart getRandomModelPart(Random random) {
