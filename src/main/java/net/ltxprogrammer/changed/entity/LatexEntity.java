@@ -457,14 +457,14 @@ public abstract class LatexEntity extends Monster {
         if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
             return;
 
-        Color3 color = getDripColor();
+        /*Color3 color = getDripColor();
         if (color != null) {
             EntityDimensions dimensions = getDimensions(getPose());
             double dh = level.random.nextDouble(dimensions.height);
             double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
             double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
             level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-        }
+        }*/
     }
 
     public double getPassengersRidingOffset() {

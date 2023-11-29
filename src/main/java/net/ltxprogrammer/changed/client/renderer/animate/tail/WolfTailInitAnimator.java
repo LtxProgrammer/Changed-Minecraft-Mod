@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class TailIdleAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
+public class WolfTailInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
     public static final float SWAY_RATE = 0.33333334F * 0.25F;
     public static final float SWAY_SCALE = 0.10F;
 
-    public TailIdleAnimator(ModelPart tail, List<ModelPart> tailJoints) {
+    public WolfTailInitAnimator(ModelPart tail, List<ModelPart> tailJoints) {
         super(tail, tailJoints);
     }
 
@@ -24,12 +24,27 @@ public class TailIdleAnimator<T extends LatexEntity, M extends EntityModel<T>> e
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        tail.yRot = Mth.lerp(limbSwingAmount, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f)), tail.zRot);
+        float f = 1.0F;
+        if (entity.getFallFlyingTicks() > 4) {
+            f = (float)entity.getDeltaMovement().lengthSqr();
+            f /= 0.2F;
+            f *= f * f;
+        }
+
+        if (f < 1.0F) {
+            f = 1.0F;
+        }
+        tail.xRot = 0.0F;
+        tail.zRot = 0.0F;
+
+        float tailSway = SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
+        float tailBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
+        tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance);
 
         float offset = 0.0F;
         for (ModelPart joint : tailJoints) {
             joint.yRot = Mth.lerp(limbSwingAmount, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
-                    (((float)Math.PI / 3.0F) * offset)), joint.yRot);
+                    (((float)Math.PI / 3.0F) * offset)), 0.0f);
             offset += 0.75F;
         }
     }
