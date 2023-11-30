@@ -240,7 +240,7 @@ public class AnimatorPresets {
                     .addPreset(wolfUpperBody(head, torso, leftArm, leftForearm, rightArm, rightForearm))
                     .addPreset(wolfTail(tail, tailJoints))
                     .addPreset(wolfEars(leftEar, rightEar))
-                    .addAnimator(new HeadInitAnimator<>(head))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
