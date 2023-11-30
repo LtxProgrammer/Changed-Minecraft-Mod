@@ -56,11 +56,11 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
 
         rightArm.zRot += Mth.lerp(core.reachOut, 0.0F, 0.1745329f); // 10 Degrees
         leftArm.zRot += Mth.lerp(core.reachOut, 0.0F, -0.1745329f); // 10 Degrees
-        rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.2617994f); // 15 Degrees
-        leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.2617994f);   // 15 Degrees
+        rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.5235988f); // 30 Degrees
+        leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.5235988f);   // 30 Degrees
 
         float armRestRot = Mth.lerp(ageLerp, 0.25f, 1.1f) * -0.1745329f;
-        rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.308997f); // 75 Degrees
-        leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.308997f);  // 75 Degrees
+        rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f); // 65 Degrees
+        leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f);  // 65 Degrees
     }
 }

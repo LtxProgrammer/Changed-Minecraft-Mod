@@ -31,11 +31,12 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfBipedal(ModelPart leftLeg, ModelPart rightLeg) {
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
                     .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new WolfBipedalInitAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new WolfBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalSwimAnimator<>(leftLeg, rightLeg));
@@ -232,9 +233,10 @@ public class AnimatorPresets {
                                                                                                              ModelPart leftArm, ModelPart leftForearm,
                                                                                                              ModelPart rightArm, ModelPart rightForearm,
                                                                                                              ModelPart tail, List<ModelPart> tailJoints,
-                                                                                                             ModelPart leftLeg, ModelPart rightLeg) {
+                                                                                                             ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                             ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
-            animator.addPreset(wolfBipedal(leftLeg, rightLeg))
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addPreset(wolfUpperBody(head, torso, leftArm, leftForearm, rightArm, rightForearm))
                     .addPreset(wolfTail(tail, tailJoints))
                     .addPreset(wolfEars(leftEar, rightEar))
