@@ -33,6 +33,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public boolean crouching;
     public float swimAmount;
 
+    public float ageLerp = 0.0F;
     public float reachOut = 0.0F;
 
     public LatexAnimator(M entityModel) {
@@ -194,6 +195,25 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
             leftArm.x += -3F;
             rightArm.z += -1F - forwardOffset;
             leftArm.z += -1F - forwardOffset;
+        });
+        return this;
+    }
+
+    public LatexAnimator<T, M> setupHandsJointed(int level, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+        setupHandsRunnable.put(level, () -> {
+            rightArm.x = -2F;
+            leftArm.x = 2F;
+            rightArm.y = 0F;
+            leftArm.y = 0F;
+            rightArm.z = -1F;
+            leftArm.z = -1F;
+
+            leftForearm.xRot = 0.0F;
+            rightForearm.xRot = 0.0F;
+            leftForearm.yRot = 0.0F;
+            rightForearm.yRot = 0.0F;
+            leftForearm.zRot = 0.0F;
+            rightForearm.zRot = 0.0F;
         });
         return this;
     }

@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -54,6 +55,13 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         LivingEntity target = entity.getTarget();
         animator.reachOut = target != null ?
                 Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;
+        if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() || !entity.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
+            animator.reachOut = 0.0F;
+        final float ageAdjusted = (entity.tickCount + partialTicks) * 0.33333334F * 0.25F * 0.15f;
+        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
+        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
+        animator.ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
+                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
         animator.swimAmount = entity.getSwimAmount(partialTicks);
         animator.crouching = entity.isCrouching();
         HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
