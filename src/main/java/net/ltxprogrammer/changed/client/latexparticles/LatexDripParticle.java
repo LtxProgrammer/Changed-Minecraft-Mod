@@ -45,7 +45,7 @@ public class LatexDripParticle extends LatexParticle {
 
     private final LatexEntity attachedEntity;
     private final ModelPartStem attachedPart;
-
+  
     private final SurfacePoint surface;
     protected final Color3 color;
     protected final float alpha;
