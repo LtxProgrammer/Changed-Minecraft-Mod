@@ -39,12 +39,13 @@ public class WolfTailInitAnimator<T extends LatexEntity, M extends EntityModel<T
 
         float tailSway = SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
         float tailBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
-        tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance);
+        float tailDrag = entity.getTailDragAmount(ageInTicks);
+        tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance) + tailDrag * 0.75F;
 
         float offset = 0.0F;
         for (ModelPart joint : tailJoints) {
             joint.yRot = Mth.lerp(limbSwingAmount, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
-                    (((float)Math.PI / 3.0F) * offset)), 0.0f);
+                    (((float)Math.PI / 3.0F) * offset)), 0.0f) + tailDrag * 0.75F;
             offset += 0.75F;
         }
     }
