@@ -62,6 +62,12 @@ public abstract class LatexEntity extends Monster {
 
     float crouchAmount;
     float crouchAmountO;
+    float tailDragAmount = 0.0F;
+    float tailDragAmountO;
+
+    public float getTailDragAmount(float partialTicks) {
+        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+    }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
 
@@ -466,6 +472,8 @@ public abstract class LatexEntity extends Monster {
 
     public void visualTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
+        this.tailDragAmountO = this.tailDragAmount;
+
         if (this.isCrouching()) {
             this.crouchAmount += 0.2F;
             if (this.crouchAmount > 3.0F) {
@@ -474,6 +482,10 @@ public abstract class LatexEntity extends Monster {
         } else {
             this.crouchAmount = 0.0F;
         }
+
+        this.tailDragAmount *= 0.75F;
+        this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
+        this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
