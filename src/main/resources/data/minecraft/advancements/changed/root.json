@@ -13,7 +13,7 @@
     "show_toast": false,
     "announce_to_chat": false,
     "hidden": false,
-    "background": "changed:textures/gui/advancements/backgrounds/main.png"
+    "background": "changed:textures/blocks/dark_latex_block_side.png"
   },
   "criteria": {
     "know_syringe": {
