@@ -21,7 +21,7 @@ Alternatively, with cheats, use `/transfur`.
 
 **Okay, but how do I untransfur?**
 
-*You can't.* Well,  **dying removes the transfur** and turns you back. This however can be prevented however with the **gamerule** `changed:keepForm`. The reasoning for this is that untransfurring isn't possible in the original game as stated by DragonSnow.
+*You can't.* Well,  **dying removes the transfur** and turns you back. This however can be prevented however with the **gamerule** `changed:keepForm`. The reasoning for this is that untransfurring isn't possible in the original game as stated by DragonSnow. There are mods to solve this problem, however.
 
 Once again, if you have cheats, use `/untransfur`.
 
