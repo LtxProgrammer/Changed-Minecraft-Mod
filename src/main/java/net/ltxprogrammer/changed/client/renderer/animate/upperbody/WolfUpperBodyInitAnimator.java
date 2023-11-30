@@ -1,0 +1,66 @@
+package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
+
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
+
+public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+    public final ModelPart leftForearm;
+    public final ModelPart rightForearm;
+
+    public WolfUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+        super(head, torso, leftArm, rightArm);
+        this.leftForearm = leftForearm;
+        this.rightForearm = rightForearm;
+    }
+
+    @Override
+    public LatexAnimator.AnimateStage preferredStage() {
+        return LatexAnimator.AnimateStage.INIT;
+    }
+
+    @Override
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        final float ageAdjusted = ageInTicks * WolfTailInitAnimator.SWAY_RATE * 0.25f;
+        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
+        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
+        float ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
+                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
+
+        boolean fallFlying = entity.getFallFlyingTicks() > 4;
+        torso.yRot = 0.0F;
+        rightArm.z = core.forwardOffset;
+        rightArm.x = -core.torsoWidth;
+        leftArm.z = core.forwardOffset;
+        leftArm.x = core.torsoWidth;
+        float f = 1.0F;
+        if (fallFlying) {
+            f = (float)entity.getDeltaMovement().lengthSqr();
+            f /= 0.2F;
+            f *= f * f;
+        }
+
+        if (f < 1.0F) {
+            f = 1.0F;
+        }
+
+        rightArm.zRot = 0.0F;
+        leftArm.zRot = 0.0F;
+
+        rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F / f;
+        leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f;
+
+        rightArm.zRot += Mth.lerp(core.reachOut, 0.0F, 0.1745329f); // 10 Degrees
+        leftArm.zRot += Mth.lerp(core.reachOut, 0.0F, -0.1745329f); // 10 Degrees
+        rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.5235988f); // 30 Degrees
+        leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.5235988f);   // 30 Degrees
+
+        float armRestRot = Mth.lerp(ageLerp, 0.25f, 1.1f) * -0.1745329f;
+        rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f); // 65 Degrees
+        leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f);  // 65 Degrees
+    }
+}
