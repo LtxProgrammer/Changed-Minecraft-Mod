@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -81,11 +82,21 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);
+    public @Nullable ModelPartStem getHand(HumanoidArm arm) {
+        return null;
+    }
 
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
-        if (this instanceof LatexHumanoidModelInterface modelInterface)
-            p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+        var hand = this.getHand(arm);
+        if (hand != null) {
+            hand.translateAndRotate(poseStack);
+            poseStack.translate(arm == HumanoidArm.LEFT ? -0.0625 : 0.0625, -0.25, 0.0);
+        }
+        else {
+            this.getArm(arm).translateAndRotate(poseStack);
+            if (this instanceof LatexHumanoidModelInterface modelInterface)
+                poseStack.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+        }
     }
 
     private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {

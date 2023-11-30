@@ -6,6 +6,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -165,8 +167,15 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
-    public ModelPart getArm(HumanoidArm p_102852_) {
-        return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    @Nullable
+    @Override
+    public ModelPartStem getHand(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? new ModelPartStem(this.LeftArm, this.LeftArm.getChild("LeftForearm")) :
+                new ModelPartStem(this.RightArm, this.RightArm.getChild("RightForearm"));
     }
 
     public ModelPart getHead() {
