@@ -25,12 +25,6 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        final float ageAdjusted = ageInTicks * WolfTailInitAnimator.SWAY_RATE * 0.25f;
-        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
-        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
-        float ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
-                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
-
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
         rightArm.z = core.forwardOffset;
@@ -59,7 +53,7 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
         rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.5235988f); // 30 Degrees
         leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.5235988f);   // 30 Degrees
 
-        float armRestRot = Mth.lerp(ageLerp, 0.25f, 1.1f) * -0.1745329f;
+        float armRestRot = Mth.lerp(core.ageLerp, 0.25f, 1.1f) * -0.1745329f;
         rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f); // 65 Degrees
         leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f);  // 65 Degrees
     }

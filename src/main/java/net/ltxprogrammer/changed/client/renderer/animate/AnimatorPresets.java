@@ -39,7 +39,7 @@ public class AnimatorPresets {
                     .addAnimator(new WolfBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
-                    .addAnimator(new BipedalSwimAnimator<>(leftLeg, rightLeg));
+                    .addAnimator(new WolfBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -99,10 +99,10 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
         return animator -> {
-            animator.setupHands(1, leftArm, rightArm)
+            animator.setupHandsJointed(1, leftArm, leftForearm, rightArm, rightForearm)
                     .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, leftForearm, rightArm, rightForearm))
                     .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
-                    .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, leftArm, leftForearm, rightArm, rightForearm))
                     .addAnimator(new WolfUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
         };
     }

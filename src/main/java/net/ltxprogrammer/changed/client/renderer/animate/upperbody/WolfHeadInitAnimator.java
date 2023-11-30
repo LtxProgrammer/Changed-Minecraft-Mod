@@ -20,12 +20,6 @@ public class WolfHeadInitAnimator<T extends LatexEntity, M extends EntityModel<T
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        final float ageAdjusted = ageInTicks * WolfTailInitAnimator.SWAY_RATE * 0.25f;
-        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
-        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
-        float ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
-                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
-
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         head.zRot = 0.0F;
@@ -39,7 +33,7 @@ public class WolfHeadInitAnimator<T extends LatexEntity, M extends EntityModel<T
             }
         } else {
             head.xRot = headPitch * ((float)Math.PI / 180F);
-            head.zRot = Mth.lerp(limbSwingAmount, -Mth.lerp(ageLerp, 0.03490659F, 0.08726646F), 0.0F);
+            head.zRot = Mth.lerp(limbSwingAmount, -Mth.lerp(core.ageLerp, 0.03490659F, 0.08726646F), 0.0F);
         }
     }
 }
