@@ -16,6 +16,9 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +62,36 @@ public abstract class LatexEntity extends Monster {
 
     float crouchAmount;
     float crouchAmountO;
+    float tailDragAmount = 0.0F;
+    float tailDragAmountO;
+
+    public float getTailDragAmount(float partialTicks) {
+        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+    }
+
+    protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity entity) {
+        super.setTarget(entity);
+        this.entityData.set(DATA_TARGET_ID, entity != null ? OptionalInt.of(entity.getId()) : OptionalInt.empty());
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getTarget() {
+        if (this.level.isClientSide) {
+            var id = this.entityData.get(DATA_TARGET_ID);
+            return id.isPresent() && this.level.getEntity(id.getAsInt()) instanceof LivingEntity livingEntity ? livingEntity : null;
+        } else
+            return super.getTarget();
+    }
 
     protected <A extends AbstractAbilityInstance> A registerAbility(Predicate<A> predicate, A instance) {
         return (A) latexAbilities.computeIfAbsent(instance.ability, type -> new Pair<>(
@@ -439,6 +472,8 @@ public abstract class LatexEntity extends Monster {
 
     public void visualTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
+        this.tailDragAmountO = this.tailDragAmount;
+
         if (this.isCrouching()) {
             this.crouchAmount += 0.2F;
             if (this.crouchAmount > 3.0F) {
@@ -447,6 +482,10 @@ public abstract class LatexEntity extends Monster {
         } else {
             this.crouchAmount = 0.0F;
         }
+
+        this.tailDragAmount *= 0.75F;
+        this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
+        this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
             return;
@@ -457,14 +496,14 @@ public abstract class LatexEntity extends Monster {
         if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
             return;
 
-        Color3 color = getDripColor();
+        /*Color3 color = getDripColor();
         if (color != null) {
             EntityDimensions dimensions = getDimensions(getPose());
             double dh = level.random.nextDouble(dimensions.height);
             double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
             double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
             level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-        }
+        }*/
     }
 
     public double getPassengersRidingOffset() {

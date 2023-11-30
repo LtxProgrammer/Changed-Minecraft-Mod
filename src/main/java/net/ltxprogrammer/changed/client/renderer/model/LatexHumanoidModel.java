@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -14,8 +15,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,8 +38,21 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         this.rootModelPart = root;
     }
 
+    protected float distanceTo(@NotNull T entity, @NotNull Entity other, float partialTicks) {
+        Vec3 entityPos = entity.getPosition(partialTicks);
+        Vec3 otherPos = other.getPosition(partialTicks);
+        float f = (float)(entityPos.x - otherPos.x);
+        float f1 = (float)(entityPos.y - otherPos.y);
+        float f2 = (float)(entityPos.z - otherPos.z);
+        return Mth.sqrt(f * f + f1 * f1 + f2 * f2);
+    }
+
     public void prepareMobModel(LatexAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
+
+        LivingEntity target = entity.getTarget();
+        animator.reachOut = target != null ?
+                Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;
         animator.swimAmount = entity.getSwimAmount(partialTicks);
         animator.crouching = entity.isCrouching();
         HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
@@ -70,8 +88,12 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
     }
 
-    public Stream<ModelPart> getAllParts() {
-        return rootModelPart.getAllParts();
+    private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {
+        return Stream.concat(Stream.of(new ModelPartStem(root)), root.children.values().stream().flatMap(this::getAllPartsFor).map(stem -> stem.withParent(root)));
+    }
+
+    public Stream<ModelPartStem> getAllParts() {
+        return getAllPartsFor(rootModelPart);
     }
 
     public ModelPart getRandomModelPart(Random random) {

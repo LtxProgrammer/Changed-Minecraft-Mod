@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.util.Color3;
@@ -44,6 +45,7 @@ public class LatexDripParticle extends LatexParticle {
 
     private final LatexEntity attachedEntity;
     private final ModelPart attachedPart;
+
     private final SurfacePoint surface;
     protected final Color3 color;
     protected final float alpha;

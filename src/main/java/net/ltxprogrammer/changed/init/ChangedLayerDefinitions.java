@@ -51,8 +51,7 @@ public class ChangedLayerDefinitions {
                 useNewModels ? DarkLatexDragonModel.Remodel::createBodyLayer : DarkLatexDragonModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION,
                 useNewModels ? DarkLatexWolfFemaleModel.Remodel::createBodyLayer :  DarkLatexWolfFemaleModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION,
-                useNewModels ? DarkLatexWolfMaleModel.Remodel::createBodyLayer : DarkLatexWolfMaleModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION, DarkLatexWolfMaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexPupModel.LAYER_LOCATION, DarkLatexPupModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION,
                 useNewModels ? DarkLatexYufengModel.Remodel::createBodyLayer : DarkLatexYufengModel::createBodyLayer);

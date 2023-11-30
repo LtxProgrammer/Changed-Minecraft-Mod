@@ -5,9 +5,12 @@ import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -29,6 +32,8 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount;
+
+    public float reachOut = 0.0F;
 
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
@@ -158,6 +163,10 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         public abstract AnimateStage preferredStage();
         public abstract void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch);
         public void copyTo(HumanoidModel<?> humanoidModel) {}
+
+        protected float sinLerp(float sin, float a, float b) {
+            return Mth.lerp(sin * 0.5f + 0.5f, a, b);
+        }
     }
 
     public LatexAnimator<T, M> addAnimator(Animator<T, M> animator) {
