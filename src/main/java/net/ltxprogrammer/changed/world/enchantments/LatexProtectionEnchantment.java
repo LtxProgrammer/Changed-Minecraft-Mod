@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class LatexProtectionEnchantment extends Enchantment {
     public LatexProtectionEnchantment(Rarity rarity, EquipmentSlot[] slots) {
@@ -17,11 +18,12 @@ public class LatexProtectionEnchantment extends Enchantment {
     }
 
     public static float getLatexProtection(LivingEntity entity, float progression) {
-        int i = EnchantmentHelper.getEnchantmentLevel(ChangedEnchantments.TRANSFUR_RESISTANCE.get(), entity);
-        if (i > 0) {
-            progression -= progression * (float)i * 0.15F;
-        }
+        int protection = EnchantmentHelper.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION, entity);
+        int tfResistance = EnchantmentHelper.getEnchantmentLevel(ChangedEnchantments.TRANSFUR_RESISTANCE.get(), entity);
 
-        return progression;
+        float tfResistanceDiscount = progression * (float)tfResistance * 0.15F;
+        float protectionDiscount = progression * (float)protection * 0.075F;
+
+        return progression - Math.max(tfResistanceDiscount, protectionDiscount);
     }
 }
