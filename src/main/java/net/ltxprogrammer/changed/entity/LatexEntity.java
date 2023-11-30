@@ -16,6 +16,9 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +62,30 @@ public abstract class LatexEntity extends Monster {
 
     float crouchAmount;
     float crouchAmountO;
+
+    protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity entity) {
+        super.setTarget(entity);
+        this.entityData.set(DATA_TARGET_ID, entity != null ? OptionalInt.of(entity.getId()) : OptionalInt.empty());
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getTarget() {
+        if (this.level.isClientSide) {
+            var id = this.entityData.get(DATA_TARGET_ID);
+            return id.isPresent() && this.level.getEntity(id.getAsInt()) instanceof LivingEntity livingEntity ? livingEntity : null;
+        } else
+            return super.getTarget();
+    }
 
     protected <A extends AbstractAbilityInstance> A registerAbility(Predicate<A> predicate, A instance) {
         return (A) latexAbilities.computeIfAbsent(instance.ability, type -> new Pair<>(

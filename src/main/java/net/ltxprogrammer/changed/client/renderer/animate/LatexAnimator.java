@@ -7,8 +7,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -30,6 +32,8 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount;
+
+    public float reachOut = 0.0F;
 
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
