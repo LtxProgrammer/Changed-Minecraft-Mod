@@ -18,10 +18,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -396,10 +393,21 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             newEntity.setCustomName(entity.getCustomName());
             newEntity.setCustomNameVisible(entity.isCustomNameVisible());
         }
+
+        if (entity instanceof Mob mob) {
+            newEntity.setLeftHanded(mob.isLeftHanded());
+        }
+
         if (entity instanceof Player player) {
             ProcessTransfur.killPlayerBy(player, newEntity);
-        } else
+        } else {
+            // Take items
+            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+
             entity.discard();
+        }
         return newEntity;
     }
 
