@@ -1,16 +1,21 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
-    public WolfUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public final ModelPart leftForearm;
+    public final ModelPart rightForearm;
+
+    public WolfUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
         super(head, torso, leftArm, rightArm);
+        this.leftForearm = leftForearm;
+        this.rightForearm = rightForearm;
     }
 
     @Override
@@ -20,6 +25,12 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        final float ageAdjusted = ageInTicks * WolfTailInitAnimator.SWAY_RATE * 0.25f;
+        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
+        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
+        float ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
+                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
+
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
         rightArm.z = core.forwardOffset;
@@ -43,7 +54,13 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
         rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F / f;
         leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f;
 
-        rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, Mth.PI * -0.5F);
-        leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, Mth.PI * -0.5F);
+        rightArm.zRot += Mth.lerp(core.reachOut, 0.0F, 0.1745329f); // 10 Degrees
+        leftArm.zRot += Mth.lerp(core.reachOut, 0.0F, -0.1745329f); // 10 Degrees
+        rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.2617994f); // 15 Degrees
+        leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.2617994f);   // 15 Degrees
+
+        float armRestRot = Mth.lerp(ageLerp, 0.25f, 1.1f) * -0.1745329f;
+        rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.308997f); // 75 Degrees
+        leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.308997f);  // 75 Degrees
     }
 }
