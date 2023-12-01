@@ -3,7 +3,6 @@
   "textures": {
     "all": "changed:blocks/computer",
     "particle": "changed:blocks/computer",
-    "0": "changed:blocks/computer",
-    "emissive": "changed:blocks/computer_emissive"
+    "0": "changed:blocks/computer"
   }
 }
