@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public abstract class FacilityPieceInstance extends StructurePiece {
     private Rotation rotation;
@@ -37,7 +38,7 @@ public abstract class FacilityPieceInstance extends StructurePiece {
 
     public abstract void addSteps(FacilityPiece parent, List<GenStep> steps);
 
-    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu);
+    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random);
     public abstract void setupBoundingBox(BlockPos minimum);
 
     public void setupBoundingBoxOnBottomCenter(BlockPos center) {
