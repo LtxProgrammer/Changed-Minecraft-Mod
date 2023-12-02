@@ -8,8 +8,8 @@ import net.minecraft.util.random.WeightedRandomList;
 public class FacilityCorridorSection extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
             WeightedEntry.wrap(PieceType.STAIRCASE_START, 1),
-            WeightedEntry.wrap(PieceType.CORRIDOR, 5),
-            WeightedEntry.wrap(PieceType.ROOM, 3));
+            WeightedEntry.wrap(PieceType.CORRIDOR, 15),
+            WeightedEntry.wrap(PieceType.ROOM, 10));
 
     public FacilityCorridorSection(Zone zone, ResourceLocation templateName) {
         super(PieceType.STAIRCASE_SECTION, zone, templateName, LootTables.LOW_TIER_LAB);

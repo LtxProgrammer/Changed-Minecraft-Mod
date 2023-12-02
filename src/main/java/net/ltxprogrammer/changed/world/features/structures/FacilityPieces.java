@@ -29,7 +29,8 @@ public class FacilityPieces {
 
     public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
     public static final FacilityPiece CORRIDOR_RED_2 = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red_2"));
-    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED, CORRIDOR_RED_2);
+    public static final FacilityPiece INTERSECTION_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/intersection_red"));
+    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED, /*CORRIDOR_RED_2,*/ INTERSECTION_RED);
 
     public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of();
 
@@ -64,7 +65,7 @@ public class FacilityPieces {
                 continue;
             }
             var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-            if (!nextStructure.setupBoundingBox(builder, start.blockInfo())) {
+            if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random())) {
                 reroll--;
                 continue;
             }
