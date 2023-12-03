@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.world.features.structures.facility;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.GluBlock;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
@@ -46,6 +47,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
         private final ResourceLocation templateName;
         private final ResourceLocation lootTable;
         private final StructureTemplate template;
+        private BlockPos generationPosition;
 
         public StructureInstance(StructureManager manager, int genDepth, ResourceLocation templateName, Optional<ResourceLocation> lootTable, BoundingBox box) {
             super(ChangedStructurePieceTypes.FACILITY_SINGLE.get(), genDepth, box);
@@ -72,10 +74,6 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                 TagUtil.putResourceLocation(tag, "lootTable", lootTable);
         }
 
-        private BlockPos getGenerationPosition() {
-            return new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
-        }
-
         @Override
         public void postProcess(WorldGenLevel level, StructureFeatureManager manager, ChunkGenerator generator, Random random, BoundingBox bb, ChunkPos pos, BlockPos blockPos) {
             var settings = new StructurePlaceSettings()
@@ -87,7 +85,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .setIgnoreEntities(false);
             if (lootTable != null)
                 settings.addProcessor(ChestLootTableProcessor.of(lootTable));
-            template.placeInWorld(level, getGenerationPosition(), blockPos, settings, random, 2);
+            template.placeInWorld(level, generationPosition, blockPos, settings, random, 2);
         }
 
         @Override
@@ -97,7 +95,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .setRotation(this.getRotation())
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
-            template.filterBlocks(getGenerationPosition(), settings, ChangedBlocks.GLU_BLOCK.get()).forEach(blockInfo -> {
+            template.filterBlocks(generationPosition, settings, ChangedBlocks.GLU_BLOCK.get()).forEach(blockInfo -> {
                 steps.add(new GenStep(blockInfo, parent.getValidNeighbors()));
             });
         }
@@ -126,8 +124,11 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     if (!GluBlock.canConnect(exitGlu.state, exitGlu.nbt, blockInfo.state, blockInfo.nbt))
                         continue;
 
-                    // TODO BUG: bounding box is not correctly placed for some directions
-                    this.setupBoundingBox(gluBlockPos.subtract(blockInfo.pos));
+                    var structureOrigin = gluBlockPos.subtract(blockInfo.pos);
+                    this.setupBoundingBox(structureOrigin);
+                    this.generationPosition = structureOrigin;
+                    if (!sanityCheckGluBlock(gluBlockPos))
+                        Changed.LOGGER.error("Sanity check failed for facility generation glu block");
 
                     if (builder.findCollisionPiece(this.boundingBox) == null)
                         return true;
@@ -137,14 +138,17 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
             return false;
         }
 
+        protected boolean sanityCheckGluBlock(BlockPos pos) {
+            return pos.getX() == this.boundingBox.minX() || pos.getX() == this.boundingBox.maxX() ||
+                    pos.getY() == this.boundingBox.minY() || pos.getY() == this.boundingBox.maxY() ||
+                    pos.getZ() == this.boundingBox.minZ() || pos.getZ() == this.boundingBox.maxZ();
+        }
+
         @Override
-        public void setupBoundingBox(BlockPos minimum) {
+        public void setupBoundingBox(BlockPos offset) {
             this.boundingBox = template.getBoundingBox(BlockPos.ZERO, this.getRotation(), BlockPos.ZERO, this.getMirror());
-            this.boundingBox.move( // Move bounding box so minimum is always BlockPos.ZERO
-                    -Math.min(this.boundingBox.minX(), 0),
-                    -Math.min(this.boundingBox.minY(), 0),
-                    -Math.min(this.boundingBox.minZ(), 0));
-            this.boundingBox.move(minimum);
+            this.boundingBox.move(offset);
+            this.generationPosition = new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
         }
     }
 
