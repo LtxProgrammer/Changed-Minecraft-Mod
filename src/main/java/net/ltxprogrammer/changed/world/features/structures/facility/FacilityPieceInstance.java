@@ -43,11 +43,11 @@ public abstract class FacilityPieceInstance extends StructurePiece {
 
     public void setupBoundingBoxOnBottomCenter(BlockPos center) {
         this.setupBoundingBox(BlockPos.ZERO);
-        var offset = new Vec3i(
+        var offset = new BlockPos(
                 (this.boundingBox.maxX() / 2) + center.getX(),
                 center.getY(),
                 (this.boundingBox.maxZ() / 2) + center.getZ());
-        this.boundingBox.move(offset);
+        this.setupBoundingBox(offset);
     }
 
     @Override
