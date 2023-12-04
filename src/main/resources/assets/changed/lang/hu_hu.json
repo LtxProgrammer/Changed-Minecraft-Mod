@@ -121,6 +121,7 @@
   "container.changed.keypad": "Írja be a jelszót",
   "container.changed.note": "Értesítés",
   "container.changed.access_chest": "Láda felszerelése",
+  "container.changed.cardboard_container": "Kartondoboz konténer",
 
   "text.changed.game_saved": "A játék el lett mentve.",
   "text.changed.game_saved_fail": "A játék nem menthető.",
@@ -147,7 +148,8 @@
   "block.changed.canned_peaches": "Őszibarack konzerv",
   "block.changed.computer": "Számítógép",
   "block.changed.clipboard": "Írótábla",
-  "block.changed.cardboard_box": "Kartondoboz",
+  "block.changed.cardboard_box": "Magas kartondoboz",
+  "block.changed.cardboard_container": "Kartondoboz",
   "block.changed.dark_latex_block": "Sötét latexblokk",
   "block.changed.dark_latex_bubble": "Sötét latexbuborék",
   "block.changed.dark_latex_crystal_large": "Nagy sötét latex kristály",
