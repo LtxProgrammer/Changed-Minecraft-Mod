@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
+import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandLeft;
@@ -338,8 +338,8 @@ public class ChangedEntities {
             EntityType.Builder.of(WhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::noSpawning);
 
-    public static final RegistryObject<EntityType<CardboardBoxBlockEntity.EntityContainer>> ENTITY_CONTAINER = REGISTRY.register("entity_container",
-            () -> EntityType.Builder.of(CardboardBoxBlockEntity.EntityContainer::new, MobCategory.MISC).sized(0.01f, 0.01f).build("entity_container"));
+    public static final RegistryObject<EntityType<CardboardBoxTallBlockEntity.EntityContainer>> ENTITY_CONTAINER = REGISTRY.register("entity_container",
+            () -> EntityType.Builder.of(CardboardBoxTallBlockEntity.EntityContainer::new, MobCategory.MISC).sized(0.01f, 0.01f).build("entity_container"));
 
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX = registerNoEgg("special_latex",
             EntityType.Builder.of(SpecialLatex::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F));
