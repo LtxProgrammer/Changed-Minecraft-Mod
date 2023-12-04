@@ -49,8 +49,11 @@ public class FacilityPieces {
     }
 
     private static void treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
-                                     FacilityPiece parent, StructurePiece parentStructure,
+                                     Stack<FacilityPiece> stack, StructurePiece parentStructure,
                                      GenStep start, int genDepth, int span) {
+        var parent = stack.peek();
+        var genStack = new FacilityGenerationStack(stack);
+
         int reroll = 10;
         while (reroll > 0) {
             var type = start.validTypes().getRandom(context.random());
@@ -72,19 +75,22 @@ public class FacilityPieces {
             }
 
             var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
+            stack.push(nextPiece);
             builder.addPiece(nextStructure);
 
             if (span > 0) {
                 List<GenStep> starts = new ArrayList<>();
-                nextStructure.addSteps(nextPiece, starts);
+                nextStructure.addSteps(genStack, starts);
                 starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
                 starts.forEach(next -> {
-                    treeGenerate(builder, context, nextPiece, nextStructure, next, genDepth, span - 1);
+                    treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1);
                 });
 
                 return;
             }
+
+            stack.pop();
         }
     }
 
@@ -95,19 +101,24 @@ public class FacilityPieces {
         blockPos = blockPos.atY(context.chunkGenerator().getBaseHeight(blockPos.getX(), blockPos.getZ(),
                 Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()));
 
+        Stack<FacilityPiece> stack = new Stack<>();
         List<GenStep> starts = new ArrayList<>();
         FacilityPiece entranceNew = ENTRANCES.findNextPiece(context.random()).orElseThrow();
         FacilityPieceInstance entrancePiece = entranceNew.createStructurePiece(context.structureManager(), genDepth);
         entrancePiece.setRotation(Direction.Plane.HORIZONTAL.getRandomDirection(context.random()));
         entrancePiece.setupBoundingBoxOnBottomCenter(blockPos);
+
+        stack.push(entranceNew);
         builder.addPiece(entrancePiece);
 
-        entrancePiece.addSteps(entranceNew, starts);
+        entrancePiece.addSteps(new FacilityGenerationStack(stack), starts);
 
         if (span > 0) {
             starts.forEach(start -> {
-                treeGenerate(builder, context, entranceNew, entrancePiece, start, genDepth, span - 1);
+                treeGenerate(builder, context, stack, entrancePiece, start, genDepth, span - 1);
             });
         }
+
+        stack.pop();
     }
 }
