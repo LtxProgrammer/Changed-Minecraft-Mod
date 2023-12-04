@@ -84,6 +84,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .addProcessor(JigsawReplacementProcessor.INSTANCE)
                     .addProcessor(GluReplacementProcessor.INSTANCE)
+                    .setKeepLiquids(false)
                     .setIgnoreEntities(false);
             if (lootTable != null)
                 settings.addProcessor(ChestLootTableProcessor.of(lootTable));
