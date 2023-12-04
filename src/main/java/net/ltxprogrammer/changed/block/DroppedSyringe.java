@@ -27,12 +27,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class DroppedSyringe extends Block implements EntityBlock {
+public class DroppedSyringe extends Block implements EntityBlock, NonLatexCoverableBlock {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
     protected static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D);
 
     public DroppedSyringe() {
-        super(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS));
+        super(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).instabreak());
         this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0));
     }
 
