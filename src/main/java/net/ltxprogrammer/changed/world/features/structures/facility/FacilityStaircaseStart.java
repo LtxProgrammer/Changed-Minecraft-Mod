@@ -14,7 +14,7 @@ public class FacilityStaircaseStart extends FacilitySinglePiece {
     }
 
     @Override
-    public WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors() {
+    public WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors(FacilityGenerationStack stack) {
         return VALID_NEIGHBORS;
     }
 }

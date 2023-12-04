@@ -36,7 +36,7 @@ public abstract class FacilityPieceInstance extends StructurePiece {
         tag.putInt("R", rotation.ordinal());
     }
 
-    public abstract void addSteps(FacilityPiece parent, List<GenStep> steps);
+    public abstract void addSteps(FacilityGenerationStack stack, List<GenStep> steps);
 
     public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random);
     public abstract void setupBoundingBox(BlockPos minimum);
