@@ -29,7 +29,7 @@ public class ChangedItems {
     public static final RegistryObject<Item> LATEX_BASE = register("latex_base", () -> new Item(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS)));
     public static final RegistryObject<RecordItem> LATEX_DANCE_RECORD = register("latex_dance_record", () -> new RecordItem(8, ChangedSounds.LATEX_DANCE, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> ORANGE = register("orange", () -> new Item((new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
+    public static final RegistryObject<Item> ORANGE = register("orange", () -> new ItemNameBlockItem(ChangedBlocks.DROPPED_ORANGE.get(), (new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
