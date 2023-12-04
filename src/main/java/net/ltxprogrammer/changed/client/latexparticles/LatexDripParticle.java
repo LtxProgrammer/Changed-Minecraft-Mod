@@ -178,7 +178,7 @@ public class LatexDripParticle extends LatexParticle {
         if (attachedEntity.getUnderlyingPlayer() != null && attachedEntity.isCrouching())
             poseStack.translate(0.0, 0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is latex?
 
-        attachedPart.translateAndRotate(poseStack); // TODO capture parent ModelPart chain to get correct translation/rotation
+        attachedPart.translateAndRotate(poseStack);
         // in C = A * B, this is C
         var modelSpaceToScreenSpace = poseStack.last().pose();
         var modelSpaceToScreenSpaceN = poseStack.last().normal();
