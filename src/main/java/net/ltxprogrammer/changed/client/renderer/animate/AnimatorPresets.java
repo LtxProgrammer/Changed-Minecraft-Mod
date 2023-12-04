@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
 import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
+import net.ltxprogrammer.changed.client.renderer.animate.ears.WolfEarsInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
@@ -27,6 +28,18 @@ public class AnimatorPresets {
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalSwimAnimator<>(leftLeg, rightLeg));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator
+                    .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new WolfBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new WolfBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -84,6 +97,16 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+        return animator -> {
+            animator.setupHandsJointed(1, leftArm, leftForearm, rightArm, rightForearm)
+                    .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, leftForearm, rightArm, rightForearm))
+                    .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, leftArm, leftForearm, rightArm, rightForearm))
+                    .addAnimator(new WolfUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
@@ -122,6 +145,25 @@ public class AnimatorPresets {
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
                     .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfTail(ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator
+                    .addAnimator(new WolfTailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSwimAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfEars(ModelPart leftEar, ModelPart rightEar) {
+        return animator -> {
+            animator
+                    .addAnimator(new WolfEarsInitAnimator<>(leftEar, rightEar));
         };
     }
 
@@ -180,6 +222,25 @@ public class AnimatorPresets {
                     .addPreset(upperBody(head, torso, leftArm, rightArm))
                     .addPreset(standardTail(tail, tailJoints))
                     .addAnimator(new HeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfLikeV2(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                             ModelPart torso,
+                                                                                                             ModelPart leftArm, ModelPart leftForearm,
+                                                                                                             ModelPart rightArm, ModelPart rightForearm,
+                                                                                                             ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                             ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                             ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(wolfUpperBody(head, torso, leftArm, leftForearm, rightArm, rightForearm))
+                    .addPreset(wolfTail(tail, tailJoints))
+                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));

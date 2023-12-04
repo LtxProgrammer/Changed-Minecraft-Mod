@@ -5,9 +5,12 @@ import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -29,6 +32,9 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount;
+
+    public float ageLerp = 0.0F;
+    public float reachOut = 0.0F;
 
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
@@ -158,6 +164,10 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         public abstract AnimateStage preferredStage();
         public abstract void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch);
         public void copyTo(HumanoidModel<?> humanoidModel) {}
+
+        protected float sinLerp(float sin, float a, float b) {
+            return Mth.lerp(sin * 0.5f + 0.5f, a, b);
+        }
     }
 
     public LatexAnimator<T, M> addAnimator(Animator<T, M> animator) {
@@ -185,6 +195,25 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
             leftArm.x += -3F;
             rightArm.z += -1F - forwardOffset;
             leftArm.z += -1F - forwardOffset;
+        });
+        return this;
+    }
+
+    public LatexAnimator<T, M> setupHandsJointed(int level, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+        setupHandsRunnable.put(level, () -> {
+            rightArm.x = -2F;
+            leftArm.x = 2F;
+            rightArm.y = 0F;
+            leftArm.y = 0F;
+            rightArm.z = -1F;
+            leftArm.z = -1F;
+
+            leftForearm.xRot = 0.0F;
+            rightForearm.xRot = 0.0F;
+            leftForearm.yRot = 0.0F;
+            rightForearm.yRot = 0.0F;
+            leftForearm.zRot = 0.0F;
+            rightForearm.zRot = 0.0F;
         });
         return this;
     }

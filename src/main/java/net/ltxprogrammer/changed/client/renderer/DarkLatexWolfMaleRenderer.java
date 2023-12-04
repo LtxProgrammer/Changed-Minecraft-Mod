@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
@@ -11,22 +12,11 @@ public class DarkLatexWolfMaleRenderer extends LatexHumanoidRenderer<DarkLatexWo
 	public DarkLatexWolfMaleRenderer(EntityRendererProvider.Context context) {
 		super(context, new DarkLatexWolfMaleModel(context.bakeLayer(DarkLatexWolfMaleModel.LAYER_LOCATION)),
 				ArmorLatexWolfModel::new, ArmorLatexWolfModel.INNER_ARMOR, ArmorLatexWolfModel.OUTER_ARMOR, 0.5f);
+		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexWolfMale p_114482_) {
 		return Changed.modResource("textures/dark_latex_wolf_male.png");
-	}
-
-	public static class Remodel extends LatexHumanoidRenderer<DarkLatexWolfMale, DarkLatexWolfMaleModel.Remodel, ArmorLatexWolfModel.RemodelMale<DarkLatexWolfMale>> {
-		public Remodel(EntityRendererProvider.Context context) {
-			super(context, new DarkLatexWolfMaleModel.Remodel(context.bakeLayer(DarkLatexWolfMaleModel.LAYER_LOCATION)),
-					ArmorLatexWolfModel.RemodelMale::new, ArmorLatexWolfModel.RemodelMale.INNER_ARMOR, ArmorLatexWolfModel.RemodelMale.OUTER_ARMOR, 0.5f);
-		}
-
-		@Override
-		public ResourceLocation getTextureLocation(DarkLatexWolfMale p_114482_) {
-			return Changed.modResource("textures/remodel/dark_latex_wolf_male.png");
-		}
 	}
 }

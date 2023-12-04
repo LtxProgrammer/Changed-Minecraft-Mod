@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.util.Color3;
@@ -43,7 +44,8 @@ public class LatexDripParticle extends LatexParticle {
     private final int maxTicksAttached;
 
     private final LatexEntity attachedEntity;
-    private final ModelPart attachedPart;
+    private final ModelPartStem attachedPart;
+  
     private final SurfacePoint surface;
     protected final Color3 color;
     protected final float alpha;
@@ -51,7 +53,7 @@ public class LatexDripParticle extends LatexParticle {
     private boolean prepped = false;
 
     public LatexDripParticle(SpriteSet spriteSet,
-                             LatexEntity attachedEntity, ModelPart attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+                             LatexEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         super(attachedEntity.level, lifespan);
         this.maxTicksAttached = attachedEntity.level.random.nextInt(80, 2400);
 
@@ -174,7 +176,7 @@ public class LatexDripParticle extends LatexParticle {
 
         poseStack.pushPose();
         if (attachedEntity.getUnderlyingPlayer() != null && attachedEntity.isCrouching())
-            poseStack.translate(0.0, -0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is latex?
+            poseStack.translate(0.0, 0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is latex?
 
         attachedPart.translateAndRotate(poseStack); // TODO capture parent ModelPart chain to get correct translation/rotation
         // in C = A * B, this is C
@@ -296,7 +298,7 @@ public class LatexDripParticle extends LatexParticle {
         return LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE;
     }
 
-    public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, ModelPart attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+    public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         return new LatexParticleProvider<>() {
             @Override
             public LatexParticleType<LatexDripParticle> getParticleType() {
