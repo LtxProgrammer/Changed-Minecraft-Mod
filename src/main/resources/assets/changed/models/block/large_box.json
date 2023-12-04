@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/large_box_bottom",
+    "up": "changed:blocks/large_box_top",
+    "north": "changed:blocks/large_box_front",
+    "east": "changed:blocks/large_box_side",
+    "south": "changed:blocks/large_box_front",
+    "west": "changed:blocks/large_box_side",
+    "particle": "changed:blocks/large_box_side"
+  }
+}

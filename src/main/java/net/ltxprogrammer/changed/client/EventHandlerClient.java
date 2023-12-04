@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
+import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -46,7 +46,7 @@ public class EventHandlerClient {
             return;
         }
 
-        if (player.vehicle != null && player.vehicle instanceof CardboardBoxBlockEntity.EntityContainer container) {
+        if (player.vehicle != null && player.vehicle instanceof CardboardBoxTallBlockEntity.EntityContainer container) {
             if (player.isInvisible()) {
                 event.setCanceled(true);
                 return;
