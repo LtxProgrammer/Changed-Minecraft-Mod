@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:cardboard_box"
+      "changed:beehive_bed"
     ]
   },
   "criteria": {
-    "has_chest": {
+    "has_beds": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:chest"
-            ]
+            "tag": "minecraft:beds"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:cardboard_box"
+        "recipe": "changed:beehive_bed"
       }
     }
   },
   "requirements": [
     [
-      "has_chest",
+      "has_beds",
       "has_the_recipe"
     ]
   ]

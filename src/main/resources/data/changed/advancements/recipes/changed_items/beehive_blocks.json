@@ -2,17 +2,20 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:cardboard_box"
+      "changed:beehive_corner",
+      "changed:beehive_floor",
+      "changed:beehive_roof",
+      "changed:beehive_wall"
     ]
   },
   "criteria": {
-    "has_chest": {
+    "has_honeycomb": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:chest"
+              "minecraft:honeycomb"
             ]
           }
         ]
@@ -21,13 +24,18 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:cardboard_box"
+        "recipe": [
+          "changed:beehive_corner",
+          "changed:beehive_floor",
+          "changed:beehive_roof",
+          "changed:beehive_wall"
+        ]
       }
     }
   },
   "requirements": [
     [
-      "has_chest",
+      "has_honeycomb",
       "has_the_recipe"
     ]
   ]
