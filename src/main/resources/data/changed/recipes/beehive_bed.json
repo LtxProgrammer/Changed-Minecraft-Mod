@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PHP",
+    "HBH",
+    "PHP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "H": {
+      "item": "minecraft:honeycomb"
+    },
+    "B": {
+      "tag": "minecraft:beds"
+    }
+  },
+  "result": {
+    "item": "changed:beehive_bed"
+  }
+}

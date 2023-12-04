@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:beehive_corner",
+      "changed:beehive_floor",
+      "changed:beehive_roof",
+      "changed:beehive_wall"
+    ]
+  },
+  "criteria": {
+    "has_honeycomb": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:honeycomb"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": [
+          "changed:beehive_corner",
+          "changed:beehive_floor",
+          "changed:beehive_roof",
+          "changed:beehive_wall"
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_honeycomb",
+      "has_the_recipe"
+    ]
+  ]
+}
