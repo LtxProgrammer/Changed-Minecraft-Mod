@@ -85,49 +85,6 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [0, 135, 0],
-			"translation": [0, 1, -1],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"thirdperson_lefthand": {
-			"rotation": [0, 135, 0],
-			"translation": [0, 1, -1],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"firstperson_righthand": {
-			"rotation": [0, 135, 0],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"firstperson_lefthand": {
-			"rotation": [0, 135, 0],
-			"scale": [0.5, 0.5, 0.5]
-		},
-		"ground": {
-			"scale": [0.25, 0.25, 0.25]
-		},
-		"gui": {
-			"rotation": [45, 135, 0],
-			"translation": [0, 0.5, 0],
-			"scale": [0.75, 0.75, 0.75]
-		},
-		"head": {
-			"translation": [0, 2, 0],
-			"scale": [1.47, 1.47, 1.47]
-		},
-		"fixed": {
-			"translation": [0, 1.75, 0]
-		}
-	},
-	"groups": [
-		{
-			"name": "clipboard",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0, 1, 2, 3, 4, 5]
-		}
-	],
-	"display": {
-		"thirdperson_righthand": {
 			"rotation": [75, 25, 0],
 			"translation": [0, 2.5, 2],
 			"scale": [0.4, 0.4, 0.4]
@@ -170,7 +127,7 @@
 			"name": "clipboard",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [0]
+			"children": [0, 1, 2, 3, 4, 5]
 		}
 	]
 }
