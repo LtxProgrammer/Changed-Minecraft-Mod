@@ -11,6 +11,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -20,7 +21,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,15 +33,31 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
     public static final IntegerProperty ORANGES = IntegerProperty.create("oranges", 1, 8);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 4.0D, 13.0D);
+    private static final VoxelShape ONE_AABB = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 2.0D, 9.5D);
+    protected static final VoxelShape TWO_AABB = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 2.0D, 11.5D);
+    protected static final VoxelShape THREE_FOUR_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
+    protected static final VoxelShape FIVE_AABB = Block.box(3.5D, 0.0D, 3.5D, 12.5D, 2.0D, 12.5D);
+    protected static final VoxelShape SIXPLUS_AABB = Block.box(3.5D, 0.0D, 3.5D, 12.5D, 4.0D, 12.5D);
 
     public DroppedOrange() {
-        super(BlockBehaviour.Properties.of(Material.VEGETABLE).dynamicShape().instabreak());
+        super(BlockBehaviour.Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).sound(SoundType.WART_BLOCK).dynamicShape().instabreak());
     }
 
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return AABB;
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+        Vec3 vec3 = blockState.getOffset(blockGetter, pos);
+        switch (blockState.getValue(ORANGES)) {
+            case 1:
+            default:
+                return ONE_AABB.move(vec3.x, vec3.y, vec3.z);
+            case 2:
+                return TWO_AABB.move(vec3.x, vec3.y, vec3.z);
+            case 3, 4:
+                return THREE_FOUR_AABB.move(vec3.x, vec3.y, vec3.z);
+            case 5:
+                return FIVE_AABB.move(vec3.x, vec3.y, vec3.z);
+            case 6, 7, 8:
+                return SIXPLUS_AABB.move(vec3.x, vec3.y, vec3.z);
+        }
     }
 
     @Override
