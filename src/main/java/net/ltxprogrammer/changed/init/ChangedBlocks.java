@@ -64,13 +64,16 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_CORNER = register("beehive_corner", AbstractBeehiveBlock::new);
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_FLOOR = register("beehive_floor", AbstractBeehiveBlock::new);
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_ROOF = register("beehive_roof", AbstractBeehiveBlock::new);
-    public static final RegistryObject<BookStack> BOOK_STACK = register("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F)));
+    public static final RegistryObject<BookStack> BOOK_STACK = register("book_stack", BookStack::new);
     public static final RegistryObject<ClipboardBlock> CLIPBOARD = register("clipboard", ClipboardBlock::new);
     public static final RegistryObject<Note> NOTE = register("note", Note::new);
     public static final RegistryObject<Computer> COMPUTER = register("computer", () -> new Computer(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractCanBlock> CANNED_PEACHES = register("canned_peaches", AbstractCanBlock::new);
+    public static final RegistryObject<CannedSoup> CANNED_SOUP = register("canned_soup", CannedSoup::new);
     public static final RegistryObject<CardboardBoxTall> CARDBOARD_BOX_TALL = register("cardboard_box", CardboardBoxTall::new);
     public static final RegistryObject<CardboardBox> CARDBOARD_BOX = register("cardboard_container", CardboardBox::new);
+    public static final RegistryObject<DroppedOrange> DROPPED_ORANGE = registerNoItem("dropped_orange", DroppedOrange::new);
+    public static final RegistryObject<DroppedSyringe> DROPPED_SYRINGE = registerNoItem("dropped_syringe", DroppedSyringe::new, ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<DuctBlock> DUCT = register("duct", () -> new DuctBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 3.0F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<BoxPile> BOX_PILE = register("box_pile", BoxPile::new);
     public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));

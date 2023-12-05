@@ -24,6 +24,6 @@ public abstract class FacilityPiece {
         return this.zone == zone;
     }
 
-    public abstract WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors();
+    public abstract WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors(FacilityGenerationStack stack);
     public abstract FacilityPieceInstance createStructurePiece(StructureManager structures, int genDepth);
 }

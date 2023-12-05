@@ -58,6 +58,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
 
         public StructureInstance(StructureManager manager, CompoundTag tag) {
             super(ChangedStructurePieceTypes.FACILITY_SINGLE.get(), tag);
+            this.generationPosition = TagUtil.getBlockPos(tag, "genPos");
             this.templateName = TagUtil.getResourceLocation(tag, "template");
             if (tag.contains("lootTable"))
                 this.lootTable = TagUtil.getResourceLocation(tag, "lootTable");
@@ -69,6 +70,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
             super.addAdditionalSaveData(context, tag);
+            TagUtil.putBlockPos(tag, "genPos", generationPosition);
             TagUtil.putResourceLocation(tag, "template", templateName);
             if (lootTable != null)
                 TagUtil.putResourceLocation(tag, "lootTable", lootTable);
@@ -82,6 +84,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .addProcessor(JigsawReplacementProcessor.INSTANCE)
                     .addProcessor(GluReplacementProcessor.INSTANCE)
+                    .setKeepLiquids(false)
                     .setIgnoreEntities(false);
             if (lootTable != null)
                 settings.addProcessor(ChestLootTableProcessor.of(lootTable));
@@ -89,14 +92,14 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
         }
 
         @Override
-        public void addSteps(FacilityPiece parent, List<GenStep> steps) {
+        public void addSteps(FacilityGenerationStack stack, List<GenStep> steps) {
             var settings = new StructurePlaceSettings()
                     .setMirror(this.getMirror())
                     .setRotation(this.getRotation())
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
             template.filterBlocks(generationPosition, settings, ChangedBlocks.GLU_BLOCK.get()).forEach(blockInfo -> {
-                steps.add(new GenStep(blockInfo, parent.getValidNeighbors()));
+                steps.add(new GenStep(blockInfo, stack.getParent().getValidNeighbors(stack)));
             });
         }
 
