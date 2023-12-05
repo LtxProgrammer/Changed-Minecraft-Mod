@@ -33,7 +33,7 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
     public static final IntegerProperty ORANGES = IntegerProperty.create("oranges", 1, 8);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape ONE_AABB = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 2.0D, 9.5D);
+    protected static final VoxelShape ONE_AABB = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 2.0D, 9.5D);
     protected static final VoxelShape TWO_AABB = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 2.0D, 11.5D);
     protected static final VoxelShape THREE_FOUR_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
     protected static final VoxelShape FIVE_AABB = Block.box(3.5D, 0.0D, 3.5D, 12.5D, 2.0D, 12.5D);
