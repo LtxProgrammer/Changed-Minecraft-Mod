@@ -35,9 +35,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class LatexSyringe extends Item implements SpecializedAnimations, VariantHoldingBase {
-    public LatexSyringe(Properties p_41383_) {
-        super(p_41383_.tab(ChangedTabs.TAB_CHANGED_ITEMS));
+public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimations, VariantHoldingBase {
+    public LatexSyringe(Properties properties) {
+        super(ChangedBlocks.DROPPED_SYRINGE.get(), properties.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
     @Override
@@ -216,5 +216,16 @@ public class LatexSyringe extends Item implements SpecializedAnimations, Variant
                         Syringe.getVariant(itemStack))) ?
                 InteractionResult.sidedSuccess(player.level.isClientSide) :
                 super.interactLivingEntity(itemStack, player, livingEntity, hand);
+    }
+
+    @Override
+    protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @org.jetbrains.annotations.Nullable Player player, ItemStack stack, BlockState state) {
+        boolean result = super.updateCustomBlockEntityTag(pos, level, player, stack, state);
+
+        level.getBlockEntity(pos, ChangedBlockEntities.DROPPED_SYRINGE.get()).ifPresent(droppedSyringeBlockEntity -> {
+            droppedSyringeBlockEntity.setVariant(Syringe.getVariant(stack));
+        });
+
+        return result;
     }
 }

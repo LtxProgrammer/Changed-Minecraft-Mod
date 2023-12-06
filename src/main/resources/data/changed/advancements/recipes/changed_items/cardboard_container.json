@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:box_pile"
+      "changed:cardboard_container"
     ]
   },
   "criteria": {
-    "has_cardboard_box_small": {
+    "has_chest": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:cardboard_box_small"
+              "minecraft:chest"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:box_pile"
+        "recipe": "changed:cardboard_container"
       }
     }
   },
   "requirements": [
     [
-      "has_cardboard_box_small",
+      "has_chest",
       "has_the_recipe"
     ]
   ]

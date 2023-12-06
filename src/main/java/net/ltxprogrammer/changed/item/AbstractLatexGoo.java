@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -12,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -26,11 +28,13 @@ import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
-public class AbstractLatexGoo extends Item {
+public class AbstractLatexGoo extends ItemNameBlockItem {
     private final LatexType type;
 
     public AbstractLatexGoo(LatexType type) {
-        super(new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).food(Foods.DRIED_KELP));
+        // TODO make better
+        super(type == LatexType.DARK_LATEX ? ChangedBlocks.DARK_LATEX_WALL_SPLOTCH.get() : ChangedBlocks.WHITE_LATEX_WALL_SPLOTCH.get(),
+                new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).food(Foods.DRIED_KELP));
         this.type = type;
     }
 
@@ -103,6 +107,9 @@ public class AbstractLatexGoo extends Item {
     }
 
     public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() != null && context.getPlayer().isCrouching())
+            return super.useOn(context);
+
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         LatexType thisType = LatexType.NEUTRAL;
         for (LatexType type : LatexType.values())
