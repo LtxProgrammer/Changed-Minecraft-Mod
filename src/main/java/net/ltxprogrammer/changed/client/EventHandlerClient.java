@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -46,8 +47,8 @@ public class EventHandlerClient {
             return;
         }
 
-        if (player.vehicle != null && player.vehicle instanceof CardboardBoxTallBlockEntity.EntityContainer container) {
-            if (player.isInvisible()) {
+        if (player.vehicle != null && player.vehicle instanceof SeatEntity seat) {
+            if (seat.shouldSeatedBeInvisible()) {
                 event.setCanceled(true);
                 return;
             }

@@ -1,17 +1,18 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class EntityContainerRenderer extends EntityRenderer<CardboardBoxTallBlockEntity.EntityContainer> {
-    public EntityContainerRenderer(EntityRendererProvider.Context p_174008_) {
-        super(p_174008_);
+public class SeatEntityRenderer extends EntityRenderer<SeatEntity> {
+    public SeatEntityRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CardboardBoxTallBlockEntity.EntityContainer p_114482_) {
+    public ResourceLocation getTextureLocation(SeatEntity entity) {
         return null;
     }
 }
