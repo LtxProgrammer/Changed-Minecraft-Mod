@@ -1,13 +1,12 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -27,37 +26,50 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
-public class DroppedOrange extends Block implements NonLatexCoverableBlock, SimpleWaterloggedBlock {
-    public static final IntegerProperty ORANGES = IntegerProperty.create("oranges", 1, 8);
+public class CannedSoup extends Block implements SimpleWaterloggedBlock {
+    public static final IntegerProperty CANS = IntegerProperty.create("cans", 1, 4);
+    public static final VoxelShape ONE_AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 7.0D, 10.0D);
+    public static final VoxelShape TWO_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 7.0D, 13.0D);
+    public static final VoxelShape THREE_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 7.0D, 13.0D);
+    public static final VoxelShape FOUR_AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape AABB = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 4.0D, 13.0D);
-
-    public DroppedOrange() {
-        super(BlockBehaviour.Properties.of(Material.VEGETABLE).dynamicShape().instabreak());
+    public CannedSoup() {
+        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape());
+        this.registerDefaultState(this.stateDefinition.any().setValue(CANS, 1));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(ORANGES, WATERLOGGED);
+        builder.add(CANS, WATERLOGGED);
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        return List.of(new ItemStack(ChangedItems.ORANGE.get(), state.getValue(ORANGES)));
+        return List.of(new ItemStack(ChangedBlocks.CANNED_SOUP.get(), state.getValue(CANS)));
+    }
+
+    public VoxelShape shapeForState(BlockState state) {
+        return switch (state.getValue(CANS)) {
+            case 1 -> ONE_AABB;
+            case 2 -> TWO_AABB;
+            case 3 -> THREE_AABB;
+            case 4 -> FOUR_AABB;
+            default -> throw new IllegalStateException("Illegal BlockState");
+        };
     }
 
     @Override
     public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
         Vec3 vec3 = state.getOffset(level, pos);
-        return AABB.move(vec3.x, vec3.y, vec3.z);
+        return shapeForState(state).move(vec3.x, vec3.y, vec3.z);
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Vec3 vec3 = state.getOffset(level, pos);
-        return AABB.move(vec3.x, vec3.y, vec3.z);
+        return shapeForState(state).move(vec3.x, vec3.y, vec3.z);
     }
 
     @Override
@@ -70,13 +82,13 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
     }
 
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
-        return !context.isSecondaryUseActive() && context.getItemInHand().getItem() == this.asItem() && state.getValue(ORANGES) < 8 || super.canBeReplaced(state, context);
+        return !context.isSecondaryUseActive() && context.getItemInHand().getItem() == this.asItem() && state.getValue(CANS) < 4 || super.canBeReplaced(state, context);
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
         if (blockstate.is(this)) {
-            return blockstate.cycle(ORANGES);
+            return blockstate.cycle(CANS);
         } else {
             FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
             boolean flag = fluidstate.getType() == Fluids.WATER;
