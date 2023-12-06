@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.PipeBlock;
 import net.ltxprogrammer.changed.block.*;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.GasCanister;
@@ -70,6 +71,7 @@ public class ChangedBlocks {
     public static final RegistryObject<Computer> COMPUTER = register("computer", () -> new Computer(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0F, 3.0F).lightLevel((state) -> 4)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractCanBlock> CANNED_PEACHES = register("canned_peaches", AbstractCanBlock::new);
     public static final RegistryObject<CannedSoup> CANNED_SOUP = register("canned_soup", CannedSoup::new);
+    public static final RegistryObject<CardboardBoxSmall> CARDBOARD_BOX_SMALL = register("cardboard_box_small", CardboardBoxSmall::new);
     public static final RegistryObject<CardboardBoxTall> CARDBOARD_BOX_TALL = register("cardboard_box", CardboardBoxTall::new);
     public static final RegistryObject<CardboardBox> CARDBOARD_BOX = register("cardboard_container", CardboardBox::new);
     public static final RegistryObject<DroppedOrange> DROPPED_ORANGE = registerNoItem("dropped_orange", DroppedOrange::new);
@@ -158,11 +160,13 @@ public class ChangedBlocks {
     public static final RegistryObject<Purifier> PURIFIER = register("purifier", () -> new Purifier(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.QUARTZ).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(4.5F, 3.0F)));
 
     public static final RegistryObject<DarkLatexBlock> DARK_LATEX_BLOCK = register("dark_latex_block", () -> new DarkLatexBlock(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_GRAY).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F)));
+    public static final RegistryObject<LatexWallSplotch> DARK_LATEX_WALL_SPLOTCH = registerNoItem("dark_latex_wall_splotch", () -> new LatexWallSplotch(LatexType.DARK_LATEX, List.of()));
     public static final RegistryObject<AbstractLatexIceBlock> DARK_LATEX_ICE = register("dark_latex_ice", () -> new AbstractLatexIceBlock(BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_GRAY).friction(0.98F).sound(SoundType.GLASS).strength(1.5F, 1.0F)));
     public static final RegistryObject<LatexWolfCrystalBlock> LATEX_WOLF_CRYSTAL_BLOCK = register("latex_wolf_crystal_block", () -> new LatexWolfCrystalBlock(
             BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_RED).friction(0.98F).sound(SoundType.AMETHYST).strength(2.0F, 2.0F)));
     public static final RegistryObject<WhiteLatexBlock> WHITE_LATEX_BLOCK = register("white_latex_block", () -> new WhiteLatexBlock(BlockBehaviour.Properties.copy(DARK_LATEX_BLOCK.get()).color(MaterialColor.QUARTZ).noOcclusion()
             .isViewBlocking(ChangedBlocks::never).isSuffocating(ChangedBlocks::never)));
+    public static final RegistryObject<LatexWallSplotch> WHITE_LATEX_WALL_SPLOTCH = registerNoItem("white_latex_wall_splotch", () -> new LatexWallSplotch(LatexType.WHITE_LATEX, List.of(LatexVariant.WHITE_LATEX_WOLF)));
     public static final RegistryObject<SaplingBlock> ORANGE_TREE_SAPLING = register("orange_tree_sapling", () -> new SaplingBlock(new AbstractTreeGrower() {
         @Override
         protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean p_204308_) {
@@ -170,7 +174,7 @@ public class ChangedBlocks {
         }
     }, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
-            BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
+            BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.COLOR_GREEN).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 
     // Structure specific block to help procedural generation
     public static final RegistryObject<GluBlock> GLU_BLOCK = registerNoItem("glu", GluBlock::new);

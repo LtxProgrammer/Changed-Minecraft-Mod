@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/white_latex_wall_splotch"
+    },
+    "facing=east": {
+      "model": "changed:block/white_latex_wall_splotch",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/white_latex_wall_splotch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/white_latex_wall_splotch",
+      "y": 270
+    }
+  }
+}

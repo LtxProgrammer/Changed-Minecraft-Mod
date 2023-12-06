@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "changed:blocks/cardboard_box_small",
+		"particle": "changed:blocks/cardboard_box_small"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 10, 13],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 5, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 5, 5], "texture": "#0"},
+				"east": {"uv": [0, 5, 5, 10], "texture": "#0"},
+				"south": {"uv": [5, 0, 10, 5], "texture": "#0"},
+				"west": {"uv": [5, 5, 10, 10], "texture": "#0"},
+				"up": {"uv": [5, 15, 0, 10], "texture": "#0"},
+				"down": {"uv": [15, 0, 10, 5], "texture": "#0", "cullface": "down"}
+			}
+		}
+	]
+}
