@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -19,56 +20,12 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.network.NetworkHooks;
 
 import static net.ltxprogrammer.changed.block.CardboardBoxTall.OPEN;
-import static net.ltxprogrammer.changed.init.ChangedEntities.ENTITY_CONTAINER;
+import static net.ltxprogrammer.changed.init.ChangedEntities.SEAT_ENTITY;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class CardboardBoxTallBlockEntity extends BlockEntity {
-    public static class EntityContainer extends Entity {
-        public EntityContainer(EntityType<?> p_19870_, Level p_19871_) {
-            super(p_19870_, p_19871_);
-        }
-
-        public void tick() {
-            super.tick();
-
-            if (!level.getBlockState(this.blockPosition()).is(ChangedBlocks.CARDBOARD_BOX_TALL.get()))
-                this.remove(RemovalReason.DISCARDED);
-            else if (this.getFirstPassenger() instanceof Player player && !player.isInvisible()) {
-                player.setInvisible(true);
-            }
-        }
-
-        public boolean canCollideWith(Entity p_38376_) {
-            return false;
-        }
-
-        public boolean canBeCollidedWith() {
-            return false;
-        }
-
-        public boolean isPushable() {
-            return false;
-        }
-
-        public boolean hurt(DamageSource p_38319_, float p_38320_) { return false; }
-
-        @Override
-        protected void defineSynchedData() {}
-
-        @Override
-        protected void readAdditionalSaveData(CompoundTag p_20052_) {}
-
-        @Override
-        protected void addAdditionalSaveData(CompoundTag p_20139_) {}
-
-        @Override
-        public Packet<?> getAddEntityPacket() {
-            return NetworkHooks.getEntitySpawningPacket(this);
-        }
-    }
-
     public LivingEntity entity;
-    public EntityContainer entityHolder;
+    public SeatEntity entityHolder;
     public int ticksSinceChange = 20;
     public static final int OPEN_THRESHOLD = 15;
 
@@ -100,9 +57,7 @@ public class CardboardBoxTallBlockEntity extends BlockEntity {
         blockEntity.ticksSinceChange++;
 
         if (blockEntity.entityHolder == null) {
-            blockEntity.entityHolder = ENTITY_CONTAINER.get().create(level);
-            blockEntity.entityHolder.setPos(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5);
-            level.addFreshEntity(blockEntity.entityHolder);
+            blockEntity.entityHolder = SeatEntity.createFor(level, state, pos, true);
         }
 
         if (blockEntity.entity != null) {

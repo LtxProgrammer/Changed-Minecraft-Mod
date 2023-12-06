@@ -114,7 +114,7 @@ public class ChangedEntityRenderers {
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
 
-        event.registerEntityRenderer(ChangedEntities.ENTITY_CONTAINER.get(), EntityContainerRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.SEAT_ENTITY.get(), SeatEntityRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.LATEX_INKBALL.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GAS_PARTICLE.get(), GasParticleRenderer::new);
