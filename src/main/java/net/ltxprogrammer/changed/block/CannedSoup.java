@@ -10,6 +10,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -35,7 +36,7 @@ public class CannedSoup extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public CannedSoup() {
-        super(BlockBehaviour.Properties.of(Material.METAL).dynamicShape());
+        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.COPPER).strength(0.5F).dynamicShape());
         this.registerDefaultState(this.stateDefinition.any().setValue(CANS, 1));
     }
 
