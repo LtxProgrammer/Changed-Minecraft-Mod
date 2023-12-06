@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:box_pile"
+      "changed:canned_soup"
     ]
   },
   "criteria": {
-    "has_cardboard_box_small": {
+    "has_beetroot_soup": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:cardboard_box_small"
+              "minecraft:beetroot_soup"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:box_pile"
+        "recipe": "changed:canned_soup"
       }
     }
   },
   "requirements": [
     [
-      "has_cardboard_box_small",
+      "has_beetroot_soup",
       "has_the_recipe"
     ]
   ]
