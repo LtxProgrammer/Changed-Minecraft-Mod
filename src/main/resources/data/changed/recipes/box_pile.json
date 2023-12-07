@@ -1,19 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " P ",
-    "PCP"
-  ],
-  "key": {
-    "C": {
-      "item": "changed:cardboard_box"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:cardboard_box_small"
     },
-    "P": {
-      "item": "minecraft:paper"
+    {
+      "item": "changed:cardboard_box_small"
+    },
+    {
+      "item": "changed:cardboard_box_small"
     }
-  },
+  ],
   "result": {
     "item": "changed:box_pile",
-    "count": 2
+    "count": 1
   }
 }

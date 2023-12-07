@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Pose;
 
 public class SlitherAbility extends SimpleAbility {
     @Override
@@ -16,27 +17,29 @@ public class SlitherAbility extends SimpleAbility {
     @Override
     public void startUsing(IAbstractLatex entity) {
         super.startUsing(entity);
-        entity.getLatexEntity().overrideVisuallySwimming = true;
+        entity.getLatexEntity().overridePose = Pose.SWIMMING;
         setDirty(entity);
     }
 
     @Override
     public void stopUsing(IAbstractLatex entity) {
         super.stopUsing(entity);
-        entity.getLatexEntity().overrideVisuallySwimming = false;
+        entity.getLatexEntity().overridePose = null;
         setDirty(entity);
     }
 
     @Override
     public void saveData(CompoundTag tag, IAbstractLatex entity) {
         super.saveData(tag, entity);
-        tag.putBoolean("overrideSwimming", entity.getLatexEntity().overrideVisuallySwimming);
+        if (entity.getLatexEntity().overridePose != null)
+            tag.putString("overridePose", entity.getLatexEntity().overridePose.name());
     }
 
     @Override
     public void readData(CompoundTag tag, IAbstractLatex entity) {
         super.readData(tag, entity);
-        entity.getLatexEntity().overrideVisuallySwimming = tag.getBoolean("overrideSwimming");
+        if (tag.contains("overridePose"))
+            entity.getLatexEntity().overridePose = Pose.valueOf(tag.getString("overridePose"));
     }
 
     @Override
