@@ -41,7 +41,8 @@ public class FurnaceFuel {
         addBlockBurnTime(ChangedBlocks.BEEHIVE_WALL, 200);
         addBlockBurnTime(ChangedBlocks.BOOK_STACK, 150);
         addBlockBurnTime(ChangedBlocks.BOX_PILE, 300);
-        addBlockBurnTime(ChangedBlocks.CARDBOARD_BOX, 200);
+        addBlockBurnTime(ChangedBlocks.CARDBOARD_BOX_TALL, 200);
+        addBlockBurnTime(ChangedBlocks.CARDBOARD_BOX, 100);
         addBlockBurnTime(ChangedBlocks.ORANGE_LAB_CARPETING, 100);
         addBlockBurnTime(ChangedBlocks.ORANGE_TREE_SAPLING, 100);
         addBlockBurnTime(ChangedBlocks.TILES_GREENHOUSE, 300);

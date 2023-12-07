@@ -181,13 +181,17 @@ public abstract class LatexEntity extends Monster {
                 underlyingPlayer.isAutoSpinAttack();
     }
 
+    @Override
+    protected boolean canEnterPose(Pose pose) {
+        if (overridePose != null && overridePose != pose)
+            return false;
+        return super.canEnterPose(pose);
+    }
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        if (this.isVisuallySwimming())
-            return EntityDimensions.scalable(core.width, core.width);
-        return switch (pose) {
+        return switch (Objects.requireNonNullElse(overridePose, pose)) {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
@@ -512,10 +516,10 @@ public abstract class LatexEntity extends Monster {
         return this.isCrouching() || this.isVisuallyCrawling();
     }
 
-    public boolean overrideVisuallySwimming = false;
+    public Pose overridePose = null;
     @Override
     public boolean isVisuallySwimming() {
-        if (overrideVisuallySwimming)
+        if (overridePose == Pose.SWIMMING)
             return true;
         return super.isVisuallySwimming();
     }

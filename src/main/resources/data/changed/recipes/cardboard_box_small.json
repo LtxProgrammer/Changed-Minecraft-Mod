@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:cardboard_container"
+    }
+  ],
+  "result": {
+    "item": "changed:cardboard_box_small",
+    "count": 3
+  }
+}

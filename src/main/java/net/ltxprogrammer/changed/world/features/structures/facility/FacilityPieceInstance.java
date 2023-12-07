@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public abstract class FacilityPieceInstance extends StructurePiece {
     private Rotation rotation;
@@ -35,18 +36,18 @@ public abstract class FacilityPieceInstance extends StructurePiece {
         tag.putInt("R", rotation.ordinal());
     }
 
-    public abstract void addSteps(FacilityPiece parent, List<GenStep> steps);
+    public abstract void addSteps(FacilityGenerationStack stack, List<GenStep> steps);
 
-    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu);
+    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random);
     public abstract void setupBoundingBox(BlockPos minimum);
 
     public void setupBoundingBoxOnBottomCenter(BlockPos center) {
         this.setupBoundingBox(BlockPos.ZERO);
-        var offset = new Vec3i(
+        var offset = new BlockPos(
                 (this.boundingBox.maxX() / 2) + center.getX(),
                 center.getY(),
                 (this.boundingBox.maxZ() / 2) + center.getZ());
-        this.boundingBox.move(offset);
+        this.setupBoundingBox(offset);
     }
 
     @Override
