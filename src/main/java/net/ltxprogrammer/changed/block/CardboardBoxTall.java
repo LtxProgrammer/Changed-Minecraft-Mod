@@ -120,7 +120,7 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
 
     private static final Vec3 SIT_OFFSET = Vec3.ZERO;
     @Override
-    public Vec3 getSitOffset(BlockState state, BlockPos pos) {
+    public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
         return SIT_OFFSET;
     }
 }
