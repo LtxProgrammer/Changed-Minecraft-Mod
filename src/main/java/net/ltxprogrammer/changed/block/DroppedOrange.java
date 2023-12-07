@@ -41,6 +41,7 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
 
     public DroppedOrange() {
         super(BlockBehaviour.Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).sound(SoundType.WART_BLOCK).dynamicShape().instabreak());
+        this.registerDefaultState(this.stateDefinition.any().setValue(ORANGES, 1).setValue(WATERLOGGED, false));
     }
 
     @Override
