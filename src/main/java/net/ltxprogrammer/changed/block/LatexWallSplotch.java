@@ -46,6 +46,7 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
         super(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_GRAY).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion());
         this.type = type;
         this.variants = variants;
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override

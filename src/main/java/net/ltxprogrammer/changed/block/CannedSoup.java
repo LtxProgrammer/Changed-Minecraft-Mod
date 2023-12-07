@@ -38,7 +38,7 @@ public class CannedSoup extends Block implements SimpleWaterloggedBlock {
 
     public CannedSoup() {
         super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.COPPER).strength(0.5F).dynamicShape());
-        this.registerDefaultState(this.stateDefinition.any().setValue(CANS, 1));
+        this.registerDefaultState(this.stateDefinition.any().setValue(CANS, 1).setValue(WATERLOGGED, false));
     }
 
     @Override
