@@ -4,24 +4,5 @@
     "all": "changed:blocks/erlenmeyer_flask/erlenmeyer_flask",
     "particle": "changed:blocks/erlenmeyer_flask/erlenmeyer_flask",
     "0": "changed:blocks/erlenmeyer_flask/erlenmeyer_flask"
-  },
-  "display": {
-    "thirdperson": {
-      "rotation": [
-        10,
-        -45,
-        170
-      ],
-      "translation": [
-        0,
-        1.5,
-        -2.75
-      ],
-      "scale": [
-        0.375,
-        0.375,
-        0.375
-      ]
-    }
   }
 }
