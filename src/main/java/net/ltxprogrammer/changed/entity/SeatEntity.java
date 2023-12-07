@@ -42,11 +42,11 @@ public class SeatEntity extends Entity {
         seat.entityData.set(SEATED_INVISIBLE, seatedInvisible);
         if (state.getBlock() instanceof SeatableBlock seatableBlock) {
             var offset = seatableBlock.getSitOffset(state, pos);
-            seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() - 0.5, pos.getZ() + 0.5 + offset.z);
+            seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() + 0.5, pos.getZ() + 0.5 + offset.z);
         }
 
         else
-            seat.setPos(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5);
+            seat.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 
         level.addFreshEntity(seat);
         return seat;
