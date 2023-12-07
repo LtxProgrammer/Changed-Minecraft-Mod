@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.block.entity.OfficeChairBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
@@ -122,7 +121,7 @@ public class OfficeChair extends BaseEntityBlock implements SeatableBlock {
     private static final Vec3 SIT_OFFSET = new Vec3(0.0D, 12.5D / 16.0D - 1.0D, 0.0D);
 
     @Override
-    public Vec3 getSitOffset(BlockState state, BlockPos pos) {
+    public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
         return SIT_OFFSET;
     }
 
