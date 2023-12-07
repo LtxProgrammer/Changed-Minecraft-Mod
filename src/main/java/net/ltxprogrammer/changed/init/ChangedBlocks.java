@@ -17,6 +17,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.FoliageColor;
@@ -177,6 +178,8 @@ public class ChangedBlocks {
     }, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.COLOR_GREEN).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
+
+    public static final RegistryObject<Pillow> WHITE_PILLOW = register("white_pillow", () -> Pillow.forColor(DyeColor.WHITE));
 
     // Structure specific block to help procedural generation
     public static final RegistryObject<GluBlock> GLU_BLOCK = registerNoItem("glu", GluBlock::new);
