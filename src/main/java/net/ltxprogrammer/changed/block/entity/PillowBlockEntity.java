@@ -13,9 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 public class PillowBlockEntity extends BlockEntity {
     public LivingEntity entity;
     public SeatEntity entityHolder;
+    private DyeColor color;
 
     public PillowBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.PILLOW.get(), pos, state);
+        this.color = ((Pillow)this.getBlockState().getBlock()).getColor();
     }
 
     public boolean sitEntity(LivingEntity entity) {
@@ -36,8 +38,12 @@ public class PillowBlockEntity extends BlockEntity {
         }
     }
 
+    public void setColor(DyeColor color) {
+        this.color = color;
+    }
+
     public DyeColor getColor() {
-        return ((Pillow)this.getBlockState().getBlock()).getColor();
+        return color;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PillowBlockEntity blockEntity) {
