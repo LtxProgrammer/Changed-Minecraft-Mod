@@ -42,8 +42,6 @@ public class PillowRenderer implements BlockEntityRenderer<PillowBlockEntity> {
     @Override
     public void render(PillowBlockEntity entity, float partialTicks, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         stack.pushPose();
-        /*stack.translate(0.0D, 0.5625D, 0.0D);
-        stack.mulPose(Vector3f.XP.rotationDegrees(90.0F));*/
         stack.translate(0.5D, 0.0D, 0.5D);
         stack.mulPose(Vector3f.YP.rotationDegrees(180.0F + Pillow.getRot16ForState(entity.getBlockState()) * 22.5F));
         stack.translate(-0.5D + (1.5D / 16.0D), 0.0D, -0.5D + (1.5D / 16.0D));
