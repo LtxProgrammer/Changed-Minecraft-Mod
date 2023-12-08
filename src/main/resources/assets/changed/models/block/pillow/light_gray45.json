@@ -1,0 +1,7 @@
+{
+	"parent": "changed:custom/pillow45",
+	"textures": {
+		"0": "changed:blocks/pillow/light_gray",
+		"particle": "changed:blocks/pillow/light_gray"
+	}
+}

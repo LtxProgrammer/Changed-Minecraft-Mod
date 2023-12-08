@@ -33,5 +33,7 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX = REGISTRY.register("cardboard_container", deferredProvider(CardboardBoxBlockEntity::new, ChangedBlocks.CARDBOARD_BOX));
     public static final RegistryObject<BlockEntityType<DroppedSyringeBlockEntity>> DROPPED_SYRINGE = REGISTRY.register("dropped_syringe", deferredProvider(DroppedSyringeBlockEntity::new, ChangedBlocks.DROPPED_SYRINGE));
     public static final RegistryObject<BlockEntityType<OfficeChairBlockEntity>> OFFICE_CHAIR = REGISTRY.register("office_chair", deferredProvider(OfficeChairBlockEntity::new, ChangedBlocks.OFFICE_CHAIR));
-    public static final RegistryObject<BlockEntityType<PillowBlockEntity>> PILLOW = REGISTRY.register("pillow", deferredProvider(PillowBlockEntity::new, ChangedBlocks.WHITE_PILLOW));
+    public static final RegistryObject<BlockEntityType<PillowBlockEntity>> PILLOW = REGISTRY.register("pillow", deferredProvider(PillowBlockEntity::new, ChangedBlocks.YELLOW_PILLOW, ChangedBlocks.WHITE_PILLOW, ChangedBlocks.RED_PILLOW,
+            ChangedBlocks.PURPLE_PILLOW, ChangedBlocks.PINK_PILLOW, ChangedBlocks.ORANGE_PILLOW, ChangedBlocks.MAGENTA_PILLOW, ChangedBlocks.LIME_PILLOW, ChangedBlocks.LIGHT_GRAY_PILLOW, ChangedBlocks.LIGHT_BLUE_PILLOW, ChangedBlocks.GREEN_PILLOW,
+            ChangedBlocks.GRAY_PILLOW, ChangedBlocks.CYAN_PILLOW, ChangedBlocks.BROWN_PILLOW, ChangedBlocks.BLUE_PILLOW, ChangedBlocks.BLACK_PILLOW));
 }
