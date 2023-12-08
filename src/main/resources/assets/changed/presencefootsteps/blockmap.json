@@ -45,6 +45,7 @@
   "changed:light_latex_puddle_female.foliage": "mudfine,slime",
   "changed:light_latex_puddle_male": "mudfine,slime",
   "changed:light_latex_puddle_male.foliage": "mudfine,slime",
+  "changed:office_chair": "woodutility",
   "changed:retinal_scanner": "hardmetal",
   "changed:speaker": "hardmetal",
   "changed:microphone": "hardmetal",
@@ -91,5 +92,6 @@
   "changed:dark_latex_block": "mudfine,slime",
   "changed:dark_latex_ice": "ice",
   "changed:latex_wolf_crystal_block": "chimes",
-  "changed:white_latex_block": "mud,slick"
+  "changed:white_latex_block": "mud,slick",
+  "changed:white_pillow": "rug"
 }
