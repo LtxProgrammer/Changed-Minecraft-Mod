@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.block.Pillow;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +34,10 @@ public class PillowBlockEntity extends BlockEntity {
         if (entity != null && entity.vehicle == entityHolder) {
             entity.vehicle = null;
         }
+    }
+
+    public DyeColor getColor() {
+        return ((Pillow)this.getBlockState().getBlock()).getColor();
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PillowBlockEntity blockEntity) {
