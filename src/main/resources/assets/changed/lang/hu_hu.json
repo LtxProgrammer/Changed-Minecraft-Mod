@@ -187,6 +187,7 @@
   "block.changed.maintenance_door": "Karbantartási ajtó",
   "block.changed.microphone": "Mikrofon",
   "block.changed.note": "Jegyzet",
+  "block.changed.office_chair": "Irodai szék",
   "block.changed.orange_lab_carpeting": "Narancssárga labor szőnyeg",
   "block.changed.orange_tree_sapling": "Narancsfa-csemete",
   "block.changed.orange_tree_leaves": "Narancsfalevelek",
@@ -232,7 +233,24 @@
   "block.changed.white_latex_block": "Fehér latexblokk",
   "block.changed.white_latex_pillar": "Fehér latexoszlop",
   "block.changed.wolf_gas_canister": "Farkasgázpalack",
-
+  
+  "block.changed.black_pillow": "Fekete párna",
+  "block.changed.blue_pillow": "Kék párna",
+  "block.changed.brown_pillow": "Barna párna",
+  "block.changed.cyan_pillow": "Türkizkék párna",
+  "block.changed.gray_pillow": "Szürke párna",
+  "block.changed.green_pillow": "Zöld párna",
+  "block.changed.light_blue_pillow": "Világoskék párna",
+  "block.changed.light_gray_pillow": "Világosszürke párna",
+  "block.changed.lime_pillow": "Világoszöld párna",
+  "block.changed.magenta_pillow": "Bíbor párna",
+  "block.changed.orange_pillow": "Narancssárga párna",
+  "block.changed.pink_pillow": "Rózsaszín párna",
+  "block.changed.purple_pillow": "Lila párna",
+  "block.changed.red_pillow": "Vörös párna",
+  "block.changed.white_pillow": "Fehér párna",
+  "block.changed.yellow_pillow": "Sárga párna",
+  
   "fluid.changed.dark_latex": "Folyékony sötét latex",
   "fluid.changed.white_latex": "Folyékony fehér latex",
 
