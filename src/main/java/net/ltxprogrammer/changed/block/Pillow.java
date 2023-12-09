@@ -47,13 +47,19 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape AABB = Block.box(1.5D, 0.0D, 1.5D, 14.5D, 5.0D, 14.5D);
+    private final DyeColor color;
 
     public Pillow(DyeColor color) {
         super(BlockBehaviour.Properties.of(Material.WOOL, color).sound(SoundType.WOOL));
+        this.color = color;
         this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0).setValue(WATERLOGGED, false).setValue(OCCUPIED, false));
     }
 
-    private BlockState getStateForRot16(BlockState existing, int rot16) {
+    public DyeColor getColor() {
+        return color;
+    }
+
+    public static BlockState getStateForRot16(BlockState existing, int rot16) {
         return switch (rot16) {
             case 0 -> existing.setValue(ROTATION, 0).setValue(FACING, Direction.NORTH);
             case 1 -> existing.setValue(ROTATION, 1).setValue(FACING, Direction.NORTH);
@@ -75,7 +81,7 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
         };
     }
 
-    private int getRot16ForState(BlockState state) {
+    public static int getRot16ForState(BlockState state) {
         return switch (state.getValue(FACING)) {
             case NORTH -> state.getValue(ROTATION);
             case EAST -> state.getValue(ROTATION) + 4;
@@ -87,11 +93,6 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
 
     public static Pillow forColor(DyeColor color) {
         return new Pillow(color);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
     }
 
     @Override

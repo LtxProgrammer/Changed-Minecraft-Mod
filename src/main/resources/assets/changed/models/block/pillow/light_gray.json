@@ -1,7 +1,5 @@
 {
-	"parent": "changed:custom/pillow",
 	"textures": {
-		"0": "changed:blocks/pillow/light_gray",
 		"particle": "changed:blocks/pillow/light_gray"
 	}
 }

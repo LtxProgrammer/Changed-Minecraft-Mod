@@ -4,12 +4,16 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.PipeBlock;
 import net.ltxprogrammer.changed.block.*;
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.item.BlockEntityRenderedBlockItem;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -30,6 +34,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,10 +45,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -179,22 +181,12 @@ public class ChangedBlocks {
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.COLOR_GREEN).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 
-    public static final RegistryObject<Pillow> YELLOW_PILLOW = register("yellow_pillow", () -> Pillow.forColor(DyeColor.YELLOW));
-    public static final RegistryObject<Pillow> WHITE_PILLOW = register("white_pillow", () -> Pillow.forColor(DyeColor.WHITE));
-    public static final RegistryObject<Pillow> RED_PILLOW = register("red_pillow", () -> Pillow.forColor(DyeColor.RED));
-    public static final RegistryObject<Pillow> PURPLE_PILLOW = register("purple_pillow", () -> Pillow.forColor(DyeColor.PURPLE));
-    public static final RegistryObject<Pillow> PINK_PILLOW = register("pink_pillow", () -> Pillow.forColor(DyeColor.PINK));
-    public static final RegistryObject<Pillow> ORANGE_PILLOW = register("orange_pillow", () -> Pillow.forColor(DyeColor.ORANGE));
-    public static final RegistryObject<Pillow> MAGENTA_PILLOW = register("magenta_pillow", () -> Pillow.forColor(DyeColor.MAGENTA));
-    public static final RegistryObject<Pillow> LIME_PILLOW = register("lime_pillow", () -> Pillow.forColor(DyeColor.LIME));
-    public static final RegistryObject<Pillow> LIGHT_GRAY_PILLOW = register("light_gray_pillow", () -> Pillow.forColor(DyeColor.LIGHT_GRAY));
-    public static final RegistryObject<Pillow> LIGHT_BLUE_PILLOW = register("light_blue_pillow", () -> Pillow.forColor(DyeColor.LIGHT_BLUE));
-    public static final RegistryObject<Pillow> GREEN_PILLOW = register("green_pillow", () -> Pillow.forColor(DyeColor.GREEN));
-    public static final RegistryObject<Pillow> GRAY_PILLOW = register("gray_pillow", () -> Pillow.forColor(DyeColor.GRAY));
-    public static final RegistryObject<Pillow> CYAN_PILLOW = register("cyan_pillow", () -> Pillow.forColor(DyeColor.CYAN));
-    public static final RegistryObject<Pillow> BROWN_PILLOW = register("brown_pillow", () -> Pillow.forColor(DyeColor.BROWN));
-    public static final RegistryObject<Pillow> BLUE_PILLOW = register("blue_pillow", () -> Pillow.forColor(DyeColor.BLUE));
-    public static final RegistryObject<Pillow> BLACK_PILLOW = register("black_pillow", () -> Pillow.forColor(DyeColor.BLACK));
+    public static final EnumMap<DyeColor, RegistryObject<Pillow>> PILLOWS = Util.make(new EnumMap<>(DyeColor.class), map -> {
+        Arrays.stream(DyeColor.values()).forEach(color -> {
+            map.put(color, register(color.getName() + "_pillow", () -> Pillow.forColor(color), null,
+                    block -> new BlockEntityRenderedBlockItem(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS))));
+        });
+    });
 
     // Structure specific block to help procedural generation
     public static final RegistryObject<GluBlock> GLU_BLOCK = registerNoItem("glu", GluBlock::new);
