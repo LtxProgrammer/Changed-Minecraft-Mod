@@ -1,3 +1,6 @@
 {
-	"parent": "changed:block/pillow/white"
+	"parent": "changed:item/template_pillow",
+	"textures": {
+		"particle": "minecraft:block/white_wool"
+	}
 }
