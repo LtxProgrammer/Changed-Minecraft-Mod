@@ -135,6 +135,7 @@
 
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
 
+  "block.changed.beaker": "Begerglass",
   "block.changed.bedside_iv_rack": "IV stativ",
   "block.changed.beehive_bed": "Bikubeseng",
   "block.changed.beehive_wall": "Bikubevegg",
@@ -179,6 +180,7 @@
   "block.changed.lab_door": "Laboratoriedør",
   "block.changed.maintenance_door": "Vedlikeholdsdør",
   "block.changed.microphone": "Mikrofon",
+  "block.changed.microscope": "Mikroskop",
   "block.changed.note": "Lapp",
   "block.changed.office_chair": "Kontorstol",
   "block.changed.lab_light": "Laboratorielys",
