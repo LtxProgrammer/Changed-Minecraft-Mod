@@ -316,8 +316,6 @@ public abstract class LatexEntity extends Monster {
         final LatexEntity self = this;
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.4, false));
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 7.0F));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LatexEntity.class, 7.0F));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
             public boolean canUse() {
                 if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
