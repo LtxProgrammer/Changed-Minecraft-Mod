@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
+import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,6 +14,8 @@ public class ChangedClient {
     private static final Minecraft minecraft = Minecraft.getInstance();
     public static long clientTicks = 0;
     public static final LatexParticleEngine particleSystem = new LatexParticleEngine(minecraft);
+    public static final ChangedBlockEntityWithoutLevelRenderer itemRenderer =
+            new ChangedBlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
 
     public static void registerEventListeners() {
         MinecraftForge.EVENT_BUS.addListener(ChangedClient::afterRenderStage);

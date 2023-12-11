@@ -41,6 +41,7 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
 
     public DroppedOrange() {
         super(BlockBehaviour.Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).sound(SoundType.WART_BLOCK).dynamicShape().instabreak());
+        this.registerDefaultState(this.stateDefinition.any().setValue(ORANGES, 1).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -111,5 +112,19 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
             boolean flag = fluidstate.getType() == Fluids.WATER;
             return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
         }
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
+        return super.updateShape(state, direction, otherState, level, pos, otherPos);
     }
 }

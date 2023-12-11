@@ -1,11 +1,8 @@
 package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.block.SeatableBlock;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -41,12 +37,12 @@ public class SeatEntity extends Entity {
         seat.entityData.set(BLOCK_POS, pos);
         seat.entityData.set(SEATED_INVISIBLE, seatedInvisible);
         if (state.getBlock() instanceof SeatableBlock seatableBlock) {
-            var offset = seatableBlock.getSitOffset(state, pos);
-            seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() - 0.5, pos.getZ() + 0.5 + offset.z);
+            var offset = seatableBlock.getSitOffset(level, state, pos);
+            seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() + 0.5, pos.getZ() + 0.5 + offset.z);
         }
 
         else
-            seat.setPos(pos.getX() + 0.5, pos.getY() - 0.5, pos.getZ() + 0.5);
+            seat.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 
         level.addFreshEntity(seat);
         return seat;
@@ -71,7 +67,7 @@ public class SeatEntity extends Entity {
         if (blockState.isEmpty())
             return super.getPassengersRidingOffset();
         if (blockState.get().getBlock() instanceof SeatableBlock seatableBlock)
-            return seatableBlock.getSitOffset(blockState.get(), getAttachedBlockPos()).y;
+            return seatableBlock.getSitOffset(this.level, blockState.get(), getAttachedBlockPos()).y;
         return super.getPassengersRidingOffset();
     }
 
@@ -116,7 +112,7 @@ public class SeatEntity extends Entity {
         if (nBlockState != oBlockState.get()) {
             this.entityData.set(BLOCK_STATE, Optional.of(nBlockState));
             if (nBlockState.getBlock() instanceof SeatableBlock seatableBlock) {
-                var offset = seatableBlock.getSitOffset(nBlockState, blockPos);
+                var offset = seatableBlock.getSitOffset(level, nBlockState, blockPos);
                 this.setPos(blockPos.getX() + 0.5 + offset.x, blockPos.getY() - 0.5, blockPos.getZ() + 0.5 + offset.z);
             }
 
