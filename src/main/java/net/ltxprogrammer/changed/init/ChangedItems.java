@@ -26,6 +26,7 @@ public class ChangedItems {
     public static final RegistryObject<DarkLatexMask> DARK_LATEX_MASK = register("dark_latex_mask", DarkLatexMask::new);
     public static final RegistryObject<AbstractLatexBucket> DARK_LATEX_BUCKET = register("dark_latex_bucket", AbstractLatexBucket.from(ChangedFluids.DARK_LATEX));
     public static final RegistryObject<CompactDisc> COMPACT_DISC = register("compact_disc", CompactDisc::new);
+    public static final RegistryObject<LabBook> LAB_BOOK = register("lab_book", LabBook::new);
     public static final RegistryObject<Item> LATEX_BASE = register("latex_base", () -> new Item(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS)));
     public static final RegistryObject<RecordItem> LATEX_DANCE_RECORD = register("latex_dance_record", () -> new RecordItem(8, ChangedSounds.LATEX_DANCE, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
