@@ -2,17 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:book"
-    },
-    {
-      "item": "minecraft:book"
+      "item": "minecraft:yellow_dye"
     },
     {
       "item": "minecraft:book"
     }
   ],
   "result": {
-    "item": "changed:book_stack",
+    "item": "changed:lab_book",
     "count": 1
   }
 }
