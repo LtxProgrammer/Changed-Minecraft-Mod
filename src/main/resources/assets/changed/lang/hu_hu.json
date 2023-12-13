@@ -42,7 +42,7 @@
   "subtitles.changed.sword1": "Tű szúr",
   "subtitles.changed.paralyze1": "Fegyver sokkol",
   "subtitles.changed.paralyze3": "Interkom bejelenti",
-  "subtitles.changed.blow1": "Játékos latexezett",
+  "subtitles.changed.blow1": "Játékos latexezik",
 
   "item.changed.benign_pants": "Latex rövidnadrág",
   "item.changed.blood_syringe": "Vérrel teli fecskendő",
@@ -136,6 +136,7 @@
   
   "enchantment.changed.latex_protection": "Latexvédelem",
 
+  "block.changed.beaker": "Főzőpohár",
   "block.changed.bedside_iv_rack": "Infúziós állvány",
   "block.changed.beehive_bed": "Méhkas-ágy",
   "block.changed.beehive_wall": "Méhkas-fal",
@@ -186,6 +187,7 @@
   "block.changed.light_latex_puddle_male": "Hím világos latex farkas pocsolya",
   "block.changed.maintenance_door": "Karbantartási ajtó",
   "block.changed.microphone": "Mikrofon",
+  "block.changed.microscope": "Mikroszkóp",
   "block.changed.note": "Jegyzet",
   "block.changed.office_chair": "Irodai szék",
   "block.changed.orange_lab_carpeting": "Narancssárga labor szőnyeg",
