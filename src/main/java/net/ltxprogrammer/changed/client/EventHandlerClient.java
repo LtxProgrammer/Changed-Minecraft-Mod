@@ -1,8 +1,9 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxBlockEntity;
+import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -31,7 +32,7 @@ public class EventHandlerClient {
         if (player == null)
             return;
         var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.type().equals(progress.type())) // Prevent sync shudder
+        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.variant() == progress.variant()) // Prevent sync shudder
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
@@ -46,8 +47,8 @@ public class EventHandlerClient {
             return;
         }
 
-        if (player.vehicle != null && player.vehicle instanceof CardboardBoxBlockEntity.EntityContainer container) {
-            if (player.isInvisible()) {
+        if (player.vehicle != null && player.vehicle instanceof SeatEntity seat) {
+            if (seat.shouldSeatedBeInvisible()) {
                 event.setCanceled(true);
                 return;
             }
@@ -98,6 +99,12 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(ChangedClient.particleSystem);
     }
 
     @OnlyIn(Dist.CLIENT)

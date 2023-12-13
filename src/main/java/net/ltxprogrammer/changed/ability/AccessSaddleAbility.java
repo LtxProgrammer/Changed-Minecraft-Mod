@@ -25,7 +25,7 @@ public class AccessSaddleAbility extends AbstractAbility<AccessSaddleAbilityInst
     }
 
     @Override
-    public void stopUsing(IAbstractLatex entity) {
-        entity.closeContainer();
+    public UseType getUseType(IAbstractLatex entity) {
+        return UseType.MENU;
     }
 }

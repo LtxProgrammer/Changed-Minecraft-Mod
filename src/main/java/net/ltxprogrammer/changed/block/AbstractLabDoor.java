@@ -182,7 +182,8 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         if (wantOn != state.getValue(POWERED)) {
             if (!wantOn && state.getValue(OPEN)) {
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, Boolean.FALSE).setValue(OPEN, Boolean.FALSE));
-                level.playSound(null, pos, close, SoundSource.BLOCKS, 1, 1);
+                if (state.getValue(SECTION) == QuarterSection.BOTTOM_LEFT)
+                    level.playSound(null, pos, close, SoundSource.BLOCKS, 1, 1);
                 level.gameEvent(GameEvent.BLOCK_CLOSE, pos);
             } else
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, wantOn));

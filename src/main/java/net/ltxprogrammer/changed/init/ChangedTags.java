@@ -58,6 +58,7 @@ public class ChangedTags {
         public static final TagKey<Biome> HAS_DECAYED_LABS = create("has_structure/decayed_labs");
         public static final TagKey<Biome> HAS_DARK_DECAYED_LABS = create("has_structure/dark_decayed_labs");
         public static final TagKey<Biome> HAS_WHITE_DECAYED_LABS = create("has_structure/white_decayed_labs");
+        public static final TagKey<Biome> HAS_FACILITY = create("has_structure/facility");
 
         private static TagKey<Biome> create(String name) {
             return TagKey.create(Registry.BIOME_REGISTRY, Changed.modResource(name));
@@ -69,6 +70,8 @@ public class ChangedTags {
         public static final TagKey<LatexVariant<?>> SHARK_LIKE = create("shark_like");
         public static final TagKey<LatexVariant<?>> CAT_LIKE = create("cat_like");
         public static final TagKey<LatexVariant<?>> LEOPARD_LIKE = create("leopard_like");
+
+        public static final TagKey<LatexVariant<?>> CAN_SLEEP_ON_PILLOWS = create("can_sleep_on_pillows");
 
         private static TagKey<LatexVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.LATEX_VARIANT.key, Changed.modResource(name));

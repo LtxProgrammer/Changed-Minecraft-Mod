@@ -34,6 +34,7 @@
   "subtitles.changed.buzzer1": "El teclado deniega el acceso",
   "subtitles.changed.shot1": "El láser se activa",
   "subtitles.changed.key": "El pestillo del teclado hace clic",
+  "subtitles.changed.latex_drip": "Latex gotea",
   "subtitles.changed.monster2": "El tiburón tigre ruge",
   "subtitles.changed.switch1": "Keypad button clicks",
   "subtitles.changed.siren": "Canto de sirena",
@@ -97,6 +98,7 @@
   "death.attack.changed:fan.player": "%1$s fue cortado en dados por un aficionado mientras luchaba contra %2$s",
 
   "command.changed.error.not_latex_form": "Formulario de látex no válido",
+  "command.changed.error.used_by_other_mod": "El jugador ya está siendo utilizado por otro mod",
   "command.changed.error.no_special_form": "Sin formulario especial asignado, visite https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:keepConscious": "Manténgase siempre alerta en transfur",
@@ -262,7 +264,7 @@
   "entity.changed.latex_shark_male": "Hombre látex tiburón fusiónn",
   "entity.changed.latex_snow_leopard_female": "Leopardo de las nieves hembra de látex",
   "entity.changed.latex_snow_leopard_male": "Leopardo de las nieves de látex macho",
-  "entity.changed.latex_silver_fox": "Zorro plateado de látex",
+  "entity.changed.latex_silver_fox": "Keon de látex",
   "entity.changed.latex_siren": "Sirena de látex",
   "entity.changed.latex_sniper_dog": "Perro de francotirador",
   "entity.changed.latex_squid_dog_female": "Perro calamar de látex hembra",
@@ -325,7 +327,7 @@
   "item.changed.latex_squid_dog_male_spawn_egg": "Huevo generador de perro calamar de látex macho",
   "item.changed.latex_squirrel_spawn_egg": "Huevo generador de ardilla de látex",
   "item.changed.latex_stiger_spawn_egg": "Huevo generador de tiaña de látex",
-  "item.changed.latex_silver_fox_spawn_egg": "Huevo generador de zorro plateado de látex",
+  "item.changed.latex_silver_fox_spawn_egg": "Huevo generador de keon de látex",
   "item.changed.latex_siren_spawn_egg": "Huevo generador de sirena de látex",
   "item.changed.latex_sniper_dog_spawn_egg": "Huevo generador de perro de francotirador",
   "item.changed.latex_tiger_shark_spawn_egg": "Huevo generador de tiburón tigre de látex",

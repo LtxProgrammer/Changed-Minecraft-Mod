@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "cans=1": {
+      "model": "changed:block/canned_soup1"
+    },
+    "cans=2": {
+      "model": "changed:block/canned_soup2"
+    },
+    "cans=3": {
+      "model": "changed:block/canned_soup3"
+    },
+    "cans=4": {
+      "model": "changed:block/canned_soup4"
+    }
+  }
+}

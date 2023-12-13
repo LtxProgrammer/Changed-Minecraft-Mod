@@ -18,15 +18,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -396,10 +394,25 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             newEntity.setCustomName(entity.getCustomName());
             newEntity.setCustomNameVisible(entity.isCustomNameVisible());
         }
+
+        if (entity instanceof Mob mob) {
+            newEntity.setLeftHanded(mob.isLeftHanded());
+        }
+
         if (entity instanceof Player player) {
             ProcessTransfur.killPlayerBy(player, newEntity);
-        } else
+        } else {
+            // Take armor
+            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
+                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+            // Drop held items
+            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.HAND).forEach(slot -> {
+                Block.popResource(entity.level, entity.blockPosition(), entity.getItemBySlot(slot).copy());
+            });
+
             entity.discard();
+        }
         return newEntity;
     }
 

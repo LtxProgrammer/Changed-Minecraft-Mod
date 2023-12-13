@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_cardboard_box": {
+    "has_cardboard_box_small": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "changed:cardboard_box"
+              "changed:cardboard_box_small"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_cardboard_box",
+      "has_cardboard_box_small",
       "has_the_recipe"
     ]
   ]

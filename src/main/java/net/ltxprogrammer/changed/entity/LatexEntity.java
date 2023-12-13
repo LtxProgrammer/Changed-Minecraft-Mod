@@ -181,13 +181,17 @@ public abstract class LatexEntity extends Monster {
                 underlyingPlayer.isAutoSpinAttack();
     }
 
+    @Override
+    protected boolean canEnterPose(Pose pose) {
+        if (overridePose != null && overridePose != pose)
+            return false;
+        return super.canEnterPose(pose);
+    }
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        if (this.isVisuallySwimming())
-            return EntityDimensions.scalable(core.width, core.width);
-        return switch (pose) {
+        return switch (Objects.requireNonNullElse(overridePose, pose)) {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
@@ -334,7 +338,9 @@ public abstract class LatexEntity extends Monster {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 7.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LatexEntity.class, 7.0F, 0.2F));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
         if (this instanceof PowderSnowWalkable)
@@ -512,10 +518,10 @@ public abstract class LatexEntity extends Monster {
         return this.isCrouching() || this.isVisuallyCrawling();
     }
 
-    public boolean overrideVisuallySwimming = false;
+    public Pose overridePose = null;
     @Override
     public boolean isVisuallySwimming() {
-        if (overrideVisuallySwimming)
+        if (overridePose == Pose.SWIMMING)
             return true;
         return super.isVisuallySwimming();
     }

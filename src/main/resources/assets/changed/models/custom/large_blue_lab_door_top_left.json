@@ -1,0 +1,96 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "changed:blocks/large_blue_lab_door",
+		"particle": "changed:blocks/large_blue_lab_door"
+	},
+	"elements": [
+		{
+			"name": "FrameTop",
+			"from": [14, 0, 2],
+			"to": [16, 16, 14],
+			"faces": {
+				"north": {"uv": [9.25, 10.75, 9.5, 12.75], "texture": "#0"},
+				"east": {"uv": [0, 6, 1.5, 8], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [9.5, 10.75, 9.75, 12.75], "texture": "#0"},
+				"west": {"uv": [1.5, 6, 3, 8], "texture": "#0"},
+				"up": {"uv": [3.25, 7.5, 3, 6], "texture": "#0", "cullface": "up"}
+			}
+		},
+		{
+			"name": "FrameLeft",
+			"from": [0, 14, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2.25, 11, 4, 11.25], "texture": "#0"},
+				"south": {"uv": [10, 11, 11.75, 11.25], "texture": "#0"},
+				"up": {"uv": [6.25, 10.5, 4.5, 9], "texture": "#0", "cullface": "up"},
+				"down": {"uv": [8, 9, 6.25, 10.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "DoorTopLeft",
+			"from": [0, 6, 4],
+			"to": [14, 14, 12],
+			"faces": {
+				"north": {"uv": [4, 10.5, 5.75, 11.5], "texture": "#0"},
+				"south": {"uv": [5.75, 10.5, 7.5, 11.5], "texture": "#0"},
+				"down": {"uv": [12.5, 2, 10.75, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "DoorTopLeft",
+			"from": [7, 0, 4],
+			"to": [14, 6, 12],
+			"faces": {
+				"north": {"uv": [7.5, 0.75, 8.375, 1.5], "texture": "#0"},
+				"south": {"uv": [8.75, 5, 9.625, 5.75], "texture": "#0"},
+				"west": {"uv": [7.25, 5.75, 8.25, 6.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "DoorTopLeft",
+			"from": [0, 0, 6],
+			"to": [7, 6, 10],
+			"faces": {
+				"north": {"uv": [7.5, 10.75, 8.375, 11.5], "texture": "#0"},
+				"south": {"uv": [8.375, 10.75, 9.25, 11.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.13, 0.13, 0.13]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.13, 0.13, 0.13]
+		},
+		"firstperson_righthand": {
+			"translation": [1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"firstperson_lefthand": {
+			"translation": [-1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"ground": {
+			"scale": [0.13, 0.13, 0.13]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.27, 0.27, 0.27]
+		},
+		"fixed": {
+			"scale": [0.34, 0.34, 0.34]
+		}
+	},
+	"groups": [
+		{
+			"name": "TopLeft",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4]
+		}
+	]
+}

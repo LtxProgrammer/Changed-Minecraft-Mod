@@ -63,11 +63,7 @@ import static net.ltxprogrammer.changed.init.ChangedGameRules.RULE_KEEP_BRAIN;
 public class ProcessTransfur {
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static record TransfurProgress(float progress, ResourceLocation type) {
-        public LatexVariant<?> getVariant() {
-            return ChangedRegistry.LATEX_VARIANT.get().getValue(type);
-        }
-    }
+    public static record TransfurProgress(float progress, LatexVariant<?> variant) {}
 
     public static void setPlayerTransfurProgress(Player player, @NotNull TransfurProgress progress) {
         if (!(player instanceof PlayerDataExtension ext))
@@ -104,7 +100,7 @@ public class ProcessTransfur {
 
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
             if (ChangedCompatibility.isPlayerUsedByOtherMod(player)) {
-                setPlayerTransfurProgress(player, new TransfurProgress(0, latexVariant.getFormId()));
+                setPlayerTransfurProgress(player, new TransfurProgress(0, latexVariant));
                 player.hurt(DamageSource.mobAttack(latexVariant.getEntityType().create(player.level)), amount);
                 return false;
             }
@@ -112,7 +108,7 @@ public class ProcessTransfur {
             float old = getPlayerTransfurProgress(player).progress;
             float next = old + amount;
             float max = Changed.config.server.transfurTolerance.get().floatValue();
-            setPlayerTransfurProgress(player, new TransfurProgress(next, latexVariant.getFormId()));
+            setPlayerTransfurProgress(player, new TransfurProgress(next, latexVariant));
             return next >= max && old < max;
         }
     }
@@ -210,8 +206,8 @@ public class ProcessTransfur {
             return;
         var progress = getPlayerTransfurProgress(player);
         if (progress.progress >= Changed.config.server.transfurTolerance.get().floatValue()) {
-            if (LatexVariant.PUBLIC_LATEX_FORMS.contains(progress.type))
-                transfur(player, player.level, ChangedRegistry.LATEX_VARIANT.get().getValue(progress.type), false);
+            if (LatexVariant.PUBLIC_LATEX_FORMS.contains(progress.variant.getFormId()))
+                transfur(player, player.level, progress.variant, false);
             else {
                 var variant = PatreonBenefits.getPlayerSpecialVariant(player.getUUID());
                 transfur(player, player.level, variant == null ? LatexVariant.FALLBACK_VARIANT : variant, false);
@@ -221,7 +217,7 @@ public class ProcessTransfur {
         else if (!player.level.isClientSide && progress.progress > 0) {
             int deltaTicks = Math.max(((player.tickCount - player.getLastHurtByMobTimestamp()) / 8) - 20, 0);
             float nextTicks = Math.max(progress.progress - (deltaTicks * 0.001f), 0);
-            setPlayerTransfurProgress(player, new TransfurProgress(nextTicks, progress.type));
+            setPlayerTransfurProgress(player, new TransfurProgress(nextTicks, progress.variant));
         }
     }
 
@@ -670,7 +666,7 @@ public class ProcessTransfur {
         if (!getEntityAttackItem(sourceEntity).isEmpty())
             return;
 
-        if (event.getEntityLiving() instanceof Player player && (player.isCreative() || player.isSpectator()))
+        if (event.getEntityLiving() instanceof Player player && (player.isCreative() || player.isSpectator() || ChangedCompatibility.isPlayerUsedByOtherMod(player)))
             return;
         onLivingAttackedByLatex(event, new LatexedEntity(sourceEntity));
     }

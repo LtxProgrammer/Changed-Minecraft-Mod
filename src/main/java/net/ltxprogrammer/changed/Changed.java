@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed;
 
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
+import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.init.*;
@@ -51,7 +53,7 @@ public class Changed {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient()));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         // Initialize packet types
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
@@ -65,6 +67,7 @@ public class Changed {
         addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
         addNetworkMessage(EmotePacket.class, EmotePacket::new);
         addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
+        addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);
@@ -79,6 +82,7 @@ public class Changed {
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);
         PlayerMover.REGISTRY.register(modEventBus);
+        LatexParticleType.REGISTRY.register(modEventBus);
 
         ChangedEnchantments.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
@@ -108,8 +112,13 @@ public class Changed {
         });
     }
 
+    private void registerClientEventListeners() {
+        MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClient());
+    }
+
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(RecipeCategories::registerCategories);
+        ChangedClient.registerEventListeners();
     }
 
     private static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

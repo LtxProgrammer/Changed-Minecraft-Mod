@@ -7,7 +7,9 @@
     "changed:beehive_floor",
     "changed:beehive_roof",
     "changed:box_pile",
+    "changed:cardboard_box_small",
     "changed:cardboard_box",
+    "changed:cardboard_container",
     "changed:tiles_greenhouse",
     "changed:tiles_greenhouse_connected",
     "changed:wall_greenhouse"

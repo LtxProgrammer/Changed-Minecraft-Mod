@@ -6,6 +6,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.item.Syringe;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 @Mod.EventBusSubscriber
 public class CommandTransfur {
     private static final SimpleCommandExceptionType NOT_LATEX_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_latex_form"));
+    private static final SimpleCommandExceptionType USED_BY_OTHER_MOD = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.used_by_other_mod"));
     private static final SimpleCommandExceptionType NO_SPECIAL_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.no_special_form"));
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_LATEX_FORMS = SuggestionProviders.register(Changed.modResource("latex_forms"), (p_121667_, p_121668_) -> {
@@ -66,6 +68,9 @@ public class CommandTransfur {
     }
 
     private static int transfurPlayer(CommandSourceStack source, ServerPlayer player, ResourceLocation form) throws CommandSyntaxException {
+        if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
+            throw USED_BY_OTHER_MOD.create();
+
         if (LatexVariant.PUBLIC_LATEX_FORMS.contains(form)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(form), true);
         }
@@ -85,7 +90,7 @@ public class CommandTransfur {
         ProcessTransfur.ifPlayerLatex(player, variant -> {
             variant.unhookAll(player);
             ProcessTransfur.setPlayerLatexVariant(player, null);
-            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT.getFormId()));
+            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT));
         });
         return Command.SINGLE_SUCCESS;
     }

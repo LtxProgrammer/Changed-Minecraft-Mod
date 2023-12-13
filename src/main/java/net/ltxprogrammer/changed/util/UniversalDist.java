@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.util;
 
+import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
+import net.ltxprogrammer.changed.client.gui.GluBlockEditScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +31,10 @@ public class UniversalDist {
         }
         public static HitResult getLocalHitResult() {
             return Minecraft.getInstance().hitResult;
+        }
+        public static void openGluBlock(Player player, GluBlockEntity gluBlockEntity) {
+            if (player == getLocalPlayer())
+                Minecraft.getInstance().setScreen(new GluBlockEditScreen(gluBlockEntity));
         }
     }
 
@@ -61,5 +68,9 @@ public class UniversalDist {
 
     public static HitResult getLocalHitResult() {
         return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> ClientDist::getLocalHitResult);
+    }
+
+    public static void openGluBlock(Player player, GluBlockEntity gluBlockEntity) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientDist.openGluBlock(player, gluBlockEntity));
     }
 }

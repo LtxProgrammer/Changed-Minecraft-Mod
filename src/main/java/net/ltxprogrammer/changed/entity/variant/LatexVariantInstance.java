@@ -63,6 +63,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
 
     public AbstractAbility<?> selectedAbility = null;
+    public AbstractAbility<?> menuAbility = null;
     public boolean abilityKeyState = false;
     private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
@@ -258,14 +259,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     protected void multiplyMotion(Player player, double mul) {
         var dP = player.getDeltaMovement();
-
-        if (mul > 1f) {
+        if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
                 float friction = player.getLevel().getBlockState(player.blockPosition().below())
                         .getFriction(player.getLevel(), player.blockPosition(), player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
             }
         }
 
@@ -500,16 +504,6 @@ public class LatexVariantInstance<T extends LatexEntity> {
             }
         }
 
-        else if (player.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == LatexVariant.BreatheMode.STRONG) {
-            //if the player is in water, add 1 air every other tick
-            if (player.isEyeInFluid(FluidTags.WATER)) {
-                int air = player.getAirSupply();
-                if (air > -10 && player.tickCount % 2 == 0)
-                    player.setAirSupply(air+1);
-                this.ticksBreathingUnderwater = 0;
-            }
-        }
-
         // Speed
         if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
             if (parent.swimSpeed > 1f) {
@@ -549,6 +543,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
                 if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
                     selectedAbility.getUseType(IAbstractLatex.forPlayer(player)).check(abilityKeyState, oldState, controller);
+            }
+        }
+
+        if (menuAbility != null) {
+            var instance = abilityInstances.get(menuAbility);
+            if (instance != null && player.containerMenu != player.inventoryMenu)
+                instance.tick();
+            else {
+                if (instance != null)
+                    instance.stopUsing();
+                menuAbility = null;
             }
         }
 
@@ -608,7 +613,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 this.selectedAbility = ability;
             else {
                 ability.startUsing(abstractLatex);
-                ability.stopUsing(abstractLatex);
+                this.menuAbility = ability;
             }
         }
     }
