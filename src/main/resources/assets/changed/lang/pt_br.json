@@ -108,7 +108,7 @@
   "gamerule.changed:latexGrowthRate": "Taxa de Crescimento de Látex",
   "gamerule.changed:transfurTolerance": "Dano de Transfur das Entidades de Látex (Ticks)",
   "gamerule.changed:npcWantFusePlayer": "NPCs de Látex Querem/Podem Se Fundir com o Jogador",
-  "gamerule.changed:doPale": "Ative O Virus Pale",
+  "gamerule.changed:doPale": "Ativar O Virus Pale",
 
   "key.changed.variant_ability": "Selecionar Habilidade de Variante",
   "key.changed.use_ability": "Usar Habilidade de Variante",
