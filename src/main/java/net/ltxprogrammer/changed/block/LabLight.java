@@ -60,17 +60,17 @@ public class LabLight extends AbstractCustomShapeBlock {
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_52739_) {
-        BlockPos blockpos = p_52739_.getClickedPos();
-        Level level = p_52739_.getLevel();
-        Direction direction = p_52739_.getHorizontalDirection();
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        Level level = context.getLevel();
+        Direction direction = context.getHorizontalDirection();
 
         boolean place = false;
         switch (direction) {
-            case NORTH -> place = level.getBlockState(blockpos.east()).canBeReplaced(p_52739_);
-            case EAST -> place = level.getBlockState(blockpos.south()).canBeReplaced(p_52739_);
-            case SOUTH -> place = level.getBlockState(blockpos.west()).canBeReplaced(p_52739_);
-            case WEST -> place = level.getBlockState(blockpos.north()).canBeReplaced(p_52739_);
+            case NORTH -> place = level.getBlockState(blockpos.east()).canBeReplaced(context);
+            case EAST -> place = level.getBlockState(blockpos.south()).canBeReplaced(context);
+            case SOUTH -> place = level.getBlockState(blockpos.west()).canBeReplaced(context);
+            case WEST -> place = level.getBlockState(blockpos.north()).canBeReplaced(context);
         }
 
         if (!place) return null;
@@ -80,7 +80,12 @@ public class LabLight extends AbstractCustomShapeBlock {
             case SOUTH -> direction = Direction.NORTH;
             case WEST -> direction = Direction.EAST;
         }
-        return this.defaultBlockState().setValue(FACING, direction);
+
+        var state = super.getStateForPlacement(context);
+        if (state != null)
+            return state.setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos())).setValue(FACING, direction);
+        else
+            return null;
     }
 
     protected BlockPos getBlockPos(BlockState p_52776_, BlockPos p_52778_, int section_num) {
@@ -111,11 +116,11 @@ public class LabLight extends AbstractCustomShapeBlock {
         return p_52777_.hasNeighborSignal(getBlockPos(p_52776_, p_52778_, section_num));
     }
 
-    public void neighborChanged(BlockState p_52776_, Level p_52777_, BlockPos p_52778_, Block p_52779_, BlockPos p_52780_, boolean p_52781_) {
-        boolean flag = this.hasNeighborSignal(p_52776_, p_52777_, p_52778_, 0) ||
-                this.hasNeighborSignal(p_52776_, p_52777_, p_52778_, 1);
-        if (!this.defaultBlockState().is(p_52779_) && flag != p_52776_.getValue(POWERED)) {
-            p_52777_.setBlock(p_52778_, p_52776_.setValue(POWERED, Boolean.valueOf(flag)), 2);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean p_52781_) {
+        boolean flag = this.hasNeighborSignal(state, level, pos, 0) ||
+                this.hasNeighborSignal(state, level, pos, 1);
+        if (!this.defaultBlockState().is(otherBlock) && flag != state.getValue(POWERED)) {
+            level.setBlock(pos, state.setValue(POWERED, flag), 2);
         }
     }
 
@@ -123,20 +128,12 @@ public class LabLight extends AbstractCustomShapeBlock {
         return p_52777_.getBlockState(getBlockPos(p_52776_, p_52778_, section_num));
     }
 
-    public void setPlacedBy(Level p_52749_, BlockPos p_52750_, BlockState p_52751_, LivingEntity p_52752_, ItemStack p_52753_) {
-        switch (p_52751_.getValue(FACING)) {
-            case NORTH -> {
-                p_52749_.setBlock(p_52750_.west(), p_52751_.setValue(SECTION, 1), 3);
-            }
-            case SOUTH -> {
-                p_52749_.setBlock(p_52750_.east(), p_52751_.setValue(SECTION, 1), 3);
-            }
-            case EAST -> {
-                p_52749_.setBlock(p_52750_.north(), p_52751_.setValue(SECTION, 1), 3);
-            }
-            case WEST -> {
-                p_52749_.setBlock(p_52750_.south(), p_52751_.setValue(SECTION, 1), 3);
-            }
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack) {
+        switch (state.getValue(FACING)) {
+            case NORTH -> level.setBlock(pos.west(), state.setValue(SECTION, 1), 3);
+            case SOUTH -> level.setBlock(pos.east(), state.setValue(SECTION, 1), 3);
+            case EAST -> level.setBlock(pos.north(), state.setValue(SECTION, 1), 3);
+            case WEST -> level.setBlock(pos.south(), state.setValue(SECTION, 1), 3);
         }
     }
 
