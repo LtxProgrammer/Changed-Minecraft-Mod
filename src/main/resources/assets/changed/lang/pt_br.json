@@ -472,8 +472,8 @@
   "changed.tutorial.use_ability.description": "Pressione ou segure %s"
   
   "glu_block.size": "Tamanho %1$sx%1$s",
-  "glu_block.has_door": "Tem porta",
+  "glu_block.has_door": "tem porta",
   "glu_block.joint_type": "Tipo de junta",
   "glu_block.joint.entrance": "Entrada",
-  "glu_block.joint.exit": "Sair"
+  "glu_block.joint.exit": "Saida"
 }
