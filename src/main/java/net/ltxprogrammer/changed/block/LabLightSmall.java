@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -22,24 +23,33 @@ public class LabLightSmall extends AbstractCustomShapeBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        var state = super.getStateForPlacement(context);
+        if (state != null)
+            return state.setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+        else
+            return null;
+    }
+
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
         return PushReaction.BLOCK;
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_54543_) {
-        super.createBlockStateDefinition(p_54543_);
-        p_54543_.add(POWERED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(POWERED);
     }
 
-    public void neighborChanged(BlockState p_52776_, Level p_52777_, BlockPos p_52778_, Block p_52779_, BlockPos p_52780_, boolean p_52781_) {
-        boolean flag = p_52777_.hasNeighborSignal(p_52778_);
-        if (!this.defaultBlockState().is(p_52779_) && flag != p_52776_.getValue(POWERED)) {
-            p_52777_.setBlock(p_52778_, p_52776_.setValue(POWERED, Boolean.valueOf(flag)), 2);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block otherBlock, BlockPos otherPos, boolean p_52781_) {
+        boolean flag = level.hasNeighborSignal(pos);
+        if (!this.defaultBlockState().is(otherBlock) && flag != state.getValue(POWERED)) {
+            level.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(flag)), 2);
         }
     }
 
-    public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
-       return p_52784_.getBlockState(p_52785_.above()).isFaceSturdy(p_52784_, p_52785_.above(), Direction.DOWN);
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+       return level.getBlockState(pos.above()).isFaceSturdy(level, pos.above(), Direction.DOWN);
     }
 
     public VoxelShape getOcclusionShape(BlockState p_54584_, BlockGetter p_54585_, BlockPos p_54586_) {
