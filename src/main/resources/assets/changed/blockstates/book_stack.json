@@ -1,19 +1,132 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "changed:block/book_stack"
-    },
-    "facing=east": {
-      "model": "changed:block/book_stack",
-      "y": 90
-    },
-    "facing=south": {
-      "model": "changed:block/book_stack",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "changed:block/book_stack",
-      "y": 270
-    }
+    "books=1": [
+      {
+        "model": "changed:block/book_stack/book_stack1"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack1v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack1",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack1v2",
+        "y": 180
+      }
+    ],
+    "books=2": [
+      {
+        "model": "changed:block/book_stack/book_stack2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack2v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack2",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack2v2",
+        "y": 180
+      }
+    ],
+    "books=3": [
+      {
+        "model": "changed:block/book_stack/book_stack3"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack3v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack3",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack3v2",
+        "y": 180
+      }
+    ],
+    "books=4": [
+      {
+        "model": "changed:block/book_stack/book_stack4"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack4v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack4",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack4v2",
+        "y": 180
+      }
+    ],
+    "books=5": [
+      {
+        "model": "changed:block/book_stack/book_stack5"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack5v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack5",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack5v2",
+        "y": 180
+      }
+    ],
+    "books=6": [
+      {
+        "model": "changed:block/book_stack/book_stack6"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack6v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack6",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack6v2",
+        "y": 180
+      }
+    ],
+    "books=7": [
+      {
+        "model": "changed:block/book_stack/book_stack7"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack7v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack7",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack7v2",
+        "y": 180
+      }
+    ],
+    "books=8": [
+      {
+        "model": "changed:block/book_stack/book_stack8"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack8v2"
+      },
+      {
+        "model": "changed:block/book_stack/book_stack8",
+        "y": 180
+      },
+      {
+        "model": "changed:block/book_stack/book_stack8v2",
+        "y": 180
+      }
+    ]
   }
 }

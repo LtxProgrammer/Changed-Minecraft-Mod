@@ -13,12 +13,17 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber
 public class ChangedBlockEntities {
     @SafeVarargs
     private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, Supplier<? extends Block>... block) {
-        return () -> new BlockEntityType<>(entitySupplier, Arrays.stream(block).map(Supplier::get).collect(Collectors.toSet()), null);
+        return () -> new BlockEntityType<T>(entitySupplier, Arrays.stream(block).map(Supplier::get).collect(Collectors.toSet()), null);
+    }
+
+    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> deferredProvider(BlockEntityType.BlockEntitySupplier<T> entitySupplier, Stream<? extends Supplier<? extends Block>> blocks) {
+        return () -> new BlockEntityType<T>(entitySupplier, blocks.map(Supplier::get).collect(Collectors.toSet()), null);
     }
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Changed.MODID);
@@ -32,4 +37,6 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<GluBlockEntity>> GLU = REGISTRY.register("glu", deferredProvider(GluBlockEntity::new, ChangedBlocks.GLU_BLOCK));
     public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX = REGISTRY.register("cardboard_container", deferredProvider(CardboardBoxBlockEntity::new, ChangedBlocks.CARDBOARD_BOX));
     public static final RegistryObject<BlockEntityType<DroppedSyringeBlockEntity>> DROPPED_SYRINGE = REGISTRY.register("dropped_syringe", deferredProvider(DroppedSyringeBlockEntity::new, ChangedBlocks.DROPPED_SYRINGE));
+    public static final RegistryObject<BlockEntityType<OfficeChairBlockEntity>> OFFICE_CHAIR = REGISTRY.register("office_chair", deferredProvider(OfficeChairBlockEntity::new, ChangedBlocks.OFFICE_CHAIR));
+    public static final RegistryObject<BlockEntityType<PillowBlockEntity>> PILLOW = REGISTRY.register("pillow", deferredProvider(PillowBlockEntity::new, ChangedBlocks.PILLOWS.values().stream()));
 }

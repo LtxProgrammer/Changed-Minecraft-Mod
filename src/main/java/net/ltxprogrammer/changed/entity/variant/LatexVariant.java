@@ -24,6 +24,7 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -401,9 +402,13 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         if (entity instanceof Player player) {
             ProcessTransfur.killPlayerBy(player, newEntity);
         } else {
-            // Take items
-            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+            // Take armor
+            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
                 newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+            // Drop held items
+            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.HAND).forEach(slot -> {
+                Block.popResource(entity.level, entity.blockPosition(), entity.getItemBySlot(slot).copy());
             });
 
             entity.discard();

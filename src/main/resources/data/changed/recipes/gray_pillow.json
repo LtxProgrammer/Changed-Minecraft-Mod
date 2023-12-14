@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "pillow",
+  "pattern": [
+    "##",
+    "XX"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gray_wool"
+    },
+    "X": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "changed:gray_pillow",
+    "count": 2
+  }
+}
