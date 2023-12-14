@@ -32,7 +32,6 @@ public class EyeStyle extends ForgeRegistryEntry<EyeStyle> {
         return REGISTRY.register(name, () -> new EyeStyle(Changed.modResource(name)));
     }
 
-    public static final RegistryObject<EyeStyle> MODEL = register("model");
     public static final RegistryObject<EyeStyle> V1 = register("v1");
     public static final RegistryObject<EyeStyle> V2 = register("v2");
     public static final RegistryObject<EyeStyle> DICHROME = register("dichrome");

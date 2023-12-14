@@ -44,8 +44,6 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var info = entity.getBasicPlayerInfo();
         var style = info.getEyeStyle();
-        if (style == EyeStyle.MODEL.get())
-            return;
 
         var irisColor = info.getIrisColor();
         var scleraColor = info.getScleraColor();
