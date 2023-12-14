@@ -120,6 +120,7 @@ public class ChangedConfig {
             try {
                 var tag = new CompoundTag();
                 data.save(tag);
+                path.getParent().toFile().mkdirs();
                 NbtIo.writeCompressed(tag, path.toFile());
             } catch (IOException ex) {
                 Changed.LOGGER.error("Failed to write data for \"{}\"", data.getName());
@@ -140,6 +141,7 @@ public class ChangedConfig {
                 try {
                     var tag = new CompoundTag();
                     data.save(tag);
+                    path.getParent().toFile().mkdirs();
                     NbtIo.writeCompressed(tag, path.toFile());
                 } catch (IOException ex) {
                     Changed.LOGGER.error("Failed to write defaults for \"{}\"", data.getName());
