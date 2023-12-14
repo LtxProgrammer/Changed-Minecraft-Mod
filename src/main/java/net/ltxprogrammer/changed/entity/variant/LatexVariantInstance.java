@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
+import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
@@ -51,6 +52,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -230,11 +232,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
     @SubscribeEvent
     public static void onPlayerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            SyncTransfurPacket.Builder builder = new SyncTransfurPacket.Builder();
-            player.getServer().getPlayerList().getPlayers().forEach(builder::addPlayer);
+            SyncTransfurPacket.Builder builderTf = new SyncTransfurPacket.Builder();
+            BasicPlayerInfoPacket.Builder builderBPI = new BasicPlayerInfoPacket.Builder();
+            player.getServer().getPlayerList().getPlayers().forEach(builderTf::addPlayer);
+            player.getServer().getPlayerList().getPlayers().forEach(builderBPI::addPlayer);
 
-            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builder.build());
+            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builderTf.build());
+            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builderBPI.build());
             Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new SyncMoverPacket(player));
+
+            // Send client empty bpi packet, so it'll reply with its bpi
+            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new BasicPlayerInfoPacket(Map.of()));
         }
     }
 

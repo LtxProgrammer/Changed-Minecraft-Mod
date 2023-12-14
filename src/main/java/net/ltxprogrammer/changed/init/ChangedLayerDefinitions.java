@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.blockentity.LatexContainerRenderer;
 import net.ltxprogrammer.changed.client.renderer.blockentity.PillowRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.client.renderer.model.armor.*;
 import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
@@ -38,6 +39,7 @@ public class ChangedLayerDefinitions {
                 LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.01F), false), 64, 64));
         ForgeHooksClient.registerLayerDefinition(LATEX_COAT_SLIM, () ->
                 LayerDefinition.create(PlayerModel.createMesh(new CubeDeformation(0.01F), false), 64, 64));
+        ForgeHooksClient.registerLayerDefinition(CustomEyesLayer.HEAD, CustomEyesLayer::createHead);
         ForgeHooksClient.registerLayerDefinition(DarkLatexMaskModel.LAYER_LOCATION, DarkLatexMaskModel::createMask);
         ForgeHooksClient.registerLayerDefinition(DuctPlayerModel.LAYER_LOCATION, DuctPlayerModel::createRoot);
         ForgeHooksClient.registerLayerDefinition(TaurChestPackModel.LAYER_LOCATION, TaurChestPackModel::createPack);

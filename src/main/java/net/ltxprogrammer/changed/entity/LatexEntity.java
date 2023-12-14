@@ -59,12 +59,20 @@ public abstract class LatexEntity extends Monster {
     @Nullable private Player underlyingPlayer;
     private HairStyle hairStyle;
     private EyeStyle eyeStyle;
+    private BasicPlayerInfo localVariantInfo;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
     float crouchAmount;
     float crouchAmountO;
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
+
+    public BasicPlayerInfo getBasicPlayerInfo() {
+        if (underlyingPlayer instanceof PlayerDataExtension ext)
+            return ext.getBasicPlayerInfo();
+        else
+            return localVariantInfo;
+    }
 
     public float getTailDragAmount(float partialTicks) {
         return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
@@ -294,6 +302,7 @@ public abstract class LatexEntity extends Monster {
         if (!type.is(ChangedTags.EntityTypes.ARMLESS) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
 
+        localVariantInfo = BasicPlayerInfo.random(level.getRandom());
         hairStyle = this.getDefaultHairStyle();
     }
 
