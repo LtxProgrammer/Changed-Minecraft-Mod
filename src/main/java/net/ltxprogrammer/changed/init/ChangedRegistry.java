@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.mojang.serialization.Lifecycle;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -49,6 +50,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     public static final RegistryHolder<HairStyle> HAIR_STYLE = new RegistryHolder<HairStyle>(registryKey("hair_style"));
     public static final RegistryHolder<PlayerMover<?>> PLAYER_MOVER = new RegistryHolder<PlayerMover<?>>(registryKey("player_mover"));
     public static final RegistryHolder<LatexParticleType<?>> LATEX_PARTICLE_TYPE = new RegistryHolder<LatexParticleType<?>>(registryKey("latex_particle_type"));
+    public static final RegistryHolder<EyeStyle> EYE_STYLE = new RegistryHolder<EyeStyle>(registryKey("eye_style"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
@@ -64,6 +66,9 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
             builder.missing((key, network) -> PlayerMover.DEFAULT_MOVER.get());
         }, null);
         createRegistry(event, LATEX_PARTICLE_TYPE.key, c(LatexParticleType.class));
+        createRegistry(event, EYE_STYLE.key, EyeStyle.class, builder -> {
+            builder.missing((key, network) -> EyeStyle.V2.get());
+        }, null);
     }
 
     private static <T extends IForgeRegistryEntry<T>> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key, Class<T> type) {

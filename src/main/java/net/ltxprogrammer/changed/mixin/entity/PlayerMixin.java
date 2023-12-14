@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -88,6 +89,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     public CameraUtil.TugData wantToLookAt;
     @Unique
     public int paleExposure;
+    @Unique
+    public BasicPlayerInfo basicPlayerInfo;
 
     @Override
     public LatexVariantInstance<?> getLatexVariant() {
@@ -174,5 +177,10 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Override
     public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
         this.playerMover = playerMover;
+    }
+
+    @Override
+    public BasicPlayerInfo getBasicPlayerInfo() {
+        return basicPlayerInfo;
     }
 }

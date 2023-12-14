@@ -58,6 +58,7 @@ import static net.ltxprogrammer.changed.entity.variant.LatexVariant.findLatexEnt
 public abstract class LatexEntity extends Monster {
     @Nullable private Player underlyingPlayer;
     private HairStyle hairStyle;
+    private EyeStyle eyeStyle;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
     float crouchAmount;
@@ -133,8 +134,16 @@ public abstract class LatexEntity extends Monster {
         return hairStyle != null ? hairStyle : HairStyle.BALD.get();
     }
 
+    public EyeStyle getEyeStyle() {
+        return eyeStyle;
+    }
+
     public void setHairStyle(HairStyle style) {
         this.hairStyle = style != null ? style : HairStyle.BALD.get();
+    }
+
+    public void setEyeStyle(EyeStyle style) {
+        this.eyeStyle = style != null ? style : EyeStyle.MODEL.get();
     }
 
     public abstract Color3 getHairColor(int layer);
@@ -568,12 +577,15 @@ public abstract class LatexEntity extends Monster {
         super.readAdditionalSaveData(tag);
         if (tag.contains("HairStyle"))
             hairStyle = ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle"));
+        if (tag.contains("EyeStyle"))
+            eyeStyle = ChangedRegistry.EYE_STYLE.get().getValue(tag.getInt("EyeStyle"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
+        tag.putInt("EyeStyle", ChangedRegistry.EYE_STYLE.get().getID(eyeStyle));
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
