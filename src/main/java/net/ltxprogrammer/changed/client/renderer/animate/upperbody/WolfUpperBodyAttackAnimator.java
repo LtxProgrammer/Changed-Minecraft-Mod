@@ -14,13 +14,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
 public class WolfUpperBodyAttackAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
-    public final ModelPart leftForearm;
-    public final ModelPart rightForearm;
-
-    public WolfUpperBodyAttackAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+    public WolfUpperBodyAttackAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
-        this.leftForearm = leftForearm;
-        this.rightForearm = rightForearm;
     }
 
     @Override
@@ -74,29 +69,22 @@ public class WolfUpperBodyAttackAnimator<T extends LatexEntity, M extends Entity
             case THROW_SPEAR:
                 rightArm.xRot = rightArm.xRot * 0.5F - (float)Math.PI;
                 rightArm.yRot = 0.0F;
-                rightForearm.xRot = 0.0F;
                 break;
             case BOW_AND_ARROW:
                 rightArm.yRot = -0.1F + head.yRot;
                 leftArm.yRot = 0.1F + head.yRot + 0.4F;
                 rightArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
                 leftArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                rightForearm.xRot = 0.0F;
                 break;
             case CROSSBOW_CHARGE:
-                rightForearm.xRot = 0.0F;
-                leftForearm.xRot = 0.0F;
                 AnimationUtils.animateCrossbowCharge(rightArm, leftArm, entity, true);
                 break;
             case CROSSBOW_HOLD:
-                rightForearm.xRot = 0.0F;
-                leftForearm.xRot = 0.0F;
                 AnimationUtils.animateCrossbowHold(rightArm, leftArm, head, true);
                 break;
             case SPYGLASS:
                 rightArm.xRot = Mth.clamp(head.xRot - 1.9198622F - (entity.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
                 rightArm.yRot = head.yRot - 0.2617994F;
-                rightForearm.xRot = 0.0F;
         }
 
     }
@@ -117,29 +105,22 @@ public class WolfUpperBodyAttackAnimator<T extends LatexEntity, M extends Entity
             case THROW_SPEAR:
                 leftArm.xRot = leftArm.xRot * 0.5F - (float)Math.PI;
                 leftArm.yRot = 0.0F;
-                leftForearm.xRot = 0.0F;
                 break;
             case BOW_AND_ARROW:
                 rightArm.yRot = -0.1F + head.yRot - 0.4F;
                 leftArm.yRot = 0.1F + head.yRot;
                 rightArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
                 leftArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                leftForearm.xRot = 0.0F;
                 break;
             case CROSSBOW_CHARGE:
-                rightForearm.xRot = 0.0F;
-                leftForearm.xRot = 0.0F;
                 AnimationUtils.animateCrossbowCharge(rightArm, leftArm, entity, true);
                 break;
             case CROSSBOW_HOLD:
-                rightForearm.xRot = 0.0F;
-                leftForearm.xRot = 0.0F;
                 AnimationUtils.animateCrossbowHold(rightArm, leftArm, head, true);
                 break;
             case SPYGLASS:
                 leftArm.xRot = Mth.clamp(head.xRot - 1.9198622F - (entity.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
                 leftArm.yRot = head.yRot + 0.2617994F;
-                leftForearm.xRot = 0.0F;
         }
     }
 
@@ -172,7 +153,6 @@ public class WolfUpperBodyAttackAnimator<T extends LatexEntity, M extends Entity
         if (!(core.entityModel.attackTime <= 0.0F)) {
             HumanoidArm humanoidarm = core.getAttackArm(entity);
             ModelPart arm = upperModelContext.getArm(humanoidarm);
-            ModelPart foreArm = humanoidarm == HumanoidArm.LEFT ? leftForearm : rightForearm;
             float f = core.entityModel.attackTime;
             torso.yRot = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
             if (humanoidarm == HumanoidArm.LEFT)
@@ -194,7 +174,6 @@ public class WolfUpperBodyAttackAnimator<T extends LatexEntity, M extends Entity
             arm.xRot = (float)((double)arm.xRot - ((double)f1 * 1.2D + (double)f2));
             arm.yRot += torso.yRot * 2.0F;
             arm.zRot += Mth.sin(core.entityModel.attackTime * (float)Math.PI) * -0.4F;
-            foreArm.xRot = 0.0F;
         }
     }
 }
