@@ -58,8 +58,7 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLikeV2(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
-                        Torso,
-                        LeftArm, LeftArm.getChild("LeftForearm"), RightArm, RightArm.getChild("RightForearm"),
+                        Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }

@@ -9,13 +9,8 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
-    public final ModelPart leftForearm;
-    public final ModelPart rightForearm;
-
-    public WolfUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+    public WolfUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
-        this.leftForearm = leftForearm;
-        this.rightForearm = rightForearm;
     }
 
     @Override
@@ -52,9 +47,5 @@ public class WolfUpperBodyInitAnimator<T extends LatexEntity, M extends EntityMo
         leftArm.zRot += Mth.lerp(core.reachOut, 0.0F, -0.1745329f); // 10 Degrees
         rightArm.xRot = Mth.lerp(core.reachOut, rightArm.xRot, -0.5235988f); // 30 Degrees
         leftArm.xRot = Mth.lerp(core.reachOut, leftArm.xRot, -0.5235988f);   // 30 Degrees
-
-        float armRestRot = Mth.lerp(core.ageLerp, 0.25f, 1.1f) * -0.1745329f;
-        rightForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f); // 65 Degrees
-        leftForearm.xRot = Mth.lerp(core.reachOut, armRestRot, -1.134464f);  // 65 Degrees
     }
 }
