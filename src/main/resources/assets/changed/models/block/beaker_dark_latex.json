@@ -1,0 +1,9 @@
+{
+  "parent": "changed:custom/beaker_filled",
+  "textures": {
+    "all": "changed:blocks/beaker/beaker",
+    "particle": "changed:blocks/beaker/beaker",
+    "0": "changed:blocks/beaker/beaker",
+    "1": "changed:blocks/beaker/dark_latex_beaker"
+  }
+}

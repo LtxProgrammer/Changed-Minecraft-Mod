@@ -26,11 +26,12 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock {
+public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock implements SeatableBlock {
     public static BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public CardboardBoxTall() {
@@ -115,5 +116,11 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return state.getValue(HALF).equals(DoubleBlockHalf.LOWER) ? null :
                 createTickerHelper(type, ChangedBlockEntities.CARDBOARD_BOX_TALL.get(), CardboardBoxTallBlockEntity::tick);
+    }
+
+    private static final Vec3 SIT_OFFSET = Vec3.ZERO;
+    @Override
+    public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
+        return SIT_OFFSET;
     }
 }
