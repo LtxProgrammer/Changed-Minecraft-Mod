@@ -90,7 +90,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public int paleExposure;
     @Unique
-    public BasicPlayerInfo basicPlayerInfo;
+    public BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
     @Override
     public LatexVariantInstance<?> getLatexVariant() {

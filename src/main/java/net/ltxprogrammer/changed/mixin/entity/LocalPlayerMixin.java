@@ -2,9 +2,12 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 
 import com.mojang.authlib.GameProfile;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
+import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -12,7 +15,9 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket;
+import net.minecraft.stats.StatsCounter;
 import net.minecraft.tags.FluidTags;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,6 +50,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Shadow public float xBobO;
 
     @Shadow public float xBob;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void applyBasicPlayerInfo(Minecraft mc, ClientLevel level, ClientPacketListener packetListener, StatsCounter stats, ClientRecipeBook recipeBook, boolean p_108626_, boolean p_108627_, CallbackInfo ci) {
+        this.getBasicPlayerInfo().copyFrom(Changed.config.client.basicPlayerInfo);
+    }
 
     @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)
     private void getWaterVision(CallbackInfoReturnable<Float> callback) {

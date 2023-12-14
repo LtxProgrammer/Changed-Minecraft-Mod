@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.init.*;
@@ -68,6 +69,7 @@ public class Changed {
         addNetworkMessage(EmotePacket.class, EmotePacket::new);
         addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
         addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
+        addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);
@@ -79,6 +81,7 @@ public class Changed {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //    vvv Last to process vvv
+        EyeStyle.REGISTRY.register(modEventBus);
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);
         PlayerMover.REGISTRY.register(modEventBus);
