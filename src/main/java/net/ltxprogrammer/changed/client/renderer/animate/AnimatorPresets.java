@@ -99,7 +99,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHands(1, leftArm, rightArm)
+            animator.setupHandsNew(1, leftArm, rightArm)
                     .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))

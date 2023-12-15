@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
@@ -59,7 +60,6 @@ public abstract class LatexEntity extends Monster {
     @Nullable private Player underlyingPlayer;
     private HairStyle hairStyle;
     private EyeStyle eyeStyle;
-    private BasicPlayerInfo localVariantInfo;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
     float crouchAmount;
@@ -71,7 +71,7 @@ public abstract class LatexEntity extends Monster {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
             return ext.getBasicPlayerInfo();
         else
-            return localVariantInfo;
+            return this.entityData.get(DATA_LOCAL_VARIANT_INFO);
     }
 
     public float getTailDragAmount(float partialTicks) {
@@ -79,11 +79,13 @@ public abstract class LatexEntity extends Monster {
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+    protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(LatexEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO);
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
+        this.entityData.define(DATA_LOCAL_VARIANT_INFO, BasicPlayerInfo.random(this.random));
     }
 
     @Override
@@ -302,7 +304,6 @@ public abstract class LatexEntity extends Monster {
         if (!type.is(ChangedTags.EntityTypes.ARMLESS) && this.getNavigation() instanceof GroundPathNavigation navigation)
             navigation.setCanOpenDoors(true);
 
-        localVariantInfo = BasicPlayerInfo.random(level.getRandom());
         hairStyle = this.getDefaultHairStyle();
     }
 
@@ -589,18 +590,21 @@ public abstract class LatexEntity extends Monster {
         if (tag.contains("HairStyle"))
             hairStyle = ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle"));
         if (tag.contains("LocalVariantInfo")) {
-            localVariantInfo.load(tag.getCompound("LocalVariantInfo"));
+            BasicPlayerInfo info = new BasicPlayerInfo();
+            info.load(tag.getCompound("LocalVariantInfo"));
+            this.entityData.set(DATA_LOCAL_VARIANT_INFO, info);
         }
-
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
-        var bpi = new CompoundTag();
-        localVariantInfo.save(bpi);
-        tag.put("LocalVariantInfo", bpi);
+        {
+            var bpi = new CompoundTag();
+            this.entityData.get(DATA_LOCAL_VARIANT_INFO).save(bpi);
+            tag.put("LocalVariantInfo", bpi);
+        }
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
