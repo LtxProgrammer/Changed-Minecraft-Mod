@@ -30,4 +30,11 @@ public class CustomCoatLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
         model.renderToBuffer(pose, bufferSource.getBuffer(coatColor.brightness() < 0.5f ? renderTypeDark : renderTypeLight), packedLight, overlay, coatColor.red(), coatColor.green(), coatColor.blue(), 1.0F);
     }
+
+    // Entity doesn't have to be the correct type syntactically, but expect bugs if the wrong renderer is used
+    public RenderType getRenderTypeForEntity(LatexEntity entity) {
+        var info = entity.getBasicPlayerInfo();
+        var coatColor = info.getHairColor();
+        return coatColor.brightness() < 0.5f ? renderTypeDark : renderTypeLight;
+    }
 }
