@@ -7,10 +7,8 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -199,7 +197,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         return this;
     }
 
-    public LatexAnimator<T, M> setupHandsJointed(int level, ModelPart leftArm, ModelPart leftForearm, ModelPart rightArm, ModelPart rightForearm) {
+    public LatexAnimator<T, M> setupHandsNew(int level, ModelPart leftArm, ModelPart rightArm) {
         setupHandsRunnable.put(level, () -> {
             rightArm.x = -2F;
             leftArm.x = 2F;
@@ -207,13 +205,6 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
             leftArm.y = 0F;
             rightArm.z = -1F;
             leftArm.z = -1F;
-
-            leftForearm.xRot = 0.0F;
-            rightForearm.xRot = 0.0F;
-            leftForearm.yRot = 0.0F;
-            rightForearm.yRot = 0.0F;
-            leftForearm.zRot = 0.0F;
-            rightForearm.zRot = 0.0F;
         });
         return this;
     }
