@@ -48,8 +48,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(BehemothHandLeftModel.LAYER_LOCATION, BehemothHandLeftModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(BehemothHandRightModel.LAYER_LOCATION, BehemothHandRightModel::createBodyLayer);
 
-        ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION,
-                useNewModels ? AerosolLatexWolfModel.Remodel::createBodyLayer : AerosolLatexWolfModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION, AerosolLatexWolfModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION,
                 useNewModels ? DarkLatexDragonModel.Remodel::createBodyLayer : DarkLatexDragonModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION, DarkLatexWolfFemaleModel::createBodyLayer);
