@@ -588,15 +588,19 @@ public abstract class LatexEntity extends Monster {
         super.readAdditionalSaveData(tag);
         if (tag.contains("HairStyle"))
             hairStyle = ChangedRegistry.HAIR_STYLE.get().getValue(tag.getInt("HairStyle"));
-        if (tag.contains("EyeStyle"))
-            eyeStyle = ChangedRegistry.EYE_STYLE.get().getValue(tag.getInt("EyeStyle"));
+        if (tag.contains("LocalVariantInfo")) {
+            localVariantInfo.load(tag.getCompound("LocalVariantInfo"));
+        }
+
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
-        tag.putInt("EyeStyle", ChangedRegistry.EYE_STYLE.get().getID(eyeStyle));
+        var bpi = new CompoundTag();
+        localVariantInfo.save(bpi);
+        tag.put("LocalVariantInfo", bpi);
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
