@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
@@ -22,13 +23,33 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEntity> extends RenderLayer<T, M> {
     public static final ModelLayerLocation HEAD = new ModelLayerLocation(Changed.modResource("head"), "main");
     private final ModelPart head;
+    private final Predicate<BasicPlayerInfo> shouldRenderSclera;
+    private final Predicate<BasicPlayerInfo> shouldRenderIris;
 
-    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
+    public static boolean never(BasicPlayerInfo info) {
+        return false;
+    }
+
+    public static boolean always(BasicPlayerInfo info) {
+        return true;
+    }
+
+    public static boolean ifDarkLatexOverride(BasicPlayerInfo info) {
+        return info.isOverrideIrisOnDarkLatex();
+    }
+
+    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet,
+                           Predicate<BasicPlayerInfo> shouldRenderSclera, Predicate<BasicPlayerInfo> shouldRenderIris) {
         super(parent);
         this.head = modelSet.bakeLayer(HEAD);
+        this.shouldRenderSclera = shouldRenderSclera;
+        this.shouldRenderIris = shouldRenderIris;
     }
 
     public static LayerDefinition createHead() {
@@ -51,7 +72,9 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 
         head.copyFrom(this.getParentModel().getHead());
-        head.render(pose, bufferSource.getBuffer(RenderType.entityCutout(style.getSclera())), packedLight, overlay, scleraColor.red(), scleraColor.green(), scleraColor.blue(), 1.0F);
-        head.render(pose, bufferSource.getBuffer(RenderType.entityCutout(style.getIris())), packedLight, overlay, irisColor.red(), irisColor.green(), irisColor.blue(), 1.0F);
+        if (shouldRenderSclera.test(info))
+            head.render(pose, bufferSource.getBuffer(RenderType.entityCutout(style.getSclera())), packedLight, overlay, scleraColor.red(), scleraColor.green(), scleraColor.blue(), 1.0F);
+        if (shouldRenderIris.test(info))
+            head.render(pose, bufferSource.getBuffer(RenderType.entityCutout(style.getIris())), packedLight, overlay, irisColor.red(), irisColor.green(), irisColor.blue(), 1.0F);
     }
 }
