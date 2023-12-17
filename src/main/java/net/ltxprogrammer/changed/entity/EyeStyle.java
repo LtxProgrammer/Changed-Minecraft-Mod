@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -35,4 +37,8 @@ public class EyeStyle extends ForgeRegistryEntry<EyeStyle> {
     public static final RegistryObject<EyeStyle> V1 = register("v1");
     public static final RegistryObject<EyeStyle> V2 = register("v2");
     public static final RegistryObject<EyeStyle> DICHROME = register("dichrome");
+
+    public Component getName() {
+        return new TranslatableComponent("eyestyle." + name.getNamespace() + "." + name.getPath());
+    }
 }

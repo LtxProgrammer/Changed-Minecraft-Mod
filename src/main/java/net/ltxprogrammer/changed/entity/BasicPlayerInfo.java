@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +56,7 @@ public class BasicPlayerInfo {
         BasicPlayerInfo info = new BasicPlayerInfo();
         info.hairColor = Util.getRandom(HAIR_COLORS, random);
         info.irisColor = Util.getRandom(IRIS_COLORS, random);
+        info.eyeStyle = ChangedRegistry.EYE_STYLE.get().getKey(Util.getRandom(ChangedRegistry.EYE_STYLE.get().getValues().stream().toList(), random));
         return info;
     }
 
@@ -109,6 +111,7 @@ public class BasicPlayerInfo {
         tag.putInt("iris", irisColor.toInt());
         tag.putInt("sclera", scleraColor.toInt());
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
+        TagUtil.putResourceLocation(tag, "eyeStyle", eyeStyle);
     }
 
     public void load(CompoundTag tag) {
@@ -116,5 +119,7 @@ public class BasicPlayerInfo {
         this.irisColor = Color3.fromInt(tag.getInt("iris"));
         this.scleraColor = Color3.fromInt(tag.getInt("sclera"));
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
+        if (tag.contains("eyeStyle"))
+            this.eyeStyle = TagUtil.getResourceLocation(tag, "eyeStyle");
     }
 }

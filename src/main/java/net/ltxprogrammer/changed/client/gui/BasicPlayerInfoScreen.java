@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -38,6 +39,18 @@ public class BasicPlayerInfoScreen extends Screen {
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1), 150, 32, new TextComponent("Sclera Color"),
                 Changed.config.client.basicPlayerInfo::getScleraColor, Changed.config.client.basicPlayerInfo::setScleraColor));
         i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1) + 12, 150, 20, Changed.config.client.basicPlayerInfo.getEyeStyle().getName(), button -> {
+            var reg = ChangedRegistry.EYE_STYLE.get();
+            var style = Changed.config.client.basicPlayerInfo.getEyeStyle();
+            int id = reg.getID(style);
+            if (reg.getKey(id + 1) != null)
+                id += 1;
+            else
+                id = 0;
+            style = reg.getValue(id);
+            Changed.config.client.basicPlayerInfo.setEyeStyle(style);
+            button.setMessage(style.getName());
+        }));
         i++;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 36 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
