@@ -28,7 +28,7 @@ public class ColorSelector extends EditBox {
     private static final int COLOR_ERROR = 16733525;
 
     public ColorSelector(Font font, int x, int y, int width, int height, Component name, Supplier<Color3> colorGetter, Consumer<Color3> colorSetter) {
-        super(font, x, y + fieldName, width - height - padding, height - fieldName, name);
+        super(font, x, y + fieldName, width - (height - padding), height - fieldName, name);
         this.font = font;
         this.name = name;
         this.colorGetter = colorGetter;
