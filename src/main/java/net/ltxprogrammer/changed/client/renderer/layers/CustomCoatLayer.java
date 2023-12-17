@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -28,13 +29,11 @@ public class CustomCoatLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         var coatColor = info.getHairColor();
 
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
-        model.renderToBuffer(pose, bufferSource.getBuffer(coatColor.brightness() < 0.5f ? renderTypeDark : renderTypeLight), packedLight, overlay, coatColor.red(), coatColor.green(), coatColor.blue(), 1.0F);
+        model.renderToBuffer(pose, bufferSource.getBuffer(getRenderTypeForColor(coatColor)), packedLight, overlay, coatColor.red(), coatColor.green(), coatColor.blue(), 1.0F);
     }
 
     // Entity doesn't have to be the correct type syntactically, but expect bugs if the wrong renderer is used
-    public RenderType getRenderTypeForEntity(LatexEntity entity) {
-        var info = entity.getBasicPlayerInfo();
-        var coatColor = info.getHairColor();
-        return coatColor.brightness() < 0.5f ? renderTypeDark : renderTypeLight;
+    public RenderType getRenderTypeForColor(Color3 color) {
+        return color.brightness() < 0.5f ? renderTypeDark : renderTypeLight;
     }
 }

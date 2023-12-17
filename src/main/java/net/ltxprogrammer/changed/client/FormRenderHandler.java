@@ -121,7 +121,7 @@ public class FormRenderHandler {
                         if (layer instanceof CustomCoatLayer<?,?> customCoatLayer) {
                             var info = livingInstance.getBasicPlayerInfo();
                             var coatColor = info.getHairColor();
-                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForEntity(livingInstance)), LightTexture.FULL_BRIGHT,
+                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForColor(coatColor)), LightTexture.FULL_BRIGHT,
                                     coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
                         }
                         if (layer instanceof LatexGelLayer<?,?> gelLayer) {
