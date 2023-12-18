@@ -153,7 +153,7 @@ public abstract class LatexEntity extends Monster {
     }
 
     public void setEyeStyle(EyeStyle style) {
-        this.eyeStyle = style != null ? style : EyeStyle.V2.get();
+        this.eyeStyle = style != null ? style : EyeStyle.V2;
     }
 
     public abstract Color3 getHairColor(int layer);
