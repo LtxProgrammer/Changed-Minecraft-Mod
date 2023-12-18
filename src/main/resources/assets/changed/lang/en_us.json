@@ -475,5 +475,9 @@
   "glu_block.has_door": "Has Door",
   "glu_block.joint_type": "Joint Type",
   "glu_block.joint.entrance": "Entrance",
-  "glu_block.joint.exit": "Exit"
+  "glu_block.joint.exit": "Exit",
+
+  "eyestyle.changed.v1": "V1",
+  "eyestyle.changed.v2": "V2",
+  "eyestyle.changed.tall": "Tall"
 }

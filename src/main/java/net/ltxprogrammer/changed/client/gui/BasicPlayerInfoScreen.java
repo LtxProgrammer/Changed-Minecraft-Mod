@@ -31,16 +31,16 @@ public class BasicPlayerInfoScreen extends Screen {
         super.init();
         int i = 0;
 
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1), 150, 32, new TextComponent("Hair Color"),
+        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TextComponent("Hair Color"),
                 Changed.config.client.basicPlayerInfo::getHairColor, Changed.config.client.basicPlayerInfo::setHairColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1), 150, 32, new TextComponent("Iris Color"),
+        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TextComponent("Iris Color"),
                 Changed.config.client.basicPlayerInfo::getIrisColor, Changed.config.client.basicPlayerInfo::setIrisColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1), 150, 32, new TextComponent("Sclera Color"),
+        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TextComponent("Sclera Color"),
                 Changed.config.client.basicPlayerInfo::getScleraColor, Changed.config.client.basicPlayerInfo::setScleraColor));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 36 * (i >> 1) + 12, 150, 20, Changed.config.client.basicPlayerInfo.getEyeStyle().getName(), button -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, Changed.config.client.basicPlayerInfo.getEyeStyle().getName(), button -> {
             var style = Changed.config.client.basicPlayerInfo.getEyeStyle();
             int id = style.ordinal();
             if (id < EyeStyle.values().length - 1)
@@ -53,7 +53,7 @@ public class BasicPlayerInfoScreen extends Screen {
         }));
         i++;
 
-        this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 36 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
+        this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
             this.minecraft.setScreen(this.lastScreen);
         }));
     }

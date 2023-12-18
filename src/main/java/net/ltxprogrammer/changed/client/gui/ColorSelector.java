@@ -11,32 +11,40 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ColorSelector extends EditBox {
     private static final int padding = 5;
-    private static final int fieldName = 12;
     private final Supplier<Color3> colorGetter;
     private final Consumer<Color3> colorSetter;
-    private final Font font;
-    private final Component name;
+    private final FormattedCharSequence name;
+    private boolean lastHovered = false;
 
     private static final int COLOR_GOOD = 14737632;
     private static final int COLOR_ERROR = 16733525;
 
     public ColorSelector(Font font, int x, int y, int width, int height, Component name, Supplier<Color3> colorGetter, Consumer<Color3> colorSetter) {
-        super(font, x, y + fieldName, width - (height - padding), height - fieldName, name);
-        this.font = font;
-        this.name = name;
+        super(font, x, y, width - height - padding, height, name);
+        this.name = name.getVisualOrderText();
         this.colorGetter = colorGetter;
         this.colorSetter = colorSetter;
 
         this.insertText(colorGetter.get().toHexCode());
         this.setResponder(this::onValueChange);
         this.setFilter(this::validColor);
+        this.setFormatter(this::onFormat);
+    }
+
+    private FormattedCharSequence onFormat(String text, int i) {
+        if (this.isHoveredOrFocused())
+            return FormattedCharSequence.forward(text, Style.EMPTY);
+        else
+            return name;
     }
 
     private void onValueChange(String text) {
@@ -68,8 +76,6 @@ public class ColorSelector extends EditBox {
         super.renderButton(poseStack, mouseX, mouseY, deltaTime);
 
         if (this.isVisible()) {
-            this.font.draw(poseStack, this.name, this.x, this.y - fieldName, 0xFFFFFFFF);
-
             // Render color preview
             int startX = this.x + this.width + padding;
             int startY = this.y;
