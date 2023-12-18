@@ -20,7 +20,7 @@ public class BasicPlayerInfo {
     private Color3 irisColor = new Color3(0.0f, 0.5f, 1.0f);
     private Color3 scleraColor = Color3.WHITE;
     private boolean overrideIrisOnDarkLatex = false;
-    private ResourceLocation eyeStyle = EyeStyle.V2.getId();
+    private EyeStyle eyeStyle = EyeStyle.V2;
 
     public static final List<Color3> HAIR_COLORS = List.of(
             new Color3(0.98f, 0.85f, 0.48f), // Blond
@@ -56,7 +56,7 @@ public class BasicPlayerInfo {
         BasicPlayerInfo info = new BasicPlayerInfo();
         info.hairColor = Util.getRandom(HAIR_COLORS, random);
         info.irisColor = Util.getRandom(IRIS_COLORS, random);
-        info.eyeStyle = ChangedRegistry.EYE_STYLE.get().getKey(Util.getRandom(ChangedRegistry.EYE_STYLE.get().getValues().stream().toList(), random));
+        info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         return info;
     }
 
@@ -77,7 +77,7 @@ public class BasicPlayerInfo {
     }
 
     public void setEyeStyle(EyeStyle eyeStyle) {
-        this.eyeStyle = eyeStyle.getRegistryName();
+        this.eyeStyle = eyeStyle;
     }
 
     public Color3 getHairColor() {
@@ -97,7 +97,7 @@ public class BasicPlayerInfo {
     }
 
     public EyeStyle getEyeStyle() {
-        return ChangedRegistry.EYE_STYLE.get().getValue(eyeStyle);
+        return eyeStyle;
     }
 
     public void copyFrom(BasicPlayerInfo other) {
@@ -111,7 +111,7 @@ public class BasicPlayerInfo {
         tag.putInt("iris", irisColor.toInt());
         tag.putInt("sclera", scleraColor.toInt());
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
-        TagUtil.putResourceLocation(tag, "eyeStyle", eyeStyle);
+        tag.putInt("eyeStyle", eyeStyle.ordinal());
     }
 
     public void load(CompoundTag tag) {
@@ -119,7 +119,6 @@ public class BasicPlayerInfo {
         this.irisColor = Color3.fromInt(tag.getInt("iris"));
         this.scleraColor = Color3.fromInt(tag.getInt("sclera"));
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
-        if (tag.contains("eyeStyle"))
-            this.eyeStyle = TagUtil.getResourceLocation(tag, "eyeStyle");
+        this.eyeStyle = EyeStyle.values()[tag.getInt("eyeStyle")];
     }
 }

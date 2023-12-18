@@ -5,21 +5,27 @@ import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.NotImplementedException;
 
-public class EyeStyle extends ForgeRegistryEntry<EyeStyle> {
-    public static final DeferredRegister<EyeStyle> REGISTRY = ChangedRegistry.EYE_STYLE.createDeferred(Changed.MODID);
+public enum EyeStyle implements IExtensibleEnum {
+    V1(Changed.modResource("v1")),
+    V2(Changed.modResource("v2")),
+    TALL(Changed.modResource("tall"));
 
     private final ResourceLocation name;
     private final ResourceLocation iris;
     private final ResourceLocation sclera;
+    private final Component textName;
 
-    public EyeStyle(ResourceLocation name) {
+    EyeStyle(ResourceLocation name) {
         this.name = name;
         this.iris = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_iris.png");
         this.sclera = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_sclera.png");
+        this.textName = new TranslatableComponent("eyestyle." + name.getNamespace() + "." + name.getPath());
     }
 
     public ResourceLocation getIris() {
@@ -30,15 +36,11 @@ public class EyeStyle extends ForgeRegistryEntry<EyeStyle> {
         return sclera;
     }
 
-    private static RegistryObject<EyeStyle> register(String name) {
-        return REGISTRY.register(name, () -> new EyeStyle(Changed.modResource(name)));
+    public Component getName() {
+        return textName;
     }
 
-    public static final RegistryObject<EyeStyle> V1 = register("v1");
-    public static final RegistryObject<EyeStyle> V2 = register("v2");
-    public static final RegistryObject<EyeStyle> DICHROME = register("dichrome");
-
-    public Component getName() {
-        return new TranslatableComponent("eyestyle." + name.getNamespace() + "." + name.getPath());
+    public static EyeStyle create(String name, ResourceLocation fullName) {
+        throw new NotImplementedException("Not implemented!");
     }
 }

@@ -81,7 +81,6 @@ public class Changed {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //    vvv Last to process vvv
-        EyeStyle.REGISTRY.register(modEventBus);
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);
         PlayerMover.REGISTRY.register(modEventBus);

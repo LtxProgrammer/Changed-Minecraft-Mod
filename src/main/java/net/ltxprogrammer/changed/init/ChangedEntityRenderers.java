@@ -34,8 +34,7 @@ public class ChangedEntityRenderers {
                 useNewModels ? LatexBeifengRenderer.Remodel::new : LatexBeifengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BENIGN_WOLF.get(), LatexBenignWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_DRAGON.get(), LatexBlueDragonRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_WOLF.get(),
-                useNewModels ? LatexBlueWolfRenderer.Remodel::new : LatexBlueWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_WOLF.get(), LatexBlueWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CROCODILE.get(), LatexCrocodileRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(),
                 useNewModels ? LatexCrystalWolfRenderer.Remodel::new : LatexCrystalWolfRenderer::new);
