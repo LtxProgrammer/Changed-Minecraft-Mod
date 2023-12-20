@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "tape_recorder",
-		"particle": "tape_recorder"
+		"0": "changed:blocks/tape_recorder",
+		"particle": "changed:blocks/tape_recorder"
 	},
 	"elements": [
 		{
@@ -68,26 +68,28 @@
 		},
 		"firstperson_righthand": {
 			"rotation": [0, 135, 0],
+			"translation": [0, 3, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"firstperson_lefthand": {
 			"rotation": [0, 135, 0],
+			"translation": [0, 3, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"ground": {
-			"translation": [0, 3, -1.5],
+			"translation": [0, 3, 0],
 			"scale": [0.25, 0.25, 0.25]
 		},
 		"gui": {
 			"rotation": [30, 225, 0],
-			"translation": [2.75, -1.5, 0],
+			"translation": [0, 1, 0],
 			"scale": [0.625, 0.625, 0.625]
 		},
 		"head": {
-			"translation": [0, 0, -10.5]
+			"translation": [0, 14.25, 0]
 		},
 		"fixed": {
-			"translation": [0, 0, -2.75],
+			"translation": [0, 1.5, -0.75],
 			"scale": [0.6, 0.6, 0.6]
 		}
 	},

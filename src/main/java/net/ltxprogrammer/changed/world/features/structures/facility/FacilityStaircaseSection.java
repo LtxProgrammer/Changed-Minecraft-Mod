@@ -23,9 +23,9 @@ public class FacilityStaircaseSection extends FacilitySinglePiece {
     public WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors(FacilityGenerationStack stack) {
         int sections = stack.sequentialMatch(FacilityPieces.STAIRCASE_SECTIONS::contains);
 
-        if (sections < 6)
+        if (sections < 3)
             return VALID_NEIGHBORS_MINIMUM;
-        if (sections > 15)
+        if (sections > 7)
             return VALID_NEIGHBORS_MAXIMUM;
 
         return VALID_NEIGHBORS;

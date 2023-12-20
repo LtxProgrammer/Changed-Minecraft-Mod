@@ -49,6 +49,8 @@
   "changed:retinal_scanner": "hardmetal",
   "changed:speaker": "hardmetal",
   "changed:microphone": "hardmetal",
+  "changed:microscope": "hardmetal",
+  "changed:tape_recorder": "hardmetal",
   "changed:tiles_darkblue": "composite",
   "changed:tiles_blue": "composite",
   "changed:tiles_blue_small": "composite",
