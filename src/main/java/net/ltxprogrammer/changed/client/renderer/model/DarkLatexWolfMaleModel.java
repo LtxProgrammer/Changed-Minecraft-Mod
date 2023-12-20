@@ -166,13 +166,6 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
-    @Nullable
-    @Override
-    public ModelPartStem getHand(HumanoidArm arm) {
-        return arm == HumanoidArm.LEFT ? new ModelPartStem(this.LeftArm, this.LeftArm.getChild("LeftForearm")) :
-                new ModelPartStem(this.RightArm, this.RightArm.getChild("RightForearm"));
-    }
-
     public ModelPart getHead() {
         return this.Head;
     }

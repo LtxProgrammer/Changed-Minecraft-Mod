@@ -20,19 +20,19 @@ public class WolfUpperBodyStandAnimator<T extends LatexEntity, M extends EntityM
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        torso.z = Mth.lerp(core.ageLerp, -2.0f, -2.5f);
-        torso.z = Mth.lerp(limbSwingAmount, torso.z, -0.5f);
+        torso.z = Mth.lerp(core.ageLerp, -0.2f, -0.8f);
+        torso.z = Mth.lerp(limbSwingAmount, torso.z, 0.0f);
         head.z = torso.z;
         leftArm.z = torso.z;
         rightArm.z = torso.z;
 
-        torso.xRot = Mth.lerp(core.ageLerp, (float)Math.PI / 16.0f, (float)Math.PI / 12.0f);
-        torso.xRot = Mth.lerp(limbSwingAmount, torso.xRot, (float)Math.PI / 30.0f);
+        torso.xRot = Mth.lerp(core.ageLerp, (float)Math.PI / 50.0f, (float)Math.PI / 42.0f);
+        torso.xRot = Mth.lerp(limbSwingAmount, torso.xRot, 0.0f);
         torso.yRot = 0.0F;
 
         torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.hipOffset + (12.0f - core.legLength);
-        head.y = torso.y + Mth.lerp(limbSwingAmount, 0.5f, 0.05f);
-        leftArm.y = torso.y + 2.75f;
-        rightArm.y = torso.y + 2.75f;
+        head.y = torso.y + Mth.lerp(limbSwingAmount, 0.15f, 0.025f);
+        leftArm.y = torso.y + 2.0f;
+        rightArm.y = torso.y + 2.0f;
     }
 }
