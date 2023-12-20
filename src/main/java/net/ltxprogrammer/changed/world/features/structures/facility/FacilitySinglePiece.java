@@ -157,9 +157,9 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
             this.boundingBox.move(offset);
             this.generationPosition = switch (this.getRotation()) {
                 case NONE -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
-                case CLOCKWISE_90 -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ());
+                case CLOCKWISE_90 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.minZ());
                 case CLOCKWISE_180 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ());
-                case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.minZ());
+                case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ());
             };
         }
     }
