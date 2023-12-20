@@ -33,9 +33,12 @@ public class FacilityPieces {
     public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
     public static final FacilityPiece CORRIDOR_BLUE_V1 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v1"));
     public static final FacilityPiece CORRIDOR_BLUE_V2 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v2"));
+    public static final FacilityPiece CORRIDOR_BLUE_V3 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v3"));
     public static final FacilityPiece INTERSECTION_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/intersection_red"));
     public static final FacilityPiece LASER_HALL = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/laser_hall"));
-    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED, CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, INTERSECTION_RED, LASER_HALL);
+    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED,
+            CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, CORRIDOR_BLUE_V3, INTERSECTION_RED,
+            LASER_HALL);
 
     public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of();
 
