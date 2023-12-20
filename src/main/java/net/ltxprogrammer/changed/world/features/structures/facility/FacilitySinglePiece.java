@@ -88,7 +88,8 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .setIgnoreEntities(false);
             if (lootTable != null)
                 settings.addProcessor(ChestLootTableProcessor.of(lootTable));
-            template.placeInWorld(level, generationPosition, blockPos, settings, random, 2);
+            settings.setBoundingBox(bb);
+            template.placeInWorld(level, generationPosition, generationPosition, settings, random, 2);
         }
 
         @Override
@@ -98,7 +99,10 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .setRotation(this.getRotation())
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
-            template.filterBlocks(generationPosition, settings, ChangedBlocks.GLU_BLOCK.get()).forEach(blockInfo -> {
+            var gluBlocks = template.filterBlocks(generationPosition, settings, ChangedBlocks.GLU_BLOCK.get());
+            if (gluBlocks.isEmpty())
+                Changed.LOGGER.error("Facility structure is missing placement blocks {}", templateName);
+            gluBlocks.forEach(blockInfo -> {
                 steps.add(new GenStep(blockInfo, stack.getParent().getValidNeighbors(stack)));
             });
         }
@@ -151,7 +155,12 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
         public void setupBoundingBox(BlockPos offset) {
             this.boundingBox = template.getBoundingBox(BlockPos.ZERO, this.getRotation(), BlockPos.ZERO, this.getMirror());
             this.boundingBox.move(offset);
-            this.generationPosition = new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
+            this.generationPosition = switch (this.getRotation()) {
+                case NONE -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
+                case CLOCKWISE_90 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.minZ());
+                case CLOCKWISE_180 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ());
+                case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ());
+            };
         }
     }
 

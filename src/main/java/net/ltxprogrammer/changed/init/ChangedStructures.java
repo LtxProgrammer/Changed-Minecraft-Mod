@@ -71,7 +71,7 @@ public class ChangedStructures {
     private static Holder<ConfiguredStructureFeature<?, ?>> registerFacility(String name) {
         RegistryObject<StructureFeature<NoneFeatureConfiguration>> facility = registerFeature(name, new Facility(
                 NoneFeatureConfiguration.CODEC,
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
+                GenerationStep.Decoration.TOP_LAYER_MODIFICATION)); // Last step
         return registerConfigured(name, () -> facility.get().configured(NoneFeatureConfiguration.INSTANCE, ChangedTags.Biomes.HAS_FACILITY));
     }
 

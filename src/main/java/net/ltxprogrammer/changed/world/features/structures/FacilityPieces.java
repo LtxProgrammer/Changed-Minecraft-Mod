@@ -18,20 +18,29 @@ import java.util.*;
 public class FacilityPieces {
     public static final FacilityPiece ENTRANCE_RED = new FacilityEntrance(Zone.RED_ZONE, Changed.modResource("facility/entrance_red"));
     public static final FacilityPiece ENTRANCE_BLUE = new FacilityEntrance(Zone.BLUE_ZONE, Changed.modResource("facility/entrance_blue"));
-    public static final FacilityPieceCollection ENTRANCES = FacilityPieceCollection.of(ENTRANCE_RED, ENTRANCE_BLUE);
+    public static final FacilityPieceCollection ENTRANCES = FacilityPieceCollection.of(/*ENTRANCE_RED, */ENTRANCE_BLUE);
 
     public static final FacilityPiece STAIRCASE_START_RED = new FacilityStaircaseStart(Zone.RED_ZONE, Changed.modResource("facility/staircase_start_red"));
-    public static final FacilityPieceCollection STAIRCASE_STARTS = FacilityPieceCollection.of(STAIRCASE_START_RED);
+    public static final FacilityPiece STAIRCASE_START_BLUE = new FacilityStaircaseStart(Zone.BLUE_ZONE, Changed.modResource("facility/staircase_start_blue"));
+    public static final FacilityPieceCollection STAIRCASE_STARTS = FacilityPieceCollection.of(STAIRCASE_START_RED, STAIRCASE_START_BLUE);
     public static final FacilityPiece STAIRCASE_SECTION_RED = new FacilityStaircaseSection(Zone.RED_ZONE, Changed.modResource("facility/staircase_section_red"));
-    public static final FacilityPieceCollection STAIRCASE_SECTIONS = FacilityPieceCollection.of(STAIRCASE_SECTION_RED);
+    public static final FacilityPiece STAIRCASE_SECTION_BLUE = new FacilityStaircaseSection(Zone.BLUE_ZONE, Changed.modResource("facility/staircase_section_blue"));
+    public static final FacilityPieceCollection STAIRCASE_SECTIONS = FacilityPieceCollection.of(STAIRCASE_SECTION_RED, STAIRCASE_SECTION_BLUE);
     public static final FacilityPiece STAIRCASE_END_RED = new FacilityStaircaseEnd(Zone.RED_ZONE, Changed.modResource("facility/staircase_end_red"));
-    public static final FacilityPieceCollection STAIRCASE_ENDS = FacilityPieceCollection.of(STAIRCASE_END_RED);
+    public static final FacilityPiece STAIRCASE_END_BLUE = new FacilityStaircaseEnd(Zone.BLUE_ZONE, Changed.modResource("facility/staircase_end_blue"));
+    public static final FacilityPieceCollection STAIRCASE_ENDS = FacilityPieceCollection.of(STAIRCASE_END_RED, STAIRCASE_END_BLUE);
 
     public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red"));
-    public static final FacilityPiece CORRIDOR_RED_2 = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/corridor_red_2"));
+    public static final FacilityPiece CORRIDOR_BLUE_V1 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v1"));
+    public static final FacilityPiece CORRIDOR_BLUE_V2 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v2"));
+    public static final FacilityPiece CORRIDOR_BLUE_V3 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_v3"));
+    public static final FacilityPiece CORRIDOR_BLUE_T_V1 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_t_v1"));
+    public static final FacilityPiece CORRIDOR_BLUE_TURN_V1 = new FacilityCorridorSection(Zone.BLUE_ZONE, Changed.modResource("facility/corridor_blue_turn_v1"));
     public static final FacilityPiece INTERSECTION_RED = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/intersection_red"));
     public static final FacilityPiece LASER_HALL = new FacilityCorridorSection(Zone.RED_ZONE, Changed.modResource("facility/laser_hall"));
-    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED, /*CORRIDOR_RED_2,*/ INTERSECTION_RED, LASER_HALL);
+    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED,
+            CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, CORRIDOR_BLUE_V3, CORRIDOR_BLUE_T_V1, CORRIDOR_BLUE_TURN_V1, INTERSECTION_RED,
+            LASER_HALL);
 
     public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of();
 

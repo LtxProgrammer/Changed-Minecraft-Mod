@@ -34,7 +34,7 @@ public class Facility extends StructureFeature<NoneFeatureConfiguration> {
     }
 
     private static void generatePieces(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context) {
-        FacilityPieces.generateFacility(builder, context, 5, 15);
+        FacilityPieces.generateFacility(builder, context, 5, 30);
     }
 
     @Override
