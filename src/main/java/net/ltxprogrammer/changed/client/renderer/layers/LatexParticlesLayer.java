@@ -22,7 +22,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         this.model = model;
     }
 
-    public SurfacePoint findSurface(ModelPart part, T entity) {
+    public SurfacePoint findSurface(ModelPart part, LatexEntity entity) {
         var cube = part.getRandomCube(entity.level.random);
         var normal = new Vector3f(0, 0, 0);
         var tangent = new Vector3f(0, 0, 0);
@@ -55,12 +55,11 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         return new SurfacePoint(normal, tangent, vector);
     }
 
-    public void createNewDripParticle(T entity) {
-        var partsWithCubes = model.getAllParts().filter(part -> !(part.getLeaf().cubes.isEmpty())).toList();
+    public void createNewDripParticle(LatexEntity entity) {
+        var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).toList();
         if (partsWithCubes.isEmpty())
             return;
 
-        //var partToAttach = model.getArm(HumanoidArm.RIGHT);
         var partToAttach = partsWithCubes.get(entity.level.random.nextInt(partsWithCubes.size()));
         ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
                 1.0f, 100));
@@ -68,9 +67,6 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float f1, float f2, float partialTicks, float bobAmount, float f3, float f4) {
-        if (ChangedClient.clientTicks % 80 == 0)
-            createNewDripParticle(entity);
-
         ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
             particle.setupForRender(pose, partialTicks);
         });
