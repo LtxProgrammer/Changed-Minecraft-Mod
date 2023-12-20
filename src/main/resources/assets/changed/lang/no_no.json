@@ -1,8 +1,8 @@
 {
-  "itemGroup.tab_changed_blocks": "Changed Blokker",
-  "itemGroup.tab_changed_items": "Changed Varer",
-  "itemGroup.tab_changed_entities": "Changed Enheter",
-  "itemGroup.tab_changed_combat": "Changed Kamputstyr",
+  "itemGroup.tab_changed_blocks": "Changed blokker",
+  "itemGroup.tab_changed_items": "Changed varer",
+  "itemGroup.tab_changed_entities": "Changed enheter",
+  "itemGroup.tab_changed_combat": "Changed kamputstyr",
 
   "ability.changed.access_saddle": "Tilgang sal",
   "ability.changed.extra_hands": "Ekstra hender",
