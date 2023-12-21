@@ -36,10 +36,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_DRAGON.get(), LatexBlueDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BLUE_WOLF.get(), LatexBlueWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CROCODILE.get(), LatexCrocodileRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(),
-                useNewModels ? LatexCrystalWolfRenderer.Remodel::new : LatexCrystalWolfRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(),
-                useNewModels ? LatexCrystalWolfHornedRenderer.Remodel::new : LatexCrystalWolfHornedRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(), LatexCrystalWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(), LatexCrystalWolfHornedRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_DEER.get(), LatexDeerRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(),
                 useNewModels ? LatexHypnoCatRenderer.Remodel::new : LatexHypnoCatRenderer::new);
@@ -103,8 +101,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC.get(), LightLatexWolfOrganicRenderer::new);
         event.registerEntityRenderer(ChangedEntities.MILK_PUDDING.get(), MilkPuddingRenderer::new);
         event.registerEntityRenderer(ChangedEntities.SHARK.get(), SharkRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF.get(),
-                useNewModels ? WhiteLatexWolfRenderer.Remodel::new : WhiteLatexWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF.get(), WhiteLatexWolfRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
 
