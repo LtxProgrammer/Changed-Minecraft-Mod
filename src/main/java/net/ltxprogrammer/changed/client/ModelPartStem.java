@@ -74,6 +74,10 @@ public class ModelPartStem {
         return new ModelPartStem(parent, this);
     }
 
+    public ModelPart getRoot() {
+        return stem.get(0);
+    }
+
     public ModelPart getLeaf() {
         return stem.get(stem.size() - 1);
     }

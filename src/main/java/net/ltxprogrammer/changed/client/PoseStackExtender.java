@@ -11,4 +11,6 @@ public interface PoseStackExtender {
      * @param consumer
      */
     <T> T popAndRepush(Function<PoseStack.Pose, T> consumer);
+
+    PoseStack.Pose first();
 }

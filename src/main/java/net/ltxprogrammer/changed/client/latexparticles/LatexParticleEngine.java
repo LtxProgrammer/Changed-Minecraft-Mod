@@ -16,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -108,7 +107,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
                 for(var particle : particleSet) {
                     if (clippingHelper != null && particle.shouldCull() && !clippingHelper.isVisible(particle.getBoundingBox())) continue;
                     try {
-                        particle.render(bufferbuilder, camera, partialTicks);
+                        particle.renderFromEvent(bufferbuilder, camera, partialTicks);
                     } catch (Throwable throwable) {
                         CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering Latex Particle");
                         CrashReportCategory crashreportcategory = crashreport.addCategory("Latex Particle being rendered");

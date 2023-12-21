@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -32,7 +33,8 @@ public abstract class LatexParticle {
     public abstract ParticleRenderType getRenderType();
 
     public void setupForRender(PoseStack poseStack, float partialTicks) {}
-    public abstract void render(VertexConsumer buffer, Camera camera, float partialTicks);
+    public abstract void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks);
+    public abstract void renderFromLayer(MultiBufferSource buffer, float partialTicks);
 
     public int getAge() {
         return age;

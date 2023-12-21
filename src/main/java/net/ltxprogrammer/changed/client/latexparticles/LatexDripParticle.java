@@ -6,20 +6,24 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
+import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Camera;
-import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +49,7 @@ public class LatexDripParticle extends LatexParticle {
 
     private final LatexEntity attachedEntity;
     private final ModelPartStem attachedPart;
+    private final LatexHumanoidModel<?> attachedModel;
   
     private final SurfacePoint surface;
     protected final Color3 color;
@@ -53,12 +58,13 @@ public class LatexDripParticle extends LatexParticle {
     private boolean prepped = false;
 
     public LatexDripParticle(SpriteSet spriteSet,
-                             LatexEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+                             LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         super(attachedEntity.level, lifespan);
         this.maxTicksAttached = attachedEntity.level.random.nextInt(80, 2400);
 
         this.spriteSet = spriteSet;
         this.attachedEntity = attachedEntity;
+        this.attachedModel = attachedModel;
         this.attachedPart = attachedPart;
         this.surface = surface;
         this.color = color;
@@ -233,6 +239,34 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     @Override
+    public void renderFromLayer(MultiBufferSource buffer, float partialTicks) {
+
+    }
+
+    @Override
+    public void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks) {
+        boolean isCamEntity = camera.getEntity() == this.attachedEntity;
+        if (!isCamEntity && this.attachedEntity.getUnderlyingPlayer() != null) {
+            isCamEntity = camera.getEntity() == this.attachedEntity.getUnderlyingPlayer();
+        }
+
+        if (isCamEntity && attached) {
+            if (ChangedCompatibility.isFirstPersonRendering()) {
+                var root = this.attachedPart.getRoot();
+                if (this.attachedModel.getHead() == root)
+                    return;
+                if (this.attachedEntity.isVisuallySwimming() && this.attachedModel.getTorso() == root)
+                    return;
+            }
+
+            else if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+                return;
+            }
+        }
+
+        this.render(buffer, camera, partialTicks);
+    }
+
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         if (attached && !prepped)
             return; // No render
@@ -251,7 +285,7 @@ public class LatexDripParticle extends LatexParticle {
         float v0 = this.sprite.getV0();
         float v1 = this.sprite.getV1();
         int lightColor = this.getLightColor(partialTicks);
-        int overlay = LivingEntityRenderer.getOverlayCoords(attachedEntity, 0.0F);
+        int overlay = attached ? LivingEntityRenderer.getOverlayCoords(attachedEntity, 0.0F) : OverlayTexture.NO_OVERLAY;
 
         if (attached) {
             // TODO align quad to normal and tangent
@@ -298,7 +332,7 @@ public class LatexDripParticle extends LatexParticle {
         return LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE;
     }
 
-    public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+    public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         return new LatexParticleProvider<>() {
             @Override
             public LatexParticleType<LatexDripParticle> getParticleType() {
@@ -307,7 +341,7 @@ public class LatexDripParticle extends LatexParticle {
 
             @Override
             public LatexDripParticle create(SpriteSet spriteSet) {
-                return new LatexDripParticle(spriteSet, attachedEntity, attachedPart, surface, color, alpha, lifespan);
+                return new LatexDripParticle(spriteSet, attachedEntity, attachedModel, attachedPart, surface, color, alpha, lifespan);
             }
         };
     }
