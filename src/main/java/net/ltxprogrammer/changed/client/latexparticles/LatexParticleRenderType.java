@@ -9,11 +9,14 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.Changed;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class LatexParticleRenderType {
+public interface LatexParticleRenderType extends ParticleRenderType {
     public static final ResourceLocation LOCATION_PARTICLES = Changed.modResource("textures/atlas/latex_particles.png");
+
+    RenderType renderType();
 
     public static ParticleRenderType LATEX_PARTICLE_SHEET_OPAQUE = new ParticleRenderType() {
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
@@ -32,7 +35,7 @@ public abstract class LatexParticleRenderType {
             return "LATEX_PARTICLE_SHEET_OPAQUE";
         }
     };
-    public static ParticleRenderType LATEX_PARTICLE_SHEET_3D_OPAQUE = new ParticleRenderType() {
+    public static LatexParticleRenderType LATEX_PARTICLE_SHEET_3D_OPAQUE = new LatexParticleRenderType() {
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
             RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
@@ -47,6 +50,11 @@ public abstract class LatexParticleRenderType {
 
         public String toString() {
             return "LATEX_PARTICLE_SHEET_3D_OPAQUE";
+        }
+
+        @Override
+        public RenderType renderType() {
+            return RenderType.entityCutout(LOCATION_PARTICLES);
         }
     };
 }

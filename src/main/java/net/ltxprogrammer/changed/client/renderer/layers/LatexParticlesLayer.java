@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.client.renderer.layers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.CubeExtender;
+import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.latexparticles.LatexDripParticle;
 import net.ltxprogrammer.changed.client.latexparticles.SurfacePoint;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
@@ -61,14 +63,18 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
             return;
 
         var partToAttach = partsWithCubes.get(entity.level.random.nextInt(partsWithCubes.size()));
-        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
+        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, this.model, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
                 1.0f, 100));
     }
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float f1, float f2, float partialTicks, float bobAmount, float f3, float f4) {
+        if (!(pose instanceof PoseStackExtender poseStackExtender))
+            return;
+
         ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
             particle.setupForRender(pose, partialTicks);
+            particle.renderFromLayer(bufferSource, partialTicks);
         });
     }
 }

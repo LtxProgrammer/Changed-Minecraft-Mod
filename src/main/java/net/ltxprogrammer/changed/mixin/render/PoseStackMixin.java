@@ -26,4 +26,9 @@ public abstract class PoseStackMixin implements PoseStackExtender {
         this.poseStack.addLast(originalLast);
         return returnValue;
     }
+
+    @Override
+    public PoseStack.Pose first() {
+        return poseStack.getFirst();
+    }
 }
