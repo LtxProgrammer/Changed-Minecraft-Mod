@@ -228,6 +228,20 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfLikeV2Armor(ModelPart head,
+                                                                                                             ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+                                                                                                             ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                             ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(wolfUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfLikeV2(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                              ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                              ModelPart tail, List<ModelPart> tailJoints,
