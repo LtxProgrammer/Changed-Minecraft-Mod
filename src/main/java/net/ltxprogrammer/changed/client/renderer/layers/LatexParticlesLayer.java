@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.client.renderer.layers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.CubeExtender;
+import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.latexparticles.LatexDripParticle;
 import net.ltxprogrammer.changed.client.latexparticles.SurfacePoint;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
@@ -22,7 +24,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         this.model = model;
     }
 
-    public SurfacePoint findSurface(ModelPart part, T entity) {
+    public SurfacePoint findSurface(ModelPart part, LatexEntity entity) {
         var cube = part.getRandomCube(entity.level.random);
         var normal = new Vector3f(0, 0, 0);
         var tangent = new Vector3f(0, 0, 0);
@@ -55,24 +57,24 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         return new SurfacePoint(normal, tangent, vector);
     }
 
-    public void createNewDripParticle(T entity) {
-        var partsWithCubes = model.getAllParts().filter(part -> !(part.getLeaf().cubes.isEmpty())).toList();
+    public void createNewDripParticle(LatexEntity entity) {
+        var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).toList();
         if (partsWithCubes.isEmpty())
             return;
 
-        //var partToAttach = model.getArm(HumanoidArm.RIGHT);
         var partToAttach = partsWithCubes.get(entity.level.random.nextInt(partsWithCubes.size()));
-        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
+        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, this.model, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
                 1.0f, 100));
     }
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float f1, float f2, float partialTicks, float bobAmount, float f3, float f4) {
-        if (ChangedClient.clientTicks % 80 == 0)
-            createNewDripParticle(entity);
+        if (!(pose instanceof PoseStackExtender poseStackExtender))
+            return;
 
         ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
             particle.setupForRender(pose, partialTicks);
+            particle.renderFromLayer(bufferSource, partialTicks);
         });
     }
 }
