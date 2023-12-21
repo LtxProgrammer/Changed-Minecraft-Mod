@@ -102,8 +102,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LatexSirenModel.LAYER_LOCATION,
                 useNewModels ? LatexSirenModel.Remodel::createBodyLayer : LatexSirenModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexSnakeModel.LAYER_LOCATION, LatexSnakeModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexSniperDogModel.LAYER_LOCATION,
-                useNewModels ? LatexSniperDogModel.Remodel::createBodyLayer : LatexSniperDogModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexSniperDogModel.LAYER_LOCATION, LatexSniperDogModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexSnowLeopardFemaleModel.LAYER_LOCATION,
                 useNewModels ? LatexSnowLeopardFemaleModel.Remodel::createBodyLayer : LatexSnowLeopardFemaleModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexSnowLeopardMaleModel.LAYER_LOCATION,
