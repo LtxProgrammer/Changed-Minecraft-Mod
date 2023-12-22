@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBenignWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.LatexBenignWolf;
@@ -11,6 +12,7 @@ public class LatexBenignWolfRenderer extends LatexHumanoidRenderer<LatexBenignWo
     public LatexBenignWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBenignWolfModel(context.bakeLayer(LatexBenignWolfModel.LAYER_LOCATION)),
                 ArmorLatexWolfModel::new, ArmorLatexWolfModel.INNER_ARMOR, ArmorLatexWolfModel.OUTER_ARMOR, 0.5f);
+        this.addLayer(new LatexParticlesLayer<>(this, getModel()));
     }
 
     @Override
