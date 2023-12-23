@@ -14,7 +14,7 @@ public class LightLatexWolfOrganicRenderer extends LatexHumanoidRenderer<LightLa
     public LightLatexWolfOrganicRenderer(EntityRendererProvider.Context context) {
         super(context, new LightLatexWolfOrganicModel(context.bakeLayer(LightLatexWolfMaleModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer::always, CustomEyesLayer::always));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
     }
 
     @Override

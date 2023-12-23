@@ -15,7 +15,7 @@ public class LightLatexWolfMaleRenderer extends LatexHumanoidRenderer<LightLatex
         super(context, new LightLatexWolfMaleModel(context.bakeLayer(LightLatexWolfMaleModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer::always, CustomEyesLayer::always));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
     }
 
     @Override

@@ -16,7 +16,7 @@ public class AerosolLatexWolfRenderer extends LatexHumanoidRenderer<AerosolLatex
         super(context, new AerosolLatexWolfModel(context.bakeLayer( AerosolLatexWolfModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new CustomCoatLayer<>(this, this.getModel(), Changed.modResource("textures/latex_gas_wolf_coat")));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer::always, CustomEyesLayer::always));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
     }
 
     @Override
