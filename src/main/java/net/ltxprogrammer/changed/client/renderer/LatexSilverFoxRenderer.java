@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexSilverFox;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSilverFoxRenderer extends LatexHumanoidRenderer<LatexSilverFox, LatexSilverFoxModel, ArmorLatexMaleWolfModel<net.ltxprogrammer.changed.entity.beast.LatexSilverFox>> {
+public class LatexSilverFoxRenderer extends LatexHumanoidRenderer<LatexSilverFox, LatexSilverFoxModel, ArmorLatexMaleWolfModel<LatexSilverFox>> {
     public LatexSilverFoxRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSilverFoxModel(context.bakeLayer(LatexSilverFoxModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
