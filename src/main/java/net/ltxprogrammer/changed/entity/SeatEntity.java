@@ -11,9 +11,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +31,21 @@ public class SeatEntity extends Entity {
     }
 
     public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
+        if (level.isClientSide) {
+            var listOfSeats = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos)); // Check for existing SeatEntities to prevent duplicates
+            if (listOfSeats.isEmpty())
+                return null;
+
+            listOfSeats = listOfSeats.stream().filter(entity -> {
+                return entity.getAttachedBlockPos().equals(pos) && entity.getAttachedBlockState().isPresent() && entity.getAttachedBlockState().get().getBlock() == state.getBlock();
+            }).toList();
+
+            if (listOfSeats.isEmpty())
+                return null;
+
+            return listOfSeats.get(0);
+        }
+
         SeatEntity seat = ChangedEntities.SEAT_ENTITY.get().create(level);
         if (seat == null)
             return null;
@@ -123,6 +140,13 @@ public class SeatEntity extends Entity {
         if (shouldSeatedBeInvisible() && this.getFirstPassenger() instanceof Player player && !player.isInvisible()) {
             player.setInvisible(true);
         }
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (this.shouldSeatedBeInvisible())
+            this.getPassengers().forEach(entity -> entity.setInvisible(false));
+        super.remove(reason);
     }
 
     @Override
