@@ -181,6 +181,7 @@ public class ChangedBlocks {
             return ChangedFeatures.ORANGE_TREE;
         }
     }, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<FlowerPotBlock> POTTED_ORANGE_TREE_SAPLING = register("potted_orange_tree_sapling", () -> new FlowerPotBlock(ORANGE_TREE_SAPLING, BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.COLOR_GREEN).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 
