@@ -37,6 +37,8 @@ public class CardboardBoxTallBlockEntity extends BlockEntity {
         if (this.entity != null)
             return false;
         else if (entityHolder != null) {
+            if (!entityHolder.getPassengers().isEmpty())
+                return false;
             this.entity = entity;
             this.entity.startRiding(entityHolder);
             ticksSinceChange = 0;
