@@ -181,6 +181,7 @@ public class ChangedBlocks {
             return ChangedFeatures.ORANGE_TREE;
         }
     }, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS)), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<FlowerPotBlock> POTTED_ORANGE_TREE = registerPottedPlant("potted_orange_tree", ORANGE_TREE_SAPLING);
     public static final RegistryObject<LeavesBlock> ORANGE_TREE_LEAVES = register("orange_tree_leaves", () -> new LeavesBlock(
             BlockBehaviour.Properties.of(Material.LEAVES, MaterialColor.COLOR_GREEN).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(ChangedBlocks::ocelotOrParrot).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)));
 
@@ -206,6 +207,14 @@ public class ChangedBlocks {
     public static void translucentRenderer(Block block) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 ItemBlockRenderTypes.setRenderLayer(block, renderType -> renderType == RenderType.translucent()));
+    }
+
+    private static RegistryObject<FlowerPotBlock> registerPottedPlant(String name, RegistryObject<? extends Block> plant) {
+        return registerNoItem(name, () -> {
+            var filledPot = new FlowerPotBlock(() -> (FlowerPotBlock)Blocks.FLOWER_POT, plant, BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion());
+            ((FlowerPotBlock)Blocks.FLOWER_POT).addPlant(plant.getId(), () -> filledPot);
+            return filledPot;
+        }, ChangedBlocks::cutoutRenderer);
     }
 
     private static <T extends Block> RegistryObject<T> registerNoItem(String name, Supplier<T> block) {
