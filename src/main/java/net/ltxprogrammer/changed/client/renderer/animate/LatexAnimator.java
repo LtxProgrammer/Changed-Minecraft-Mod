@@ -34,6 +34,13 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float ageLerp = 0.0F;
     public float reachOut = 0.0F;
 
+    public void resetVariables() {
+        crouching = false;
+        swimAmount = 0.0F;
+        ageLerp = 0.0F;
+        reachOut = 0.0F;
+    }
+
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
         this.animators = new EnumMap<>(AnimateStage.class);
