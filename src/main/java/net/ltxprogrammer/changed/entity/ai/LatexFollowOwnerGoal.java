@@ -1,10 +1,10 @@
 package net.ltxprogrammer.changed.entity.ai;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.TamableLatexEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
 
-public class LatexFollowOwnerGoal<T extends LatexEntity & OwnableEntity> extends Goal {
+public class LatexFollowOwnerGoal<T extends LatexEntity & TamableLatexEntity> extends Goal {
     public static final int TELEPORT_WHEN_DISTANCE_IS = 12;
     private static final int MIN_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 2;
     private static final int MAX_HORIZONTAL_DISTANCE_FROM_PLAYER_WHEN_TELEPORTING = 3;
@@ -48,6 +48,9 @@ public class LatexFollowOwnerGoal<T extends LatexEntity & OwnableEntity> extends
     }
 
     public boolean canUse() {
+        if (!this.tamable.isFollowingOwner())
+            return false;
+
         Entity livingentity = this.tamable.getOwner();
         if (livingentity == null) {
             return false;
@@ -64,6 +67,9 @@ public class LatexFollowOwnerGoal<T extends LatexEntity & OwnableEntity> extends
     }
 
     public boolean canContinueToUse() {
+        if (!this.tamable.isFollowingOwner())
+            return false;
+
         if (this.navigation.isDone()) {
             return false;
         } else {

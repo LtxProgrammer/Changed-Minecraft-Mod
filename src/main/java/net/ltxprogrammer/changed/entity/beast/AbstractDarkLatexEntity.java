@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TamableLatexEntity;
 import net.ltxprogrammer.changed.entity.ai.LatexFollowOwnerGoal;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -15,22 +16,24 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implements DarkLatexEntity, OwnableEntity {
+public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implements DarkLatexEntity, TamableLatexEntity {
     protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(AbstractDarkLatexEntity.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(AbstractDarkLatexEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
@@ -41,7 +44,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.42D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.35D, 10.0F, 2.0F, false));
     }
 
     @Override
@@ -63,6 +66,9 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
         }
 
+        if (tag.contains("FollowOwner"))
+            this.setFollowOwner(tag.getBoolean("FollowOwner"));
+
         if (uuid != null) {
             try {
                 this.setOwnerUUID(uuid);
@@ -80,6 +86,8 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
         if (this.getOwnerUUID() != null) {
             tag.putUUID("Owner", this.getOwnerUUID());
         }
+
+        tag.putBoolean("FollowOwner", this.isFollowingOwner());
     }
 
     public boolean isMaskless() {
@@ -100,7 +108,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
         if (livingEntity == this.getOwner())
             return false;
-
+        
         if (!this.isMaskless()) {// Check if masked DL can see entity
             if (livingEntity.distanceToSqr(this) <= 1.0)
                 return super.targetSelectorTest(livingEntity);
@@ -171,9 +179,63 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
     public void tame(Player player) {
         this.setTame(true);
+        this.setFollowOwner(true);
         this.setOwnerUUID(player.getUUID());
-        if (player instanceof ServerPlayer) {
-            ChangedCriteriaTriggers.TAME_LATEX.trigger((ServerPlayer)player, this);
+        if (player instanceof ServerPlayer serverPlayer) {
+            ChangedCriteriaTriggers.TAME_LATEX.trigger(serverPlayer, this);
+        }
+
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        Item item = itemstack.getItem();
+        if (this.level.isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (this.isTame()) {
+                /*if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                    this.heal((float) itemstack.getFoodProperties(this).getNutrition());
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                    return InteractionResult.SUCCESS;
+                }*/
+
+                /*else*/ {
+                    InteractionResult interactionresult = super.mobInteract(player, hand);
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        this.setFollowOwner(!this.isFollowingOwner());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        return InteractionResult.SUCCESS;
+                    }
+
+                    return interactionresult;
+                }
+            }
+        }
+
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public boolean isFollowingOwner() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
+    }
+
+    @Override
+    public void setFollowOwner(boolean value) {
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (value) {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 1));
+        } else {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
         }
 
     }
