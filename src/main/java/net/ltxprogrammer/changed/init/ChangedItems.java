@@ -82,7 +82,7 @@ public class ChangedItems {
     public static final RegistryObject<RecordItem> LABORATORY_RECORD = registerRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
     public static final RegistryObject<RecordItem> OUTSIDE_THE_TOWER_RECORD = registerRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
     public static final RegistryObject<RecordItem> PURO_THE_BLACK_GOO_RECORD = registerRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
-    public static final RegistryObject<RecordItem> PUROS_HOME = registerRecord("puros_home", () -> ChangedSounds.MUSIC_PUROS_HOME);
+    public static final RegistryObject<RecordItem> PUROS_HOME_RECORD = registerRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
     public static final RegistryObject<RecordItem> THE_LIBRARY_RECORD = registerRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
     public static final RegistryObject<RecordItem> VENT_PIPE_RECORD = registerRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
 
