@@ -12,7 +12,7 @@ public class LatexKeonWolfRenderer extends LatexHumanoidRenderer<LatexKeonWolf, 
     public LatexKeonWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexKeonWolfModel(context.bakeLayer(LatexKeonWolfModel.LAYER_LOCATION)),
                 ArmorLatexWolfModel::new, ArmorLatexWolfModel.INNER_ARMOR, ArmorLatexWolfModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer::scleraColor, CustomEyesLayer::irisColor));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
     }
 
     @Override
