@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.init;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.entity.beast.*;
@@ -185,8 +184,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexPinkDeer>> LATEX_PINK_DEER = register("latex_pink_deer", 0xF2AFBC, 0xCA636A,
             EntityType.Builder.of(LatexPinkDeer::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::forestSpawning);
-    public static final RegistryObject<EntityType<LatexSilverFox>> LATEX_SILVER_FOX = register("latex_silver_fox", 0x959CA5, 0x272727,
-            EntityType.Builder.of(LatexSilverFox::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
+    public static final RegistryObject<EntityType<LatexKeonWolf>> LATEX_KEON_WOLF = register("latex_keon_wolf", 0x959CA5, 0x272727,
+            EntityType.Builder.of(LatexKeonWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = registerReducedSpawn("aerosol_latex_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(AerosolLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.95F),
