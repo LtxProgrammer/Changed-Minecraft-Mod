@@ -246,11 +246,19 @@ public abstract class LatexCoveredBlocks {
         }
 
         public void registerEarlyBake(ModelResourceLocation name, UnbakedModel model) {
-            earlyBakeModels.put(name, model);
+            try {
+                earlyBakeModels.put(name, model);
+            } catch (UnsupportedOperationException ex) {
+                LOGGER.warn("Attempted to register early bake model when it should not of ({})", name);
+            }
         }
 
         public void registerPreBaked(ResourceLocation name, ModelResourceLocation prebaked) {
-            referencePreBaked.put(name, prebaked);
+            try {
+                referencePreBaked.put(name, prebaked);
+            } catch (UnsupportedOperationException ex) {
+                LOGGER.warn("Attempted to register reference bake model when it should not of ({})", name);
+            }
         }
 
         public void registerIfAbsent(ResourceLocation name, Function<ResourceLocation, UnbakedModel> fn) {
@@ -496,8 +504,11 @@ public abstract class LatexCoveredBlocks {
 
         if (newModel != null)
             registrar.register(coveredModelName, newModel);
-        else
+        else if (!registrar.mixTextures)
             registrar.registerPreBaked(coveredModelName, getDefaultLatexModelCached.apply(type)); // Register a generic 1x1x1 block reference
+        else {
+            LOGGER.error("Could not generate covered variant of {} : {}", baseModelName, baseModel);
+        }
     }
 
     private static final Map<ResourceLocation, UnbakedModel> MODEL_CACHE = new HashMap<>();
