@@ -294,5 +294,134 @@
         "stream": true
       }
     ]
+  },
+
+  "music.black_goo_zone": {
+    "sounds": [
+      {
+        "name": "changed:bgm/black_goo_zone",
+        "stream": true
+      }
+    ]
+  },
+  "music.crystal_zone": {
+    "sounds": [
+      {
+        "name": "changed:bgm/crystal_zone",
+        "stream": true
+      }
+    ]
+  },
+  "music.gas_room": {
+    "sounds": [
+      {
+        "name": "changed:bgm/gas_room",
+        "stream": true
+      }
+    ]
+  },
+  "music.laboratory": {
+    "sounds": [
+      {
+        "name": "changed:bgm/laboratory",
+        "stream": true
+      }
+    ]
+  },
+  "music.outside_the_tower": {
+    "sounds": [
+      {
+        "name": "changed:bgm/outside_the_tower",
+        "stream": true
+      }
+    ]
+  },
+  "music.puro_the_black_goo": {
+    "sounds": [
+      {
+        "name": "changed:bgm/puro_the_black_goo",
+        "stream": true
+      }
+    ]
+  },
+  "music.puros_home": {
+    "sounds": [
+      {
+        "name": "changed:bgm/puros_home",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_library": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_library",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_lion_chase": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_lion_chase",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_scarlet_crystal_mine": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_scarlet_crystal_mine",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_shark": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_shark",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_squid_dog": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_squid_dog",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_goo_jungle": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_goo_jungle",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_tail_chase_part_1": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_tail_chase_part_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_tail_chase_part_2": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_tail_chase_part_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.vent_pipe": {
+    "sounds": [
+      {
+        "name": "changed:bgm/vent_pipe",
+        "stream": true
+      }
+    ]
   }
 }
