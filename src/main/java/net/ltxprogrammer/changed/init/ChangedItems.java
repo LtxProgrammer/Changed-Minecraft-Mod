@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -28,8 +29,6 @@ public class ChangedItems {
     public static final RegistryObject<CompactDisc> COMPACT_DISC = register("compact_disc", CompactDisc::new);
     public static final RegistryObject<LabBook> LAB_BOOK = register("lab_book", LabBook::new);
     public static final RegistryObject<Item> LATEX_BASE = register("latex_base", () -> new Item(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS)));
-    public static final RegistryObject<RecordItem> LATEX_DANCE_RECORD = register("latex_dance_record", () -> new RecordItem(8, ChangedSounds.LATEX_DANCE, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
-    public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new ItemNameBlockItem(ChangedBlocks.DROPPED_ORANGE.get(), (new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
@@ -75,6 +74,21 @@ public class ChangedItems {
             () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
     public static final RegistryObject<AbdomenArmor> NETHERITE_LOWER_ABDOMEN_ARMOR = register("netherite_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
+
+    // Unsure whether to keep this record, it doesn't fit with the BGM from changed
+    public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
+    public static final RegistryObject<RecordItem> BLACK_GOO_ZONE_RECORD = registerRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);
+    public static final RegistryObject<RecordItem> CRYSTAL_ZONE_RECORD = registerRecord("crystal_zone_record", () -> ChangedSounds.MUSIC_CRYSTAL_ZONE);
+    public static final RegistryObject<RecordItem> LABORATORY_RECORD = registerRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
+    public static final RegistryObject<RecordItem> OUTSIDE_THE_TOWER_RECORD = registerRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
+    public static final RegistryObject<RecordItem> PURO_THE_BLACK_GOO_RECORD = registerRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
+    public static final RegistryObject<RecordItem> PUROS_HOME_RECORD = registerRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
+    public static final RegistryObject<RecordItem> THE_LIBRARY_RECORD = registerRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
+    public static final RegistryObject<RecordItem> VENT_PIPE_RECORD = registerRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
+
+    private static RegistryObject<RecordItem> registerRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
+        return register(name, () -> new RecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
+    }
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
         return REGISTRY.register(name, item);
