@@ -20,4 +20,8 @@ public class ChangedTabs {
         @Override
         public ItemStack makeIcon() { return new ItemStack(ChangedItems.TSC_BATON.get()); }
     };
+    public static CreativeModeTab TAB_CHANGED_MUSIC = new CreativeModeTab("tab_changed_music") {
+        @Override
+        public ItemStack makeIcon() { return new ItemStack(ChangedItems.PURO_THE_BLACK_GOO_RECORD.get()); }
+    };
 }
