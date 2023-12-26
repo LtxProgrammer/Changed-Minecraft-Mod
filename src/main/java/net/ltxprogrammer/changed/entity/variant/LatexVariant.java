@@ -70,124 +70,168 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         });
         return list;
     }
-    
-    public static final LatexVariant<LatexSilverFox> LATEX_SILVER_FOX = register(Builder.of(ChangedEntities.LATEX_SILVER_FOX)
-            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
-            .build(Changed.modResource("form_latex_silver_fox")));
-    
+
     public static final GenderedVariant<LightLatexWolfMale, LightLatexWolfFemale> LIGHT_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.LIGHT_LATEX_WOLF_MALE, ChangedEntities.LIGHT_LATEX_WOLF_FEMALE)
             .addAbility(ChangedAbilities.SWITCH_GENDER).split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_light_latex_wolf")));
-    public static final LatexVariant<LightLatexKnight> LIGHT_LATEX_KNIGHT = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_KNIGHT).absorbing()
-            .build(Changed.modResource("form_light_latex_knight")));
-    public static final LatexVariant<LatexBlueWolf> LATEX_BLUE_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_BLUE_WOLF).absorbing()
-            .build(Changed.modResource("form_latex_blue_wolf")));
-    public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION).additionalHealth(8)
-            .fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
-            .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_CENTAUR).groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall()
-            .build(Changed.modResource("form_light_latex_centaur")));
-    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.AEROSOL_LATEX_WOLF).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_aerosol_latex_wolf")));
-    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LATEX_SILVER_FOX, ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
-            .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX).buildGendered(Changed.modResource("form_dark_latex_wolf")));
-    public static final LatexVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_PUP)
-            .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE).build(Changed.modResource("form_dark_latex_pup")));
-    public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.WHITE_LATEX_WOLF).faction(LatexType.WHITE_LATEX)
-            .build(Changed.modResource("form_white_latex_wolf")));
-    public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_PURPLE_FOX)
-            .build(Changed.modResource("form_latex_purple_fox")));
-    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_CRYSTAL_WOLF).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_latex_crystal_wolf")));
-    public static final LatexVariant<LatexCrystalWolfHorned> LATEX_CRYSTAL_WOLF_HORNED = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_latex_crystal_wolf_horned")));
-    public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_SNIPER_DOG).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_latex_sniper_dog")));
-    public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_light_latex_wolf_organic")));
-    public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
-            .build(Changed.modResource("form_latex_traffic_cone_dragon")));
-    public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(LATEX_TRAFFIC_CONE_DRAGON, ChangedEntities.LATEX_LEAF)
-            .build(Changed.modResource("form_latex_leaf")));
-    public static final LatexVariant<LatexMimicPlant> LATEX_MIMIC_PLANT = register(Builder.of(LATEX_LEAF, ChangedEntities.LATEX_MIMIC_PLANT)
-            .build(Changed.modResource("form_latex_mimic_plant")));
-    public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
-            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
-            .buildGendered(Changed.modResource("form_latex_snow_leopard")));
-    public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_WATERMELON_CAT)
-            .build(Changed.modResource("form_latex_watermelon_cat")));
-    public static final LatexVariant<LatexWhiteTiger> LATEX_WHITE_TIGER = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_WHITE_TIGER)
-            .build(Changed.modResource("form_latex_white_tiger")));
-    public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_HYPNO_CAT).addAbility(ChangedAbilities.HYPNOSIS)
-            .build(Changed.modResource("form_latex_hypno_cat")));
 
-    public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK).groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().absorbing()
-            .build(Changed.modResource("form_latex_shark")));
-    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSION = register(GenderedVariant.Builder.of(LATEX_SHARK, ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.9f).swimSpeed(1.5f).stepSize(0.7f).additionalHealth(8).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, LATEX_SHARK)
-            .buildGendered(Changed.modResource("form_latex_shark")));
-    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10).replicating().addAbility(ChangedAbilities.SUMMON_SHARKS)
-            .build(Changed.modResource("form_latex_tiger_shark")));
-    public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(LATEX_SHARK, ChangedEntities.LATEX_ORCA).replicating()
+    public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(ChangedEntities.AEROSOL_LATEX_WOLF)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_aerosol_latex_wolf")));
+    public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON)
+            .groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
+            .build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(ChangedEntities.DARK_LATEX_YUFENG)
+            .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX)
+            .build(Changed.modResource("form_dark_latex_yufeng")));
+    public static final LatexVariant<LatexAlien> LATEX_ALIEN = register(Builder.of(ChangedEntities.LATEX_ALIEN)
+            .groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision()
+            .build(Changed.modResource("form_latex_alien")));
+    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE)
+            .groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
+            .build(Changed.modResource("form_latex_bee")));
+    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG)
+            .groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_latex_beifeng")));
+    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF)
+            .groundSpeed(0.15f).swimSpeed(0.15f).noVision().disableItems()
+            .build(Changed.modResource("form_latex_benign_wolf")));
+    public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON)
+            .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_blue_dragon")));
+    public static final LatexVariant<LatexBlueWolf> LATEX_BLUE_WOLF = register(Builder.of(ChangedEntities.LATEX_BLUE_WOLF)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
+            .build(Changed.modResource("form_latex_blue_wolf")));
+    public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE)
+            .groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
+            .build(Changed.modResource("form_latex_crocodile")));
+    public static final LatexVariant<LatexCrystalWolf> LATEX_CRYSTAL_WOLF = register(Builder.of(ChangedEntities.LATEX_CRYSTAL_WOLF)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_latex_crystal_wolf")));
+    public static final LatexVariant<LatexCrystalWolfHorned> LATEX_CRYSTAL_WOLF_HORNED = register(Builder.of(LATEX_CRYSTAL_WOLF, ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED)
+            .sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_latex_crystal_wolf_horned")));
+    public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
+            .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(ChangedEntities.LATEX_HYPNO_CAT)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.HYPNOSIS)
+            .build(Changed.modResource("form_latex_hypno_cat")));
+    public static final LatexVariant<LatexKeonWolf> LATEX_KEON_WOLF = register(Builder.of(ChangedEntities.LATEX_KEON_WOLF)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_keon_wolf")));
+    public static final LatexVariant<LatexLeaf> LATEX_LEAF = register(Builder.of(ChangedEntities.LATEX_LEAF)
+            .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
+            .build(Changed.modResource("form_latex_leaf")));
+    public static final LatexVariant<LatexMedusaCat> LATEX_MEDUSA_CAT = register(Builder.of(ChangedEntities.LATEX_MEDUSA_CAT)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().absorbing()
+            .build(Changed.modResource("form_latex_medusa_cat")));
+    public static final LatexVariant<LatexMimicPlant> LATEX_MIMIC_PLANT = register(Builder.of(ChangedEntities.LATEX_MIMIC_PLANT)
+            .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).reducedFall().absorbing()
+            .build(Changed.modResource("form_latex_mimic_plant")));
+    public static final LatexVariant<LatexMingCat> LATEX_MING_CAT = register(Builder.of(ChangedEntities.LATEX_MING_CAT)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision()
+            .build(Changed.modResource("form_latex_ming_cat")));
+    public static final LatexVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH)
+            .groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
+            .build(Changed.modResource("form_latex_moth")));
+    public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(ChangedEntities.LATEX_ORCA)
+            .groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills()
             .build(Changed.modResource("form_latex_orca")));
+    public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER)
+            .groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
+            .build(Changed.modResource("form_latex_otter")));
+    public static final LatexVariant<LatexPinkDeer> LATEX_PINK_DEER = register(Builder.of(ChangedEntities.LATEX_PINK_DEER)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_pink_deer")));
+    public static final LatexVariant<LatexPinkWyvern> LATEX_PINK_WYVERN = register(Builder.of(ChangedEntities.LATEX_PINK_WYVERN)
+            .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_pink_wyvern")));
+    public static final LatexVariant<LatexPinkYuinDragon> LATEX_PINK_YUIN_DRAGON = register(Builder.of(ChangedEntities.LATEX_PINK_YUIN_DRAGON)
+            .groundSpeed(1.0F).swimSpeed(0.85f).glide()
+            .build(Changed.modResource("form_latex_pink_yuin_dragon")));
+    public static final LatexVariant<LatexPurpleFox> LATEX_PURPLE_FOX = register(Builder.of(ChangedEntities.LATEX_PURPLE_FOX)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_purple_fox")));
+    public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON)
+            .groundSpeed(0.95f).swimSpeed(0.97f).noVision()
+            .build(Changed.modResource("form_latex_raccoon")));
+    public static final LatexVariant<LatexRedDragon> LATEX_RED_DRAGON = register(Builder.of(ChangedEntities.LATEX_RED_DRAGON)
+            .groundSpeed(1.0F).swimSpeed(0.85f).glide()
+            .build(Changed.modResource("form_latex_red_dragon")));
+    public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(ChangedEntities.LATEX_RED_PANDA)
+            .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).reducedFall()
+            .build(Changed.modResource("form_latex_red_panda")));
+    public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK)
+            .groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().absorbing()
+            .build(Changed.modResource("form_latex_shark")));
+    public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(Builder.of(ChangedEntities.LATEX_SNAKE)
+            .groundSpeed(1.0F).swimSpeed(0.95f).additionalHealth(6).stepSize(1.1f).noLegs().addAbility(ChangedAbilities.SLITHER)
+            .build(Changed.modResource("form_latex_snake")));
+    public static final LatexVariant<LatexSniperDog> LATEX_SNIPER_DOG = register(Builder.of(ChangedEntities.LATEX_SNIPER_DOG)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_latex_sniper_dog")));
+    public static final LatexVariant<LatexSquirrel> LATEX_SQUIRREL = register(Builder.of(ChangedEntities.LATEX_SQUIRREL)
+            .groundSpeed(1.1f).swimSpeed(0.9f).stepSize(0.7f).reducedFall()
+            .build(Changed.modResource("form_latex_squirrel")));
+    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER)
+            .canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
+            .build(Changed.modResource("form_latex_stiger")));
+    public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(ChangedEntities.LATEX_TIGER_SHARK)
+            .groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10).gills().addAbility(ChangedAbilities.SUMMON_SHARKS)
+            .build(Changed.modResource("form_latex_tiger_shark")));
+    public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
+            .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
+            .build(Changed.modResource("form_latex_traffic_cone_dragon")));
+    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(ChangedEntities.LATEX_TRANSLUCENT_LIZARD)
+            .groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).absorbing()
+            .build(Changed.modResource("form_latex_translucent_lizard")));
+    public static final LatexVariant<LatexWatermelonCat> LATEX_WATERMELON_CAT = register(Builder.of(ChangedEntities.LATEX_WATERMELON_CAT)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().absorbing()
+            .build(Changed.modResource("form_latex_watermelon_cat")));
+    public static final LatexVariant<LatexWhiteTiger> LATEX_WHITE_TIGER = register(Builder.of(ChangedEntities.LATEX_WHITE_TIGER)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision()
+            .build(Changed.modResource("form_latex_white_tiger")));
+    public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(ChangedEntities.LATEX_YUIN)
+            .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).reducedFall().absorbing()
+            .build(Changed.modResource("form_latex_yuin")));
+    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(ChangedEntities.LIGHT_LATEX_CENTAUR)
+            .groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall()
+            .build(Changed.modResource("form_light_latex_centaur")));
+    public static final LatexVariant<LightLatexKnight> LIGHT_LATEX_KNIGHT = register(Builder.of(ChangedEntities.LIGHT_LATEX_KNIGHT)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
+            .build(Changed.modResource("form_light_latex_knight")));
+    public static final LatexVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.LIGHT_LATEX_KNIGHT_FUSION)
+            .additionalHealth(8).fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
+            .build(Changed.modResource("form_light_latex_knight_fusion")));
+    public static final LatexVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(ChangedEntities.LIGHT_LATEX_WOLF_ORGANIC)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_light_latex_wolf_organic")));
+    public static final LatexVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(ChangedEntities.WHITE_LATEX_WOLF)
+            .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX)
+            .build(Changed.modResource("form_white_latex_wolf")));
+
+    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
+            .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
+            .buildGendered(Changed.modResource("form_dark_latex_wolf")));
+    public static final LatexVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_PUP)
+            .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE)
+            .build(Changed.modResource("form_dark_latex_pup")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
             .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(2.9F).absorbing().additionalHealth(8).noLegs())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
-    public static final LatexVariant<LatexMedusaCat> LATEX_MEDUSA_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_MEDUSA_CAT)
-            .build(Changed.modResource("form_latex_medusa_cat")));
-    public static final LatexVariant<LatexMingCat> LATEX_MING_CAT = register(Builder.of(LATEX_SNOW_LEOPARD.male(), ChangedEntities.LATEX_MING_CAT)
-            .build(Changed.modResource("form_latex_ming_cat")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
             .groundSpeed(0.26F).swimSpeed(2.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.SIREN_SING)).additionalHealth(8).noLegs()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
-
+    public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSION = register(GenderedVariant.Builder.of(LATEX_SHARK, ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE)
+            .groundSpeed(0.9f).swimSpeed(1.5f).stepSize(0.7f).additionalHealth(8).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, LATEX_SHARK)
+            .buildGendered(Changed.modResource("form_latex_shark")));
+    public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
+            .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
+            .buildGendered(Changed.modResource("form_latex_snow_leopard")));
     public static final GenderedVariant<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOG = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SQUID_DOG_MALE, ChangedEntities.LATEX_SQUID_DOG_FEMALE)
             .groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().split(male -> male.replicating(), female -> female.absorbing()).addAbility(ChangedAbilities.CREATE_INKBALL)
             .buildGendered(Changed.modResource("form_latex_squid_dog")));
-    public static final LatexVariant<LatexSquirrel> LATEX_SQUIRREL = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_SQUIRREL).reducedFall()
-            .build(Changed.modResource("form_latex_squirrel")));
-    public static final LatexVariant<LatexCrocodile> LATEX_CROCODILE = register(Builder.of(ChangedEntities.LATEX_CROCODILE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(12).breatheMode(BreatheMode.STRONG)
-            .build(Changed.modResource("form_latex_crocodile")));
-    public static final LatexVariant<LatexRaccoon> LATEX_RACCOON = register(Builder.of(ChangedEntities.LATEX_RACCOON).groundSpeed(0.95f).swimSpeed(0.97f).noVision()
-            .build(Changed.modResource("form_latex_raccoon")));
-    public static final LatexVariant<LatexBee> LATEX_BEE = register(Builder.of(ChangedEntities.LATEX_BEE).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(BreatheMode.WEAK)
-            .build(Changed.modResource("form_latex_bee")));
-    public static final LatexVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
-            .build(Changed.modResource("form_latex_moth")));
-    public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER).groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
-            .build(Changed.modResource("form_latex_otter")));
-    public static final LatexVariant<LatexAlien> LATEX_ALIEN = register(Builder.of(ChangedEntities.LATEX_ALIEN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision()
-            .build(Changed.modResource("form_latex_alien")));
-    public static final LatexVariant<LatexBenignWolf> LATEX_BENIGN_WOLF = register(Builder.of(ChangedEntities.LATEX_BENIGN_WOLF).groundSpeed(0.15f).swimSpeed(0.15f).noVision().disableItems()
-            .build(Changed.modResource("form_latex_benign_wolf")));
-    public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
-            .build(Changed.modResource("form_dark_latex_dragon")));
-    public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(Builder.of(ChangedEntities.LATEX_SNAKE).groundSpeed(1.0F).swimSpeed(0.95f).additionalHealth(6).noLegs().stepSize(1.1f).addAbility(ChangedAbilities.SLITHER)
-            .build(Changed.modResource("form_latex_snake")));
-    public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(DARK_LATEX_DRAGON, ChangedEntities.DARK_LATEX_YUFENG)
-            .build(Changed.modResource("form_dark_latex_yufeng")));
-    public static final LatexVariant<LatexBeifeng> LATEX_BEIFENG = register(Builder.of(ChangedEntities.LATEX_BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_latex_beifeng")));
-    public static final LatexVariant<LatexBlueDragon> LATEX_BLUE_DRAGON = register(Builder.of(ChangedEntities.LATEX_BLUE_DRAGON).groundSpeed(1.1f).swimSpeed(0.98f).stepSize(0.7f)
-            .build(Changed.modResource("form_latex_blue_dragon")));
-    public static final LatexVariant<LatexPinkWyvern> LATEX_PINK_WYVERN = register(Builder.of(LATEX_BLUE_DRAGON, ChangedEntities.LATEX_PINK_WYVERN).faction(LatexType.NEUTRAL)
-            .build(Changed.modResource("form_latex_pink_wyvern")));
-    public static final LatexVariant<LatexRedDragon> LATEX_RED_DRAGON = register(Builder.of(DARK_LATEX_YUFENG, ChangedEntities.LATEX_RED_DRAGON).faction(LatexType.NEUTRAL)
-            .build(Changed.modResource("form_latex_red_dragon")));
-    public static final LatexVariant<LatexPinkYuinDragon> LATEX_PINK_YUIN_DRAGON = register(Builder.of(DARK_LATEX_YUFENG, ChangedEntities.LATEX_PINK_YUIN_DRAGON).faction(LatexType.NEUTRAL)
-            .build(Changed.modResource("form_latex_pink_yuin_dragon")));
-    public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_YUIN)
-            .build(Changed.modResource("form_latex_yuin")));
-    public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_DEER)
-            .build(Changed.modResource("form_latex_deer")));
-    public static final LatexVariant<LatexPinkDeer> LATEX_PINK_DEER = register(Builder.of(LATEX_DEER, ChangedEntities.LATEX_PINK_DEER)
-            .build(Changed.modResource("form_latex_pink_deer")));
-    public static final LatexVariant<LatexRedPanda> LATEX_RED_PANDA = register(Builder.of(LATEX_SILVER_FOX, ChangedEntities.LATEX_RED_PANDA)
-            .build(Changed.modResource("form_latex_red_panda")));
-    public static final LatexVariant<LatexTranslucentLizard> LATEX_TRANSLUCENT_LIZARD = register(Builder.of(LATEX_BEIFENG, ChangedEntities.LATEX_TRANSLUCENT_LIZARD).sound(ChangedSounds.POISON.getLocation()).absorbing()
-            .build(Changed.modResource("form_latex_translucent_lizard")));
-
-    public static final LatexVariant<LatexStiger> LATEX_STIGER = register(Builder.of(ChangedEntities.LATEX_STIGER).canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
-            .build(Changed.modResource("form_latex_stiger")));
 
     public static final LatexVariant<?> FALLBACK_VARIANT = LIGHT_LATEX_WOLF.male();
 

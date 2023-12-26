@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSilverFox extends AbstractLatexWolf implements PatronOC {
-    public LatexSilverFox(EntityType<? extends LatexSilverFox> p_19870_, Level p_19871_) {
+public class LatexKeonWolf extends AbstractLatexWolf implements PatronOC {
+    public LatexKeonWolf(EntityType<? extends LatexKeonWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
     @Override
