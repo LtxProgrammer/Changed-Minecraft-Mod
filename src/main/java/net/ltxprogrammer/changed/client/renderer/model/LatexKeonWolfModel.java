@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.beast.LatexSilverFox;
+import net.ltxprogrammer.changed.entity.beast.LatexKeonWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,9 +14,9 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexSilverFoxModel extends LatexHumanoidModel<LatexSilverFox> implements LatexHumanoidModelInterface<LatexSilverFox, LatexSilverFoxModel> {
+public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implements LatexHumanoidModelInterface<LatexKeonWolf, LatexKeonWolfModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_silver_fox"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_keon_wolf"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -24,9 +24,9 @@ public class LatexSilverFoxModel extends LatexHumanoidModel<LatexSilverFox> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSilverFox, LatexSilverFoxModel> animator;
+    private final LatexAnimator<LatexKeonWolf, LatexKeonWolfModel> animator;
 
-    public LatexSilverFoxModel(ModelPart root) {
+    public LatexKeonWolfModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -132,7 +132,7 @@ public class LatexSilverFoxModel extends LatexHumanoidModel<LatexSilverFox> impl
     }
 
     @Override
-    public void prepareMobModel(LatexSilverFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexKeonWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -141,7 +141,12 @@ public class LatexSilverFoxModel extends LatexHumanoidModel<LatexSilverFox> impl
     }
 
     @Override
-    public void setupAnim(LatexSilverFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public LatexAnimator<LatexKeonWolf, LatexKeonWolfModel> getAnimator() {
+        return animator;
+    }
+
+    @Override
+    public void setupAnim(LatexKeonWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -159,16 +164,11 @@ public class LatexSilverFoxModel extends LatexHumanoidModel<LatexSilverFox> impl
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-    }
-
-    @Override
-    public LatexAnimator<LatexSilverFox, LatexSilverFoxModel> getAnimator() {
-        return animator;
+        RightLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        LeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
+        Head.render(poseStack, buffer, packedLight, packedOverlay);
+        Torso.render(poseStack, buffer, packedLight, packedOverlay);
+        RightArm.render(poseStack, buffer, packedLight, packedOverlay);
+        LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }
