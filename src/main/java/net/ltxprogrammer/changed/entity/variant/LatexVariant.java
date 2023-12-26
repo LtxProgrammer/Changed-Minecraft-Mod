@@ -452,7 +452,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             });
             // Drop held items
             Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.HAND).forEach(slot -> {
-                Block.popResource(entity.level, entity.blockPosition(), entity.getItemBySlot(slot).copy());
+                if (entity.getRandom().nextFloat() < 0.05f) // 5% Drop rate
+                    Block.popResource(entity.level, entity.blockPosition(), entity.getItemBySlot(slot).copy());
             });
 
             entity.discard();
