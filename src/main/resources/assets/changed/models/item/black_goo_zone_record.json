@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "changed:items/back_goo_zone_record"
+    "layer0": "changed:items/black_goo_zone_record"
   }
 }
