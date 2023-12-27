@@ -26,8 +26,23 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 2,
+          "name": "changed:puro_the_black_goo_record"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 5,
-          "name": "changed:owo_record"
+          "name": "changed:the_library_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:crystal_zone_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "changed:black_goo_zone_record"
         },
         {
           "type": "minecraft:item",

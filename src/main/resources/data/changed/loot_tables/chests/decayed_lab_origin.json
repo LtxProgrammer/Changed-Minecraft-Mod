@@ -21,13 +21,18 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "changed:latex_dance_record"
+          "weight": 2,
+          "name": "changed:puro_the_black_goo_record"
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "changed:owo_record"
+          "weight": 2,
+          "name": "changed:puros_home_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "changed:the_library_record"
         },
         {
           "type": "minecraft:item",
