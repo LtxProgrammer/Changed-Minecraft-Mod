@@ -16,11 +16,6 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "changed:latex_dance_record"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 10,
           "name": "minecraft:water_bucket"
         },
