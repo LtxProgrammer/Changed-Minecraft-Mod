@@ -89,9 +89,13 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
         }
     }
 
+    public boolean shouldDrop(BlockState blockState) {
+        return !blockState.getProperties().contains(HALF) || blockState.getValue(HALF) != DoubleBlockHalf.UPPER;
+    }
+
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder lootBuilder) {
-        if (blockState.getProperties().contains(HALF) && blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
+        if (!shouldDrop(blockState))
             return List.of();
 
         if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, lootBuilder.getParameter(LootContextParams.TOOL)) > 0)
