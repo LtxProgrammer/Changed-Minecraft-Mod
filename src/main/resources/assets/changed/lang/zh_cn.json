@@ -39,7 +39,6 @@
   "subtitles.changed.sword1": "注射器扎针",
   "subtitles.changed.paralyze1": "武器电击",
 
-  "item.changed.wolf_gas_bucket": "桶装气溶胶",
   "item.changed.benign_pants": "黑胶短裤",
   "item.changed.blood_syringe": "血液注射器",
   "item.changed.dark_latex_crystal_fragment": "黑胶结晶碎片",
@@ -128,7 +127,6 @@
   "effect.changed.hypercoagulation": "凝血症",
   "effect.changed.shock": "麻痹",
 
-  "block.changed.wolf_gas": "气溶胶",
   "block.changed.beehive_bed": "Beehive Bed",
   "block.changed.beehive_wall": "Beehive Wall",
   "block.changed.beehive_floor": "Beehive Floor",
