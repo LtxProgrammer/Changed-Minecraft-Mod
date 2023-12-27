@@ -155,7 +155,7 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
     public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::translucentRenderer);
+    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_BLUE_LAB_DOOR = register("large_blue_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
