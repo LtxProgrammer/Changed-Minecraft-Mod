@@ -10,13 +10,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 5,
-          "name": "changed:latex_dance_record"
+          "weight": 2,
+          "name": "changed:outside_the_tower_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "changed:owo_record"
         },
         {
           "type": "minecraft:item",
           "weight": 5,
-          "name": "changed:owo_record"
+          "name": "changed:vent_pipe_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:laboratory_record"
         },
         {
           "type": "minecraft:item",
