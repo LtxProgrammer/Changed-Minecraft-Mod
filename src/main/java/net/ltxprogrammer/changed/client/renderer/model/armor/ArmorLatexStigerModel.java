@@ -49,7 +49,7 @@ public class ArmorLatexStigerModel<T extends LatexEntity> extends LatexHumanoidA
         this.LeftArm3 = root.getChild("LeftArm3");
         this.RightArm3 = root.getChild("RightArm3");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2))
                 .addPreset(AnimatorPresets.armSetThree(LeftArm, RightArm, LeftArm3, RightArm3));
     }

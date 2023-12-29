@@ -6,10 +6,8 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +17,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLikeV2(
+                .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),

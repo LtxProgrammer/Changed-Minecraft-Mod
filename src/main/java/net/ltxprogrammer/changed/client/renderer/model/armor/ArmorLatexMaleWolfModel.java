@@ -17,8 +17,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
-
 public class ArmorLatexMaleWolfModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleWolfModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_wolf_male_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_wolf_male_unified")).get();
@@ -45,7 +43,7 @@ public class ArmorLatexMaleWolfModel<T extends LatexEntity> extends LatexHumanoi
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLikeV2Armor(Head, Torso, LeftArm, RightArm,
+                .addPreset(AnimatorPresets.wolfLikeArmor(Head, Torso, LeftArm, RightArm,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 

@@ -41,7 +41,7 @@ public class ArmorLatexAlienModel<T extends LatexEntity> extends LatexHumanoidAr
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {

@@ -43,7 +43,7 @@ public class ArmorLatexFemaleWolfModel<T extends LatexEntity> extends LatexHuman
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLikeV2Armor(Head, Torso, LeftArm, RightArm,
+                .addPreset(AnimatorPresets.wolfLikeArmor(Head, Torso, LeftArm, RightArm,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 

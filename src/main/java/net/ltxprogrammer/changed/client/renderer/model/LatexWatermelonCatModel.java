@@ -36,7 +36,7 @@ public class LatexWatermelonCatModel extends LatexHumanoidModel<LatexWatermelonC
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -199,7 +199,7 @@ public class LatexWatermelonCatModel extends LatexHumanoidModel<LatexWatermelonC
             this.Tail = Torso.getChild("Tail");
             this.RightArm = root.getChild("RightArm");
             this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createBodyLayer() {
