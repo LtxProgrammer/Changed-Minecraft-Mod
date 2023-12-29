@@ -77,17 +77,21 @@ public class ChangedItems {
 
     // Unsure whether to keep this record, it doesn't fit with the BGM from changed
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
-    public static final RegistryObject<RecordItem> BLACK_GOO_ZONE_RECORD = registerRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);
-    public static final RegistryObject<RecordItem> CRYSTAL_ZONE_RECORD = registerRecord("crystal_zone_record", () -> ChangedSounds.MUSIC_CRYSTAL_ZONE);
-    public static final RegistryObject<RecordItem> LABORATORY_RECORD = registerRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
-    public static final RegistryObject<RecordItem> OUTSIDE_THE_TOWER_RECORD = registerRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
-    public static final RegistryObject<RecordItem> PURO_THE_BLACK_GOO_RECORD = registerRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
-    public static final RegistryObject<RecordItem> PUROS_HOME_RECORD = registerRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
-    public static final RegistryObject<RecordItem> THE_LIBRARY_RECORD = registerRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
-    public static final RegistryObject<RecordItem> VENT_PIPE_RECORD = registerRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
+    public static final RegistryObject<LoopedRecordItem> BLACK_GOO_ZONE_RECORD = registerLoopedRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);
+    public static final RegistryObject<LoopedRecordItem> CRYSTAL_ZONE_RECORD = registerLoopedRecord("crystal_zone_record", () -> ChangedSounds.MUSIC_CRYSTAL_ZONE);
+    public static final RegistryObject<LoopedRecordItem> LABORATORY_RECORD = registerLoopedRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
+    public static final RegistryObject<LoopedRecordItem> OUTSIDE_THE_TOWER_RECORD = registerLoopedRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
+    public static final RegistryObject<LoopedRecordItem> PURO_THE_BLACK_GOO_RECORD = registerLoopedRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
+    public static final RegistryObject<LoopedRecordItem> PUROS_HOME_RECORD = registerLoopedRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
+    public static final RegistryObject<LoopedRecordItem> THE_LIBRARY_RECORD = registerLoopedRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
+    public static final RegistryObject<LoopedRecordItem> VENT_PIPE_RECORD = registerLoopedRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
 
     private static RegistryObject<RecordItem> registerRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
         return register(name, () -> new RecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
+    }
+
+    private static RegistryObject<LoopedRecordItem> registerLoopedRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
+        return register(name, () -> new LoopedRecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
     }
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {
