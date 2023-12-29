@@ -45,7 +45,7 @@ public class ArmorLatexSquidDogModel<T extends LatexEntity> extends LatexHumanoi
         this.LeftArm2 = root.getChild("LeftArm2");
         this.RightArm2 = root.getChild("RightArm2");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2)).hipOffset(-4.0f);
     }
 

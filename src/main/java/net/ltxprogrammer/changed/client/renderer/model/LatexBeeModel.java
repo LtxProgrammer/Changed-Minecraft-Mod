@@ -47,7 +47,7 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
         this.LeftArm2 = root.getChild("LeftArm2");
         this.RightWing = Torso.getChild("RightWing");
         this.LeftWing = Torso.getChild("LeftWing");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2));
     }
 
