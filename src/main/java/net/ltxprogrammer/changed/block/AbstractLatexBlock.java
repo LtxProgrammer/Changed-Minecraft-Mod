@@ -29,6 +29,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -135,8 +136,13 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         return List.of(goo.get().getDefaultInstance(), goo.get().getDefaultInstance(), goo.get().getDefaultInstance());
     }
 
-    private static boolean checkBlock(BlockGetter level, BlockPos pos) {
-        return !level.getBlockState(pos).isRedstoneConductor(level, pos);
+    private static boolean isPassThroughBlock(Level level, BlockState state, BlockPos pos) {
+        return state.isAir() || !state.isCollisionShapeFullBlock(level, pos);
+    }
+
+    private static boolean isValidSurface(Level level, BlockPos toCover, BlockPos neighbor, Direction coverNormal) {
+        BlockState state = level.getBlockState(neighbor);
+        return isPassThroughBlock(level, state, neighbor);
     }
 
     // Note: see BlockMixin.java and BlockBehaviourMixin.java for context
@@ -145,50 +151,22 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (random.nextInt(10 * level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE)) < 600) return;
 
-        boolean spread = checkBlock(level, position.above());
-        if (!spread && checkBlock(level, position.above().east()))
-            spread = true;
-        if (!spread && checkBlock(level, position.above().west()))
-            spread = true;
-        if (!spread && checkBlock(level, position.above().north()))
-            spread = true;
-        if (!spread && checkBlock(level, position.above().south()))
-            spread = true;
-        if (!spread && checkBlock(level, position.below()))
-            spread = true;
-        if (!spread && checkBlock(level, position.below().east()))
-            spread = true;
-        if (!spread && checkBlock(level, position.below().west()))
-            spread = true;
-        if (!spread && checkBlock(level, position.below().north()))
-            spread = true;
-        if (!spread && checkBlock(level, position.below().south()))
-            spread = true;
-        if (!spread && checkBlock(level, position.east()))
-            spread = true;
-        if (!spread && checkBlock(level, position.west()))
-            spread = true;
-        if (!spread && checkBlock(level, position.east().north()))
-            spread = true;
-        if (!spread && checkBlock(level, position.west().north()))
-            spread = true;
-        if (!spread && checkBlock(level, position.east().south()))
-            spread = true;
-        if (!spread && checkBlock(level, position.west().south()))
-            spread = true;
-        if (!spread && checkBlock(level, position.north()))
-            spread = true;
-        if (!spread && checkBlock(level, position.south()))
-            spread = true;
-
-        if (!spread) return;
-
         Direction checkDir = Direction.getRandom(random);
-        BlockPos checkPos = position.relative(checkDir);
+        BlockPos.MutableBlockPos checkPos = position.relative(checkDir).mutable();
+
+        if (checkDir.getAxis() == Direction.Axis.Y && level.getBlockState(checkPos).isAir()) {
+            checkDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+            checkPos.set(checkPos.relative(checkDir));
+        }
+
         BlockState checkState = level.getBlockState(checkPos);
+
         if (!checkState.is(ChangedTags.Blocks.LATEX_NON_REPLACEABLE) && checkState.getProperties().contains(COVERED) &&
-                checkState.getValue(COVERED) == LatexType.NEUTRAL) {
-            if (checkDir == Direction.UP && random.nextInt(3) > 0) // Reduced chance of spreading up
+                checkState.getValue(COVERED) != latexType) {
+            if (checkPos.subtract(position).getY() > 0 && random.nextInt(3) > 0) // Reduced chance of spreading up
+                return;
+
+            if (Arrays.stream(Direction.values()).noneMatch(direction -> isValidSurface(level, checkPos, checkPos.relative(direction), direction)))
                 return;
 
             var event = new AbstractLatexGoo.CoveringBlockEvent(latexType, checkState, checkPos, level);
