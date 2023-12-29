@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
-public class LatexGelLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexTranslucentLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
     private final LatexHumanoidModel<T> model;
 
-    public LatexGelLayer(RenderLayerParent<T, M> p_174536_, M model) {
+    public LatexTranslucentLayer(RenderLayerParent<T, M> p_174536_, M model) {
         super(p_174536_);
         this.model = model;
     }
