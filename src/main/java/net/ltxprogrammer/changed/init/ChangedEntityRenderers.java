@@ -62,8 +62,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_RED_DRAGON.get(), LatexRedDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_RED_PANDA.get(),
                 useNewModels ? LatexRedPandaRenderer.Remodel::new : LatexRedPandaRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_SHARK.get(),
-                useNewModels ? LatexSharkRenderer.Remodel::new : LatexSharkRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_SHARK.get(), LatexSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SHARK_FEMALE.get(),
                 /*useNewModels ? LatexSharkFemaleRenderer.Remodel::new :*/ LatexSharkFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SHARK_MALE.get(),
