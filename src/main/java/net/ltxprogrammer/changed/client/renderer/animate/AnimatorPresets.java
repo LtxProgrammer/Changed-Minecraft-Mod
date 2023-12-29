@@ -49,6 +49,7 @@ public class AnimatorPresets {
             animator
                     .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new DragonBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new DragonBipedalFallFlyAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new DragonBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
@@ -185,7 +186,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
-                    .addAnimator(new TailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new DragonTailInitAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSwimAnimator<>(tail, tailJoints))
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))

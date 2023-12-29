@@ -32,8 +32,6 @@ public class DragonHeadInitAnimator<T extends LatexEntity, M extends EntityModel
             }
         } else {
             head.xRot = headPitch * ((float)Math.PI / 180F);
-            if (entity.getUnderlyingPlayer() == null)
-                head.zRot = Mth.lerp(limbSwingAmount, -Mth.lerp(core.ageLerp, 0.03490659F * 0.65F, 0.08726646F * 0.65F), 0.0F);
         }
     }
 }
