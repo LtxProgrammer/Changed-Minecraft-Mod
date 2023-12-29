@@ -46,7 +46,7 @@ public class LatexMothModel extends LatexHumanoidModel<LatexMoth> implements Lat
         this.LeftArm = root.getChild("LeftArm");
         this.RightWing = Torso.getChild("RightWing");
         this.LeftWing = Torso.getChild("LeftWing");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing));
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing));
     }
 
     public static LayerDefinition createBodyLayer() {

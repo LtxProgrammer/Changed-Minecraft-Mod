@@ -249,7 +249,7 @@ public class DarkLatexDragonModel extends LatexHumanoidModel<DarkLatexDragon> im
 
             ModelPart leftWingRoot = LeftWing.getChild("WingRoot");
             ModelPart rightWingRoot = RightWing.getChild("WingRoot2");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLikeV2(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg,
+            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLikeRemodel(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg,
                     leftWingRoot, leftWingRoot.getChild("bone3"), leftWingRoot.getChild("bone3").getChild("bone4"),
                     rightWingRoot, rightWingRoot.getChild("bone"), rightWingRoot.getChild("bone").getChild("bone2")
             )).hipOffset(0.0f);

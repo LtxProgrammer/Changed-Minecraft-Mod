@@ -36,7 +36,7 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
         this.RightArm2 = root.getChild("rightArm2");
         this.LeftArm = root.getChild("leftArm");
         this.LeftArm2 = root.getChild("leftArm2");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Torso.getChild("Tail"), List.of(), LeftLeg, RightLeg))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Torso.getChild("Tail"), List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2)).hipOffset(-4.0f);
     }
 
