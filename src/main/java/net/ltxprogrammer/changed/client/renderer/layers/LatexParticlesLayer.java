@@ -63,7 +63,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
             return;
 
         var partToAttach = partsWithCubes.get(entity.level.random.nextInt(partsWithCubes.size()));
-        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, this.model, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor().add(0.05f),
+        ChangedClient.particleSystem.addParticle(LatexDripParticle.of(entity, this.model, partToAttach, findSurface(partToAttach.getLeaf(), entity), entity.getDripColor(),
                 1.0f, 100));
     }
 
