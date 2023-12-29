@@ -5,6 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexPinkWyvern;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,6 +17,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> implements LatexHumanoidModelInterface<LatexPinkWyvern, LatexPinkWyvernModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
@@ -27,6 +31,24 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
     private final ModelPart Torso;
     private final ModelPart Tail;
     private final LatexAnimator<LatexPinkWyvern, LatexPinkWyvernModel> animator;
+
+    public LatexPinkWyvernModel(ModelPart root, boolean alt) {
+        super(root);
+        this.RightLeg = new ModelPart(List.of(), Map.of());
+        this.LeftLeg = new ModelPart(List.of(), Map.of());
+        this.Head = new ModelPart(List.of(), Map.of());
+        this.Torso = new ModelPart(List.of(), Map.of());
+        this.Tail = new ModelPart(List.of(), Map.of());
+        this.RightArm = root.getChild("RightArm");
+        this.LeftArm = root.getChild("LeftArm");
+
+        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+                .addPreset(AnimatorPresets.dragonUpperBody(
+                        Head, Torso, LeftArm, RightArm))
+                .addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm))
+                .addAnimator(new ArmBobAnimator<>(LeftArm, RightArm))
+                .addAnimator(new ArmRideAnimator<>(LeftArm, RightArm));;
+    }
 
     public LatexPinkWyvernModel(ModelPart root) {
         super(root);

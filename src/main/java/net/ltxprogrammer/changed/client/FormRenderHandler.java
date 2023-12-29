@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomCoatLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -114,7 +114,7 @@ public class FormRenderHandler {
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForColor(coatColor)), light,
                                     coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
                         }
-                        if (layer instanceof LatexGelLayer<?,?> gelLayer) {
+                        if (layer instanceof LatexTranslucentLayer<?,?> gelLayer) {
                             LatexHumanoidModel entityModel = gelLayer.getModel();
                             var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
                             var controller = latexHumanoidModel.getAnimator();

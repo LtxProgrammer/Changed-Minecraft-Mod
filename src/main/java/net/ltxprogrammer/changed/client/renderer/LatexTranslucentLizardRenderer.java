@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexTranslucentLizardModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBlueDragonModel;
 import net.ltxprogrammer.changed.entity.beast.LatexTranslucentLizard;
@@ -12,7 +12,7 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
     public LatexTranslucentLizardRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
                 ArmorLatexBlueDragonModel::new, ArmorLatexBlueDragonModel.INNER_ARMOR, ArmorLatexBlueDragonModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new LatexGelLayer<>(this, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
+        this.addLayer(new LatexTranslucentLayer<>(this, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new LatexTranslucentLizardModel.Remodel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
                     ArmorLatexBlueDragonModel.RemodelMale::new, ArmorLatexBlueDragonModel.RemodelMale.INNER_ARMOR, ArmorLatexBlueDragonModel.RemodelMale.OUTER_ARMOR, 0.5f);
-            this.addLayer(new LatexGelLayer<>(this, new LatexTranslucentLizardModel.Remodel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
+            this.addLayer(new LatexTranslucentLayer<>(this, new LatexTranslucentLizardModel.Remodel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER))));
         }
 
         @Override
