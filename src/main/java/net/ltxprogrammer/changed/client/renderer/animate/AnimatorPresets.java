@@ -363,7 +363,11 @@ public class AnimatorPresets {
                                                                                                                    ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
             animator.addPreset(dragonLike(head, torso, leftArm, rightArm, tail, tailJoints, leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
-                    .addPreset(dragonWinged(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2));
+                    .addPreset(dragonWinged(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
+                    .addAnimator(new DragonBipedalCreativeFlyAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new DragonTailCreativeFlyAnimator<>(tail, tailJoints))
+                    .addAnimator(new DragonHeadCreativeFlyAnimator<>(head));
         };
     }
 

@@ -30,6 +30,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
     public float swimAmount = 0.0F;
+    public float flyAmount = 0.0F;
     public float fallFlyingAmount = 0.0F;
 
     public float ageLerp = 0.0F;
@@ -37,6 +38,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
 
     public void resetVariables() {
         crouching = false;
+        flyAmount = 0.0F;
         fallFlyingAmount = 0.0F;
         swimAmount = 0.0F;
         ageLerp = 0.0F;
@@ -118,8 +120,8 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         else
             setupAnimStage(AnimateStage.STAND, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         setupAnimStage(AnimateStage.BOB, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        /*if (entity.isFlying())
-            setupAnimStage(AnimateStage.CREATIVE_FLY, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);*/
+        if (flyAmount > 0f)
+            setupAnimStage(AnimateStage.CREATIVE_FLY, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (entity.isFallFlying())
             setupAnimStage(AnimateStage.FALL_FLY, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (swimAmount > 0f)
