@@ -7,10 +7,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Animator that handles a slithering entity upright on land
- * @param <T>
- */
 public class DragonWingInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractWingAnimatorV2<T, M> {
     public DragonWingInitAnimator(
             ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
@@ -25,25 +21,28 @@ public class DragonWingInitAnimator<T extends LatexEntity, M extends EntityModel
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        leftWingRoot.xRot = Mth.DEG_TO_RAD * 7.1228f;
-        leftWingRoot.yRot = Mth.DEG_TO_RAD * -29.2189f;
-        leftWingRoot.zRot = Mth.DEG_TO_RAD * 16.8588f;
-        rightWingRoot.xRot = Mth.DEG_TO_RAD * -7.1228f;
-        rightWingRoot.yRot = Mth.DEG_TO_RAD * 29.2189f;
-        rightWingRoot.zRot = Mth.DEG_TO_RAD * 16.8588f;
+        float wingRootYAgeLerp = Mth.lerp(core.ageLerp, 0.174532f, 0.3490659f);
+        float wingRootZAgeLerp = Mth.lerp(core.ageLerp, 0.174532f, 0.2617994f);
+
+        leftWingRoot.xRot = 0.0f;
+        leftWingRoot.yRot = -wingRootYAgeLerp;
+        leftWingRoot.zRot = -wingRootZAgeLerp;
+        rightWingRoot.xRot = 0.0f;
+        rightWingRoot.yRot = wingRootYAgeLerp;
+        rightWingRoot.zRot = wingRootZAgeLerp;
 
         leftWingBone1.xRot = 0.0f;
         leftWingBone1.yRot = 0.0f;
-        leftWingBone1.zRot = 0.0f;
+        leftWingBone1.zRot = -0.087266f;
         leftWingBone2.xRot = 0.0f;
         leftWingBone2.yRot = 0.0f;
-        leftWingBone2.zRot = Mth.DEG_TO_RAD * 25.0f;
+        leftWingBone2.zRot = -0.481710f;
 
         rightWingBone1.xRot = 0.0f;
         rightWingBone1.yRot = 0.0f;
-        rightWingBone1.zRot = 0.0f;
+        rightWingBone1.zRot = 0.087266f;
         rightWingBone2.xRot = 0.0f;
         rightWingBone2.yRot = 0.0f;
-        rightWingBone2.zRot = Mth.DEG_TO_RAD * 25.0f;
+        rightWingBone2.zRot = 0.481710f;
     }
 }
