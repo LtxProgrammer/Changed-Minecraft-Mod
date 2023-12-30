@@ -102,6 +102,8 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
         float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
         animator.ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
                 ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
+        float fallFlyingTicks = (float)entity.getFallFlyingTicks();
+        animator.fallFlyingAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
         animator.swimAmount = entity.getSwimAmount(partialTicks);
         animator.crouching = entity.isCrouching();
         HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
