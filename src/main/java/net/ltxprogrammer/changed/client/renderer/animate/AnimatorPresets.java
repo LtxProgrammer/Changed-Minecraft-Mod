@@ -263,6 +263,16 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+                                                                                                               ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
+        return animator -> {
+            animator
+                    .addAnimator(new DragonWingInitAnimator<>(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
+                    .addAnimator(new DragonWingCreativeFlyAnimator<>(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
+                    .addAnimator(new DragonWingFallFlyAnimator<>(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> armSetTwo(ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart leftArm2, ModelPart rightArm2) {
         return animator -> {
@@ -353,7 +363,7 @@ public class AnimatorPresets {
                                                                                                                    ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
             animator.addPreset(dragonLike(head, torso, leftArm, rightArm, tail, tailJoints, leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
-                    .addPreset(wingedV2(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2));
+                    .addPreset(dragonWinged(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2));
         };
     }
 

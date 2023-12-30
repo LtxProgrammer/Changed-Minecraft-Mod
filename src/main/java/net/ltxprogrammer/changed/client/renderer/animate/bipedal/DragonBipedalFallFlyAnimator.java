@@ -29,17 +29,14 @@ public class DragonBipedalFallFlyAnimator<T extends LatexEntity, M extends Entit
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float fallFlyingTicks = (float)entity.getFallFlyingTicks();
-        float fallFlyAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
-        
-        leftLeg.xRot += Mth.lerp(fallFlyAmount, 0.0f, Mth.DEG_TO_RAD * -10.0f);
-        rightLeg.xRot += Mth.lerp(fallFlyAmount, 0.0f, Mth.DEG_TO_RAD * -10.0f);
+        leftLeg.xRot += Mth.lerp(core.fallFlyingAmount, 0.0f, Mth.DEG_TO_RAD * -10.0f);
+        rightLeg.xRot += Mth.lerp(core.fallFlyingAmount, 0.0f, Mth.DEG_TO_RAD * -10.0f);
 
-        rightLegLower.xRot = Mth.lerp(fallFlyAmount, rightLegLower.xRot, -0.6544985F);
-        leftLegLower.xRot = Mth.lerp(fallFlyAmount, leftLegLower.xRot, -0.6544985F);
-        rightFoot.xRot = Mth.lerp(fallFlyAmount, rightFoot.xRot, 0.3926991F);
-        leftFoot.xRot = Mth.lerp(fallFlyAmount, leftFoot.xRot, 0.3926991F);
-        rightPad.xRot = Mth.lerp(fallFlyAmount, rightPad.xRot, 0.3490659F);
-        leftPad.xRot = Mth.lerp(fallFlyAmount, leftPad.xRot, 0.3490659F);
+        rightLegLower.xRot = Mth.lerp(core.fallFlyingAmount, rightLegLower.xRot, -0.6544985F);
+        leftLegLower.xRot = Mth.lerp(core.fallFlyingAmount, leftLegLower.xRot, -0.6544985F);
+        rightFoot.xRot = Mth.lerp(core.fallFlyingAmount, rightFoot.xRot, 0.3926991F);
+        leftFoot.xRot = Mth.lerp(core.fallFlyingAmount, leftFoot.xRot, 0.3926991F);
+        rightPad.xRot = Mth.lerp(core.fallFlyingAmount, rightPad.xRot, 0.3490659F);
+        leftPad.xRot = Mth.lerp(core.fallFlyingAmount, leftPad.xRot, 0.3490659F);
     }
 }
