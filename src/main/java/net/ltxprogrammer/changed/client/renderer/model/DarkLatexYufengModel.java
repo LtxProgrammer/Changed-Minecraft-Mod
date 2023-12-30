@@ -57,8 +57,8 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        var leftWingRoot = LeftWing.getChild("WingRoot");
-        var rightWingRoot = RightWing.getChild("WingRoot2");
+        var leftWingRoot = LeftWing.getChild("leftWingRoot");
+        var rightWingRoot = RightWing.getChild("rightWingRoot");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wingedDragonLike(
