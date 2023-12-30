@@ -25,6 +25,6 @@ public class DragonHeadCreativeFlyAnimator<T extends LatexEntity, M extends Enti
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float flapAmount = Mth.cos(ageInTicks * WING_FLAP_RATE);
         flapAmount = Mth.map(flapAmount * flapAmount, 0.0f, 1.0f, -BODY_FLY_SCALE, BODY_FLY_SCALE);
-        head.y += Mth.lerp(core.flyAmount, 0.0f, flapAmount);
+        head.y += Mth.lerp(core.flyAmount, 0.0f, flapAmount + 0.5f);
     }
 }

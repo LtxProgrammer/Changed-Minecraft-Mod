@@ -32,7 +32,7 @@ public class DragonUpperBodyCreativeFlyAnimator<T extends LatexEntity, M extends
         rightArm.z += Mth.lerp(core.flyAmount, 0.0f, 1.0f);
 
         torso.xRot = Mth.lerp(core.flyAmount, torso.xRot, Mth.DEG_TO_RAD * 45.0f);
-        leftArm.xRot = Mth.lerp(core.flyAmount, leftArm.xRot, Mth.DEG_TO_RAD * 30.0f);
-        rightArm.xRot = Mth.lerp(core.flyAmount, rightArm.xRot, Mth.DEG_TO_RAD * 30.0f);
+        leftArm.xRot += Mth.lerp(core.flyAmount, 0.0f, Mth.DEG_TO_RAD * 30.0f);
+        rightArm.xRot += Mth.lerp(core.flyAmount, 0.0f, Mth.DEG_TO_RAD * 30.0f);
     }
 }
