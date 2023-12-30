@@ -19,6 +19,7 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
+import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -532,8 +533,32 @@ public class ProcessTransfur {
         }
 
         // Check if attacked entity is already latexed
-        if (LatexedEntity.isLatexed(event.getEntityLiving()))
+        if (LatexedEntity.isLatexed(event.getEntityLiving())) {
+            if (!possibleMobFusions.isEmpty()) {
+                var mobFusionVariant = Util.getRandom(possibleMobFusions, source.entity.getRandom());
+
+                if (source.entity instanceof Player sourcePlayer) {
+                    float beforeHealth = sourcePlayer.getHealth();
+                    setPlayerLatexVariant(sourcePlayer, mobFusionVariant);
+                    sourcePlayer.setHealth(beforeHealth);
+                }
+
+                else {
+                    source.entity.discard();
+                    source = new LatexedEntity(mobFusionVariant.getEntityType().create(source.entity.level));
+                    source.entity.level.addFreshEntity(source.entity);
+                }
+
+                source.entity.heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+                var pos = event.getEntityLiving().position();
+                source.entity.teleportTo(pos.x, pos.y, pos.z);
+                source.entity.setYRot(event.getEntityLiving().getYRot());
+                source.entity.setXRot(event.getEntityLiving().getXRot());
+
+                event.getEntityLiving().discard();
+            }
             return;
+        }
         // Check if attacked entity is not humanoid
         if (possibleMobFusions.isEmpty() && !event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
             bonusHurt(entity, ChangedDamageSources.entityTransfur(source.entity), 2.0f, false);
