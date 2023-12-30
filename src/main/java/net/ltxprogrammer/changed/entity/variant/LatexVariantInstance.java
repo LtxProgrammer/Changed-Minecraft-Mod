@@ -417,6 +417,26 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (parent.rideable() || !parent.hasLegs)
             player.stopRiding();
 
+        if (parent.canGlide) {
+            if (!player.isCreative() && !player.isSpectator()) {
+                if (player.getFoodData().getFoodLevel() <= 6.0F && player.getAbilities().mayfly) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.onUpdateAbilities();
+                } else if (player.getFoodData().getFoodLevel() > 6.0F && !player.getAbilities().mayfly) {
+                    player.getAbilities().mayfly = true;
+                    player.onUpdateAbilities();
+                }
+
+                if (player.getAbilities().flying) {
+                    float horizontalPenalty = player.isSprinting() ? 0.825f : 0.8f;
+                    float verticalPenalty = player.getDeltaMovement().y > 0.0 ? 0.45f : 0.8f;
+                    player.setDeltaMovement(player.getDeltaMovement().multiply(horizontalPenalty, verticalPenalty, horizontalPenalty)); // Speed penalty
+                    player.causeFoodExhaustion(player.isSprinting() ? 0.05F : 0.025F); // Food penalty
+                }
+            }
+        }
+
         player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
             if (!canWear(player, itemStack)) {
                 ItemStack copy = itemStack.copy();
@@ -596,6 +616,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
             player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
+        if (parent.canGlide) {
+            player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
+        }
         player.maxUpStep = 0.6F;
         player.refreshDimensions();
     }

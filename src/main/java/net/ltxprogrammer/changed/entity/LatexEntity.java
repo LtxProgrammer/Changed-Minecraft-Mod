@@ -64,6 +64,8 @@ public abstract class LatexEntity extends Monster {
 
     float crouchAmount;
     float crouchAmountO;
+    public float flyAmount;
+    public float flyAmountO;
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
 
@@ -111,6 +113,10 @@ public abstract class LatexEntity extends Monster {
 
     public float getCrouchAmount(float partialTicks) {
         return Mth.lerp(partialTicks, this.crouchAmountO, this.crouchAmount);
+    }
+
+    public float getFlyAmount(float partialTicks) {
+        return Mth.lerp(partialTicks, this.flyAmountO, this.flyAmount);
     }
 
     public boolean isFullyCrouched() {
@@ -497,6 +503,7 @@ public abstract class LatexEntity extends Monster {
 
     public void visualTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
+        this.flyAmountO = this.flyAmount;
         this.tailDragAmountO = this.tailDragAmount;
 
         if (this.isCrouching()) {
@@ -506,6 +513,12 @@ public abstract class LatexEntity extends Monster {
             }
         } else {
             this.crouchAmount = 0.0F;
+        }
+
+        if (this.isFlying()) {
+            this.flyAmount = Math.min(1.0F, this.flyAmount + 0.15F);
+        } else {
+            this.flyAmount = Math.max(0.0F, this.flyAmount - 0.15F);
         }
 
         this.tailDragAmount *= 0.75F;
@@ -605,6 +618,12 @@ public abstract class LatexEntity extends Monster {
             this.entityData.get(DATA_LOCAL_VARIANT_INFO).save(bpi);
             tag.put("LocalVariantInfo", bpi);
         }
+    }
+
+    public boolean isFlying() {
+        if (this.getUnderlyingPlayer() != null)
+            return this.getUnderlyingPlayer().getAbilities().flying;
+        return false;
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {

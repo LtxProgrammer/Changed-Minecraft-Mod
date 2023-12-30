@@ -65,6 +65,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         float fallFlyingTicks = (float)entity.getFallFlyingTicks();
         animator.fallFlyingAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
         animator.swimAmount = entity.getSwimAmount(partialTicks);
+        animator.flyAmount = entity.getFlyAmount(partialTicks);
         animator.crouching = entity.isCrouching();
         HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
         HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.OFF_HAND);
