@@ -52,7 +52,7 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 		var rightFoot = rightLowerLeg.getChild("RightFoot");
 
 		animator = LatexAnimator.of(this).hipOffset(-1.5f)
-				.addPreset(AnimatorPresets.dragonLike(
+				.addPreset(AnimatorPresets.sharkLike(
 						Head, Torso, LeftArm, RightArm,
 						Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
 						LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));

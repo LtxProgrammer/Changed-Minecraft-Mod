@@ -56,6 +56,18 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator
+                    .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new SharkBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new SharkBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> quadrupedal(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontRightLeg, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator
@@ -130,6 +142,17 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHandsNew(1, leftArm, rightArm)
+                    .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodySwimAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
@@ -188,6 +211,18 @@ public class AnimatorPresets {
             animator
                     .addAnimator(new DragonTailInitAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSwimAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkTail(ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator
+                    .addAnimator(new SharkTailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new SharkTailSwimAnimator<>(tail, tailJoints))
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
@@ -377,15 +412,32 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkLike(ModelPart head, ModelPart torso,
-                                                                                                            ModelPart leftArm, ModelPart rightArm,
-                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
-                                                                                                            ModelPart leftLeg, ModelPart rightLeg) {
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkLikeOld(ModelPart head, ModelPart torso,
+                                                                                                               ModelPart leftArm, ModelPart rightArm,
+                                                                                                               ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                               ModelPart leftLeg, ModelPart rightLeg) {
         return animator -> {
             animator.addPreset(bipedal(leftLeg, rightLeg))
                     .addPreset(upperBody(head, torso, leftArm, rightArm))
                     .addPreset(aquaticUpperBody(head, leftArm, rightArm))
                     .addPreset(aquaticTail(tail, tailJoints))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkLike(ModelPart head, ModelPart torso,
+                                                                                                            ModelPart leftArm, ModelPart rightArm,
+                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
+
+                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                            ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(sharkBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(sharkTail(tail, tailJoints))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new SharkHeadSwimAnimator<>(head))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
         };
