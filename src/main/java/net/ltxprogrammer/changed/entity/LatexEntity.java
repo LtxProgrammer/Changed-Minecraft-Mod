@@ -539,6 +539,12 @@ public abstract class LatexEntity extends Monster {
         tag.putInt("HairStyle", ChangedRegistry.HAIR_STYLE.get().getID(hairStyle));
     }
 
+    public boolean isFlying() {
+        if (this.getUnderlyingPlayer() != null)
+            return this.getUnderlyingPlayer().getAbilities().flying;
+        return false;
+    }
+
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
 
     }
