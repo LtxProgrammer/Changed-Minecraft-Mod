@@ -607,6 +607,12 @@ public abstract class LatexEntity extends Monster {
         }
     }
 
+    public boolean isFlying() {
+        if (this.getUnderlyingPlayer() != null)
+            return this.getUnderlyingPlayer().getAbilities().flying;
+        return false;
+    }
+
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
 
     }
