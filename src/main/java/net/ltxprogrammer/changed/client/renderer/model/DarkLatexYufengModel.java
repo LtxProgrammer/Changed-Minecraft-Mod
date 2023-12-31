@@ -47,7 +47,6 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         this.RightWing = Torso.getChild("RightWing");
         this.LeftWing = Torso.getChild("LeftWing");
 
-
         var tailPrimary = Tail.getChild("TailPrimary");
         var tailSecondary = tailPrimary.getChild("TailSecondary");
         var tailTertiary = tailSecondary.getChild("TailTertiary");
