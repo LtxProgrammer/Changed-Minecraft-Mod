@@ -57,11 +57,17 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
+        var leftWingRoot = LeftWing.getChild("WingRoot");
+        var rightWingRoot = RightWing.getChild("WingRoot2");
+
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.dragonLike(
+                .addPreset(AnimatorPresets.wingedDragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
-                        LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+                        LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad"),
+
+                        leftWingRoot, leftWingRoot.getChild("leftSecondaries"), leftWingRoot.getChild("leftSecondaries").getChild("leftTertiaries"),
+                        rightWingRoot, rightWingRoot.getChild("rightSecondaries"), rightWingRoot.getChild("rightSecondaries").getChild("rightTertiaries")));
     }
 
     public static LayerDefinition createBodyLayer() {
