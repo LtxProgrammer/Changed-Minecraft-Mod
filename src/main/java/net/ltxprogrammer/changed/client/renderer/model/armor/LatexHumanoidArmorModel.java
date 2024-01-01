@@ -91,35 +91,7 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
 
     public void prepareMobModel(LatexAnimator<T, M> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
-
-        LivingEntity target = entity.getTarget();
-        animator.reachOut = target != null ?
-                Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;
-        if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() || !entity.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
-            animator.reachOut = 0.0F;
-        final float ageAdjusted = (entity.tickCount + partialTicks) * 0.33333334F * 0.25F * 0.15f;
-        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
-        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
-        animator.ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
-                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
-        float fallFlyingTicks = (float)entity.getFallFlyingTicks();
-        animator.fallFlyingAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
-        animator.swimAmount = entity.getSwimAmount(partialTicks);
-        animator.flyAmount = entity.getFlyAmount(partialTicks);
-        animator.crouching = entity.isCrouching();
-        HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
-        HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.OFF_HAND);
-        if (humanoidmodel$armpose.isTwoHanded()) {
-            humanoidmodel$armpose1 = entity.getOffhandItem().isEmpty() ? HumanoidModel.ArmPose.EMPTY : HumanoidModel.ArmPose.ITEM;
-        }
-
-        if (entity.getMainArm() == HumanoidArm.RIGHT) {
-            animator.rightArmPose = humanoidmodel$armpose;
-            animator.leftArmPose = humanoidmodel$armpose1;
-        } else {
-            animator.rightArmPose = humanoidmodel$armpose1;
-            animator.leftArmPose = humanoidmodel$armpose;
-        }
+        animator.setupVariables(entity, partialTicks);
     }
 
     @Override

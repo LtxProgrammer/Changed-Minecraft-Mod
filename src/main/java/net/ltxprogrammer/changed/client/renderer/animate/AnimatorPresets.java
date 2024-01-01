@@ -6,6 +6,8 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
 import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
+import net.ltxprogrammer.changed.client.renderer.animate.camera.DragonCameraCreativeFlyAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.camera.SharkCameraSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.WolfEarsInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
@@ -367,7 +369,8 @@ public class AnimatorPresets {
                     .addAnimator(new DragonBipedalCreativeFlyAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonTailCreativeFlyAnimator<>(tail, tailJoints))
-                    .addAnimator(new DragonHeadCreativeFlyAnimator<>(head));
+                    .addAnimator(new DragonHeadCreativeFlyAnimator<>(head))
+                    .addCameraAnimator(new DragonCameraCreativeFlyAnimator<>());
         };
     }
 
@@ -453,7 +456,8 @@ public class AnimatorPresets {
                     .addAnimator(new SharkHeadInitAnimator<>(head))
                     .addAnimator(new SharkHeadSwimAnimator<>(head))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
-                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
+                    .addCameraAnimator(new SharkCameraSwimAnimator<>());
         };
     }
 
