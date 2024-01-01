@@ -17,7 +17,7 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_translucent_lizard_outer.png")));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#ffb84c")),CustomEyesLayer.fixedColor(Color3.parseHex("#a24b42"))));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#ffb84c"), 0.5f),CustomEyesLayer.fixedColor(Color3.parseHex("#a24b42"), 0.75f)));
     }
 
     @Override
