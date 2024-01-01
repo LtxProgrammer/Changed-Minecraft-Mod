@@ -11,6 +11,9 @@ import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingC
 import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingCreativeFlyAnimator.WING_FLAP_RATE;
 
 public class DragonBipedalCreativeFlyAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractBipedalAnimator<T, M> {
+    public static final float LEG_SWAY_RATE = 0.6662f * 0.5f;
+    public static final float LEG_SWAY_AMOUNT = 1.4f * 0.25f;
+
     public final ModelPart leftLegLower, leftFoot, leftPad;
     public final ModelPart rightLegLower, rightFoot, rightPad;
 
@@ -39,8 +42,8 @@ public class DragonBipedalCreativeFlyAnimator<T extends LatexEntity, M extends E
         leftLeg.z += Mth.lerp(core.flyAmount, 0.0f, 7.0f);
         rightLeg.z += Mth.lerp(core.flyAmount, 0.0f, 7.0f);
 
-        leftLeg.xRot = Mth.lerp(core.flyAmount, 0.0f,  Mth.DEG_TO_RAD * (15.0f + Mth.lerp(core.ageLerp, -3.5f, 3.5f)));
-        rightLeg.xRot = Mth.lerp(core.flyAmount, 0.0f, Mth.DEG_TO_RAD * (15.0f + Mth.lerp(core.ageLerp, 3.5f, -3.5f)));
+        leftLeg.xRot = Mth.lerp(core.flyAmount, 0.0f,  (Mth.DEG_TO_RAD * 15.0f) + Mth.cos(limbSwing * LEG_SWAY_RATE + (float)Math.PI) * LEG_SWAY_AMOUNT * limbSwingAmount);
+        rightLeg.xRot = Mth.lerp(core.flyAmount, 0.0f,  (Mth.DEG_TO_RAD * 15.0f) + Mth.cos(limbSwing * LEG_SWAY_RATE) * LEG_SWAY_AMOUNT * limbSwingAmount);
 
         rightLegLower.xRot = Mth.lerp(core.flyAmount, rightLegLower.xRot, -0.6544985F * 0.25f);
         leftLegLower.xRot = Mth.lerp(core.flyAmount, leftLegLower.xRot, -0.6544985F * 0.25f);
