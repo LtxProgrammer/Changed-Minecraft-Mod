@@ -48,6 +48,10 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         public static ColorData ofEmissiveColor(Color3 color) {
             return new ColorData(color, 1.0f, true);
         }
+
+        public RenderType getRenderType(ResourceLocation texture) {
+            return alpha < 1.0f ? RenderType.entityTranslucent(texture) : (emissive ? RenderType.eyes(texture) : RenderType.entityCutout(texture));
+        }
     }
 
     public interface ColorFunction<T extends LatexEntity> extends BiFunction<T, BasicPlayerInfo, ColorData> {
@@ -143,10 +147,6 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         head.render(pose, buffer, packedLight, overlay, color.red(), color.green(), color.blue(), alpha);
     }
 
-    private RenderType renderTypeForData(ColorData data, ResourceLocation texture) {
-        return data.alpha < 1.0f ? RenderType.entityTranslucent(texture) : (data.emissive ? RenderType.eyes(texture) : RenderType.entityCutout(texture));
-    }
-
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         var info = entity.getBasicPlayerInfo();
@@ -157,13 +157,13 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         head.copyFrom(this.getParentModel().getHead());
 
         scleraColorFn.getColorSafe(entity, info).ifPresent(data -> {
-            renderHead(pose, bufferSource.getBuffer(renderTypeForData(data, style.getSclera())), packedLight, overlay, data.color, data.alpha);
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getSclera())), packedLight, overlay, data.color, data.alpha);
         });
         irisColorFn.getColorSafe(entity, info).ifPresent(data -> {
-            renderHead(pose, bufferSource.getBuffer(renderTypeForData(data, style.getIris())), packedLight, overlay, data.color, data.alpha);
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getIris())), packedLight, overlay, data.color, data.alpha);
         });
         eyeBrowsColorFn.getColorSafe(entity, info).ifPresent(data -> {
-            renderHead(pose, bufferSource.getBuffer(renderTypeForData(data, style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);
         });
     }
 }
