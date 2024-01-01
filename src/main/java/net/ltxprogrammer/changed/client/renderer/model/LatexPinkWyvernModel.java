@@ -22,7 +22,6 @@ import java.util.Map;
 public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> implements LatexHumanoidModelInterface<LatexPinkWyvern, LatexPinkWyvernModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_pink_wyvern"), "main");
-    public static final ModelLayerLocation LAYER_LOCATION_WING = new ModelLayerLocation(Changed.modResource("latex_pink_wyvern"), "wing_layer");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -31,24 +30,6 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
     private final ModelPart Torso;
     private final ModelPart Tail;
     private final LatexAnimator<LatexPinkWyvern, LatexPinkWyvernModel> animator;
-
-    public LatexPinkWyvernModel(ModelPart root, boolean alt) {
-        super(root);
-        this.RightLeg = new ModelPart(List.of(), Map.of());
-        this.LeftLeg = new ModelPart(List.of(), Map.of());
-        this.Head = new ModelPart(List.of(), Map.of());
-        this.Torso = new ModelPart(List.of(), Map.of());
-        this.Tail = new ModelPart(List.of(), Map.of());
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
-
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.dragonUpperBody(
-                        Head, Torso, LeftArm, RightArm))
-                .addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm))
-                .addAnimator(new ArmBobAnimator<>(LeftArm, RightArm))
-                .addAnimator(new ArmRideAnimator<>(LeftArm, RightArm));;
-    }
 
     public LatexPinkWyvernModel(ModelPart root) {
         super(root);
@@ -189,22 +170,11 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
 
         PartDefinition Wing_r7 = LeftArm.addOrReplaceChild("Wing_r7", CubeListBuilder.create().texOffs(18, 56).addBox(5.5F, -12.0F, 13.0F, 1.0F, 1.0F, 6.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-4.0F, 23.0F, 0.0F, 0.6981F, 0.2182F, 0.0F));
 
-        return LayerDefinition.create(meshdefinition, 96, 96);
-    }
-
-    public static LayerDefinition createWingLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(0, 32).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-5.0F, 1.5F, 0.0F));
-
         PartDefinition Wing_r2 = RightArm.addOrReplaceChild("Wing_r2", CubeListBuilder.create().texOffs(4, 2).addBox(-6.0F, -9.1F, 17.0F, 0.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 17).addBox(-6.0F, -10.1F, 14.0F, 0.0F, 1.0F, 4.0F, CubeDeformation.NONE)
                 .texOffs(24, 16).addBox(-6.0F, -12.1F, 12.0F, 0.0F, 2.0F, 6.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, 23.0F, 0.0F, 0.6545F, -0.2182F, 0.0F));
 
         PartDefinition Wing_r4 = RightArm.addOrReplaceChild("Wing_r4", CubeListBuilder.create().texOffs(0, 12).addBox(-6.0F, -10.75F, 17.0F, 0.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(4.0F, 23.0F, 0.0F, 0.9599F, -0.2182F, 0.0F));
-
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(16, 40).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(5.0F, 1.5F, 0.0F));
 
         PartDefinition Wing_r6 = LeftArm.addOrReplaceChild("Wing_r6", CubeListBuilder.create().texOffs(3, 1).addBox(6.0F, -9.1F, 17.0F, 0.0F, 1.0F, 1.0F, CubeDeformation.NONE)
                 .texOffs(0, 16).addBox(6.0F, -10.1F, 14.0F, 0.0F, 1.0F, 4.0F, CubeDeformation.NONE)
