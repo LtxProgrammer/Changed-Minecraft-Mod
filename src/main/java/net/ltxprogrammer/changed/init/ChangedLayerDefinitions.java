@@ -109,10 +109,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LatexTigerSharkModel.LAYER_LOCATION, LatexTigerSharkModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexTrafficConeDragonModel.LAYER_LOCATION,
                 useNewModels ? LatexTrafficConeDragonModel.Remodel::createBodyLayer : LatexTrafficConeDragonModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexTranslucentLizardModel.LAYER_LOCATION,
-                useNewModels ? LatexTranslucentLizardModel.Remodel::createInnerLayer : LatexTranslucentLizardModel::createInnerLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexTranslucentLizardModel.LAYER_LOCATION_OUTER,
-                useNewModels ? LatexTranslucentLizardModel.Remodel::createOuterLayer : LatexTranslucentLizardModel::createOuterLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexTranslucentLizardModel.LAYER_LOCATION, LatexTranslucentLizardModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexWatermelonCatModel.LAYER_LOCATION,
                 useNewModels ? LatexWatermelonCatModel.Remodel::createBodyLayer : LatexWatermelonCatModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexWhiteTigerModel.LAYER_LOCATION, LatexWhiteTigerModel::createBodyLayer);
