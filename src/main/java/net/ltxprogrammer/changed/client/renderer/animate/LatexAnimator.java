@@ -1,14 +1,20 @@
 package net.ltxprogrammer.changed.client.renderer.animate;
 
+import net.ltxprogrammer.changed.client.CameraExtender;
+import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -26,6 +32,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     private final HumanoidModel<?> propertyModel;
     private final Map<Integer, Runnable> setupHandsRunnable = new HashMap<>();
     private final EnumMap<AnimateStage, List<Animator<T, M>>> animators;
+    private final EnumMap<AnimateStage, List<CameraAnimator<T, M>>> cameraAnimators;
     public HumanoidModel.ArmPose leftArmPose = HumanoidModel.ArmPose.EMPTY;
     public HumanoidModel.ArmPose rightArmPose = HumanoidModel.ArmPose.EMPTY;
     public boolean crouching;
@@ -45,10 +52,52 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         reachOut = 0.0F;
     }
 
+    protected float distanceTo(@NotNull T entity, @NotNull Entity other, float partialTicks) {
+        Vec3 entityPos = entity.getPosition(partialTicks);
+        Vec3 otherPos = other.getPosition(partialTicks);
+        float f = (float)(entityPos.x - otherPos.x);
+        float f1 = (float)(entityPos.y - otherPos.y);
+        float f2 = (float)(entityPos.z - otherPos.z);
+        return Mth.sqrt(f * f + f1 * f1 + f2 * f2);
+    }
+
+    public void setupVariables(T entity, float partialTicks) {
+        LivingEntity target = entity.getTarget();
+        reachOut = target != null ?
+                Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;
+        if (!entity.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty() || !entity.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty())
+            reachOut = 0.0F;
+        final float ageAdjusted = (entity.tickCount + partialTicks) * 0.33333334F * 0.25F * 0.15f;
+        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
+        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
+        ageLerp = Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
+                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos));
+        float fallFlyingTicks = (float)entity.getFallFlyingTicks();
+        fallFlyingAmount = Mth.clamp(fallFlyingTicks * fallFlyingTicks / 100.0F, 0.0F, 1.0F);
+        swimAmount = entity.getSwimAmount(partialTicks);
+        flyAmount = entity.getFlyAmount(partialTicks);
+        crouching = entity.isCrouching();
+        HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
+        HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.OFF_HAND);
+        if (humanoidmodel$armpose.isTwoHanded()) {
+            humanoidmodel$armpose1 = entity.getOffhandItem().isEmpty() ? HumanoidModel.ArmPose.EMPTY : HumanoidModel.ArmPose.ITEM;
+        }
+
+        if (entity.getMainArm() == HumanoidArm.RIGHT) {
+            rightArmPose = humanoidmodel$armpose;
+            leftArmPose = humanoidmodel$armpose1;
+        } else {
+            rightArmPose = humanoidmodel$armpose1;
+            leftArmPose = humanoidmodel$armpose;
+        }
+    }
+
     public LatexAnimator(M entityModel) {
         this.entityModel = entityModel;
         this.animators = new EnumMap<>(AnimateStage.class);
+        this.cameraAnimators = new EnumMap<>(AnimateStage.class);
         Arrays.stream(AnimateStage.values()).forEach(stage -> animators.put(stage, new ArrayList<>())); // Populate array
+        Arrays.stream(AnimateStage.values()).forEach(stage -> cameraAnimators.put(stage, new ArrayList<>())); // Populate array
 
         this.propertyModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
                 Map.of("head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body",
@@ -108,6 +157,18 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         });
     }
 
+    private void setupCameraAnimStage(AnimateStage stage, @NotNull CameraExtender camera, @NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        var animatorList = cameraAnimators.get(stage);
+        if (animatorList == null) return;
+        boolean bobView = Minecraft.getInstance().options.bobView;
+
+        animatorList.forEach(animator -> {
+            if (animator.requiresViewBob() && !bobView)
+                return;
+            animator.setupAnim(camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        });
+    }
+
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         setupAnimStage(AnimateStage.INIT, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         setupAnimStage(AnimateStage.ATTACK, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
@@ -127,6 +188,27 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         if (swimAmount > 0f)
             setupAnimStage(AnimateStage.SWIM, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         setupAnimStage(AnimateStage.FINAL, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
+    public void setupCameraAnim(@NotNull CameraExtender camera, @NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        setupCameraAnimStage(AnimateStage.INIT, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        setupCameraAnimStage(AnimateStage.ATTACK, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (entityModel.riding)
+            setupCameraAnimStage(AnimateStage.RIDE, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (entity.isSleeping())
+            setupCameraAnimStage(AnimateStage.SLEEP, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (crouching)
+            setupCameraAnimStage(AnimateStage.CROUCH, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        else
+            setupCameraAnimStage(AnimateStage.STAND, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        setupCameraAnimStage(AnimateStage.BOB, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (flyAmount > 0f)
+            setupCameraAnimStage(AnimateStage.CREATIVE_FLY, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (entity.isFallFlying())
+            setupCameraAnimStage(AnimateStage.FALL_FLY, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (swimAmount > 0f)
+            setupCameraAnimStage(AnimateStage.SWIM, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        setupCameraAnimStage(AnimateStage.FINAL, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public LatexAnimator<T, M> forwardOffset(float v) {
@@ -182,6 +264,19 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         }
     }
 
+    public static abstract class CameraAnimator<T extends LatexEntity, M extends EntityModel<T>> {
+        protected LatexAnimator<T, M> core;
+
+        // Understandably, users may not want the camera to move heavily while playing.
+        public abstract boolean requiresViewBob();
+        public abstract AnimateStage preferredStage();
+        public abstract void setupAnim(@NotNull CameraExtender camera, @NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch);
+
+        protected float sinLerp(float sin, float a, float b) {
+            return Mth.lerp(sin * 0.5f + 0.5f, a, b);
+        }
+    }
+
     public LatexAnimator<T, M> addAnimator(Animator<T, M> animator) {
         return addAnimator(animator, animator.preferredStage());
     }
@@ -189,6 +284,16 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public LatexAnimator<T, M> addAnimator(Animator<T, M> animator, AnimateStage stage) {
         animator.core = this;
         animators.computeIfAbsent(stage, s -> new ArrayList<>()).add(animator);
+        return this;
+    }
+
+    public LatexAnimator<T, M> addCameraAnimator(CameraAnimator<T, M> animator) {
+        return addCameraAnimator(animator, animator.preferredStage());
+    }
+
+    public LatexAnimator<T, M> addCameraAnimator(CameraAnimator<T, M> animator, AnimateStage stage) {
+        animator.core = this;
+        cameraAnimators.computeIfAbsent(stage, s -> new ArrayList<>()).add(animator);
         return this;
     }
 
