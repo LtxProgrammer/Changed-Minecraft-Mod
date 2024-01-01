@@ -104,7 +104,7 @@ public class FormRenderHandler {
                 }
 
                 if(handPart != null && texture != null) {
-                    renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
+                    renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityCutout(texture)), light, 1F);
                     for (var layer : latexRenderer.layers)  {
                         if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), LightTexture.FULL_BRIGHT, 1F);
@@ -114,17 +114,8 @@ public class FormRenderHandler {
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForColor(coatColor)), light,
                                     coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
                         }
-                        if (layer instanceof LatexTranslucentLayer<?,?> gelLayer) {
-                            LatexHumanoidModel entityModel = gelLayer.getModel();
-                            var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
-                            var controller = latexHumanoidModel.getAnimator();
-
-                            entityModel.attackTime = 0.0F;
-                            controller.resetVariables();
-                            entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-                            latexHumanoidModel.setupHand();
-                            renderModelPartWithTexture(gelLayer.getModel().getArm(handSide), stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
-                        }
+                        if (layer instanceof LatexTranslucentLayer<?,?> gelLayer)
+                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(gelLayer.getTexture())), light, 1F);
                     }
                 }
 
