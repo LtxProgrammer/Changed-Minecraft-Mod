@@ -19,6 +19,8 @@ public class ChangedTags {
         public static final TagKey<EntityType<?>> WHITE_LATEX_SWIMMING = create("white_latex_swimming");
         public static final TagKey<EntityType<?>> PUDDING = create("pudding");
         public static final TagKey<EntityType<?>> ARMLESS = create("armless");
+        public static final TagKey<EntityType<?>> CANNOT_OPEN_LAB_DOORS = create("cannot_open_lab_doors");
+        public static final TagKey<EntityType<?>> CAN_OPEN_LAB_DOORS = create("can_open_lab_doors");
 
         private static TagKey<EntityType<?>> create(String name) {
             return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, Changed.modResource(name));
