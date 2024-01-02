@@ -9,21 +9,30 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+
+import java.util.function.Predicate;
 
 public class DecayedLab extends StructureFeature<NoneFeatureConfiguration> {
     private final GenerationStep.Decoration step;
 
     public DecayedLab(Codec<NoneFeatureConfiguration> codec, GenerationStep.Decoration step, ResourceLocation nbt, ResourceLocation lootTable) {
-        super(codec, PieceGeneratorSupplier.simple(DecayedLab::checkLocation, DecayedLab.generatePieces(nbt, lootTable)));
+        super(codec, PieceGeneratorSupplier.simple(DecayedLab.checkLocation(nbt), DecayedLab.generatePieces(nbt, lootTable)));
         this.step = step;
     }
 
-    private static <C extends FeatureConfiguration> boolean checkLocation(PieceGeneratorSupplier.Context<C> context) {
-        if (!context.validBiomeOnTop(Heightmap.Types.WORLD_SURFACE_WG)) {
-            return false;
-        } else {
-            return context.getLowestY(12, 15) >= context.chunkGenerator().getSeaLevel();
-        }
+    private static <C extends FeatureConfiguration> Predicate<PieceGeneratorSupplier.Context<C>> checkLocation(ResourceLocation nbt) {
+        return context -> {
+            if (!context.validBiomeOnTop(Heightmap.Types.WORLD_SURFACE_WG)) {
+                return false;
+            } else {
+                StructureTemplate template = context.structureManager().get(nbt).orElseThrow();
+
+                if (context.getLowestY(template.getSize().getX(), template.getSize().getZ()) < context.chunkGenerator().getSeaLevel())
+                    return false;
+                return true;
+            }
+        };
     }
 
     private static PieceGenerator<NoneFeatureConfiguration> generatePieces(ResourceLocation nbt, ResourceLocation lootTable) {
