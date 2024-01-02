@@ -45,7 +45,7 @@ public class VariantBlindnessOverlay {
             if (variant.getLatexType() == LatexType.DARK_LATEX)
                 alpha = Mth.lerp(0.65F, alphaO, darkness * ALPHA);
             else
-                alpha = ALPHA;
+                alpha = ALPHA * Minecraft.getInstance().options.screenEffectScale;
             alphaO = alpha;
 
             RenderSystem.disableDepthTest();
