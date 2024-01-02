@@ -53,7 +53,7 @@ public class LatexOrcaModel extends LatexHumanoidModel<LatexOrca> implements Lat
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.sharkLike(
+                .addPreset(AnimatorPresets.orcaLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
