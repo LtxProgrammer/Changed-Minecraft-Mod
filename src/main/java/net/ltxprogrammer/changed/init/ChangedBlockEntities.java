@@ -39,4 +39,9 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<DroppedSyringeBlockEntity>> DROPPED_SYRINGE = REGISTRY.register("dropped_syringe", deferredProvider(DroppedSyringeBlockEntity::new, ChangedBlocks.DROPPED_SYRINGE));
     public static final RegistryObject<BlockEntityType<OfficeChairBlockEntity>> OFFICE_CHAIR = REGISTRY.register("office_chair", deferredProvider(OfficeChairBlockEntity::new, ChangedBlocks.OFFICE_CHAIR));
     public static final RegistryObject<BlockEntityType<PillowBlockEntity>> PILLOW = REGISTRY.register("pillow", deferredProvider(PillowBlockEntity::new, ChangedBlocks.PILLOWS.values().stream()));
+    public static final RegistryObject<BlockEntityType<LabDoorOpenerEntity>> LAB_DOOR_OPENER = REGISTRY.register("lab_door_opener", deferredProvider((pos, state) -> {
+        if (state.getBlock() instanceof OpenableDoor door)
+            return new LabDoorOpenerEntity(pos, state, door);
+        else throw new IllegalStateException("Block does not extend OpenableDoor");
+    }, ChangedBlocks.LAB_DOORS.stream()));
 }
