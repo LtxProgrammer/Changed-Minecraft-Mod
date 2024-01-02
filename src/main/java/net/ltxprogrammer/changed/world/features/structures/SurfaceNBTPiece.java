@@ -37,12 +37,17 @@ public class SurfaceNBTPiece extends StructurePiece {
                 .setMirror(this.getMirror())
                 .setRotation(this.getRotation())
                 .setIgnoreEntities(false);
-        this.generationPosition = StructureTemplate.calculateRelativePosition(settings, new BlockPos(0, 0, 0)).offset(
-                x, context.chunkGenerator().getBaseHeight(
-                        x + template.getSize().getX() / 2,
-                        z + template.getSize().getZ() / 2, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), z
+        var tmpGenPos = StructureTemplate.calculateRelativePosition(settings, new BlockPos(0, 0, 0)).offset(
+                x, 0, z
         );
-        this.boundingBox = template.getBoundingBox(settings, this.generationPosition);
+        this.boundingBox = template.getBoundingBox(settings, tmpGenPos);
+        int minXminZ = context.chunkGenerator().getBaseHeight(this.boundingBox.minX(), this.boundingBox.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int minXmaxZ = context.chunkGenerator().getBaseHeight(this.boundingBox.minX(), this.boundingBox.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXminZ = context.chunkGenerator().getBaseHeight(this.boundingBox.maxX(), this.boundingBox.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXmaxZ = context.chunkGenerator().getBaseHeight(this.boundingBox.maxX(), this.boundingBox.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+
+        this.generationPosition = tmpGenPos.offset(0, Math.min(Math.min(minXminZ, minXmaxZ), Math.min(maxXminZ, maxXmaxZ)), 0);
+        this.boundingBox = this.boundingBox.moved(0, this.generationPosition.getY(), 0);
         this.templateName = structureNBT;
         this.template = template;
         this.lootTable = lootTable;
