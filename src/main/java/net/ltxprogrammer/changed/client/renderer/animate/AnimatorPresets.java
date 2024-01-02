@@ -6,9 +6,8 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
 import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
-import net.ltxprogrammer.changed.client.renderer.animate.camera.DragonCameraCreativeFlyAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.camera.SharkCameraSwimAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.ears.WolfEarsInitAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.camera.*;
+import net.ltxprogrammer.changed.client.renderer.animate.ears.*;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
@@ -67,6 +66,18 @@ public class AnimatorPresets {
                     .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
                     .addAnimator(new SharkBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator
+                    .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new SharkBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new OrcaBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
         };
     }
 
@@ -166,6 +177,17 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHandsNew(1, leftArm, rightArm)
+                    .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new OrcaUpperBodySwimAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
@@ -236,6 +258,18 @@ public class AnimatorPresets {
             animator
                     .addAnimator(new SharkTailInitAnimator<>(tail, tailJoints))
                     .addAnimator(new SharkTailSwimAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaTail(ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator
+                    .addAnimator(new SharkTailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new OrcaTailSwimAnimator<>(tail, tailJoints))
                     .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
@@ -474,6 +508,24 @@ public class AnimatorPresets {
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new SharkCameraSwimAnimator<>());
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaLike(ModelPart head, ModelPart torso,
+                                                                                                            ModelPart leftArm, ModelPart rightArm,
+                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
+
+                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                            ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(orcaBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(orcaUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(orcaTail(tail, tailJoints))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new OrcaHeadSwimAnimator<>(head))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
+                    .addCameraAnimator(new OrcaCameraSwimAnimator<>());
         };
     }
 

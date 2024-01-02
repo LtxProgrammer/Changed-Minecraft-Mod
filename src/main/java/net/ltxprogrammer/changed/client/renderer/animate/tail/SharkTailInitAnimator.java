@@ -42,11 +42,9 @@ public class SharkTailInitAnimator<T extends LatexEntity, M extends EntityModel<
         float tailDrag = entity.getTailDragAmount(ageInTicks);
         tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance) + tailDrag * 0.75F;
 
-        float offset = 0.0F;
         for (ModelPart joint : tailJoints) {
-            joint.yRot = Mth.lerp(limbSwingAmount, 0.0f/*SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
-                    (((float)Math.PI / 3.0F) * offset))*/, 0.0f) + tailDrag * 0.75F;
-            offset += 0.75F;
+            joint.yRot = tailDrag * 0.75F;
+            joint.xRot = 0.0F;
         }
     }
 }
