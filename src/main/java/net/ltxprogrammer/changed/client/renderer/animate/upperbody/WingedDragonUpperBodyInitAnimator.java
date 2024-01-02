@@ -7,8 +7,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class DragonUpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
-    public DragonUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+public class WingedDragonUpperBodyInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+    public WingedDragonUpperBodyInitAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
     }
 
@@ -39,8 +39,8 @@ public class DragonUpperBodyInitAnimator<T extends LatexEntity, M extends Entity
         rightArm.zRot = 0.0F;
         leftArm.zRot = 0.0F;
 
-        rightArm.xRot = Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F / f;
-        leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f;
+        rightArm.xRot = Mth.lerp(core.flyAmount, Mth.cos(limbSwing * 0.6662F + Mth.PI) * 2.0F * limbSwingAmount * 0.5F / f, 0.0f);
+        leftArm.xRot = Mth.lerp(core.flyAmount, Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f, 0.0f);
 
         rightArm.zRot += Mth.lerp(core.reachOut, 0.0F, 0.1745329f); // 10 Degrees
         leftArm.zRot += Mth.lerp(core.reachOut, 0.0F, -0.1745329f); // 10 Degrees

@@ -144,6 +144,17 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonWingedUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHandsNew(1, leftArm, rightArm)
+                    .addAnimator(new WingedDragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new DragonUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new DragonUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new DragonUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
@@ -364,12 +375,17 @@ public class AnimatorPresets {
                                                                                                                    ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
                                                                                                                    ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
-            animator.addPreset(dragonLike(head, torso, leftArm, rightArm, tail, tailJoints, leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+            animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(dragonWingedUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(dragonTail(tail, tailJoints))
                     .addPreset(dragonWinged(leftWingRoot, leftWingBone1, leftWingBone2, rightWingRoot, rightWingBone1, rightWingBone2))
                     .addAnimator(new DragonBipedalCreativeFlyAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
-                    .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonTailCreativeFlyAnimator<>(tail, tailJoints))
                     .addAnimator(new DragonHeadCreativeFlyAnimator<>(head))
+                    .addAnimator(new DragonHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new DragonCameraCreativeFlyAnimator<>());
         };
     }
