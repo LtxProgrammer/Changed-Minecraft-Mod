@@ -3,6 +3,13 @@
   "values": [
     "minecraft:plains",
     "minecraft:meadow",
-    "minecraft:snowy_plains"
+    "minecraft:snowy_plains",
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:taiga",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_hills",
+    "minecraft:sparse_jungle"
   ]
 }

@@ -38,7 +38,7 @@ public class LabLight extends AbstractCustomShapeBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(-16.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     public LabLight(Properties properties) {
-        super(properties);
+        super(properties.lightLevel((state) -> state.getValue(LabLight.POWERED) ? 15 : 0).emissiveRendering((state, level, pos) -> state.getValue(POWERED)));
         this.registerDefaultState(this.stateDefinition.any().setValue(SECTION, 0).setValue(POWERED, false));
     }
 

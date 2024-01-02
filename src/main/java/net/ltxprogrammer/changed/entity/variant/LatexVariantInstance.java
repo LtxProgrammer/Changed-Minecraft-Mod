@@ -618,6 +618,10 @@ public class LatexVariantInstance<T extends LatexEntity> {
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         if (parent.canGlide) {
             player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
+            if (!player.isCreative() && !player.isSpectator()) {
+                player.getAbilities().flying = false;
+            }
+            player.onUpdateAbilities();
         }
         player.maxUpStep = 0.6F;
         player.refreshDimensions();
