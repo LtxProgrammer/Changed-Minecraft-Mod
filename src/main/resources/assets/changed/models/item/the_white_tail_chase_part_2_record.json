@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:items/the_white_tail_chase_part_2_record"
+  }
+}
