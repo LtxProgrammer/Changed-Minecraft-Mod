@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CatTailInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
     public static final float SWAY_RATE = 0.33333334F * 0.25F;
-    public static final float SWAY_SCALE = 0.10F;
+    public static final float SWAY_SCALE = 0.05F;
 
     public CatTailInitAnimator(ModelPart tail, List<ModelPart> tailJoints) {
         super(tail, tailJoints);
@@ -43,10 +43,13 @@ public class CatTailInitAnimator<T extends LatexEntity, M extends EntityModel<T>
         tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance) + tailDrag * 0.75F;
 
         float offset = 0.0F;
+        float rotation = Mth.DEG_TO_RAD * 35.0f;
         for (ModelPart joint : tailJoints) {
             joint.yRot = Mth.lerp(limbSwingAmount, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
                     (((float)Math.PI / 3.0F) * offset)), 0.0f) + tailDrag * 0.75F;
+            joint.xRot = Mth.lerp(limbSwingAmount, rotation, 0.0f);
             offset += 0.75F;
+            rotation *= 0.5f;
         }
     }
 }
