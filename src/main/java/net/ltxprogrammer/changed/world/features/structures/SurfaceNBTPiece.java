@@ -68,7 +68,11 @@ public class SurfaceNBTPiece extends StructurePiece {
         this.templateName = TagUtil.getResourceLocation(tag, "nbt");
         this.template = manager.get(templateName).orElseThrow();
         this.lootTable = tag.contains("lootTable") ? TagUtil.getResourceLocation(tag, "lootTable") : null;
-        this.generationPosition = TagUtil.getBlockPos(tag, "genPos");
+        if (tag.contains("genPos"))
+            this.generationPosition = TagUtil.getBlockPos(tag, "genPos");
+        else {
+            this.generationPosition = new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
+        }
     }
 
     @Override
