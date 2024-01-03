@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.PipeBlock;
 import net.ltxprogrammer.changed.block.*;
+import net.ltxprogrammer.changed.block.entity.OpenableDoor;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -66,7 +67,7 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_CORNER = register("beehive_corner", AbstractBeehiveBlock::new);
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_FLOOR = register("beehive_floor", AbstractBeehiveBlock::new);
     public static final RegistryObject<AbstractBeehiveBlock> BEEHIVE_ROOF = register("beehive_roof", AbstractBeehiveBlock::new);
-    public static final RegistryObject<BookStack> BOOK_STACK = register("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F)));
+    public static final RegistryObject<BookStack> BOOK_STACK = registerNoItem("book_stack", () -> new BookStack(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_RED).sound(SoundType.WOOD).strength(0.5F)));
     public static final RegistryObject<BoxPile> BOX_PILE = register("box_pile", BoxPile::new);
     public static final RegistryObject<ClipboardBlock> CLIPBOARD = register("clipboard", ClipboardBlock::new);
     public static final RegistryObject<Note> NOTE = register("note", Note::new);
@@ -83,8 +84,7 @@ public class ChangedBlocks {
     public static final RegistryObject<IronCrate> IRON_CRATE = register("iron_crate", () -> new IronCrate(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.COPPER).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));
     public static final RegistryObject<DarkLatexFluidBlock> DARK_LATEX_FLUID = registerNoItem("dark_latex_fluid", DarkLatexFluidBlock::new);
     public static final RegistryObject<KeypadBlock> KEYPAD = register("keypad", KeypadBlock::new);
-    public static final RegistryObject<LabLight> LAB_LIGHT = register("lab_light", () -> new LabLight(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.QUARTZ).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 3.0F).lightLevel(
-            (state) -> state.getValue(LabLight.POWERED) ? 15 : 0)));
+    public static final RegistryObject<LabLight> LAB_LIGHT = register("lab_light", () -> new LabLight(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.QUARTZ).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<LabLightSmall> LAB_LIGHT_SMALL = register("lab_light_small", () -> new LabLightSmall(BlockBehaviour.Properties.copy(LAB_LIGHT.get())));
     public static final RegistryObject<LabTable> LAB_TABLE = register("lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LaserBeamBlock> LASER_BEAM = register("laser_beam", LaserBeamBlock::new, ChangedBlocks::cutoutRenderer, null);
@@ -152,14 +152,25 @@ public class ChangedBlocks {
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));
 
-    public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3));
-    public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::translucentRenderer);
+    public static final RegistryObject<AbstractLabDoor> BLUE_LAB_DOOR = register("blue_lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<AbstractLabDoor> MAINTENANCE_DOOR = register("maintenance_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
+    public static final RegistryObject<AbstractLabDoor> LAB_DOOR = register("lab_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<AbstractLabDoor> LIBRARY_DOOR = register("library_door", () -> new AbstractLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::translucentRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_BLUE_LAB_DOOR = register("large_blue_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LIBRARY_DOOR = register("large_library_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::translucentRenderer);
+
+    public static final List<RegistryObject<? extends Block>> LAB_DOORS = Util.make(new ArrayList<>(), list -> {
+        list.add(BLUE_LAB_DOOR);
+        list.add(MAINTENANCE_DOOR);
+        list.add(LAB_DOOR);
+        list.add(LIBRARY_DOOR);
+        list.add(LARGE_BLUE_LAB_DOOR);
+        list.add(LARGE_MAINTENANCE_DOOR);
+        list.add(LARGE_LAB_DOOR);
+        list.add(LARGE_LIBRARY_DOOR);
+    });
 
     public static final RegistryObject<Infuser> INFUSER = register("infuser", () -> new Infuser(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.QUARTZ).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(4.5F, 3.0F)));
     public static final RegistryObject<Purifier> PURIFIER = register("purifier", () -> new Purifier(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.QUARTZ).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(4.5F, 3.0F)));

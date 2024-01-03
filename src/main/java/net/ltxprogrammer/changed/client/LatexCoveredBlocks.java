@@ -497,10 +497,12 @@ public abstract class LatexCoveredBlocks {
         var baseModel = registrar.getModel(baseModelName);
         UnbakedModel newModel = null;
 
-        if (baseModel instanceof MultiPart multiPart)
-            newModel = overWriteMultiPart(registrar, multiPart, coveredModelName, state, type);
-        else if (baseModel instanceof MultiVariant multiVariant)
-            newModel = overWriteMultiVariant(registrar, multiVariant, coveredModelName, state, type);
+        try {
+            if (baseModel instanceof MultiPart multiPart)
+                newModel = overWriteMultiPart(registrar, multiPart, coveredModelName, state, type);
+            else if (baseModel instanceof MultiVariant multiVariant)
+                newModel = overWriteMultiVariant(registrar, multiVariant, coveredModelName, state, type);
+        } catch (Exception ignored) {}
 
         if (newModel != null)
             registrar.register(coveredModelName, newModel);

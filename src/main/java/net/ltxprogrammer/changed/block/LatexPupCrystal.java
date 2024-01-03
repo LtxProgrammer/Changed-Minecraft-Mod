@@ -177,7 +177,10 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     }
 
     public void playerDestroy(Level p_52865_, Player p_52866_, BlockPos p_52867_, BlockState p_52868_, @Nullable BlockEntity p_52869_, ItemStack p_52870_) {
-        super.playerDestroy(p_52865_, p_52866_, p_52867_, Blocks.AIR.defaultBlockState(), p_52869_, p_52870_);
+        if (p_52868_.getValue(EXTENDED))
+            super.playerDestroy(p_52865_, p_52866_, p_52867_, Blocks.AIR.defaultBlockState(), p_52869_, p_52870_);
+        else
+            super.playerDestroy(p_52865_, p_52866_, p_52867_, p_52868_, p_52869_, p_52870_);
     }
 
     @Override
@@ -188,5 +191,10 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
         } else {
             return Blocks.AIR.defaultBlockState();
         }
+    }
+
+    @Override
+    public boolean shouldDrop(BlockState blockState) {
+        return !blockState.getValue(EXTENDED) || super.shouldDrop(blockState);
     }
 }

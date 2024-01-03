@@ -1,8 +1,13 @@
 package net.ltxprogrammer.changed.block;
 
 import com.mojang.datafixers.util.Either;
+import net.ltxprogrammer.changed.block.entity.LabDoorOpenerEntity;
+import net.ltxprogrammer.changed.block.entity.OpenableDoor;
+import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
+import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -16,6 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -35,14 +43,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static net.ltxprogrammer.changed.init.ChangedSounds.OPEN2;
 
-public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock {
+public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock, EntityBlock, OpenableDoor {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -52,11 +57,16 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
     public static final VoxelShape SHAPE_FRAME3 = Block.box(-16.0D, 30.0D, 2.0D, 16.0D, 32.0D, 14.0D);
     public static final VoxelShape SHAPE_FRAME = Shapes.or(SHAPE_FRAME1, SHAPE_FRAME2, SHAPE_FRAME3);
     public static final VoxelShape SHAPE_DOOR = Block.box(-16.0D, 0.0D, 4.0D, 16.0D, 32.0D, 12.0D);
+    public static final VoxelShape SHAPE_DOOR_SLIM = Block.box(-16.0D, 0.0D, 7.0D, 16.0D, 32.0D, 9.0D);
     public static final VoxelShape SHAPE_COLLISION_CLOSED = Shapes.or(SHAPE_FRAME, SHAPE_DOOR);
+    public static final VoxelShape SHAPE_COLLISION_CLOSED_SLIM = Shapes.or(SHAPE_FRAME, SHAPE_DOOR_SLIM);
 
     private final SoundEvent open, close;
 
-    public AbstractLabDoor(SoundEvent open, SoundEvent close) {
+    private final VoxelShape shapeFrame;
+    private final VoxelShape shapeCollisionClosed;
+
+    public AbstractLabDoor(SoundEvent open, SoundEvent close, boolean slim) {
         super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(6.5F, 9.0F));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -65,6 +75,9 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
                 .setValue(OPEN, Boolean.FALSE));
         this.open = open;
         this.close = close;
+
+        this.shapeFrame = SHAPE_FRAME;
+        this.shapeCollisionClosed = slim ? SHAPE_COLLISION_CLOSED_SLIM : SHAPE_COLLISION_CLOSED;
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
@@ -82,7 +95,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         double z = 0.0D;
 
         if (state.getValue(OPEN)) {
-            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), SHAPE_FRAME);
+            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), shapeFrame);
             switch (state.getValue(FACING)) {
                 case NORTH -> x = 1.0D;
                 case EAST -> z = 1.0D;
@@ -91,7 +104,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
             }
         }
         else {
-            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), SHAPE_COLLISION_CLOSED);
+            shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), shapeCollisionClosed);
             switch (state.getValue(FACING)) {
                 case NORTH -> x = 1.0D;
                 case EAST -> z = 1.0D;
@@ -198,7 +211,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
 
     public boolean isPathfindable(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull PathComputationType type) {
         return switch (type) {
-            case LAND, AIR -> state.getValue(OPEN);
+            case LAND, AIR -> state.getValue(POWERED);
             case WATER -> false;
         };
     }
@@ -208,23 +221,7 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
             level.playSound(null, pos, OPEN2, SoundSource.BLOCKS, 1, 1);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        if (state.getValue(OPEN) && player.getDimensions(player.getPose()).makeBoundingBox(player.position()).intersects(new AABB(
-                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.BOTTOM_LEFT),
-                state.getValue(SECTION).getRelative(pos, state.getValue(FACING), QuarterSection.TOP_RIGHT))))
-            return InteractionResult.FAIL;
-
-        var wantState = !state.getValue(OPEN);
-        var thisSect = state.getValue(SECTION);
-        for (var sect : QuarterSection.values()) {
-            var nPos = thisSect.getRelative(pos, state.getValue(FACING), sect);
-            var nBlock = level.getBlockState(nPos);
-            if (nBlock.getBlock() != this)
-                continue;
-            level.setBlockAndUpdate(nPos, nBlock.setValue(OPEN, wantState));
-            level.gameEvent(wantState ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-        }
-        level.playSound(null, pos, wantState ? open : close, SoundSource.BLOCKS, 1, 1);
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.FAIL;
     }
 
     @Override
@@ -311,5 +308,84 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
         else {
             return super.mirror(state, mirror).setValue(SECTION, state.getValue(SECTION).getHorizontalNeighbor());
         }
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        if (state.getValue(SECTION) != QuarterSection.BOTTOM_LEFT)
+            return null;
+        return new LabDoorOpenerEntity(pos, state, this);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTicker(level, type, ChangedBlockEntities.LAB_DOOR_OPENER.get());
+    }
+
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> typeA, BlockEntityType<E> typeE, BlockEntityTicker<? super E> ticker) {
+        return typeE == typeA ? (BlockEntityTicker<A>)ticker : null;
+    }
+
+    @Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<? extends LabDoorOpenerEntity> newType) {
+        return level.isClientSide ? null : createTickerHelper(type, newType, LabDoorOpenerEntity::serverTick);
+    }
+
+    @Override
+    public boolean openDoor(BlockState state, Level level, BlockPos pos) {
+        if (state.getValue(OPEN))
+            return false;
+
+        var wantState = true;
+        var thisSect = state.getValue(SECTION);
+        for (var sect : QuarterSection.values()) {
+            var nPos = thisSect.getRelative(pos, state.getValue(FACING), sect);
+            var nBlock = level.getBlockState(nPos);
+            if (nBlock.getBlock() != this)
+                continue;
+            level.setBlockAndUpdate(nPos, nBlock.setValue(OPEN, wantState));
+            level.gameEvent(GameEvent.BLOCK_OPEN, pos);
+        }
+        level.playSound(null, pos, open, SoundSource.BLOCKS, 1, 1);
+        return true;
+    }
+
+    @Override
+    public boolean closeDoor(BlockState state, Level level, BlockPos pos) {
+        if (!state.getValue(OPEN))
+            return false;
+
+        var wantState = false;
+        var thisSect = state.getValue(SECTION);
+        for (var sect : QuarterSection.values()) {
+            var nPos = thisSect.getRelative(pos, state.getValue(FACING), sect);
+            var nBlock = level.getBlockState(nPos);
+            if (nBlock.getBlock() != this)
+                continue;
+            level.setBlockAndUpdate(nPos, nBlock.setValue(OPEN, wantState));
+            level.gameEvent(GameEvent.BLOCK_CLOSE, pos);
+        }
+        level.playSound(null, pos, close, SoundSource.BLOCKS, 1, 1);
+        return true;
+    }
+
+    @Override
+    public boolean isOpen(BlockState state, Level level, BlockPos pos) {
+        return state.getValue(OPEN);
+    }
+
+    @Override
+    public AABB getDetectionSize(BlockState state, Level level, BlockPos pos) {
+        var thisSect = state.getValue(SECTION);
+
+        var facing = state.getValue(FACING);
+        var aabbBottomLeft = new AABB(thisSect.getRelative(pos, facing, QuarterSection.BOTTOM_LEFT));
+        var aabbTopRight = new AABB(thisSect.getRelative(pos, facing, QuarterSection.TOP_RIGHT));
+        var aabb = aabbBottomLeft.minmax(aabbTopRight);
+
+        return aabb.inflate(facing.getAxis() == Direction.Axis.X ? 1.0 : 0.0, 0.0, facing.getAxis() == Direction.Axis.Z ? 1.0 : 0.0);
     }
 }
