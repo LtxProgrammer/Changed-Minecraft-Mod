@@ -69,10 +69,8 @@ public class ChangedEntityRenderers {
                 useNewModels ? LatexSirenRenderer.Remodel::new : LatexSirenRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNAKE.get(), LatexSnakeRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNIPER_DOG.get(), LatexSniperDogRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE.get(),
-                useNewModels ? LatexSnowLeopardFemaleRenderer.Remodel::new : LatexSnowLeopardFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_SNOW_LEOPARD_MALE.get(),
-                useNewModels ? LatexSnowLeopardMaleRenderer.Remodel::new : LatexSnowLeopardMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE.get(), LatexSnowLeopardFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_SNOW_LEOPARD_MALE.get(), LatexSnowLeopardMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SQUID_DOG_FEMALE.get(), LatexSquidDogFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SQUID_DOG_MALE.get(), LatexSquidDogMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SQUIRREL.get(), LatexSquirrelRenderer::new);
