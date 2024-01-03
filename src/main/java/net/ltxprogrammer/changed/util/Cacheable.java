@@ -17,6 +17,10 @@ public abstract class Cacheable<T> implements Supplier<T> {
         return value.orElse(null);
     }
 
+    public final boolean isResolved() {
+        return value != null;
+    }
+
     public final T getOrThrow() {
         var v = get();
         if (v != null)
