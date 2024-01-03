@@ -158,9 +158,9 @@ public class PatreonBenefits {
             AnimationData animationData,
 
             boolean oldModelRig,
-            DelayLoadedModel model,
-            DelayLoadedModel armorModelInner,
-            DelayLoadedModel armorModelOuter,
+            Cacheable<DelayLoadedModel> model,
+            Cacheable<DelayLoadedModel> armorModelInner,
+            Cacheable<DelayLoadedModel> armorModelOuter,
 
             float shadowSize,
             float hipOffset,
@@ -187,9 +187,9 @@ public class PatreonBenefits {
                             Optional.of(Changed.modResource(fullId + "/emissive.png")) : Optional.empty(),
                     AnimationData.fromJSON(object.get("animation")),
                     GsonHelper.getAsBoolean(object, "oldModelRig", true),
-                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/model.json")),
-                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_inner.json")),
-                    DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_outer.json")),
+                    Cacheable.of(() -> DelayLoadedModel.parse(jsonGetter.apply(fullId + "/model.json"))),
+                    Cacheable.of(() -> DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_inner.json"))),
+                    Cacheable.of(() -> DelayLoadedModel.parse(jsonGetter.apply(fullId + "/armor_outer.json"))),
                     GsonHelper.getAsFloat(object, "shadowsize", 0.5f),
                     GsonHelper.getAsFloat(object, "hipOffset", -2.0f),
                     GsonHelper.getAsFloat(object, "torsoWidth", 5.0f),
@@ -202,25 +202,25 @@ public class PatreonBenefits {
 
         public void registerLayerDefinitions(BiConsumer<DeferredModelLayerLocation, Supplier<LayerDefinition>> registrar) {
             if (oldModelRig) {
-                registrar.accept(modelLayerLocation, () -> model.createBodyLayer(
+                registrar.accept(modelLayerLocation, () -> model.get().createBodyLayer(
                         DelayLoadedModel.HUMANOID_PART_FIXER,
                         DelayLoadedModel.HUMANOID_GROUP_FIXER));
-                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.createBodyLayer(
+                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.get().createBodyLayer(
                         DelayLoadedModel.HUMANOID_PART_FIXER,
                         DelayLoadedModel.HUMANOID_GROUP_FIXER));
-                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.createBodyLayer(
+                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.get().createBodyLayer(
                         DelayLoadedModel.HUMANOID_PART_FIXER,
                         DelayLoadedModel.HUMANOID_GROUP_FIXER));
             }
 
             else {
-                registrar.accept(modelLayerLocation, () -> model.createBodyLayer(
+                registrar.accept(modelLayerLocation, () -> model.get().createBodyLayer(
                         DelayLoadedModel.PART_NO_FIX,
                         DelayLoadedModel.GROUP_NO_FIX));
-                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.createBodyLayer(
+                registrar.accept(armorModelLayerLocation.inner(), () -> armorModelInner.get().createBodyLayer(
                         DelayLoadedModel.PART_NO_FIX,
                         DelayLoadedModel.GROUP_NO_FIX));
-                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.createBodyLayer(
+                registrar.accept(armorModelLayerLocation.outer(), () -> armorModelOuter.get().createBodyLayer(
                         DelayLoadedModel.PART_NO_FIX,
                         DelayLoadedModel.GROUP_NO_FIX));
             }
@@ -365,6 +365,14 @@ public class PatreonBenefits {
         }
     }
 
+    public static void registerOnlineTexture(ResourceLocation location) {
+        DynamicClient.lateRegisterOnlineTexture(OnlineResource.of(
+                location.getPath(),
+                location,
+                URI.create(FORMS_BASE + location.getPath())
+        ));
+    }
+
     public static void loadSpecialForms(HttpClient client) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder(URI.create(FORMS_DOCUMENT)).GET().build();
         JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
@@ -390,16 +398,11 @@ public class PatreonBenefits {
                     object
             );
 
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                form.registerTextures(location ->
-                        DynamicClient.lateRegisterOnlineTexture(OnlineResource.of(
-                                location.getPath(),
-                                location,
-                                URI.create(FORMS_BASE + location.getPath())
-                        )));
+            /*DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                form.registerTextures(PatreonBenefits::registerOnlineTexture);
 
                 form.registerLayerDefinitions(DynamicClient::lateRegisterLayerDefinition);
-            });
+            });*/
 
             CACHED_SPECIAL_FORMS.put(form.playerUUID, form);
             LatexVariant.registerSpecial(form.variant);
