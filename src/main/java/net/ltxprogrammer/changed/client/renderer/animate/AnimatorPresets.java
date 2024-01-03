@@ -44,6 +44,18 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator
+                    .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new CatBipedalInitAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addAnimator(new BipedalRideAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new BipedalStandAnimator<>(leftLeg, rightLeg))
+                    .addAnimator(new CatBipedalSwimAnimator<>(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
@@ -145,6 +157,16 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHandsNew(1, leftArm, rightArm)
+                    .addAnimator(new CatUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new CatUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new CatUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new CatUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
@@ -241,6 +263,18 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catTail(ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator
+                    .addAnimator(new CatTailInitAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSwimAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailCrouchAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailRideAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
+                    .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
@@ -281,6 +315,13 @@ public class AnimatorPresets {
         return animator -> {
             animator
                     .addAnimator(new WolfEarsInitAnimator<>(leftEar, rightEar));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catEars(ModelPart leftEar, ModelPart rightEar) {
+        return animator -> {
+            animator
+                    .addAnimator(new CatEarsInitAnimator<>(leftEar, rightEar));
         };
     }
 
@@ -380,6 +421,23 @@ public class AnimatorPresets {
                     .addPreset(wolfTail(tail, tailJoints))
                     .addPreset(wolfEars(leftEar, rightEar))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                           ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+                                                                                                           ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                           ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                           ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(catBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(catUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(catTail(tail, tailJoints))
+                    .addPreset(catEars(leftEar, rightEar))
+                    .addAnimator(new CatHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
