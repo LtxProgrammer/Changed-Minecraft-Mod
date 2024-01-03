@@ -77,8 +77,6 @@ public class ArmorLatexMaleWingedDragonModel<T extends LatexEntity> extends Late
 
         PartDefinition rightWingRoot = RightWing.addOrReplaceChild("rightWingRoot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition cube_r1 = rightWingRoot.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(24, 23).mirror().addBox(-25.075F, -12.7F, 1.2F, 6.0F, 2.0F, 1.0F, layer.deformation.extend(-0.5F)).mirror(false), PartPose.offsetAndRotation(2.0F, 20.0F, -2.0F, 0.0F, 0.0F, 0.7854F));
-
         PartDefinition cube_r2 = rightWingRoot.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(25, 23).addBox(-12.775F, -19.75F, 1.2F, 5.0F, 2.0F, 1.0F, layer.deformation.extend(-0.5F)), PartPose.offsetAndRotation(2.0F, 20.0F, -2.0F, 0.0F, 0.0F, 0.3491F));
 
         PartDefinition rightSecondaries = rightWingRoot.addOrReplaceChild("rightSecondaries", CubeListBuilder.create(), PartPose.offsetAndRotation(-7.3F, -7.0F, -0.5F, 0.0F, 0.0F, 0.5236F));
@@ -88,8 +86,6 @@ public class ArmorLatexMaleWingedDragonModel<T extends LatexEntity> extends Late
         PartDefinition LeftWing = Torso.addOrReplaceChild("LeftWing", CubeListBuilder.create(), PartPose.offsetAndRotation(2.0F, 5.0F, 2.0F, 0.0F, -0.48F, 0.0F));
 
         PartDefinition leftWingRoot = LeftWing.addOrReplaceChild("leftWingRoot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition cube_r3 = leftWingRoot.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(24, 23).addBox(19.075F, -12.7F, 1.2F, 6.0F, 2.0F, 1.0F, layer.deformation.extend(-0.5F)), PartPose.offsetAndRotation(-2.0F, 20.0F, -2.0F, 0.0F, 0.0F, -0.7854F));
 
         PartDefinition cube_r4 = leftWingRoot.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(25, 23).mirror().addBox(7.775F, -19.75F, 1.2F, 5.0F, 2.0F, 1.0F, layer.deformation.extend(-0.5F)).mirror(false), PartPose.offsetAndRotation(-2.0F, 20.0F, -2.0F, 0.0F, 0.0F, -0.3491F));
 
