@@ -59,13 +59,30 @@ public class LatexParticleEngine implements PreparableReloadListener {
         textureManager.register(LatexParticleRenderType.LOCATION_PARTICLES, textureAtlas);
     }
 
+    public int countParticles() {
+        return this.particles.values().stream().mapToInt(Collection::size).sum();
+    }
+
+    public int getMaxParticles() {
+        return switch (minecraft.options.particles) {
+            case ALL -> 8000;
+            case DECREASED -> 2000;
+            case MINIMAL -> 500;
+        };
+    }
+
     public void addParticle(LatexParticleProvider<? extends LatexParticle> particleProvider) {
-        // TODO use chance to limit active particles before ctor
+        if (countParticles() >= getMaxParticles())
+            return;
         var particle = particleProvider.create(this.spriteSets.get(particleProvider.getParticleType().getRegistryName()));
         particles.computeIfAbsent(particle.getRenderType(), type -> new ArrayList<>()).add(particle);
     }
 
     public void tick() {
+        if (this.minecraft.level == null) {
+            particles.clear();
+        }
+
         if (pauseForReload())
             return;
 

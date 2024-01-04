@@ -57,4 +57,6 @@ public abstract class LatexParticle {
     }
 
     public abstract AABB getBoundingBox();
+
+    public void onCollide() {}
 }
