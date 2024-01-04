@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.model.SpecialLatexModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSpecialLatexModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
+import net.ltxprogrammer.changed.util.DynamicClient;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -34,8 +35,17 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
         this.context = context;
     }
 
+    private static PatreonBenefits.ModelData ensureModelIsLoaded(PatreonBenefits.ModelData modelData) {
+        if (!modelData.model().isResolved()) {
+            modelData.registerLayerDefinitions(DynamicClient::lateRegisterLayerDefinition);
+            modelData.registerTextures(PatreonBenefits::registerOnlineTexture);
+        }
+
+        return modelData;
+    }
+
     public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.ModelData modelData) {
-        super(context, new SpecialLatexModel(context.bakeLayer(modelData.modelLayerLocation().get()), modelData),
+        super(context, new SpecialLatexModel(context.bakeLayer(ensureModelIsLoaded(modelData).modelLayerLocation().get()), modelData),
                 (part) -> new ArmorSpecialLatexModel<>(part, modelData), modelData.armorModelLayerLocation().inner().get(),
                 modelData.armorModelLayerLocation().outer().get(), modelData.shadowSize());
         if (modelData.emissive().isPresent())

@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -168,6 +169,10 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
 
         public Builder<M, F> fusionOf(LatexVariant<?> variantA, LatexVariant<?> variantB) {
             this.maleBuilder.fusionOf(variantA, variantB); this.femaleBuilder.fusionOf(variantA, variantB); return this;
+        }
+
+        public Builder<M, F> fusionOf(LatexVariant<?> variant, Class<? extends LivingEntity> mobClass) {
+            this.maleBuilder.fusionOf(variant, mobClass); this.femaleBuilder.fusionOf(variant, mobClass); return this;
         }
 
         public LatexVariant.Builder<LatexEntity> disableItems() {
