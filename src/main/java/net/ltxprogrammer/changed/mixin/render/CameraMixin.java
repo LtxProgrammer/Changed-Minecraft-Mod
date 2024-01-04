@@ -7,6 +7,8 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterfa
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -113,22 +115,16 @@ public abstract class CameraMixin implements CameraExtender {
     }
 
     @Inject(method = "setup", at = @At("HEAD"))
-    public void setup(BlockGetter level, Entity entity, boolean p_90578_, boolean p_90579_, float partialTicks, CallbackInfo callback) {
-        if (entity instanceof Player player) {
-            var tug = CameraUtil.getTugData(player);
-            if (tug == null)
-                return;
-            if (tug.tickExpire() < player.tickCount) {
-                CameraUtil.resetTugData(player);
-                return;
-            }
+    public void setupWithTug(BlockGetter level, Entity entity, boolean firstPerson, boolean mirrored, float partialTicks, CallbackInfo ci) {
+        if (!(entity instanceof Player player))
+            return;
 
-            float xRotO = player.xRotO;
-            float yRotO = player.yRotO;
-            Vec3 direction = player.getLookAngle().lerp(tug.getDirection(player), tug.strength());
+        var tug = CameraUtil.getTugData(player);
+        if (tug != null) {
+            Vec3 direction = player.getLookAngle().lerp(tug.getDirection(player, partialTicks), tug.strength);
             player.lookAt(EntityAnchorArgument.Anchor.EYES, player.getEyePosition().add(direction));
-            player.xRotO = xRotO;
-            player.yRotO = yRotO;
+            player.yRotO = player.getYRot();
+            player.xRotO = player.getXRot();
         }
     }
 
