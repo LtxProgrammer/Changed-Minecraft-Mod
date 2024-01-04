@@ -16,8 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 public interface LatexParticleRenderType extends ParticleRenderType {
     public static final ResourceLocation LOCATION_PARTICLES = Changed.modResource("textures/atlas/latex_particles.png");
 
-    RenderType renderType();
-
     public static ParticleRenderType LATEX_PARTICLE_SHEET_OPAQUE = new ParticleRenderType() {
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
             RenderSystem.disableBlend();
@@ -50,11 +48,6 @@ public interface LatexParticleRenderType extends ParticleRenderType {
 
         public String toString() {
             return "LATEX_PARTICLE_SHEET_3D_OPAQUE";
-        }
-
-        @Override
-        public RenderType renderType() {
-            return RenderType.entityCutout(LOCATION_PARTICLES);
         }
     };
 }
