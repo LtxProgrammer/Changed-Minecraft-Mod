@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.Entity;
@@ -16,22 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Camera.class)
 public abstract class CameraMixin {
     @Inject(method = "setup", at = @At("HEAD"))
-    public void setup(BlockGetter level, Entity entity, boolean p_90578_, boolean p_90579_, float p_90580_, CallbackInfo callback) {
-        if (entity instanceof Player player) {
-            var tug = CameraUtil.getTugData(player);
-            if (tug == null)
-                return;
-            if (tug.tickExpire() < player.tickCount) {
-                CameraUtil.resetTugData(player);
-                return;
-            }
+    public void setupWithTug(BlockGetter level, Entity entity, boolean firstPerson, boolean mirrored, float partialTicks, CallbackInfo ci) {
+        if (!(entity instanceof Player player))
+            return;
 
-            float xRotO = player.xRotO;
-            float yRotO = player.yRotO;
-            Vec3 direction = player.getLookAngle().lerp(tug.getDirection(player), tug.strength());
+        var tug = CameraUtil.getTugData(player);
+        if (tug != null) {
+            Vec3 direction = player.getLookAngle().lerp(tug.getDirection(player, partialTicks), tug.strength);
             player.lookAt(EntityAnchorArgument.Anchor.EYES, player.getEyePosition().add(direction));
-            player.xRotO = xRotO;
-            player.yRotO = yRotO;
+            player.yRotO = player.getYRot();
+            player.xRotO = player.getXRot();
         }
     }
 
