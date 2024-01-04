@@ -39,6 +39,11 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         this.minecraft = Minecraft.getInstance();
     }
 
+    public static void purgeTextureCache() {
+        cachedTextures.values().forEach(NativeImage::close);
+        cachedTextures.clear();
+    }
+
     public NativeImage getTexture(T entity) {
         return cachedTextures.computeIfAbsent(parent.getTextureLocation(entity), resourceLocation -> {
             Resource resource = null;

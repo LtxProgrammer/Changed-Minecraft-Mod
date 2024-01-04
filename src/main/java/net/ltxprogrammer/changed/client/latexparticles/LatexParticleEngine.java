@@ -7,6 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import net.ltxprogrammer.changed.client.ChangedClient;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -48,6 +50,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
     private final TextureAtlas textureAtlas;
 
     private final Map<ParticleRenderType, List<LatexParticle>> particles = new HashMap<>();
+    private boolean isReloading = false;
 
     public LatexParticleEngine(Minecraft minecraft) {
         this.minecraft = minecraft;
@@ -63,6 +66,9 @@ public class LatexParticleEngine implements PreparableReloadListener {
     }
 
     public void tick() {
+        if (pauseForReload())
+            return;
+
         for (var particleSet : particles.values())
             for (var particle : particleSet)
                 particle.tick();
@@ -70,6 +76,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
         particles.values().forEach(particleSet -> {
             particleSet.removeIf(LatexParticle::shouldExpire);
         });
+    }
+
+    public void purgeParticles() {
+        particles.clear();
     }
 
     public List<LatexParticle> getAllParticlesForEntity(Entity entity) {
@@ -140,6 +150,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
             return new CompletableFuture[p_107303_];
         });
 
+        LatexParticlesLayer.purgeTextureCache();
+        purgeParticles();
+        isReloading = true;
+
         return CompletableFuture.allOf(completablefuture).thenApplyAsync((p_107324_) -> {
             profilerA.startTick();
             profilerA.push("stitching");
@@ -160,6 +174,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
             });
             profilerB.pop();
             profilerB.endTick();
+            isReloading = false;
         }, execB);
     }
 
@@ -223,6 +238,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
 
     public void close() {
         this.textureAtlas.clearTextureData();
+    }
+
+    public boolean pauseForReload() {
+        return isReloading;
     }
 
     @OnlyIn(Dist.CLIENT)
