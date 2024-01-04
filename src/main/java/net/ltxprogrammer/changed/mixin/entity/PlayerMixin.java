@@ -11,9 +11,11 @@ import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityDimensions;
@@ -62,8 +64,21 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void tick(CallbackInfo ci) {
+    public void tickPre(CallbackInfo ci) {
         ProcessTransfur.tickPlayerTransfurProgress((Player)(Object)this);
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void tickPost(CallbackInfo ci) {
+        var tug = CameraUtil.getTugData((Player)(Object)this);
+        if (tug != null) {
+            if (tug.shouldExpire(this)) {
+                CameraUtil.resetTugData((Player)(Object)this);
+                return;
+            }
+
+            tug.ticksExpire--;
+        }
     }
 
     @Inject(method = "getHurtSound", at = @At("HEAD"), cancellable = true)
