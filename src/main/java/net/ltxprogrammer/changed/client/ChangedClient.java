@@ -35,6 +35,8 @@ public class ChangedClient {
     }
 
     protected static void addLatexParticleToEntity(LatexEntity entity) {
+        if (particleSystem.pauseForReload())
+            return;
         if (entity.getRandom().nextFloat() > entity.getDripRate(1.0f - entity.computeHealthRatio()))
             return;
         var renderer = minecraft.getEntityRenderDispatcher().getRenderer(entity);
