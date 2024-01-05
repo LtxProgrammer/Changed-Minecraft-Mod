@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,8 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
     private final RenderLayerParent<T, M> parent;
     private final M model;
     private final Minecraft minecraft;
+    private final @Nullable ResourceLocation alternateTexture;
+
     private static final NativeImage MISSING_TEXTURE = new NativeImage(1, 1, false);
     private static final Map<ResourceLocation, NativeImage> cachedTextures = new HashMap<>();
 
@@ -37,6 +40,15 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         this.parent = parent;
         this.model = model;
         this.minecraft = Minecraft.getInstance();
+        this.alternateTexture = null;
+    }
+
+    public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model, LatexTranslucentLayer<T, M> translucentLayer) {
+        super(parent);
+        this.parent = parent;
+        this.model = model;
+        this.minecraft = Minecraft.getInstance();
+        this.alternateTexture = translucentLayer.getTexture();
     }
 
     public static void purgeTextureCache() {
@@ -45,7 +57,11 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
     }
 
     public NativeImage getTexture(T entity) {
-        return cachedTextures.computeIfAbsent(parent.getTextureLocation(entity), resourceLocation -> {
+        return getTexture(parent.getTextureLocation(entity));
+    }
+
+    public NativeImage getTexture(ResourceLocation name) {
+        return cachedTextures.computeIfAbsent(name, resourceLocation -> {
             Resource resource = null;
 
             try {
@@ -74,6 +90,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         var vector = new Vector3f(entity.level.random.nextFloat(), entity.level.random.nextFloat(), entity.level.random.nextFloat());
         vector.normalize();
         var spherePoint = vector.copy();
+        var cubePoint = vector.copy();
         var cubeMin = ((CubeExtender)cube).getVisualMin();
         var cubeMax = ((CubeExtender)cube).getVisualMax();
         var cubeSize = cubeMax.copy();
@@ -85,19 +102,20 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         if (Math.abs(spherePoint.x()) > Math.abs(spherePoint.y()) && Math.abs(spherePoint.x()) > Math.abs(spherePoint.z())) {
             vector.setX(Math.signum(vector.x()) * cubeSize.x()); // X is the largest value
             normal.setX(Math.signum(vector.x()));
+            cubePoint.setX(normal.x());
             tangent.setY(-1.0f);
         } else if (Math.abs(spherePoint.y()) > Math.abs(spherePoint.x()) && Math.abs(spherePoint.y()) > Math.abs(spherePoint.z())) {
             vector.setY(Math.signum(vector.y()) * cubeSize.y()); // Y is the largest value
             normal.setY(Math.signum(vector.y()));
+            cubePoint.setY(Math.signum(vector.y()));
             tangent.setX(1.0f);
         } else {
             vector.setZ(Math.signum(vector.z()) * cubeSize.z()); // Z is the largest value
             normal.setZ(Math.signum(vector.z()));
+            cubePoint.setZ(Math.signum(vector.z()));
             tangent.setY(-1.0f);
         }
 
-        var cubePoint = vector.copy();
-        cubePoint.mul(1.0f / cubeSize.x(), 1.0f / cubeSize.y(), 1.0f / cubeSize.z());
         UVPair uv = ((CubeExtender)cube).getUV(cubePoint);
         vector.add(cubeMin.x() / 16.0f, cubeMin.y() / 16.0f, cubeMin.z() / 16.0f);
         return new SurfacePoint(normal, tangent, vector, uv);
@@ -120,6 +138,19 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
             var rgba = MixedTexture.sampleNearest(image, null, surface.uv().u(), surface.uv().v());
             color = new Color3(rgba.r(), rgba.g(), rgba.b());
             alpha = rgba.a();
+            if (alpha < 0.00001f && alternateTexture != null) {
+                var altImage = getTexture(alternateTexture);
+
+                if (altImage != MISSING_TEXTURE) {
+                    rgba = MixedTexture.sampleNearest(altImage, null, surface.uv().u(), surface.uv().v());
+                    color = new Color3(rgba.r(), rgba.g(), rgba.b());
+                    alpha = rgba.a();
+                }
+
+                else {
+                    color = entity.getDripColor();
+                }
+            }
         } else {
             color = entity.getDripColor();
         }
@@ -129,9 +160,6 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float f1, float f2, float partialTicks, float bobAmount, float f3, float f4) {
-        if (!(pose instanceof PoseStackExtender poseStackExtender))
-            return;
-
         ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
             particle.setupForRender(pose, partialTicks);
             particle.renderFromLayer(bufferSource, partialTicks);
