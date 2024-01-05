@@ -86,16 +86,16 @@ public class MixedTexture {
     public record RGBA(float r, float g, float b, float a) {
         public static RGBA of(int integer) {
             return new RGBA(
-                    (float)((integer & 0x00ff0000) >>> 16) / 255.0f,
-                    (float)((integer & 0x0000ff00) >>> 8) / 255.0f,
                     (float)(integer & 0x000000ff) / 255.0f,
+                    (float)((integer & 0x0000ff00) >>> 8) / 255.0f,
+                    (float)((integer & 0x00ff0000) >>> 16) / 255.0f,
                     (float)((integer & 0xff000000) >>> 24) / 255.0f);
         }
 
         public int toInt() {
-            return ((int)(clamp(r, 0f, 1f) * 255.0f) << 16) +
+            return (int)(clamp(r, 0f, 1f) * 255.0f) +
                     ((int)(clamp(g, 0f, 1f) * 255.0f) << 8) +
-                    (int)(clamp(b, 0f, 1f) * 255.0f) +
+                    ((int)(clamp(b, 0f, 1f) * 255.0f) << 16) +
                     ((int)(clamp(a, 0f, 1f) * 255.0f) << 24);
         }
 

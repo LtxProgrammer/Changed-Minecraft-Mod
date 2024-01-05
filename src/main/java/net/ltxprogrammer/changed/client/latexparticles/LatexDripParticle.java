@@ -345,7 +345,7 @@ public class LatexDripParticle extends LatexParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE;
+        return alpha >= 1.0f ? LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE : LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_TRANSLUCENT;
     }
 
     public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
