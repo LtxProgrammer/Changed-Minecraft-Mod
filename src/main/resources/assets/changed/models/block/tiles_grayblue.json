@@ -7,6 +7,6 @@
     "east": "changed:blocks/tiles_grayblue",
     "south": "changed:blocks/tiles_grayblue",
     "west": "changed:blocks/tiles_grayblue",
-    "particle": "changed:blocks/grayblue_particle"
+    "particle": "changed:blocks/tiles_grayblue"
   }
 }

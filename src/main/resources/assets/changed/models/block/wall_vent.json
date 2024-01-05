@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "down": "changed:blocks/wall_white",
-    "up": "changed:blocks/wall_white",
+    "down": "changed:blocks/floor_vent",
+    "up": "changed:blocks/floor_vent",
     "north": "changed:blocks/wall_vent",
     "east": "changed:blocks/wall_vent",
     "south": "changed:blocks/wall_vent",
     "west": "changed:blocks/wall_vent",
-    "particle": "changed:blocks/wall_white"
+    "particle": "changed:blocks/floor_vent"
   }
 }

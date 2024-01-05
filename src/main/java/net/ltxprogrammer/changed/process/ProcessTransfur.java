@@ -798,6 +798,11 @@ public class ProcessTransfur {
 
             if (possible.isEmpty())
                 return;
+            if (entity instanceof Player player) {
+                var instance = getPlayerLatexVariant(player);
+                if (instance != null && instance.ageAsVariant > entity.level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    return;
+            }
 
             LatexVariant<?> fusion = possible.get(level.random.nextInt(possible.size()));
             ChangedSounds.broadcastSound(entity, fusion.sound, 1.0f, 1.0f);
