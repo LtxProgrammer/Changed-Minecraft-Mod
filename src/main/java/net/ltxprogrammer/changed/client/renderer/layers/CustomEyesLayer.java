@@ -149,6 +149,9 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (entity.isInvisible())
+            return;
+
         var info = entity.getBasicPlayerInfo();
         var style = info.getEyeStyle();
 
