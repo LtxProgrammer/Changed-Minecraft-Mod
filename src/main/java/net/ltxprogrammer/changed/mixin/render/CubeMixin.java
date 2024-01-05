@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.UVPair;
@@ -54,7 +55,10 @@ public abstract class CubeMixin implements CubeExtender {
             }
         }
 
-        Objects.requireNonNull(surface);
+        if (surface == null) {
+            Changed.LOGGER.warn("Null surface encountered for given normal {}, with {} polygons", cubeSurfaceNormal, this.polygons.length);
+            return new UVPair(0, 0);
+        }
 
         float uX = Mth.lerp(xLerp, surface.vertices[0].u, surface.vertices[1].u);
         float uY = Mth.lerp(xLerp, surface.vertices[3].u, surface.vertices[2].u);
