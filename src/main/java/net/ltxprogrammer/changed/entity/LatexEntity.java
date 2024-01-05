@@ -357,8 +357,13 @@ public abstract class LatexEntity extends Monster {
         if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
             return true;
         LatexVariant<?> playerVariant = LatexVariant.getEntityVariant(livingEntity);
-        if (livingEntity instanceof Player && !livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
-            return false;
+        if (livingEntity instanceof Player player) {
+            if (!livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
+                return false;
+            var instance = ProcessTransfur.getPlayerLatexVariant(player);
+            if (instance != null && instance.ageAsVariant > livingEntity.level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                return false;
+        }
         for (var checkVariant : LatexVariant.FUSION_LATEX_FORMS) {
             if (ChangedRegistry.LATEX_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
                 return true;

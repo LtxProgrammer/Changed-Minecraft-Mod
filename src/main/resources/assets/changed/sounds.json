@@ -279,14 +279,6 @@
     ],
     "subtitle": "subtitles.changed.monster2"
   },
-  "music_disc.latex_dance": {
-    "sounds": [
-      {
-        "name": "changed:latex_dance",
-        "stream": true
-      }
-    ]
-  },
   "music_disc.owo": {
     "sounds": [
       {

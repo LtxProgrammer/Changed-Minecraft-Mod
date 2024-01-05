@@ -10,7 +10,10 @@ import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
@@ -22,8 +25,10 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -152,6 +157,8 @@ public class LatexDripParticle extends LatexParticle {
                 this.stoppedByCollision = true;
             }
 
+            boolean lastOnGround = this.isOnGround;
+            boolean lastOnWall = this.isOnWall;
             this.isOnGround = presimYd != yd && presimYd < 0.0D;
             if (presimXd != xd) {
                 this.xd = 0.0D;
@@ -164,7 +171,16 @@ public class LatexDripParticle extends LatexParticle {
             if (!this.isOnWall)
                 this.isOnWall = (presimXd != xd && Math.abs(presimXd) > 1.0E-5F && xd == 0.0D) ||
                     (presimZd != zd && Math.abs(presimZd) > 1.0E-5F && zd == 0.0D);
+
+            if ((!lastOnWall && this.isOnWall) || (!lastOnGround && this.isOnGround))
+                onCollide();
         }
+    }
+
+    @Override
+    public void onCollide() {
+        Player localPlayer = UniversalDist.getLocalPlayer();
+        level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP, ProcessTransfur.isPlayerLatex(localPlayer) ? SoundSource.NEUTRAL : SoundSource.HOSTILE, 0.025f, 1.0f, true);
     }
 
     @Override

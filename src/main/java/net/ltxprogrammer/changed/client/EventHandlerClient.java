@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;

@@ -7,6 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import net.ltxprogrammer.changed.client.ChangedClient;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -48,6 +50,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
     private final TextureAtlas textureAtlas;
 
     private final Map<ParticleRenderType, List<LatexParticle>> particles = new HashMap<>();
+    private boolean isReloading = false;
 
     public LatexParticleEngine(Minecraft minecraft) {
         this.minecraft = minecraft;
@@ -56,13 +59,33 @@ public class LatexParticleEngine implements PreparableReloadListener {
         textureManager.register(LatexParticleRenderType.LOCATION_PARTICLES, textureAtlas);
     }
 
+    public int countParticles() {
+        return this.particles.values().stream().mapToInt(Collection::size).sum();
+    }
+
+    public int getMaxParticles() {
+        return switch (minecraft.options.particles) {
+            case ALL -> 8000;
+            case DECREASED -> 2000;
+            case MINIMAL -> 500;
+        };
+    }
+
     public void addParticle(LatexParticleProvider<? extends LatexParticle> particleProvider) {
-        // TODO use chance to limit active particles before ctor
+        if (countParticles() >= getMaxParticles())
+            return;
         var particle = particleProvider.create(this.spriteSets.get(particleProvider.getParticleType().getRegistryName()));
         particles.computeIfAbsent(particle.getRenderType(), type -> new ArrayList<>()).add(particle);
     }
 
     public void tick() {
+        if (this.minecraft.level == null) {
+            particles.clear();
+        }
+
+        if (pauseForReload())
+            return;
+
         for (var particleSet : particles.values())
             for (var particle : particleSet)
                 particle.tick();
@@ -70,6 +93,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
         particles.values().forEach(particleSet -> {
             particleSet.removeIf(LatexParticle::shouldExpire);
         });
+    }
+
+    public void purgeParticles() {
+        particles.clear();
     }
 
     public List<LatexParticle> getAllParticlesForEntity(Entity entity) {
@@ -140,6 +167,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
             return new CompletableFuture[p_107303_];
         });
 
+        LatexParticlesLayer.purgeTextureCache();
+        purgeParticles();
+        isReloading = true;
+
         return CompletableFuture.allOf(completablefuture).thenApplyAsync((p_107324_) -> {
             profilerA.startTick();
             profilerA.push("stitching");
@@ -160,6 +191,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
             });
             profilerB.pop();
             profilerB.endTick();
+            isReloading = false;
         }, execB);
     }
 
@@ -223,6 +255,10 @@ public class LatexParticleEngine implements PreparableReloadListener {
 
     public void close() {
         this.textureAtlas.clearTextureData();
+    }
+
+    public boolean pauseForReload() {
+        return isReloading;
     }
 
     @OnlyIn(Dist.CLIENT)
