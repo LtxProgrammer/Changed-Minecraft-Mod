@@ -344,6 +344,11 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     @Override
+    public boolean shouldExpire() {
+        return super.shouldExpire() || attachedEntity == null || attachedEntity.isDeadOrDying() || attachedEntity.isRemoved() || attachedEntity.isInvisible();
+    }
+
+    @Override
     public @NotNull ParticleRenderType getRenderType() {
         return alpha >= 1.0f ? LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE : LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_TRANSLUCENT;
     }
