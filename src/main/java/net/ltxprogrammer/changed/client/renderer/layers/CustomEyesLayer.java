@@ -149,7 +149,14 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        var info = entity.getBasicPlayerInfo();
+        if (entity.isInvisible())
+            return;
+
+        BasicPlayerInfo info = new BasicPlayerInfo();
+        info.copyFrom(entity.getBasicPlayerInfo());
+        if (Changed.config.client.basicPlayerInfo.isOverrideOthersToMatchStyle())
+            info.setEyeStyle(Changed.config.client.basicPlayerInfo.getEyeStyle());
+
         var style = info.getEyeStyle();
 
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);

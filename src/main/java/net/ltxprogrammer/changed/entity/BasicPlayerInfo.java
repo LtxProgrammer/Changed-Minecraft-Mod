@@ -1,11 +1,8 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.util.Color3;
-import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Random;
@@ -21,6 +18,7 @@ public class BasicPlayerInfo {
     private Color3 scleraColor = Color3.WHITE;
     private boolean overrideIrisOnDarkLatex = false;
     private EyeStyle eyeStyle = EyeStyle.V2;
+    private boolean overrideOthersToMatchStyle = false;
 
     public static final List<Color3> HAIR_COLORS = List.of(
             new Color3(0.98f, 0.85f, 0.48f), // Blond
@@ -57,6 +55,7 @@ public class BasicPlayerInfo {
         info.hairColor = Util.getRandom(HAIR_COLORS, random);
         info.irisColor = Util.getRandom(IRIS_COLORS, random);
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
+        info.overrideOthersToMatchStyle = false;
         return info;
     }
 
@@ -74,6 +73,10 @@ public class BasicPlayerInfo {
 
     public void setOverrideIrisOnDarkLatex(boolean overrideIrisOnDarkLatex) {
         this.overrideIrisOnDarkLatex = overrideIrisOnDarkLatex;
+    }
+
+    public void setOverrideOthersToMatchStyle(boolean overrideOthersToMatchStyle) {
+        this.overrideOthersToMatchStyle = overrideOthersToMatchStyle;
     }
 
     public void setEyeStyle(EyeStyle eyeStyle) {
@@ -96,6 +99,10 @@ public class BasicPlayerInfo {
         return overrideIrisOnDarkLatex;
     }
 
+    public boolean isOverrideOthersToMatchStyle() {
+        return overrideOthersToMatchStyle;
+    }
+
     public EyeStyle getEyeStyle() {
         return eyeStyle;
     }
@@ -112,6 +119,7 @@ public class BasicPlayerInfo {
         tag.putInt("sclera", scleraColor.toInt());
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
         tag.putInt("eyeStyle", eyeStyle.ordinal());
+        tag.putBoolean("overrideOthersToMatchStyle", overrideOthersToMatchStyle);
     }
 
     public void load(CompoundTag tag) {
@@ -120,5 +128,6 @@ public class BasicPlayerInfo {
         this.scleraColor = Color3.fromInt(tag.getInt("sclera"));
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
         this.eyeStyle = EyeStyle.values()[tag.getInt("eyeStyle")];
+        this.overrideOthersToMatchStyle = tag.getBoolean("overrideOthersToMatchStyle");
     }
 }
