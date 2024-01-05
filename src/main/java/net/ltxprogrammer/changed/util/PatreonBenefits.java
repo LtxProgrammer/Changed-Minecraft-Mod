@@ -480,32 +480,39 @@ public class PatreonBenefits {
         return form.variant;
     }
 
-    public static Component getPlayerName(Player player) {
-        Component name = player.getDisplayName();
+    public static Component getPlayerName(Player player, Component username) {
+        if (!Changed.config.common.displayPatronage.get())
+            return username;
+
+        Component copy = username.copy();
 
         switch (PatreonBenefits.getPlayerTier(player)) {
             case LEVEL0 -> {
-                name.getSiblings().add(new TextComponent(" | "));
-                name.getSiblings().add(new TranslatableComponent("changed.patreon.level0").withStyle(ChatFormatting.GRAY));
+                copy.getSiblings().add(new TextComponent(" | "));
+                copy.getSiblings().add(new TranslatableComponent("changed.patreon.level0").withStyle(ChatFormatting.GRAY));
             }
             case LEVEL1 -> {
-                name.getSiblings().add(new TextComponent(" | "));
-                name.getSiblings().add(new TranslatableComponent("changed.patreon.level1").withStyle(ChatFormatting.GREEN));
+                copy.getSiblings().add(new TextComponent(" | "));
+                copy.getSiblings().add(new TranslatableComponent("changed.patreon.level1").withStyle(ChatFormatting.GREEN));
             }
             case LEVEL2 -> {
-                name.getSiblings().add(new TextComponent(" | "));
-                name.getSiblings().add(new TranslatableComponent("changed.patreon.level2").withStyle(ChatFormatting.AQUA));
+                copy.getSiblings().add(new TextComponent(" | "));
+                copy.getSiblings().add(new TranslatableComponent("changed.patreon.level2").withStyle(ChatFormatting.AQUA));
             }
             case LEVEL3 -> {
-                name.getSiblings().add(new TextComponent(" | "));
-                name.getSiblings().add(new TranslatableComponent("changed.patreon.level3").withStyle(ChatFormatting.LIGHT_PURPLE));
+                copy.getSiblings().add(new TextComponent(" | "));
+                copy.getSiblings().add(new TranslatableComponent("changed.patreon.level3").withStyle(ChatFormatting.LIGHT_PURPLE));
             }
             case LEVEL4 -> {
-                name.getSiblings().add(new TextComponent(" | "));
-                name.getSiblings().add(new TranslatableComponent("changed.patreon.level4").withStyle(ChatFormatting.GOLD));
+                copy.getSiblings().add(new TextComponent(" | "));
+                copy.getSiblings().add(new TranslatableComponent("changed.patreon.level4").withStyle(ChatFormatting.GOLD));
             }
         }
 
-        return name;
+        return copy;
+    }
+
+    public static Component getPlayerName(Player player) {
+        return getPlayerName(player, player.getDisplayName());
     }
 }

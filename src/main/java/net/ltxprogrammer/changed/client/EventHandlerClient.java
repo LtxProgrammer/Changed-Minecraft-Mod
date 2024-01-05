@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -111,9 +112,9 @@ public class EventHandlerClient {
     public static class ForgeEventHandler {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
-        public static void onRenderNameplateEvent(RenderNameplateEvent event) {
-            if (event.getEntity() instanceof Player player) // Can't believe this is all it takes
-                event.setContent(PatreonBenefits.getPlayerName(player));
+        public static void onNameFormat(PlayerEvent.NameFormat event) {
+            if (event.getEntity() instanceof Player player)
+                event.setDisplayname(PatreonBenefits.getPlayerName(player, event.getDisplayname()));
         }
 
         @SubscribeEvent
