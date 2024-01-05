@@ -15,8 +15,9 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
     public LatexTranslucentLizardRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_translucent_lizard_outer.png")));
-        this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+        var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_translucent_lizard_outer.png"));
+        this.addLayer(translucent);
+        this.addLayer(new LatexParticlesLayer<>(this, getModel(), translucent));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#ffb84c"), 0.5f),CustomEyesLayer.fixedColor(Color3.parseHex("#a24b42"), 0.75f)));
     }
 

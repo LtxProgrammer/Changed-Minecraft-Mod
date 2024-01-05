@@ -50,4 +50,22 @@ public interface LatexParticleRenderType extends ParticleRenderType {
             return "LATEX_PARTICLE_SHEET_3D_OPAQUE";
         }
     };
+    public static LatexParticleRenderType LATEX_PARTICLE_SHEET_3D_TRANSLUCENT = new LatexParticleRenderType() {
+        public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            RenderSystem.depthMask(true);
+            RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
+            RenderSystem.setShaderTexture(0, LOCATION_PARTICLES);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.NEW_ENTITY);
+        }
+
+        public void end(Tesselator tesselator) {
+            tesselator.end();
+        }
+
+        public String toString() {
+            return "LATEX_PARTICLE_SHEET_3D_TRANSLUCENT";
+        }
+    };
 }
