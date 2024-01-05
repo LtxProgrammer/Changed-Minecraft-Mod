@@ -134,6 +134,7 @@
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Post-Transfur Fusability Duration (Ticks)",
   "gamerule.changed:keepConscious": "Always Keep Conscious on Transfur",
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexGrowthRate": "Latex Growth Percentage",
