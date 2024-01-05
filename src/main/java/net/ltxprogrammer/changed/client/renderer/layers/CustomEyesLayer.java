@@ -152,7 +152,11 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         if (entity.isInvisible())
             return;
 
-        var info = entity.getBasicPlayerInfo();
+        BasicPlayerInfo info = new BasicPlayerInfo();
+        info.copyFrom(entity.getBasicPlayerInfo());
+        if (Changed.config.client.basicPlayerInfo.isOverrideOthersToMatchStyle())
+            info.setEyeStyle(Changed.config.client.basicPlayerInfo.getEyeStyle());
+
         var style = info.getEyeStyle();
 
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
