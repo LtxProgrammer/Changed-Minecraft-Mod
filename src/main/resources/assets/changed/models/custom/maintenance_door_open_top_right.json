@@ -2,34 +2,19 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "changed:blocks/maintenance_door",
-		"particle": "changed:blocks/maintenance_door"
+		"0": "changed:blocks/maintenance_door"
 	},
 	"elements": [
-		{
-			"name": "DoorTopRight",
-			"from": [2, 13, 4],
-			"to": [16, 14, 12],
-			"faces": {
-				"north": {"uv": [3.75, 7.75, 5.5, 7.875], "texture": "#0"},
-				"east": {"uv": [9, 5.5, 10, 5.625], "texture": "#0"},
-				"south": {"uv": [7.25, 7.75, 9, 7.875], "texture": "#0"},
-				"west": {"uv": [9, 7.375, 10, 7.5], "texture": "#0"},
-				"up": {"uv": [3.5, 9.875, 1.75, 8.875], "texture": "#0"},
-				"down": {"uv": [7, 8.875, 5.25, 9.875], "texture": "#0"}
-			}
-		},
 		{
 			"name": "FrameTop",
 			"from": [0, 0, 2],
 			"to": [2, 16, 14],
 			"faces": {
-				"north": {"uv": [9, 7.5, 9.25, 9.5], "texture": "#0"},
-				"east": {"uv": [0, 0, 2, 1.875], "texture": "#0"},
-				"south": {"uv": [9.25, 7.5, 9.5, 9.5], "texture": "#0"},
-				"west": {"uv": [2, 0, 4, 1.875], "texture": "#0"},
-				"up": {"uv": [9.75, 2.5, 9.5, 0.5], "texture": "#0"},
-				"down": {"uv": [10, 0.5, 9.75, 2.5], "texture": "#0"}
+				"north": {"uv": [1.75, 7.75, 2, 9.75], "texture": "#0"},
+				"east": {"uv": [1.75, 3.75, 3.25, 5.75], "texture": "#0"},
+				"south": {"uv": [2, 7.75, 2.25, 9.75], "texture": "#0"},
+				"west": {"uv": [5.25, 0, 6.75, 2], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [3.5, 5.25, 3.25, 3.75], "texture": "#0", "cullface": "up"}
 			}
 		},
 		{
@@ -37,12 +22,23 @@
 			"from": [2, 14, 2],
 			"to": [16, 16, 14],
 			"faces": {
-				"north": {"uv": [11.25, 0, 13, 0.25], "texture": "#0"},
-				"east": {"uv": [6, 3.75, 8, 3.875], "texture": "#0"},
-				"south": {"uv": [11.25, 0.25, 13, 0.5], "texture": "#0"},
-				"west": {"uv": [0, 8, 2, 8.125], "texture": "#0"},
-				"up": {"uv": [5.5, 6, 3.75, 4], "texture": "#0"},
-				"down": {"uv": [9, 4, 7.25, 6], "texture": "#0"}
+				"north": {"uv": [8, 8, 9.75, 8.25], "texture": "#0"},
+				"south": {"uv": [3, 8.25, 4.75, 8.5], "texture": "#0"},
+				"up": {"uv": [8.5, 3, 6.75, 1.5], "texture": "#0", "cullface": "up"},
+				"down": {"uv": [8.5, 3, 6.75, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "DoorTopRightLower",
+			"from": [2, 13, 4],
+			"to": [16, 14, 12],
+			"faces": {
+				"north": {"uv": [8.5, 0.0625, 10.25, 0.125], "texture": "#0"},
+				"east": {"uv": [6.75, 5.75, 7.75, 5.875], "texture": "#0"},
+				"south": {"uv": [8.5, 0.1875, 10.25, 0.25], "texture": "#0"},
+				"west": {"uv": [6.75, 5.875, 7.75, 6], "texture": "#0"},
+				"up": {"uv": [9.75, 6.5, 8, 5.5], "texture": "#0"},
+				"down": {"uv": [10.25, 1.25, 8.5, 2.25], "texture": "#0"}
 			}
 		}
 	],
