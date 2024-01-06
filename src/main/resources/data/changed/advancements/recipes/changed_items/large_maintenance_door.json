@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:large_maintenance_door"
+    ]
+  },
+  "criteria": {
+    "has_maintenance_door": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:maintenance_door"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:large_maintenance_door"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_maintenance_door",
+      "has_the_recipe"
+    ]
+  ]
+}
