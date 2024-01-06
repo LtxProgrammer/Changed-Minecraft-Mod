@@ -10,6 +10,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
+import net.ltxprogrammer.changed.recipe.PurifierRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipe> {
+public class PurifierRecipeCategory implements IRecipeCategory<PurifierRecipe> {
     private static final int craftOutputSlot = 0;
     private static final int craftInputSlot1 = 1;
 
@@ -31,11 +32,11 @@ public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipe> {
     private final TranslatableComponent localizedName;
     private final ICraftingGridHelper craftingGridHelper;
 
-    public InfuserRecipeCategory(IGuiHelper guiHelper) {
+    public PurifierRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
         background = guiHelper.createDrawable(location, 0, 60, WIDTH, HEIGHT);
-        icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ChangedBlocks.INFUSER.get()));
-        localizedName = new TranslatableComponent("container.changed.infuser");
+        icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ChangedBlocks.PURIFIER.get()));
+        localizedName = new TranslatableComponent("container.changed.purifier");
         craftingGridHelper = guiHelper.createCraftingGridHelper(craftInputSlot1);
     }
 
@@ -56,23 +57,18 @@ public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipe> {
 
     @Override
     public ResourceLocation getUid() {
-        return Changed.modResource("infuser_recipe");
+        return Changed.modResource("purifier_recipe");
     }
 
     @Override
-    public Class<? extends InfuserRecipe> getRecipeClass() {
-        return InfuserRecipe.class;
+    public Class<? extends PurifierRecipe> getRecipeClass() {
+        return PurifierRecipe.class;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, InfuserRecipe recipe, IFocusGroup focuses) {
-        var ingredients = recipe.getIngredients();
-        List<List<ItemStack>> grid = new ArrayList<>();
-
-        for (int idx = 0; idx < ingredients.size(); ++idx)
-            grid.add(Arrays.asList(ingredients.get(idx).getItems()));
-
-        craftingGridHelper.setInputs(builder, VanillaTypes.ITEM_STACK, grid, 3, 3);
-        craftingGridHelper.setOutputs(builder, VanillaTypes.ITEM_STACK, recipe.getPossibleResults());
+    public void setRecipe(IRecipeLayoutBuilder builder, PurifierRecipe recipe, IFocusGroup focuses) {
+        var ingredient = recipe.getIngredient();
+        craftingGridHelper.setInputs(builder, VanillaTypes.ITEM_STACK, List.of(Arrays.asList(ingredient.getItems())), 1, 1);
+        craftingGridHelper.setOutputs(builder, VanillaTypes.ITEM_STACK, List.of(new ItemStack(recipe.getResult())));
     }
 }

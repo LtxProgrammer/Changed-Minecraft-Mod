@@ -21,7 +21,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.item.VariantHoldingBase;
-import net.ltxprogrammer.changed.recipe.InfuserRecipes;
+import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -112,7 +112,7 @@ public class InfuserRecipeCategory implements DisplayCategory<InfuserRecipeDispl
             boolean disabled = true;
             boolean toggle = false;
             if (entry.getValue() instanceof ItemStack stack && stack.getItem() instanceof VariantHoldingBase base &&
-                    InfuserRecipes.InfuserRecipe.INFUSER_BASE_CONVERSION.containsKey(base.getOriginalItem())) {
+                    InfuserRecipe.INFUSER_BASE_CONVERSION.containsKey(base.getOriginalItem())) {
                 var variant = Syringe.getVariant(stack);
                 if (variant != null && variant.isGendered()) {
                     disabled = false;

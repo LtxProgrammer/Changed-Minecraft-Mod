@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 @JeiPlugin
 public class ChangedJeiPlugin implements IModPlugin {
     InfuserRecipeCategory infuserRecipeCategory;
+    PurifierRecipeCategory purifierRecipeCategory;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -58,6 +59,9 @@ public class ChangedJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(
                 infuserRecipeCategory = new InfuserRecipeCategory(guiHelper)
         );
+        registration.addRecipeCategories(
+                purifierRecipeCategory = new PurifierRecipeCategory(guiHelper)
+        );
     }
 
     @Override
@@ -68,6 +72,7 @@ public class ChangedJeiPlugin implements IModPlugin {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
 
         registration.addRecipes(infuserRecipeCategory.getRecipeType(), recipeManager.getAllRecipesFor(ChangedRecipeTypes.INFUSER_RECIPE));
+        registration.addRecipes(purifierRecipeCategory.getRecipeType(), recipeManager.getAllRecipesFor(ChangedRecipeTypes.PURIFIER_RECIPE));
     }
 
     @Override
