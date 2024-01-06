@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
+import net.ltxprogrammer.changed.block.PartialEntityBlock;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -22,8 +23,18 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 public abstract class BlockStateBaseMixin extends StateHolder<Block, BlockState> {
     @Shadow protected abstract BlockState asState();
 
+    @Shadow public abstract Block getBlock();
+
     protected BlockStateBaseMixin(Block p_61117_, ImmutableMap<Property<?>, Comparable<?>> p_61118_, MapCodec<BlockState> p_61119_) {
         super(p_61117_, p_61118_, p_61119_);
+    }
+
+    @Inject(method = "hasBlockEntity", at = @At("RETURN"), cancellable = true)
+    public void hasPartialBlockEntity(CallbackInfoReturnable<Boolean> callback) {
+        var base = (BlockBehaviour.BlockStateBase)(Object)this;
+
+        if (callback.getReturnValue() && this.getBlock() instanceof PartialEntityBlock partial && base instanceof BlockState blockState)
+            callback.setReturnValue(partial.stateHasBlockEntity(blockState));
     }
 
     @Inject(method = "isSuffocating", at = @At("HEAD"), cancellable = true)

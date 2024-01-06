@@ -56,6 +56,11 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
         return new BedsideIVRackBlockEntity(p_153277_, p_153278_);
     }
 
+    @Override
+    public boolean stateHasBlockEntity(BlockState blockState) {
+        return true;
+    }
+
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext p_52863_) {
         BlockPos blockpos = p_52863_.getClickedPos();
