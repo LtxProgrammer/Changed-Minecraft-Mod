@@ -5,14 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 
-public class FacilityCorridorSection extends FacilitySinglePiece {
+public class FacilityTransitionSection extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
-            WeightedEntry.wrap(PieceType.STAIRCASE_START, 1),
-            WeightedEntry.wrap(PieceType.TRANSITION, 3),
-            WeightedEntry.wrap(PieceType.CORRIDOR, 15),
-            WeightedEntry.wrap(PieceType.ROOM, 3));
+            WeightedEntry.wrap(PieceType.CORRIDOR, 1));
 
-    public FacilityCorridorSection(ResourceLocation templateName) {
+    public FacilityTransitionSection(ResourceLocation templateName) {
         super(PieceType.CORRIDOR, templateName, LootTables.LOW_TIER_LAB);
     }
 

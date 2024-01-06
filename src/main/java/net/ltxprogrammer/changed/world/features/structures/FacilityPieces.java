@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -75,6 +76,9 @@ public class FacilityPieces {
             STAIRS1_GRAY, STAIRS1_RED,
             LASER_HALL);
 
+    public static final FacilityPiece CORRIDOR_BLUE_STAIRS_TO_RED = new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red"));
+    public static final FacilityPieceCollection TRANSITIONS = FacilityPieceCollection.of(CORRIDOR_BLUE_STAIRS_TO_RED);
+
     public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityCorridorSection(Changed.modResource("facility/room_blue_wl_test"));
     public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST);
 
@@ -84,6 +88,7 @@ public class FacilityPieces {
         map.put(PieceType.STAIRCASE_SECTION, STAIRCASE_SECTIONS);
         map.put(PieceType.STAIRCASE_END, STAIRCASE_ENDS);
         map.put(PieceType.CORRIDOR, CORRIDORS);
+        map.put(PieceType.TRANSITION, TRANSITIONS);
         map.put(PieceType.ROOM, ROOMS);
     });
 
@@ -105,8 +110,7 @@ public class FacilityPieces {
             var entry = type.get();
 
             var collection = BY_PIECE_TYPE.get(entry.getData());
-            var nextPiece = collection.findNextPiece(context.random()).orElseGet(() ->
-                    collection.findNextPiece(context.random()).orElse(null));
+            var nextPiece = collection.findNextPiece(context.random()).orElse(null);
             if (nextPiece == null) {
                 reroll--;
                 continue;
@@ -150,6 +154,13 @@ public class FacilityPieces {
         FacilityPieceInstance entrancePiece = entranceNew.createStructurePiece(context.structureManager(), genDepth);
         entrancePiece.setRotation(Direction.Plane.HORIZONTAL.getRandomDirection(context.random()));
         entrancePiece.setupBoundingBoxOnBottomCenter(blockPos);
+        BoundingBox entranceBB = entrancePiece.getBoundingBox();
+        
+        int minXminZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int minXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXminZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        entrancePiece.setupBoundingBoxOnBottomCenter(new BlockPos(blockPos.getX(), Math.min(Math.min(minXminZ, minXmaxZ), Math.min(maxXminZ, maxXmaxZ)), blockPos.getZ()));
 
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);
