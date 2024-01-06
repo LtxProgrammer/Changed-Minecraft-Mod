@@ -134,6 +134,7 @@
   "command.changed.error.used_by_other_mod": "Spiller er allerede en form fra en annen mod",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Post-transpels fusabilitet varighet (Tikker)",
   "gamerule.changed:keepConscious": "Alltid holde bevisst etter transpelsmasjon",
   "gamerule.changed:keepForm": "Permanent transpels",
   "gamerule.changed:latexGrowthRate": "Lateks vekstprosent",
@@ -506,5 +507,17 @@
   "glu_block.has_door": "Har dør",
   "glu_block.joint_type": "Strukturskjøt type",
   "glu_block.joint.entrance": "Inngang",
-  "glu_block.joint.exit": "Utgang"
+  "glu_block.joint.exit": "Utgang",
+
+  "eyestyle.changed.v1": "Original",
+  "eyestyle.changed.v2": "Slank",
+  "eyestyle.changed.tall": "Høy",
+
+  "changed.config.bpi.screen": "Grunnleggende spiller info",
+  "changed.config.bpi.hair_color": "Hårfarge",
+  "changed.config.bpi.iris_color": "Regnbuehinnefarge",
+  "changed.config.bpi.sclera_color": "Senehinnefarge",
+  "changed.config.bpi.eye_style": "Øyenstil: %s",
+  "changed.config.bpi.override_dl_iris": "Overstyre regnbuehinnefarge på mørk lateks varianter",
+  "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche"
 }

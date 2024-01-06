@@ -134,6 +134,7 @@
   "command.changed.error.used_by_other_mod": "Spelare är redan en form från en annan mod",
   "command.changed.error.no_special_form": "Ingen särskild form tilldelad, besök https://www.patreon.com/ltxprogrammer",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Efter förpälsvandla fusibilitet varaktighet (Tickar)",
   "gamerule.changed:keepConscious": "Alltid vara medveten med förpälsvandling",
   "gamerule.changed:keepForm": "Permanent förpälsvandla",
   "gamerule.changed:latexGrowthRate": "Latex tillväxtprocent",
@@ -506,5 +507,17 @@
   "glu_block.has_door": "Har dörr",
   "glu_block.joint_type": "Strukturfog typ",
   "glu_block.joint.entrance": "Ingång",
-  "glu_block.joint.exit": "Utgång"
+  "glu_block.joint.exit": "Utgång",
+
+  "eyestyle.changed.v1": "Original",
+  "eyestyle.changed.v2": "Slank",
+  "eyestyle.changed.tall": "Hög",
+
+  "changed.config.bpi.screen": "Grundläggande spelare info",
+  "changed.config.bpi.hair_color": "Hårfärg",
+  "changed.config.bpi.iris_color": "Regnbågshinnefärg",
+  "changed.config.bpi.sclera_color": "Ögonvitefärg",
+  "changed.config.bpi.eye_style": "Ögonstil: %s",
+  "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",
+  "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha"
 }
