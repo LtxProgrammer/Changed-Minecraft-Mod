@@ -47,6 +47,6 @@ public enum Zone implements StringRepresentable {
     }
 
     public boolean canConnectTo(Zone other) {
-        return this != other;
+        return this == other;
     }
 }
