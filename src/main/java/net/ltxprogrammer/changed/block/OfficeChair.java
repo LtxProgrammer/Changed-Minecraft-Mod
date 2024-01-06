@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class OfficeChair extends BaseEntityBlock implements SeatableBlock {
+public class OfficeChair extends BaseEntityBlock implements PartialEntityBlock, SeatableBlock {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     protected static final VoxelShape SHAPE = Block.box(3.5D, 0.0D, 3.5D, 12.5D, 9.0D, 12.5D);
@@ -128,7 +128,12 @@ public class OfficeChair extends BaseEntityBlock implements SeatableBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return state.getValue(HALF) == DoubleBlockHalf.LOWER ? new OfficeChairBlockEntity(pos, state) : null;
+        return new OfficeChairBlockEntity(pos, state);
+    }
+
+    @Override
+    public boolean stateHasBlockEntity(BlockState blockState) {
+        return blockState.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     @Nullable
