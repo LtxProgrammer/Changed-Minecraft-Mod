@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.recipe.InfuserRecipes;
+import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
@@ -55,7 +55,7 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
 
     @Inject(method = "renderButton", at = @At("HEAD"), cancellable = true)
     public void renderButton(PoseStack p_100484_, int p_100485_, int p_100486_, float p_100487_, CallbackInfo ci) {
-        if (collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
+        if (collection.getRecipes().get(0) instanceof InfuserRecipe infuserRecipe) {
             if (!Screen.hasControlDown()) {
                 time += p_100487_;
             }
@@ -84,7 +84,7 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
     private static final Component MORE_RECIPES_TOOLTIP = new TranslatableComponent("gui.recipebook.moreRecipes");
     @Inject(method = "getTooltipText", at = @At("HEAD"), cancellable = true)
     public void getTooltipText(Screen p_100478_, CallbackInfoReturnable<List<Component>> ci) {
-        if (collection.getRecipes().get(0) instanceof InfuserRecipes.InfuserRecipe infuserRecipe) {
+        if (collection.getRecipes().get(0) instanceof InfuserRecipe infuserRecipe) {
             ci.cancel();
             List<Component> list = Lists.newArrayList(infuserRecipe.getNameFor(Minecraft.getInstance().level, activeGender));
 

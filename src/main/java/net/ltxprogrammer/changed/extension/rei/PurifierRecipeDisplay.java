@@ -4,42 +4,44 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
+import net.ltxprogrammer.changed.recipe.PurifierRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collections;
 import java.util.Optional;
 
-public class InfuserRecipeDisplay extends DefaultCraftingDisplay<InfuserRecipe> {
-    public InfuserRecipeDisplay(InfuserRecipe recipe) {
+public class PurifierRecipeDisplay extends DefaultCraftingDisplay<PurifierRecipe> {
+    public PurifierRecipeDisplay(PurifierRecipe recipe) {
         super(
-                EntryIngredients.ofIngredients(recipe.getIngredients()),
-                Collections.singletonList(EntryIngredients.ofItemStacks(recipe.getPossibleResults())),
+                Collections.singletonList(EntryIngredients.ofIngredient(recipe.getIngredient())),
+                Collections.singletonList(EntryIngredients.of(recipe.getResult())),
                 Optional.of(recipe)
         );
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return ChangedReiPlugin.INFUSER;
+        return ChangedReiPlugin.PURIFIER;
     }
 
     @Override
     public int getWidth() {
-        return getInputEntries().size() > 4 ? 3 : 2;
+        return 1;
     }
 
     @Override
     public int getHeight() {
-        return getInputEntries().size() > 4 ? 3 : 2;
+        return 1;
     }
 
     @Override
     public int getInputWidth(int craftingWidth, int craftingHeight) {
-        return craftingWidth * craftingHeight <= getInputEntries().size() ? craftingWidth : Math.min(getInputEntries().size(), 3);
+        return 1;
     }
 
     @Override
     public int getInputHeight(int craftingWidth, int craftingHeight) {
-        return (int) Math.ceil(getInputEntries().size() / (double) getInputWidth(craftingWidth, craftingHeight));
+        return 1;
     }
 
     @Override
