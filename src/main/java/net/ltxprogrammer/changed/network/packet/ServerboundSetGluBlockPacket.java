@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
+import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -11,6 +12,7 @@ public class ServerboundSetGluBlockPacket implements ChangedPacket {
     private final BlockPos pos;
     private final int size;
     private final boolean hasDoor;
+    private final Zone zone;
     private final GluBlockEntity.JointType jointType;
     private final String finalState;
 
@@ -18,14 +20,16 @@ public class ServerboundSetGluBlockPacket implements ChangedPacket {
         this.pos = buffer.readBlockPos();
         this.size = buffer.readInt();
         this.hasDoor = buffer.readBoolean();
+        this.zone = Zone.byName(buffer.readUtf()).orElse(Zone.BLUE_ZONE);
         this.jointType = GluBlockEntity.JointType.byName(buffer.readUtf()).orElse(GluBlockEntity.JointType.ENTRANCE);
         this.finalState = buffer.readUtf();
     }
 
-    public ServerboundSetGluBlockPacket(BlockPos pos, int size, boolean hasDoor, GluBlockEntity.JointType jointType, String finalState) {
+    public ServerboundSetGluBlockPacket(BlockPos pos, int size, boolean hasDoor, Zone zone, GluBlockEntity.JointType jointType, String finalState) {
         this.pos = pos;
         this.size = size;
         this.hasDoor = hasDoor;
+        this.zone = zone;
         this.jointType = jointType;
         this.finalState = finalState;
     }
@@ -35,6 +39,7 @@ public class ServerboundSetGluBlockPacket implements ChangedPacket {
         buffer.writeBlockPos(pos);
         buffer.writeInt(size);
         buffer.writeBoolean(hasDoor);
+        buffer.writeUtf(zone.getSerializedName());
         buffer.writeUtf(jointType.getSerializedName());
         buffer.writeUtf(finalState);
     }
@@ -48,6 +53,7 @@ public class ServerboundSetGluBlockPacket implements ChangedPacket {
         if (blockEntity instanceof GluBlockEntity gluBlockEntity) {
             gluBlockEntity.setSize(size);
             gluBlockEntity.setHasDoor(hasDoor);
+            gluBlockEntity.setZone(zone);
             gluBlockEntity.setJointType(jointType);
             gluBlockEntity.setFinalState(finalState);
             gluBlockEntity.setChanged();
