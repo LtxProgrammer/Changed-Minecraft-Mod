@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -17,11 +18,13 @@ public class GluBlockEntity extends BlockEntity {
     public static final String SIZE = "size";
     public static final String HAS_DOOR = "door";
     public static final String JOINT = "joint";
+    public static final String ZONE = "zone";
     public static final String FINAL_STATE = "final_state";
 
     private int size = 3;
     private boolean hasDoor = false;
     private JointType jointType = JointType.ENTRANCE;
+    private Zone zone = Zone.BLUE_ZONE;
     private String finalState = "minecraft:air";
 
     public GluBlockEntity(BlockPos pos, BlockState state) {
@@ -40,6 +43,10 @@ public class GluBlockEntity extends BlockEntity {
         return this.jointType;
     }
 
+    public Zone getZone() {
+        return this.zone;
+    }
+
     public String getFinalState() {
         return this.finalState;
     }
@@ -56,6 +63,10 @@ public class GluBlockEntity extends BlockEntity {
         this.jointType = type;
     }
 
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
     public void setFinalState(String state) {
         this.finalState = state;
     }
@@ -65,6 +76,7 @@ public class GluBlockEntity extends BlockEntity {
         tag.putInt(SIZE, this.size);
         tag.putBoolean(HAS_DOOR, this.hasDoor);
         tag.putString(JOINT, this.jointType.getSerializedName());
+        tag.putString(ZONE, this.zone.getSerializedName());
         tag.putString(FINAL_STATE, this.finalState);
     }
 
@@ -72,7 +84,8 @@ public class GluBlockEntity extends BlockEntity {
         super.load(tag);
         this.size = tag.getInt(SIZE);
         this.hasDoor = tag.getBoolean(HAS_DOOR);
-        this.jointType = JointType.byName(tag.getString(JOINT)).orElseThrow();
+        this.jointType = JointType.byName(tag.getString(JOINT)).orElse(JointType.ENTRANCE);
+        this.zone = Zone.byName(tag.getString(ZONE)).orElse(Zone.BLUE_ZONE);
         this.finalState = tag.getString(FINAL_STATE);
     }
 
