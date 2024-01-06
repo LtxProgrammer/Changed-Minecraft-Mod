@@ -9,7 +9,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.recipe.InfuserRecipes;
+import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipes.InfuserRecipe> {
+public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipe> {
     private static final int craftOutputSlot = 0;
     private static final int craftInputSlot1 = 1;
 
@@ -60,12 +60,12 @@ public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipes.Inf
     }
 
     @Override
-    public Class<? extends InfuserRecipes.InfuserRecipe> getRecipeClass() {
-        return InfuserRecipes.InfuserRecipe.class;
+    public Class<? extends InfuserRecipe> getRecipeClass() {
+        return InfuserRecipe.class;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, InfuserRecipes.InfuserRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, InfuserRecipe recipe, IFocusGroup focuses) {
         var ingredients = recipe.getIngredients();
         List<List<ItemStack>> grid = new ArrayList<>();
 
