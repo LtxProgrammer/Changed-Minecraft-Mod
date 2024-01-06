@@ -134,11 +134,12 @@
   "command.changed.error.used_by_other_mod": "A játékost már használja egy másik mod",
   "command.changed.error.no_special_form": "Nincs hozzárendelve speciális forma, látogasson el a https://www.patreon.com/ltxprogrammer oldalra",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Transzfur utáni összeolvadhatóság ideje (tikkek)",
   "gamerule.changed:keepConscious": "Transzfurban mindig legyen eszméletben",
   "gamerule.changed:keepForm": "Maradandó transzfur",
   "gamerule.changed:latexGrowthRate": "Hagyja, hogy a latex természetes módon terjedjen",
   "gamerule.changed:transfurTolerance": "Latex entitás transzfur sebzés (tikkek)",
-  "gamerule.changed:npcWantFusePlayer": "A latex NPC-k egyesülni szeretnének a játékossal",
+  "gamerule.changed:npcWantFusePlayer": "A latex NPC-k összeolvadni szeretnének a játékossal",
   "gamerule.changed:doPale": "A pale engedélyezve van-e",
 
   "key.changed.variant_ability": "Aktív változat képessége",
@@ -507,4 +508,16 @@
   "glu_block.joint_type": "Ajtócsukó típusa",
   "glu_block.joint.entrance": "Bejárat",
   "glu_block.joint.exit": "Kijárat"
+
+  "eyestyle.changed.v1": "Eredeti",
+  "eyestyle.changed.v2": "Vékony",
+  "eyestyle.changed.tall": "Magas",
+
+  "changed.config.bpi.screen": "Alap játékos információ",
+  "changed.config.bpi.hair_color": "Hajszín",
+  "changed.config.bpi.iris_color": "Szivárványhártya színe",
+  "changed.config.bpi.sclera_color": "Ínhártya színe",
+  "changed.config.bpi.eye_style": "Szem stílus: %s",
+  "changed.config.bpi.override_dl_iris": "Szivárványhártya színének felülbírálása sötét latex változatoknál",
+  "changed.config.bpi.override_all_eye_styles": "Az összes szem stílus felülbírálása, hogy megfeleljen"
 }
