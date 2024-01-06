@@ -177,6 +177,10 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(ArmorLatexFemaleWolfModel.INNER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexFemaleWolfModel.OUTER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.OUTER));
 
+        ForgeHooksClient.registerLayerDefinition(ArmorLatexMaleCatModel.INNER_ARMOR, () -> ArmorLatexMaleCatModel.createArmorLayer(ArmorModel.INNER));
+        ForgeHooksClient.registerLayerDefinition(ArmorLatexMaleCatModel.OUTER_ARMOR, () -> ArmorLatexMaleCatModel.createArmorLayer(ArmorModel.OUTER));
+        ForgeHooksClient.registerLayerDefinition(ArmorLatexFemaleCatModel.INNER_ARMOR, () -> ArmorLatexFemaleCatModel.createArmorLayer(ArmorModel.INNER));
+        ForgeHooksClient.registerLayerDefinition(ArmorLatexFemaleCatModel.OUTER_ARMOR, () -> ArmorLatexFemaleCatModel.createArmorLayer(ArmorModel.OUTER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexMaleDragonModel.INNER_ARMOR, () -> ArmorLatexMaleDragonModel.createArmorLayer(ArmorModel.INNER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexMaleDragonModel.OUTER_ARMOR, () -> ArmorLatexMaleDragonModel.createArmorLayer(ArmorModel.OUTER));
         ForgeHooksClient.registerLayerDefinition(ArmorLatexFemaleDragonModel.INNER_ARMOR, () -> ArmorLatexFemaleDragonModel.createArmorLayer(ArmorModel.INNER));
