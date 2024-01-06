@@ -136,8 +136,11 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        if (blockState.getValue(HALF) == DoubleBlockHalf.UPPER)
-            return null;
         return new LatexContainerBlockEntity(blockPos, blockState);
+    }
+
+    @Override
+    public boolean stateHasBlockEntity(BlockState blockState) {
+        return blockState.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 }

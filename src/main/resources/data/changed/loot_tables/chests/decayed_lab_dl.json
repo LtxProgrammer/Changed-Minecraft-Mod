@@ -41,6 +41,11 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:the_scarlet_crystal_mine_record"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 12,
           "name": "changed:black_goo_zone_record"
         },

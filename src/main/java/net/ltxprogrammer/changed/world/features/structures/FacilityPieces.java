@@ -38,6 +38,10 @@ public class FacilityPieces {
     public static final FacilityPiece CORRIDOR_BLUE_T_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_t_v1"));
     public static final FacilityPiece CORRIDOR_BLUE_TURN_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_turn_v1"));
 
+    public static final FacilityPiece CORRIDOR_RED_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v1"));
+    public static final FacilityPiece CORRIDOR_RED_V2 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v2"));
+    public static final FacilityPiece CORRIDOR_RED_V3 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v3"));
+
     public static final FacilityPiece INTERSECTION1_BLUE = new FacilityCorridorSection(Changed.modResource("facility/intersection1_blue"));
     public static final FacilityPiece INTERSECTION1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/intersection1_gray"));
     public static final FacilityPiece INTERSECTION1_RED = new FacilityCorridorSection(Changed.modResource("facility/intersection1_red"));
@@ -69,6 +73,7 @@ public class FacilityPieces {
     public static final FacilityPiece LASER_HALL = new FacilityCorridorSection(Changed.modResource("facility/laser_hall"));
     public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED,
             CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, CORRIDOR_BLUE_V3, CORRIDOR_BLUE_T_V1, CORRIDOR_BLUE_TURN_V1, INTERSECTION_RED,
+            CORRIDOR_RED_V1, CORRIDOR_BLUE_V2, CORRIDOR_RED_V3,
             INTERSECTION1_BLUE, INTERSECTION1_GRAY, INTERSECTION1_RED, INTERSECTION2_BLUE, INTERSECTION2_GRAY, INTERSECTION2_RED,
             LONGHALLWAY1_BLUE, LONGHALLWAY1_GRAY, LONGHALLWAY1_RED, LONGHALLWAY2_BLUE, LONGHALLWAY2_GRAY, LONGHALLWAY2_RED,
             SHORTHALLWAY1_BLUE, SHORTHALLWAY1_GRAY, SHORTHALLWAY1_RED, SHORTHALLWAY2_BLUE, SHORTHALLWAY2_GRAY, SHORTHALLWAY2_RED,
@@ -79,8 +84,9 @@ public class FacilityPieces {
     public static final FacilityPiece CORRIDOR_BLUE_STAIRS_TO_RED = new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red"));
     public static final FacilityPieceCollection TRANSITIONS = FacilityPieceCollection.of(CORRIDOR_BLUE_STAIRS_TO_RED);
 
-    public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityCorridorSection(Changed.modResource("facility/room_blue_wl_test"));
-    public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST);
+    public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL);
+    public static final FacilityPiece ROOM_RED_DL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL);
+    public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST, ROOM_RED_DL_TEST);
 
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
@@ -100,7 +106,6 @@ public class FacilityPieces {
                                      Stack<FacilityPiece> stack, StructurePiece parentStructure,
                                      GenStep start, int genDepth, int span) {
         var parent = stack.peek();
-        var genStack = new FacilityGenerationStack(stack);
 
         int reroll = 10;
         while (reroll > 0) {
@@ -126,6 +131,7 @@ public class FacilityPieces {
             builder.addPiece(nextStructure);
 
             if (span > 0) {
+                var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator());
                 List<GenStep> starts = new ArrayList<>();
                 nextStructure.addSteps(genStack, starts);
                 starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
@@ -165,7 +171,7 @@ public class FacilityPieces {
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);
 
-        entrancePiece.addSteps(new FacilityGenerationStack(stack), starts);
+        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context.chunkGenerator()), starts);
 
         if (span > 0) {
             starts.forEach(start -> {
