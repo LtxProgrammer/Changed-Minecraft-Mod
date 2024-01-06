@@ -8,8 +8,8 @@ import net.minecraft.util.random.WeightedRandomList;
 public class FacilityEntrance extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(WeightedEntry.wrap(PieceType.STAIRCASE_START, 1));
 
-    public FacilityEntrance(Zone zone, ResourceLocation templateName) {
-        super(PieceType.ENTRANCE, zone, templateName, LootTables.LOW_TIER_LAB);
+    public FacilityEntrance(ResourceLocation templateName) {
+        super(PieceType.ENTRANCE, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override

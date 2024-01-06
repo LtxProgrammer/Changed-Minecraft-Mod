@@ -503,8 +503,15 @@
   "changed.tutorial.use_ability.title": "Use your ability",
   "changed.tutorial.use_ability.description": "Press or hold %s",
 
+  "facility.zone.red_zone": "Red Zone",
+  "facility.zone.gray_zone": "Gray Zone",
+  "facility.zone.maintenance_zone": "Maintenance Zone",
+  "facility.zone.greenhouse_zone": "Greenhouse Zone",
+  "facility.zone.blue_zone": "Blue Zone",
+
   "glu_block.size": "Size %1$sx%1$s",
   "glu_block.has_door": "Has Door",
+  "glu_block.zone": "Zone",
   "glu_block.joint_type": "Joint Type",
   "glu_block.joint.entrance": "Entrance",
   "glu_block.joint.exit": "Exit"
