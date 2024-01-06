@@ -68,6 +68,7 @@ public class Changed {
         addNetworkMessage(EmotePacket.class, EmotePacket::new);
         addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
         addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
+        addNetworkMessage(TugCameraPacket.class, TugCameraPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
                 ExtraJumpKeybind::handler);

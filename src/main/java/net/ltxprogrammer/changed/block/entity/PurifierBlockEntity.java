@@ -1,14 +1,18 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.ltxprogrammer.changed.world.inventory.PurifierMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,6 +22,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -110,21 +116,25 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
         ContainerHelper.saveAllItems(p_187452_, this.items);
     }
 
-    public static boolean isImpureGoo(ItemStack itemStack) {
-        for (var type : LatexType.values()) {
-            if (type == LatexType.NEUTRAL)
-                continue;
-            if (itemStack.is(type.goo.get()))
-                return true;
-        }
-        return false;
+    public static boolean isConversionRecipe(RecipeManager recipeManager, ItemStack stack) {
+        return recipeManager.getAllRecipesFor(ChangedRecipeTypes.PURIFIER_RECIPE).stream().anyMatch(recipe -> recipe.getIngredient().test(stack));
     }
 
-    public static float getTotalProgress(ItemStack stack) {
+    public ItemLike getConversionFor(RecipeManager recipeManager,ItemStack stack) {
+        try {
+            return recipeManager.getAllRecipesFor(ChangedRecipeTypes.PURIFIER_RECIPE).stream()
+                    .filter(recipe -> recipe.getIngredient().test(stack)).toList().get(0).getResult();
+        } catch (Exception ex) {
+            Changed.LOGGER.error("Error retrieving recipe that should exist");
+            throw ex;
+        }
+    }
+
+    public static float getTotalProgress(RecipeManager recipeManager, ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (!stack.isEmpty() && stack.is(ChangedItems.LATEX_SYRINGE.get()) && tag != null && !tag.getBoolean("safe")) {
             return tag.contains("owner") ? PURIFY_SYRINGE_PROGRESS_TOTAL : PURIFY_UNIVERSAL_SYRINGE_PROGRESS_TOTAL;
-        } else if (!stack.isEmpty() && isImpureGoo(stack)) {
+        } else if (!stack.isEmpty() && isConversionRecipe(recipeManager, stack)) {
             float count = stack.getCount();
             return Mth.lerp(count / stack.getMaxStackSize(), PURIFY_GOO_PROGRESS_TOTAL_MIN, PURIFY_GOO_PROGRESS_TOTAL_MAX);
         }
@@ -135,7 +145,7 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
     public static void serverTick(Level level, BlockPos pos, BlockState state, PurifierBlockEntity blockEntity) {
         ItemStack itemstack = blockEntity.items.get(0);
         CompoundTag tag = itemstack.getTag();
-        float progressRelative = getTotalProgress(itemstack);
+        float progressRelative = getTotalProgress(level.getRecipeManager(), itemstack);
         if (!itemstack.isEmpty() && itemstack.is(ChangedItems.LATEX_SYRINGE.get()) && tag != null) {
             if (!tag.getBoolean("safe")) {
                 ++blockEntity.purifyProgress;
@@ -151,11 +161,11 @@ public class PurifierBlockEntity extends BaseContainerBlockEntity implements Sta
                 blockEntity.purifyProgress = 0;
         }
 
-        else if (!itemstack.isEmpty() && isImpureGoo(itemstack)) {
+        else if (!itemstack.isEmpty() && isConversionRecipe(level.getRecipeManager(), itemstack)) {
             ++blockEntity.purifyProgress;
             if (blockEntity.purifyProgress >= progressRelative) {
                 blockEntity.purifyProgress = 0;
-                blockEntity.items.set(0, new ItemStack(ChangedItems.LATEX_BASE.get(), itemstack.getCount()));
+                blockEntity.items.set(0, new ItemStack(blockEntity.getConversionFor(level.getRecipeManager(), itemstack), itemstack.getCount()));
             }
 
             blockEntity.setChanged();

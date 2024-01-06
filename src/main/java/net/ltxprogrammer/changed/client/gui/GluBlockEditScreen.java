@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
 import net.ltxprogrammer.changed.network.packet.ServerboundSetGluBlockPacket;
+import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.*;
@@ -20,11 +21,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GluBlockEditScreen extends Screen {
     private static final int MAX_LEVELS = 7;
     private static final Component JOINT_TYPE_LABEL = new TranslatableComponent("glu_block.joint_type");
+    private static final Component ZONE_LABEL = new TranslatableComponent("glu_block.zone");
     private static final Component HAS_DOOR_LABEL = new TranslatableComponent("glu_block.has_door");
     private static final Component FINAL_STATE_LABEL = new TranslatableComponent("jigsaw_block.final_state");
     private final GluBlockEntity gluEntity;
     private int size = 3;
     private Button jointTypeButton;
+    private Button zoneButton;
+    private Zone zone;
     private GluBlockEntity.JointType jointType;
     private Checkbox hasDoor;
     private EditBox finalStateEdit;
@@ -34,6 +38,7 @@ public class GluBlockEditScreen extends Screen {
         super(NarratorChatListener.NO_TITLE);
         this.gluEntity = blockEntity;
         this.size = blockEntity.getSize();
+        this.zone = blockEntity.getZone();
         this.jointType = blockEntity.getJointType();
     }
 
@@ -55,6 +60,7 @@ public class GluBlockEditScreen extends Screen {
                 this.gluEntity.getBlockPos(),
                 this.size,
                 this.hasDoor.selected(),
+                this.zone,
                 this.jointType,
                 this.finalStateEdit.getValue()
         ));
@@ -67,11 +73,17 @@ public class GluBlockEditScreen extends Screen {
     protected void init() {
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        this.jointTypeButton = new Button(this.width / 2 - 152, 55, 300, 20, jointType.getTranslatedName(), press -> {
+        this.jointTypeButton = new Button(this.width / 2 - 152, 55, 148, 20, jointType.getTranslatedName(), press -> {
             this.jointType = this.jointType.next();
             this.jointTypeButton.setMessage(jointType.getTranslatedName());
         });
         this.addWidget(this.jointTypeButton);
+
+        this.zoneButton = new Button((this.width / 2 - 152) + 152, 55, 148, 20, zone.getTranslatedName(), press -> {
+            this.zone = this.zone.next();
+            this.zoneButton.setMessage(zone.getTranslatedName());
+        });
+        this.addWidget(this.zoneButton);
 
         this.hasDoor = new Checkbox(this.width / 2 - 152, 90, 300, 20, HAS_DOOR_LABEL, gluEntity.getHasDoor(), false);
         this.addWidget(this.hasDoor);
@@ -81,7 +93,7 @@ public class GluBlockEditScreen extends Screen {
         this.finalStateEdit.setValue(this.gluEntity.getFinalState());
         this.addWidget(this.finalStateEdit);
 
-        this.addRenderableWidget(new AbstractSliderButton(this.width / 2 - 154, 180, 100, 20, TextComponent.EMPTY, 3.0D / 7.0D) {
+        this.addRenderableWidget(new AbstractSliderButton(this.width / 2 - 154, 180, 100, 20, TextComponent.EMPTY, 3.0D / 10.0D) {
             {
                 this.updateMessage();
             }
@@ -91,7 +103,7 @@ public class GluBlockEditScreen extends Screen {
             }
 
             protected void applyValue() {
-                GluBlockEditScreen.this.size = Mth.floor(Mth.clampedLerp(0.0D, 7.0D, this.value));
+                GluBlockEditScreen.this.size = Mth.floor(Mth.clampedLerp(0.0D, 10.0D, this.value));
             }
         });
         this.doneButton = this.addRenderableWidget(new Button(this.width / 2 - 4 - 150, 210, 150, 20, CommonComponents.GUI_DONE, (p_98973_) -> {
@@ -134,6 +146,8 @@ public class GluBlockEditScreen extends Screen {
         this.renderBackground(pose);
         drawString(pose, this.font, JOINT_TYPE_LABEL, this.width / 2 - 153, 45, 10526880);
         this.jointTypeButton.render(pose, x, y, partialTicks);
+        drawString(pose, this.font, ZONE_LABEL, (this.width / 2 - 153) + 152, 45, 10526880);
+        this.zoneButton.render(pose, x, y, partialTicks);
         drawString(pose, this.font, HAS_DOOR_LABEL, this.width / 2 - 153, 80, 10526880);
         this.hasDoor.render(pose, x, y, partialTicks);
         drawString(pose, this.font, FINAL_STATE_LABEL, this.width / 2 - 153, 115, 10526880);

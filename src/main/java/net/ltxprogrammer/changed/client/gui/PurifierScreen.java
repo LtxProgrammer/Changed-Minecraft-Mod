@@ -43,7 +43,7 @@ public class PurifierScreen extends AbstractContainerScreen<PurifierMenu> {
         blit(ms, this.leftPos + 63, this.topPos + 62, 0, 0, 48, 12, 48, 12);
 
         var slot = menu.slots.get(0);
-        float progress = (float)menu.data.get(0) / (float) PurifierBlockEntity.getTotalProgress(slot.getItem());
+        float progress = (float)menu.data.get(0) / (float) PurifierBlockEntity.getTotalProgress(this.minecraft.level.getRecipeManager(), slot.getItem());
         RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/progress_bar_front.png"));
         blit(ms, this.leftPos + 63, this.topPos + 62, 0, 0, (int)(48 * progress), 12, 48, 12);
 

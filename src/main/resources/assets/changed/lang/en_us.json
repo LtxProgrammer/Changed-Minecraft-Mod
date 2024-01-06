@@ -134,6 +134,7 @@
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Post-Transfur Fusability Duration (Ticks)",
   "gamerule.changed:keepConscious": "Always Keep Conscious on Transfur",
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexGrowthRate": "Latex Growth Percentage",
@@ -502,8 +503,15 @@
   "changed.tutorial.use_ability.title": "Use your ability",
   "changed.tutorial.use_ability.description": "Press or hold %s",
 
+  "facility.zone.red_zone": "Red Zone",
+  "facility.zone.gray_zone": "Gray Zone",
+  "facility.zone.maintenance_zone": "Maintenance Zone",
+  "facility.zone.greenhouse_zone": "Greenhouse Zone",
+  "facility.zone.blue_zone": "Blue Zone",
+
   "glu_block.size": "Size %1$sx%1$s",
   "glu_block.has_door": "Has Door",
+  "glu_block.zone": "Zone",
   "glu_block.joint_type": "Joint Type",
   "glu_block.joint.entrance": "Entrance",
   "glu_block.joint.exit": "Exit"

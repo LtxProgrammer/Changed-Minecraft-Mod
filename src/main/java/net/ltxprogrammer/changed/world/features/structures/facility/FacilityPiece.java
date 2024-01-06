@@ -13,15 +13,9 @@ import java.util.Set;
 
 public abstract class FacilityPiece {
     public final PieceType type;
-    public final Zone zone;
 
-    protected FacilityPiece(PieceType type, Zone zone) {
+    protected FacilityPiece(PieceType type) {
         this.type = type;
-        this.zone = zone;
-    }
-
-    public final boolean isValidForZone(Zone zone) {
-        return this.zone == zone;
     }
 
     public abstract WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors(FacilityGenerationStack stack);

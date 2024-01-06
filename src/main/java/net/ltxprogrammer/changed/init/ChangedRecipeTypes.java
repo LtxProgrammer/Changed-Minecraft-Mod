@@ -1,7 +1,8 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.recipe.InfuserRecipes;
+import net.ltxprogrammer.changed.recipe.InfuserRecipe;
+import net.ltxprogrammer.changed.recipe.PurifierRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.RecipeBookType;
@@ -32,7 +33,8 @@ public class ChangedRecipeTypes {
         return RecipeBookType.create(name);
     }
 
-    public static RecipeType<InfuserRecipes.InfuserRecipe> INFUSER_RECIPE = register(Changed.modResource("infuser"));
+    public static RecipeType<InfuserRecipe> INFUSER_RECIPE = register(Changed.modResource("infuser"));
+    public static RecipeType<PurifierRecipe> PURIFIER_RECIPE = register(Changed.modResource("purifier"));
 
     public static final RecipeBookType INFUSER_BOOK = registerBookType( "CHANGED_INFUSER");
 
