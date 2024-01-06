@@ -5,7 +5,7 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
-import net.ltxprogrammer.changed.recipe.InfuserRecipes;
+import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -293,7 +293,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
             this.syncCopyContainer();
 
             ServerPlayer serverplayer = (ServerPlayer)this.entity;
-            Optional<InfuserRecipes.InfuserRecipe> recipeOptional = serverplayer.getLevel().getServer().getRecipeManager()
+            Optional<InfuserRecipe> recipeOptional = serverplayer.getLevel().getServer().getRecipeManager()
                     .getRecipeFor(ChangedRecipeTypes.INFUSER_RECIPE, copyContainer, serverplayer.level);
             ItemStack input = this.internal.getStackInSlot(1);
             recipeOptional.ifPresentOrElse(recipe -> {
@@ -303,7 +303,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                 }
 
                 Gender gender = getSelectedGender();
-                ItemStack newStack = recipe.processItem(InfuserRecipes.InfuserRecipe.getBaseFor(input), gender);
+                ItemStack newStack = recipe.processItem(InfuserRecipe.getBaseFor(input), gender);
                 lastAssembledGender = gender;
                 if (input.getTag() != null && input.getTag().contains("owner")) {
                     newStack.getOrCreateTag().putUUID("owner", input.getTag().getUUID("owner"));

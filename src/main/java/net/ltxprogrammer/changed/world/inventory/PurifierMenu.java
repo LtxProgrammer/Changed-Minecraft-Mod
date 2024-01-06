@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedMenus;
+import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
@@ -20,12 +21,13 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class PurifierMenu extends AbstractContainerMenu implements Supplier<Map<Integer, Slot>> {
-
     public final static HashMap<String, Object> guistate = new HashMap<>();
 
     public final Container container;
     public final ContainerData data;
     public final Level world;
+    public final Player entity;
+    public final RecipeManager recipeManager;
     public int x, y, z;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
@@ -47,10 +49,14 @@ public class PurifierMenu extends AbstractContainerMenu implements Supplier<Map<
         this.container = p_38971_;
         this.data = p_38972_;
         this.world = inv.player.level;
+        this.entity = inv.player;
+        this.recipeManager = inv.player.level.getRecipeManager();
         this.customSlots.put(0, this.addSlot(new Slot(p_38971_, 0, 79, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return (ChangedItems.LATEX_SYRINGE.get() == stack.getItem()) || PurifierBlockEntity.isImpureGoo(stack);
+                boolean hasRecipe = recipeManager.getAllRecipesFor(ChangedRecipeTypes.PURIFIER_RECIPE).stream().anyMatch(recipe -> recipe.getIngredient().test(stack));
+
+                return (ChangedItems.LATEX_SYRINGE.get() == stack.getItem()) || hasRecipe;
             }
         }));
 
