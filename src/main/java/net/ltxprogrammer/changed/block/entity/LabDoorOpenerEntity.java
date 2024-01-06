@@ -27,8 +27,8 @@ public class LabDoorOpenerEntity extends BlockEntity {
     }
 
     private boolean canOpenDoor(LivingEntity entity) {
-        if (entity instanceof Player)
-            return true;
+        if (entity instanceof Player player)
+            return !player.isSpectator();
         if (entity.getType().is(ChangedTags.EntityTypes.CANNOT_OPEN_LAB_DOORS))
             return false;
         if (entity instanceof LatexEntity)
