@@ -16,6 +16,21 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:the_white_goo_jungle_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "changed:the_white_tail_chase_part_1_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "changed:the_white_tail_chase_part_2_record"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 10,
           "name": "changed:white_latex_bucket"
         },
