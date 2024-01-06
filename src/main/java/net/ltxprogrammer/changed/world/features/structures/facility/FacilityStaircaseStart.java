@@ -9,8 +9,8 @@ public class FacilityStaircaseStart extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
             WeightedEntry.wrap(PieceType.STAIRCASE_SECTION, 1));
 
-    public FacilityStaircaseStart(Zone zone, ResourceLocation templateName) {
-        super(PieceType.STAIRCASE_START, zone, templateName, LootTables.LOW_TIER_LAB);
+    public FacilityStaircaseStart(ResourceLocation templateName) {
+        super(PieceType.STAIRCASE_START, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override

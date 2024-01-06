@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.ltxprogrammer.changed.world.features.structures.facility.Zone;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -75,6 +76,11 @@ public class GluBlock extends Block implements EntityBlock, GameMasterBlock {
         if (orientA.front().getAxis() == Direction.Axis.Y && orientA.top() != orientB.top())
             return false;
         if (orientA.front().getAxis() != Direction.Axis.Y && orientA.front() != orientB.front().getOpposite())
+            return false;
+
+        var zoneA = Zone.byName(nbtA.getString(GluBlockEntity.ZONE)).orElse(Zone.BLUE_ZONE);
+        var zoneB = Zone.byName(nbtB.getString(GluBlockEntity.ZONE)).orElse(Zone.BLUE_ZONE);
+        if (!zoneA.canConnectTo(zoneB))
             return false;
 
         var jointA = GluBlockEntity.JointType.byName(nbtA.getString(GluBlockEntity.JOINT)).orElseThrow();

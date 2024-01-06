@@ -15,8 +15,8 @@ public class FacilityStaircaseSection extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS_MAXIMUM = WeightedRandomList.create(
             WeightedEntry.wrap(PieceType.STAIRCASE_END, 1));
 
-    public FacilityStaircaseSection(Zone zone, ResourceLocation templateName) {
-        super(PieceType.STAIRCASE_SECTION, zone, templateName, LootTables.LOW_TIER_LAB);
+    public FacilityStaircaseSection(ResourceLocation templateName) {
+        super(PieceType.STAIRCASE_SECTION, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override

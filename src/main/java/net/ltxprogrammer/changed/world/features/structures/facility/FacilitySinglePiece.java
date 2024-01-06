@@ -29,16 +29,14 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
     public final Optional<ResourceLocation> lootTable;
     private StructureTemplate template = null;
 
-    protected FacilitySinglePiece(PieceType type, Zone zone,
-                                  ResourceLocation templateName) {
-        super(type, zone);
+    protected FacilitySinglePiece(PieceType type, ResourceLocation templateName) {
+        super(type);
         this.templateName = templateName;
         this.lootTable = Optional.empty();
     }
 
-    protected FacilitySinglePiece(PieceType type, Zone zone,
-                                  ResourceLocation templateName, ResourceLocation lootTable) {
-        super(type, zone);
+    protected FacilitySinglePiece(PieceType type, ResourceLocation templateName, ResourceLocation lootTable) {
+        super(type);
         this.templateName = templateName;
         this.lootTable = Optional.of(lootTable);
     }
