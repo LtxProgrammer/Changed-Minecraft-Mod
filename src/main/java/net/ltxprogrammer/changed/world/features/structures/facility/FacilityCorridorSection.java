@@ -11,8 +11,8 @@ public class FacilityCorridorSection extends FacilitySinglePiece {
             WeightedEntry.wrap(PieceType.CORRIDOR, 15),
             WeightedEntry.wrap(PieceType.ROOM, 10));
 
-    public FacilityCorridorSection(Zone zone, ResourceLocation templateName) {
-        super(PieceType.STAIRCASE_SECTION, zone, templateName, LootTables.LOW_TIER_LAB);
+    public FacilityCorridorSection(ResourceLocation templateName) {
+        super(PieceType.STAIRCASE_SECTION, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override

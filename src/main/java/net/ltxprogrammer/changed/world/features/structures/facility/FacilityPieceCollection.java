@@ -17,10 +17,6 @@ public class FacilityPieceCollection implements Collection<FacilityPiece> {
         return Util.getRandomSafe(pieces, random);
     }
 
-    public Optional<FacilityPiece> findNextPiece(Random random, Zone zone) {
-        return Util.getRandomSafe(pieces.stream().filter(piece -> piece.isValidForZone(zone)).toList(), random);
-    }
-
     public static FacilityPieceCollection of(FacilityPiece... pieces) {
         return new FacilityPieceCollection(List.of(pieces));
     }
