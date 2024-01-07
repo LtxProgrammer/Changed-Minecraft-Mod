@@ -22,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -203,6 +205,37 @@ public class DuctBlock extends ChangedBlock
             }
         }
         return wanted;
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return switch (rotation) {
+            case NONE -> state;
+            case CLOCKWISE_90 ->
+                    state.setValue(NORTH, state.getValue(WEST))
+                            .setValue(EAST, state.getValue(NORTH))
+                            .setValue(SOUTH, state.getValue(EAST))
+                            .setValue(WEST, state.getValue(SOUTH));
+            case CLOCKWISE_180 ->
+                    state.setValue(NORTH, state.getValue(SOUTH))
+                            .setValue(EAST, state.getValue(WEST))
+                            .setValue(SOUTH, state.getValue(NORTH))
+                            .setValue(WEST, state.getValue(EAST));
+            case COUNTERCLOCKWISE_90 ->
+                    state.setValue(NORTH, state.getValue(EAST))
+                            .setValue(EAST, state.getValue(SOUTH))
+                            .setValue(SOUTH, state.getValue(WEST))
+                            .setValue(WEST, state.getValue(NORTH));
+        };
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return switch (mirror) {
+            case NONE -> state;
+            case FRONT_BACK -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+            case LEFT_RIGHT -> state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+        };
     }
 
     protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {

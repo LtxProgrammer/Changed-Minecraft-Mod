@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.init.ChangedTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -172,7 +171,7 @@ public class PipeBlock extends Block {
     }
 
     public final ConnectState connectsTo(BlockGetter level, BlockState state, BlockPos blockPos) {
-        return state.is(this) ? ConnectState.PIPE : (state.isCollisionShapeFullBlock(level, blockPos) && !state.is(ChangedTags.Blocks.PIPE_IGNORED) ? ConnectState.WALL : ConnectState.AIR);
+        return state.is(this) ? ConnectState.PIPE : (state.isCollisionShapeFullBlock(level, blockPos) ? ConnectState.WALL : ConnectState.AIR);
     }
 
     private BlockState stateFor(BlockState start, ConnectState north, ConnectState east, ConnectState south, ConnectState west) {

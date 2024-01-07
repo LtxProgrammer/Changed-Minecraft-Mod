@@ -91,6 +91,7 @@ public class SurfaceNBTPiece extends StructurePiece {
                 .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                 .setBoundingBox(bb)
                 .setKeepLiquids(false)
+                .setKnownShape(true)
                 .setIgnoreEntities(false);
         if (lootTable != null)
             settings.addProcessor(ChestLootTableProcessor.of(lootTable));

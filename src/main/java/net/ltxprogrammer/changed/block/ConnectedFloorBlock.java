@@ -236,7 +236,7 @@ public class ConnectedFloorBlock extends ChangedBlock {
                 .setValue(STATE, calculateState(level, blockPos, this.defaultBlockState()));
     }
 
-    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
+    public BlockState rotate(BlockState state, Rotation direction) {
         switch(direction) {
             case NONE:
                 return state;
