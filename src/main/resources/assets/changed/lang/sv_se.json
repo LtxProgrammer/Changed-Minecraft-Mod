@@ -502,8 +502,15 @@
   "changed.tutorial.use_ability.title": "Använda din förmåga",
   "changed.tutorial.use_ability.description": "Tryck eller håll ned %s",
 
+  "facility.zone.red_zone": "Röd zon",
+  "facility.zone.gray_zone": "Grå zon",
+  "facility.zone.maintenance_zone": "Underhåll zon",
+  "facility.zone.greenhouse_zone": "Växthus zon",
+  "facility.zone.blue_zone": "Blå zon",
+
   "glu_block.size": "Storlek %1$sx%1$s",
   "glu_block.has_door": "Har dörr",
+  "glu_block.zone": "Zon",
   "glu_block.joint_type": "Strukturfog typ",
   "glu_block.joint.entrance": "Ingång",
   "glu_block.joint.exit": "Utgång",

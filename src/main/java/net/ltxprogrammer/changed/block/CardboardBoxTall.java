@@ -108,8 +108,12 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
     @Override
     @Nullable
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return state.getValue(HALF).equals(DoubleBlockHalf.LOWER) ? null :
-                new CardboardBoxTallBlockEntity(pos, state);
+        return new CardboardBoxTallBlockEntity(pos, state);
+    }
+
+    @Override
+    public boolean stateHasBlockEntity(BlockState blockState) {
+        return blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER);
     }
 
     @Nullable

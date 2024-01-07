@@ -6,5 +6,6 @@ public enum PieceType {
     STAIRCASE_SECTION,
     STAIRCASE_END,
     CORRIDOR,
+    TRANSITION,
     ROOM
 }

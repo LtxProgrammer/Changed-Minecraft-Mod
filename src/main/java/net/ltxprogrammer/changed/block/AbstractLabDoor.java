@@ -47,7 +47,7 @@ import java.util.*;
 
 import static net.ltxprogrammer.changed.init.ChangedSounds.OPEN2;
 
-public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock, EntityBlock, OpenableDoor {
+public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLatexCoverableBlock, PartialEntityBlock, OpenableDoor {
     public static final EnumProperty<QuarterSection> SECTION = EnumProperty.create("section", QuarterSection.class);
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -313,9 +313,12 @@ public class AbstractLabDoor extends HorizontalDirectionalBlock implements NonLa
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        if (state.getValue(SECTION) != QuarterSection.BOTTOM_LEFT)
-            return null;
         return new LabDoorOpenerEntity(pos, state, this);
+    }
+
+    @Override
+    public boolean stateHasBlockEntity(BlockState blockState) {
+        return blockState.getValue(SECTION) == QuarterSection.BOTTOM_LEFT;
     }
 
     @Nullable
