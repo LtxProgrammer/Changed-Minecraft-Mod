@@ -33,7 +33,7 @@ public class ChangedTags {
         public static final TagKey<Block> LASER_TRANSLUCENT = create("laser_translucent");
         public static final TagKey<Block> DUCT_CONNECTOR = create("duct_connector");
         public static final TagKey<Block> DUCT_EXIT = create("duct_exit");
-        public static final TagKey<Block> PIPE_CONNECTOR = create("pipe_connector");
+        public static final TagKey<Block> PIPE_IGNORED = create("pipe_ignored");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, Changed.modResource(name));

@@ -172,7 +172,7 @@ public class PipeBlock extends Block {
     }
 
     public final ConnectState connectsTo(BlockGetter level, BlockState state, BlockPos blockPos) {
-        return state.is(this) ? ConnectState.PIPE : (state.is(ChangedTags.Blocks.PIPE_CONNECTOR) ? ConnectState.WALL : ConnectState.AIR);
+        return state.is(this) ? ConnectState.PIPE : (state.isCollisionShapeFullBlock(level, blockPos) && !state.is(ChangedTags.Blocks.PIPE_IGNORED) ? ConnectState.WALL : ConnectState.AIR);
     }
 
     private BlockState stateFor(BlockState start, ConnectState north, ConnectState east, ConnectState south, ConnectState west) {
