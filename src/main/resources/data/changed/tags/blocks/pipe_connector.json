@@ -1,0 +1,34 @@
+{
+  "replace": false,
+  "values": [
+    "changed:tiles_blue",
+    "changed:tiles_blue_small",
+    "changed:tiles_caution",
+    "changed:tiles_darkblue",
+    "changed:tiles_gray",
+    "changed:tiles_grayblue",
+    "changed:tiles_grayblue_bolted",
+    "changed:tiles_grayblue_bolted_connected",
+    "changed:tiles_greenhouse",
+    "changed:tiles_greenhouse_connected",
+    "changed:tiles_library_brown",
+    "changed:tiles_library_tan",
+    "changed:tiles_white",
+    "changed:wall_blue_striped",
+    "changed:wall_blue_tiled",
+    "changed:wall_caution",
+    "changed:wall_gray",
+    "changed:wall_gray_striped",
+    "changed:wall_green",
+    "changed:wall_green_striped",
+    "changed:wall_greenhouse",
+    "changed:wall_library_lower",
+    "changed:wall_library_upper",
+    "changed:wall_lightred",
+    "changed:wall_lightred_striped",
+    "changed:wall_vent",
+    "changed:wall_white",
+
+    "minecraft:calcite"
+  ]
+}
