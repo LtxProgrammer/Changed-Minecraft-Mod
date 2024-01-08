@@ -11,6 +11,8 @@ import java.util.Random;
 public enum Zone implements StringRepresentable {
     RED_ZONE("red_zone"),
     GRAY_ZONE("gray_zone"),
+    LIBRARY_ZONE("library_zone"),
+    VENT_ZONE("vent_zone"),
     MAINTENANCE_ZONE("maintenance_zone"),
     GREENHOUSE_ZONE("greenhouse_zone"),
     BLUE_ZONE("blue_zone");
