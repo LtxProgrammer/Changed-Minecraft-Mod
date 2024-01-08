@@ -268,7 +268,7 @@ public abstract class LatexEntity extends Monster {
 
     public float getEyeHeightMul() {
         if (this.isCrouching())
-            return 0.82F;
+            return 0.83F;
         else
             return 0.93F;
     }
