@@ -19,7 +19,7 @@ import java.util.*;
 
 public class FacilityPieces {
     public static final FacilityPieceCollection ENTRANCES = new FacilityPieceCollection()
-            .register(new FacilityEntrance(Changed.modResource("facility/entrance_red")))
+            //.register(new FacilityEntrance(Changed.modResource("facility/entrance_red")))
             .register(new FacilityEntrance(Changed.modResource("facility/entrance_blue")));
 
     public static final FacilityPieceCollection STAIRCASE_STARTS = new FacilityPieceCollection()
@@ -44,6 +44,10 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v3")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_t_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_turn_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v2")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v3")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_maintenance_v1")))
 
             .register(new FacilityCorridorSection(Changed.modResource("facility/intersection1_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/intersection1_gray")))
@@ -76,7 +80,8 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/laser_hall")));
 
     public static final FacilityPieceCollection TRANSITIONS = new FacilityPieceCollection()
-            .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red")));
+            .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red")))
+            .register(new FacilityTransitionSection(Changed.modResource("facility/transition_red_to_gray")));
 
     public static final FacilityPieceCollection ROOMS = new FacilityPieceCollection()
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
@@ -108,64 +113,62 @@ public class FacilityPieces {
                 return false;
             var entry = type.get();
 
-            var collection = BY_PIECE_TYPE.get(entry.getData());
-            var nextPiece = collection.findNextPiece(context.random()).orElse(null);
-            if (nextPiece == null) {
-                reroll--;
-                continue;
-            }
-            var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-            if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random())) {
-                reroll--;
-                continue;
-            }
+            var pieces = new ArrayList<>(BY_PIECE_TYPE.get(entry.getData()));
+            Collections.shuffle(pieces, context.random());
+            for (FacilityPiece nextPiece : pieces) {
+                var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
+                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                    continue;
 
-            var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
-            builder.addPiece(nextStructure);
+                var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
+                builder.addPiece(nextStructure);
 
-            int nextSpan = entry.getData() == PieceType.STAIRCASE_SECTION ? span : span - 1;
-            if (span > 0) {
-                stack.push(nextPiece);
+                int nextSpan = entry.getData() == PieceType.STAIRCASE_SECTION ? span : span - 1;
+                if (span > 0) {
+                    stack.push(nextPiece);
 
-                var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator());
-                List<GenStep> starts = new ArrayList<>();
-                nextStructure.addSteps(genStack, starts);
-                starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
+                    var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator());
+                    List<GenStep> starts = new ArrayList<>();
+                    nextStructure.addSteps(genStack, starts);
+                    starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
-                int children = starts.stream().mapToInt(next -> {
-                    if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, nextSpan))
-                        return 1;
-                    else
-                        return 0;
-                }).reduce(0, Math::addExact);
+                    int children = starts.stream().mapToInt(next -> {
+                        if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, nextSpan))
+                            return 1;
+                        else
+                            return 0;
+                    }).reduce(0, Math::addExact);
 
-                if (children > 0) // Successfully generated pieces that attach to this one
+                    if (children > 0) // Successfully generated pieces that attach to this one
+                        return true;
+
+                    // No piece was generated to attach to this one
+                    if (entry.getData() == PieceType.ROOM)
+                        return true; // This behaviour is expected for a room
+
+                    // Attempt to regenerate this piece as a room, to prevent a dead end
+                    ((StructurePiecesBuilderExtender)builder).removePiece(nextStructure);
+                    StructurePiece pieceToPut = nextStructure;
+                    for (FacilityPiece nextRoom : ROOMS) {
+                        var nextRoomStructure = nextRoom.createStructurePiece(context.structureManager(), genDepth);
+                        if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                            continue;
+
+                        // Success
+                        pieceToPut = nextRoomStructure;
+                        break;
+                    }
+
+                    if (pieceToPut == nextStructure)
+                        Changed.LOGGER.debug("Failed to seal dead end in facility, startPos {}", startPos);
+                    builder.addPiece(pieceToPut);
+
+                    stack.pop();
                     return true;
-
-                // No piece was generated to attach to this one
-                if (entry.getData() == PieceType.ROOM)
-                    return true; // This behaviour is expected for a room
-
-                // Attempt to regenerate this piece as a room, to prevent a dead end
-                ((StructurePiecesBuilderExtender)builder).removePiece(nextStructure);
-                StructurePiece pieceToPut = nextStructure;
-                for (FacilityPiece nextRoom : ROOMS) {
-                    var nextRoomStructure = nextRoom.createStructurePiece(context.structureManager(), genDepth);
-                    if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
-                        continue;
-
-                    // Success
-                    pieceToPut = nextRoomStructure;
-                    break;
                 }
-
-                if (pieceToPut == nextStructure)
-                    Changed.LOGGER.debug("Failed to seal dead end in facility, startPos {}", startPos);
-                builder.addPiece(pieceToPut);
-
-                stack.pop();
-                return true;
             }
+
+            reroll--;
         }
 
         return false;

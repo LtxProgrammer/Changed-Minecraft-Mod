@@ -506,6 +506,8 @@
   "facility.zone.red_zone": "Red Zone",
   "facility.zone.gray_zone": "Gray Zone",
   "facility.zone.maintenance_zone": "Maintenance Zone",
+  "facility.zone.library_zone": "Library Zone",
+  "facility.zone.vent_zone": "Vent Zone",
   "facility.zone.greenhouse_zone": "Greenhouse Zone",
   "facility.zone.blue_zone": "Blue Zone",
 
