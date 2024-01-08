@@ -18,76 +18,69 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import java.util.*;
 
 public class FacilityPieces {
-    public static final FacilityPiece ENTRANCE_RED = new FacilityEntrance(Changed.modResource("facility/entrance_red"));
-    public static final FacilityPiece ENTRANCE_BLUE = new FacilityEntrance(Changed.modResource("facility/entrance_blue"));
-    public static final FacilityPieceCollection ENTRANCES = FacilityPieceCollection.of(/*ENTRANCE_RED, */ENTRANCE_BLUE);
+    public static final FacilityPieceCollection ENTRANCES = new FacilityPieceCollection()
+            .register(new FacilityEntrance(Changed.modResource("facility/entrance_red")))
+            .register(new FacilityEntrance(Changed.modResource("facility/entrance_blue")));
 
-    public static final FacilityPiece STAIRCASE_START_RED = new FacilityStaircaseStart(Changed.modResource("facility/staircase_start_red"));
-    public static final FacilityPiece STAIRCASE_START_BLUE = new FacilityStaircaseStart(Changed.modResource("facility/staircase_start_blue"));
-    public static final FacilityPieceCollection STAIRCASE_STARTS = FacilityPieceCollection.of(STAIRCASE_START_RED, STAIRCASE_START_BLUE);
-    public static final FacilityPiece STAIRCASE_SECTION_RED = new FacilityStaircaseSection(Changed.modResource("facility/staircase_section_red"));
-    public static final FacilityPiece STAIRCASE_SECTION_BLUE = new FacilityStaircaseSection(Changed.modResource("facility/staircase_section_blue"));
-    public static final FacilityPieceCollection STAIRCASE_SECTIONS = FacilityPieceCollection.of(STAIRCASE_SECTION_RED, STAIRCASE_SECTION_BLUE);
-    public static final FacilityPiece STAIRCASE_END_RED = new FacilityStaircaseEnd(Changed.modResource("facility/staircase_end_red"));
-    public static final FacilityPiece STAIRCASE_END_BLUE = new FacilityStaircaseEnd(Changed.modResource("facility/staircase_end_blue"));
-    public static final FacilityPieceCollection STAIRCASE_ENDS = FacilityPieceCollection.of(STAIRCASE_END_RED, STAIRCASE_END_BLUE);
+    public static final FacilityPieceCollection STAIRCASE_STARTS = new FacilityPieceCollection()
+            .register(new FacilityStaircaseStart(Changed.modResource("facility/staircase_start_red")))
+            .register(new FacilityStaircaseStart(Changed.modResource("facility/staircase_start_blue")));
+    public static final FacilityPieceCollection STAIRCASE_SECTIONS = new FacilityPieceCollection()
+            .register(new FacilityStaircaseSection(Changed.modResource("facility/staircase_section_red")))
+            .register(new FacilityStaircaseSection(Changed.modResource("facility/staircase_section_blue")));
+    public static final FacilityPieceCollection STAIRCASE_ENDS = new FacilityPieceCollection()
+            .register(new FacilityStaircaseEnd(Changed.modResource("facility/staircase_end_red")))
+            .register(new FacilityStaircaseEnd(Changed.modResource("facility/staircase_end_blue")));
 
-    public static final FacilityPiece CORRIDOR_RED = new FacilityCorridorSection(Changed.modResource("facility/corridor_red"));
-    public static final FacilityPiece CORRIDOR_BLUE_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v1"));
-    public static final FacilityPiece CORRIDOR_BLUE_V2 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v2"));
-    public static final FacilityPiece CORRIDOR_BLUE_V3 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v3"));
-    public static final FacilityPiece CORRIDOR_BLUE_T_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_t_v1"));
-    public static final FacilityPiece CORRIDOR_BLUE_TURN_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_turn_v1"));
+    public static final FacilityPieceCollection CORRIDORS = new FacilityPieceCollection()
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v2")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v3")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_t_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_turn_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v2")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v3")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_t_v1")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red_turn_v1")))
 
-    public static final FacilityPiece CORRIDOR_RED_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v1"));
-    public static final FacilityPiece CORRIDOR_RED_V2 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v2"));
-    public static final FacilityPiece CORRIDOR_RED_V3 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v3"));
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection1_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection1_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection1_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection2_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection2_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection2_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_red")))
 
-    public static final FacilityPiece INTERSECTION1_BLUE = new FacilityCorridorSection(Changed.modResource("facility/intersection1_blue"));
-    public static final FacilityPiece INTERSECTION1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/intersection1_gray"));
-    public static final FacilityPiece INTERSECTION1_RED = new FacilityCorridorSection(Changed.modResource("facility/intersection1_red"));
-    public static final FacilityPiece INTERSECTION2_BLUE = new FacilityCorridorSection(Changed.modResource("facility/intersection2_blue"));
-    public static final FacilityPiece INTERSECTION2_GRAY = new FacilityCorridorSection(Changed.modResource("facility/intersection2_gray"));
-    public static final FacilityPiece INTERSECTION2_RED = new FacilityCorridorSection(Changed.modResource("facility/intersection2_red"));
-    public static final FacilityPiece LONGHALLWAY1_BLUE = new FacilityCorridorSection(Changed.modResource("facility/longhallway1_blue"));
-    public static final FacilityPiece LONGHALLWAY1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/longhallway1_gray"));
-    public static final FacilityPiece LONGHALLWAY1_RED = new FacilityCorridorSection(Changed.modResource("facility/longhallway1_red"));
-    public static final FacilityPiece LONGHALLWAY2_BLUE = new FacilityCorridorSection(Changed.modResource("facility/longhallway2_blue"));
-    public static final FacilityPiece LONGHALLWAY2_GRAY = new FacilityCorridorSection(Changed.modResource("facility/longhallway2_gray"));
-    public static final FacilityPiece LONGHALLWAY2_RED = new FacilityCorridorSection(Changed.modResource("facility/longhallway2_red"));
-    public static final FacilityPiece SHORTHALLWAY1_BLUE = new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_blue"));
-    public static final FacilityPiece SHORTHALLWAY1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_gray"));
-    public static final FacilityPiece SHORTHALLWAY1_RED = new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_red"));
-    public static final FacilityPiece SHORTHALLWAY2_BLUE = new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_blue"));
-    public static final FacilityPiece SHORTHALLWAY2_GRAY = new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_gray"));
-    public static final FacilityPiece SHORTHALLWAY2_RED = new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_red"));
-    public static final FacilityPiece SHORTHALLWAY3_BLUE = new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_blue"));
-    public static final FacilityPiece SHORTHALLWAY3_GRAY = new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_gray"));
-    public static final FacilityPiece SHORTHALLWAY3_RED = new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_red"));
-    public static final FacilityPiece SHORTHALLWAY4_BLUE = new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_blue"));
-    public static final FacilityPiece SHORTHALLWAY4_GRAY = new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_gray"));
-    public static final FacilityPiece SHORTHALLWAY4_RED = new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_red"));
-    public static final FacilityPiece STAIRS1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/stairs1_gray"));
-    public static final FacilityPiece STAIRS1_RED = new FacilityCorridorSection(Changed.modResource("facility/stairs1_red"));
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway2_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway3_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs1_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs1_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/intersection_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/laser_hall")));
 
-    public static final FacilityPiece INTERSECTION_RED = new FacilityCorridorSection(Changed.modResource("facility/intersection_red"));
-    public static final FacilityPiece LASER_HALL = new FacilityCorridorSection(Changed.modResource("facility/laser_hall"));
-    public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED,
-            CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, CORRIDOR_BLUE_V3, CORRIDOR_BLUE_T_V1, CORRIDOR_BLUE_TURN_V1, INTERSECTION_RED,
-            CORRIDOR_RED_V1, CORRIDOR_BLUE_V2, CORRIDOR_RED_V3,
-            INTERSECTION1_BLUE, INTERSECTION1_GRAY, INTERSECTION1_RED, INTERSECTION2_BLUE, INTERSECTION2_GRAY, INTERSECTION2_RED,
-            LONGHALLWAY1_BLUE, LONGHALLWAY1_GRAY, LONGHALLWAY1_RED, LONGHALLWAY2_BLUE, LONGHALLWAY2_GRAY, LONGHALLWAY2_RED,
-            SHORTHALLWAY1_BLUE, SHORTHALLWAY1_GRAY, SHORTHALLWAY1_RED, SHORTHALLWAY2_BLUE, SHORTHALLWAY2_GRAY, SHORTHALLWAY2_RED,
-            SHORTHALLWAY3_BLUE, SHORTHALLWAY3_GRAY, SHORTHALLWAY3_RED, SHORTHALLWAY4_BLUE, SHORTHALLWAY4_GRAY, SHORTHALLWAY4_RED,
-            STAIRS1_GRAY, STAIRS1_RED,
-            LASER_HALL);
+    public static final FacilityPieceCollection TRANSITIONS = new FacilityPieceCollection()
+            .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red")));
 
-    public static final FacilityPiece CORRIDOR_BLUE_STAIRS_TO_RED = new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red"));
-    public static final FacilityPieceCollection TRANSITIONS = FacilityPieceCollection.of(CORRIDOR_BLUE_STAIRS_TO_RED);
-
-    public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL);
-    public static final FacilityPiece ROOM_RED_DL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL);
-    public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST, ROOM_RED_DL_TEST);
+    public static final FacilityPieceCollection ROOMS = new FacilityPieceCollection()
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL));
 
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
