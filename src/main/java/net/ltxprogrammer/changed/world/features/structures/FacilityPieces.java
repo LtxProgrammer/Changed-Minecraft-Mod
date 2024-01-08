@@ -102,7 +102,7 @@ public class FacilityPieces {
         return gluPos.relative(gluState.getValue(GluBlock.ORIENTATION).front());
     }
 
-    private static void treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
+    private static boolean treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
                                      Stack<FacilityPiece> stack, StructurePiece parentStructure,
                                      GenStep start, int genDepth, int span) {
         var parent = stack.peek();
@@ -111,7 +111,7 @@ public class FacilityPieces {
         while (reroll > 0) {
             var type = start.validTypes().getRandom(context.random());
             if (type.isEmpty())
-                return;
+                return false;
             var entry = type.get();
 
             var collection = BY_PIECE_TYPE.get(entry.getData());
@@ -136,15 +136,42 @@ public class FacilityPieces {
                 nextStructure.addSteps(genStack, starts);
                 starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
-                starts.forEach(next -> {
-                    treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1);
-                });
+                int children = starts.stream().mapToInt(next -> {
+                    if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1))
+                        return 1;
+                    else
+                        return 0;
+                }).reduce(0, Math::addExact);
 
-                return;
+                if (children > 0) // Successfully generated pieces that attach to this one
+                    return true;
+
+                // No piece was generated to attach to this one
+                if (entry.getData() == PieceType.ROOM)
+                    return true; // This behaviour is expected for a room
+
+                // Attempt to regenerate this piece as a room, to prevent a dead end
+                ((StructurePiecesBuilderExtender)builder).removePiece(nextStructure);
+                StructurePiece pieceToPut = nextStructure;
+                for (FacilityPiece nextRoom : ROOMS) {
+                    var nextRoomStructure = nextRoom.createStructurePiece(context.structureManager(), genDepth);
+                    if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                        continue;
+
+                    // Success
+                    pieceToPut = nextRoomStructure;
+                    break;
+                }
+
+                if (pieceToPut == nextStructure)
+                    Changed.LOGGER.debug("Failed to seal dead end in facility, startPos {}", startPos);
+                builder.addPiece(pieceToPut);
             }
 
             stack.pop();
         }
+
+        return false;
     }
 
     public static void generateFacility(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context, int genDepth, int span) {
