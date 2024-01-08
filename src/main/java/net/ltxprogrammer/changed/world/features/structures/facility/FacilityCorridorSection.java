@@ -7,13 +7,13 @@ import net.minecraft.util.random.WeightedRandomList;
 
 public class FacilityCorridorSection extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
-            WeightedEntry.wrap(PieceType.STAIRCASE_START, 5),
-            WeightedEntry.wrap(PieceType.TRANSITION, 5),
+            WeightedEntry.wrap(PieceType.STAIRCASE_START, 3),
+            WeightedEntry.wrap(PieceType.TRANSITION, 3),
             WeightedEntry.wrap(PieceType.CORRIDOR, 15),
             WeightedEntry.wrap(PieceType.ROOM, 5));
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS_MIN = WeightedRandomList.create(
             WeightedEntry.wrap(PieceType.STAIRCASE_START, 1),
-            WeightedEntry.wrap(PieceType.TRANSITION, 5),
+            WeightedEntry.wrap(PieceType.TRANSITION, 3),
             WeightedEntry.wrap(PieceType.CORRIDOR, 15),
             WeightedEntry.wrap(PieceType.ROOM, 1));
 
