@@ -503,11 +503,18 @@
   "changed.tutorial.use_ability.title": "Használja ki képességét",
   "changed.tutorial.use_ability.description": "Nyomd meg vagy megnyomva tartani a %s gombot",
 
+  "facility.zone.red_zone": "Vörös zóna",
+  "facility.zone.gray_zone": "Szürke zóna",
+  "facility.zone.maintenance_zone": "Karbantartási zóna",
+  "facility.zone.greenhouse_zone": "Üvegház zóna",
+  "facility.zone.blue_zone": "Kék zóna",
+
   "glu_block.size": "Mérete %1$sx%1$s",
   "glu_block.has_door": "Ajtaja van",
+  "glu_block.zone": "Zóna",
   "glu_block.joint_type": "Ajtócsukó típusa",
   "glu_block.joint.entrance": "Bejárat",
-  "glu_block.joint.exit": "Kijárat"
+  "glu_block.joint.exit": "Kijárat",
 
   "eyestyle.changed.v1": "Eredeti",
   "eyestyle.changed.v2": "Vékony",

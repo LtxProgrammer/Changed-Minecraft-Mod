@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomShapeEntityBlock {
+public abstract class AbstractCustomShapeTallEntityBlock extends AbstractCustomShapeEntityBlock implements PartialEntityBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     public AbstractCustomShapeTallEntityBlock(Properties properties) {
