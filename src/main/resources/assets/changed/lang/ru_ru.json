@@ -500,8 +500,15 @@
   "changed.tutorial.use_ability.title": "Используйте способность",
   "changed.tutorial.use_ability.description": "Нажмите или Зажмите %s",
 
+  "facility.zone.red_zone": "Красная зона",
+  "facility.zone.gray_zone": "Серая зона",
+  "facility.zone.maintenance_zone": "Зона обслуживания",
+  "facility.zone.greenhouse_zone": "Тепличная зона",
+  "facility.zone.blue_zone": "Синяя зона",
+
   "glu_block.size": "Размер %1$sx%1$s",
   "glu_block.has_door": "Имеется дверь",
+  "glu_block.zone": "Зона",
   "glu_block.joint_type": "Тип подключения",
   "glu_block.joint.entrance": "Вход",
   "glu_block.joint.exit": "Выход"
