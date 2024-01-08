@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.world.features.structures.facility.*;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -127,17 +128,19 @@ public class FacilityPieces {
             }
 
             var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
-            stack.push(nextPiece);
             builder.addPiece(nextStructure);
 
+            int nextSpan = entry.getData() == PieceType.STAIRCASE_SECTION ? span : span - 1;
             if (span > 0) {
+                stack.push(nextPiece);
+
                 var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator());
                 List<GenStep> starts = new ArrayList<>();
                 nextStructure.addSteps(genStack, starts);
                 starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
                 int children = starts.stream().mapToInt(next -> {
-                    if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1))
+                    if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, nextSpan))
                         return 1;
                     else
                         return 0;
@@ -166,9 +169,10 @@ public class FacilityPieces {
                 if (pieceToPut == nextStructure)
                     Changed.LOGGER.debug("Failed to seal dead end in facility, startPos {}", startPos);
                 builder.addPiece(pieceToPut);
-            }
 
-            stack.pop();
+                stack.pop();
+                return true;
+            }
         }
 
         return false;
@@ -185,15 +189,33 @@ public class FacilityPieces {
         List<GenStep> starts = new ArrayList<>();
         FacilityPiece entranceNew = ENTRANCES.findNextPiece(context.random()).orElseThrow();
         FacilityPieceInstance entrancePiece = entranceNew.createStructurePiece(context.structureManager(), genDepth);
-        entrancePiece.setRotation(Direction.Plane.HORIZONTAL.getRandomDirection(context.random()));
-        entrancePiece.setupBoundingBoxOnBottomCenter(blockPos);
-        BoundingBox entranceBB = entrancePiece.getBoundingBox();
-        
-        int minXminZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
-        int minXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
-        int maxXminZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
-        int maxXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
-        entrancePiece.setupBoundingBoxOnBottomCenter(new BlockPos(blockPos.getX(), Math.min(Math.min(minXminZ, minXmaxZ), Math.min(maxXminZ, maxXmaxZ)), blockPos.getZ()));
+
+        var directions = new ArrayList<>(Direction.Plane.HORIZONTAL.stream().toList());
+        Collections.shuffle(directions, context.random());
+
+        for (Direction dir : directions) {
+            entrancePiece.setRotation(dir);
+            entrancePiece.setupBoundingBoxOnBottomCenter(blockPos);
+            BoundingBox entranceBB = entrancePiece.getBoundingBox();
+
+            int minXminZ = context.chunkGenerator().getBaseHeight(entranceBB.minX() + 1, entranceBB.minZ() + 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+            int minXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.minX() + 1, entranceBB.maxZ() - 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+            int maxXminZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX() - 1, entranceBB.minZ() + 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+            int maxXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX() - 1, entranceBB.maxZ() - 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+            int min = Math.min(Math.min(minXminZ, minXmaxZ), Math.min(maxXminZ, maxXmaxZ));
+            int max = Math.max(Math.max(minXminZ, minXmaxZ), Math.max(maxXminZ, maxXmaxZ));
+
+            entrancePiece.setupBoundingBoxOnBottomCenter(new BlockPos(blockPos.getX(), min, blockPos.getZ()));
+
+            if (max - min < 3) break; // Surface is flat enough to not worry about rotating the entrance
+
+            BlockPos testPos = entrancePiece.getRandomStart(context.random());
+            double minX = Mth.lerp((double)(testPos.getZ() - entranceBB.minZ()) / (double)entranceBB.getZSpan(), (double)minXminZ, (double)minXmaxZ);
+            double maxX = Mth.lerp((double)(testPos.getZ() - entranceBB.minZ()) / (double)entranceBB.getZSpan(), (double)maxXminZ, (double)maxXmaxZ);
+            double height = Mth.lerp((double)(testPos.getX() - entranceBB.minX()) / (double)entranceBB.getXSpan(), minX, maxX);
+
+            if (testPos.getY() < height) break; // Next structure piece is in the surface
+        }
 
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);

@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.features.structures.ChestLootTableProcessor;
 import net.ltxprogrammer.changed.world.features.structures.GluReplacementProcessor;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -201,6 +202,19 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                 case CLOCKWISE_180 -> new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ());
                 case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ());
             };
+        }
+
+        @Override
+        public BlockPos getRandomStart(Random random) {
+            var settings = new StructurePlaceSettings()
+                    .setMirror(this.getMirror())
+                    .setRotation(this.getRotation())
+                    .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
+                    .setIgnoreEntities(true);
+            var gluBlocks = template.filterBlocks(generationPosition, settings, ChangedBlocks.GLU_BLOCK.get());
+            if (gluBlocks.isEmpty())
+                Changed.LOGGER.error("Facility structure is missing placement blocks {}", templateName);
+            return Util.getRandom(gluBlocks, random).pos;
         }
     }
 
