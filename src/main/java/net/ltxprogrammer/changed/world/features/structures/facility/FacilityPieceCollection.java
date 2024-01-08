@@ -9,8 +9,17 @@ import java.util.*;
 public class FacilityPieceCollection implements Collection<FacilityPiece> {
     private final List<FacilityPiece> pieces;
 
+    public FacilityPieceCollection() {
+        this.pieces = new ArrayList<>();
+    }
+
     protected FacilityPieceCollection(List<FacilityPiece> pieces) {
         this.pieces = pieces;
+    }
+
+    public FacilityPieceCollection register(FacilityPiece piece) {
+        this.pieces.add(piece);
+        return this;
     }
 
     public Optional<FacilityPiece> findNextPiece(Random random) {

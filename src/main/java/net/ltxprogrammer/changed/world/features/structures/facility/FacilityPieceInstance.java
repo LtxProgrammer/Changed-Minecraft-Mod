@@ -2,10 +2,8 @@ package net.ltxprogrammer.changed.world.features.structures.facility;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -71,4 +69,6 @@ public abstract class FacilityPieceInstance extends StructurePiece {
             }
         }
     }
+
+    public abstract BlockPos getRandomStart(Random random);
 }
