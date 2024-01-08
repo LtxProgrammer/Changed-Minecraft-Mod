@@ -9,6 +9,7 @@
     "GameDataMixin",
     "PrimaryLevelDataMixin",
     "StateHolderMixin",
+    "StructurePiecesBuilderMixin",
     "TreeFeaturesMixin",
     "block.BlockBehaviourMixin",
     "block.BlockBehaviourMixinFixer",

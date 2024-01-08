@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.world.features.structures.facility;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.block.ConnectedFloorBlock;
 import net.ltxprogrammer.changed.block.GluBlock;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
@@ -9,6 +10,7 @@ import net.ltxprogrammer.changed.world.features.structures.ChestLootTableProcess
 import net.ltxprogrammer.changed.world.features.structures.GluReplacementProcessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 public abstract class FacilitySinglePiece extends FacilityPiece {
     public final ResourceLocation templateName;
@@ -82,12 +85,51 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .addProcessor(JigsawReplacementProcessor.INSTANCE)
                     .addProcessor(GluReplacementProcessor.INSTANCE)
+                    .setKnownShape(true)
                     .setKeepLiquids(false)
                     .setIgnoreEntities(false);
             if (lootTable != null)
                 settings.addProcessor(ChestLootTableProcessor.of(lootTable));
             settings.setBoundingBox(bb);
             template.placeInWorld(level, generationPosition, generationPosition, settings, random, 2);
+            BoundingBox intersect = new BoundingBox(
+                    Math.max(this.boundingBox.minX(), bb.minX()),
+                    Math.max(this.boundingBox.minY(), bb.minY()),
+                    Math.max(this.boundingBox.minZ(), bb.minZ()),
+                    Math.min(this.boundingBox.maxX(), bb.maxX()),
+                    Math.min(this.boundingBox.maxY(), bb.maxY()),
+                    Math.min(this.boundingBox.maxZ(), bb.maxZ())
+            );
+
+            final BiConsumer<BlockPos, Direction> withNormal = (processPos, normal) -> {
+                BlockState state = level.getBlockState(processPos);
+                if (state.getBlock() instanceof ConnectedFloorBlock)
+                    return; // These are okay to fail
+
+                BlockPos relativePos = processPos.relative(normal);
+                BlockState relativeState = level.getBlockState(relativePos);
+                BlockState nState = state.updateShape(normal, relativeState, level, processPos, relativePos);
+                BlockState nRelativeState = relativeState.updateShape(normal.getOpposite(), nState, level, relativePos, processPos);
+                if (nState != state)
+                    level.setBlock(processPos, nState, 2);
+                if (nRelativeState != relativeState)
+                    level.setBlock(relativePos, nRelativeState, 2);
+            };
+
+            BlockPos.betweenClosedStream(intersect).forEach(processPos -> {
+                if (processPos.getX() == boundingBox.minX())
+                    withNormal.accept(processPos, Direction.WEST);
+                if (processPos.getX() == boundingBox.maxX())
+                    withNormal.accept(processPos, Direction.EAST);
+                if (processPos.getY() == boundingBox.minY())
+                    withNormal.accept(processPos, Direction.DOWN);
+                if (processPos.getY() == boundingBox.maxY())
+                    withNormal.accept(processPos, Direction.UP);
+                if (processPos.getZ() == boundingBox.minZ())
+                    withNormal.accept(processPos, Direction.NORTH);
+                if (processPos.getZ() == boundingBox.maxZ())
+                    withNormal.accept(processPos, Direction.SOUTH);
+            });
         }
 
         @Override

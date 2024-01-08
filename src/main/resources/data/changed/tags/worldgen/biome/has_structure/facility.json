@@ -4,6 +4,14 @@
     "minecraft:plains",
     "minecraft:meadow",
     "minecraft:snowy_plains",
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:taiga",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_hills",
+    "minecraft:sparse_jungle",
+    "minecraft:desert",
     "changed:dark_latex_plains",
     "changed:white_latex_forest"
   ]

@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -36,6 +37,10 @@ public class FacilityPieces {
     public static final FacilityPiece CORRIDOR_BLUE_V3 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v3"));
     public static final FacilityPiece CORRIDOR_BLUE_T_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_t_v1"));
     public static final FacilityPiece CORRIDOR_BLUE_TURN_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_turn_v1"));
+
+    public static final FacilityPiece CORRIDOR_RED_V1 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v1"));
+    public static final FacilityPiece CORRIDOR_RED_V2 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v2"));
+    public static final FacilityPiece CORRIDOR_RED_V3 = new FacilityCorridorSection(Changed.modResource("facility/corridor_red_v3"));
 
     public static final FacilityPiece INTERSECTION1_BLUE = new FacilityCorridorSection(Changed.modResource("facility/intersection1_blue"));
     public static final FacilityPiece INTERSECTION1_GRAY = new FacilityCorridorSection(Changed.modResource("facility/intersection1_gray"));
@@ -68,6 +73,7 @@ public class FacilityPieces {
     public static final FacilityPiece LASER_HALL = new FacilityCorridorSection(Changed.modResource("facility/laser_hall"));
     public static final FacilityPieceCollection CORRIDORS = FacilityPieceCollection.of(CORRIDOR_RED,
             CORRIDOR_BLUE_V1, CORRIDOR_BLUE_V2, CORRIDOR_BLUE_V3, CORRIDOR_BLUE_T_V1, CORRIDOR_BLUE_TURN_V1, INTERSECTION_RED,
+            CORRIDOR_RED_V1, CORRIDOR_BLUE_V2, CORRIDOR_RED_V3,
             INTERSECTION1_BLUE, INTERSECTION1_GRAY, INTERSECTION1_RED, INTERSECTION2_BLUE, INTERSECTION2_GRAY, INTERSECTION2_RED,
             LONGHALLWAY1_BLUE, LONGHALLWAY1_GRAY, LONGHALLWAY1_RED, LONGHALLWAY2_BLUE, LONGHALLWAY2_GRAY, LONGHALLWAY2_RED,
             SHORTHALLWAY1_BLUE, SHORTHALLWAY1_GRAY, SHORTHALLWAY1_RED, SHORTHALLWAY2_BLUE, SHORTHALLWAY2_GRAY, SHORTHALLWAY2_RED,
@@ -75,8 +81,12 @@ public class FacilityPieces {
             STAIRS1_GRAY, STAIRS1_RED,
             LASER_HALL);
 
-    public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityCorridorSection(Changed.modResource("facility/room_blue_wl_test"));
-    public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST);
+    public static final FacilityPiece CORRIDOR_BLUE_STAIRS_TO_RED = new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red"));
+    public static final FacilityPieceCollection TRANSITIONS = FacilityPieceCollection.of(CORRIDOR_BLUE_STAIRS_TO_RED);
+
+    public static final FacilityPiece ROOM_BLUE_WL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL);
+    public static final FacilityPiece ROOM_RED_DL_TEST = new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL);
+    public static final FacilityPieceCollection ROOMS = FacilityPieceCollection.of(ROOM_BLUE_WL_TEST, ROOM_RED_DL_TEST);
 
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
@@ -84,6 +94,7 @@ public class FacilityPieces {
         map.put(PieceType.STAIRCASE_SECTION, STAIRCASE_SECTIONS);
         map.put(PieceType.STAIRCASE_END, STAIRCASE_ENDS);
         map.put(PieceType.CORRIDOR, CORRIDORS);
+        map.put(PieceType.TRANSITION, TRANSITIONS);
         map.put(PieceType.ROOM, ROOMS);
     });
 
@@ -91,22 +102,20 @@ public class FacilityPieces {
         return gluPos.relative(gluState.getValue(GluBlock.ORIENTATION).front());
     }
 
-    private static void treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
+    private static boolean treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
                                      Stack<FacilityPiece> stack, StructurePiece parentStructure,
                                      GenStep start, int genDepth, int span) {
         var parent = stack.peek();
-        var genStack = new FacilityGenerationStack(stack);
 
         int reroll = 10;
         while (reroll > 0) {
             var type = start.validTypes().getRandom(context.random());
             if (type.isEmpty())
-                return;
+                return false;
             var entry = type.get();
 
             var collection = BY_PIECE_TYPE.get(entry.getData());
-            var nextPiece = collection.findNextPiece(context.random()).orElseGet(() ->
-                    collection.findNextPiece(context.random()).orElse(null));
+            var nextPiece = collection.findNextPiece(context.random()).orElse(null);
             if (nextPiece == null) {
                 reroll--;
                 continue;
@@ -122,19 +131,47 @@ public class FacilityPieces {
             builder.addPiece(nextStructure);
 
             if (span > 0) {
+                var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator());
                 List<GenStep> starts = new ArrayList<>();
                 nextStructure.addSteps(genStack, starts);
                 starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
-                starts.forEach(next -> {
-                    treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1);
-                });
+                int children = starts.stream().mapToInt(next -> {
+                    if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, span - 1))
+                        return 1;
+                    else
+                        return 0;
+                }).reduce(0, Math::addExact);
 
-                return;
+                if (children > 0) // Successfully generated pieces that attach to this one
+                    return true;
+
+                // No piece was generated to attach to this one
+                if (entry.getData() == PieceType.ROOM)
+                    return true; // This behaviour is expected for a room
+
+                // Attempt to regenerate this piece as a room, to prevent a dead end
+                ((StructurePiecesBuilderExtender)builder).removePiece(nextStructure);
+                StructurePiece pieceToPut = nextStructure;
+                for (FacilityPiece nextRoom : ROOMS) {
+                    var nextRoomStructure = nextRoom.createStructurePiece(context.structureManager(), genDepth);
+                    if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                        continue;
+
+                    // Success
+                    pieceToPut = nextRoomStructure;
+                    break;
+                }
+
+                if (pieceToPut == nextStructure)
+                    Changed.LOGGER.debug("Failed to seal dead end in facility, startPos {}", startPos);
+                builder.addPiece(pieceToPut);
             }
 
             stack.pop();
         }
+
+        return false;
     }
 
     public static void generateFacility(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context, int genDepth, int span) {
@@ -150,11 +187,18 @@ public class FacilityPieces {
         FacilityPieceInstance entrancePiece = entranceNew.createStructurePiece(context.structureManager(), genDepth);
         entrancePiece.setRotation(Direction.Plane.HORIZONTAL.getRandomDirection(context.random()));
         entrancePiece.setupBoundingBoxOnBottomCenter(blockPos);
+        BoundingBox entranceBB = entrancePiece.getBoundingBox();
+        
+        int minXminZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int minXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.minX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXminZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.minZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        int maxXmaxZ = context.chunkGenerator().getBaseHeight(entranceBB.maxX(), entranceBB.maxZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor());
+        entrancePiece.setupBoundingBoxOnBottomCenter(new BlockPos(blockPos.getX(), Math.min(Math.min(minXminZ, minXmaxZ), Math.min(maxXminZ, maxXmaxZ)), blockPos.getZ()));
 
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);
 
-        entrancePiece.addSteps(new FacilityGenerationStack(stack), starts);
+        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context.chunkGenerator()), starts);
 
         if (span > 0) {
             starts.forEach(start -> {

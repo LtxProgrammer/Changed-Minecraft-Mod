@@ -503,8 +503,15 @@
   "changed.tutorial.use_ability.title": "Bruke din evne",
   "changed.tutorial.use_ability.description": "Trykk på eller hold %s",
 
+  "facility.zone.red_zone": "Rød sone",
+  "facility.zone.gray_zone": "Grå sone",
+  "facility.zone.maintenance_zone": "Vedlikehold sone",
+  "facility.zone.greenhouse_zone": "Drivhus sone",
+  "facility.zone.blue_zone": "Blå sone",
+
   "glu_block.size": "Størrelse %1$sx%1$s",
   "glu_block.has_door": "Har dør",
+  "glu_block.zone": "Sone",
   "glu_block.joint_type": "Strukturskjøt type",
   "glu_block.joint.entrance": "Inngang",
   "glu_block.joint.exit": "Utgang",

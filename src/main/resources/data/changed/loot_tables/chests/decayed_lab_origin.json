@@ -31,6 +31,16 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 6,
+          "name": "changed:the_lion_chase_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "changed:gas_room_record"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 12,
           "name": "changed:the_library_record"
         },
