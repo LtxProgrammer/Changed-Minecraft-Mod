@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.world.features.structures.ChestLootTableProcessor;
+import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
 import net.ltxprogrammer.changed.world.features.structures.GluReplacementProcessor;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -153,7 +154,7 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
         }
 
         @Override
-        public boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random) {
+        public boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random, BoundingBox allowedRegion) {
             var settings = new StructurePlaceSettings()
                     .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
                     .setIgnoreEntities(true);
@@ -175,6 +176,8 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
                     var structureOrigin = gluBlockPos.subtract(blockInfo.pos);
                     this.setupBoundingBox(structureOrigin);
                     this.generationPosition = structureOrigin;
+                    if (FacilityPieces.isNotCompletelyInsideRegion(this.getBoundingBox(), allowedRegion))
+                        continue;
                     if (!sanityCheckGluBlock(gluBlockPos))
                         Changed.LOGGER.error("Sanity check failed for facility generation glu block");
 
