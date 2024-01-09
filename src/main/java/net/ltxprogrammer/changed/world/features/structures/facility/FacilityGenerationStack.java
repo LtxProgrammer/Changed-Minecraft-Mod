@@ -11,11 +11,13 @@ public class FacilityGenerationStack {
     private final Stack<FacilityPiece> stack;
     private final BoundingBox parentPieceBoundingBox;
     private final ChunkGenerator chunkGenerator;
+    private final int depthRemaining;
 
-    public FacilityGenerationStack(Stack<FacilityPiece> stack, BoundingBox parentPieceBoundingBox, ChunkGenerator chunkGenerator) {
+    public FacilityGenerationStack(Stack<FacilityPiece> stack, BoundingBox parentPieceBoundingBox, ChunkGenerator chunkGenerator, int depthRemaining) {
         this.stack = stack;
         this.parentPieceBoundingBox = parentPieceBoundingBox;
         this.chunkGenerator = chunkGenerator;
+        this.depthRemaining = depthRemaining;
     }
 
     public Stream<FacilityPiece> stream() {
@@ -41,5 +43,9 @@ public class FacilityGenerationStack {
         }
 
         return stack.size();
+    }
+
+    public int getDepthRemaining() {
+        return this.depthRemaining;
     }
 }
