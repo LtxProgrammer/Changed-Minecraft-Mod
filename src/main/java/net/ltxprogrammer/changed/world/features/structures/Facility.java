@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplie
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
 public class Facility extends StructureFeature<NoneFeatureConfiguration> {
-    public static final int GENERATION_CHUNK_RADIUS = 5;
+    public static final int GENERATION_CHUNK_RADIUS = 6;
 
     private final GenerationStep.Decoration step;
 
