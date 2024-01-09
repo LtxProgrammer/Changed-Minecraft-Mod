@@ -29,7 +29,9 @@ public class Facility extends StructureFeature<NoneFeatureConfiguration> {
             if (variation > 1)
                 return false;
 
-            return context.getLowestY(12, 15) >= context.chunkGenerator().getSeaLevel();
+            int lowestY = context.getLowestY(12, 15);
+
+            return lowestY >= context.chunkGenerator().getSeaLevel() && lowestY <= context.chunkGenerator().getSeaLevel() + 30;
         }
     }
 
