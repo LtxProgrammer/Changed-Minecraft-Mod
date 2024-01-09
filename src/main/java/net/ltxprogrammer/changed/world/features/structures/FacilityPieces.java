@@ -100,10 +100,15 @@ public class FacilityPieces {
     private static BlockPos gluNeighbor(BlockPos gluPos, BlockState gluState) {
         return gluPos.relative(gluState.getValue(GluBlock.ORIENTATION).front());
     }
+    
+    public static boolean isNotCompletelyInsideRegion(BoundingBox boundingBox, BoundingBox region) {
+        return boundingBox.minX() < region.minX() || boundingBox.minY() < region.minY() || boundingBox.minZ() < region.minZ() ||
+                boundingBox.maxX() > region.maxX() || boundingBox.maxY() > region.maxY() || boundingBox.maxZ() > region.maxZ();
+    }
 
     private static boolean treeGenerate(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context,
                                      Stack<FacilityPiece> stack, StructurePiece parentStructure,
-                                     GenStep start, int genDepth, int span) {
+                                     GenStep start, int genDepth, int span, BoundingBox allowedRegion) {
         var parent = stack.peek();
 
         int reroll = 10;
@@ -117,7 +122,7 @@ public class FacilityPieces {
             Collections.shuffle(pieces, context.random());
             for (FacilityPiece nextPiece : pieces) {
                 var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegion))
                     continue;
 
                 var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
@@ -133,7 +138,7 @@ public class FacilityPieces {
                     starts.removeIf(next -> next.blockInfo().pos.equals(startPos));
 
                     int children = starts.stream().mapToInt(next -> {
-                        if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, nextSpan))
+                        if (treeGenerate(builder, context, stack, nextStructure, next, genDepth, nextSpan, allowedRegion))
                             return 1;
                         else
                             return 0;
@@ -151,7 +156,7 @@ public class FacilityPieces {
                     StructurePiece pieceToPut = nextStructure;
                     for (FacilityPiece nextRoom : ROOMS) {
                         var nextRoomStructure = nextRoom.createStructurePiece(context.structureManager(), genDepth);
-                        if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random()))
+                        if (!nextRoomStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegion))
                             continue;
 
                         // Success
@@ -174,7 +179,7 @@ public class FacilityPieces {
         return false;
     }
 
-    public static void generateFacility(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context, int genDepth, int span) {
+    public static void generateFacility(StructurePiecesBuilder builder, PieceGenerator.Context<NoneFeatureConfiguration> context, int genDepth, int span, BoundingBox allowedRegion) {
         BlockPos blockPos = new BlockPos(
                 context.chunkPos().getBlockX(8), 0,
                 context.chunkPos().getBlockZ(8));
@@ -220,7 +225,7 @@ public class FacilityPieces {
 
         if (span > 0) {
             starts.forEach(start -> {
-                treeGenerate(builder, context, stack, entrancePiece, start, genDepth, span - 1);
+                treeGenerate(builder, context, stack, entrancePiece, start, genDepth, span - 1, allowedRegion);
             });
         }
 

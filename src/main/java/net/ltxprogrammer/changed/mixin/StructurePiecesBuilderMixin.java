@@ -18,4 +18,9 @@ public abstract class StructurePiecesBuilderMixin implements StructurePiecesBuil
     public boolean removePiece(StructurePiece piece) {
         return this.pieces.remove(piece);
     }
+
+    @Override
+    public int pieceCount() {
+        return this.pieces.size();
+    }
 }
