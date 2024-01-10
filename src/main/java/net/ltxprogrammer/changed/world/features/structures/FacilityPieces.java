@@ -74,6 +74,7 @@ public class FacilityPieces {
 
     public static final FacilityPieceCollection TRANSITIONS = new FacilityPieceCollection()
             .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red")))
+            .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_gray")))
             .register(new FacilityTransitionSection(Changed.modResource("facility/transition_red_to_gray")));
 
     public static final FacilityPieceCollection SPLITS = new FacilityPieceCollection()
