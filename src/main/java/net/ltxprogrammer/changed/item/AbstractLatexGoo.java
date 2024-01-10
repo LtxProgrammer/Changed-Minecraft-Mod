@@ -1,18 +1,20 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.StateHolderHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -20,10 +22,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
@@ -50,10 +54,29 @@ public class AbstractLatexGoo extends ItemNameBlockItem {
     }
 
     public static class GatherNonCoverableBlocksEvent extends Event {
+        private static ResourceLocation r(String s) { return new ResourceLocation(s); }
+        private static final Set<ResourceLocation> FIXED_BLOCKS = Set.of(
+                r("bedrock"),
+                r("integrateddynamics:cable"),
+                r("dragonsurvival:oak_dragon_door"),
+                r("dragonsurvival:spruce_dragon_door"),
+                r("dragonsurvival:acacia_dragon_door"),
+                r("dragonsurvival:birch_dragon_door"),
+                r("dragonsurvival:jungle_dragon_door"),
+                r("dragonsurvival:dark_oak_dragon_door"),
+                r("dragonsurvival:warped_dragon_door"),
+                r("dragonsurvival:crimson_dragon_door"),
+                r("dragonsurvival:cave_dragon_door"),
+                r("dragonsurvival:forest_dragon_door"),
+                r("dragonsurvival:sea_dragon_door"),
+                r("dragonsurvival:iron_dragon_door")
+        );
+
         private final HashSet<ResourceLocation> set;
 
         public GatherNonCoverableBlocksEvent(HashSet<ResourceLocation> set) {
             this.set = set;
+            this.set.addAll(FIXED_BLOCKS);
         }
 
         public void addBlock(Block block) {
@@ -66,6 +89,38 @@ public class AbstractLatexGoo extends ItemNameBlockItem {
 
         public void addBlock(ResourceLocation registryName) {
             set.add(registryName);
+        }
+    }
+
+    private static boolean removalCompleted = false;
+    public static synchronized void removeLatexCoveredStates() {
+        if (!removalCompleted) {
+            HashSet<ResourceLocation> notCoverable = new HashSet<>();
+            MinecraftForge.EVENT_BUS.post(new AbstractLatexGoo.GatherNonCoverableBlocksEvent(notCoverable));
+
+            Registry.BLOCK.forEach(block -> {
+                if (!block.getStateDefinition().getProperties().contains(AbstractLatexBlock.COVERED))
+                    return;
+
+                if (notCoverable.contains(block.getRegistryName())) {
+                    var builder = new StateDefinition.Builder<Block, BlockState>(block);
+                    var oldDefault = block.defaultBlockState();
+                    block.getStateDefinition().getProperties().stream().filter(property -> property != AbstractLatexBlock.COVERED).forEach(builder::add);
+                    var newStateDefinition = builder.create(StateHolderHelper.FN_STATE_CREATION_BYPASS, BlockState::new);
+
+                    // Create new default state
+                    if (!(newStateDefinition.any() instanceof StateHolderHelper<?,?> newDefault))
+                        throw new IllegalStateException("Mixin failed for StateHolderHelper");
+                    for (var property : newStateDefinition.getProperties())
+                        newDefault = newDefault.setValueTypeless(property, oldDefault.getValue(property));
+
+                    // Update old state stuff
+                    block.stateDefinition = newStateDefinition;
+                    block.defaultBlockState = (BlockState) newDefault.getState();
+                }
+            });
+
+            removalCompleted = true;
         }
     }
 
