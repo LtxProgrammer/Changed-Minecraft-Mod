@@ -50,7 +50,7 @@ public class SpecialLatexModel extends LatexHumanoidModel<SpecialLatex> implemen
         if (form.animationData().hasWings()) {
             this.RightWing = Torso.getChild("RightWing");
             this.LeftWing = Torso.getChild("LeftWing");
-            animator.addPreset(AnimatorPresets.winged(LeftWing, RightWing));
+            animator.addPreset(AnimatorPresets.wingedOld(LeftWing, RightWing));
         } else if (form.animationData().hasWingsV2()) {
             this.RightWing = Torso.getChild("RightWing");
             this.LeftWing = Torso.getChild("LeftWing");

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -14,10 +15,16 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,21 +42,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
 
     public void prepareMobModel(LatexAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
-        animator.swimAmount = entity.getSwimAmount(partialTicks);
-        animator.crouching = entity.isCrouching();
-        HumanoidModel.ArmPose humanoidmodel$armpose = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.MAIN_HAND);
-        HumanoidModel.ArmPose humanoidmodel$armpose1 = LatexHumanoidRenderer.getArmPose(entity, InteractionHand.OFF_HAND);
-        if (humanoidmodel$armpose.isTwoHanded()) {
-            humanoidmodel$armpose1 = entity.getOffhandItem().isEmpty() ? HumanoidModel.ArmPose.EMPTY : HumanoidModel.ArmPose.ITEM;
-        }
-
-        if (entity.getMainArm() == HumanoidArm.RIGHT) {
-            animator.rightArmPose = humanoidmodel$armpose;
-            animator.leftArmPose = humanoidmodel$armpose1;
-        } else {
-            animator.rightArmPose = humanoidmodel$armpose1;
-            animator.leftArmPose = humanoidmodel$armpose;
-        }
+        animator.setupVariables(entity, partialTicks);
 
         if (ChangedCompatibility.isFirstPersonRendering()) {
             getHead().visible = false;
@@ -64,14 +57,18 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
 
     public abstract ModelPart getArm(HumanoidArm arm);
 
-    public void translateToHand(HumanoidArm p_102854_, PoseStack p_102855_) {
-        this.getArm(p_102854_).translateAndRotate(p_102855_);
+    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getArm(arm).translateAndRotate(poseStack);
         if (this instanceof LatexHumanoidModelInterface modelInterface)
-            p_102855_.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+            poseStack.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
     }
 
-    public Stream<ModelPart> getAllParts() {
-        return rootModelPart.getAllParts();
+    private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {
+        return Stream.concat(Stream.of(new ModelPartStem(root)), root.children.values().stream().flatMap(this::getAllPartsFor).map(stem -> stem.withParent(root)));
+    }
+
+    public Stream<ModelPartStem> getAllParts() {
+        return getAllPartsFor(rootModelPart);
     }
 
     public ModelPart getRandomModelPart(Random random) {

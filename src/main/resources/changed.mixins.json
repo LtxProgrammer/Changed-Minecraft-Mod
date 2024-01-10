@@ -53,6 +53,7 @@
     "gui.InventoryScreenMixin",
     "gui.RecipeBookTabButtonMixin",
     "gui.RecipeButtonMixin",
+    "gui.TitleScreenMixin",
     "gui.SplashManagerMixin",
     "item.ItemRendererMixin",
     "render.AtlasSetMixin",

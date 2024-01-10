@@ -41,7 +41,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		this.Tail = Torso.getChild("Tail");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+		animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
 				.hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
 	}
 
@@ -263,7 +263,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 			this.Tail = Torso.getChild("Tail");
 			this.RightArm = root.getChild("RightArm");
 			this.LeftArm = root.getChild("LeftArm");
-			animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+			animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
 					.hipOffset(-2.0f).legLength(14.0f).armLength(14.0f).torsoLength(14.0f);
 			animator.torsoWidth = 6.0f;
 		}

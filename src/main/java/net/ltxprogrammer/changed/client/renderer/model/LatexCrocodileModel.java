@@ -39,7 +39,7 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
     }
 

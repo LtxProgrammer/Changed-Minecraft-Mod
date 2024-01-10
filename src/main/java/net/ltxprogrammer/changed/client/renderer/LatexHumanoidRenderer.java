@@ -37,8 +37,8 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
     }
 
     private void addLayers(EntityRendererProvider.Context context, M main) {
-        if (Changed.config.client.useNewModels.get())
-            hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());
+        /*if (Changed.config.client.useNewModels.get())
+            hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());*/
         this.addLayer(new LatexItemInHandLayer<>(this));
         if (hairLayer != null)
             this.addLayer(hairLayer);

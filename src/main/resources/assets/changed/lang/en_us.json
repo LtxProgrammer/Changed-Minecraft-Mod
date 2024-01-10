@@ -518,5 +518,17 @@
   "glu_block.zone": "Zone",
   "glu_block.joint_type": "Joint Type",
   "glu_block.joint.entrance": "Entrance",
-  "glu_block.joint.exit": "Exit"
+  "glu_block.joint.exit": "Exit",
+
+  "eyestyle.changed.v1": "Original",
+  "eyestyle.changed.v2": "Slim",
+  "eyestyle.changed.tall": "Tall",
+
+  "changed.config.bpi.screen": "Basic Player Info",
+  "changed.config.bpi.hair_color": "Hair Color",
+  "changed.config.bpi.iris_color": "Iris Color",
+  "changed.config.bpi.sclera_color": "Sclera Color",
+  "changed.config.bpi.eye_style": "Eye Style: %s",
+  "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",
+  "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match"
 }

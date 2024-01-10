@@ -41,7 +41,7 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -154,7 +154,7 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -245,7 +245,7 @@ public class ArmorLatexSharkModel<T extends LatexEntity> extends LatexHumanoidAr
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createArmorLayer(ArmorModel layer) {
