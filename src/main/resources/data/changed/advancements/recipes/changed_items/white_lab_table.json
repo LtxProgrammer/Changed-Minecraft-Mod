@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:white_lab_table"
+    ]
+  },
+  "criteria": {
+    "has_lab_table": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:lab_table"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:white_lab_table"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lab_table",
+      "has_the_recipe"
+    ]
+  ]
+}
