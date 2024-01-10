@@ -104,6 +104,7 @@ public abstract class CameraMixin implements CameraExtender {
 
     @Inject(method = "setup", at = @At("RETURN"))
     public void animateCamera(BlockGetter level, Entity entity, boolean p_90578_, boolean p_90579_, float partialTicks, CallbackInfo ci) {
+        if (entity.isSpectator()) return;
         if (entity instanceof LatexEntity latexEntity)
             adjustAnimForEntity(latexEntity, partialTicks);
 
