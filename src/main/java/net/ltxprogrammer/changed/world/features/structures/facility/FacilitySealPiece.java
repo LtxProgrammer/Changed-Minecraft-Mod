@@ -5,12 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 
-public class FacilityStaircaseEnd extends FacilitySinglePiece {
-    private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
-            WeightedEntry.wrap(PieceType.SPLIT, 1));
+public class FacilitySealPiece extends FacilitySinglePiece {
+    private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create();
 
-    public FacilityStaircaseEnd(ResourceLocation templateName) {
-        super(PieceType.STAIRCASE_END, templateName, LootTables.LOW_TIER_LAB);
+    public FacilitySealPiece(ResourceLocation templateName) {
+        super(PieceType.SEAL, templateName, LootTables.LOW_TIER_LAB);
     }
 
     @Override
