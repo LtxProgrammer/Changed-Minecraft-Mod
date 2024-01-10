@@ -144,7 +144,7 @@ public class FacilityPieces {
                 if (span > 0) {
                     stack.push(nextPiece);
 
-                    var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator(), nextSpan);
+                    var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context, nextSpan);
                     List<GenStep> starts = new ArrayList<>();
                     nextStructure.addSteps(genStack, starts);
 
@@ -233,7 +233,7 @@ public class FacilityPieces {
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);
 
-        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context.chunkGenerator(), span), starts);
+        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context, span), starts);
 
         if (span > 0) {
             starts.forEach(start -> {
