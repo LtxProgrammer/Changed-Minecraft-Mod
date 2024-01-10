@@ -21,8 +21,11 @@ public class FacilityStaircaseSection extends FacilitySinglePiece {
 
     @Override
     public WeightedRandomList<WeightedEntry.Wrapper<PieceType>> getValidNeighbors(FacilityGenerationStack stack) {
-        if (stack.getParentPieceBoundingBox().minY() > stack.getChunkGenerator().getSeaLevel() - 10)
+        int min = stack.getParentPieceBoundingBox().minY();
+        if (min > stack.getChunkGenerator().getSeaLevel() - 10)
             return VALID_NEIGHBORS_MINIMUM; // Force labs to go below sea level
+        if (min < stack.getContext().heightAccessor().getMinBuildHeight() + 20)
+            return VALID_NEIGHBORS_MAXIMUM; // Force labs to stay above the void
 
         int sections = stack.sequentialMatch(FacilityPieces.STAIRCASE_SECTIONS::contains);
 

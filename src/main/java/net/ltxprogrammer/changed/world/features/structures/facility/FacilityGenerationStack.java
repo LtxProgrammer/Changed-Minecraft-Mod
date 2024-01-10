@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.world.features.structures.facility;
 
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.pieces.PieceGenerator;
 
 import java.util.Stack;
 import java.util.function.Predicate;
@@ -10,13 +12,13 @@ import java.util.stream.Stream;
 public class FacilityGenerationStack {
     private final Stack<FacilityPiece> stack;
     private final BoundingBox parentPieceBoundingBox;
-    private final ChunkGenerator chunkGenerator;
+    private final PieceGenerator.Context<NoneFeatureConfiguration> context;
     private final int depthRemaining;
 
-    public FacilityGenerationStack(Stack<FacilityPiece> stack, BoundingBox parentPieceBoundingBox, ChunkGenerator chunkGenerator, int depthRemaining) {
+    public FacilityGenerationStack(Stack<FacilityPiece> stack, BoundingBox parentPieceBoundingBox, PieceGenerator.Context<NoneFeatureConfiguration> context, int depthRemaining) {
         this.stack = stack;
         this.parentPieceBoundingBox = parentPieceBoundingBox;
-        this.chunkGenerator = chunkGenerator;
+        this.context = context;
         this.depthRemaining = depthRemaining;
     }
 
@@ -33,7 +35,11 @@ public class FacilityGenerationStack {
     }
 
     public ChunkGenerator getChunkGenerator() {
-        return chunkGenerator;
+        return context.chunkGenerator();
+    }
+
+    public PieceGenerator.Context<NoneFeatureConfiguration> getContext() {
+        return context;
     }
 
     public int sequentialMatch(Predicate<FacilityPiece> predicate) {
