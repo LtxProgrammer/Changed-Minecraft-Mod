@@ -167,6 +167,7 @@
   "effect.changed.shock": "Stöt",
 
   "enchantment.changed.latex_protection": "Latexskydd",
+  "enchantment.changed.latex_protection.desc": "Skyddar bäraren från att förpälsvandlas.",
 
   "block.changed.beaker": "Bägare",
   "block.changed.bedside_iv_rack": "IV kuggstång",
@@ -264,6 +265,7 @@
   "block.changed.wall_greenhouse": "Växthusvägg",
   "block.changed.wall_vent": "Ventileravägg",
   "block.changed.wall_white": "Vit vegg",
+  "block.changed.white_lab_table": "Vit laboratoriebord",
   "block.changed.white_latex_block": "Vit latexblock",
   "block.changed.white_latex_pillar": "Vit latexspelare",
   "block.changed.wolf_gas_canister": "Varggasbehållare",
@@ -506,6 +508,8 @@
   "facility.zone.red_zone": "Röd zon",
   "facility.zone.gray_zone": "Grå zon",
   "facility.zone.maintenance_zone": "Underhåll zon",
+  "facility.zone.library_zone": "Bibliotek zon",
+  "facility.zone.vent_zone": "Ventilera zon",
   "facility.zone.greenhouse_zone": "Växthus zon",
   "facility.zone.blue_zone": "Blå zon",
 
