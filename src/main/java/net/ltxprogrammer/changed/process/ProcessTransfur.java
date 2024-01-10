@@ -228,6 +228,22 @@ public class ProcessTransfur {
         return null;
     }
 
+    public static class KeepConsciousEvent extends Event {
+        public final Player player;
+        public final boolean keepConscious;
+        public boolean shouldKeepConscious;
+
+        public KeepConsciousEvent(Player player, boolean keepConscious) {
+            this.player = player;
+            this.keepConscious = keepConscious;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return false;
+        }
+    }
+
     public static class EntityVariantAssigned extends Event {
         public final LivingEntity livingEntity;
         public final @Nullable LatexVariant<?> previousVariant;
@@ -739,8 +755,15 @@ public class ProcessTransfur {
             return; // To prevent most bugs, entity has to be alive to transfur
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
             keepConscious = true;
-        else if (entity instanceof Player player && player.isCreative())
-            keepConscious = true;
+        else if (entity instanceof Player player) {
+            if (player.isCreative())
+                keepConscious = true;
+            else {
+                KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
+                MinecraftForge.EVENT_BUS.post(event);
+                keepConscious = event.keepConscious;
+            }
+        }
         else for (var hand : InteractionHand.values()) {
             if (entity.getItemInHand(hand).is(Items.TOTEM_OF_UNDYING)) {
                 if (entity instanceof ServerPlayer serverPlayer) {
