@@ -148,6 +148,7 @@ public class ChangedBlocks {
     public static final RegistryObject<GasCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
             () -> new GasCanisterBlock(List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)), null,
             canister -> new GasCanister(canister, List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)));
+    public static final RegistryObject<LabTable> WHITE_LAB_TABLE = register("white_lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
 
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));

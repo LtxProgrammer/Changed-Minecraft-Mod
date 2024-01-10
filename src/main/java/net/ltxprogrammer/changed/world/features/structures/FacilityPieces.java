@@ -45,6 +45,7 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v2")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v3")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_turn_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_maintenance_v1")))
 
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_blue")))
@@ -78,6 +79,7 @@ public class FacilityPieces {
     public static final FacilityPieceCollection SPLITS = new FacilityPieceCollection()
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_red_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_blue_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor_gray_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_blue")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_gray")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_red")))
