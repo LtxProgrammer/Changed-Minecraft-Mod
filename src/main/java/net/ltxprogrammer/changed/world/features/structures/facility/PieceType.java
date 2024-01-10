@@ -1,11 +1,22 @@
 package net.ltxprogrammer.changed.world.features.structures.facility;
 
 public enum PieceType {
-    ENTRANCE,
-    STAIRCASE_START,
-    STAIRCASE_SECTION,
-    STAIRCASE_END,
-    CORRIDOR,
-    TRANSITION,
-    ROOM
+    ENTRANCE(true),
+    STAIRCASE_START(true),
+    STAIRCASE_SECTION(false),
+    STAIRCASE_END(false),
+    CORRIDOR(true),
+    SPLIT(true),
+    TRANSITION(true),
+    ROOM(true);
+
+    private final boolean consumesSpan;
+
+    PieceType(boolean consumesSpan) {
+        this.consumesSpan = consumesSpan;
+    }
+
+    public boolean shouldConsumeSpan() {
+        return this.consumesSpan;
+    }
 }

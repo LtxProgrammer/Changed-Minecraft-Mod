@@ -36,7 +36,7 @@ public abstract class FacilityPieceInstance extends StructurePiece {
 
     public abstract void addSteps(FacilityGenerationStack stack, List<GenStep> steps);
 
-    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random);
+    public abstract boolean setupBoundingBox(StructurePiecesBuilder builder, StructureTemplate.StructureBlockInfo exitGlu, Random random, BoundingBox allowedRegion);
     public abstract void setupBoundingBox(BlockPos minimum);
 
     public void setupBoundingBoxOnBottomCenter(BlockPos center) {
