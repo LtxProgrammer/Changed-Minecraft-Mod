@@ -95,6 +95,11 @@ public class FacilityPieces {
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_storage"), LootTables.DECAYED_LAB_DL))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_storage"), LootTables.DECAYED_LAB_ORIGIN));
 
+    public static final FacilityPieceCollection SEALS = new FacilityPieceCollection()
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_blue")))
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_red")))
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_gray")));
+
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
         map.put(PieceType.STAIRCASE_START, STAIRCASE_STARTS);
@@ -104,6 +109,7 @@ public class FacilityPieces {
         map.put(PieceType.SPLIT, SPLITS);
         map.put(PieceType.TRANSITION, TRANSITIONS);
         map.put(PieceType.ROOM, ROOMS);
+        map.put(PieceType.SEAL, SEALS);
     });
 
     private static BlockPos gluNeighbor(BlockPos gluPos, BlockState gluState) {
@@ -123,7 +129,11 @@ public class FacilityPieces {
         int reroll = 10;
         while (reroll > 0) {
             PieceType pieceType;
-            if (span == 0) {
+            BoundingBox allowedRegionForPiece = allowedRegion;
+            if (parent.type == PieceType.SPLIT && reroll == 1) { // Split pieces will dead-end if it's too close to the gen region
+                pieceType = PieceType.SEAL;
+                allowedRegionForPiece = BoundingBox.infinite();
+            } else if (span == 0) {
                 pieceType = PieceType.ROOM;
             } else {
                 var type = start.validTypes().getRandom(context.random());
@@ -136,7 +146,7 @@ public class FacilityPieces {
             Collections.shuffle(pieces, context.random());
             for (FacilityPiece nextPiece : pieces) {
                 var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegion))
+                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegionForPiece))
                     continue;
 
                 var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
