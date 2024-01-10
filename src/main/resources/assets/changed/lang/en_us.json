@@ -168,6 +168,7 @@
   "effect.changed.shock": "Shock",
 
   "enchantment.changed.latex_protection": "Latex Protection",
+  "enchantment.changed.latex_protection.desc": "Protects the wearer from being transfurred.",
 
   "block.changed.beaker": "Beaker",
   "block.changed.bedside_iv_rack": "IV Rack",
