@@ -127,21 +127,13 @@ public class ArmorLatexFemaleWingedDragonModel<T extends LatexEntity> extends La
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
             case LEGS -> {
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, false);
-                    setAllPartsVisibility(RightLeg, false);
-                    LeftLeg.getChild("LeftThigh_r1").visible = true;
-                    RightLeg.getChild("RightThigh_r1").visible = true;
-                }
+                prepareLegsForArmor(stack, LeftLeg, RightLeg, Tail);
 
                 Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, true);
-                    setAllPartsVisibility(RightLeg, true);
-                }
+                unprepareLegsForArmor(stack, LeftLeg, RightLeg, Tail);
             }
             case FEET -> {
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,9 +23,37 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+
 public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends EntityModel<T>> extends EntityModel<T> implements LatexHumanoidModelInterface<T, M> {
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
             PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
+
+    protected static void prepareLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg) {
+        prepareLegsForArmor(stack, LeftLeg, RightLeg, null);
+    }
+
+    protected static void prepareLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg, @Nullable ModelPart Tail) {
+        if (stack.getItem() instanceof Shorts) {
+            setAllPartsVisibility(LeftLeg.getChild("LeftLowerLeg"), false);
+            setAllPartsVisibility(RightLeg.getChild("RightLowerLeg"), false);
+            if (Tail != null)
+                Tail.visible = false;
+        }
+    }
+
+    protected static void unprepareLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg) {
+        unprepareLegsForArmor(stack, LeftLeg, RightLeg, null);
+    }
+
+    protected static void unprepareLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg, @Nullable ModelPart Tail) {
+        if (stack.getItem() instanceof Shorts) {
+            setAllPartsVisibility(LeftLeg, true);
+            setAllPartsVisibility(RightLeg, true);
+            if (Tail != null)
+                Tail.visible = true;
+        }
+    }
 
     protected static void addUnifiedLegs(PartDefinition partDefinition, ArmorModel layer) {
         PartDefinition RightLeg = partDefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.5F, 10.5F, 0.0F));
