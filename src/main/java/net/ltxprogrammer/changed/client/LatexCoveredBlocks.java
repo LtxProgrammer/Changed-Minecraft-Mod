@@ -13,6 +13,7 @@ import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.item.AbstractLatexGoo;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -41,7 +42,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -556,13 +559,27 @@ public abstract class LatexCoveredBlocks {
         }
 
         @SubscribeEvent
+        public static void onInitModelBaking(ModelRegistryEvent event) {
+            // This step should have already completed by this point, but race conditions will be race conditions
+            AbstractLatexGoo.removeLatexCoveredStates();
+        }
+
+        @SubscribeEvent
         public static void onModelBake(ModelBakeEvent event) {
             LatexBlockUploader uploader = getUploader();
 
             MODEL_CACHE.clear();
             final Registrar registrar = new Registrar(event, MODEL_CACHE, EARLY_CACHE, MODEL_REF_CACHE, uploader, Changed.config.client.generateUniqueTexturesForAllBlocks.get());
             LOGGER.info("Gathering blocks to cover");
-            List<Block> toCover = Registry.BLOCK.stream().filter(block -> block.getStateDefinition().getProperties().contains(COVERED)).toList();
+
+            HashSet<ResourceLocation> notCoverable = new HashSet<>();
+            MinecraftForge.EVENT_BUS.post(new AbstractLatexGoo.GatherNonCoverableBlocksEvent(notCoverable));
+
+            List<Block> toCover = Registry.BLOCK.stream().filter(block -> {
+                if (!block.getStateDefinition().getProperties().contains(COVERED))
+                    return false;
+                return !notCoverable.contains(block.getRegistryName());
+            }).toList();
             LOGGER.info("Starting latex cover generation for {} blocks", toCover.size());
             Stopwatch timerFull = Stopwatch.createStarted();
             Stopwatch timerPart = Stopwatch.createStarted();
