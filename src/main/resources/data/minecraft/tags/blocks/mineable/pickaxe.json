@@ -67,6 +67,7 @@
     "changed:wall_white",
     "changed:infuser",
     "changed:purifier",
-    "changed:iron_crate"
+    "changed:iron_crate",
+    "changed:white_lab_table"
   ]
 }
