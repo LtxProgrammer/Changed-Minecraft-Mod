@@ -494,6 +494,8 @@
   "facility.zone.red_zone": "Vörös zóna",
   "facility.zone.gray_zone": "Szürke zóna",
   "facility.zone.maintenance_zone": "Karbantartási zóna",
+  "facility.zone.library_zone": "Könyvtár zóna",
+  "facility.zone.vent_zone": "Szellőztetőrendszer zóna",
   "facility.zone.greenhouse_zone": "Üvegház zóna",
   "facility.zone.blue_zone": "Kék zóna",
 
