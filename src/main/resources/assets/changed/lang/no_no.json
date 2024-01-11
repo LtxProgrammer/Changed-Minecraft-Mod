@@ -167,6 +167,7 @@
   "effect.changed.shock": "Støt",
 
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
+  "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli transpelsert.",
 
   "block.changed.beaker": "Begerglass",
   "block.changed.bedside_iv_rack": "IV stativ",
@@ -264,6 +265,7 @@
   "block.changed.wall_greenhouse": "Drivhusvegg",
   "block.changed.wall_vent": "Ventilasjonsvegg",
   "block.changed.wall_white": "Hvit vegg",
+  "block.changed.white_lab_table": "Hvit laboratoriebord",
   "block.changed.white_latex_block": "Hvit lateksblokk",
   "block.changed.white_latex_pillar": "Hvit latekssøyle",
   "block.changed.wolf_gas_canister": "Ulvgassbeholder",
@@ -506,6 +508,8 @@
   "facility.zone.red_zone": "Rød sone",
   "facility.zone.gray_zone": "Grå sone",
   "facility.zone.maintenance_zone": "Vedlikehold sone",
+  "facility.zone.library_zone": "Bibliotek sone",
+  "facility.zone.vent_zone": "Ventilasjon sone",
   "facility.zone.greenhouse_zone": "Drivhus sone",
   "facility.zone.blue_zone": "Blå sone",
 
