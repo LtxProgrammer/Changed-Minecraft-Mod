@@ -164,9 +164,9 @@
   "block.changed.beehive_roof": "Teto de Colmeia",
   "block.changed.beehive_corner": "Canto de Colmeia",
   "block.changed.blue_lab_door": "Porta de Laboratório Azul",
-  "block.changed.book_stack": "Pilha de Livros",
   "block.changed.box_pile": "Pilha de Caixas",
   "block.changed.canned_peaches": "Pêssegos Enlatados",
+  "block.changed.canned_soup": "Sopa Enlatada",
   "block.changed.computer": "Computador",
   "block.changed.clipboard": "Prancheta",
   "block.changed.cardboard_box_small": "Pequena Caixa De Papelão",
@@ -489,7 +489,7 @@
   "changed.tutorial.select_ability.title": "Escolha sua habilidade",
   "changed.tutorial.select_ability.description": "Pressione %s",
   "changed.tutorial.use_ability.title": "Use sua habilidade",
-  "changed.tutorial.use_ability.description": "Pressione ou segure %s"
+  "changed.tutorial.use_ability.description": "Pressione ou segure %s",
 
   "facility.zone.red_zone": "Zona Vermelha",
   "facility.zone.gray_zone": "Zona Cinza",
