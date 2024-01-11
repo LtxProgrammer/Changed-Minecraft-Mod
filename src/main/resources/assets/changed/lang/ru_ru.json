@@ -135,6 +135,7 @@
   "command.changed.error.used_by_other_mod": "Игрок уже использует другой мод",
   "command.changed.error.no_special_form": "У вас нет доступа к особой форме, если вы хотите её получить поддержите автора на патреон и свяжитесь с ним https://www.patreon.com/ltxprogrammer",
 
+  "gamerule.changed:fusabilityDurationPlayer": "Длительность возможности сливаться после трансфурмации (В тиках)",
   "gamerule.changed:keepConscious": "Вы не расстанитесь со своим разумом после трансфурмации",
   "gamerule.changed:keepForm": "Перма-трансфур",
   "gamerule.changed:latexGrowthRate": "Позволяет латексу распростронятся",
@@ -154,6 +155,7 @@
   "container.changed.keypad": "Ввести код",
   "container.changed.note": "Записка",
   "container.changed.access_chest": "Меню ручного сундука",
+  "container.changed.cardboard_container": "Картонная коробка",
 
   "text.changed.game_saved": "Игра сохранена.",
   "text.changed.game_saved_fail": "Невозможно сохранить игру.",
@@ -167,6 +169,7 @@
   "effect.changed.shock": "Шок",
   
   "enchantment.changed.latex_protection": "Защита от латекса",
+  "enchantment.changed.latex_protection.desc": "Защищает носителя от трансфурмации.",
 
   "block.changed.beaker": "Лабораторный стакан",
   "block.changed.bedside_iv_rack": "Капельница",
@@ -179,6 +182,7 @@
   "block.changed.book_stack": "Стопка книг",
   "block.changed.box_pile": "Кучка коробок",
   "block.changed.canned_peaches": "Консервированные персики",
+  "block.changed.canned_soup": "Консервированный суп",
   "block.changed.computer": "Компьютер",
   "block.changed.clipboard": "Планшет",
   "block.changed.cardboard_box_small": "Маленькая картонная коробка",
@@ -263,6 +267,7 @@
   "block.changed.wall_greenhouse": "Тепличная стена",
   "block.changed.wall_vent": "Вентиляционная стена",
   "block.changed.wall_white": "Белая стена",
+  "block.changed.white_lab_table": "Белый лабораторный стол",
   "block.changed.white_latex_block": "Блок белого латекса",
   "block.changed.white_latex_pillar": "Колонна белого латекса",
   "block.changed.wolf_gas_canister": "Канистра с газом",
@@ -513,7 +518,19 @@
   "glu_block.size": "Размер %1$sx%1$s",
   "glu_block.has_door": "Наличие двери",
   "glu_block.zone": "Зона",
-  "glu_block.joint_type": "Тип подключения",
+  "glu_block.joint_type": "Тип соединения",
   "glu_block.joint.entrance": "Вход",
-  "glu_block.joint.exit": "Выход"
+  "glu_block.joint.exit": "Выход",
+
+  "eyestyle.changed.v1": "Оригинальный",
+  "eyestyle.changed.v2": "Горизонтальный",
+  "eyestyle.changed.tall": "Вертикальный",
+
+  "changed.config.bpi.screen": "Основная информация о игроке",
+  "changed.config.bpi.hair_color": "Цвет волос",
+  "changed.config.bpi.iris_color": "Цвет радужки",
+  "changed.config.bpi.sclera_color": "Цвет склеры",
+  "changed.config.bpi.eye_style": "Стиль глаз: %s",
+  "changed.config.bpi.override_dl_iris": "Принудительное изменение цвета глаз у тёмных латексных",
+  "changed.config.bpi.override_all_eye_styles": "Принудительно использовать оригинальный цвет глаз"
 }
