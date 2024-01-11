@@ -13,6 +13,16 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 2,
+          "name": "changed:the_lion_chase_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "changed:laboratory_record"
+        },
+        {
+          "type": "minecraft:item",
           "name": "changed:purifier"
         }
       ],
@@ -28,7 +38,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 4,
+          "weight": 6,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -41,6 +51,48 @@
             }
           ],
           "name": "changed:syringe"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 5.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:iron_ingot"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 7.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_base"
         }
       ]
     },
