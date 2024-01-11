@@ -444,6 +444,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         if (entity instanceof Player player) {
+            newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             ProcessTransfur.killPlayerBy(player, newEntity);
         } else {
             // Take armor
