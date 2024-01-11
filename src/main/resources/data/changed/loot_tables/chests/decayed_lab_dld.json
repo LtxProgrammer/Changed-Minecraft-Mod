@@ -16,6 +16,21 @@
       ]
     },
     {
+      "type": "minecraft:item",
+      "weight": 5,
+      "name": "changed:the_scarlet_crystal_mine_record"
+    },
+    {
+      "type": "minecraft:item",
+      "weight": 5,
+      "name": "changed:crystal_zone_record"
+    },
+    {
+      "type": "minecraft:item",
+      "weight": 8,
+      "name": "changed:black_goo_zone_record"
+    },
+    {
       "rolls": {
         "type": "minecraft:uniform",
         "min": 2.0,
