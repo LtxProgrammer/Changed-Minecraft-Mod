@@ -169,7 +169,8 @@
 
   "enchantment.changed.latex_protection": "Proteção de Látex",
   "enchantment.changed.latex_protection.desc": "Fornece uma Proteção ao usuário contra a infecção do latex.",
-
+  
+  "block.changed.beaker": "Proveta",
   "block.changed.bedside_iv_rack": "Suporte de Soro",
   "block.changed.beehive_bed": "Cama de Colmeia",
   "block.changed.beehive_wall": "Parede de Colmeia",
@@ -191,9 +192,15 @@
   "block.changed.dark_latex_dragon_crystal": "Cristal de Dragão de Látex Escuro",
   "block.changed.dark_latex_ice": "Gelo de Látex Escuro",
   "block.changed.duct": "Duto de Ventilação",
+  "block.changed.erlenmeyer_flask": "Frasco Erlenmeyer",
+  "block.changed.glu": "Bloco Glu",
   "block.changed.infuser": "Infusor",
   "block.changed.iron_crate": "Caixa de Ferro",
   "block.changed.keypad": "Teclado Numérico",
+  "block.changed.large_blue_lab_door": "Grande Porta azul do laboratório", 
+  "block.changed.large_maintenance_door": "Grande Porta de manutenção", 
+  "block.changed.large_lab_door": "Grande Porta do Laboratório", 
+  "block.changed.large_library_door": "Grande Porta da biblioteca",
   "block.changed.laser_emitter": "Emissor de Laser",
   "block.changed.latex_container": "Recipiente de Látex",
   "block.changed.latex_beifeng_crystal": "Cristal de Beifeng de Látex",
@@ -213,7 +220,9 @@
   "block.changed.light_latex_puddle_male": "Poça de Lobo De Látex Claro Macho",
   "block.changed.maintenance_door": "Porta de Manutenção",
   "block.changed.microphone": "Microfone",
+  "block.changed.microscope": "Microscópio",
   "block.changed.note": "Nota",
+  "block.changed.office_chair": "Cadeira De Escritório",
   "block.changed.orange_lab_carpeting": "Revestimento de Carpete Laranja de Laboratório",
   "block.changed.orange_tree_sapling": "Muda de laranjeira",
   "block.changed.orange_tree_leaves": "Folhas de laranjeira",
@@ -221,6 +230,7 @@
   "block.changed.purifier": "Purificador",
   "block.changed.retinal_scanner": "Scanner Retinal",
   "block.changed.speaker": "Alto-falante",
+  "block.changed.tape_recorder": "Gravador de fita",
   "block.changed.tiles_blue": "Azulejos Azuis",
   "block.changed.tiles_blue_small": "Pequenos Azulejos Azuis",
   "block.changed.tiles_caution": "Azulejos de Aviso",
@@ -255,10 +265,28 @@
   "block.changed.wall_greenhouse": "Parede de Estufa",
   "block.changed.wall_vent": "Parede de Ventilação",
   "block.changed.wall_white": "Parede Branca",
+  "block.changed.white_lab_table": "Mesa De Laboratório Branca",
   "block.changed.white_latex_block": "Bloco de Látex Branco",
   "block.changed.white_latex_pillar": "Pilar de Látex Branco",
   "block.changed.wolf_gas_canister": "Cilindro de Gás Lobo",
 
+  "block.changed.black_pillow": "Almofada Preta",
+  "block.changed.blue_pillow": "Almofada Azul",
+  "block.changed.brown_pillow": "Almofada Marrom",
+  "block.changed.cyan_pillow": "Almofada Ciana",
+  "block.changed.gray_pillow": "Almofada Cinza",
+  "block.changed.green_pillow": "Almofada Verde",
+  "block.changed.light_blue_pillow": "Almofada Azul Claro",
+  "block.changed.light_gray_pillow": "Almofada Cinza Claro",
+  "block.changed.lime_pillow": "Almofada de limão",
+  "block.changed.magenta_pillow": "Almofada Magenta",
+  "block.changed.orange_pillow": "Almofada Laranja",
+  "block.changed.pink_pillow": "Almofada Rosa",
+  "block.changed.purple_pillow": "Almofada Roxa",
+  "block.changed.red_pillow": "Almofada Vermelha",
+  "block.changed.white_pillow": "Almofada Branca",
+  "block.changed.yellow_pillow": "Almofada Amarela",
+  
   "fluid.changed.dark_latex": "Líquido de Látex Escuro",
   "fluid.changed.white_latex": "Líquido de Látex Branco",
 
@@ -448,7 +476,7 @@
   "changed:advancements.main.aquatic_swimming.title": "Fui Nadar",
   "changed:advancements.main.aquatic_swimming.description": "Passe um dia completo debaixo d'água como uma forma aquática",
 
-  "changed:advancements.main.transfur_white.title": "Um Só",
+  "changed:advancements.main.transfur_white.title": "Um Dos Mesmos",
   "changed:advancements.main.transfur_white.description": "Se Transfurme em uma forma de látex branco",
 
   "changed:advancements.main.transfur_dark.title": "Irmandade",
@@ -476,4 +504,31 @@
   "changed.tutorial.select_ability.description": "Pressione %s",
   "changed.tutorial.use_ability.title": "Use sua habilidade",
   "changed.tutorial.use_ability.description": "Pressione ou segure %s"
+
+  "facility.zone.red_zone": "Zona Vermelha",
+  "facility.zone.gray_zone": "Zona Cinza",
+  "facility.zone.maintenance_zone": "Zona de Manutenção",
+  "facility.zone.library_zone": "Zona da Biblioteca",
+  "facility.zone.vent_zone": "Zona de ventilação",
+  "facility.zone.greenhouse_zone": "Zona da estufa",
+  "facility.zone.blue_zone": "Zona Azul",
+
+  "glu_block.size": "Tamanho %1$sx%1$s",
+  "glu_block.has_door": "Tem porta",
+  "glu_block.zone": "Zona",
+  "glu_block.joint_type": "Tipo de junta",
+  "glu_block.joint.entrance": "Entrada",
+  "glu_block.joint.exit": "Sair",
+
+  "eyestyle.changed.v1": "Original",
+  "eyestyle.changed.v2": "Slim",
+  "eyestyle.changed.tall": "Grande",
+
+  "changed.config.bpi.screen": "Informações básicas do player",
+  "changed.config.bpi.hair_color": "Cor do cabelo",
+  "changed.config.bpi.iris_color": "Cor da íris",
+  "changed.config.bpi.sclera_color": "Cor da esclera",
+  "changed.config.bpi.eye_style": "Estilo de olho: %s",
+  "changed.config.bpi.override_dl_iris": "Substituir cor da íris em variantes de látex escuro",
+  "changed.config.bpi.override_all_eye_styles": "Substituir todos os estilos de olhos para corresponder"
 }
