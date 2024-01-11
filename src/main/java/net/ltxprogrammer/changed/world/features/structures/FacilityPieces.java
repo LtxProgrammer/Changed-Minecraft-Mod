@@ -81,6 +81,7 @@ public class FacilityPieces {
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_red_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_blue_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_gray_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor_gray_circle")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_blue")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_gray")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_red")))
