@@ -92,8 +92,8 @@ public class FacilityPieces {
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_origin"), LootTables.DECAYED_LAB_ORIGIN))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_storage"), LootTables.DECAYED_LAB_WL))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_storage"), LootTables.DECAYED_LAB_DL))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_storage"), LootTables.LAB_WHITE_LATEX))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_storage"), LootTables.LAB_DARK_LATEX))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_storage"), LootTables.DECAYED_LAB_ORIGIN))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_risk"), LootTables.HIGH_TIER_LAB))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_risk"), LootTables.HIGH_TIER_LAB));
