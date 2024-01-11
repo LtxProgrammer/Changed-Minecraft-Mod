@@ -74,12 +74,12 @@
   "item.changed.diamond_upper_abdomen_armor": "钻石上腹甲",
   "item.changed.diamond_lower_abdomen_armor": "钻石下腹甲",
   "item.changed.netherite_upper_abdomen_armor": "下界合金上腹甲",
-  "item.ged.netherite_lower_abdomen_armor": "下界合金下腹甲",
+  "item.changed.netherite_lower_abdomen_armor": "下界合金下腹甲",
 
-  "itemnged.latex_dance_record": "胶液音乐唱片",
-  "item.changed.latex_dance_record.desc": "Latex Dance - LtxProgrammer",
   "item.changed.owo_record": "胶液音乐唱片",
   "item.changed.owo_record.desc": "ÒwÓ - Artemka2009",
+
+  "item.changed.latex_music_disc": "胶液音乐唱片",
 
   "syringe.changed:form_special": "Patron Custom Form Syringe",
 
@@ -98,7 +98,6 @@
 
   "gamerule.changed:keepConscious": "是否在Transfur的时候保留意识",
   "gamerule.changed:keepForm": "是否永久Transfur",
-  "gamerule.changed:latexSpread": "是否允许胶液自然蔓延",
   "gamerule.changed:transfurTolerance": "胶液生物Transfur伤害(Ticks)",
   "gamerule.changed:npcWantFusePlayer": "是否允许胶液生物与玩家融合",
   "gamerule.changed:doPale": "启用苍白病",
@@ -133,7 +132,6 @@
   "block.changed.beehive_roof": "Beehive Roof",
   "block.changed.beehive_corner": "Beehive Corner",
   "block.changed.bedside_iv_rack": "输液架",
-  "block.changed.book_stack": "一摞书",
   "block.changed.canned_peaches": "桃子罐头",
   "block.changed.computer": "电脑",
   "block.changed.clipboard": "纸夹板",
@@ -375,9 +373,6 @@
 
   "changed.compact_disc.title.special_latex": "独一无二的变种",
   "changed.compact_disc.content.special_latex": "感谢出色的贡献者们，我们有足够多的资金去测试一种不太稳定的胶液。 似乎我们测试的每个测试者的形态都是独一无二的。",
-
-  "changed.compact_disc.title.hardware_upgrade":"硬件升级",
-  "changed.compact_disc.content.hardware_upgrade":"近日，公司对电脑设备进行了升级，用全新的CD驱动器换掉了那些老掉牙的软盘驱动器。",
   
   "changed:advancements.main.root.title": "Changed",
   "changed:advancements.main.root.description": "欢迎来到未来",
