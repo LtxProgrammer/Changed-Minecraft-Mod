@@ -31,7 +31,7 @@ public record Color3(float red, float green, float blue) {
     }
 
     @Nullable
-    private static Color3 parseHex(String tag) {
+    public static Color3 parseHex(String tag) {
         if (tag.length() > 0) {
             if (tag.charAt(0) == '#')
                 tag = tag.substring(1);
@@ -43,6 +43,14 @@ public record Color3(float red, float green, float blue) {
         }
 
         return null;
+    }
+
+    public String toHexCode() {
+        StringBuilder s = new StringBuilder(Integer.toString(toInt(), 16).toUpperCase());
+        while (s.length() < 6)
+            s.insert(0, "0");
+
+        return "#" + s;
     }
 
     public static Color3 getColor(String color) {

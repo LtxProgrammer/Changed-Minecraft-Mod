@@ -3,8 +3,9 @@ package net.ltxprogrammer.changed.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.CustomCoatLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexGelLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -56,7 +57,7 @@ public class FormRenderHandler {
 
                 HumanoidArm handSide = playerRenderer.getModel().rightArm != arm ? HumanoidArm.LEFT : HumanoidArm.RIGHT; //default to right arm instead any mods override the player model
 
-                LivingEntity livingInstance = variant.getLatexEntity();
+                LatexEntity livingInstance = variant.getLatexEntity();
                 if (livingInstance == null) return false;
                 EntityRenderer entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(livingInstance);
                 LatexHumanoidRenderer<?, ?, ?> latexRenderer = null;
@@ -64,7 +65,7 @@ public class FormRenderHandler {
                 if (entRenderer instanceof LatexHumanoidRenderer<?,?,?> tmp) {
                     latexRenderer = tmp;
 
-                    LatexHumanoidModel entityModel = latexRenderer.getModel((LatexEntity) livingInstance);
+                    LatexHumanoidModel entityModel = latexRenderer.getModel(livingInstance);
                     if (entityModel == null)
                         return true;
 
@@ -79,14 +80,9 @@ public class FormRenderHandler {
                         var controller = latexHumanoidModel.getAnimator();
 
                         entityModel.attackTime = 0.0F;
-                        boolean lastCrouch = controller.crouching;
-                        controller.crouching = false;
-                        float lastSwim = controller.swimAmount;
-                        controller.swimAmount = 0.0F;
+                        controller.resetVariables();
                         entityModel.setupAnim(replacementInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                         latexHumanoidModel.setupHand();
-                        controller.crouching = lastCrouch;
-                        controller.swimAmount = lastSwim;
 
                         handPart = latexHumanoidModel.getArm(handSide);
                         stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
@@ -97,14 +93,9 @@ public class FormRenderHandler {
                         var controller = latexHumanoidModel.getAnimator();
 
                         entityModel.attackTime = 0.0F;
-                        boolean lastCrouch = controller.crouching;
-                        controller.crouching = false;
-                        float lastSwim = controller.swimAmount;
-                        controller.swimAmount = 0.0F;
+                        controller.resetVariables();
                         entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                         latexHumanoidModel.setupHand();
-                        controller.crouching = lastCrouch;
-                        controller.swimAmount = lastSwim;
 
                         handPart = latexHumanoidModel.getArm(handSide);
                         stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
@@ -113,26 +104,18 @@ public class FormRenderHandler {
                 }
 
                 if(handPart != null && texture != null) {
-                    renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
+                    renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityCutout(texture)), light, 1F);
                     for (var layer : latexRenderer.layers)  {
                         if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), LightTexture.FULL_BRIGHT, 1F);
-                        if (layer instanceof LatexGelLayer<?,?> gelLayer) {
-                            LatexHumanoidModel entityModel = gelLayer.getModel();
-                            var latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
-                            var controller = latexHumanoidModel.getAnimator();
-
-                            entityModel.attackTime = 0.0F;
-                            boolean lastCrouch = controller.crouching;
-                            controller.crouching = false;
-                            float lastSwim = controller.swimAmount;
-                            controller.swimAmount = 0.0F;
-                            entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-                            latexHumanoidModel.setupHand();
-                            controller.crouching = lastCrouch;
-                            controller.swimAmount = lastSwim;
-                            renderModelPartWithTexture(gelLayer.getModel().getArm(handSide), stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(texture)), light, 1F);
+                        if (layer instanceof CustomCoatLayer<?,?> customCoatLayer) {
+                            var info = livingInstance.getBasicPlayerInfo();
+                            var coatColor = info.getHairColor();
+                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForColor(coatColor)), light,
+                                    coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
                         }
+                        if (layer instanceof LatexTranslucentLayer<?,?> gelLayer)
+                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(gelLayer.getTexture())), light, 1F);
                     }
                 }
 
@@ -158,6 +141,28 @@ public class FormRenderHandler {
             stack.mulPoseMatrix(stackCorrector.last().pose());
 
             part.render(stack, buffer, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, alpha);
+
+            stack.popPose();
+        }
+
+        part.xRot = prevX;
+    }
+
+    public static void renderModelPartWithTexture(ModelPart part, PoseStack stackCorrector, PoseStack stack, VertexConsumer buffer, int light, float red, float green, float blue, float alpha) {
+        if(part == null) return;
+
+        float prevX = part.xRot;
+        part.xRot = 0F;
+
+        //taken from ModelRenderer.render
+        if(part.visible) {
+            stack.pushPose();
+
+            part.translateAndRotate(stack);
+
+            stack.mulPoseMatrix(stackCorrector.last().pose());
+
+            part.render(stack, buffer, light, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 
             stack.popPose();
         }

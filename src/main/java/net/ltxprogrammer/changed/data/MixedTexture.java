@@ -83,19 +83,19 @@ public class MixedTexture {
         return baseLocation;
     }
 
-    private record RGBA(float r, float g, float b, float a) {
+    public record RGBA(float r, float g, float b, float a) {
         public static RGBA of(int integer) {
             return new RGBA(
-                    (float)((integer & 0x00ff0000) >>> 16) / 255.0f,
-                    (float)((integer & 0x0000ff00) >>> 8) / 255.0f,
                     (float)(integer & 0x000000ff) / 255.0f,
+                    (float)((integer & 0x0000ff00) >>> 8) / 255.0f,
+                    (float)((integer & 0x00ff0000) >>> 16) / 255.0f,
                     (float)((integer & 0xff000000) >>> 24) / 255.0f);
         }
 
         public int toInt() {
-            return ((int)(clamp(r, 0f, 1f) * 255.0f) << 16) +
+            return (int)(clamp(r, 0f, 1f) * 255.0f) +
                     ((int)(clamp(g, 0f, 1f) * 255.0f) << 8) +
-                    (int)(clamp(b, 0f, 1f) * 255.0f) +
+                    ((int)(clamp(b, 0f, 1f) * 255.0f) << 16) +
                     ((int)(clamp(a, 0f, 1f) * 255.0f) << 24);
         }
 
@@ -124,19 +124,19 @@ public class MixedTexture {
         return Math.max(min, Math.min(max, val));
     }
 
-    public Pair<Integer, Integer> imageSize(NativeImage image, @Nullable AnimationMetadataSection metadataSection) {
+    public static Pair<Integer, Integer> imageSize(NativeImage image, @Nullable AnimationMetadataSection metadataSection) {
         return metadataSection != null ?
                 metadataSection.getFrameSize(image.getWidth(), image.getHeight()) :
                 new Pair<>(image.getWidth(), image.getHeight());
     }
 
-    public RGBA sampleNearest(NativeImage image, @Nullable AnimationMetadataSection metadataSection, float u, float v) {
+    public static RGBA sampleNearest(NativeImage image, @Nullable AnimationMetadataSection metadataSection, float u, float v) {
         var size = imageSize(image, metadataSection);
         return RGBA.of(image.getPixelRGBA((int)(size.getFirst() * frac(u)),
                         (int)(size.getSecond() * frac(v))));
     }
 
-    public RGBA sampleLinear(NativeImage image, @Nullable AnimationMetadataSection metadataSection, float u, float v) {
+    public static RGBA sampleLinear(NativeImage image, @Nullable AnimationMetadataSection metadataSection, float u, float v) {
         var size = imageSize(image, metadataSection);
         float actualX = size.getFirst() * frac(u);
         float actualY = size.getFirst() * frac(v);

@@ -168,6 +168,7 @@
   "effect.changed.shock": "Sokk",
   
   "enchantment.changed.latex_protection": "Latexvédelem",
+  "enchantment.changed.latex_protection.desc": "Védi a viselőjét a transzfurálástól.",
 
   "block.changed.beaker": "Főzőpohár",
   "block.changed.bedside_iv_rack": "Infúziós állvány",
@@ -264,6 +265,7 @@
   "block.changed.wall_greenhouse": "Üvegház-fal",
   "block.changed.wall_vent": "Szellőztetőfal",
   "block.changed.wall_white": "Fehér fal",
+  "block.changed.white_lab_table": "Fehér laborasztal",
   "block.changed.white_latex_block": "Fehér latexblokk",
   "block.changed.white_latex_pillar": "Fehér latexoszlop",
   "block.changed.wolf_gas_canister": "Farkasgázpalack",
@@ -466,31 +468,31 @@
   "changed:advancements.main.root.description": "Üdvözöljük a jövőben",
 
   "changed:advancements.main.transfur.title": "Maradandó!?",
-  "changed:advancements.main.transfur.description": "Transzfurozzon magát",
+  "changed:advancements.main.transfur.description": "Transzfurálja magát",
 
   "changed:advancements.main.transfur_aquatic.title": "Megyek úszni!",
-  "changed:advancements.main.transfur_aquatic.description": "Transzfurozzon magát vízi formává",
+  "changed:advancements.main.transfur_aquatic.description": "Transzfurálja magát vízi formává",
 
   "changed:advancements.main.aquatic_swimming.title": "Úszni mentem",
   "changed:advancements.main.aquatic_swimming.description": "Tölts egy teljes napot a víz alatt vízi formaként",
 
   "changed:advancements.main.transfur_white.title": "Egy ugyanabban",
-  "changed:advancements.main.transfur_white.description": "Transzfurozzon magát fehér latex formává",
+  "changed:advancements.main.transfur_white.description": "Transzfurálja magát fehér latex formává",
 
   "changed:advancements.main.transfur_dark.title": "Testvériség",
-  "changed:advancements.main.transfur_dark.description": "Transzfurozzon magát sötét latex formává",
+  "changed:advancements.main.transfur_dark.description": "Transzfurálja magát sötét latex formává",
 
   "changed:advancements.main.white_latex_fuse.title": "Egyneműség",
   "changed:advancements.main.white_latex_fuse.description": "Fehér latex formaként beolvadjon a fehér latexbe",
 
   "changed:advancements.main.transfur_aerial.title": "Repülési órák",
-  "changed:advancements.main.transfur_aerial.description": "Transzfurozzon magát légi formává",
+  "changed:advancements.main.transfur_aerial.description": "Transzfurálja magát légi formává",
 
   "changed:advancements.main.transfur_mask.title": "Emberiség elutasítása",
   "changed:advancements.main.transfur_mask.description": "Szerezzen sötét latex maszkot és vegye fel.",
 
   "changed:advancements.main.transfur_legless.title": "Lábaim!",
-  "changed:advancements.main.transfur_legless.description": "Transzfurozzon magát lábatlan formává",
+  "changed:advancements.main.transfur_legless.description": "Transzfurálja magát lábatlan formává",
 
   "changed:advancements.main.beehive_sleep.title": "Édesebb álmok",
   "changed:advancements.main.beehive_sleep.description": "Aludjon egy méhkas-ágyban",

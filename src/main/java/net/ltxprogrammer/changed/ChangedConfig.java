@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ConfigTracker;
@@ -12,7 +15,20 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChangedConfig {
+    private interface AdditionalData {
+        String getName();
+        void load(CompoundTag tag);
+        void save(CompoundTag tag);
+    }
+
     private static final Logger LOGGER = LogManager.getLogger();
     static final Marker CONFIG = MarkerManager.getMarker("CONFIG");
 
@@ -28,7 +44,7 @@ public class ChangedConfig {
         }
     }
 
-    public static class Client {
+    public static class Client implements AdditionalData {
         public final ForgeConfigSpec.ConfigValue<Boolean> useNewModels;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyInventory;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
@@ -36,6 +52,8 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> memCacheBaseImages;
         public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
         public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
+
+        public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
@@ -53,6 +71,23 @@ public class ChangedConfig {
             builder.comment("Got a lot of mods? Unique model generation will be limited to minecraft and changed");
             fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
         }
+
+        @Override
+        public String getName() {
+            return "client";
+        }
+
+        @Override
+        public void load(CompoundTag tag) {
+            basicPlayerInfo.load(tag.getCompound("basicPlayerInfo"));
+        }
+
+        @Override
+        public void save(CompoundTag tag) {
+            var bpi = new CompoundTag();
+            basicPlayerInfo.save(bpi);
+            tag.put("basicPlayerInfo", bpi);
+        }
     }
 
     public static class Server {
@@ -67,6 +102,7 @@ public class ChangedConfig {
     private final Pair<Common, ForgeConfigSpec> commonPair;
     private final Pair<Client, ForgeConfigSpec> clientPair;
     private final Pair<Server, ForgeConfigSpec> serverPair;
+    private final List<AdditionalData> additionalDataList = new ArrayList<>();
     public final Common common;
     public final Client client;
     public final Server server;
@@ -81,6 +117,43 @@ public class ChangedConfig {
         }
     }
 
+    public void saveAdditionalData() {
+        additionalDataList.forEach(data -> {
+            var path = FMLPaths.CONFIGDIR.get().resolve(Changed.MODID).resolve(data.getName() + ".nbt");
+            try {
+                var tag = new CompoundTag();
+                data.save(tag);
+                path.getParent().toFile().mkdirs();
+                NbtIo.writeCompressed(tag, path.toFile());
+            } catch (IOException ex) {
+                Changed.LOGGER.error("Failed to write data for \"{}\"", data.getName());
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    public void updateAdditionalData() {
+        additionalDataList.forEach(data -> {
+            var path = FMLPaths.CONFIGDIR.get().resolve(Changed.MODID).resolve(data.getName() + ".nbt");
+            try {
+                var tag = NbtIo.readCompressed(path.toFile());
+                data.load(tag);
+            } catch (IOException e) {
+                Changed.LOGGER.warn("Data file missing or corrupted for \"{}\", initializing on defaults", data.getName());
+
+                try {
+                    var tag = new CompoundTag();
+                    data.save(tag);
+                    path.getParent().toFile().mkdirs();
+                    NbtIo.writeCompressed(tag, path.toFile());
+                } catch (IOException ex) {
+                    Changed.LOGGER.error("Failed to write defaults for \"{}\"", data.getName());
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
     public ChangedConfig(ModLoadingContext context) {
         commonPair = new ForgeConfigSpec.Builder()
                 .configure(Common::new);
@@ -88,6 +161,8 @@ public class ChangedConfig {
                 .configure(Client::new);
         serverPair = new ForgeConfigSpec.Builder()
                 .configure(Server::new);
+
+        additionalDataList.add(clientPair.getLeft());
 
         context.registerConfig(ModConfig.Type.COMMON, commonPair.getRight());
         context.registerConfig(ModConfig.Type.CLIENT, clientPair.getRight());
@@ -98,5 +173,7 @@ public class ChangedConfig {
 
         // Early load client config
         earlyLoad(ModConfig.Type.CLIENT, clientPair);
+
+        updateAdditionalData();
     }
 }

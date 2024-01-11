@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "state=0": { "model": "changed:block/white_lab_table/0" },
+    "state=1": { "model": "changed:block/white_lab_table/1" },
+    "state=2": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=3": { "model": "changed:block/white_lab_table/3" },
+    "state=4": { "model": "changed:block/white_lab_table/4" },
+    "state=5": { "model": "changed:block/white_lab_table/5" },
+    "state=6": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=7": { "model": "changed:block/white_lab_table/7" },
+    "state=8": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=9": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=10": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=11": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=12": { "model": "changed:block/white_lab_table/12" },
+    "state=13": { "model": "changed:block/white_lab_table/13" },
+    "state=14": { "model": "changed:block/white_lab_table/no_legs" },
+    "state=15": { "model": "changed:block/white_lab_table/15" }
+  }
+}

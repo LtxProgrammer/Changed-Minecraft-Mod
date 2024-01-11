@@ -7,7 +7,7 @@ import net.minecraft.util.random.WeightedRandomList;
 
 public class FacilityStaircaseEnd extends FacilitySinglePiece {
     private static final WeightedRandomList<WeightedEntry.Wrapper<PieceType>> VALID_NEIGHBORS = WeightedRandomList.create(
-            WeightedEntry.wrap(PieceType.CORRIDOR, 1));
+            WeightedEntry.wrap(PieceType.SPLIT, 1));
 
     public FacilityStaircaseEnd(ResourceLocation templateName) {
         super(PieceType.STAIRCASE_END, templateName, LootTables.LOW_TIER_LAB);

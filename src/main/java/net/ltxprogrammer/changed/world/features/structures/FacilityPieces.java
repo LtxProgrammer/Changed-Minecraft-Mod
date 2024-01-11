@@ -45,6 +45,7 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v2")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_v3")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_gray_turn_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_maintenance_v1")))
 
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_blue")))
@@ -73,11 +74,13 @@ public class FacilityPieces {
 
     public static final FacilityPieceCollection TRANSITIONS = new FacilityPieceCollection()
             .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_red")))
+            .register(new FacilityTransitionSection(Changed.modResource("facility/corridor_blue_stairs_to_gray")))
             .register(new FacilityTransitionSection(Changed.modResource("facility/transition_red_to_gray")));
 
     public static final FacilityPieceCollection SPLITS = new FacilityPieceCollection()
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_red_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/corridor_blue_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor_gray_t_v1")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_blue")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_gray")))
             .register(new FacilitySplitSection(Changed.modResource("facility/intersection1_red")))
@@ -89,9 +92,16 @@ public class FacilityPieces {
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_test"), LootTables.DECAYED_LAB_DL))
             .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_origin"), LootTables.DECAYED_LAB_ORIGIN))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_storage"), LootTables.DECAYED_LAB_WL))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_storage"), LootTables.DECAYED_LAB_DL))
-            .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_storage"), LootTables.DECAYED_LAB_ORIGIN));
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_storage"), LootTables.LAB_WHITE_LATEX))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_storage"), LootTables.LAB_DARK_LATEX))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_gray_storage"), LootTables.DECAYED_LAB_ORIGIN))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_blue_wl_risk"), LootTables.HIGH_TIER_LAB))
+            .register(new FacilityRoomPiece(Changed.modResource("facility/room_red_dl_risk"), LootTables.HIGH_TIER_LAB));
+
+    public static final FacilityPieceCollection SEALS = new FacilityPieceCollection()
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_blue")))
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_red")))
+            .register(new FacilitySealPiece(Changed.modResource("facility/seal_gray")));
 
     public static final Map<PieceType, FacilityPieceCollection> BY_PIECE_TYPE = Util.make(new HashMap<>(), map -> {
         map.put(PieceType.ENTRANCE, ENTRANCES);
@@ -102,6 +112,7 @@ public class FacilityPieces {
         map.put(PieceType.SPLIT, SPLITS);
         map.put(PieceType.TRANSITION, TRANSITIONS);
         map.put(PieceType.ROOM, ROOMS);
+        map.put(PieceType.SEAL, SEALS);
     });
 
     private static BlockPos gluNeighbor(BlockPos gluPos, BlockState gluState) {
@@ -121,7 +132,11 @@ public class FacilityPieces {
         int reroll = 10;
         while (reroll > 0) {
             PieceType pieceType;
-            if (span == 0) {
+            BoundingBox allowedRegionForPiece = allowedRegion;
+            if (parent.type == PieceType.SPLIT && reroll == 1) { // Split pieces will dead-end if it's too close to the gen region
+                pieceType = PieceType.SEAL;
+                allowedRegionForPiece = BoundingBox.infinite();
+            } else if (span == 0) {
                 pieceType = PieceType.ROOM;
             } else {
                 var type = start.validTypes().getRandom(context.random());
@@ -134,7 +149,7 @@ public class FacilityPieces {
             Collections.shuffle(pieces, context.random());
             for (FacilityPiece nextPiece : pieces) {
                 var nextStructure = nextPiece.createStructurePiece(context.structureManager(), genDepth);
-                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegion))
+                if (!nextStructure.setupBoundingBox(builder, start.blockInfo(), context.random(), allowedRegionForPiece))
                     continue;
 
                 var startPos = gluNeighbor(start.blockInfo().pos, start.blockInfo().state);
@@ -144,7 +159,7 @@ public class FacilityPieces {
                 if (span > 0) {
                     stack.push(nextPiece);
 
-                    var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context.chunkGenerator(), nextSpan);
+                    var genStack = new FacilityGenerationStack(stack, nextStructure.getBoundingBox(), context, nextSpan);
                     List<GenStep> starts = new ArrayList<>();
                     nextStructure.addSteps(genStack, starts);
 
@@ -233,7 +248,7 @@ public class FacilityPieces {
         stack.push(entranceNew);
         builder.addPiece(entrancePiece);
 
-        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context.chunkGenerator(), span), starts);
+        entrancePiece.addSteps(new FacilityGenerationStack(stack, entrancePiece.getBoundingBox(), context, span), starts);
 
         if (span > 0) {
             starts.forEach(start -> {

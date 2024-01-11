@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -54,6 +55,7 @@ public interface IAbstractLatex {
     void openMenu(MenuProvider menuProvider);
     void closeContainer();
     void setHairStyle(HairStyle style);
+    void setEyeStyle(EyeStyle style);
     void causeFoodExhaustion(float exhaustion);
 
     static IAbstractLatex forPlayer(Player player) {
@@ -191,6 +193,11 @@ public interface IAbstractLatex {
             @Override
             public void setHairStyle(HairStyle style) {
                 latex.get().setHairStyle(style);
+            }
+
+            @Override
+            public void setEyeStyle(EyeStyle style) {
+                latex.get().setEyeStyle(style);
             }
 
             @Override
@@ -356,6 +363,11 @@ public interface IAbstractLatex {
             @Override
             public void setHairStyle(HairStyle style) {
                 latex.setHairStyle(style);
+            }
+
+            @Override
+            public void setEyeStyle(EyeStyle style) {
+                latex.setEyeStyle(style);
             }
 
             @Override

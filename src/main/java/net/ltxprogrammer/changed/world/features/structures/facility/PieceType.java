@@ -8,6 +8,7 @@ public enum PieceType {
     CORRIDOR(true),
     SPLIT(true),
     TRANSITION(true),
+    SEAL(true),
     ROOM(true);
 
     private final boolean consumesSpan;

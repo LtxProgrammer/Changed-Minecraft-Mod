@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -77,29 +76,29 @@ public class ChangedItems {
 
     // Unsure whether to keep this record, it doesn't fit with the BGM from changed
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
-    public static final RegistryObject<LoopedRecordItem> BLACK_GOO_ZONE_RECORD = registerLoopedRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);
-    public static final RegistryObject<LoopedRecordItem> CRYSTAL_ZONE_RECORD = registerLoopedRecord("crystal_zone_record", () -> ChangedSounds.MUSIC_CRYSTAL_ZONE);
-    public static final RegistryObject<LoopedRecordItem> GAS_ROOM_RECORD = registerLoopedRecord("gas_room_record", () -> ChangedSounds.MUSIC_GAS_ROOM);
-    public static final RegistryObject<LoopedRecordItem> LABORATORY_RECORD = registerLoopedRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
-    public static final RegistryObject<LoopedRecordItem> OUTSIDE_THE_TOWER_RECORD = registerLoopedRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
-    public static final RegistryObject<LoopedRecordItem> PURO_THE_BLACK_GOO_RECORD = registerLoopedRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
-    public static final RegistryObject<LoopedRecordItem> PUROS_HOME_RECORD = registerLoopedRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
-    public static final RegistryObject<LoopedRecordItem> THE_LIBRARY_RECORD = registerLoopedRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
-    public static final RegistryObject<LoopedRecordItem> THE_LION_CHASE_RECORD = registerLoopedRecord("the_lion_chase_record", () -> ChangedSounds.MUSIC_THE_LION_CHASE);
-    public static final RegistryObject<LoopedRecordItem> THE_SCARLET_CRYSTAL_MINE_RECORD = registerLoopedRecord("the_scarlet_crystal_mine_record", () -> ChangedSounds.MUSIC_THE_SCARLET_CRYSTAL_MINE);
-    public static final RegistryObject<LoopedRecordItem> THE_SHARK_RECORD = registerLoopedRecord("the_shark_record", () -> ChangedSounds.MUSIC_THE_SHARK);
-    public static final RegistryObject<LoopedRecordItem> THE_SQUID_DOG_RECORD = registerLoopedRecord("the_squid_dog_record", () -> ChangedSounds.MUSIC_THE_SQUID_DOG);
-    public static final RegistryObject<LoopedRecordItem> THE_WHITE_GOO_JUNGLE_RECORD = registerLoopedRecord("the_white_goo_jungle_record", () -> ChangedSounds.MUSIC_THE_WHITE_GOO_JUNGLE);
-    public static final RegistryObject<LoopedRecordItem> THE_WHITE_TAIL_CHASE_PART_1 = registerLoopedRecord("the_white_tail_chase_part_1_record", () -> ChangedSounds.MUSIC_THE_WHITE_TAIL_CHASE_PART_1);
-    public static final RegistryObject<LoopedRecordItem> THE_WHITE_TAIL_CHASE_PART_2 = registerLoopedRecord("the_white_tail_chase_part_2_record", () -> ChangedSounds.MUSIC_THE_WHITE_TAIL_CHASE_PART_2);
-    public static final RegistryObject<LoopedRecordItem> VENT_PIPE_RECORD = registerLoopedRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
+    public static final RegistryObject<LatexRecordItem> BLACK_GOO_ZONE_RECORD = registerLatexRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);
+    public static final RegistryObject<LatexRecordItem> CRYSTAL_ZONE_RECORD = registerLatexRecord("crystal_zone_record", () -> ChangedSounds.MUSIC_CRYSTAL_ZONE);
+    public static final RegistryObject<LatexRecordItem> GAS_ROOM_RECORD = registerLatexRecord("gas_room_record", () -> ChangedSounds.MUSIC_GAS_ROOM);
+    public static final RegistryObject<LatexRecordItem> LABORATORY_RECORD = registerLatexRecord("laboratory_record", () -> ChangedSounds.MUSIC_LABORATORY);
+    public static final RegistryObject<LatexRecordItem> OUTSIDE_THE_TOWER_RECORD = registerLatexRecord("outside_the_tower_record", () -> ChangedSounds.MUSIC_OUTSIDE_THE_TOWER);
+    public static final RegistryObject<LatexRecordItem> PURO_THE_BLACK_GOO_RECORD = registerLatexRecord("puro_the_black_goo_record", () -> ChangedSounds.MUSIC_PURO_THE_BLACK_GOO);
+    public static final RegistryObject<LatexRecordItem> PUROS_HOME_RECORD = registerLatexRecord("puros_home_record", () -> ChangedSounds.MUSIC_PUROS_HOME);
+    public static final RegistryObject<LatexRecordItem> THE_LIBRARY_RECORD = registerLatexRecord("the_library_record", () -> ChangedSounds.MUSIC_THE_LIBRARY);
+    public static final RegistryObject<LatexRecordItem> THE_LION_CHASE_RECORD = registerLatexRecord("the_lion_chase_record", () -> ChangedSounds.MUSIC_THE_LION_CHASE);
+    public static final RegistryObject<LatexRecordItem> THE_SCARLET_CRYSTAL_MINE_RECORD = registerLatexRecord("the_scarlet_crystal_mine_record", () -> ChangedSounds.MUSIC_THE_SCARLET_CRYSTAL_MINE);
+    public static final RegistryObject<LatexRecordItem> THE_SHARK_RECORD = registerLatexRecord("the_shark_record", () -> ChangedSounds.MUSIC_THE_SHARK);
+    public static final RegistryObject<LatexRecordItem> THE_SQUID_DOG_RECORD = registerLatexRecord("the_squid_dog_record", () -> ChangedSounds.MUSIC_THE_SQUID_DOG);
+    public static final RegistryObject<LatexRecordItem> THE_WHITE_GOO_JUNGLE_RECORD = registerLatexRecord("the_white_goo_jungle_record", () -> ChangedSounds.MUSIC_THE_WHITE_GOO_JUNGLE);
+    public static final RegistryObject<LatexRecordItem> THE_WHITE_TAIL_CHASE_PART_1 = registerLatexRecord("the_white_tail_chase_part_1_record", () -> ChangedSounds.MUSIC_THE_WHITE_TAIL_CHASE_PART_1);
+    public static final RegistryObject<LatexRecordItem> THE_WHITE_TAIL_CHASE_PART_2 = registerLatexRecord("the_white_tail_chase_part_2_record", () -> ChangedSounds.MUSIC_THE_WHITE_TAIL_CHASE_PART_2);
+    public static final RegistryObject<LatexRecordItem> VENT_PIPE_RECORD = registerLatexRecord("vent_pipe_record", () -> ChangedSounds.MUSIC_VENT_PIPE);
 
     private static RegistryObject<RecordItem> registerRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
         return register(name, () -> new RecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
     }
 
-    private static RegistryObject<LoopedRecordItem> registerLoopedRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
-        return register(name, () -> new LoopedRecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
+    private static RegistryObject<LatexRecordItem> registerLatexRecord(String name, Supplier<SoundEvent> soundEventSupplier) {
+        return register(name, () -> new LatexRecordItem(8, soundEventSupplier, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
     }
 
     static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item) {

@@ -41,7 +41,7 @@ public class ArmorLatexBuffSharkModel<T extends LatexEntity> extends LatexHumano
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLike(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
     }
 
