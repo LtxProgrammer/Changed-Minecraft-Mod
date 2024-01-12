@@ -85,13 +85,23 @@
 
   "item.changed.owo_record": "라텍스 음반",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
+
+  "item.changed.latex_music_disc": "라텍스 음반",
   "item.changed.black_goo_zone_record.desc": "Shizi - Black Goo Zone",
   "item.changed.crystal_zone_record.desc": "Shizi - Crystal Zone",
+  "item.changed.gas_room_record.desc": "Shizi - Gas Room",
   "item.changed.laboratory_record.desc": "Shizi - Laboratory",
   "item.changed.outside_the_tower_record.desc": "Shizi - Outside The Tower",
   "item.changed.puro_the_black_goo_record.desc": "Shizi - Puro The Black Goo",
   "item.changed.puros_home_record.desc": "Shizi - Puro's Home",
+  "item.changed.the_lion_chase_record.desc": "Shizi - The Lion Chase",
   "item.changed.the_library_record.desc": "Shizi - The Library",
+  "item.changed.the_scarlet_crystal_mine_record.desc": "Shizi - The Scarlet Crystal Mine",
+  "item.changed.the_shark_record.desc": "Shizi - The Shark",
+  "item.changed.the_squid_dog_record.desc": "Shizi - The Squid Dog",
+  "item.changed.the_white_goo_jungle_record.desc": "Shizi - The White Goo Jungle",
+  "item.changed.the_white_tail_chase_part_1_record.desc": "Shizi - The White Tail Chase Part 1",
+  "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
   "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",
   
   "syringe.changed:form_special": "후원자 전용 커스텀 모델 주사기",
@@ -110,6 +120,7 @@
   "command.changed.error.used_by_other_mod": "플레이어가 이미 다른 모드에 의해 사용되고 있습니다",
   "command.changed.error.no_special_form": "등록된 특수 모델이 없습니다, https://www.patreon.com/ltxprogrammer 에 방문하십시오",
 
+  "gamerule.changed:fusabilityDurationPlayer": "수화 후 융합 가능 기간 (틱)",
   "gamerule.changed:keepConscious": "수화시 항상 의식 유지",
   "gamerule.changed:keepForm": "영구적인 수화",
   "gamerule.changed:latexGrowthRate": "라텍스 성장 비율",
@@ -143,6 +154,7 @@
   "effect.changed.shock": "감전",
   
   "enchantment.changed.latex_protection": "라텍스 보호",
+  "enchantment.changed.latex_protection.desc": "착용자가 수화하지 않도록 보호합니다.",
 
   "block.changed.beaker": "비커",
   "block.changed.bedside_iv_rack": "링거 스탠드",
@@ -240,6 +252,7 @@
   "block.changed.wall_greenhouse": "온실 벽",
   "block.changed.wall_vent": "통풍관 벽",
   "block.changed.wall_white": "흰색 벽",
+  "block.changed.white_lab_table": "흰색 연구실 테이블",
   "block.changed.white_latex_block": "하얀 라텍스 블록",
   "block.changed.white_latex_pillar": "하얀 라텍스 기둥",
   "block.changed.wolf_gas_canister": "늑대 가스통",
@@ -478,10 +491,31 @@
   "changed.tutorial.select_ability.description": "%s을(를) 누르세요",
   "changed.tutorial.use_ability.title": "능력을 사용하세요",
   "changed.tutorial.use_ability.description": "%s을(를) 누르거나 유지하세요",
-
+  
+  "facility.zone.red_zone": "적색 구역",
+  "facility.zone.gray_zone": "회색 구역",
+  "facility.zone.maintenance_zone": "점검 구역",
+  "facility.zone.library_zone": "도서관 구역",
+  "facility.zone.vent_zone": "통풍관 구역",
+  "facility.zone.greenhouse_zone": "온실 구역",
+  "facility.zone.blue_zone": "청색 구역",
+  
   "glu_block.size": "크기 %1$sx%1$s",
   "glu_block.has_door": "문 있음",
+  "glu_block.zone": "구역",
   "glu_block.joint_type": "접합 종류",
   "glu_block.joint.entrance": "입구",
   "glu_block.joint.exit": "출구"
+
+  "eyestyle.changed.v1": "기본",
+  "eyestyle.changed.v2": "가늘게",
+  "eyestyle.changed.tall": "길게",
+
+  "changed.config.bpi.screen": "기본 플레이어 정보",
+  "changed.config.bpi.hair_color": "머리 색",
+  "changed.config.bpi.iris_color": "홍채 색",
+  "changed.config.bpi.sclera_color": "공막 색",
+  "changed.config.bpi.eye_style": "눈 형태: %s",
+  "changed.config.bpi.override_dl_iris": "검은 라텍스 변종에서 홍채 색 무시",
+  "changed.config.bpi.override_all_eye_styles": "모든 눈 형태 무시"
 }
