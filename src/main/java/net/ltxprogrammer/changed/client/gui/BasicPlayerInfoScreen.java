@@ -3,20 +3,33 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.EyeStyle;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.Map;
 
 public class BasicPlayerInfoScreen extends Screen {
     private final Screen lastScreen;
+    private final @Nullable Player player;
 
     public BasicPlayerInfoScreen(Screen parent) {
         super(new TranslatableComponent("changed.config.bpi.screen"));
         this.lastScreen = parent;
+        this.player = null;
+    }
+
+    public BasicPlayerInfoScreen(Screen parent, Player player) {
+        super(new TranslatableComponent("changed.config.bpi.screen"));
+        this.lastScreen = parent;
+        this.player = player;
     }
 
     @Override
@@ -73,6 +86,8 @@ public class BasicPlayerInfoScreen extends Screen {
         i += 2;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
+            if (this.player != null)
+                Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(this.player));
             this.minecraft.setScreen(this.lastScreen);
         }));
     }
