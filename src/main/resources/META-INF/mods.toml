@@ -10,7 +10,7 @@ displayName="Changed: Minecraft Mod"
 updateJSONURL="https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/update.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod"
 logoFile="icon@400.png"
-credits='''DragonSnow, bijimio, Yird, Valurio9683, KoBOLTA, poptartiguess, N1CO785, BaiTian6641, Artemka2009, Foxyas, Crepe2806, xxXMinionXxx, Sel7D4, Candnhen, ABTOR, Twix#5803'''
+credits='''DragonSnow, bijimio, Yird, Valurio9683, KoBOLTA, poptartiguess, N1CO785, BaiTian6641, Artemka2009, Foxyas, Crepe2806, xxXMinionXxx, Sel7D4, Candnhen, ABTOR, Twix#5803, dahotdogdesant'''
 authors="LtxProgrammer"
 description='''Gooey transfur mod inspired by Dragon Snow's Changed.'''
 [[dependencies.changed]]

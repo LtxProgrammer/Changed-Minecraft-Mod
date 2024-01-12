@@ -53,7 +53,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void applyBasicPlayerInfo(Minecraft mc, ClientLevel level, ClientPacketListener packetListener, StatsCounter stats, ClientRecipeBook recipeBook, boolean p_108626_, boolean p_108627_, CallbackInfo ci) {
-        this.getBasicPlayerInfo().copyFrom(Changed.config.client.basicPlayerInfo);
+        this.setBasicPlayerInfo(Changed.config.client.basicPlayerInfo);
     }
 
     @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)

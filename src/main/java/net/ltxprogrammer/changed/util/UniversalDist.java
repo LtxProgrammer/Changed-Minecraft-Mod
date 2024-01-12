@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.util;
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
 import net.ltxprogrammer.changed.client.gui.GluBlockEditScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

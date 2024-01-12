@@ -30,4 +30,5 @@ public interface PlayerDataExtension {
     void setPlayerMover(@Nullable PlayerMoverInstance<?> mover);
 
     BasicPlayerInfo getBasicPlayerInfo();
+    void setBasicPlayerInfo(BasicPlayerInfo basicPlayerInfo);
 }

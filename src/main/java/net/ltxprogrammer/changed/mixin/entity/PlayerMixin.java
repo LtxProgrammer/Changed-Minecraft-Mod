@@ -198,4 +198,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     public BasicPlayerInfo getBasicPlayerInfo() {
         return basicPlayerInfo;
     }
+
+    @Override
+    public void setBasicPlayerInfo(BasicPlayerInfo basicPlayerInfo) {
+        this.basicPlayerInfo = basicPlayerInfo;
+    }
 }
