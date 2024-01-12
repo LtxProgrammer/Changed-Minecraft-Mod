@@ -86,8 +86,7 @@ public class ChangedLayerDefinitions {
         ForgeHooksClient.registerLayerDefinition(LatexPurpleFoxModel.LAYER_LOCATION, LatexPurpleFoxModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexRaccoonModel.LAYER_LOCATION, LatexRaccoonModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexRedDragonModel.LAYER_LOCATION, LatexRedDragonModel::createBodyLayer);
-        ForgeHooksClient.registerLayerDefinition(LatexRedPandaModel.LAYER_LOCATION,
-                useNewModels ? LatexRedPandaModel.Remodel::createBodyLayer : LatexRedPandaModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(LatexRedPandaModel.LAYER_LOCATION, LatexRedPandaModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexSharkModel.LAYER_LOCATION, LatexSharkModel::createBodyLayer);
         ForgeHooksClient.registerLayerDefinition(LatexSharkFemaleModel.LAYER_LOCATION,
                 /*useNewModels ? LatexSharkFemaleModel.Remodel::createBodyLayer :*/ LatexSharkFemaleModel::createBodyLayer);
