@@ -70,6 +70,7 @@ public class Changed {
         addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
         addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
         addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
+        addNetworkMessage(SetLatexVariantDataPacket.class, SetLatexVariantDataPacket::new);
         addNetworkMessage(TugCameraPacket.class, TugCameraPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,

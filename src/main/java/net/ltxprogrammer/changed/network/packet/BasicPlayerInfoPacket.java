@@ -4,15 +4,12 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -54,7 +51,7 @@ public class BasicPlayerInfoPacket implements ChangedPacket {
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         if (context.getDirection().getReceptionSide().isClient()) {
-            ClientLevel level = Minecraft.getInstance().level;
+            Level level = UniversalDist.getLevel();
 
             if (!playerInfos.isEmpty()) {
                 Objects.requireNonNull(level);
@@ -68,7 +65,7 @@ public class BasicPlayerInfoPacket implements ChangedPacket {
             }
 
             else {
-                Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(Minecraft.getInstance().player));
+                Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(UniversalDist.getLocalPlayer()));
                 context.setPacketHandled(true);
             }
         }

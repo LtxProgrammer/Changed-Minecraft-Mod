@@ -2,9 +2,11 @@
   "replace": false,
   "values": [
     "changed:dark_latex_block",
+    "changed:dark_latex_wall_splotch",
     "changed:light_latex_puddle_female",
     "changed:light_latex_puddle_male",
     "changed:white_latex_block",
-    "changed:white_latex_pillar"
+    "changed:white_latex_pillar",
+    "changed:white_latex_wall_splotch"
   ]
 }

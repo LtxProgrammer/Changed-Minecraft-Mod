@@ -36,6 +36,7 @@
     "item.ItemMixin",
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
+    "server.ServerEntityMixin",
     "server.ServerPlayerGameModeMixin"
   ],
   "client": [
@@ -51,10 +52,11 @@
     "gui.ForgeIngameGuiMixin",
     "gui.GuiMixin",
     "gui.InventoryScreenMixin",
+    "gui.PauseScreenMixin",
     "gui.RecipeBookTabButtonMixin",
     "gui.RecipeButtonMixin",
-    "gui.TitleScreenMixin",
     "gui.SplashManagerMixin",
+    "gui.TitleScreenMixin",
     "item.ItemRendererMixin",
     "render.AtlasSetMixin",
     "render.CameraMixin",
