@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
@@ -323,8 +324,8 @@ public class ProcessTransfur {
             player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
         if (oldVariant != null)
             oldVariant.unhookAll(player);
-        if (!player.level.isClientSide)
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), SyncTransfurPacket.Builder.of(player));
+        if (player instanceof ServerPlayer serverPlayer)
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(player));
         return instance;
     }
 
@@ -727,11 +728,12 @@ public class ProcessTransfur {
         if (event.side.isServer()) {
             worldTickCount++;
 
-            if (worldTickCount % 120 == 0) { // Discrete sync packet
-                SyncTransfurPacket.Builder builder = new SyncTransfurPacket.Builder();
-                ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers().forEach(builder::addPlayer);
-
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), builder.build());
+            if (worldTickCount % 60 == 0) { // Discrete sync packet
+                ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers().forEach(serverPlayer -> {
+                    // Latex variant
+                    Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(serverPlayer));
+                    Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> serverPlayer), BasicPlayerInfoPacket.Builder.of(serverPlayer));
+                });
             }
 
             if (worldTickCount % 1200 == 0) {
