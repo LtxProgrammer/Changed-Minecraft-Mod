@@ -82,12 +82,15 @@ public abstract class LatexEntity extends Monster {
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
     protected static final EntityDataAccessor<BasicPlayerInfo> DATA_LOCAL_VARIANT_INFO = SynchedEntityData.defineId(LatexEntity.class, ChangedEntityDataSerializers.BASIC_PLAYER_INFO);
+    protected static final EntityDataAccessor<Byte> DATA_LATEX_ENTITY_FLAGS = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.BYTE);
+    public static final int FLAG_IS_FLYING = 0;
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_TARGET_ID, OptionalInt.empty());
         this.entityData.define(DATA_LOCAL_VARIANT_INFO, BasicPlayerInfo.random(this.random));
+        this.entityData.define(DATA_LATEX_ENTITY_FLAGS, (byte)0);
     }
 
     @Override
@@ -612,6 +615,8 @@ public abstract class LatexEntity extends Monster {
             info.load(tag.getCompound("LocalVariantInfo"));
             this.entityData.set(DATA_LOCAL_VARIANT_INFO, info);
         }
+        if (tag.contains("LatexEntityFlags"))
+            this.entityData.set(DATA_LATEX_ENTITY_FLAGS, tag.getByte("LatexEntityFlags"));
     }
 
     @Override
@@ -623,12 +628,25 @@ public abstract class LatexEntity extends Monster {
             this.entityData.get(DATA_LOCAL_VARIANT_INFO).save(bpi);
             tag.put("LocalVariantInfo", bpi);
         }
+        tag.putByte("LatexEntityFlags", this.entityData.get(DATA_LATEX_ENTITY_FLAGS));
+    }
+
+    public boolean getLatexEntityFlag(int id) {
+        return (this.entityData.get(DATA_LATEX_ENTITY_FLAGS) & (0b1 << id)) >> id == 1;
+    }
+
+    public void setLatexEntityFlag(int id, boolean value) {
+        byte flags = this.entityData.get(DATA_LATEX_ENTITY_FLAGS);
+        byte givenFlag = (byte)(0b1 << id);
+
+        if (((flags & (0b1 << id)) >> id == 1) == value)
+            return;
+
+        this.entityData.set(DATA_LATEX_ENTITY_FLAGS, (byte)(flags ^ givenFlag));
     }
 
     public boolean isFlying() {
-        if (this.getUnderlyingPlayer() != null)
-            return this.getUnderlyingPlayer().getAbilities().flying;
-        return false;
+        return getLatexEntityFlag(FLAG_IS_FLYING);
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {

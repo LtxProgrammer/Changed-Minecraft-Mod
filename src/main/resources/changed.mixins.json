@@ -36,6 +36,7 @@
     "item.ItemMixin",
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
+    "server.ServerEntityMixin",
     "server.ServerPlayerGameModeMixin"
   ],
   "client": [

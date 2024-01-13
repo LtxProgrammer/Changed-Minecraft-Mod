@@ -435,6 +435,10 @@ public class LatexVariantInstance<T extends LatexEntity> {
                     player.causeFoodExhaustion(player.isSprinting() ? 0.05F : 0.025F); // Food penalty
                 }
             }
+
+            if (!player.level.isClientSide) {
+                this.entity.setLatexEntityFlag(LatexEntity.FLAG_IS_FLYING, player.getAbilities().flying);
+            }
         }
 
         player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
