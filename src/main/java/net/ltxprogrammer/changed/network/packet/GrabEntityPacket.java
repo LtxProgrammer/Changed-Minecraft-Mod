@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.network.packet;
 
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.LockToPlayerMover;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -53,6 +54,8 @@ public class GrabEntityPacket implements ChangedPacket {
         if (context.getDirection().getReceptionSide().isServer() && sender != null) {
             var level = sender.getLevel();
             var target = level.getEntity(targetEntity);
+            if (!(target instanceof LivingEntity livingTarget))
+                return;
             context.setPacketHandled(true);
             if (sender.getUUID().equals(sourceEntity)) {
                 if (ProcessTransfur.isPlayerOrganic(sender))
@@ -61,18 +64,25 @@ public class GrabEntityPacket implements ChangedPacket {
                 return; // Invalid, sender cannot dictate other entities grab action
             }
 
-            switch (type) {
-                case SUIT -> {
-                    ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
-                    if (target instanceof Player targetPlayer)
-                        LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);
+            ProcessTransfur.ifPlayerLatex(sender, variant -> {
+                var ability = variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                if (ability == null)
+                    return;
+                ability.grabbedEntity = livingTarget;
+
+                switch (type) {
+                    case SUIT -> {
+                        ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
+                        if (target instanceof Player targetPlayer)
+                            LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);
+                    }
+                    case ARMS -> {
+                        ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
+                        if (target instanceof Player targetPlayer)
+                            LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);
+                    }
                 }
-                case ARMS -> {
-                    ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
-                    if (target instanceof Player targetPlayer)
-                        LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);
-                }
-            }
+            });
         }
 
         else {

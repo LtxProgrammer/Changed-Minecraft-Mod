@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Nullable
-    protected LivingEntity grabbedEntity = null;
+    public LivingEntity grabbedEntity = null;
 
     public LivingEntity getHoveredEntity(IAbstractLatex entity) {
         if (!(entity.getEntity() instanceof Player player))
@@ -45,15 +45,19 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     @Override
     public void startUsing() {
-        if (entity.getLevel().isClientSide && entity.getEntity() instanceof PlayerDataExtension ext) {
-            grabbedEntity = this.getHoveredEntity(entity);
-            Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
-        }
+
     }
 
     @Override
     public void tick() {
+        var grabbedEntity = this.getHoveredEntity(entity);
+        if (grabbedEntity != null && entity.getLevel().isClientSide && entity.getEntity() instanceof PlayerDataExtension ext) {
+            if (!this.entity.getEntity().getBoundingBox().inflate(0.5, 0.0, 0.5).intersects(grabbedEntity.getBoundingBox()))
+                return;
 
+            this.grabbedEntity = grabbedEntity;
+            Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
+        }
     }
 
     @Override
