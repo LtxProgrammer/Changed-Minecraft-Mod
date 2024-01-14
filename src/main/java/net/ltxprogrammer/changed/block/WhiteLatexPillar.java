@@ -116,12 +116,18 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
         if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-                if (ProcessTransfur.getPlayerLatexVariant(player).getLatexType() == LatexType.WHITE_LATEX) {
+                var latexType = ProcessTransfur.getPlayerLatexVariant(player).getLatexType();
+
+                if (latexType == LatexType.WHITE_LATEX) {
                     WhiteLatexTransportInterface.entityEnterLatex(player, pos);
                     return;
                 }
+
+                else if (latexType.isHostileTo(LatexType.WHITE_LATEX)) {
+                    player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+                }
             }
-            else if (!(entity instanceof Player)){
+            else {
                 ProcessTransfur.progressTransfur(le, 4.8f, LatexVariant.WHITE_LATEX_WOLF);
             }
         } else if (entity instanceof LatexEntity latexEntity) {
