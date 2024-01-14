@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.TickEvent;
@@ -74,9 +75,9 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         }
 
         static boolean interactionCollide(LivingEntity entity, BlockPos pos, BlockState state) {
-            VoxelShape voxelshape = state.getInteractionShape(entity.level, pos);
-            VoxelShape voxelshape1 = voxelshape.move(entity.getX(), entity.getY(), entity.getZ());
-            return Shapes.joinIsNotEmpty(voxelshape1, Shapes.create(entity.getBoundingBox()), BooleanOp.AND);
+            VoxelShape collision = state.getCollisionShape(entity.level, pos, CollisionContext.of(entity));
+            VoxelShape shapeMoved = collision.move(pos.getX(), pos.getY(), pos.getZ());
+            return Shapes.joinIsNotEmpty(shapeMoved, Shapes.create(entity.getBoundingBox()), BooleanOp.AND);
         }
 
         @SubscribeEvent
