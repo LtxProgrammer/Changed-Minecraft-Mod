@@ -285,6 +285,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public static void syncEntityPosRotWithEntity(LivingEntity set, LivingEntity get) {
+        set.setDeltaMovement(get.getDeltaMovement());
         set.setPos(get.getX(), get.getY(), get.getZ());
         set.setXRot(get.getXRot());
         set.setYRot(get.getYRot());

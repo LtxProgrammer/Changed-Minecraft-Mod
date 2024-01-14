@@ -53,14 +53,13 @@ public class GrabEntityPacket implements ChangedPacket {
         if (context.getDirection().getReceptionSide().isServer() && sender != null) {
             var level = sender.getLevel();
             var target = level.getEntity(targetEntity);
+            context.setPacketHandled(true);
             if (sender.getUUID().equals(sourceEntity)) {
                 if (ProcessTransfur.isPlayerOrganic(sender))
                     return; // Invalid, sender has to be latex
             } else {
                 return; // Invalid, sender cannot dictate other entities grab action
             }
-
-            context.setPacketHandled(true);
 
             switch (type) {
                 case SUIT -> {

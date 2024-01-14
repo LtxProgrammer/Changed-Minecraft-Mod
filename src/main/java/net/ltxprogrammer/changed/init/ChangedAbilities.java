@@ -29,7 +29,7 @@ public class ChangedAbilities {
     public static RegistryObject<HypnosisAbility> HYPNOSIS = REGISTRY.register("hypnosis", HypnosisAbility::new);
     public static RegistryObject<SirenSingAbility> SIREN_SING = REGISTRY.register("siren_sing", SirenSingAbility::new);
     public static RegistryObject<PuddleAbility> PUDDLE = REGISTRY.register("puddle", PuddleAbility::new);
-    public static RegistryObject<HoldEntityAbility> HOLD_ENTITY_ABILITY = REGISTRY.register("hold_entity", HoldEntityAbility::new);
+    public static RegistryObject<GrabEntityAbility> GRAB_ENTITY_ABILITY = REGISTRY.register("grab_entity", GrabEntityAbility::new);
 
     public static RegistryObject<SelectSpecialStateAbility> SELECT_SPECIAL_STATE = REGISTRY.register("select_special_state", SelectSpecialStateAbility::new);
 
