@@ -20,6 +20,8 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class BasicPlayerInfoPacket implements ChangedPacket {
+    public static final BasicPlayerInfoPacket EMPTY = new BasicPlayerInfoPacket(Map.of());
+
     record Listing(BasicPlayerInfo info) {
         static Listing fromStream(FriendlyByteBuf buf) {
             return new Listing(new BasicPlayerInfo(buf.readNbt()));

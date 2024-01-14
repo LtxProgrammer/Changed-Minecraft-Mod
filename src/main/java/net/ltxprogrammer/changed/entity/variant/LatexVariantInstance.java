@@ -237,12 +237,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.getServer().getPlayerList().getPlayers().forEach(builderTf::addPlayer);
             player.getServer().getPlayerList().getPlayers().forEach(builderBPI::addPlayer);
 
-            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builderTf.build());
-            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), builderBPI.build());
-            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new SyncMoverPacket(player));
+            final PacketDistributor.PacketTarget playerTarget = PacketDistributor.PLAYER.with(() -> player);
+            Changed.PACKET_HANDLER.send(playerTarget, builderTf.build());
+            Changed.PACKET_HANDLER.send(playerTarget, builderBPI.build());
+            Changed.PACKET_HANDLER.send(playerTarget, new SyncMoverPacket(player));
 
             // Send client empty bpi packet, so it'll reply with its bpi
-            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> player), new BasicPlayerInfoPacket(Map.of()));
+            Changed.PACKET_HANDLER.send(playerTarget, BasicPlayerInfoPacket.EMPTY);
         }
     }
 
