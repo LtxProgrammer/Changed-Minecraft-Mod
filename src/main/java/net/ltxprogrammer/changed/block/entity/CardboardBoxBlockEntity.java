@@ -3,8 +3,10 @@ package net.ltxprogrammer.changed.block.entity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
@@ -38,5 +40,20 @@ public class CardboardBoxBlockEntity extends RandomizableContainerBlockEntity {
 
     protected AbstractContainerMenu createMenu(int id, Inventory inv) {
         return new ChestMenu(MenuType.GENERIC_9x2, id, inv, this, 2);
+    }
+
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        if (!this.tryLoadLootTable(tag)) {
+            ContainerHelper.loadAllItems(tag, this.items);
+        }
+    }
+
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        if (!this.trySaveLootTable(tag)) {
+            ContainerHelper.saveAllItems(tag, this.items);
+        }
     }
 }
