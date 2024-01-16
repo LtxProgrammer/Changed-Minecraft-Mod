@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -25,6 +26,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -61,7 +63,22 @@ public class EventHandlerClient {
                 if (!grabAbility.shouldRenderGrabbedEntity())
                     event.setCanceled(true);
             }
+
+            return;
         }
+
+        final AtomicReference<GrabEntityAbilityInstance> abilityInstanceAtomic = new AtomicReference<>(null);
+        if (event.getEntity() instanceof LatexEntity latex)
+            abilityInstanceAtomic.set(latex.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()));
+        else if (event.getEntity() instanceof Player player) {
+            ProcessTransfur.ifPlayerLatex(player, variant -> {
+                abilityInstanceAtomic.set(variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()));
+            });
+        }
+
+        final GrabEntityAbilityInstance abilityInstance = abilityInstanceAtomic.getAcquire();
+        if (abilityInstance != null && !abilityInstance.shouldRenderLatex())
+            event.setCanceled(true);
     }
 
     @OnlyIn(Dist.CLIENT)

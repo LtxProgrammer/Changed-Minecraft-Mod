@@ -68,20 +68,29 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     private void releaseEntity() {
+        if (this.grabbedEntity == null) return;
+
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
             ext.setGrabbedBy(null);
 
         if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
+        this.grabbedEntity.noPhysics = false;
         this.grabbedEntity = null;
         this.suited = false;
         this.relinquishControl = false;
+    }
+
+    @Override
+    public void onRemove() {
+        releaseEntity();
     }
 
     public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
         if (this.grabbedEntity != null) {
             if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
                 ext.setGrabbedBy(this.entity.getEntity());
+            this.grabbedEntity.noPhysics = true;
 
             LatexVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
 
