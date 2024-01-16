@@ -15,6 +15,10 @@ import java.util.function.Supplier;
 public class GrabEntityPacket implements ChangedPacket {
     public enum GrabType {
         /**
+         * Target will be release by the latex
+         */
+        RELEASE,
+        /**
          * Target is grabbed by latex by their arms
          */
         ARMS,
@@ -71,6 +75,11 @@ public class GrabEntityPacket implements ChangedPacket {
                 ability.grabbedEntity = livingTarget;
 
                 switch (type) {
+                    case RELEASE -> {
+                        ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
+                        if (target instanceof Player targetPlayer)
+                            LockToPlayerMover.releaseHuman(sender, targetPlayer, type);
+                    }
                     case SUIT -> {
                         ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
                         if (target instanceof Player targetPlayer)
@@ -88,6 +97,10 @@ public class GrabEntityPacket implements ChangedPacket {
         else {
 
         }
+    }
+
+    public static GrabEntityPacket release(Player latexPlayer, LivingEntity entity) {
+        return new GrabEntityPacket(latexPlayer, entity, GrabType.RELEASE);
     }
 
     public static GrabEntityPacket initialGrab(Player latexPlayer, LivingEntity entity) {

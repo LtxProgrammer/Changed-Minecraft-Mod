@@ -87,6 +87,18 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
         return instance;
     }
 
+    public static void releaseHuman(Player latexPlayer, Player human, GrabEntityPacket.GrabType grabType) {
+        if (latexPlayer instanceof PlayerDataExtension ext) {
+            if (ext.getPlayerMover() instanceof LockToPlayerMover.Instance)
+                ext.setPlayerMover(null);
+        }
+
+        if (human instanceof PlayerDataExtension ext) {
+            if (ext.getPlayerMover() instanceof LockToPlayerMover.Instance)
+                ext.setPlayerMover(null);
+        }
+    }
+
     public static void setupLatexHoldHuman(Player latexPlayer, Player human, GrabEntityPacket.GrabType grabType) {
         var instance = PlayerMover.LOCK_TO_PLAYER.get().latexPlayerHoldHuman(latexPlayer);
         instance.grabType = grabType;

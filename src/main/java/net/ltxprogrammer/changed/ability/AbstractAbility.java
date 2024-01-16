@@ -4,16 +4,21 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
     public static class Controller {
         private final AbstractAbilityInstance abilityInstance;
+        private boolean startedUsing = false;
         private int chargeTicks = 0;
         private int holdTicks = 0;
         private int coolDownTicksRemaining = 0;
@@ -36,13 +41,20 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void activateAbility() {
-            if (abilityInstance.canUse())
+            if (abilityInstance.canUse()) {
                 abilityInstance.startUsing();
+                startedUsing = true;
+            }
+
+            else
+                startedUsing = false;
         }
 
         public void tickAbility() {
-            holdTicks++;
-            abilityInstance.tick();
+            if (startedUsing) {
+                holdTicks++;
+                abilityInstance.tick();
+            }
         }
 
         public void tickCharge() {
@@ -51,7 +63,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void deactivateAbility() {
-            abilityInstance.stopUsing();
+            if (startedUsing) {
+                abilityInstance.stopUsing();
+                startedUsing = false;
+            }
         }
 
         public void applyCoolDown() {
@@ -193,6 +208,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
     public Instance makeInstance(IAbstractLatex entity) {
         return ctor.apply(this, entity);
+    }
+
+    @Nullable
+    public Component getSelectedDisplayText(IAbstractLatex entity) {
+        return null;
     }
 
     public TranslatableComponent getDisplayName(IAbstractLatex entity) {

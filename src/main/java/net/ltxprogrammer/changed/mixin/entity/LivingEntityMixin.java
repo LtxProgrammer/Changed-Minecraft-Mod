@@ -35,6 +35,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityDataExtension {
     public LivingEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
@@ -43,6 +45,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Unique
     public int controlDisabledFor = 0;
+    @Unique @Nullable
+    public LivingEntity grabbedBy = null;
 
     @Override
     public int getNoControlTicks() {
@@ -52,6 +56,17 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Override
     public void setNoControlTicks(int ticks) {
         this.controlDisabledFor = ticks;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getGrabbedBy() {
+        return grabbedBy;
+    }
+
+    @Override
+    public void setGrabbedBy(@Nullable LivingEntity grabbedBy) {
+        this.grabbedBy = grabbedBy;
     }
 
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)

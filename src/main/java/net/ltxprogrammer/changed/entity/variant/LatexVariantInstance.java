@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -569,13 +570,17 @@ public class LatexVariantInstance<T extends LatexEntity> {
             instance.getController().tickCoolDown();
         }
 
+        if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
+            getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
+        }
+
         if (selectedAbility != null) {
             var instance = abilityInstances.get(selectedAbility);
             if (instance != null) {
                 var controller = instance.getController();
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
                 if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
-                    selectedAbility.getUseType(IAbstractLatex.forPlayer(player)).check(abilityKeyState, oldState, controller);
+                    instance.getUseType().check(abilityKeyState, oldState, controller);
             }
         }
 
@@ -647,12 +652,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
-            var abstractLatex = IAbstractLatex.forPlayer(this.host);
+            var instance = abilityInstances.get(ability);
 
-            if (ability.getUseType(abstractLatex) != AbstractAbility.UseType.MENU)
+            if (instance.getUseType() != AbstractAbility.UseType.MENU) {
                 this.selectedAbility = ability;
-            else {
-                ability.startUsing(abstractLatex);
+                instance.onSelected();
+            } else {
+                instance.startUsing();
                 this.menuAbility = ability;
             }
         }

@@ -93,7 +93,7 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     }
 
     @Nullable
-    protected RenderType getRenderType(SpecialLatex entity, boolean p_115323_, boolean p_115324_, boolean p_115325_) {
+    public RenderType getRenderType(SpecialLatex entity, boolean p_115323_, boolean p_115324_, boolean p_115325_) {
         var opt = runIfValid(entity, renderer -> { return renderer.getRenderType(entity, p_115323_, p_115324_, p_115325_); });
         if (opt.isEmpty())
             return super.getRenderType(entity, p_115323_, p_115324_, p_115325_);

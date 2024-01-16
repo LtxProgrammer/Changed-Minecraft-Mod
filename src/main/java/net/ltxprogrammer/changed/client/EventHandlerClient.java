@@ -2,8 +2,11 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.BiListener;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
@@ -36,6 +39,30 @@ public class EventHandlerClient {
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
+        if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
+            if (ext.getGrabbedBy() instanceof Player player) {
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    var grabAbility = variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                    if (grabAbility == null) return;
+
+                    if (!grabAbility.shouldRenderGrabbedEntity())
+                        event.setCanceled(true);
+                });
+            }
+
+            else if (ext.getGrabbedBy() instanceof LatexEntity latex) {
+                var grabAbility = latex.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                if (grabAbility == null) return;
+
+                if (!grabAbility.shouldRenderGrabbedEntity())
+                    event.setCanceled(true);
+            }
+        }
+    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent

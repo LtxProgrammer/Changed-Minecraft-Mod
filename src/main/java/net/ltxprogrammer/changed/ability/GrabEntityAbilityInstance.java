@@ -1,10 +1,14 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
@@ -15,6 +19,16 @@ import java.util.UUID;
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Nullable
     public LivingEntity grabbedEntity = null;
+    public boolean relinquishControl = false;
+    public boolean suited = false;
+
+    public boolean shouldRenderLatex() {
+        return !shouldRenderGrabbedEntity();
+    }
+
+    public boolean shouldRenderGrabbedEntity() {
+        return suited && relinquishControl && grabbedEntity != null;
+    }
 
     public LivingEntity getHoveredEntity(IAbstractLatex entity) {
         if (!(entity.getEntity() instanceof Player player))
@@ -34,18 +48,53 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     @Override
+    public AbstractAbility.UseType getUseType() {
+        return grabbedEntity == null ? AbstractAbility.UseType.HOLD : AbstractAbility.UseType.INSTANT;
+    }
+
+    @Override
+    public void onSelected() {
+        this.entity.displayClientMessage(new TextComponent("Hold Z to grab an entity"), true);
+    }
+
+    @Override
     public boolean canUse() {
-        return grabbedEntity == null;
+        return true;
     }
 
     @Override
     public boolean canKeepUsing() {
-        return grabbedEntity == null;
+        return true;
+    }
+
+    private void releaseEntity() {
+        if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
+            ext.setGrabbedBy(null);
+
+        if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
+            Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
+        this.grabbedEntity = null;
+        this.suited = false;
+        this.relinquishControl = false;
+    }
+
+    public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
+        if (this.grabbedEntity != null) {
+            if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
+                ext.setGrabbedBy(this.entity.getEntity());
+
+            LatexVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
+
+            if (this.grabbedEntity.isDeadOrDying() || this.grabbedEntity.isRemoved()) {
+                this.releaseEntity();
+            }
+        }
     }
 
     @Override
     public void startUsing() {
-
+        if (this.grabbedEntity != null)
+            this.releaseEntity();
     }
 
     @Override
@@ -55,6 +104,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             if (!this.entity.getEntity().getBoundingBox().inflate(0.5, 0.0, 0.5).intersects(grabbedEntity.getBoundingBox()))
                 return;
 
+            this.entity.getEntity().swing(InteractionHand.MAIN_HAND);
             this.grabbedEntity = grabbedEntity;
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
         }
