@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.LockToPlayerMover;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.FriendlyByteBuf;
@@ -59,6 +60,8 @@ public class GrabEntityPacket implements ChangedPacket {
             var level = sender.getLevel();
             var target = level.getEntity(targetEntity);
             if (!(target instanceof LivingEntity livingTarget))
+                return;
+            if (!target.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(target instanceof Player))
                 return;
             context.setPacketHandled(true);
             if (sender.getUUID().equals(sourceEntity)) {
