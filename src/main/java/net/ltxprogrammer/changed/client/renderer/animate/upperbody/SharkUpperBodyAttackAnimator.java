@@ -27,8 +27,7 @@ public class SharkUpperBodyAttackAnimator<T extends LatexEntity, M extends Entit
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightArm.yRot = 0.0F;
         leftArm.yRot = 0.0F;
-        var self = entity.getSelfVariant();
-        if (self.itemUseMode != UseItemMode.NORMAL)
+        if (entity.getItemUseMode() != UseItemMode.NORMAL)
             return;
 
         boolean mainHandRight = entity.getMainArm() == HumanoidArm.RIGHT;

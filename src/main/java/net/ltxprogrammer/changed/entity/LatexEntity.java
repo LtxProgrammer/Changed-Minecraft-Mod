@@ -659,4 +659,15 @@ public abstract class LatexEntity extends Monster {
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
 
     }
+
+    public UseItemMode getItemUseMode() {
+        var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (instance != null && instance.shouldAnimateArms())
+            return UseItemMode.NONE;
+        var variant = getSelfVariant();
+        if (variant != null)
+            return getSelfVariant().itemUseMode;
+        else
+            return UseItemMode.NORMAL;
+    }
 }

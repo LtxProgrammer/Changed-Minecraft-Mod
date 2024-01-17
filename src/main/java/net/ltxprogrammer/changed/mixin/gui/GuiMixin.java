@@ -162,7 +162,7 @@ public abstract class GuiMixin extends GuiComponent {
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     protected void renderHotbar(float partialTicks, PoseStack pose, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
-            if (!variant.getParent().itemUseMode.showHotbar) {
+            if (!variant.getItemUseMode().showHotbar) {
                 callback.cancel();
                 
                 Player player = this.getCameraPlayer();
@@ -180,7 +180,7 @@ public abstract class GuiMixin extends GuiComponent {
     @Inject(method = "renderSelectedItemName", at = @At("HEAD"), cancellable = true)
     public void renderSelectedItemName(PoseStack pose, CallbackInfo callback) {
         ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
-            if (!variant.getParent().itemUseMode.showHotbar)
+            if (!variant.getItemUseMode().showHotbar)
                 callback.cancel();
         });
     }

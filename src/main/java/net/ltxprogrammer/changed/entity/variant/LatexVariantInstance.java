@@ -5,10 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
@@ -140,7 +137,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.canUseHand(event.getHand()))
+            if (!variant.getItemUseMode().canUseHand(event.getHand()))
                 event.setCanceled(true);
         });
     }
@@ -148,7 +145,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.interactWithBlocks)
+            if (!variant.getItemUseMode().interactWithBlocks)
                 event.setCanceled(true);
         });
     }
@@ -156,7 +153,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.breakBlocks)
+            if (!variant.getItemUseMode().breakBlocks)
                 event.setCanceled(true);
         });
     }
@@ -663,5 +660,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 this.menuAbility = ability;
             }
         }
+    }
+
+    public UseItemMode getItemUseMode() {
+        var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (instance != null && instance.shouldAnimateArms())
+            return UseItemMode.NONE;
+        else
+            return parent.itemUseMode;
     }
 }

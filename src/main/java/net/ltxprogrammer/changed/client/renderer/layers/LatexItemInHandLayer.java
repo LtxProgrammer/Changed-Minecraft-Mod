@@ -64,10 +64,9 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        var self = entity.getSelfVariant();
-        if (self == null || self.itemUseMode == UseItemMode.NORMAL)
+        if (entity.getItemUseMode() == UseItemMode.NORMAL)
             super.render(pose, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        else if (self.itemUseMode == UseItemMode.MOUTH) {
+        else if (entity.getItemUseMode() == UseItemMode.MOUTH) {
             boolean flag = entity.isSleeping();
             pose.pushPose();
             var head = this.getParentModel().getHead();

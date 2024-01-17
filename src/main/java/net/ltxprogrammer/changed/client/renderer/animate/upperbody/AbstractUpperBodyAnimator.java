@@ -124,8 +124,7 @@ public abstract class AbstractUpperBodyAnimator<T extends LatexEntity, M extends
     }
 
     protected void setupAttackAnimation(T entity, float ageInTicks) {
-        var self = entity.getSelfVariant();
-        if (self.itemUseMode != UseItemMode.NORMAL)
+        if (entity.getItemUseMode() != UseItemMode.NORMAL)
             return;
 
         var entityContext = core.entityContextOf(entity, ageInTicks - entity.tickCount);
