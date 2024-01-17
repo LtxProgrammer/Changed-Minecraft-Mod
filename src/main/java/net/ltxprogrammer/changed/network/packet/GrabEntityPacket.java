@@ -72,20 +72,22 @@ public class GrabEntityPacket implements ChangedPacket {
                 var ability = variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
                 if (ability == null)
                     return;
-                ability.grabbedEntity = livingTarget;
 
                 switch (type) {
                     case RELEASE -> {
+                        ability.grabbedEntity = null;
                         ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
                         if (target instanceof Player targetPlayer)
                             LockToPlayerMover.releaseHuman(sender, targetPlayer, type);
                     }
                     case SUIT -> {
+                        ability.grabbedEntity = livingTarget;
                         ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
                         if (target instanceof Player targetPlayer)
                             LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);
                     }
                     case ARMS -> {
+                        ability.grabbedEntity = livingTarget;
                         ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
                         if (target instanceof Player targetPlayer)
                             LockToPlayerMover.setupLatexHoldHuman(sender, targetPlayer, type);

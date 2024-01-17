@@ -28,6 +28,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             this.abilityInstance = abilityInstance;
         }
 
+        public int getHoldTicks() {
+            return holdTicks;
+        }
+
         public void saveData(CompoundTag tag) {
             tag.putInt("Charge", chargeTicks);
             tag.putInt("Hold", holdTicks);

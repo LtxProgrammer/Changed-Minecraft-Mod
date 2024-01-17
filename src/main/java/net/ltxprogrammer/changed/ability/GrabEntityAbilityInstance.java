@@ -30,6 +30,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         return suited && relinquishControl && grabbedEntity != null;
     }
 
+    public boolean shouldAnimateArms() {
+        return grabbedEntity != null && !suited;
+    }
+
     public LivingEntity getHoveredEntity(IAbstractLatex entity) {
         if (!(entity.getEntity() instanceof Player player))
             return null;
@@ -129,6 +133,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         super.saveData(tag);
         if (grabbedEntity != null)
             tag.putUUID("GrabbedEntity", grabbedEntity.getUUID());
+        tag.putBoolean("RelinquishControl", relinquishControl);
+        tag.putBoolean("Suited", suited);
     }
 
     @Override
@@ -142,5 +148,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 }
             });
         }
+        this.relinquishControl = tag.getBoolean("RelinquishControl");
+        this.suited = tag.getBoolean("Suited");
     }
 }

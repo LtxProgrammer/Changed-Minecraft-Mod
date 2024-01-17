@@ -148,6 +148,12 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         return list;
     }
 
+    public enum GrabState {
+        EMPTY,
+        REACH,
+        HOLD
+    }
+
     public static abstract class LatexRemodel<T extends LatexEntity, M extends EntityModel<T>> extends LatexHumanoidModel<T> implements LatexHumanoidModelInterface<T, M> {
         public LatexRemodel(ModelPart root) {
             super(root);

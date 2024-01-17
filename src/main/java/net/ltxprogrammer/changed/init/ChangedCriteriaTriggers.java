@@ -7,6 +7,7 @@ import static net.minecraft.advancements.CriteriaTriggers.register;
 
 @Mod.EventBusSubscriber
 public class ChangedCriteriaTriggers {
+    // TODO grab mechanic
     public static final TransfurTrigger TRANSFUR = register(new TransfurTrigger());
     public static final AquaticBreatheTrigger AQUATIC_BREATHE = register(new AquaticBreatheTrigger());
     public static final WhiteLatexFuseTrigger WHITE_LATEX_FUSE = register(new WhiteLatexFuseTrigger());

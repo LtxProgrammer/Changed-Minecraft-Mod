@@ -2,8 +2,11 @@ package net.ltxprogrammer.changed.client.renderer.animate;
 
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
+import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -18,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
@@ -39,6 +43,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float swimAmount = 0.0F;
     public float flyAmount = 0.0F;
     public float fallFlyingAmount = 0.0F;
+    public LatexHumanoidModel.GrabState grabState = LatexHumanoidModel.GrabState.EMPTY;
 
     public float ageLerp = 0.0F;
     public float reachOut = 0.0F;
@@ -50,6 +55,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         swimAmount = 0.0F;
         ageLerp = 0.0F;
         reachOut = 0.0F;
+        grabState = LatexHumanoidModel.GrabState.EMPTY;
     }
 
     protected float distanceTo(@NotNull T entity, @NotNull Entity other, float partialTicks) {
@@ -90,6 +96,14 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
             rightArmPose = humanoidmodel$armpose1;
             leftArmPose = humanoidmodel$armpose;
         }
+
+        grabState = LatexHumanoidModel.GrabState.EMPTY;
+        entity.ifAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), instance -> {
+            if (instance.shouldAnimateArms())
+                grabState = LatexHumanoidModel.GrabState.HOLD;
+            else if (instance.getController().getHoldTicks() > 0)
+                grabState = LatexHumanoidModel.GrabState.REACH;
+        });
     }
 
     public LatexAnimator(M entityModel) {
@@ -170,45 +184,17 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     }
 
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        setupAnimStage(AnimateStage.INIT, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupAnimStage(AnimateStage.ATTACK, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entityModel.riding)
-            setupAnimStage(AnimateStage.RIDE, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity.isSleeping())
-            setupAnimStage(AnimateStage.SLEEP, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (crouching)
-            setupAnimStage(AnimateStage.CROUCH, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        else
-            setupAnimStage(AnimateStage.STAND, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupAnimStage(AnimateStage.BOB, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (flyAmount > 0f)
-            setupAnimStage(AnimateStage.CREATIVE_FLY, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity.isFallFlying())
-            setupAnimStage(AnimateStage.FALL_FLY, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (swimAmount > 0f)
-            setupAnimStage(AnimateStage.SWIM, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupAnimStage(AnimateStage.FINAL, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        AnimateStage.ORDER.forEach(animateStage -> {
+            if (animateStage.test(this, entity))
+                setupAnimStage(animateStage, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        });
     }
 
     public void setupCameraAnim(@NotNull CameraExtender camera, @NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        setupCameraAnimStage(AnimateStage.INIT, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupCameraAnimStage(AnimateStage.ATTACK, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entityModel.riding)
-            setupCameraAnimStage(AnimateStage.RIDE, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity.isSleeping())
-            setupCameraAnimStage(AnimateStage.SLEEP, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (crouching)
-            setupCameraAnimStage(AnimateStage.CROUCH, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        else
-            setupCameraAnimStage(AnimateStage.STAND, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupCameraAnimStage(AnimateStage.BOB, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (flyAmount > 0f)
-            setupCameraAnimStage(AnimateStage.CREATIVE_FLY, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity.isFallFlying())
-            setupCameraAnimStage(AnimateStage.FALL_FLY, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (swimAmount > 0f)
-            setupCameraAnimStage(AnimateStage.SWIM, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        setupCameraAnimStage(AnimateStage.FINAL, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        AnimateStage.ORDER.forEach(animateStage -> {
+            if (animateStage.test(this, entity))
+                setupCameraAnimStage(animateStage, camera, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        });
     }
 
     public LatexAnimator<T, M> forwardOffset(float v) {
@@ -236,20 +222,39 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         return this;
     }
 
-    public static enum AnimateStage {
+    public static enum AnimateStage implements BiPredicate<LatexAnimator<?,?>, LatexEntity> {
         INIT,
-        RIDE,
-        SLEEP,
+        RIDE((animator, latex) -> animator.entityModel.riding),
+        SLEEP((animator, latex) -> latex.isSleeping()),
         ATTACK,
-        CROUCH,
-        STAND,
+        CROUCH((animator, latex) -> animator.crouching),
+        STAND((animator, latex) -> !animator.crouching),
         BOB,
-        CREATIVE_FLY,
-        FALL_FLY,
-        SWIM,
+        CREATIVE_FLY((animator, latex) -> animator.flyAmount > 0f),
+        FALL_FLY((animator, latex) -> latex.isFallFlying()),
+        SWIM((animator, latex) -> animator.swimAmount > 0f),
         FINAL;
 
-        public static final List<AnimateStage> ORDER = List.of(INIT, RIDE, SLEEP, ATTACK, CROUCH, STAND, BOB, FALL_FLY, SWIM);
+        public static final List<AnimateStage> ORDER = List.of(INIT, RIDE, SLEEP, ATTACK, CROUCH, STAND, BOB, CREATIVE_FLY, FALL_FLY, SWIM, FINAL);
+
+        private final BiPredicate<LatexAnimator<?,?>, LatexEntity> predicate;
+
+        AnimateStage() {
+            this.predicate = AnimateStage::always;
+        }
+
+        AnimateStage(BiPredicate<LatexAnimator<?,?>, LatexEntity> predicate) {
+            this.predicate = predicate;
+        }
+
+        @Override
+        public boolean test(LatexAnimator<?, ?> animator, LatexEntity latex) {
+            return predicate.test(animator, latex);
+        }
+
+        private static boolean always(LatexAnimator<?,?> animator, LatexEntity entity) {
+            return true;
+        }
     }
 
     public static abstract class Animator<T extends LatexEntity, M extends EntityModel<T>> {

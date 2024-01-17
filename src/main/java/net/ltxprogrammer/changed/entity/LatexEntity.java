@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -147,6 +148,12 @@ public abstract class LatexEntity extends Monster {
         } catch (Exception unused) {
             return null;
         }
+    }
+
+    public <A extends AbstractAbilityInstance> void ifAbilityInstance(AbstractAbility<A> ability, Consumer<A> consumer) {
+        A instance = getAbilityInstance(ability);
+        if (instance != null)
+            consumer.accept(instance);
     }
 
     public @NotNull HairStyle getHairStyle() {
