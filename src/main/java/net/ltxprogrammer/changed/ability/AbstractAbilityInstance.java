@@ -1,10 +1,16 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.init.ChangedKeyMappings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
@@ -16,6 +22,26 @@ public abstract class AbstractAbilityInstance {
         this.entity = entity;
 
         this.controller = new AbstractAbility.Controller(this);
+    }
+
+    enum KeyReference implements Function<Level, Component> {
+        ABILITY(() -> ChangedKeyMappings.USE_ABILITY.getTranslatedKeyMessage()),
+        ATTACK(() -> Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage()),
+        USE(() -> Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage());
+
+        private final Supplier<Component> supplier;
+
+        KeyReference(Supplier<Component> supplier) {
+            this.supplier = supplier;
+        }
+
+        @Override
+        public Component apply(Level level) {
+            if (level.isClientSide)
+                return supplier.get();
+            else
+                return TextComponent.EMPTY;
+        }
     }
 
     public abstract boolean canUse();

@@ -23,6 +23,10 @@
   "ability.changed.select_special_state": "Select Special State",
   "ability.changed.summon_sharks": "Summon Sharks",
 
+  "ability.changed.grab_entity": "Grab Entity",
+  "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
+  "ability.changed.grab_entity.how_to_hold": "Press [%s] to release the entity\nHold [%s] to progress transfur\nHold [%s] to switch to suit",
+
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open2": "Door won't open",

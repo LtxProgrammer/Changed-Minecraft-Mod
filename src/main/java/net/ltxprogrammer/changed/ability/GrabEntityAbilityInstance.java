@@ -4,15 +4,19 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedKeyMappings;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -61,7 +65,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     @Override
     public void onSelected() {
-        this.entity.displayClientMessage(new TextComponent("Hold Z to grab an entity"), true);
+        if (entity.getLevel().isClientSide)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_grab", KeyReference.ABILITY.apply(entity.getLevel())), true);
     }
 
     @Override
@@ -123,6 +128,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.entity.getEntity().swing(InteractionHand.MAIN_HAND);
             this.grabbedEntity = grabbedEntity;
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_hold",
+                    KeyReference.ABILITY.apply(entity.getLevel()),
+                    KeyReference.ATTACK.apply(entity.getLevel()),
+                    KeyReference.USE.apply(entity.getLevel())), true);
         }
     }
 

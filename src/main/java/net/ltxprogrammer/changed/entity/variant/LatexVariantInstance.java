@@ -653,8 +653,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
             var instance = abilityInstances.get(ability);
 
             if (instance.getUseType() != AbstractAbility.UseType.MENU) {
+                if (this.selectedAbility != ability)
+                    instance.onSelected();
                 this.selectedAbility = ability;
-                instance.onSelected();
             } else {
                 instance.startUsing();
                 this.menuAbility = ability;
