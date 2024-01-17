@@ -74,7 +74,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         return true;
     }
 
-    private void releaseEntity() {
+    public void releaseEntity() {
         if (this.grabbedEntity == null) return;
 
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)

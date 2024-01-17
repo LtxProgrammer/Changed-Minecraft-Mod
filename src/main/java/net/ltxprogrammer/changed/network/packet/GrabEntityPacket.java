@@ -78,7 +78,7 @@ public class GrabEntityPacket implements ChangedPacket {
 
                 switch (type) {
                     case RELEASE -> {
-                        ability.grabbedEntity = null;
+                        ability.releaseEntity();
                         ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
                         if (target instanceof Player targetPlayer)
                             LockToPlayerMover.releaseHuman(sender, targetPlayer, type);

@@ -67,6 +67,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void deactivateAbility() {
+            holdTicks = 0;
             if (startedUsing) {
                 abilityInstance.stopUsing();
                 startedUsing = false;

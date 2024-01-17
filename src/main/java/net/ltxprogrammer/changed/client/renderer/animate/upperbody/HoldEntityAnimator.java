@@ -31,5 +31,12 @@ public class HoldEntityAnimator<T extends LatexEntity, M extends EntityModel<T>>
             leftArm.z -= 2.5f;
             leftArm.y += 2.0f;
         }
+
+        else if (core.grabState == LatexHumanoidModel.GrabState.REACH) {
+            rightArm.xRot = torso.xRot + (Mth.PI * -0.45f);
+            rightArm.yRot = torso.yRot + (Mth.PI * 0.05f);
+            leftArm.xRot = torso.xRot + (Mth.PI * -0.45f);
+            leftArm.yRot = torso.yRot + (Mth.PI * -0.05f);
+        }
     }
 }
