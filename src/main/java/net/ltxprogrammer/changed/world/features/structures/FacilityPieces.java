@@ -19,7 +19,6 @@ import java.util.*;
 
 public class FacilityPieces {
     public static final FacilityPieceCollection ENTRANCES = new FacilityPieceCollection()
-            //.register(new FacilityEntrance(Changed.modResource("facility/entrance_red")))
             .register(new FacilityEntrance(Changed.modResource("facility/entrance_blue")));
 
     public static final FacilityPieceCollection STAIRCASE_STARTS = new FacilityPieceCollection()
@@ -33,7 +32,6 @@ public class FacilityPieces {
             .register(new FacilityStaircaseEnd(Changed.modResource("facility/staircase_end_blue")));
 
     public static final FacilityPieceCollection CORRIDORS = new FacilityPieceCollection()
-            //.register(new FacilityCorridorSection(Changed.modResource("facility/corridor_red")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v1")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v2")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/corridor_blue_v3")))
@@ -51,10 +49,16 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_gray")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway1_red")))
-
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_gray")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway2_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway3_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway3_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway3_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway4_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway4_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/longhallway4_red")))
+
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_gray")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway1_red")))
@@ -67,9 +71,33 @@ public class FacilityPieces {
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_gray")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway4_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway5_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway5_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway5_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway6_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway6_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway6_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway7_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway7_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway7_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway8_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway8_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/shorthallway8_red")))
+
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs1_blue")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/stairs1_gray")))
             .register(new FacilityCorridorSection(Changed.modResource("facility/stairs1_red")))
-            //.register(new FacilityCorridorSection(Changed.modResource("facility/intersection_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs2_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs2_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/stairs2_red")))
+
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn1_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn1_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn1_red")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn2_blue")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn2_gray")))
+            .register(new FacilityCorridorSection(Changed.modResource("facility/hallwayturn2_red")))
+
             .register(new FacilityCorridorSection(Changed.modResource("facility/laser_hall")));
 
     public static final FacilityPieceCollection TRANSITIONS = new FacilityPieceCollection()

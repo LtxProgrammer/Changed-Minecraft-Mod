@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -75,7 +76,11 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
     @Override
     public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
-        return Shapes.empty();
+        if (context instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() != null)
+            if (LatexType.getEntityLatexType(entityCollisionContext.getEntity()) == LatexType.WHITE_LATEX)
+                return Shapes.empty();
+
+        return getInteractionShape(blockState, blockGetter, blockPos);
     }
 
     @Override
@@ -111,12 +116,18 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
         if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-                if (ProcessTransfur.getPlayerLatexVariant(player).getLatexType() == LatexType.WHITE_LATEX) {
+                var latexType = ProcessTransfur.getPlayerLatexVariant(player).getLatexType();
+
+                if (latexType == LatexType.WHITE_LATEX) {
                     WhiteLatexTransportInterface.entityEnterLatex(player, pos);
                     return;
                 }
+
+                else if (latexType.isHostileTo(LatexType.WHITE_LATEX)) {
+                    player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+                }
             }
-            else if (!(entity instanceof Player)){
+            else {
                 ProcessTransfur.progressTransfur(le, 4.8f, LatexVariant.WHITE_LATEX_WOLF);
             }
         } else if (entity instanceof LatexEntity latexEntity) {

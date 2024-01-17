@@ -43,4 +43,9 @@ public class ExtraHandsAbility extends SimpleAbility {
         tag.remove("changed:extra_hands_rh");
         tag.remove("changed:extra_hands_lh");
     }
+
+    @Override
+    public UseType getUseType(IAbstractLatex entity) {
+        return UseType.MENU;
+    }
 }
