@@ -62,6 +62,10 @@ public class Computer extends AbstractCustomShapeBlock {
         return p_52784_.getBlockState(p_52785_.below()).isFaceSturdy(p_52784_, p_52785_.below(), Direction.UP);
     }
 
+    public VoxelShape getCollisionShape(BlockState p_54577_, BlockGetter p_54578_, BlockPos p_54579_, CollisionContext p_54580_) {
+        return getInteractionShape(p_54577_, p_54578_, p_54579_);
+    }
+
     public RenderShape getRenderShape(BlockState p_54559_) {
         return super.getRenderShape(p_54559_);
     }
