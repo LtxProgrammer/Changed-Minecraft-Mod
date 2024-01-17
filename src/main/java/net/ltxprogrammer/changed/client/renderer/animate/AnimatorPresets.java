@@ -150,7 +150,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
-                    .addAnimator(new HoldEntityRenderer<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -161,7 +161,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
-                    .addAnimator(new HoldEntityRenderer<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -172,7 +172,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
-                    .addAnimator(new HoldEntityRenderer<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -194,7 +194,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
-                    .addAnimator(new HoldEntityRenderer<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -206,7 +206,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsNew(1, leftArm, rightArm)
-                    .addAnimator(new HoldEntityRenderer<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))

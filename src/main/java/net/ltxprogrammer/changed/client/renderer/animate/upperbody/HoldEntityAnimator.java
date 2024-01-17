@@ -8,8 +8,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class HoldEntityRenderer<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
-    public HoldEntityRenderer(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+public class HoldEntityAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+    public HoldEntityAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
     }
 
