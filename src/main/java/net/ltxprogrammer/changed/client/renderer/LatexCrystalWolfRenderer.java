@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexCrystalWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.LatexCrystalWolf;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,7 +15,9 @@ public class LatexCrystalWolfRenderer extends LatexHumanoidRenderer<LatexCrystal
     public LatexCrystalWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexCrystalWolfModel(context.bakeLayer(LatexCrystalWolfModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
+                CustomEyesLayer.fixedColor(Color3.parseHex("#5a5a5a")),
+                CustomEyesLayer::irisColor));
     }
 
     @Override

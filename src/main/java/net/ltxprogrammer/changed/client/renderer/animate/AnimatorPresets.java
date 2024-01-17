@@ -473,6 +473,21 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> bigTailDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+                                                                                                             ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                             ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                             ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(dragonUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(dragonTail(tail, tailJoints))
+                    .addAnimator(new DragonHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wingedDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                    ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                    ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
