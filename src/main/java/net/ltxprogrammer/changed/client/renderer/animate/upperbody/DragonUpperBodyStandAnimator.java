@@ -29,7 +29,6 @@ public class DragonUpperBodyStandAnimator<T extends LatexEntity, M extends Entit
         /*torso.xRot = Mth.lerp(core.ageLerp, (float)Math.PI / 50.0f, (float)Math.PI / 42.0f);
         torso.xRot = Mth.lerp(limbSwingAmount, torso.xRot, 0.0f);*/
         torso.xRot = 0.0F;
-        torso.yRot = 0.0F;
 
         torso.y = core.hipOffset + (12.0f - core.legLength);
         head.y = torso.y;;
