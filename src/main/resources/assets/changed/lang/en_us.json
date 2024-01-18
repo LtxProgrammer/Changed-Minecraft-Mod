@@ -25,7 +25,9 @@
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
-  "ability.changed.grab_entity.how_to_hold": "Press [%s] to release the entity\nHold [%s] to progress transfur\nHold [%s] to switch to suit",
+  "ability.changed.grab_entity.how_to_release": "Press [%s] to release the entity",
+  "ability.changed.grab_entity.how_to_transfur": "Hold [%s] to progress transfur",
+  "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
 
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",

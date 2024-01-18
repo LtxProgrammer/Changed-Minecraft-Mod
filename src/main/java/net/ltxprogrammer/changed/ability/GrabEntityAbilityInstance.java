@@ -98,8 +98,18 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         releaseEntity();
     }
 
+    int instructionTicks = 0;
     public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
         if (this.grabbedEntity != null) {
+            if (instructionTicks == 180)
+                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.apply(entity.getLevel())), true);
+            else if (instructionTicks == 120)
+                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_transfur", KeyReference.ATTACK.apply(entity.getLevel())), true);
+            else if (instructionTicks == 60)
+                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_suit", KeyReference.USE.apply(entity.getLevel())), true);
+            if (instructionTicks > 0)
+                instructionTicks--;
+
             if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
                 ext.setGrabbedBy(this.entity.getEntity());
             this.grabbedEntity.noPhysics = true;
@@ -128,10 +138,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.entity.getEntity().swing(InteractionHand.MAIN_HAND);
             this.grabbedEntity = grabbedEntity;
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
-            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_hold",
-                    KeyReference.ABILITY.apply(entity.getLevel()),
-                    KeyReference.ATTACK.apply(entity.getLevel()),
-                    KeyReference.USE.apply(entity.getLevel())), true);
+            instructionTicks = 180;
         }
     }
 
