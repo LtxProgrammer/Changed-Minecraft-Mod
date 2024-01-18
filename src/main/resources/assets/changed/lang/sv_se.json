@@ -23,6 +23,12 @@
   "ability.changed.select_special_state": "Välja särskild stat",
   "ability.changed.summon_sharks": "Tillkalla hajar",
 
+  "ability.changed.grab_entity": "Gripa enhet",
+  "ability.changed.grab_entity.how_to_grab": "Håll [%s] för att ta tag i en enhet",
+  "ability.changed.grab_entity.how_to_release": "Tryck [%s] för att frige enheten",
+  "ability.changed.grab_entity.how_to_transfur": "Håll [%s] för att göra framsteg förpälsvandla",
+  "ability.changed.grab_entity.how_to_suit": "Håll [%s] för att byta till kostym",
+
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
   "subtitles.changed.open2": "Dörr öppnas inte",

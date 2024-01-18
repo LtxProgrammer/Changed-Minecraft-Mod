@@ -23,6 +23,12 @@
   "ability.changed.select_special_state": "Velg spesiell stat",
   "ability.changed.summon_sharks": "Fremkalle haier",
 
+  "ability.changed.grab_entity": "Gripe enhet",
+  "ability.changed.grab_entity.how_to_grab": "Hold [%s] for å grabbe en enhet",
+  "ability.changed.grab_entity.how_to_release": "Trykk på [%s] for å løslate enheten",
+  "ability.changed.grab_entity.how_to_transfur": "Hold [%s] for å fremskritt transpels",
+  "ability.changed.grab_entity.how_to_suit": "Hold [%s] for å bytte til drakt",
+
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
   "subtitles.changed.open2": "Dør vil ikke åpne",
