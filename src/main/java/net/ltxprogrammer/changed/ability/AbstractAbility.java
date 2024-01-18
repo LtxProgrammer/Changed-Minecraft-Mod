@@ -1,14 +1,18 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -30,6 +34,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
         public int getHoldTicks() {
             return holdTicks;
+        }
+
+        public void resetHoldTicks() {
+            this.holdTicks = 0;
         }
 
         public void saveData(CompoundTag tag) {
@@ -269,5 +277,21 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.entity.getUUID()));
+    }
+
+    @Nullable
+    public static <T extends AbstractAbilityInstance> T getAbilityInstance(LivingEntity livingEntity, AbstractAbility<T> ability) {
+        if (livingEntity == null) return null;
+
+        if (livingEntity instanceof LatexEntity latex)
+            return latex.getAbilityInstance(ability);
+        else if (livingEntity instanceof Player player) {
+            var latexInstance = ProcessTransfur.getPlayerLatexVariant(player);
+            if (latexInstance == null)
+                return null;
+            return latexInstance.getAbilityInstance(ability);
+        }
+
+        return null;
     }
 }

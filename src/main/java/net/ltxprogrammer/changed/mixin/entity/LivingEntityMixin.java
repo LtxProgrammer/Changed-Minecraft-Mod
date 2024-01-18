@@ -157,6 +157,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
             --controlDisabledFor;
         }
+
+        if (grabbedBy != null) {
+            if (grabbedBy.isDeadOrDying() || grabbedBy.isRemoved())
+                grabbedBy = null;
+            if (grabbedBy instanceof Player player && player.isSpectator())
+                grabbedBy = null;
+        }
     }
 
     @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
