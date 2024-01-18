@@ -72,6 +72,7 @@ public class Changed {
         addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
         addNetworkMessage(SetLatexVariantDataPacket.class, SetLatexVariantDataPacket::new);
         addNetworkMessage(GrabEntityPacket.class, GrabEntityPacket::new);
+        addNetworkMessage(GrabEntityPacket.KeyState.class, GrabEntityPacket.KeyState::new);
         addNetworkMessage(TugCameraPacket.class, TugCameraPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,

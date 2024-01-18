@@ -5,11 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class AbstractAbilityInstance {
@@ -24,23 +22,31 @@ public abstract class AbstractAbilityInstance {
         this.controller = new AbstractAbility.Controller(this);
     }
 
-    enum KeyReference implements Function<Level, Component> {
-        ABILITY(() -> ChangedKeyMappings.USE_ABILITY.getTranslatedKeyMessage()),
-        ATTACK(() -> Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage()),
-        USE(() -> Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage());
+    enum KeyReference {
+        ABILITY(() -> ChangedKeyMappings.USE_ABILITY.getTranslatedKeyMessage(), () -> ChangedKeyMappings.USE_ABILITY.isDown()),
+        ATTACK(() -> Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyAttack.isDown()),
+        USE(() -> Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyUse.isDown());
 
-        private final Supplier<Component> supplier;
+        private final Supplier<Component> getName;
+        private final Supplier<Boolean> isDown;
 
-        KeyReference(Supplier<Component> supplier) {
-            this.supplier = supplier;
+        KeyReference(Supplier<Component> getName, Supplier<Boolean> isDown) {
+            this.getName = getName;
+            this.isDown = isDown;
         }
 
-        @Override
-        public Component apply(Level level) {
+        public Component getName(Level level) {
             if (level.isClientSide)
-                return supplier.get();
+                return getName.get();
             else
                 return TextComponent.EMPTY;
+        }
+
+        public boolean isDown(Level level) {
+            if (level.isClientSide)
+                return isDown.get();
+            else
+                return false;
         }
     }
 

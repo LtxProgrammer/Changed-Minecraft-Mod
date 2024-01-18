@@ -1,11 +1,14 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -35,12 +38,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
     @Shadow public abstract boolean isSwimming();
+
+    @Shadow public abstract boolean isSpectator();
 
     @Nullable
     @Unique public PlayerMoverInstance<?> playerMover = null;
@@ -178,9 +184,21 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
     public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
-        if (ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
-        }));
+        });
+    }
+
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z"))
+    public boolean isSpectatorOrGrabbed(Player player) {
+        if (player instanceof LivingEntityDataExtension ext) {
+            var grabbedBy = ext.getGrabbedBy();
+            var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (ability != null && !ability.relinquishControl)
+                return true;
+        }
+
+        return this.isSpectator();
     }
 
     @Nullable

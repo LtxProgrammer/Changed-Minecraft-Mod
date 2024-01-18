@@ -14,7 +14,9 @@ import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -143,6 +145,23 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onInputEvent(InputEvent.ClickInputEvent event) {
+        if (event.isAttack() || event.isUseItem()) {
+            LocalPlayer localPlayer = Minecraft.getInstance().player;
+
+            ProcessTransfur.ifPlayerLatex(localPlayer, variant -> {
+                variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), ability -> {
+                    if (ability.grabbedEntity != null && !ability.suited) {
+                        event.setCanceled(true);
+                        event.setSwingHand(false);
+                    }
+                });
+            });
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
