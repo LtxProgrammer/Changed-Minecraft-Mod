@@ -29,12 +29,25 @@ public class GrabOverlay {
 
     public static void renderBackground(int x, int y, int width, int height, PoseStack stack) {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
-        blit(stack, x, y, 0, 0, width, height, width, height * 2);
+        blit(stack, x, y, 0, 0, width, height, width, height * 3);
     }
 
     public static void renderForeground(int x, int y, int width, int height, PoseStack stack, float progress) {
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
-        blit(stack, x, y, 0, height, (int)(progress * width), height, width, height * 2);
+        blit(stack, x, y, 0, height, (int)(progress * width), height, width, height * 3);
+    }
+
+    public static void renderSuit(int x, int y, int width, int height, PoseStack stack, float progress) {
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
+        float halfWidth = progress * width * 0.5f;
+
+        if (progress >= 1.0f) {
+            blit(stack, x, y, 0, height * 2, width, height, width, height * 3); // Full
+        } else {
+            int rightOffset = (int)((width * 0.5f) + ((1.0f - progress) * width * 0.5f));
+            blit(stack, x, y, 0, height * 2, (int)halfWidth, height, width, height * 3); // Left
+            blit(stack, x + rightOffset, y, rightOffset, height * 2, (int)halfWidth, height, width, height * 3); // Right
+        }
     }
 
     public static void renderProgressBarPlayer(PoseStack stack, int screenWidth, int screenHeight) {
@@ -49,6 +62,7 @@ public class GrabOverlay {
 
             renderBackground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack);
             renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength());
+            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress());
         }
     }
 
@@ -65,6 +79,7 @@ public class GrabOverlay {
 
         renderBackground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack);
         renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength());
+        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress());
     }
 
     public static void renderProgressBars(Gui gui, PoseStack stack, int screenWidth, int screenHeight) {
