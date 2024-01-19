@@ -98,30 +98,8 @@ public abstract class RenderOverride {
             pose.popPose();
         }
     }
-
-    public static class LockToPlayerOverride implements Override {
-        public LockToPlayerOverride(EntityModelSet modelSet) {
-
-        }
-
-        @java.lang.Override
-        public boolean requireVariant() {
-            return false;
-        }
-
-        public boolean wantToOverride(Player player, LatexVariantInstance<?> variant) {
-            return player instanceof PlayerDataExtension ext && // Mixin worked
-                    ext.getPlayerMover() != null && // Has player mover
-                    ext.getPlayerMover().is(PlayerMover.LOCK_TO_PLAYER.get());
-        }
-
-        public void render(Player player, @Nullable LatexVariantInstance<?> variant, PoseStack pose, MultiBufferSource buffer, int packedLight, float partialTick) {
-            // render nothing
-        }
-    }
     
     static {
         registerOverride(DuctPlayerOverride::new);
-        registerOverride(LockToPlayerOverride::new);
     }
 }

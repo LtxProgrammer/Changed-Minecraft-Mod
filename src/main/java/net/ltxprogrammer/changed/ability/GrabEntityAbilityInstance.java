@@ -38,6 +38,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         return grabbedEntity != null && !suited;
     }
 
+    public float getGrabStrength() {
+        return grabStrength;
+    }
+
+    public float getSuitTransitionProgress() {
+        return suitTransition / 3.0f;
+    }
+
     public LivingEntity getHoveredEntity(IAbstractLatex entity) {
         if (!(entity.getEntity() instanceof Player player))
             return null;

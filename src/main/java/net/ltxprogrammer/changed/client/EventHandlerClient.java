@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -48,38 +49,14 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
         if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
-            if (ext.getGrabbedBy() instanceof Player player) {
-                ProcessTransfur.ifPlayerLatex(player, variant -> {
-                    var grabAbility = variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-                    if (grabAbility == null) return;
-
-                    if (!grabAbility.shouldRenderGrabbedEntity())
-                        event.setCanceled(true);
-                });
-            }
-
-            else if (ext.getGrabbedBy() instanceof LatexEntity latex) {
-                var grabAbility = latex.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-                if (grabAbility == null) return;
-
-                if (!grabAbility.shouldRenderGrabbedEntity())
-                    event.setCanceled(true);
-            }
-
+            var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity())
+                event.setCanceled(true);
             return;
         }
 
-        final AtomicReference<GrabEntityAbilityInstance> abilityInstanceAtomic = new AtomicReference<>(null);
-        if (event.getEntity() instanceof LatexEntity latex)
-            abilityInstanceAtomic.set(latex.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()));
-        else if (event.getEntity() instanceof Player player) {
-            ProcessTransfur.ifPlayerLatex(player, variant -> {
-                abilityInstanceAtomic.set(variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()));
-            });
-        }
-
-        final GrabEntityAbilityInstance abilityInstance = abilityInstanceAtomic.getAcquire();
-        if (abilityInstance != null && !abilityInstance.shouldRenderLatex())
+        var entityGrabAbility = AbstractAbility.getAbilityInstance(event.getEntity(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (entityGrabAbility != null && !entityGrabAbility.shouldRenderLatex())
             event.setCanceled(true);
     }
 
