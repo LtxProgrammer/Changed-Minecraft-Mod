@@ -160,6 +160,7 @@ public class GrabEntityPacket implements ChangedPacket {
                         instance.attackDown = this.attackKey;
                         instance.useDown = this.useKey;
                         contextSupplier.get().setPacketHandled(true);
+                        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), this);
                     });
                 });
             }

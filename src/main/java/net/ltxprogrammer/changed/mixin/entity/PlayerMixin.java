@@ -14,11 +14,9 @@ import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityDimensions;
@@ -189,12 +187,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         });
     }
 
+    // TODO make interactions pass the grabbed entity
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z"))
     public boolean isSpectatorOrGrabbed(Player player) {
         if (player instanceof LivingEntityDataExtension ext) {
             var grabbedBy = ext.getGrabbedBy();
             var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (ability != null && !ability.relinquishControl)
+            if (ability != null && !ability.grabbedHasControl)
                 return true;
         }
 

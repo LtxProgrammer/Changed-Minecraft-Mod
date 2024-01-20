@@ -2,9 +2,7 @@ package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.*;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -22,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,6 +38,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -135,7 +135,34 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     @SubscribeEvent
+    public static void onEntityAttack(LivingAttackEvent event) {
+        if (!(event.getSource() instanceof EntityDamageSource entityDamageSource)) return;
+
+        if (GrabEntityAbility.isEntityNoControl(entityDamageSource.getEntity())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getItemUseMode().canUseHand(event.getHand()))
+                event.setCanceled(true);
+        });
+    }
+
+    @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
             if (!variant.getItemUseMode().canUseHand(event.getHand()))
                 event.setCanceled(true);
@@ -144,6 +171,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
             if (!variant.getItemUseMode().interactWithBlocks)
                 event.setCanceled(true);
@@ -152,6 +184,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
             if (!variant.getItemUseMode().breakBlocks)
                 event.setCanceled(true);

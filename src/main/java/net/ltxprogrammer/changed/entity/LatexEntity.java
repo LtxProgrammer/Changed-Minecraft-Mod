@@ -662,7 +662,7 @@ public abstract class LatexEntity extends Monster {
 
     public UseItemMode getItemUseMode() {
         var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-        if (instance != null && instance.shouldAnimateArms())
+        if (instance != null && (instance.shouldAnimateArms() || instance.grabbedHasControl))
             return UseItemMode.NONE;
         var variant = getSelfVariant();
         if (variant != null)

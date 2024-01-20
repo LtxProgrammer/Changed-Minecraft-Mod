@@ -22,8 +22,5 @@ public class ChangedOverlays {
         gui.setupOverlayRenderState(true, false);
         AbilityOverlay.renderSelectedAbility(gui, poseStack, screenWidth, screenHeight);
     });
-    public static final IIngameOverlay GRABBED_ELEMENT = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, Changed.modResourceStr("grabbed"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-        gui.setupOverlayRenderState(true, false);
-        GrabOverlay.renderProgressBars(gui, poseStack, screenWidth, screenHeight);
-    });
+    public static final IIngameOverlay GRABBED_ELEMENT = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, Changed.modResourceStr("grabbed"), GrabOverlay::renderProgressBars);
 }

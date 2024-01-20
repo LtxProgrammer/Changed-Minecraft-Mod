@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,29 +22,31 @@ import java.util.UUID;
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Nullable
     public LivingEntity grabbedEntity = null;
-    public boolean relinquishControl = false;
+    public boolean grabbedHasControl = false;
     public boolean suited = false;
     public float grabStrength = 0.0f;
+    public float grabStrengthO = 0.0f;
     public float suitTransition = 0.0f;
+    public float suitTransitionO = 0.0f;
 
     public boolean shouldRenderLatex() {
         return !shouldRenderGrabbedEntity();
     }
 
     public boolean shouldRenderGrabbedEntity() {
-        return suited && relinquishControl && grabbedEntity != null;
+        return suited && grabbedHasControl && grabbedEntity != null;
     }
 
     public boolean shouldAnimateArms() {
         return grabbedEntity != null && !suited;
     }
 
-    public float getGrabStrength() {
-        return grabStrength;
+    public float getGrabStrength(float partialTicks) {
+        return Mth.lerp(partialTicks, grabStrengthO, grabStrength);
     }
 
-    public float getSuitTransitionProgress() {
-        return suitTransition / 3.0f;
+    public float getSuitTransitionProgress(float partialTicks) {
+        return Mth.lerp(partialTicks, suitTransitionO, suitTransition) / 3.0f;
     }
 
     public LivingEntity getHoveredEntity(IAbstractLatex entity) {
@@ -69,7 +72,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     @Override
     public AbstractAbility.UseType getUseType() {
-        return grabbedEntity == null ? AbstractAbility.UseType.HOLD : AbstractAbility.UseType.INSTANT;
+        return AbstractAbility.UseType.HOLD;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public void releaseEntity() {
-        this.relinquishControl = false;
+        this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
         if (this.grabbedEntity == null) return;
@@ -108,6 +111,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public void suitEntity(LivingEntity entity) {
+        getController().resetHoldTicks();
         entity.setInvisible(true);
         if (this.grabbedEntity == entity) {
             this.suited = true;
@@ -122,9 +126,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public void grabEntity(LivingEntity entity) {
+        getController().resetHoldTicks();
         if (this.grabbedEntity == entity) {
             this.suited = false;
-            this.relinquishControl = false;
+            this.grabbedHasControl = false;
             this.grabStrength = 1.0f;
             return;
         }
@@ -139,28 +144,43 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         releaseEntity();
     }
 
+    void handleInstructions(Level level) {
+        if (!level.isClientSide) return;
+
+        if (instructionTicks == 180)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
+        else if (instructionTicks == 120)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_transfur", KeyReference.ATTACK.getName(level)), true);
+        else if (instructionTicks == 60)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_suit", KeyReference.USE.getName(level)), true);
+        if (instructionTicks > 0)
+            instructionTicks--;
+
+        if (instructionTicks == -120)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
+        else if (instructionTicks == -60)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_toggle_control", KeyReference.ABILITY.getName(level)), true);
+        if (instructionTicks < 0)
+            instructionTicks++;
+    }
+
     int instructionTicks = 0;
     public boolean attackDown = false;
     public boolean useDown = false;
     public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
+        this.grabStrengthO = this.grabStrength;
+        this.suitTransitionO = this.suitTransition;
+
         if (this.grabbedEntity != null) {
-            getController().resetHoldTicks();
             Level level = entity.getLevel();
 
-            if (instructionTicks == 180)
-                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
-            else if (instructionTicks == 120)
-                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_transfur", KeyReference.ATTACK.getName(level)), true);
-            else if (instructionTicks == 60)
-                this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_suit", KeyReference.USE.getName(level)), true);
-            if (instructionTicks > 0)
-                instructionTicks--;
+            handleInstructions(level);
 
             if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
                 ext.setGrabbedBy(this.entity.getEntity());
-            this.grabbedEntity.noPhysics = true;
+            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
 
-            if (!relinquishControl)
+            if (!grabbedHasControl)
                 LatexVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
             else
                 LatexVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
@@ -189,7 +209,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 useDown = useKeyDown;
             }
 
-            if (attackDown) {
+            if (attackDown && !suited) { // TODO progress absorption while suited
                 if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getLatexEntity().getTransfurVariant()))
                     this.releaseEntity();
             }
@@ -207,7 +227,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
                     if (this.entity.getEntity() instanceof Player player && player.level.isClientSide) {
                         Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.suitGrab(player, this.grabbedEntity));
-                        this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
+                        this.instructionTicks = -120;
                         this.grabStrength = 1.0f;
                     }
                 }
@@ -217,12 +237,17 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     @Override
     public void startUsing() {
-        if (this.grabbedEntity != null)
-            this.releaseEntity();
+
     }
 
     @Override
     public void tick() {
+        if (this.grabbedEntity != null) {
+            if (this.getController().getHoldTicks() >= 40)
+                this.releaseEntity();
+            return;
+        }
+
         var grabbedEntity = this.getHoveredEntity(entity);
         if (grabbedEntity != null && entity.getLevel().isClientSide && entity.getEntity() instanceof PlayerDataExtension ext) {
             if (!this.entity.getEntity().getBoundingBox().inflate(0.5, 0.0, 0.5).intersects(grabbedEntity.getBoundingBox()))
@@ -232,12 +257,16 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), grabbedEntity));
             this.grabStrength = 1.0f;
             this.instructionTicks = 180;
+            getController().resetHoldTicks();
         }
     }
 
     @Override
     public void stopUsing() {
-
+        if (this.grabbedEntity != null && suited && this.getController().getHoldTicks() < 40) {
+            this.grabbedHasControl = !this.grabbedHasControl;
+            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
+        }
     }
 
     @Override
@@ -245,7 +274,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         super.saveData(tag);
         if (grabbedEntity != null)
             tag.putUUID("GrabbedEntity", grabbedEntity.getUUID());
-        tag.putBoolean("RelinquishControl", relinquishControl);
+        tag.putBoolean("GrabbedHasControl", grabbedHasControl);
         tag.putBoolean("Suited", suited);
         tag.putFloat("GrabStrength", grabStrength);
         tag.putFloat("SuitTransition", suitTransition);
@@ -262,7 +291,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 }
             });
         }
-        this.relinquishControl = tag.getBoolean("RelinquishControl");
+        this.grabbedHasControl = tag.getBoolean("GrabbedHasControl");
         this.suited = tag.getBoolean("Suited");
         this.grabStrength = tag.getFloat("GrabStrength");
         this.suitTransition = tag.getFloat("SuitTransition");

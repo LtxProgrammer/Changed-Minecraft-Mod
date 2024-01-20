@@ -44,13 +44,13 @@ public class GrabOverlay {
         if (progress >= 1.0f) {
             blit(stack, x, y, 0, height * 2, width, height, width, height * 3); // Full
         } else {
-            int rightOffset = (int)((width * 0.5f) + ((1.0f - progress) * width * 0.5f));
+            int rightOffset = (int)((width * 0.5f) + ((1.0f - progress) * width * 0.5f)) + 1;
             blit(stack, x, y, 0, height * 2, (int)halfWidth, height, width, height * 3); // Left
             blit(stack, x + rightOffset, y, rightOffset, height * 2, (int)halfWidth, height, width, height * 3); // Right
         }
     }
 
-    public static void renderProgressBarPlayer(PoseStack stack, int screenWidth, int screenHeight) {
+    public static void renderProgressBarPlayer(PoseStack stack, float partialTicks, int screenWidth, int screenHeight) {
         RenderSystem.setShaderTexture(0, GRAB_PROGRESS_BAR_PLAYER);
         int x = (screenWidth / 2) - (BAR_WIDTH_PLAYER / 2);
         int y = (screenHeight / 2) + 20;
@@ -58,15 +58,15 @@ public class GrabOverlay {
         if (Minecraft.getInstance().cameraEntity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grabAbility == null) return;
-            if (grabAbility.relinquishControl) return;
+            if (grabAbility.grabbedHasControl) return;
 
             renderBackground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack);
-            renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength());
-            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress());
+            renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength(partialTicks));
+            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress(partialTicks));
         }
     }
 
-    public static void renderProgressBarLatex(PoseStack stack, int screenWidth, int screenHeight) {
+    public static void renderProgressBarLatex(PoseStack stack, float partialTicks, int screenWidth, int screenHeight) {
         RenderSystem.setShaderTexture(0, GRAB_PROGRESS_BAR_LATEX);
         int x = (screenWidth / 2) - (BAR_WIDTH_LATEX / 2);
         int y = screenHeight - 29;
@@ -75,14 +75,15 @@ public class GrabOverlay {
 
         var grabAbility = AbstractAbility.getAbilityInstance(livingCameraEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (grabAbility == null) return;
-        if (grabAbility.relinquishControl) return;
+        if (grabAbility.grabbedEntity == null) return;
+        if (grabAbility.grabbedHasControl) return;
 
         renderBackground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack);
-        renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength());
-        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress());
+        renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength(partialTicks));
+        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress(partialTicks));
     }
 
-    public static void renderProgressBars(Gui gui, PoseStack stack, int screenWidth, int screenHeight) {
+    public static void renderProgressBars(Gui gui, PoseStack stack, float partialTicks, int screenWidth, int screenHeight) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -90,10 +91,10 @@ public class GrabOverlay {
         stack.pushPose();
         stack.translate(0.5, 0.0, 0.0);
 
-        renderProgressBarPlayer(stack, screenWidth, screenHeight);
+        renderProgressBarPlayer(stack, partialTicks, screenWidth, screenHeight);
 
         stack.popPose();
 
-        renderProgressBarLatex(stack, screenWidth, screenHeight);
+        renderProgressBarLatex(stack, partialTicks, screenWidth, screenHeight);
     }
 }

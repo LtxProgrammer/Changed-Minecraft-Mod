@@ -1,10 +1,11 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedShaders;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Camera;
@@ -82,7 +83,12 @@ public abstract class GameRendererMixin {
     public void setupForHolderEntity(Camera camera, BlockGetter level, Entity entity, boolean thirdPerson, boolean mirrored, float partialTicks) {
         if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null)
             camera.setup(level, ext.getGrabbedBy(), thirdPerson, mirrored, partialTicks);
-        else
-            camera.setup(level, entity, thirdPerson, mirrored, partialTicks);
+        else if (entity instanceof LivingEntity livingEntity) {
+            var grabAbility = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grabAbility != null && grabAbility.grabbedHasControl && grabAbility.grabbedEntity != null)
+                camera.setup(level, grabAbility.grabbedEntity, thirdPerson, mirrored, partialTicks);
+            else
+                camera.setup(level, entity, thirdPerson, mirrored, partialTicks);
+        }
     }
 }
