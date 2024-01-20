@@ -19,7 +19,7 @@
  "ability.changed.changed.siren_sing": "Співати",
  "ability.changed.puddle": "Стати калюжею",
  "ability.changed.select_hairstyle": "Вибрати зачіску",
- "ability.changed.select_special_state": "Вибір особливого стану"
+ "ability.changed.select_special_state": "Вибір особливого стану",
  "ability.changed.summon_sharks": "Викликати акул",
 
  "subtitles.changed.sound3": "Хтось трансфурмований органічно",
@@ -189,7 +189,7 @@
  "block.changed.latex_wolf_crystal_block": "Блок червоного кристала",
  "block.changed.latex_beifeng_crystal_small": "Маленький зелений кристал ",
  "block.changed.latex_wolf_crystal_small": "Маленький червоний кристал",
- "block.changed.latex_crystal": "Темний кристал"
+ "block.changed.latex_crystal": "Темний кристал",
  "block.changed.latex_traffic_cone": "Дорожній конус",
  "block.changed.lab_door": "Лаюораторні двері",
  "block.changed.lab_light": "Лабораторний світильник",
@@ -212,7 +212,7 @@
  "block.changed.speaker": "Гучномовець",
  "block.changed.tape_recorder": "Магнітофон",
  "block.changed.tiles_blue": "Синя плитка",
- "block.changed.tiles_blue_small": "Маленька синя плитка"
+ "block.changed.tiles_blue_small": "Маленька синя плитка",
  "block.changed.tiles_caution": "Попереджувальна плитка",
  "block.changed.tiles_darkblue": "Темно-синя плитка",
  "block.changed.tiles_grayblue": "Сіро-синя плитка",
@@ -358,7 +358,7 @@
  "item.changed.latex_crocodile_spawn_egg": "Яйце виклику Латексний крокодил",
  "item.changed.latex_crystal_wolf_spawn_egg": "Яйце виклику Кристальний вовк",
  "item.changed.latex_crystal_wolf_horned_spawn_egg": "Яйце виклику Рогатий кристальний вовк",
- "item.changed.latex_deer_spawn_egg": "Яйце виклику Латексний олень"
+ "item.changed.latex_deer_spawn_egg": "Яйце виклику Латексний олень",
  "item.changed.latex_hypno_cat_spawn_egg": "Яйце виклику Латексний гіпно-кіт",
  "item.changed.latex_keon_wolf_spawn_egg": "Яйце виклику Латексний срібний лис",
  "item.changed.latex_leaf_spawn_egg": "Яйце виклику Латексна листяна рептилія",
