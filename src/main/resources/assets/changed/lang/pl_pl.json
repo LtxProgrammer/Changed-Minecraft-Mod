@@ -86,7 +86,7 @@
   "item.changed.owo_record": "Latexowa płyta muzyczna",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
-  "item.changed.latex_music_disc": "Latex Music Disc",
+  "item.changed.latex_music_disc": "Latexowa płyta muzyczna",
   "item.changed.black_goo_zone_record.desc": "Shizi - Black Goo Zone",
   "item.changed.crystal_zone_record.desc": "Shizi - Crystal Zone",
   "item.changed.gas_room_record.desc": "Shizi - Gas Room",
@@ -294,7 +294,7 @@
   "entity.changed.milk_pudding": "Mleczny pudding",
   "entity.changed.latex_alien": "Latexowy obcy",
   "entity.changed.latex_bee": "Latexowa pszczoła",
-  "entity.changed.latex_beifeng": "Beifeng",
+  "entity.changed.latex_beifeng": "Latexowy Beifeng",
   "entity.changed.latex_benign_wolf": "Benginowy latexowy Wilk",
   "entity.changed.latex_blue_dragon": "Latexowy niebieski smok",
   "entity.changed.latex_blue_wolf": "Latexowy niebieski wilk",
@@ -445,10 +445,10 @@
   "changed.compact_disc.content.latex_squid_dog": "Nie tylko oni dobrze pływają,ale też za pomocą dodatkowych rąk potrafi przenosić wiele rzeczy.",
 
   "changed.compact_disc.title.white_latex_creature": "Kształtna maź",
-  "changed.compact_disc.content.white_latex_creature": "ten experyment jest najdziwniejszy,jaki jest.Otóż te obiekty to coś w stylu wspólnego umysłu,interesujące.",
+  "changed.compact_disc.content.white_latex_creature": "ten eksperyment jest najdziwniejszy,jaki jest.Otóż te obiekty to coś w stylu wspólnego umysłu,interesujące.",
 
   "changed.compact_disc.title.special_latex": "Unikalne warianty",
-  "changed.compact_disc.content.special_latex": "Dziękując pomocnikom,mamy wystarczająco dużo funduszy na wybrane unikalne warianty,jakie możemy sobie pozwolić,bez ryzyka bankrupcji.",
+  "changed.compact_disc.content.special_latex": "Dziękując darczyńcom,mamy wystarczająco dużo funduszy na wybrane unikalne warianty,jakie możemy sobie pozwolić,bez ryzyka bankrupcji.",
 
   "changed:advancements.main.root.title": "Changed",
   "changed:advancements.main.root.description": "pobudka,witaj w pryszłości",
