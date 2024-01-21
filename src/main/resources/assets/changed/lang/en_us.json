@@ -510,6 +510,10 @@
   "eyestyle.changed.v2": "Slim",
   "eyestyle.changed.tall": "Tall",
 
+  "changed.config.color_picker_red": "Red: %s",
+  "changed.config.color_picker_green": "Green: %s",
+  "changed.config.color_picker_blue": "Blue: %s",
+
   "changed.config.bpi.screen": "Basic Player Info",
   "changed.config.bpi.hair_color": "Hair Color",
   "changed.config.bpi.iris_color.left": "Left Iris Color",

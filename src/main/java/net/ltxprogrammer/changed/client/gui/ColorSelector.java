@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -20,9 +21,11 @@ import java.util.function.Supplier;
 
 public class ColorSelector extends EditBox {
     private static final int padding = 5;
-    private final Supplier<Color3> colorGetter;
-    private final Consumer<Color3> colorSetter;
-    private final FormattedCharSequence name;
+    final Supplier<Color3> colorGetter;
+    final Consumer<Color3> colorSetter;
+    private final Component name;
+    private final FormattedCharSequence nameCharSequence;
+    private final int realWidth;
     private boolean lastHovered = false;
 
     private static final int COLOR_GOOD = 14737632;
@@ -30,9 +33,11 @@ public class ColorSelector extends EditBox {
 
     public ColorSelector(Font font, int x, int y, int width, int height, Component name, Supplier<Color3> colorGetter, Consumer<Color3> colorSetter) {
         super(font, x, y, width - height - padding, height, name);
-        this.name = name.getVisualOrderText();
+        this.name = name;
+        this.nameCharSequence = name.getVisualOrderText();
         this.colorGetter = colorGetter;
         this.colorSetter = colorSetter;
+        this.realWidth = width;
 
         this.insertText(colorGetter.get().toHexCode());
         this.setResponder(this::onValueChange);
@@ -40,11 +45,15 @@ public class ColorSelector extends EditBox {
         this.setFormatter(this::onFormat);
     }
 
+    public Component getName() {
+        return name;
+    }
+
     private FormattedCharSequence onFormat(String text, int i) {
         if (this.isHoveredOrFocused())
             return FormattedCharSequence.forward(text, Style.EMPTY);
         else
-            return name;
+            return nameCharSequence;
     }
 
     private void onValueChange(String text) {
@@ -122,5 +131,47 @@ public class ColorSelector extends EditBox {
     @Override
     public void updateNarration(NarrationElementOutput output) {
 
+    }
+
+    @Override
+    public boolean mouseClicked(double x, double y, int button) {
+        if (super.mouseClicked(x, y, button))
+            return true;
+
+        if (this.active && this.visible) {
+            if (this.isValidClickButton(button)) {
+                boolean flag = this.clicked(x, y);
+                if (flag) {
+                    this.playDownSound(Minecraft.getInstance().getSoundManager());
+                    this.onClick(x, y);
+                    return true;
+                }
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    protected boolean clicked(double x, double y) {
+        return this.active && this.visible && x >= (double)this.x && y >= (double)this.y && x < (double)(this.x + this.realWidth) && y < (double)(this.y + this.height);
+    }
+
+    @Override
+    public void onClick(double x, double y) {
+        super.onClick(x, y);
+
+        if (this.isVisible()) {
+            int startX = this.x + this.width + padding;
+            int startY = this.y;
+            int endX = startX + this.height;
+            int endY = startY + this.height;
+
+            if (x >= startX && x < endX && y >= startY && y < endY) {
+                Minecraft.getInstance().setScreen(new AdvancedColorSelectorScreen(Minecraft.getInstance().screen, this));
+            }
+        }
     }
 }
