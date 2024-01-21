@@ -512,7 +512,8 @@
 
   "changed.config.bpi.screen": "Basic Player Info",
   "changed.config.bpi.hair_color": "Hair Color",
-  "changed.config.bpi.iris_color": "Iris Color",
+  "changed.config.bpi.iris_color.left": "Left Iris Color",
+  "changed.config.bpi.iris_color.right": "Right Iris Color",
   "changed.config.bpi.sclera_color": "Sclera Color",
   "changed.config.bpi.eye_style": "Eye Style: %s",
   "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",

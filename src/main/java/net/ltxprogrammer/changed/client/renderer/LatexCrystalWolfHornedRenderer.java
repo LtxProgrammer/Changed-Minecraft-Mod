@@ -17,7 +17,8 @@ public class LatexCrystalWolfHornedRenderer extends LatexHumanoidRenderer<LatexC
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#5a5a5a")),
-                CustomEyesLayer::irisColor));
+                CustomEyesLayer::irisColorLeft,
+                CustomEyesLayer::irisColorRight));
     }
 
     @Override

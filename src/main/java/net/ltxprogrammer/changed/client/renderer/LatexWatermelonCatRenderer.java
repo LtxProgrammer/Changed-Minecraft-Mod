@@ -18,6 +18,7 @@ public class LatexWatermelonCatRenderer extends LatexHumanoidRenderer<LatexWater
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.BLACK),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
+                CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#91ad3f"))));
     }
 
