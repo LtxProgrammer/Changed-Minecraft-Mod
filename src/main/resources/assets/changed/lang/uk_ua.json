@@ -423,7 +423,7 @@
 "changed.compact_disc.title.dark_latex_yufeng": "Дракони в масках?"
 "changed.compact_disc.content.dark_latex_yufeng": "Після використання тих же матеріалів, що і у вовку з темного латексу але додавши перо, ми створили істоту здатну планувати повітрям, але все ще не вміючу літати. Воно майже схоже на дракона, але тільки з маскою.",
 "changed.compact_disc.title.dark_latex_dragon": "Дракони"
-"changed.compact_disc.content.dark_latex_dragon": "Не дивлячись на те, що ця істота походить від вовків з темного латексу, вона на подив не має маски. Ці ті, що використовують свої задні лапи \"Дракони"\ здатні планувати. Об'єднавши мембрану фантома і те ж за допомогою чого комбінуються вовки з темного латексу, створюється ДНК дракона.\",
+"changed.compact_disc.content.dark_latex_dragon": "Не дивлячись на те, що ця істота походить від вовків з темного латексу, вона на подив не має маски. Ці ті, що використовують свої задні лапи "\Дракони\" здатні планувати. Об'єднавши мембрану фантома і те ж за допомогою чого комбінуються вовки з темного латексу, створюється ДНК дракона.",
  
 "changed.compact_disc.title.latex_beifeng": "Резюме по рептиліям",
 "changed.compact_disc.content.latex_beifeng": "Змішавши синій пігмент з первинним латексом було створено ящероподібну істоту, трохи швидша ніж звичайна латексна істота, як на суші так і у воді.",
@@ -452,7 +452,7 @@
 "changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій..."
 "changed:advancements.main.transfur_aquatic.description": "Трансфурмуйтеся в будь-який водний латекс.",
 
-"changed:advancements.main.aquatic_swimming.title": "Я шукав \"Москву"\!",
+"changed:advancements.main.aquatic_swimming.title": "Я шукав "\Москву\"!",
 "changed:advancements.main.aquatic_swimming.description": "Проведіть весь день підводою будучи водним латексом.",
 
 "changed:advancements.main.transfur_white.title": "Єдиний розум",
