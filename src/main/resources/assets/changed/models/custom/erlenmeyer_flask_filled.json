@@ -1,9 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
-	"textures": {
-		"particle": "changed:blocks/erlenmeyer_flask/erlenmeyer_flask_new"
-	},
+	"textures": {},
 	"elements": [
 		{
 			"from": [4, 0, 4],

@@ -1,10 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
-	"textures": {
-		"0": "keypad",
-		"particle": "keypad"
-	},
+	"textures": {},
 	"elements": [
 		{
 			"from": [11, 1, 1],
