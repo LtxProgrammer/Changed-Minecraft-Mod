@@ -1,9 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "block/latex_wall_splotch",
-		"particle": "block/latex_wall_splotch"
-	},
+	"textures": {},
 	"elements": [
 		{
 			"from": [4, 6, 15],

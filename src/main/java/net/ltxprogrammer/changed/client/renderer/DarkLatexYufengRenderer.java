@@ -16,7 +16,8 @@ public class DarkLatexYufengRenderer extends LatexHumanoidRenderer<DarkLatexYufe
                 ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#303030")),
-                CustomEyesLayer.fixedIfNotDarkLatexOverride(Color3.WHITE)));
+                CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
+                CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));
     }
 
     @Override
