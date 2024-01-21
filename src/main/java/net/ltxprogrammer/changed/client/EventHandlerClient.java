@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -50,8 +51,19 @@ public class EventHandlerClient {
     public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
         if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity())
+            if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity()) {
                 event.setCanceled(true);
+            } else if (grabAbility != null && grabAbility.shouldRenderGrabbedEntity()) {
+                if (grabAbility.grabbedHasControl && grabAbility.syncEntity != null) {
+                    grabAbility.syncEntity.mirrorLiving(event.getEntity());
+
+                    if (event.getEntity() instanceof Player player) {
+                        LatexVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
+                    }
+
+                    FormRenderHandler.renderLiving(grabAbility.syncEntity, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
+                }
+            }
             return;
         }
 

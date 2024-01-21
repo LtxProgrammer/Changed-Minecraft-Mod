@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
@@ -22,6 +24,8 @@ import java.util.UUID;
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Nullable
     public LivingEntity grabbedEntity = null;
+    @Nullable
+    public LatexEntity syncEntity = null;
     public boolean grabbedHasControl = false;
     public boolean suited = false;
     public float grabStrength = 0.0f;
@@ -92,6 +96,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public void releaseEntity() {
+        if (this.syncEntity != null)
+            this.syncEntity.discard();
+        this.syncEntity = null;
         this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
@@ -110,9 +117,22 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.useDown = false;
     }
 
+    private void prepareSyncEntity(LivingEntity syncTo) {
+        this.syncEntity = (LatexEntity) this.entity.getLatexEntity().getType().create(this.entity.getLevel());
+        this.syncEntity.setId(LatexVariant.getNextEntId());
+        CompoundTag tag = new CompoundTag();
+        this.entity.getLatexEntity().saveWithoutId(tag);
+        this.syncEntity.load(tag);
+
+        if (syncTo instanceof Player player) {
+            this.syncEntity.setUnderlyingPlayer(player);
+        }
+    }
+
     public void suitEntity(LivingEntity entity) {
         getController().resetHoldTicks();
         entity.setInvisible(true);
+        prepareSyncEntity(entity);
         if (this.grabbedEntity == entity) {
             this.suited = true;
             this.grabStrength = 1.0f;
@@ -127,6 +147,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     public void grabEntity(LivingEntity entity) {
         getController().resetHoldTicks();
+        prepareSyncEntity(entity);
         if (this.grabbedEntity == entity) {
             this.suited = false;
             this.grabbedHasControl = false;
@@ -170,6 +191,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
         this.grabStrengthO = this.grabStrength;
         this.suitTransitionO = this.suitTransition;
+
+        if (this.syncEntity != null) {
+            this.syncEntity.visualTick(this.entity.getLevel());
+        }
 
         if (this.grabbedEntity != null) {
             Level level = entity.getLevel();
@@ -258,6 +283,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.grabStrength = 1.0f;
             this.instructionTicks = 180;
             getController().resetHoldTicks();
+            prepareSyncEntity(grabbedEntity);
         }
     }
 
@@ -291,9 +317,11 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 }
             });
         }
-        this.grabbedHasControl = tag.getBoolean("GrabbedHasControl");
-        this.suited = tag.getBoolean("Suited");
-        this.grabStrength = tag.getFloat("GrabStrength");
-        this.suitTransition = tag.getFloat("SuitTransition");
+        if (this.grabbedEntity != null) {
+            this.grabbedHasControl = tag.getBoolean("GrabbedHasControl");
+            this.suited = tag.getBoolean("Suited");
+            this.grabStrength = tag.getFloat("GrabStrength");
+            this.suitTransition = tag.getFloat("SuitTransition");
+        }
     }
 }

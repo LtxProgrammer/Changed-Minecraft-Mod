@@ -50,7 +50,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -351,7 +350,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
 
-        living.mirrorPlayer(player);
+        living.mirrorLiving(player);
 
         //Entity stuff
         living.setHealth(living.getMaxHealth() * (player.getHealth() / player.getMaxHealth()));

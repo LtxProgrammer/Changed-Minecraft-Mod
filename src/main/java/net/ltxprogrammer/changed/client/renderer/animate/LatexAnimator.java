@@ -101,7 +101,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         entity.ifAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), instance -> {
             if (instance.shouldAnimateArms())
                 grabState = LatexHumanoidModel.GrabState.HOLD;
-            else if (instance.getController().getHoldTicks() > 0)
+            else if (instance.getController().getHoldTicks() > 0 && instance.grabbedEntity == null)
                 grabState = LatexHumanoidModel.GrabState.REACH;
         });
     }

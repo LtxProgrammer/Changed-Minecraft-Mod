@@ -39,7 +39,7 @@ public class FormRenderHandler {
         });
     }
 
-    private static void renderLiving(LivingEntity living, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderLiving(LivingEntity living, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         if (living == null) return;
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
         renderer.render(living, living.getYRot(), partialTick, stack, buffer, light);

@@ -427,7 +427,7 @@ public abstract class LatexEntity extends Monster {
 
         var player = getUnderlyingPlayer();
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
-            mirrorPlayer(player);
+            mirrorLiving(player);
         }
 
         var variant = getSelfVariant();
@@ -437,7 +437,7 @@ public abstract class LatexEntity extends Monster {
             this.stopRiding();
     }
     
-    public void mirrorPlayer(Player player) {
+    public void mirrorLiving(LivingEntity player) {
         LatexVariantInstance.syncEntityPosRotWithEntity(this, player);
         
         this.swingingArm = player.swingingArm;
