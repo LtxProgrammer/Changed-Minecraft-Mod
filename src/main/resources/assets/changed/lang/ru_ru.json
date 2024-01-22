@@ -515,16 +515,11 @@
   "eyestyle.changed.v2": "Широкий",
   "eyestyle.changed.tall": "Узкий",
 
- "changed.config.color_picker_red": "Красный: %s",
- "changed.config.color_picker_green": "Зеленый: %s",
- "changed.config.color_picker_blue": "Синий: %s",
-
   "changed.config.bpi.screen": "Основная информация о игроке",
   "changed.config.bpi.hair_color": "Цвет волос",
-  "changed.config.bpi.iris_color.left": "Цвет левой радужки",
-  "changed.config.bpi.iris_color.right": "Цвет правой радужки",
+  "changed.config.bpi.iris_color": "Цвет радужки",
   "changed.config.bpi.sclera_color": "Цвет склеры",
   "changed.config.bpi.eye_style": "Стиль глаз: %s",
   "changed.config.bpi.override_dl_iris": "Принудительное изменение цвета глаз у тёмных латексных",
-  "changed.config.bpi.override_all_eye_styles": "Принудительно использовать оригинальный цвет глаз"
+  "changed.config.bpi.override_all_eye_styles": "Принудительно использовать оригинальный цвет глаз",
 }
