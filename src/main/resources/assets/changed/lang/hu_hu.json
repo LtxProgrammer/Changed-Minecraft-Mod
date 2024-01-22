@@ -22,6 +22,12 @@
   "ability.changed.select_hairstyle": "Válassz egy frizurát",
   "ability.changed.select_special_state": "Válassz egy speciális állapotot",
   "ability.changed.summon_sharks": "Idézz cápákat",
+
+  "ability.changed.grab_entity": "Entitás megragadása",
+  "ability.changed.grab_entity.how_to_grab": "Tartsa nyomva a [%s] gombot egy entitás megragadásához",
+  "ability.changed.grab_entity.how_to_release": "Nyomd meg a [%s] gombot az entitás elengedéséhez",
+  "ability.changed.grab_entity.how_to_transfur": "Tartsa nyomva a [%s] gombot a transzfur előrehaladásához",
+  "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot jelmezzé váltásához",
   
   "subtitles.changed.sound3": "Organikus transzfur",
   "subtitles.changed.poison": "Transzfur",
@@ -124,7 +130,7 @@
   "gamerule.changed:keepConscious": "Transzfurban mindig legyen eszméletben",
   "gamerule.changed:keepForm": "Maradandó transzfur",
   "gamerule.changed:latexGrowthRate": "Hagyja, hogy a latex természetes módon terjedjen",
-  "gamerule.changed:transfurTolerance": "Latex entitás transzfur sebzés (tikkek)",
+  "gamerule.changed:transfurTolerance": "Latex entitás transzfur sebzése (tikkek)",
   "gamerule.changed:npcWantFusePlayer": "A latex NPC-k összeolvadni szeretnének a játékossal",
   "gamerule.changed:doPale": "A pale engedélyezve van-e",
 
@@ -510,9 +516,14 @@
   "eyestyle.changed.v2": "Vékony",
   "eyestyle.changed.tall": "Magas",
 
+  "changed.config.color_picker_red": "Vörös: %s",
+  "changed.config.color_picker_green": "Zöld: %s",
+  "changed.config.color_picker_blue": "Kék: %s",
+
   "changed.config.bpi.screen": "Alap játékos információ",
   "changed.config.bpi.hair_color": "Hajszín",
-  "changed.config.bpi.iris_color": "Szivárványhártya színe",
+  "changed.config.bpi.iris_color.left": "Bal oldali szivárványhártya színe",
+  "changed.config.bpi.iris_color.right": "Jobb oldali szivárványhártya színe",
   "changed.config.bpi.sclera_color": "Ínhártya színe",
   "changed.config.bpi.eye_style": "Szem stílus: %s",
   "changed.config.bpi.override_dl_iris": "Szivárványhártya színének felülbírálása sötét latex változatoknál",
