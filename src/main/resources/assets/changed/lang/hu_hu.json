@@ -510,6 +510,10 @@
   "eyestyle.changed.v2": "Vékony",
   "eyestyle.changed.tall": "Magas",
 
+  "changed.config.color_picker_red": "Vörös: %s",
+  "changed.config.color_picker_green": "Zöld: %s",
+  "changed.config.color_picker_blue": "Kék: %s",
+
   "changed.config.bpi.screen": "Alap játékos információ",
   "changed.config.bpi.hair_color": "Hajszín",
   "changed.config.bpi.iris_color.left": "Bal oldali szivárványhártya színe",
