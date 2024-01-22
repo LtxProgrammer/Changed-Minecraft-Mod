@@ -103,7 +103,6 @@
   "item.changed.the_white_tail_chase_part_1_record.desc": "Shizi - The White Tail Chase Part 1",
   "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
   "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",  
-
   "syringe.changed:form_special": "Шприц с патреон формой",
 
   "death.attack.changed:transfur": "%1$s был трансфуррирован",
@@ -510,9 +509,14 @@
   "eyestyle.changed.v2": "Широкий",
   "eyestyle.changed.tall": "Узкий",
 
-  "changed.config.bpi.screen": "Информация о игроке",
+ "changed.config.color_picker_red": "Красный: %s",
+ "changed.config.color_picker_green": "Зеленый: %s",
+ "changed.config.color_picker_blue": "Синий: %s",
+
+  "changed.config.bpi.screen": "Основная информация о игроке",
   "changed.config.bpi.hair_color": "Цвет волос",
-  "changed.config.bpi.iris_color": "Цвет радужки",
+  "changed.config.bpi.iris_color.left": "Цвет левой радужки",
+  "changed.config.bpi.iris_color.right": "Цвет правой радужки",
   "changed.config.bpi.sclera_color": "Цвет склеры",
   "changed.config.bpi.eye_style": "Стиль глаз: %s",
   "changed.config.bpi.override_dl_iris": "Принудительное изменение цвета глаз у тёмных латексных",
