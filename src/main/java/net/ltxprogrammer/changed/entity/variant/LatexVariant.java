@@ -114,6 +114,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexFennecFox> LATEX_FENNEC_FOX = register(Builder.of(ChangedEntities.LATEX_FENNEC_FOX)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_fennec_fox")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(ChangedEntities.LATEX_HYPNO_CAT)
             .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.HYPNOSIS)
             .build(Changed.modResource("form_latex_hypno_cat")));
