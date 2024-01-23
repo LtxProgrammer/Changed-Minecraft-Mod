@@ -69,6 +69,7 @@
     "render.ItemBlockRenderTypesMixin",
     "render.ItemInHandRendererMixin",
     "render.LevelRendererMixin",
+    "render.LivingEntityRendererMixin",
     "render.ModelBakeryMixin",
     "render.PlayerRendererMixin",
     "render.PoseStackMixin",

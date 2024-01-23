@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
@@ -37,19 +38,9 @@ public class LatexHeldEntityLayer<T extends LatexEntity, M extends LatexHumanoid
 
         var entityRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ability.grabbedEntity);
 
-        if (!(entityRenderer instanceof LivingEntityRenderer livingEntityRenderer)) return;
+        if (!(entityRenderer instanceof LivingEntityRendererExtender ext)) return;
 
-        boolean bodyVisible = livingEntityRenderer.isBodyVisible(ability.grabbedEntity);
-        boolean shouldBeVisible = !bodyVisible && !ability.grabbedEntity.isInvisibleTo(Minecraft.getInstance().player);
-        boolean shouldGlow = Minecraft.getInstance().shouldEntityAppearGlowing(ability.grabbedEntity);
-        var renderType = livingEntityRenderer.getRenderType(ability.grabbedEntity, bodyVisible, shouldBeVisible, shouldGlow);
-        int overlay = LivingEntityRenderer.getOverlayCoords(ability.grabbedEntity, livingEntityRenderer.getWhiteOverlayProgress(ability.grabbedEntity, partialTicks));
-        livingEntityRenderer.getModel().renderToBuffer(pose, bufferSource.getBuffer(renderType), packedLight, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
-
-        for (Object layer : livingEntityRenderer.layers) {
-            if (!(layer instanceof RenderLayer renderLayer)) return;
-            renderLayer.render(pose, bufferSource, packedLight, ability.grabbedEntity, 0.0f, 0.0f, partialTicks, 0.0f, 0.0f, 0.0f);
-        }
+        ext.directRender(ability.grabbedEntity, 0.0f, partialTicks, pose, bufferSource, packedLight);
 
         pose.popPose();
     }
