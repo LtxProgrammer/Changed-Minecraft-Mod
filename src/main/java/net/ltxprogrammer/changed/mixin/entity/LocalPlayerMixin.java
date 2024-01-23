@@ -88,8 +88,9 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
 
         ProcessTransfur.ifPlayerLatex(player, variant -> {
             if (variant.getParent().canGlide) {
-                KeyboardInput kb = null;
+                KeyboardInput kb;
                 if (input instanceof KeyboardInput k) kb = k;
+                else return;
 
                 boolean jumping = input.jumping;
                 boolean flying = this.getAbilities().flying;
