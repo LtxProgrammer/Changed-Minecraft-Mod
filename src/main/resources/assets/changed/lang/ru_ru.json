@@ -23,6 +23,12 @@
   "ability.changed.select_special_state": "Выбор особого состояния",
   "ability.changed.summon_sharks": "Призыв акул",
 
+ "ability.changed.grab_entity": "Схватить"
+ "ability.changed.grab_entity.how_to_grab": "Зажмите [%s] чтобы схватить существо",
+ "ability.changed.grab_entity.how_to_release": "Нажмите [%s] чтобы отпустить сущность",
+ "ability.changed.grab_entity.how_to_transfur": "Зажмите [%s] чтобы трансфуррировать",
+ "ability.changed.grab_entity.how_to_suit": "Зажмите [%s] чтобы переключиться в костюм",
+
   "subtitles.changed.sound3": "Кто-то трансфурмирован органически",
   "subtitles.changed.poison": "Кто-то трансфурмирован",
   "subtitles.changed.open2": "Дверь не открывается",
