@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.EyeStyle;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
@@ -11,10 +10,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class BasicPlayerInfoScreen extends Screen {
     private final Screen lastScreen;
@@ -50,11 +47,14 @@ public class BasicPlayerInfoScreen extends Screen {
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.hair_color"),
                 bpi::getHairColor, bpi::setHairColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color"),
-                bpi::getIrisColor, bpi::setIrisColor));
-        i++;
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.sclera_color"),
                 bpi::getScleraColor, bpi::setScleraColor));
+        i++;
+        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
+                bpi::getRightIrisColor, bpi::setRightIrisColor));
+        i++;
+        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
+                bpi::getLeftIrisColor, bpi::setLeftIrisColor));
         i++;
         this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.eye_style", bpi.getEyeStyle().getName()), button -> {
             var style = bpi.getEyeStyle();
@@ -67,7 +67,7 @@ public class BasicPlayerInfoScreen extends Screen {
             bpi.setEyeStyle(style);
             button.setMessage(new TranslatableComponent("changed.config.bpi.eye_style", style.getName()));
         }));
-        i++;
+        i += 2;
         this.addRenderableWidget(new Checkbox(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.override_dl_iris"), bpi.isOverrideIrisOnDarkLatex()) {
             @Override
             public void onPress() {

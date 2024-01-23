@@ -5,7 +5,7 @@ issueTrackerURL="https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues" 
 
 [[mods]]
 modId="changed"
-version="0.13"
+version="0.13.1"
 displayName="Changed: Minecraft Mod"
 updateJSONURL="https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/update.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/changed-minecraft-mod"

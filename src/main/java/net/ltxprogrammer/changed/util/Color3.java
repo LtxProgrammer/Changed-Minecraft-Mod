@@ -80,4 +80,8 @@ public record Color3(float red, float green, float blue) {
     public Color3 mul(float v) {
         return new Color3(red * v, green * v, blue * v);
     }
+
+    public float dot(Color3 color) {
+        return (red * color.red) + (green * color.green) + (blue * color.blue);
+    }
 }
