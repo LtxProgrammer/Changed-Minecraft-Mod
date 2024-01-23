@@ -22,6 +22,12 @@
   "ability.changed.select_hairstyle": "Válassz egy frizurát",
   "ability.changed.select_special_state": "Válassz egy speciális állapotot",
   "ability.changed.summon_sharks": "Idézz cápákat",
+
+  "ability.changed.grab_entity": "Entitás megragadása",
+  "ability.changed.grab_entity.how_to_grab": "Tartsa nyomva a [%s] gombot egy entitás megragadásához",
+  "ability.changed.grab_entity.how_to_release": "Nyomd meg a [%s] gombot az entitás elengedéséhez",
+  "ability.changed.grab_entity.how_to_transfur": "Tartsa nyomva a [%s] gombot a transzfur előrehaladásához",
+  "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot jelmezzé váltásához",
   
   "subtitles.changed.sound3": "Organikus transzfur",
   "subtitles.changed.poison": "Transzfur",
