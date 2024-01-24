@@ -50,11 +50,16 @@ public class BasicPlayerInfoScreen extends Screen {
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.sclera_color"),
                 bpi::getScleraColor, bpi::setScleraColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
+        var rightIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
                 bpi::getRightIrisColor, bpi::setRightIrisColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
+        var leftIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
                 bpi::getLeftIrisColor, bpi::setLeftIrisColor));
+        this.addRenderableWidget(new Button((this.width / 2 - 155 + i % 2 * 160) + 110, (this.height / 6 + 24 * (i >> 1)) + 24, 40, 20, new TranslatableComponent("changed.config.bpi.iris_color.sync"),
+                button -> {
+                    leftIris.setValue(rightIris.getValue());
+                    //bpi.setLeftIrisColor(bpi.getRightIrisColor());
+                }));
         i++;
         this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.eye_style", bpi.getEyeStyle().getName()), button -> {
             var style = bpi.getEyeStyle();
