@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.function.Consumer;
@@ -125,7 +126,24 @@ public class ColorSelector extends EditBox {
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 RenderSystem.enableTexture();
             }
+
+            if (mouseX >= startX && mouseX < endX && mouseY >= startY && mouseY < endY) {
+                this.renderToolTip(poseStack, mouseX, mouseY);
+            }
         }
+    }
+
+    @Override
+    public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY) {
+        super.renderToolTip(poseStack, mouseX, mouseY);
+        if (Minecraft.getInstance().screen == null) return;
+
+        if (Minecraft.getInstance().screen instanceof BasicPlayerInfoScreen bpiScreen)
+            bpiScreen.setToolTip(() -> {
+                Minecraft.getInstance().screen.renderTooltip(poseStack, new TranslatableComponent("changed.config.color_picker_tooltip"), mouseX, mouseY);
+            });
+        else
+            Minecraft.getInstance().screen.renderTooltip(poseStack, new TranslatableComponent("changed.config.color_picker_tooltip"), mouseX, mouseY);
     }
 
     @Override
