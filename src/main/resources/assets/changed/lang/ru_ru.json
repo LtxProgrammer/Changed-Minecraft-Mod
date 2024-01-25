@@ -511,7 +511,7 @@
   "eyestyle.changed.v2": "Широкий",
   "eyestyle.changed.tall": "Узкий",
 
- "changed.config.color_picker_tooltip": "Нажмите чтобы открыть цветовую палитру".
+ "changed.config.color_picker_tooltip": "Нажмите чтобы открыть цветовую палитру",
  "changed.config.color_picker_red": "Красный: %s",
  "changed.config.color_picker_green": "Зеленый: %s",
  "changed.config.color_picker_blue": "Синий: %s",
