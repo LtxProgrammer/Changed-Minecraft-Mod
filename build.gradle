@@ -205,6 +205,8 @@ dependencies {
     implementation fg.deobf("net.blay09.mods:balm:3.2.6")
     implementation fg.deobf("net.blay09.mods:hardcorerevival-forge-1.18.2:8.0.1")
 
+    implementation fg.deobf("virtuoel:Pehkui-3.7.11+1.18.2-forge:3.7.11")
+
     // Uncomment here to test the dragons
     // implementation fg.deobf("software.bernie:geckolib-forge-1.18:3.0.57")
     // implementation fg.deobf("by.dragonsurvivalteam:DragonSurvival-1.18.2:1.5.48")
