@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale> implements LatexHumanoidModelInterface<LatexSquidDogMale, LatexSquidDogMaleModel> {
@@ -48,11 +49,36 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
+        var upperRightTentacle = new ArrayList<ModelPart>();
+        upperRightTentacle.add(Torso.getChild("RightUpperTentacle"));
+        upperRightTentacle.add(last(upperRightTentacle).getChild("TentacleSecondaryRU"));
+        upperRightTentacle.add(last(upperRightTentacle).getChild("TentacleTertiaryRU"));
+        upperRightTentacle.add(last(upperRightTentacle).getChild("TentacleQuaternaryRU"));
+        upperRightTentacle.add(last(upperRightTentacle).getChild("TentaclePadRU"));
+        var upperLeftTentacle = new ArrayList<ModelPart>();
+        upperLeftTentacle.add(Torso.getChild("LeftUpperTentacle"));
+        upperLeftTentacle.add(last(upperLeftTentacle).getChild("TentacleSecondaryLU"));
+        upperLeftTentacle.add(last(upperLeftTentacle).getChild("TentacleTertiaryLU"));
+        upperLeftTentacle.add(last(upperLeftTentacle).getChild("TentacleQuaternaryLU"));
+        upperLeftTentacle.add(last(upperLeftTentacle).getChild("TentaclePadLU"));
+        var lowerRightTentacle = new ArrayList<ModelPart>();
+        lowerRightTentacle.add(Torso.getChild("RightLowerTentacle"));
+        lowerRightTentacle.add(last(lowerRightTentacle).getChild("TentacleSecondaryRL"));
+        lowerRightTentacle.add(last(lowerRightTentacle).getChild("TentacleTertiaryRL"));
+        lowerRightTentacle.add(last(lowerRightTentacle).getChild("TentacleQuaternaryRL"));
+        lowerRightTentacle.add(last(lowerRightTentacle).getChild("TentaclePadRL"));
+        var lowerLeftTentacle = new ArrayList<ModelPart>();
+        lowerLeftTentacle.add(Torso.getChild("LeftLowerTentacle"));
+        lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentacleSecondaryLL"));
+        lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentacleTertiaryLL"));
+        lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentacleQuaternaryLL"));
+        lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentaclePadLL"));
+
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.squidDogLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
-                        Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
+                        Tail, List.of(tailPrimary, tailSecondary, tailTertiary), upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 

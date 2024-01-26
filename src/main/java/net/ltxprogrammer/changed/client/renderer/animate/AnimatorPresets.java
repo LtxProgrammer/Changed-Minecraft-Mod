@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.*;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.*;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
@@ -321,6 +322,12 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
+        return animator -> {
+            animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfEars(ModelPart leftEar, ModelPart rightEar) {
         return animator -> {
             animator
@@ -523,7 +530,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
-                                                                                                           ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                           ModelPart tail, List<ModelPart> tailJoints, List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                            ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
@@ -531,6 +538,7 @@ public class AnimatorPresets {
                     .addPreset(squidDogUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addPreset(wolfTail(tail, tailJoints))
                     .addPreset(wolfEars(leftEar, rightEar))
+                    .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
                     .addAnimator(new ArmBobAnimator<>(upperLeftArm, upperRightArm))
