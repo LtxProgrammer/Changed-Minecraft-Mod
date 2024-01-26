@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.*;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.*;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
@@ -210,6 +211,16 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+        return animator -> {
+            animator.setupHandsNew(1, upperLeftArm, upperRightArm)
+                    .addAnimator(new SquidDogUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm))
+                    .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm))
+                    .addAnimator(new WolfUpperBodyStandAnimator<>(head, torso, upperLeftArm, upperRightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
@@ -308,6 +319,12 @@ public class AnimatorPresets {
                     .addAnimator(new TailRideAnimator<>(tail, tailJoints))
                     .addAnimator(new TailSleepAnimator<>(tail, tailJoints))
                     .addAnimator(new TailFallFlyAnimator<>(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
+        return animator -> {
+            animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle));
         };
     }
 
@@ -508,6 +525,24 @@ public class AnimatorPresets {
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new DragonCameraCreativeFlyAnimator<>());
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                           ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                           ModelPart tail, List<ModelPart> tailJoints, List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
+                                                                                                           ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                           ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(squidDogUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(wolfTail(tail, tailJoints))
+                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new ArmBobAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
         };
     }
 
