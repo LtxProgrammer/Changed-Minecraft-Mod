@@ -66,4 +66,11 @@ public abstract class AbstractTentaclesAnimator<T extends LatexEntity, M extends
             joint.yRot += scale;
         }
     }
+
+    protected void bobTentacle(List<ModelPart> tentacle, float ageInTicks, float scale) {
+        for (ModelPart joint : tentacle) {
+            joint.yRot += scale * (Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F);
+            joint.xRot += scale * Mth.sin(ageInTicks * 0.067F) * 0.05F;
+        }
+    }
 }
