@@ -41,6 +41,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
@@ -71,6 +72,9 @@ public abstract class LatexEntity extends Monster {
     float verticalDragAmount = 0.0F;
     float verticalDragAmountO;
     float verticalDragVelocity = 0.0F;
+    float horizontalDragAmount = 0.0F;
+    float horizontalDragAmountO;
+    float horizontalDragVelocity = 0.0F;
 
     public BasicPlayerInfo getBasicPlayerInfo() {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
@@ -85,6 +89,10 @@ public abstract class LatexEntity extends Monster {
 
     public float getVerticalDragAmount(float partialTicks) {
         return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), verticalDragAmountO, verticalDragAmount);
+    }
+
+    public float getHorizontalDragAmount(float partialTicks) {
+        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), horizontalDragAmountO, horizontalDragAmount);
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -516,11 +524,16 @@ public abstract class LatexEntity extends Monster {
             return this.getHealth() / this.getMaxHealth();
     }
 
+    protected final Vec3 calculateHorizontalViewVector(float yRot) {
+        float f1 = -yRot * ((float)Math.PI / 180F);
+        float f2 = Mth.cos(f1);
+        float f3 = Mth.sin(f1);
+        return new Vec3((double)(f3), 0.0, (double)(f2));
+    }
+
     public void visualTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
         this.flyAmountO = this.flyAmount;
-        this.tailDragAmountO = this.tailDragAmount;
-        this.verticalDragAmountO = this.verticalDragAmount;
 
         if (this.isCrouching()) {
             this.crouchAmount += 0.2F;
@@ -537,6 +550,12 @@ public abstract class LatexEntity extends Monster {
             this.flyAmount = Math.max(0.0F, this.flyAmount - 0.15F);
         }
 
+        if (!this.level.isClientSide) return;
+
+        this.tailDragAmountO = this.tailDragAmount;
+        this.verticalDragAmountO = this.verticalDragAmount;
+        this.horizontalDragAmountO = this.horizontalDragAmount;
+
         this.tailDragAmount *= 0.75F;
         this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
@@ -548,6 +567,14 @@ public abstract class LatexEntity extends Monster {
 
         this.verticalDragAmount += this.verticalDragVelocity * 0.20f; // This adds weight to the spring
         this.verticalDragAmount *= 0.85f; // This adds an organic dampening
+
+        this.horizontalDragVelocity *= 0.95F; // Velocity dampening
+        this.horizontalDragVelocity += calculateHorizontalViewVector(this.yBodyRot).dot(this.getDeltaMovement());
+        this.horizontalDragVelocity = Mth.clamp(this.horizontalDragVelocity, -1.0F, 1.0F);
+        this.horizontalDragVelocity -= this.horizontalDragAmount * 0.80f; // This should simulate a spring
+
+        this.horizontalDragAmount += this.horizontalDragVelocity * 0.20f; // This adds weight to the spring
+        this.horizontalDragAmount *= 0.85f; // This adds an organic dampening
     }
 
     public double getPassengersRidingOffset() {
