@@ -40,23 +40,29 @@ public class SquidDogTentaclesInitAnimator<T extends LatexEntity, M extends Enti
         float tentacleBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
         float tentacleDrag = entity.getTailDragAmount(ageInTicks);
         float verticalDrag = entity.getVerticalDragAmount(ageInTicks) * 0.30f;
+        float horizontalDrag = entity.getHorizontalDragAmount(ageInTicks) * 0.35f;
 
         resetTentacle(upperLeftTentacle);
         resetTentacle(upperRightTentacle);
         resetTentacle(lowerLeftTentacle);
         resetTentacle(lowerRightTentacle);
 
-        animateTentacle(upperLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(upperRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(lowerLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(lowerRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(upperLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(upperRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(lowerLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(lowerRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
 
-        bendTentacle(upperLeftTentacle, -12.5f * Mth.DEG_TO_RAD);
-        bendTentacle(upperRightTentacle, 12.5f * Mth.DEG_TO_RAD);
+        bendVerticalTentacle(upperLeftTentacle, -12.5f * Mth.DEG_TO_RAD);
+        bendVerticalTentacle(upperRightTentacle, 12.5f * Mth.DEG_TO_RAD);
 
-        bendTentacle(upperLeftTentacle, verticalDrag);
-        bendTentacle(upperRightTentacle, -verticalDrag);
-        bendTentacle(lowerLeftTentacle, verticalDrag);
-        bendTentacle(lowerRightTentacle, -verticalDrag);
+        bendVerticalTentacle(upperLeftTentacle, verticalDrag);
+        bendVerticalTentacle(upperRightTentacle, -verticalDrag);
+        bendVerticalTentacle(lowerLeftTentacle, verticalDrag);
+        bendVerticalTentacle(lowerRightTentacle, -verticalDrag);
+
+        bendInTentacle(upperLeftTentacle, -horizontalDrag);
+        bendInTentacle(upperRightTentacle, horizontalDrag);
+        bendInTentacle(lowerLeftTentacle, -horizontalDrag);
+        bendInTentacle(lowerRightTentacle, horizontalDrag);
     }
 }

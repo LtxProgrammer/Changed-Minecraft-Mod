@@ -1,15 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.animate;
 
-import net.ltxprogrammer.changed.client.renderer.animate.arm.AquaticArmSwimAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.*;
 import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
 import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.*;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.*;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
 import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesInitAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
@@ -324,7 +322,8 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
         return animator -> {
-            animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle));
+            animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new SquidDogTentaclesSwimAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle));
         };
     }
 
@@ -541,7 +540,7 @@ public class AnimatorPresets {
                     .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
-                    .addAnimator(new ArmBobAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new SquidDogArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
         };
     }

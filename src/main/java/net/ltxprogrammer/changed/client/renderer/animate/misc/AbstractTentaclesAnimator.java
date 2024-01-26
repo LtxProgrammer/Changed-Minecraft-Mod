@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public abstract class AbstractTentaclesAnimator<T extends LatexEntity, M extends
         }
     }
 
-    protected void animateTentacle(List<ModelPart> tentacle, float limbSwingAmount, float ageInTicks, float tentacleBalance, float balance, float tentacleDrag) {
+    protected void idleTentacle(List<ModelPart> tentacle, float limbSwingAmount, float ageInTicks, float tentacleBalance, float balance, float tentacleDrag) {
         float offset = 0.0F;
         for (ModelPart joint : tentacle) {
             joint.yRot = Mth.lerp(limbSwingAmount, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
@@ -43,9 +42,28 @@ public abstract class AbstractTentaclesAnimator<T extends LatexEntity, M extends
         }
     }
 
-    protected void bendTentacle(List<ModelPart> tentacle, float scale) {
+    protected void swimTentacle(List<ModelPart> tentacle, float ageInTicks, float yAngle, float zAngle) {
+        var first = tentacle.get(0);
+        first.yRot = Mth.lerp(core.swimAmount, first.yRot, yAngle);
+        first.zRot = Mth.lerp(core.swimAmount, first.zRot, zAngle);
+
+        float offset = 0.0F;
+        for (ModelPart joint : tentacle) {
+            joint.yRot = Mth.lerp(core.swimAmount, joint.yRot, SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE -
+                    (((float)Math.PI / 3.0F) * offset)));
+            offset += 0.75F;
+        }
+    }
+
+    protected void bendVerticalTentacle(List<ModelPart> tentacle, float scale) {
         for (ModelPart joint : tentacle) {
             joint.zRot += scale;
+        }
+    }
+
+    protected void bendInTentacle(List<ModelPart> tentacle, float scale) {
+        for (ModelPart joint : tentacle) {
+            joint.yRot += scale;
         }
     }
 }
