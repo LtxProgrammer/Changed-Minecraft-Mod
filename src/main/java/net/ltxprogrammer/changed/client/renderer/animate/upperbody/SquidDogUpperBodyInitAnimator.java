@@ -30,6 +30,7 @@ public class SquidDogUpperBodyInitAnimator<T extends LatexEntity, M extends Enti
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
+        torso.y = core.hipOffset + (12.0f - core.legLength);
         upperRightArm.z = core.forwardOffset;
         upperRightArm.x = -core.torsoWidth;
         upperLeftArm.z = core.forwardOffset;
@@ -71,13 +72,13 @@ public class SquidDogUpperBodyInitAnimator<T extends LatexEntity, M extends Enti
         lowerLeftArm.z += Mth.lerp(limbSwingAmount, 1.0f, 0.0f);
         lowerLeftArm.x -= Mth.lerp(limbSwingAmount, 0.5f, 0.0f);
         lowerLeftArm.xRot = -Mth.lerp(limbSwingAmount, 50.0f, 20.0f) * Mth.DEG_TO_RAD;
-        lowerLeftArm.yRot = Mth.lerp(limbSwingAmount, 25.0f, 15.0f) * Mth.DEG_TO_RAD;
+        lowerLeftArm.yRot = Mth.lerp(limbSwingAmount, 22.5f, 15.0f) * Mth.DEG_TO_RAD;
 
         lowerRightArm.y += Mth.lerp(limbSwingAmount, 1.0f, 0.0f);
         lowerRightArm.z += Mth.lerp(limbSwingAmount, 1.0f, 0.0f);
         lowerRightArm.x += Mth.lerp(limbSwingAmount, 0.5f, 0.0f);
         lowerRightArm.xRot = -Mth.lerp(limbSwingAmount, 50.0f, 20.0f) * Mth.DEG_TO_RAD;
-        lowerRightArm.yRot = -Mth.lerp(limbSwingAmount, 25.0f, 15.0f) * Mth.DEG_TO_RAD;
+        lowerRightArm.yRot = -Mth.lerp(limbSwingAmount, 22.5f, 15.0f) * Mth.DEG_TO_RAD;
 
         upperLeftArm.xRot = -20.0f * Mth.DEG_TO_RAD;
         upperLeftArm.zRot = -20.0f * Mth.DEG_TO_RAD;

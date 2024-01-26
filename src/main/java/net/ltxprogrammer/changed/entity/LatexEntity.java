@@ -68,6 +68,9 @@ public abstract class LatexEntity extends Monster {
     public float flyAmountO;
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
+    float verticalDragAmount = 0.0F;
+    float verticalDragAmountO;
+    float verticalDragVelocity = 0.0F;
 
     public BasicPlayerInfo getBasicPlayerInfo() {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
@@ -78,6 +81,10 @@ public abstract class LatexEntity extends Monster {
 
     public float getTailDragAmount(float partialTicks) {
         return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+    }
+
+    public float getVerticalDragAmount(float partialTicks) {
+        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), verticalDragAmountO, verticalDragAmount);
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -513,6 +520,7 @@ public abstract class LatexEntity extends Monster {
         this.crouchAmountO = this.crouchAmount;
         this.flyAmountO = this.flyAmount;
         this.tailDragAmountO = this.tailDragAmount;
+        this.verticalDragAmountO = this.verticalDragAmount;
 
         if (this.isCrouching()) {
             this.crouchAmount += 0.2F;
@@ -533,23 +541,14 @@ public abstract class LatexEntity extends Monster {
         this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
-        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
-            return;
+        this.verticalDragAmount *= 0.55f;
 
-        if (!level.isClientSide)
-            return;
+        this.verticalDragVelocity *= 0.95F;
+        this.verticalDragVelocity += this.onGround ? 0.0f : this.getDeltaMovement().y;
+        this.verticalDragVelocity = Mth.clamp(this.verticalDragVelocity, -1.0F, 1.0F);
+        this.verticalDragVelocity -= this.verticalDragAmount * 0.55f; // This should simulate a spring
 
-        if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
-            return;
-
-        /*Color3 color = getDripColor();
-        if (color != null) {
-            EntityDimensions dimensions = getDimensions(getPose());
-            double dh = level.random.nextDouble(dimensions.height);
-            double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-            double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-            level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-        }*/
+        this.verticalDragAmount += this.verticalDragVelocity;
     }
 
     public double getPassengersRidingOffset() {
