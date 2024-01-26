@@ -74,7 +74,7 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
         lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentacleQuaternaryLL"));
         lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentaclePadLL"));
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = LatexAnimator.of(this).hipOffset(-2.5f)
                 .addPreset(AnimatorPresets.squidDogLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
