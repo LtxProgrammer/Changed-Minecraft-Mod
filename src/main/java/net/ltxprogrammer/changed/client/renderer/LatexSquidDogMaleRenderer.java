@@ -14,11 +14,10 @@ public class LatexSquidDogMaleRenderer extends LatexHumanoidRenderer<LatexSquidD
     public LatexSquidDogMaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSquidDogMaleModel(context.bakeLayer(LatexSquidDogMaleModel.LAYER_LOCATION)),
                 ArmorLatexSquidDogModel::new, ArmorLatexSquidDogModel.INNER_ARMOR, ArmorLatexSquidDogModel.OUTER_ARMOR, 0.65f);
-        this.addLayer(new LatexParticlesLayer<>(this, this.model));
+        this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.BLACK),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#ffffff")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#ffffff"))));
+                CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
+                CustomEyesLayer.fixedColor(Color3.parseHex("#dfdfdf"))));
     }
 
     @Override
