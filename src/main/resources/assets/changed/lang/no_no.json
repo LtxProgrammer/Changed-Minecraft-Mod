@@ -513,6 +513,7 @@
   "eyestyle.changed.v2": "Slank",
   "eyestyle.changed.tall": "Høy",
 
+  "changed.config.color_picker_tooltip": "Trykk for å åpne den avanserte fargevelgeren",
   "changed.config.color_picker_red": "Rød: %s",
   "changed.config.color_picker_green": "Grønn: %s",
   "changed.config.color_picker_blue": "Blå: %s",
@@ -521,6 +522,8 @@
   "changed.config.bpi.hair_color": "Hårfarge",
   "changed.config.bpi.iris_color.left": "Venstre regnbuehinnefarge",
   "changed.config.bpi.iris_color.right": "Høyre regnbuehinnefarge",
+  "changed.config.bpi.iris_color.sync": "Synkronisere",
+  "changed.config.bpi.iris_color.sync_tooltip": "Synkroniserer venstre regnbuehinnefarge til høyre regnbuehinnefarge",
   "changed.config.bpi.sclera_color": "Senehinnefarge",
   "changed.config.bpi.eye_style": "Øyenstil: %s",
   "changed.config.bpi.override_dl_iris": "Overstyre regnbuehinnefarge på mørk lateks varianter",
