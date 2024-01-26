@@ -69,12 +69,14 @@ public abstract class LatexEntity extends Monster {
     public float flyAmountO;
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
-    float verticalDragAmount = 0.0F;
+
+    final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
+    /*float verticalDragAmount = 0.0F;
     float verticalDragAmountO;
     float verticalDragVelocity = 0.0F;
     float horizontalDragAmount = 0.0F;
     float horizontalDragAmountO;
-    float horizontalDragVelocity = 0.0F;
+    float horizontalDragVelocity = 0.0F;*/
 
     public BasicPlayerInfo getBasicPlayerInfo() {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
@@ -87,12 +89,8 @@ public abstract class LatexEntity extends Monster {
         return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
     }
 
-    public float getVerticalDragAmount(float partialTicks) {
-        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), verticalDragAmountO, verticalDragAmount);
-    }
-
-    public float getHorizontalDragAmount(float partialTicks) {
-        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), horizontalDragAmountO, horizontalDragAmount);
+    public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
+        return simulatedSprings.get(direction).get(type).getSpring(partialTicks);
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -329,6 +327,18 @@ public abstract class LatexEntity extends Monster {
             navigation.setCanOpenDoors(true);
 
         hairStyle = this.getDefaultHairStyle();
+        if (level.isClientSide) { // Springs are only simulated on the client side
+            simulatedSprings = new HashMap<>();
+            Arrays.stream(SpringType.Direction.values()).forEach(direction -> {
+                final var map = new EnumMap<SpringType, SpringType.Simulator>(SpringType.class);
+                simulatedSprings.put(direction, map);
+                Arrays.stream(SpringType.values()).forEach(springType -> {
+                    map.put(springType, new SpringType.Simulator(springType));
+                });
+            });
+        } else {
+            simulatedSprings = Map.of();
+        }
     }
 
     protected void setAttributes(AttributeMap attributes) {
@@ -553,14 +563,19 @@ public abstract class LatexEntity extends Monster {
         if (!this.level.isClientSide) return;
 
         this.tailDragAmountO = this.tailDragAmount;
-        this.verticalDragAmountO = this.verticalDragAmount;
-        this.horizontalDragAmountO = this.horizontalDragAmount;
 
         this.tailDragAmount *= 0.75F;
         this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
-        this.verticalDragVelocity *= 0.95F; // Velocity dampening
+        simulatedSprings.forEach((direction, map) -> {
+            final float deltaVelocity = direction.apply(this);
+            map.forEach((springType, simulator) -> {
+                simulator.tick(deltaVelocity);
+            });
+        });
+
+        /*this.verticalDragVelocity *= 0.95F; // Velocity dampening
         this.verticalDragVelocity += this.onGround ? 0.0f : this.getDeltaMovement().y;
         this.verticalDragVelocity = Mth.clamp(this.verticalDragVelocity, -1.0F, 1.0F);
         this.verticalDragVelocity -= this.verticalDragAmount * 0.80f; // This should simulate a spring
@@ -574,7 +589,7 @@ public abstract class LatexEntity extends Monster {
         this.horizontalDragVelocity -= this.horizontalDragAmount * 0.80f; // This should simulate a spring
 
         this.horizontalDragAmount += this.horizontalDragVelocity * 0.20f; // This adds weight to the spring
-        this.horizontalDragAmount *= 0.85f; // This adds an organic dampening
+        this.horizontalDragAmount *= 0.85f; // This adds an organic dampening*/
     }
 
     public double getPassengersRidingOffset() {
