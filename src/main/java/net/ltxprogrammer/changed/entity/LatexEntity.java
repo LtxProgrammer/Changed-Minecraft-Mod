@@ -541,14 +541,13 @@ public abstract class LatexEntity extends Monster {
         this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
-        this.verticalDragAmount *= 0.55f;
-
-        this.verticalDragVelocity *= 0.95F;
+        this.verticalDragVelocity *= 0.95F; // Velocity dampening
         this.verticalDragVelocity += this.onGround ? 0.0f : this.getDeltaMovement().y;
         this.verticalDragVelocity = Mth.clamp(this.verticalDragVelocity, -1.0F, 1.0F);
-        this.verticalDragVelocity -= this.verticalDragAmount * 0.55f; // This should simulate a spring
+        this.verticalDragVelocity -= this.verticalDragAmount * 0.80f; // This should simulate a spring
 
-        this.verticalDragAmount += this.verticalDragVelocity;
+        this.verticalDragAmount += this.verticalDragVelocity * 0.20f; // This adds weight to the spring
+        this.verticalDragAmount *= 0.85f; // This adds an organic dampening
     }
 
     public double getPassengersRidingOffset() {
