@@ -15,7 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale> implements LatexHumanoidModelInterface<LatexSquidDogMale, LatexSquidDogMaleModel> {
+public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale> implements LatexHumanoidModelInterface<LatexSquidDogMale, LatexSquidDogMaleModel>, DoubleArmedModel {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_male"), "main");
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -80,6 +80,7 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary), upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+        animator.torsoWidth = 5.2f;
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -281,9 +282,28 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
     @Override
     public ModelPart getArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
+            case LEFT -> LeftArm2;
+            case RIGHT -> RightArm2;
+        };
+    }
+
+    public ModelPart getLowerArm(HumanoidArm humanoidArm) {
+        return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    @Override
+    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getArm(arm).translateAndRotate(poseStack);
+        poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
+    }
+
+    @Override
+    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getLowerArm(arm).translateAndRotate(poseStack);
+        poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
