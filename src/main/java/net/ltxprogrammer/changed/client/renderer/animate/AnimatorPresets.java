@@ -214,9 +214,9 @@ public class AnimatorPresets {
         return animator -> {
             animator.setupHandsNew(1, upperLeftArm, upperRightArm)
                     .addAnimator(new SquidDogUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
-                    .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm))
-                    .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm))
-                    .addAnimator(new WolfUpperBodyStandAnimator<>(head, torso, upperLeftArm, upperRightArm));
+                    .addAnimator(new SquidDogUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new SquidDogUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new SquidDogUpperBodyStandAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm));
         };
     }
 
