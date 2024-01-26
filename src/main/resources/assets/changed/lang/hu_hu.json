@@ -521,7 +521,7 @@
   "changed.config.bpi.hair_color": "Hajszín",
   "changed.config.bpi.iris_color.left": "Bal oldali szivárványhártya színe",
   "changed.config.bpi.iris_color.right": "Jobb oldali szivárványhártya színe",
-  "changed.config.bpi.iris_color.sync": "Szinkronizálás"
+  "changed.config.bpi.iris_color.sync": "Szinkronizálás",
   "changed.config.bpi.iris_color.sync_tooltip": "Szinkronizálja a bal oldali szivárványhártya színét a jobb oldali szivárványhártya színéhez",
   "changed.config.bpi.sclera_color": "Ínhártya színe",
   "changed.config.bpi.eye_style": "Szem stílus: %s",
