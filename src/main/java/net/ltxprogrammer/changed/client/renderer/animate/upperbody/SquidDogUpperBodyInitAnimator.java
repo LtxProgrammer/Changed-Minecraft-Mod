@@ -31,14 +31,6 @@ public class SquidDogUpperBodyInitAnimator<T extends LatexEntity, M extends Enti
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
         torso.y = core.hipOffset + (12.0f - core.legLength);
-        upperRightArm.z = core.forwardOffset;
-        upperRightArm.x = -core.torsoWidth;
-        upperLeftArm.z = core.forwardOffset;
-        upperLeftArm.x = core.torsoWidth;
-        lowerRightArm.z = core.forwardOffset;
-        lowerRightArm.x = -core.torsoWidth;
-        lowerLeftArm.z = core.forwardOffset;
-        lowerLeftArm.x = core.torsoWidth;
         float f = 1.0F;
         if (fallFlying) {
             f = (float)entity.getDeltaMovement().lengthSqr();
@@ -50,18 +42,18 @@ public class SquidDogUpperBodyInitAnimator<T extends LatexEntity, M extends Enti
             f = 1.0F;
         }
 
-        lowerLeftArm.x = torso.x + 5.2f;
+        lowerLeftArm.x = torso.x + core.torsoWidth;
         lowerLeftArm.y = torso.y + 6.0f;
-        lowerLeftArm.z = torso.z;
-        lowerRightArm.x = torso.x - 5.2f;
+        lowerLeftArm.z = torso.z + core.forwardOffset;
+        lowerRightArm.x = torso.x - core.torsoWidth;
         lowerRightArm.y = torso.y + 6.0f;
-        lowerRightArm.z = torso.z;
-        upperLeftArm.x = torso.x + 5.2f;
+        lowerRightArm.z = torso.z + core.forwardOffset;
+        upperLeftArm.x = torso.x + core.torsoWidth;
         upperLeftArm.y = torso.y + 2.0f;
-        upperLeftArm.z = torso.z;
-        upperRightArm.x = torso.x - 5.2f;
+        upperLeftArm.z = torso.z + core.forwardOffset;
+        upperRightArm.x = torso.x - core.torsoWidth;
         upperRightArm.y = torso.y + 2.0f;
-        upperRightArm.z = torso.z;
+        upperRightArm.z = torso.z + core.forwardOffset;
 
         lowerRightArm.zRot = 0.0F;
         lowerLeftArm.zRot = 0.0F;
