@@ -512,6 +512,7 @@
   "eyestyle.changed.v2": "가늘게",
   "eyestyle.changed.tall": "길게",
 
+  "changed.config.color_picker_tooltip": "고급 색 선택기를 열려면 클릭하세요",
   "changed.config.color_picker_red": "적색: %s",
   "changed.config.color_picker_green": "녹색: %s",
   "changed.config.color_picker_blue": "청색: %s",
@@ -520,6 +521,8 @@
   "changed.config.bpi.hair_color": "머리 색",
   "changed.config.bpi.iris_color.left": "왼쪽 홍채 색",
   "changed.config.bpi.iris_color.right": "오른쪽 홍채 색",
+  "changed.config.bpi.iris_color.sync": "동기화",
+  "changed.config.bpi.iris_color.sync_tooltip": "왼쪽 홍채 색을 오른쪽 홍채 색과 동기화합니다",
   "changed.config.bpi.sclera_color": "공막 색",
   "changed.config.bpi.eye_style": "눈 형태: %s",
   "changed.config.bpi.override_dl_iris": "검은 라텍스 변종에서 홍채 색 무시",
