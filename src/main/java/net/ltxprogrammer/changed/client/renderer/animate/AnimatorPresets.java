@@ -529,6 +529,22 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLikeArmor(ModelPart head,
+                                                                                                                    ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                                    List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
+                                                                                                                    ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                                    ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(squidDogUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new SquidDogArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints, List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
