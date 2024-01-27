@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.misc;
 
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.SpringType;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -39,24 +40,30 @@ public class SquidDogTentaclesInitAnimator<T extends LatexEntity, M extends Enti
         float tentacleSway = SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
         float tentacleBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
         float tentacleDrag = entity.getTailDragAmount(ageInTicks);
-        float verticalDrag = entity.getVerticalDragAmount(ageInTicks) * 0.30f;
+        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.VERTICAL, ageInTicks) * 0.30f;
+        float horizontalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.FORWARDS, ageInTicks) * 0.35f;
 
         resetTentacle(upperLeftTentacle);
         resetTentacle(upperRightTentacle);
         resetTentacle(lowerLeftTentacle);
         resetTentacle(lowerRightTentacle);
 
-        animateTentacle(upperLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(upperRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(lowerLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
-        animateTentacle(lowerRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(upperLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(upperRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(lowerLeftTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
+        idleTentacle(lowerRightTentacle, limbSwingAmount, ageInTicks, tentacleSway, tentacleBalance, tentacleDrag);
 
-        bendTentacle(upperLeftTentacle, -12.5f * Mth.DEG_TO_RAD);
-        bendTentacle(upperRightTentacle, 12.5f * Mth.DEG_TO_RAD);
+        bendVerticalTentacle(upperLeftTentacle, -12.5f * Mth.DEG_TO_RAD);
+        bendVerticalTentacle(upperRightTentacle, 12.5f * Mth.DEG_TO_RAD);
 
-        bendTentacle(upperLeftTentacle, verticalDrag);
-        bendTentacle(upperRightTentacle, -verticalDrag);
-        bendTentacle(lowerLeftTentacle, verticalDrag);
-        bendTentacle(lowerRightTentacle, -verticalDrag);
+        bendVerticalTentacle(upperLeftTentacle, verticalDrag);
+        bendVerticalTentacle(upperRightTentacle, -verticalDrag);
+        bendVerticalTentacle(lowerLeftTentacle, verticalDrag);
+        bendVerticalTentacle(lowerRightTentacle, -verticalDrag);
+
+        bendInTentacle(upperLeftTentacle, -horizontalDrag);
+        bendInTentacle(upperRightTentacle, horizontalDrag);
+        bendInTentacle(lowerLeftTentacle, -horizontalDrag);
+        bendInTentacle(lowerRightTentacle, horizontalDrag);
     }
 }
