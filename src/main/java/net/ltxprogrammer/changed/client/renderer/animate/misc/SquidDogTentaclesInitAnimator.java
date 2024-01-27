@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.misc;
 
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.SpringType;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -39,8 +40,8 @@ public class SquidDogTentaclesInitAnimator<T extends LatexEntity, M extends Enti
         float tentacleSway = SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
         float tentacleBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
         float tentacleDrag = entity.getTailDragAmount(ageInTicks);
-        float verticalDrag = entity.getVerticalDragAmount(ageInTicks) * 0.30f;
-        float horizontalDrag = entity.getHorizontalDragAmount(ageInTicks) * 0.35f;
+        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.VERTICAL, ageInTicks) * 0.30f;
+        float horizontalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.FORWARDS, ageInTicks) * 0.35f;
 
         resetTentacle(upperLeftTentacle);
         resetTentacle(upperRightTentacle);
