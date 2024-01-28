@@ -9,11 +9,13 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public interface LatexHumanoidModelInterface<T extends LatexEntity, M extends EntityModel<T>> {
     ModelPart getArm(HumanoidArm arm);
+    @Deprecated
     default PoseStack getPlacementCorrectors(CorrectorType type) {
         return new PoseStack();
     }
     void setupHand();
     LatexAnimator<T, M> getAnimator();
+    @Deprecated
     default LatexEntity getFirstPersonReplacementModel() {
         return null;
     }
