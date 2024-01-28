@@ -108,7 +108,7 @@
  "death.attack.changed:white_latex": "%s вирішив випробувати білий латекс на щільність",
  "death.attack.changed:white_latex.player": "%1$s був затягнутий білим латексом, намагаючись втекти від %2$s",
  "death.attack.changed:pale": "%s вирушив у кращий світ через Бледний вірус",
- "death.attack.changed:bloodloss": "%s втратив занадто багато крові",
+ "death.attack.changed:bloodloss": "%s не підійшла група крові",
  "death.attack.changed:bloodloss.player": "%1$s отримав чужу кров завдяки %2$s",
  "death.attack.changed:fan": "%s перетворився на бекон напоровшись на лопаті вентилятора",
  "death.attack.changed:fan.player": "%1$s був порізаний лопатями вентилятора, відбиваючись від %2$s",
