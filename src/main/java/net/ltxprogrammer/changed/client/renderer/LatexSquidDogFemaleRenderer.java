@@ -5,16 +5,16 @@ import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexDoubleItemInHandLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogFemaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSquidDogModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexFemaleSquidDogModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSquidDogFemaleRenderer extends LatexHumanoidRenderer<LatexSquidDogFemale, LatexSquidDogFemaleModel, ArmorLatexSquidDogModel<LatexSquidDogFemale>> {
+public class LatexSquidDogFemaleRenderer extends LatexHumanoidRenderer<LatexSquidDogFemale, LatexSquidDogFemaleModel, ArmorLatexFemaleSquidDogModel<LatexSquidDogFemale>> {
     public LatexSquidDogFemaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSquidDogFemaleModel(context.bakeLayer(LatexSquidDogFemaleModel.LAYER_LOCATION)),
-                ArmorLatexSquidDogModel::new, ArmorLatexSquidDogModel.INNER_ARMOR, ArmorLatexSquidDogModel.OUTER_ARMOR, 0.65f);
+                ArmorLatexFemaleSquidDogModel::new, ArmorLatexFemaleSquidDogModel.INNER_ARMOR, ArmorLatexFemaleSquidDogModel.OUTER_ARMOR, 0.65f);
         this.addLayer(new LatexDoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),

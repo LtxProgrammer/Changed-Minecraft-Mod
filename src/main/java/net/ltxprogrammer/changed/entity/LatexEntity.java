@@ -71,12 +71,6 @@ public abstract class LatexEntity extends Monster {
     float tailDragAmountO;
 
     final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
-    /*float verticalDragAmount = 0.0F;
-    float verticalDragAmountO;
-    float verticalDragVelocity = 0.0F;
-    float horizontalDragAmount = 0.0F;
-    float horizontalDragAmountO;
-    float horizontalDragVelocity = 0.0F;*/
 
     public BasicPlayerInfo getBasicPlayerInfo() {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
@@ -574,22 +568,6 @@ public abstract class LatexEntity extends Monster {
                 simulator.tick(deltaVelocity);
             });
         });
-
-        /*this.verticalDragVelocity *= 0.95F; // Velocity dampening
-        this.verticalDragVelocity += this.onGround ? 0.0f : this.getDeltaMovement().y;
-        this.verticalDragVelocity = Mth.clamp(this.verticalDragVelocity, -1.0F, 1.0F);
-        this.verticalDragVelocity -= this.verticalDragAmount * 0.80f; // This should simulate a spring
-
-        this.verticalDragAmount += this.verticalDragVelocity * 0.20f; // This adds weight to the spring
-        this.verticalDragAmount *= 0.85f; // This adds an organic dampening
-
-        this.horizontalDragVelocity *= 0.95F; // Velocity dampening
-        this.horizontalDragVelocity += calculateHorizontalViewVector(this.yBodyRot).dot(this.getDeltaMovement());
-        this.horizontalDragVelocity = Mth.clamp(this.horizontalDragVelocity, -1.0F, 1.0F);
-        this.horizontalDragVelocity -= this.horizontalDragAmount * 0.80f; // This should simulate a spring
-
-        this.horizontalDragAmount += this.horizontalDragVelocity * 0.20f; // This adds weight to the spring
-        this.horizontalDragAmount *= 0.85f; // This adds an organic dampening*/
     }
 
     public double getPassengersRidingOffset() {
