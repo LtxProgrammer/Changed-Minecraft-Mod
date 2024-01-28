@@ -52,7 +52,7 @@ public class ArmorLatexFemaleSquidDogModel<T extends LatexEntity> extends LatexH
         var lowerRightTentacle = List.of(Torso.getChild("RightLowerTentacle"));
         var lowerLeftTentacle = List.of(Torso.getChild("LeftLowerTentacle"));
 
-        animator = LatexAnimator.of(this).hipOffset(-2.5f)
+        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(13.0f)
                 .addPreset(AnimatorPresets.squidDogLikeArmor(
                         Head,
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,

@@ -46,7 +46,7 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-3.5f).legLength(10.0f).torsoLength(14.0f)
+        animator = LatexAnimator.of(this).hipOffset(-3.5f).legLength(10.0f).torsoLength(14.0f).armLength(15.0f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
