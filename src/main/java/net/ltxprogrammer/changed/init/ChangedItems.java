@@ -6,8 +6,10 @@ import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -28,7 +30,14 @@ public class ChangedItems {
     public static final RegistryObject<CompactDisc> COMPACT_DISC = register("compact_disc", CompactDisc::new);
     public static final RegistryObject<LabBook> LAB_BOOK = register("lab_book", LabBook::new);
     public static final RegistryObject<Item> LATEX_BASE = register("latex_base", () -> new Item(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS)));
-    public static final RegistryObject<Item> ORANGE = register("orange", () -> new ItemNameBlockItem(ChangedBlocks.DROPPED_ORANGE.get(), (new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)));
+    public static final RegistryObject<Item> ORANGE = register("orange", () -> new ItemNameBlockItem(ChangedBlocks.DROPPED_ORANGE.get(), (new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)) {
+        @Override
+        public InteractionResult useOn(UseOnContext context) {
+            if (context.getPlayer() != null && context.getPlayer().isCrouching())
+                return super.useOn(context);
+            return InteractionResult.PASS;
+        }
+    });
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
