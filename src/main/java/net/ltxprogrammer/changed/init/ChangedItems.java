@@ -33,6 +33,8 @@ public class ChangedItems {
     public static final RegistryObject<Item> ORANGE = register("orange", () -> new ItemNameBlockItem(ChangedBlocks.DROPPED_ORANGE.get(), (new Item.Properties()).tab(ChangedTabs.TAB_CHANGED_ITEMS).food(ChangedFoods.ORANGE)) {
         @Override
         public InteractionResult useOn(UseOnContext context) {
+            if (context.getLevel().getBlockState(context.getClickedPos()).is(ChangedBlocks.DROPPED_ORANGE.get()))
+                return super.useOn(context);
             if (context.getPlayer() != null && context.getPlayer().isCrouching())
                 return super.useOn(context);
             return InteractionResult.PASS;
