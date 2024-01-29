@@ -311,7 +311,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         setupHandsRunnable.forEach((level, task) -> task.run());
     }
 
-    public LatexAnimator<T, M> setupHands(int level, ModelPart leftArm, ModelPart rightArm) {
+    public LatexAnimator<T, M> setupHandsOld(int level, ModelPart leftArm, ModelPart rightArm) {
         setupHandsRunnable.put(level, () -> {
             rightArm.x += 3F;
             leftArm.x += -3F;
@@ -321,14 +321,21 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         return this;
     }
 
-    public LatexAnimator<T, M> setupHandsNew(int level, ModelPart leftArm, ModelPart rightArm) {
+    public LatexAnimator<T, M> setupHands(int level, ModelPart leftArm, ModelPart rightArm) {
         setupHandsRunnable.put(level, () -> {
-            rightArm.x = -2F;
-            leftArm.x = 2F;
-            rightArm.y = 0F;
-            leftArm.y = 0F;
-            rightArm.z = -1F;
-            leftArm.z = -1F;
+            rightArm.x = -2.5F;
+            leftArm.x = 2.5F;
+            rightArm.y = 1F;
+            leftArm.y = 1F;
+            rightArm.z = 0F;
+            leftArm.z = 0F;
+
+            rightArm.xRot = 0f;
+            rightArm.yRot = 0f;
+            rightArm.zRot = 0.05f;
+            leftArm.xRot = 0f;
+            leftArm.yRot = 0f;
+            leftArm.zRot = -0.05f;
         });
         return this;
     }

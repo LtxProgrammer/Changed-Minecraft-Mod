@@ -132,6 +132,10 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         return mesh;
     }
 
+    public static <T> T last(List<T> list) {
+        return list.get(list.size()-1);
+    }
+
     public static List<ModelPart.Cube> findLargestCube(ModelPart part) {
         ArrayList<ModelPart.Cube> list = new ArrayList<>(part.cubes);
 

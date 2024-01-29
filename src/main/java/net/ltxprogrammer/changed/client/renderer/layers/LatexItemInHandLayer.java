@@ -50,14 +50,14 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(pose, false);
         boolean flag = arm == HumanoidArm.LEFT;
-        var list = LatexHumanoidModel.findLargestCube(modelpart);
+        /*var list = LatexHumanoidModel.findLargestCube(modelpart);
         if (list.isEmpty()) {
             pose.popPose();
             return;
         }
         var headCube = list.get(0);
-        float dH = 0.5f - headCube.maxY;
-        pose.translate(((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D + (dH / 16.0f), 0.0D);
+        float dH = 0.5f - headCube.maxY;*/
+        pose.translate(((flag ? -2.5F : 2.5F) / 16.0F), -0.0625D/* + (dH / 16.0f)*/, 0.0D);
         Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemStack, ItemTransforms.TransformType.HEAD, false, pose, source, color);
         pose.popPose();
     }

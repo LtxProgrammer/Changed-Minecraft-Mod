@@ -20,7 +20,7 @@ public class BipedalCrouchAnimator<T extends LatexEntity, M extends EntityModel<
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightLeg.z = 4.0F + core.forwardOffset + ((core.torsoLength - 12.0f) / 1.83048772171f);
         leftLeg.z = 4.0F + core.forwardOffset + ((core.torsoLength - 12.0f) / 1.83048772171f);
-        rightLeg.y = 12.2F + core.hipOffset;
-        leftLeg.y = 12.2F + core.hipOffset;
+        rightLeg.y = (12.0f - core.legLength) + 10.7f;
+        leftLeg.y = (12.0f - core.legLength) + 10.7f;
     }
 }

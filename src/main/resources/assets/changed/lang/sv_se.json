@@ -519,6 +519,7 @@
   "eyestyle.changed.v2": "Slank",
   "eyestyle.changed.tall": "Hög",
 
+  "changed.config.color_picker_tooltip": "Klicka för att öppna den avancerade färghämtaren",
   "changed.config.color_picker_red": "Röd: %s",
   "changed.config.color_picker_green": "Grön: %s",
   "changed.config.color_picker_blue": "Blå: %s",
@@ -527,6 +528,8 @@
   "changed.config.bpi.hair_color": "Hårfärg",
   "changed.config.bpi.iris_color.left": "Vänster regnbågshinnefärg",
   "changed.config.bpi.iris_color.right": "Höger regnbågshinnefärg",
+  "changed.config.bpi.iris_color.sync": "Synkronisera",
+  "changed.config.bpi.iris_color.sync_tooltip": "Synkroniserar den vänstra regnbågshinnefärge till höger regnbågshinnefärge",
   "changed.config.bpi.sclera_color": "Ögonvitefärg",
   "changed.config.bpi.eye_style": "Ögonstil: %s",
   "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",

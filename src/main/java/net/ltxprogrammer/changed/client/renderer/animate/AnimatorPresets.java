@@ -1,14 +1,14 @@
 package net.ltxprogrammer.changed.client.renderer.animate;
 
-import net.ltxprogrammer.changed.client.renderer.animate.arm.AquaticArmSwimAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.arm.*;
 import net.ltxprogrammer.changed.client.renderer.animate.armsets.*;
 import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.*;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.*;
 import net.ltxprogrammer.changed.client.renderer.animate.legless.*;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesBobAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesInitAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.misc.SquidDogTentaclesSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
@@ -130,7 +130,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHands(1, leftArm, rightArm)
+            animator.setupHandsOld(1, leftArm, rightArm)
                     .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
@@ -139,7 +139,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> upperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHands(1, leftArm, rightArm)
+            animator.setupHandsOld(1, leftArm, rightArm)
                     .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new UpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -149,7 +149,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
@@ -160,7 +160,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
@@ -171,7 +171,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
@@ -182,7 +182,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonWingedUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WingedDragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
@@ -194,7 +194,7 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
@@ -206,13 +206,23 @@ public class AnimatorPresets {
 
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
-            animator.setupHandsNew(1, leftArm, rightArm)
+            animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new OrcaUpperBodySwimAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+        return animator -> {
+            animator.setupHands(1, upperLeftArm, upperRightArm)
+                    .addAnimator(new SquidDogUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new SquidDogUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new SquidDogUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new SquidDogUpperBodyStandAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm));
         };
     }
 
@@ -317,6 +327,14 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
+        return animator -> {
+            animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new SquidDogTentaclesSwimAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new SquidDogTentaclesBobAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> wolfEars(ModelPart leftEar, ModelPart rightEar) {
         return animator -> {
             animator
@@ -370,7 +388,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> armSetTwo(ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart leftArm2, ModelPart rightArm2) {
         return animator -> {
-            animator.setupHands(2, leftArm2, rightArm2)
+            animator.setupHandsOld(2, leftArm2, rightArm2)
                     .addAnimator(new ArmSetTwoBobAnimator<>(leftArm, rightArm, leftArm2, rightArm2))
                     .addAnimator(new ArmSetTwoCrouchAnimator<>(leftArm, rightArm, leftArm2, rightArm2))
                     .addAnimator(new ArmSetTwoFinalAnimator<>(leftArm, rightArm, leftArm2, rightArm2))
@@ -381,7 +399,7 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> armSetThree(ModelPart leftArm, ModelPart rightArm,
                                                                                                               ModelPart leftArm3, ModelPart rightArm3) {
         return animator -> {
-            animator.setupHands(3, leftArm3, rightArm3)
+            animator.setupHandsOld(3, leftArm3, rightArm3)
                     .addAnimator(new ArmSetThreeBobAnimator<>(leftArm, rightArm, leftArm3, rightArm3))
                     .addAnimator(new ArmSetThreeFinalAnimator<>(leftArm, rightArm, leftArm3, rightArm3));
         };
@@ -514,6 +532,40 @@ public class AnimatorPresets {
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new DragonCameraCreativeFlyAnimator<>());
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLikeArmor(ModelPart head,
+                                                                                                                    ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                                    List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
+                                                                                                                    ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                                    ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(squidDogUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new SquidDogArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                           ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                           ModelPart tail, List<ModelPart> tailJoints, List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
+                                                                                                           ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                           ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(wolfBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(squidDogUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(wolfTail(tail, tailJoints))
+                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addPreset(squidDogTentacles(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new SquidDogArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
         };
     }
 
