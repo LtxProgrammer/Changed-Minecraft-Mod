@@ -5,46 +5,29 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.UseItemMode;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class LatexDoubleItemInHandLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & DoubleArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     public LatexDoubleItemInHandLayer(RenderLayerParent<T, M> parent) {
         super(parent);
     }
 
-    private ItemStack getAlternateLeftHandItem(T entity) {
-        var tag = entity.getPersistentData();
-        if (tag.contains("changed:extra_hands_lh"))
-            return ItemStack.of(tag.getCompound("changed:extra_hands_lh"));
-        return ItemStack.EMPTY;
-    }
-
-    private ItemStack getAlternateRightHandItem(T entity) {
-        var tag = entity.getPersistentData();
-        if (tag.contains("changed:extra_hands_rh"))
-            return ItemStack.of(tag.getCompound("changed:extra_hands_rh"));
-        return ItemStack.EMPTY;
-    }
-
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T entity, float p_117208_, float p_117209_, float p_117210_, float p_117211_, float p_117212_, float p_117213_) {
         boolean flag = entity.getMainArm() == HumanoidArm.RIGHT;
-        ItemStack leftHandStack = getAlternateLeftHandItem(entity);
-        ItemStack rightHandStack = getAlternateRightHandItem(entity);
+        var abilityInstance = entity.getAbilityInstance(ChangedAbilities.SWITCH_HANDS.get());
+        if (abilityInstance == null) return;
+
+        ItemStack leftHandStack = abilityInstance.extraLeftHand;
+        ItemStack rightHandStack = abilityInstance.extraRightHand;
         if (!leftHandStack.isEmpty() || !rightHandStack.isEmpty()) {
             poseStack.pushPose();
             if (this.getParentModel().young) {
