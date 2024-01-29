@@ -219,6 +219,8 @@ public class AnimatorPresets {
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> squidDogUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         return animator -> {
             animator.setupHands(1, upperLeftArm, upperRightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, upperLeftArm, upperRightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, lowerLeftArm, lowerRightArm))
                     .addAnimator(new SquidDogUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new SquidDogUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new SquidDogUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))

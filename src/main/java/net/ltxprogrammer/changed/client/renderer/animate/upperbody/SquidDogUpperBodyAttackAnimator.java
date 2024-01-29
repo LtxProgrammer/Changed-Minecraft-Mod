@@ -62,7 +62,7 @@ public class SquidDogUpperBodyAttackAnimator<T extends LatexEntity, M extends En
         this.setupAttackAnimation(entity, ageInTicks);
     }
 
-    private void poseRightArm(T entity) {
+    public void poseRightArm(T entity) {
         switch(core.rightArmPose) {
             case EMPTY:
                 upperRightArm.yRot = 0.0F;
@@ -98,7 +98,7 @@ public class SquidDogUpperBodyAttackAnimator<T extends LatexEntity, M extends En
 
     }
 
-    private void poseLeftArm(T entity) {
+    public void poseLeftArm(T entity) {
         switch(core.leftArmPose) {
             case EMPTY:
                 upperLeftArm.yRot = 0.0F;
