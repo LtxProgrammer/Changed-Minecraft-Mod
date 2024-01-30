@@ -44,6 +44,10 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float reachOut = 0.0F;
 
     public void resetVariables() {
+        entityModel.attackTime = 0.0F;
+        entityModel.riding = false;
+        entityModel.young = false;
+        
         crouching = false;
         flyAmount = 0.0F;
         fallFlyingAmount = 0.0F;
@@ -62,6 +66,12 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     }
 
     public void setupVariables(T entity, float partialTicks) {
+        boolean shouldSit = entity.isPassenger() && (entity.getVehicle() != null && entity.getVehicle().shouldRiderSit());
+        
+        entityModel.attackTime = entity.getAttackAnim(partialTicks);
+        entityModel.riding = shouldSit;
+        entityModel.young = entity.isBaby();
+
         LivingEntity target = entity.getTarget();
         reachOut = target != null ?
                 Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;
@@ -306,7 +316,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         setupHandsRunnable.forEach((level, task) -> task.run());
     }
 
-    public LatexAnimator<T, M> setupHands(int level, ModelPart leftArm, ModelPart rightArm) {
+    public LatexAnimator<T, M> setupHandsOld(int level, ModelPart leftArm, ModelPart rightArm) {
         setupHandsRunnable.put(level, () -> {
             rightArm.x += 3F;
             leftArm.x += -3F;
@@ -316,14 +326,21 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         return this;
     }
 
-    public LatexAnimator<T, M> setupHandsNew(int level, ModelPart leftArm, ModelPart rightArm) {
+    public LatexAnimator<T, M> setupHands(int level, ModelPart leftArm, ModelPart rightArm) {
         setupHandsRunnable.put(level, () -> {
-            rightArm.x = -2F;
-            leftArm.x = 2F;
-            rightArm.y = 0F;
-            leftArm.y = 0F;
-            rightArm.z = -1F;
-            leftArm.z = -1F;
+            rightArm.x = -2.5F;
+            leftArm.x = 2.5F;
+            rightArm.y = 1F;
+            leftArm.y = 1F;
+            rightArm.z = 0F;
+            leftArm.z = 0F;
+
+            rightArm.xRot = 0f;
+            rightArm.yRot = 0f;
+            rightArm.zRot = 0.05f;
+            leftArm.xRot = 0f;
+            leftArm.yRot = 0f;
+            leftArm.zRot = -0.05f;
         });
         return this;
     }

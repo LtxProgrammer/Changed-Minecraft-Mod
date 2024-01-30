@@ -41,6 +41,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
@@ -69,6 +70,8 @@ public abstract class LatexEntity extends Monster {
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
 
+    final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
+
     public BasicPlayerInfo getBasicPlayerInfo() {
         if (underlyingPlayer instanceof PlayerDataExtension ext)
             return ext.getBasicPlayerInfo();
@@ -78,6 +81,10 @@ public abstract class LatexEntity extends Monster {
 
     public float getTailDragAmount(float partialTicks) {
         return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+    }
+
+    public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
+        return simulatedSprings.get(direction).get(type).getSpring(partialTicks);
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -314,6 +321,18 @@ public abstract class LatexEntity extends Monster {
             navigation.setCanOpenDoors(true);
 
         hairStyle = this.getDefaultHairStyle();
+        if (level.isClientSide) { // Springs are only simulated on the client side
+            simulatedSprings = new HashMap<>();
+            Arrays.stream(SpringType.Direction.values()).forEach(direction -> {
+                final var map = new EnumMap<SpringType, SpringType.Simulator>(SpringType.class);
+                simulatedSprings.put(direction, map);
+                Arrays.stream(SpringType.values()).forEach(springType -> {
+                    map.put(springType, new SpringType.Simulator(springType));
+                });
+            });
+        } else {
+            simulatedSprings = Map.of();
+        }
     }
 
     protected void setAttributes(AttributeMap attributes) {
@@ -509,10 +528,16 @@ public abstract class LatexEntity extends Monster {
             return this.getHealth() / this.getMaxHealth();
     }
 
+    protected final Vec3 calculateHorizontalViewVector(float yRot) {
+        float f1 = -yRot * ((float)Math.PI / 180F);
+        float f2 = Mth.cos(f1);
+        float f3 = Mth.sin(f1);
+        return new Vec3((double)(f3), 0.0, (double)(f2));
+    }
+
     public void visualTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
         this.flyAmountO = this.flyAmount;
-        this.tailDragAmountO = this.tailDragAmount;
 
         if (this.isCrouching()) {
             this.crouchAmount += 0.2F;
@@ -529,27 +554,20 @@ public abstract class LatexEntity extends Monster {
             this.flyAmount = Math.max(0.0F, this.flyAmount - 0.15F);
         }
 
+        if (!this.level.isClientSide) return;
+
+        this.tailDragAmountO = this.tailDragAmount;
+
         this.tailDragAmount *= 0.75F;
         this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
-        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
-            return;
-
-        if (!level.isClientSide)
-            return;
-
-        if (level.random.nextFloat() > getDripRate(1.0f - computeHealthRatio()))
-            return;
-
-        /*Color3 color = getDripColor();
-        if (color != null) {
-            EntityDimensions dimensions = getDimensions(getPose());
-            double dh = level.random.nextDouble(dimensions.height);
-            double dx = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-            double dz = (level.random.nextDouble(dimensions.width) - (0.5 * dimensions.width));
-            level.addParticle(ChangedParticles.drippingLatex(color), xo + dx * 1.2, yo + dh, zo + dz * 1.2, 0.0, 0.0, 0.0);
-        }*/
+        simulatedSprings.forEach((direction, map) -> {
+            final float deltaVelocity = direction.apply(this);
+            map.forEach((springType, simulator) -> {
+                simulator.tick(deltaVelocity);
+            });
+        });
     }
 
     public double getPassengersRidingOffset() {

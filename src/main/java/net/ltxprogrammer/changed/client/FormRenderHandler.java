@@ -71,36 +71,15 @@ public class FormRenderHandler {
 
                     LatexHumanoidModelInterface latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
 
-                    var replacementInstance = latexHumanoidModel.getFirstPersonReplacementModel();
-                    if (replacementInstance != null) {
-                        latexRenderer = (LatexHumanoidRenderer<?, ?, ?>)Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(replacementInstance);
+                    var controller = latexHumanoidModel.getAnimator();
 
-                        entityModel = latexRenderer.getModel();
-                        latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
-                        var controller = latexHumanoidModel.getAnimator();
+                    controller.resetVariables();
+                    entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+                    latexHumanoidModel.setupHand();
 
-                        entityModel.attackTime = 0.0F;
-                        controller.resetVariables();
-                        entityModel.setupAnim(replacementInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-                        latexHumanoidModel.setupHand();
-
-                        handPart = latexHumanoidModel.getArm(handSide);
-                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
-                        texture = entRenderer.getTextureLocation(livingInstance);
-                    }
-
-                    else {
-                        var controller = latexHumanoidModel.getAnimator();
-
-                        entityModel.attackTime = 0.0F;
-                        controller.resetVariables();
-                        entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-                        latexHumanoidModel.setupHand();
-
-                        handPart = latexHumanoidModel.getArm(handSide);
-                        stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
-                        texture = entRenderer.getTextureLocation(livingInstance);
-                    }
+                    handPart = latexHumanoidModel.getArm(handSide);
+                    stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
+                    texture = entRenderer.getTextureLocation(livingInstance);
                 }
 
                 if(handPart != null && texture != null) {

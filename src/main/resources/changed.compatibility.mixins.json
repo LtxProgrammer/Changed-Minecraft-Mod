@@ -4,10 +4,13 @@
   "package": "net.ltxprogrammer.changed.mixin.compatibility",
   "compatibilityLevel": "JAVA_17",
   "refmap": "changed.refmap.json",
+  "plugin": "net.ltxprogrammer.changed.mixin.compatibility.ChangedMixinPlugin",
   "mixins": [],
   "client": [
     "HardcoreRevival.KnockoutHandlerMixin",
     "Oculus.WorldRenderingPhaseMixin",
+    "Pehkui.LatexEntityMixin",
+    "Pehkui.ScaleTypeMixin",
     "PresenceFootsteps.SoundEngineMixin",
     "PresenceFootsteps.StateLookupMixin",
     "Rubidium.BlockRenderPassManagerMixin",

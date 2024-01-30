@@ -142,7 +142,13 @@ public abstract class AbstractAquaticGenderedEntity extends LatexEntity implemen
 
     boolean wantsToSwim() {
         LivingEntity livingentity = this.getTarget();
-        return livingentity == null || livingentity.isInWater();
+        if (livingentity == null)
+            return true;
+        if (livingentity.isInWater())
+            return true;
+        if (livingentity.isPassenger() && livingentity.getVehicle().isInWater())
+            return true;
+        return false;
     }
 
     static class AquaticMoveControl extends MoveControl {

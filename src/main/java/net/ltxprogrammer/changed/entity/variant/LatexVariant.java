@@ -81,6 +81,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<DarkLatexWolfPartial> DARK_LATEX_WOLF_PARTIAL = register(Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL)
+            .groundSpeed(1.0F).swimSpeed(1.0f).faction(LatexType.DARK_LATEX)
+            .build(Changed.modResource("form_dark_latex_wolf_partial")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(ChangedEntities.DARK_LATEX_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_yufeng")));
@@ -114,6 +117,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexFennecFox> LATEX_FENNEC_FOX = register(Builder.of(ChangedEntities.LATEX_FENNEC_FOX)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_fennec_fox")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(ChangedEntities.LATEX_HYPNO_CAT)
             .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.HYPNOSIS)
             .build(Changed.modResource("form_latex_hypno_cat")));
@@ -446,6 +452,14 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             ProcessTransfur.killPlayerBy(player, newEntity);
+        } else if (entity instanceof LatexEntity latexEntity) {
+            newEntity.getBasicPlayerInfo().copyFrom(latexEntity.getBasicPlayerInfo());
+            // Take armor and held items
+            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+
+            latexEntity.discard();
         } else {
             // Take armor
             Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
@@ -621,7 +635,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         public Builder<T> extraHands() {
-            return addAbility(ChangedAbilities.EXTRA_HANDS).addAbility(ChangedAbilities.SWITCH_HANDS);
+            return addAbility(ChangedAbilities.SWITCH_HANDS);
         }
 
         public Builder<T> rideable() {

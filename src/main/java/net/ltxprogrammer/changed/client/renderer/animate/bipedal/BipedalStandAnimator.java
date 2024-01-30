@@ -20,7 +20,7 @@ public class BipedalStandAnimator<T extends LatexEntity, M extends EntityModel<T
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightLeg.z = 0.1F + core.forwardOffset;
         leftLeg.z = 0.1F + core.forwardOffset;
-        rightLeg.y = 12.0F + core.hipOffset;
-        leftLeg.y = 12.0F + core.hipOffset;
+        rightLeg.y = (12.0f - core.legLength) + 10.5f;
+        leftLeg.y = (12.0f - core.legLength) + 10.5f;
     }
 }

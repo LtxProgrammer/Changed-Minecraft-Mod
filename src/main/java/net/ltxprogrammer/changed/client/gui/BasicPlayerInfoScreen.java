@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 public class BasicPlayerInfoScreen extends Screen {
     private final Screen lastScreen;
     private final @Nullable Player player;
+    private @Nullable Runnable toolTip = null;
 
     public BasicPlayerInfoScreen(Screen parent) {
         super(new TranslatableComponent("changed.config.bpi.screen"));
@@ -27,6 +28,10 @@ public class BasicPlayerInfoScreen extends Screen {
         super(new TranslatableComponent("changed.config.bpi.screen"));
         this.lastScreen = parent;
         this.player = player;
+    }
+
+    public void setToolTip(Runnable fn) {
+        this.toolTip = fn;
     }
 
     @Override
@@ -50,11 +55,18 @@ public class BasicPlayerInfoScreen extends Screen {
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.sclera_color"),
                 bpi::getScleraColor, bpi::setScleraColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
+        var rightIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
                 bpi::getRightIrisColor, bpi::setRightIrisColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
+        var leftIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
                 bpi::getLeftIrisColor, bpi::setLeftIrisColor));
+        this.addRenderableWidget(new Button((this.width / 2 - 155 + i % 2 * 160) + 110, (this.height / 6 + 24 * (i >> 1)) + 24, 40, 20, new TranslatableComponent("changed.config.bpi.iris_color.sync"),
+                button -> {
+                    leftIris.setValue(rightIris.getValue());
+                    //bpi.setLeftIrisColor(bpi.getRightIrisColor());
+                }, (button, stack, x, y) -> {
+                    setToolTip(() -> this.renderTooltip(stack, new TranslatableComponent("changed.config.bpi.iris_color.sync_tooltip"), x, y));
+                }));
         i++;
         this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.eye_style", bpi.getEyeStyle().getName()), button -> {
             var style = bpi.getEyeStyle();
@@ -97,5 +109,9 @@ public class BasicPlayerInfoScreen extends Screen {
         this.renderBackground(poseStack);
         drawCenteredString(poseStack, this.font, this.title, this.width / 2, 15, 16777215);
         super.render(poseStack, p_96563_, p_96564_, p_96565_);
+        if (toolTip != null) {
+            toolTip.run();
+            toolTip = null;
+        }
     }
 }
