@@ -49,6 +49,10 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float reachOut = 0.0F;
 
     public void resetVariables() {
+        entityModel.attackTime = 0.0F;
+        entityModel.riding = false;
+        entityModel.young = false;
+        
         crouching = false;
         flyAmount = 0.0F;
         fallFlyingAmount = 0.0F;
@@ -68,6 +72,12 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     }
 
     public void setupVariables(T entity, float partialTicks) {
+        boolean shouldSit = entity.isPassenger() && (entity.getVehicle() != null && entity.getVehicle().shouldRiderSit());
+        
+        entityModel.attackTime = entity.getAttackAnim(partialTicks);
+        entityModel.riding = shouldSit;
+        entityModel.young = entity.isBaby();
+
         LivingEntity target = entity.getTarget();
         reachOut = target != null ?
                 Mth.clamp(Mth.inverseLerp(this.distanceTo(entity, target, partialTicks), 5.0f, 2.0f), 0.0f, 1.0f) : 0.0f;

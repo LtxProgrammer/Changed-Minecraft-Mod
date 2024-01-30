@@ -1,14 +1,10 @@
 package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.IExtensibleEnum;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.NotImplementedException;
 
 public enum EyeStyle implements IExtensibleEnum {
@@ -16,20 +12,20 @@ public enum EyeStyle implements IExtensibleEnum {
     V2(Changed.modResource("v2")),
     TALL(Changed.modResource("tall"));
 
-    private final ResourceLocation name;
+    private final ResourceLocation id;
     private final ResourceLocation irisLeft;
     private final ResourceLocation irisRight;
     private final ResourceLocation sclera;
     private final ResourceLocation eyeBrows;
     private final Component textName;
 
-    EyeStyle(ResourceLocation name) {
-        this.name = name;
-        this.irisLeft = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_iris_left.png");
-        this.irisRight = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_iris_right.png");
-        this.sclera = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_sclera.png");
-        this.eyeBrows = new ResourceLocation(name.getNamespace(), "textures/eyes/" + name.getPath() + "_eyebrows.png");
-        this.textName = new TranslatableComponent("eyestyle." + name.getNamespace() + "." + name.getPath());
+    EyeStyle(ResourceLocation id) {
+        this.id = id;
+        this.irisLeft = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_iris_left.png");
+        this.irisRight = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_iris_right.png");
+        this.sclera = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_sclera.png");
+        this.eyeBrows = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_eyebrows.png");
+        this.textName = new TranslatableComponent("eyestyle." + id.getNamespace() + "." + id.getPath());
     }
 
     public ResourceLocation getLeftIris() {
@@ -44,6 +40,10 @@ public enum EyeStyle implements IExtensibleEnum {
         return sclera;
     }
 
+    public ResourceLocation getId() {
+        return id;
+    }
+
     public Component getName() {
         return textName;
     }
@@ -52,7 +52,7 @@ public enum EyeStyle implements IExtensibleEnum {
         return eyeBrows;
     }
 
-    public static EyeStyle create(String name, ResourceLocation fullName) {
+    public static EyeStyle create(String name, ResourceLocation id) {
         throw new NotImplementedException("Not implemented!");
     }
 }

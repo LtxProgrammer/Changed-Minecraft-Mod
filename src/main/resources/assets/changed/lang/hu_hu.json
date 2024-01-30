@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Changed Zene",
 
   "ability.changed.access_saddle": "Nyereg hozzáférése",
-  "ability.changed.extra_hands": "Extra kezek",
   "ability.changed.switch_transfur_mode": "Válassz egy transzfur módot",
   "ability.changed.switch_transfur_mode.select": "Transzfur mód most már: %s",
   "ability.changed.create_cobweb": "Pókháló létrehozása",
@@ -293,6 +292,7 @@
   "entity.changed.behemoth_hand_right": "Behemót jobbkéz",
   "entity.changed.dark_latex_wolf_female": "Nőstény sötét latex farkas",
   "entity.changed.dark_latex_wolf_male": "Hím sötét latex farkas",
+  "entity.changed.dark_latex_wolf_partial": "Részleges sötét latex farkas",
   "entity.changed.dark_latex_dragon": "Sötét sárkány",
   "entity.changed.dark_latex_pup": "Sötét latex farkaskölyök",
   "entity.changed.dark_latex_yufeng": "Sötét latex jüfeng",
@@ -494,6 +494,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Valószínűtlen barát",
   "changed:advancements.main.tame_a_latex.description": "Szelídíts meg egy latexet",
+
+  "changed:advancements.main.kill_all_latex.title": "Megőrült",
+  "changed:advancements.main.kill_all_latex.description": "Vadássz le egyet minden latex lényből",
   
   "changed.tutorial.select_ability.title": "Válassza ki képességét",
   "changed.tutorial.select_ability.description": "Nyomd meg a %s gombot",

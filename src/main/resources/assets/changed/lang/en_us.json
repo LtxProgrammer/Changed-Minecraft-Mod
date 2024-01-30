@@ -292,6 +292,7 @@
   "entity.changed.behemoth_hand_right": "Right Behemoth Hand",
   "entity.changed.dark_latex_wolf_female": "Female Dark Latex Wolf",
   "entity.changed.dark_latex_wolf_male": "Male Dark Latex Wolf",
+  "entity.changed.dark_latex_wolf_partial": "Partial Dark Latex Wolf",
   "entity.changed.dark_latex_dragon": "Dark Dragon",
   "entity.changed.dark_latex_pup": "Dark Latex Pup",
   "entity.changed.dark_latex_yufeng": "Dark Latex Yufeng",
@@ -493,6 +494,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Unlikely Friend",
   "changed:advancements.main.tame_a_latex.description": "Tame a latex",
+
+  "changed:advancements.main.kill_all_latex.title": "Gone Berserk",
+  "changed:advancements.main.kill_all_latex.description": "Kill one of every kind of latex beast",
 
   "changed.tutorial.select_ability.title": "Select your ability",
   "changed.tutorial.select_ability.description": "Press %s",

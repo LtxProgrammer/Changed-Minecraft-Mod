@@ -73,7 +73,6 @@ public class FormRenderHandler {
 
                     var controller = latexHumanoidModel.getAnimator();
 
-                    entityModel.attackTime = 0.0F;
                     controller.resetVariables();
                     entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
                     latexHumanoidModel.setupHand();

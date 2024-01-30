@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Changed Musik",
 
   "ability.changed.access_saddle": "Tillgång sadel",
-  "ability.changed.extra_hands": "Extra händer",
   "ability.changed.switch_transfur_mode": "Växla förpälsvandla läge",
   "ability.changed.switch_transfur_mode.select": "Förpälsvandla läge är nu: %s",
   "ability.changed.create_cobweb": "Skapa spindelnät",
@@ -293,6 +292,7 @@
   "entity.changed.behemoth_hand_right": "Höger gigantisk händ",
   "entity.changed.dark_latex_wolf_female": "Kvinnlig mörk latexvarg",
   "entity.changed.dark_latex_wolf_male": "Manlig mörk latexvarg",
+  "entity.changed.dark_latex_wolf_partial": "Partiell mörk latexvarg",
   "entity.changed.dark_latex_dragon": "Mörk drake",
   "entity.changed.dark_latex_pup": "Mörk latexvalp",
   "entity.changed.dark_latex_yufeng": "Mörk latex yufeng",
@@ -494,6 +494,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Osannolik vän",
   "changed:advancements.main.tame_a_latex.description": "Tämja ett latex",
+
+  "changed:advancements.main.kill_all_latex.title": "Blivit bärsärk",
+  "changed:advancements.main.kill_all_latex.description": "Döda en av varje slags av latexdjur",
 
   "changed.tutorial.select_ability.title": "Välj din förmåga",
   "changed.tutorial.select_ability.description": "Tryck %s",
