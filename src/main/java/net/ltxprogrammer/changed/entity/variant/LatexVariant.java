@@ -624,7 +624,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         public Builder<T> extraHands() {
-            return addAbility(ChangedAbilities.EXTRA_HANDS).addAbility(ChangedAbilities.SWITCH_HANDS);
+            return addAbility(ChangedAbilities.SWITCH_HANDS);
         }
 
         public Builder<T> rideable() {
