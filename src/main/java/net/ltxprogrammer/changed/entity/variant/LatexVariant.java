@@ -81,6 +81,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<DarkLatexWolfPartial> DARK_LATEX_WOLF_PARTIAL = register(Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL)
+            .groundSpeed(1.0F).swimSpeed(1.0f).faction(LatexType.DARK_LATEX)
+            .build(Changed.modResource("form_dark_latex_wolf_partial")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(ChangedEntities.DARK_LATEX_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_yufeng")));
