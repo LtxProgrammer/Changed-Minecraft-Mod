@@ -286,6 +286,7 @@
   "entity.changed.behemoth_hand_right": "Høyre behemoth hånd",
   "entity.changed.dark_latex_wolf_female": "Kvinnelig mørk lateks ulv",
   "entity.changed.dark_latex_wolf_male": "Mannlig mørk lateks ulv",
+  "entity.changed.dark_latex_wolf_partial": "Delvis mørk lateks ulv",
   "entity.changed.dark_latex_dragon": "Mørk drage",
   "entity.changed.dark_latex_pup": "Mørk lateksvalp",
   "entity.changed.dark_latex_yufeng": "Mørk lateks yufeng",
@@ -487,6 +488,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Usannsynlig venn",
   "changed:advancements.main.tame_a_latex.description": "Tem et lateks",
+
+  "changed:advancements.main.kill_all_latex.title": "Gått berserk",
+  "changed:advancements.main.kill_all_latex.description": "Drep et av hvert slag av lateksdyr",
 
   "changed.tutorial.select_ability.title": "Velge din evne",
   "changed.tutorial.select_ability.description": "Trykk på %s",
