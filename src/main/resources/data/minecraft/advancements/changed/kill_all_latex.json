@@ -1,0 +1,1130 @@
+{
+  "parent": "minecraft:changed/root",
+  "display": {
+    "icon": {
+      "item": "changed:tsc_baton"
+    },
+    "title": {
+      "translate": "changed:advancements.main.kill_all_latex.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.kill_all_latex.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 150
+  },
+  "criteria": {
+    "changed:aerosol_latex_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:aerosol_latex_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:behemoth_head": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:behemoth_head"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:dark_latex_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:dark_latex_pup": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_pup"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:dark_latex_wolf_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_wolf_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:dark_latex_wolf_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_wolf_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:dark_latex_yufeng": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_yufeng"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:headless_knight": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:headless_knight"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_alien": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_alien"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_bee": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_bee"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_beifeng": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_beifeng"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_benign_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_benign_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_blue_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_blue_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_blue_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_blue_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_crocodile": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_crocodile"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_crystal_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_crystal_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_crystal_wolf_horned": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_crystal_wolf_horned"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_deer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_deer"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_fennec_fox": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_fennec_fox"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_hypno_cat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_hypno_cat"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_keon_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_keon_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_leaf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_leaf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_manta_ray_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_manta_ray_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_manta_ray_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_manta_ray_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_medusa_cat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_medusa_cat"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_mermaid_shark": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_mermaid_shark"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_mimic_plant": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_mimic_plant"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_ming_cat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_ming_cat"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_moth": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_moth"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_orca": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_orca"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_otter": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_otter"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_pink_deer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_pink_deer"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_pink_wyvern": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_pink_wyvern"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_pink_yuin_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_pink_yuin_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_purple_fox": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_purple_fox"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_raccoon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_raccoon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_red_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_red_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_red_panda": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_red_panda"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_shark": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_shark"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_shark_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_shark_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_shark_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_shark_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_siren": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_siren"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_snake": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_snake"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_sniper_dog": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_sniper_dog"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_snow_leopard_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_snow_leopard_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_snow_leopard_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_snow_leopard_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_squid_dog_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_squid_dog_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_squid_dog_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_squid_dog_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_squirrel": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_squirrel"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_stiger": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_stiger"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_tiger_shark": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_tiger_shark"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_traffic_cone_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_traffic_cone_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_translucent_lizard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_translucent_lizard"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_watermelon_cat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_watermelon_cat"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_white_tiger": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_white_tiger"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_yuin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_yuin"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_centaur": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_centaur"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_knight": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_knight"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_knight_fusion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_knight_fusion"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_wolf_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_wolf_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_wolf_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_wolf_male"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:light_latex_wolf_organic": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:light_latex_wolf_organic"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:milk_pudding": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:milk_pudding"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:shark": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:shark"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:white_latex_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:white_latex_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "changed:aerosol_latex_wolf"
+    ],
+    [
+      "changed:behemoth_head"
+    ],
+    [
+      "changed:dark_latex_dragon"
+    ],
+    [
+      "changed:dark_latex_pup"
+    ],
+    [
+      "changed:dark_latex_wolf_female"
+    ],
+    [
+      "changed:dark_latex_wolf_male"
+    ],
+    [
+      "changed:dark_latex_yufeng"
+    ],
+    [
+      "changed:headless_knight"
+    ],
+    [
+      "changed:latex_alien"
+    ],
+    [
+      "changed:latex_bee"
+    ],
+    [
+      "changed:latex_beifeng"
+    ],
+    [
+      "changed:latex_benign_wolf"
+    ],
+    [
+      "changed:latex_blue_dragon"
+    ],
+    [
+      "changed:latex_blue_wolf"
+    ],
+    [
+      "changed:latex_crocodile"
+    ],
+    [
+      "changed:latex_crystal_wolf"
+    ],
+    [
+      "changed:latex_crystal_wolf_horned"
+    ],
+    [
+      "changed:latex_deer"
+    ],
+    [
+      "changed:latex_fennec_fox"
+    ],
+    [
+      "changed:latex_hypno_cat"
+    ],
+    [
+      "changed:latex_keon_wolf"
+    ],
+    [
+      "changed:latex_leaf"
+    ],
+    [
+      "changed:latex_manta_ray_female"
+    ],
+    [
+      "changed:latex_manta_ray_male"
+    ],
+    [
+      "changed:latex_medusa_cat"
+    ],
+    [
+      "changed:latex_mermaid_shark"
+    ],
+    [
+      "changed:latex_mimic_plant"
+    ],
+    [
+      "changed:latex_ming_cat"
+    ],
+    [
+      "changed:latex_moth"
+    ],
+    [
+      "changed:latex_orca"
+    ],
+    [
+      "changed:latex_otter"
+    ],
+    [
+      "changed:latex_pink_deer"
+    ],
+    [
+      "changed:latex_pink_wyvern"
+    ],
+    [
+      "changed:latex_pink_yuin_dragon"
+    ],
+    [
+      "changed:latex_purple_fox"
+    ],
+    [
+      "changed:latex_raccoon"
+    ],
+    [
+      "changed:latex_red_dragon"
+    ],
+    [
+      "changed:latex_red_panda"
+    ],
+    [
+      "changed:latex_shark"
+    ],
+    [
+      "changed:latex_shark_female"
+    ],
+    [
+      "changed:latex_shark_male"
+    ],
+    [
+      "changed:latex_siren"
+    ],
+    [
+      "changed:latex_snake"
+    ],
+    [
+      "changed:latex_sniper_dog"
+    ],
+    [
+      "changed:latex_snow_leopard_female"
+    ],
+    [
+      "changed:latex_snow_leopard_male"
+    ],
+    [
+      "changed:latex_squid_dog_female"
+    ],
+    [
+      "changed:latex_squid_dog_male"
+    ],
+    [
+      "changed:latex_squirrel"
+    ],
+    [
+      "changed:latex_stiger"
+    ],
+    [
+      "changed:latex_tiger_shark"
+    ],
+    [
+      "changed:latex_traffic_cone_dragon"
+    ],
+    [
+      "changed:latex_translucent_lizard"
+    ],
+    [
+      "changed:latex_watermelon_cat"
+    ],
+    [
+      "changed:latex_white_tiger"
+    ],
+    [
+      "changed:latex_yuin"
+    ],
+    [
+      "changed:light_latex_centaur"
+    ],
+    [
+      "changed:light_latex_knight"
+    ],
+    [
+      "changed:light_latex_knight_fusion"
+    ],
+    [
+      "changed:light_latex_wolf_female"
+    ],
+    [
+      "changed:light_latex_wolf_male"
+    ],
+    [
+      "changed:light_latex_wolf_organic"
+    ],
+    [
+      "changed:milk_pudding"
+    ],
+    [
+      "changed:shark"
+    ],
+    [
+      "changed:white_latex_wolf"
+    ]
+  ]
+}
