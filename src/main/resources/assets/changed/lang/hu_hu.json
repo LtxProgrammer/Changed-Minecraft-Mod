@@ -487,6 +487,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Valószínűtlen barát",
   "changed:advancements.main.tame_a_latex.description": "Szelídíts meg egy latexet",
+
+  "changed:advancements.main.kill_all_latex.title": "Megőrült",
+  "changed:advancements.main.kill_all_latex.description": "Vadássz le egyet minden latex lényből",
   
   "changed.tutorial.select_ability.title": "Válassza ki képességét",
   "changed.tutorial.select_ability.description": "Nyomd meg a %s gombot",
