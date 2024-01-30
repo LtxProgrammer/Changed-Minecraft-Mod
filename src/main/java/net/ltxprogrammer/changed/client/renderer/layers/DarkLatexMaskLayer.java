@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexMaskModel;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +17,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 
-public class DarkLatexMaskLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
+public class DarkLatexMaskLayer<T extends LivingEntity, M extends EntityModel<T> & HeadedModel> extends RenderLayer<T, M> {
     private final Cacheable<DarkLatexMaskModel> maskModel;
 
     public DarkLatexMaskLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {

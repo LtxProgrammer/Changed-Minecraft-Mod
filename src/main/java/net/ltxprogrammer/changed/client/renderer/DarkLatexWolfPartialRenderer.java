@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel;
@@ -20,6 +21,7 @@ public class DarkLatexWolfPartialRenderer extends LatexHumanoidRenderer<DarkLate
 				context.bakeLayer(slim ? DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX_SLIM : DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX)),
 				slim ? Changed.modResource("textures/dark_latex_wolf_partial_slim.png") : Changed.modResource("textures/dark_latex_wolf_partial.png")));
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 	}
 
 	@Override
