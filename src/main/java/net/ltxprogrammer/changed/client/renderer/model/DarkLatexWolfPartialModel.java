@@ -6,6 +6,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
@@ -14,6 +15,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -73,8 +75,11 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
 
         PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.5F, 10.5F, 0.0F));
 
-        PartDefinition RightThighLayer_r1 = RightLeg.addOrReplaceChild("RightThighLayer_r1", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F))
-                .texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+        final var rightThighCubes = CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F));
+        ((CubeListBuilderExtender)rightThighCubes).removeLastFaces(Direction.DOWN);
+
+        PartDefinition RightThighLayer_r1 = RightLeg.addOrReplaceChild("RightThighLayer_r1", rightThighCubes, PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
         PartDefinition RightLowerLeg = RightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.ZERO);
         PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.ZERO);
@@ -82,8 +87,11 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
 
         PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.5F, 10.5F, 0.0F));
 
-        PartDefinition LeftThighLayer_r1 = LeftLeg.addOrReplaceChild("LeftThighLayer_r1", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F))
-                .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+        final var leftThighCubes = CubeListBuilder.create().texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F));
+        ((CubeListBuilderExtender)leftThighCubes).removeLastFaces(Direction.DOWN);
+
+        PartDefinition LeftThighLayer_r1 = LeftLeg.addOrReplaceChild("LeftThighLayer_r1", leftThighCubes, PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
         PartDefinition LeftLowerLeg = LeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.ZERO);
         PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.ZERO);
@@ -104,11 +112,17 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
         PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create(), PartPose.ZERO);
         PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.ZERO);
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(40, 32).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.offset(-5.0F, 1.5F, 0.0F));
+        final var rightArmCubes = CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 32).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F));
+        ((CubeListBuilderExtender)rightArmCubes).removeLastFaces(Direction.DOWN);
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.offset(5.0F, 1.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", rightArmCubes, PartPose.offset(-5.0F, 1.5F, 0.0F));
+
+        final var leftArmCubes = CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F));
+        ((CubeListBuilderExtender)leftArmCubes).removeLastFaces(Direction.DOWN);
+
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", leftArmCubes, PartPose.offset(5.0F, 1.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
