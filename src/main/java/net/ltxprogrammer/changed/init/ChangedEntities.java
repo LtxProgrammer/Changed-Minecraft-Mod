@@ -299,10 +299,10 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSnowLeopardFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexSquidDogFemale>> LATEX_SQUID_DOG_FEMALE = register("latex_squid_dog_female", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.2F),
+            EntityType.Builder.of(LatexSquidDogFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.00F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER, LatexSquidDogFemale::createAttributes);
     public static final RegistryObject<EntityType<LatexSquidDogMale>> LATEX_SQUID_DOG_MALE = register("latex_squid_dog_male", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.2F),
+            EntityType.Builder.of(LatexSquidDogMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.00F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER, LatexSquidDogMale::createAttributes);
     public static final RegistryObject<EntityType<LatexStiger>> LATEX_STIGER = register("latex_stiger", 0x7b4251, 0xe0cfd9,
             EntityType.Builder.of(LatexStiger::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -344,6 +344,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<SeatEntity>> SEAT_ENTITY = REGISTRY.register("seat_entity",
             () -> EntityType.Builder.of(SeatEntity::new, MobCategory.MISC).sized(0.01f, 0.01f).build("seat_entity"));
 
+    public static final RegistryObject<EntityType<DarkLatexWolfPartial>> DARK_LATEX_WOLF_PARTIAL = registerNoEgg("dark_latex_wolf_partial", 0x393939, 0x303030,
+            EntityType.Builder.of(DarkLatexWolfPartial::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F));
     public static final RegistryObject<EntityType<SpecialLatex>> SPECIAL_LATEX = registerNoEgg("special_latex",
             EntityType.Builder.of(SpecialLatex::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F));
 
@@ -366,11 +368,24 @@ public class ChangedEntities {
             DARK_LATEX_DRAGON,
             DARK_LATEX_WOLF_MALE,
             DARK_LATEX_WOLF_FEMALE,
+            DARK_LATEX_WOLF_PARTIAL,
             DARK_LATEX_YUFENG
         );
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends WhiteLatexEntity>>> WHITE_LATEX = ImmutableList.of(
             WHITE_LATEX_WOLF
         );
+    }
+
+    public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerNoEgg(
+            String name,
+            int eggBack,
+            int eggHighlight,
+            EntityType.Builder<T> builder) {
+        String regName = Changed.modResource(name).toString();
+        ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
+        RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        return entityType;
     }
 
     public static <T extends LatexEntity> RegistryObject<EntityType<T>> registerNoEgg(

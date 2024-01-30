@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Changed Music",
 
   "ability.changed.access_saddle": "Access Saddle",
-  "ability.changed.extra_hands": "Extra Hands",
   "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
   "ability.changed.switch_transfur_mode.select": "Transfur mode is now: %s",
   "ability.changed.create_cobweb": "Create Cobweb",
@@ -286,6 +285,7 @@
   "entity.changed.behemoth_hand_right": "Right Behemoth Hand",
   "entity.changed.dark_latex_wolf_female": "Female Dark Latex Wolf",
   "entity.changed.dark_latex_wolf_male": "Male Dark Latex Wolf",
+  "entity.changed.dark_latex_wolf_partial": "Partial Dark Latex Wolf",
   "entity.changed.dark_latex_dragon": "Dark Dragon",
   "entity.changed.dark_latex_pup": "Dark Latex Pup",
   "entity.changed.dark_latex_yufeng": "Dark Latex Yufeng",
