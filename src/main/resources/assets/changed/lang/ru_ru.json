@@ -285,7 +285,7 @@
   "entity.changed.behemoth_hand_right": "Правая рука исполина",
   "entity.changed.dark_latex_wolf_female": "Волчица из тёмного латекса",
   "entity.changed.dark_latex_wolf_male": "Волк из тёмного латекса",
-  "entity.changed.dark_latex_wolf_partial": "Частичный волк из тёмного латекса",
+  "entity.changed.dark_latex_wolf_partial": "Волк из тёмного латекса",
   "entity.changed.dark_latex_dragon": "Дракон из тёмного латекса",
   "entity.changed.dark_latex_pup": "Щенок из тёмного латекса",
   "entity.changed.dark_latex_yufeng": "ЮФэн из тёмного латекса",
@@ -483,10 +483,13 @@
   "changed:advancements.main.transfur_legless.description": "Трансфурмируйтесь в любую форму латекса не имеющую ног.",
   
   "changed:advancements.main.beehive_sleep.title": "Что сниться пчелам...",
-  "changed:advancements.main.beehive_sleep.description": "Поспите в кровати улья",
+  "changed:advancements.main.beehive_sleep.description": "Поспите в кровати улья.",
 
   "changed:advancements.main.tame_a_latex.title": "Странный друг",
-  "changed:advancements.main.tame_a_latex.description": "Приручите латекс",
+  "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
+
+  "changed:advancements.main.kill_all_latex.title": "Совершенно невменяемый",
+  "changed.advancements.main.kill_all_latex.description": "Убейте все виды латекса.",
 
   "changed.tutorial.select_ability.title": "Выберите способность",
   "changed.tutorial.select_ability.description": "Нажмите клавишу %s",
