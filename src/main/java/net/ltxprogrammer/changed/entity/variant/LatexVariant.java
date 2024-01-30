@@ -452,6 +452,14 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             ProcessTransfur.killPlayerBy(player, newEntity);
+        } else if (entity instanceof LatexEntity latexEntity) {
+            newEntity.getBasicPlayerInfo().copyFrom(latexEntity.getBasicPlayerInfo());
+            // Take armor and held items
+            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+
+            latexEntity.discard();
         } else {
             // Take armor
             Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
