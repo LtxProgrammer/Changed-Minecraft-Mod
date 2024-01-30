@@ -286,6 +286,7 @@
   "entity.changed.behemoth_hand_right": "Prawa ręka Begemota",
   "entity.changed.dark_latex_wolf_female": "Żeński wilk z ciemnego latexu",
   "entity.changed.dark_latex_wolf_male": "Męski wilk z ciemnego latexu",
+  "entity.changed.dark_latex_wolf_partial": "częściowo zmieniony wilk z ciemnego latexu",
   "entity.changed.dark_latex_dragon": "Ciemny latexowy smok",
   "entity.changed.dark_latex_pup": "Szczeniak z ciemnego latexu",
   "entity.changed.dark_latex_yufeng": "Yufeng z ciemnego latexu",
@@ -485,6 +486,10 @@
 
   "changed:advancements.main.tame_a_latex.title": "Niemożliwe stało się możliwym",
   "changed:advancements.main.tame_a_latex.description": "oswój latexową bestię",
+
+  "changed:advancements.main.kill_all_latex.title": "Srebro na potwory i łom na latex",
+
+  "changed:advancements.main.kill_all_latex.description": "pokonaj każdy rodzaj latexowej bestii",
 
   "changed.tutorial.select_ability.title": "Wybierz umiejętność",
   "changed.tutorial.select_ability.description": "Naciśnij %s",
