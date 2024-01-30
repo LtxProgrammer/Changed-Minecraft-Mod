@@ -63,6 +63,7 @@
     "render.CubeMixin",
     "render.CustomHeadLayerMixin",
     "render.EntityRenderDispatcherMixin",
+    "render.EntityRenderersMixin",
     "render.GameRendererMixin",
     "render.HumanoidMobRendererMixin",
     "render.HumanoidModelMixin",

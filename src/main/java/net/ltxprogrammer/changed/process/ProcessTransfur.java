@@ -203,6 +203,15 @@ public class ProcessTransfur {
         return progressTransfur(entity, amount, ChangedRegistry.LATEX_VARIANT.get().getValue(type));
     }
 
+    public static LivingEntity changeTransfur(LivingEntity entity, LatexVariant<?> latexVariant) {
+        if (entity instanceof Player player) {
+            setPlayerLatexVariant(player, latexVariant);
+            return player;
+        } else {
+            return latexVariant.replaceEntity(entity);
+        }
+    }
+
     public static void tickPlayerTransfurProgress(Player player) {
         if (isPlayerLatex(player))
             return;

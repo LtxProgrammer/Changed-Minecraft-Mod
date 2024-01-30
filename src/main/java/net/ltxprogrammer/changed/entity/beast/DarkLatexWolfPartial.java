@@ -3,8 +3,13 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -41,5 +46,19 @@ public class DarkLatexWolfPartial extends AbstractDarkLatexEntity {
     @Override
     public boolean isMaskless() {
         return true;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ResourceLocation getSkinTextureLocation() {
+        if (getUnderlyingPlayer() instanceof AbstractClientPlayer clientPlayer)
+            return clientPlayer.getSkinTextureLocation();
+        return DefaultPlayerSkin.getDefaultSkin(this.getUUID());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public String getModelName() {
+        if (getUnderlyingPlayer() instanceof AbstractClientPlayer clientPlayer)
+            return clientPlayer.getModelName();
+        return DefaultPlayerSkin.getSkinModelName(this.getUUID());
     }
 }

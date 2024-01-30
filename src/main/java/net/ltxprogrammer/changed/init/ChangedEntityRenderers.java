@@ -1,16 +1,45 @@
 package net.ltxprogrammer.changed.init;
 
+import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
+import java.util.Map;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedEntityRenderers {
+    private static Map<String, EntityRenderer<? extends DarkLatexWolfPartial>> partialRenderers = ImmutableMap.of();
+
+    @Nullable
+    public static <T extends Entity> EntityRenderer<? super T> getRenderer(T entity) {
+        if (entity instanceof DarkLatexWolfPartial partial) {
+            String s = partial.getModelName();
+            EntityRenderer<? extends DarkLatexWolfPartial> entityrenderer = partialRenderers.get(s);
+            return (EntityRenderer) (entityrenderer != null ? entityrenderer : partialRenderers.get("default"));
+        }
+
+        return null; // Default to registered renderer
+    }
+
+    public static void registerComplexRenderers(EntityRendererProvider.Context context) {
+        partialRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends DarkLatexWolfPartial>>()
+                .put("default", new DarkLatexWolfPartialRenderer(context, false))
+                .put("slim", new DarkLatexWolfPartialRenderer(context, true)).build();
+    }
+
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         final boolean useNewModels = Changed.config.client.useNewModels.get();
@@ -23,7 +52,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), DarkLatexWolfPartialRenderer::new);
+        //event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), DarkLatexWolfPartialRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_PUP.get(), DarkLatexPupRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
