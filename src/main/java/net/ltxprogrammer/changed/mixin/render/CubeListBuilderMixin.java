@@ -16,8 +16,9 @@ public abstract class CubeListBuilderMixin implements CubeListBuilderExtender {
     @Shadow @Final private List<CubeDefinition> cubes;
 
     @Override
-    public void removeLastFaces(Direction... directions) {
+    public CubeListBuilder removeLastFaces(Direction... directions) {
         CubeDefinitionExtender cube = (CubeDefinitionExtender)(Object)this.cubes.get(this.cubes.size() - 1);
         cube.removeFaces(directions);
+        return (CubeListBuilder)(Object)this;
     }
 }
