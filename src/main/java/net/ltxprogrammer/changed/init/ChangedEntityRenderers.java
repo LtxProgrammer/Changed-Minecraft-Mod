@@ -5,12 +5,11 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +21,7 @@ import java.util.Map;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedEntityRenderers {
     private static Map<String, EntityRenderer<? extends DarkLatexWolfPartial>> partialRenderers = ImmutableMap.of();
+    private static Map<String, EntityRenderer<? extends LatexHuman>> humanRenderers = ImmutableMap.of();
 
     @Nullable
     public static <T extends Entity> EntityRenderer<? super T> getRenderer(T entity) {
@@ -29,6 +29,10 @@ public class ChangedEntityRenderers {
             String s = partial.getModelName();
             EntityRenderer<? extends DarkLatexWolfPartial> entityrenderer = partialRenderers.get(s);
             return (EntityRenderer) (entityrenderer != null ? entityrenderer : partialRenderers.get("default"));
+        } else if (entity instanceof LatexHuman human) {
+            String s = human.getModelName();
+            EntityRenderer<? extends LatexHuman> entityrenderer = humanRenderers.get(s);
+            return (EntityRenderer) (entityrenderer != null ? entityrenderer : humanRenderers.get("default"));
         }
 
         return null; // Default to registered renderer
@@ -38,6 +42,9 @@ public class ChangedEntityRenderers {
         partialRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends DarkLatexWolfPartial>>()
                 .put("default", new DarkLatexWolfPartialRenderer(context, false))
                 .put("slim", new DarkLatexWolfPartialRenderer(context, true)).build();
+        humanRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends LatexHuman>>()
+                .put("default", new LatexHumanRenderer(context, false))
+                .put("slim", new LatexHumanRenderer(context, true)).build();
     }
 
     @SubscribeEvent
