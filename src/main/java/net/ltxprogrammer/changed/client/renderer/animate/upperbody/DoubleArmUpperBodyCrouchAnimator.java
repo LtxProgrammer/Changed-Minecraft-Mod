@@ -7,13 +7,13 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class SquidDogUpperBodyCrouchAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public class DoubleArmUpperBodyCrouchAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public final ModelPart upperLeftArm;
     public final ModelPart upperRightArm;
     public final ModelPart lowerLeftArm;
     public final ModelPart lowerRightArm;
 
-    public SquidDogUpperBodyCrouchAnimator(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+    public DoubleArmUpperBodyCrouchAnimator(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         super(head, torso, upperLeftArm, upperRightArm);
         this.upperLeftArm = upperLeftArm;
         this.upperRightArm = upperRightArm;
