@@ -581,6 +581,7 @@ public class AnimatorPresets {
                     .addPreset(dragonTail(tail, tailJoints))
                     .addPreset(beeAntennae(leftAntennae, rightAntennae))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new BeeWingInitAnimator<>(leftWing, rightWing))
                     .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
                     .addAnimator(new DoubleArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
