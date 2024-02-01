@@ -16,6 +16,10 @@ public class DeferredSpecialLatexModel extends LatexHumanoidModel<SpecialLatex> 
         return null;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
     @Override
     public void translateToHand(HumanoidArm p_102108_, PoseStack p_102109_) {
 

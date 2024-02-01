@@ -146,6 +146,10 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg2 : this.RightLeg2;
+    }
+
     public ModelPart getHead() {
         return this.LowerTorso;
     }

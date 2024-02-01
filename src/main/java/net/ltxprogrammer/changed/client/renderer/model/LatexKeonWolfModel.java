@@ -154,6 +154,10 @@ public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implem
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }

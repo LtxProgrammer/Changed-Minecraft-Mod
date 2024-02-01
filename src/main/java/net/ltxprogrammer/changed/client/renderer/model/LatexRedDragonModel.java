@@ -234,6 +234,10 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
     }
 
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }

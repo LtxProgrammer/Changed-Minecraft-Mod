@@ -301,6 +301,10 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
         };
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     @Override
     public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);

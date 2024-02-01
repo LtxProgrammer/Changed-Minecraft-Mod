@@ -56,6 +56,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);
+    public abstract ModelPart getLeg(HumanoidArm leg);
 
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);

@@ -132,6 +132,10 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return Abdomen;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }

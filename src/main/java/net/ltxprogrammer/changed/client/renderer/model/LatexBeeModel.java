@@ -219,6 +219,10 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
         };
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     @Override
     public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);

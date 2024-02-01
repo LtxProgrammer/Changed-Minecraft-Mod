@@ -226,6 +226,10 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
 	}
 
+	public ModelPart getLeg(HumanoidArm p_102852_) {
+		return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+	}
+
 	public ModelPart getHead() {
 		return this.Head;
 	}
@@ -361,6 +365,10 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 
 		public ModelPart getArm(HumanoidArm p_102852_) {
 			return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+		}
+
+		public ModelPart getLeg(HumanoidArm p_102852_) {
+			return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 		}
 
 		public ModelPart getHead() {

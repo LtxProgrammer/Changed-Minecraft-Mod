@@ -171,6 +171,10 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return Abdomen;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
@@ -296,6 +300,10 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
 
         public ModelPart getArm(HumanoidArm p_102852_) {
             return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+        }
+
+        public ModelPart getLeg(HumanoidArm p_102852_) {
+            return Abdomen;
         }
 
         public ModelPart getHead() {

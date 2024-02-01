@@ -240,6 +240,10 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
         return arm == HumanoidArm.LEFT ? this.LeftFrontLeg : this.RightFrontLeg;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLegBack : this.RightLegBack;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
