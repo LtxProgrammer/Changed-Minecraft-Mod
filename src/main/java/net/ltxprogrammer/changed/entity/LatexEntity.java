@@ -675,4 +675,12 @@ public abstract class LatexEntity extends Monster {
     public void onReplicateOther(IAbstractLatex other, LatexVariant<?> variant) {
 
     }
+
+    public CompoundTag savePlayerVariantData() {
+        return new CompoundTag();
+    }
+
+    public void readPlayerVariantData(CompoundTag tag) {
+
+    }
 }

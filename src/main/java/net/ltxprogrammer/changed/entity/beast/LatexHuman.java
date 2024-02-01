@@ -173,4 +173,21 @@ public class LatexHuman extends LatexEntity {
             }
         }
     }
+
+    @Override
+    public CompoundTag savePlayerVariantData() {
+        var tag = super.savePlayerVariantData();
+        this.entityData.get(DATA_PLAYER).ifPresent(uuid -> {
+            tag.putUUID("RepresentPlayer", uuid);
+        });
+        return tag;
+    }
+
+    @Override
+    public void readPlayerVariantData(CompoundTag tag) {
+        super.readPlayerVariantData(tag);
+        if (tag.contains("RepresentPlayer")) {
+            this.entityData.set(DATA_PLAYER, Optional.of(tag.getUUID("RepresentPlayer")));
+        }
+    }
 }
