@@ -303,6 +303,7 @@
   "entity.changed.latex_crystal_wolf_horned": "Horned Crystal Wolf",
   "entity.changed.latex_deer": "Latex Deer",
   "entity.changed.latex_fennec_fox": "Latex Fennec Fox",
+  "entity.changed.latex_human": "Latex Human",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
   "entity.changed.latex_keon_wolf": "Latex Keon",
   "entity.changed.latex_leaf": "Latex Leaf",
@@ -487,6 +488,9 @@
 
   "changed:advancements.main.tame_a_latex.title": "Unlikely Friend",
   "changed:advancements.main.tame_a_latex.description": "Tame a latex",
+
+  "changed:advancements.main.kill_all_latex.title": "Gone Berserk",
+  "changed:advancements.main.kill_all_latex.description": "Kill one of every kind of latex beast",
 
   "changed.tutorial.select_ability.title": "Select your ability",
   "changed.tutorial.select_ability.description": "Press %s",

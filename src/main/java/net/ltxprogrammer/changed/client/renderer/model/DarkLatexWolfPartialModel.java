@@ -6,6 +6,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
@@ -14,12 +15,16 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfPartial> implements LatexHumanoidModelInterface<DarkLatexWolfPartial, DarkLatexWolfPartialModel> {
@@ -35,33 +40,117 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
+
+    private final ModelPart RightPants;
+    private final ModelPart LeftPants;
+    private final ModelPart RightSleeve;
+    private final ModelPart LeftSleeve;
+    private final ModelPart Hat;
+    private final ModelPart Jacket;
+
     private final LatexAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> animator;
 
-    public DarkLatexWolfPartialModel(ModelPart root) {
+    private static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
+
+    public DarkLatexWolfPartialModel(ModelPart root, boolean latexLayer) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
-        this.Tail = Torso.getChild("Tail");
+        this.Tail = latexLayer ? Torso.getChild("Tail") : NULL_PART;
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
 
-        var tailPrimary = Tail.getChild("TailPrimary");
-        var tailSecondary = tailPrimary.getChild("TailSecondary");
-        var tailTertiary = tailSecondary.getChild("TailTertiary");
+        ModelPart tailPrimary;
+        ModelPart tailSecondary;
+        ModelPart tailTertiary;
 
-        var leftLowerLeg = LeftLeg.getChild("LeftLowerLeg");
-        var leftFoot = leftLowerLeg.getChild("LeftFoot");
-        var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
-        var rightFoot = rightLowerLeg.getChild("RightFoot");
+        ModelPart leftEar, rightEar;
+
+        ModelPart leftLowerLeg;
+        ModelPart leftFoot;
+        ModelPart leftPad;
+        ModelPart rightLowerLeg;
+        ModelPart rightFoot;
+        ModelPart rightPad;
+
+        if (latexLayer) {
+            RightPants = NULL_PART;
+            LeftPants = NULL_PART;
+            RightSleeve = NULL_PART;
+            LeftSleeve = NULL_PART;
+            Hat = NULL_PART;
+            Jacket = NULL_PART;
+
+            tailPrimary = Tail.getChild("TailPrimary");
+            tailSecondary = tailPrimary.getChild("TailSecondary");
+            tailTertiary = tailSecondary.getChild("TailTertiary");
+
+            leftEar = Head.getChild("LeftEar");
+            rightEar = Head.getChild("RightEar");
+
+            leftLowerLeg = LeftLeg.getChild("LeftLowerLeg");
+            leftFoot = leftLowerLeg.getChild("LeftFoot");
+            leftPad = leftFoot.getChild("LeftPad");
+            rightLowerLeg = RightLeg.getChild("RightLowerLeg");
+            rightFoot = rightLowerLeg.getChild("RightFoot");
+            rightPad = rightFoot.getChild("RightPad");
+        } else {
+            RightPants = RightLeg.getChild("RightPants");
+            LeftPants = LeftLeg.getChild("LeftPants");
+            RightSleeve = RightArm.getChild("RightSleeve");
+            LeftSleeve = LeftArm.getChild("LeftSleeve");
+            Hat = Head.getChild("Hat");
+            Jacket = Torso.getChild("Jacket");
+
+            tailPrimary = NULL_PART;
+            tailSecondary = NULL_PART;
+            tailTertiary = NULL_PART;
+
+            leftEar = NULL_PART;
+            rightEar = NULL_PART;
+
+            leftLowerLeg = NULL_PART;
+            leftFoot = NULL_PART;
+            leftPad = NULL_PART;
+            rightLowerLeg = NULL_PART;
+            rightFoot = NULL_PART;
+            rightPad = NULL_PART;
+        }
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
-                        Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
+                        Head, leftEar, rightEar,
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
-                        LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+                        LeftLeg, leftLowerLeg, leftFoot, leftPad, RightLeg, rightLowerLeg, rightFoot, rightPad));
+    }
+
+    public static DarkLatexWolfPartialModel human(ModelPart root) {
+        return new DarkLatexWolfPartialModel(root, false);
+    }
+
+    public static DarkLatexWolfPartialModel latex(ModelPart root) {
+        return new DarkLatexWolfPartialModel(root, true);
+    }
+
+    public void defaultModelProperties() {
+        Hat.visible = true;
+        Jacket.visible = true;
+        LeftPants.visible = true;
+        RightPants.visible = true;
+        LeftSleeve.visible = true;
+        RightSleeve.visible = true;
+    }
+
+    public void setModelProperties(AbstractClientPlayer player) {
+        Hat.visible = player.isModelPartShown(PlayerModelPart.HAT);
+        Jacket.visible = player.isModelPartShown(PlayerModelPart.JACKET);
+        LeftPants.visible = player.isModelPartShown(PlayerModelPart.LEFT_PANTS_LEG);
+        RightPants.visible = player.isModelPartShown(PlayerModelPart.RIGHT_PANTS_LEG);
+        LeftSleeve.visible = player.isModelPartShown(PlayerModelPart.LEFT_SLEEVE);
+        RightSleeve.visible = player.isModelPartShown(PlayerModelPart.RIGHT_SLEEVE);
     }
 
     public static LayerDefinition createHumanLayer(boolean slim) {
@@ -73,42 +162,43 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
 
         PartDefinition RightLeg = partdefinition.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.5F, 10.5F, 0.0F));
 
-        PartDefinition RightThighLayer_r1 = RightLeg.addOrReplaceChild("RightThighLayer_r1", CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F))
-                .texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+        PartDefinition RightThigh_r1 = RightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition RightLowerLeg = RightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition RightPants = RightLeg.addOrReplaceChild("RightPants", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        final var rightPantCubes = ((CubeListBuilderExtender)CubeListBuilder.create().texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.5F))).removeLastFaces(Direction.DOWN);
+
+        PartDefinition RightThighLayer_r1 = RightPants.addOrReplaceChild("RightThighLayer_r1", rightPantCubes, PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
         PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.5F, 10.5F, 0.0F));
 
-        PartDefinition LeftThighLayer_r1 = LeftLeg.addOrReplaceChild("LeftThighLayer_r1", CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.5F))
-                .texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+        PartDefinition LeftThigh_r1 = LeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition LeftLowerLeg = LeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition LeftPants = LeftLeg.addOrReplaceChild("LeftPants", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, -0.5F, 0.0F));
+        final var leftPantCubes = ((CubeListBuilderExtender)CubeListBuilder.create().texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.5F))).removeLastFaces(Direction.DOWN);
 
-        PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition LeftThighLayer_r1 = LeftPants.addOrReplaceChild("LeftThighLayer_r1", leftPantCubes, PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition Tail = Torso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition Hat = Head.addOrReplaceChild("Hat", CubeListBuilder.create().texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create(), PartPose.ZERO);
-        PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(40, 32).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.offset(-5.0F, 1.5F, 0.0F));
+        PartDefinition Jacket = Torso.addOrReplaceChild("Jacket", CubeListBuilder.create().texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 7.0F, 4.0F, new CubeDeformation(0.5F)), PartPose.offset(5.0F, 1.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, 1.5F, 0.0F));
+
+        final var rightSleeveCube = ((CubeListBuilderExtender)CubeListBuilder.create().texOffs(40, 32).addBox(-3.0F + rightArmOffset, -2.0F, -2.0F, armWidth, 9.0F, 4.0F, new CubeDeformation(0.25F))).removeLastFaces(Direction.DOWN);
+
+        PartDefinition RightSleeve = RightArm.addOrReplaceChild("RightSleeve", rightSleeveCube, PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 1.5F, 0.0F));
+
+        final var leftSleeveCube = ((CubeListBuilderExtender)CubeListBuilder.create().texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, armWidth, 9.0F, 4.0F, new CubeDeformation(0.25F))).removeLastFaces(Direction.DOWN);
+
+        PartDefinition LeftSleeve = LeftArm.addOrReplaceChild("LeftSleeve", leftSleeveCube, PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

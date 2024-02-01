@@ -21,7 +21,7 @@ public abstract class LatexEntityMixin extends Monster implements PehkuiEntityEx
         super(type, level);
     }
 
-    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true, remap = true)
     public void getPehkuiDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
         float widthScale = ScaleUtils.getBoundingBoxWidthScale(this);
         float heightScale = ScaleUtils.getBoundingBoxHeightScale(this);
