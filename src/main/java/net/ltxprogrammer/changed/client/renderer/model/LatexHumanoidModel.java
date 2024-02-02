@@ -5,6 +5,8 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.model.ArmedModel;
@@ -57,6 +59,16 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
 
     public abstract ModelPart getArm(HumanoidArm arm);
     public abstract ModelPart getLeg(HumanoidArm leg);
+
+    @Nullable
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        return switch (limb) {
+            case TORSO -> TransfurHelper.getTailedTorso();
+            case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg();
+            case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg();
+            default -> null;
+        };
+    }
 
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);

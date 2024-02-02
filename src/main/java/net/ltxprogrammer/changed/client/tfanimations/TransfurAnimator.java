@@ -78,13 +78,35 @@ public class TransfurAnimator {
     private static ModelPart matchCubeCount(ModelPart to, ModelPart from, ModelPart.Cube copyWith) {
         List<ModelPart.Cube> cubes = new ArrayList<>();
 
+        final int targetCubeCount = Math.max(to.cubes.size(), from.cubes.size());
+        int cubeCount = 0;
+
         for (var cube : to.cubes) {
+            if (cubeCount >= targetCubeCount) break;
+
             cubes.add(copyCube(cube));
+            cubeCount++;
         }
 
         for (var cube : from.cubes) {
+            if (cubeCount >= targetCubeCount) break;
+
             cubes.add(clampCube(cube, copyWith));
+            cubeCount++;
         }
+
+        cubes.sort((c1, c2) -> {
+            int yCompare = Float.compare(c1.maxY, c2.maxY);
+            int xCompare = Float.compare(c1.maxX, c2.maxX);
+            int zCompare = Float.compare(c1.maxZ, c2.maxZ);
+
+            if (yCompare == 0) {
+                if (xCompare == 0)
+                    return zCompare;
+                return xCompare;
+            }
+            return yCompare;
+        });
 
         Map<String, ModelPart> children = new HashMap<>();
 
@@ -96,7 +118,9 @@ public class TransfurAnimator {
 
         for (var k : from.children.keySet()) {
             if (to.children.containsKey(k)) {
-                children.put(k, matchCubeCount(to.children.get(k), from.children.get(k), copyOverride));
+                var model = matchCubeCount(to.children.get(k), from.children.get(k), copyOverride);
+                model.loadPose(to.children.get(k).storePose());
+                children.put(k, model);
             } else {
                 children.put(k, replaceCubesAndZeroParts(from.children.get(k), copyOverride));
             }
@@ -219,14 +243,21 @@ public class TransfurAnimator {
         ));
     }
 
+    private static ModelPart maybeReplaceWithHelper(LatexHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
+        var helper = afterModel.getTransfurHelperModel(limb);
+        return helper == null ? orDefault : helper;
+    }
+
     private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, LatexHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
-        final ModelPart before = limb.getModelPart(beforeModel);
+        ModelPart before = limb.getModelPart(beforeModel);
         final ModelPart after = limb.getModelPart(afterModel);
         if (before == null || after == null)
             return;
 
         final ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
+
+        before = maybeReplaceWithHelper(afterModel, limb, before);
 
         final ModelPart transitionPart = transitionModelPart(before, after, morphProgress);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);
@@ -261,6 +292,11 @@ public class TransfurAnimator {
             return Mth.clamp(Mth.map(transfurProgression, 0.8f, 0.85f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
+    static float easeInOutSine(float x) {
+        return -(Mth.cos(Mth.PI * x) - 1) / 2;
+
+    }
+
     public static void renderTransfurringPlayer(Player player, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
@@ -289,7 +325,7 @@ public class TransfurAnimator {
 
         final var colors = AbilityRadialScreen.getColors(variant);
         renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getLatexEntity()),
-                morphProgress, colors.foreground(), morphAlpha, stack, buffer, light, partialTick);
+                easeInOutSine(morphProgress), colors.foreground(), morphAlpha, stack, buffer, light, partialTick);
     }
 
     private static boolean capturingPose = false;
