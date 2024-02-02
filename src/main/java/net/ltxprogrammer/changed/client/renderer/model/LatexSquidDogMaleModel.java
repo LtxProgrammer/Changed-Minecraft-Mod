@@ -287,7 +287,8 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
         };
     }
 
-    public ModelPart getLowerArm(HumanoidArm humanoidArm) {
+    @Override
+    public ModelPart getOtherArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
@@ -306,7 +307,7 @@ public class LatexSquidDogMaleModel extends LatexHumanoidModel<LatexSquidDogMale
 
     @Override
     public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
-        this.getLowerArm(arm).translateAndRotate(poseStack);
+        this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 

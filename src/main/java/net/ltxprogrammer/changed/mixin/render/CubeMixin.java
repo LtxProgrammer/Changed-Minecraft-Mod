@@ -84,4 +84,32 @@ public abstract class CubeMixin implements CubeExtender {
                     Arrays.fill(polygon.vertices, NULL_VERTEX);
         }
     }
+
+    @Override
+    public ModelPart.Polygon[] getPolygons() {
+        return polygons;
+    }
+
+    @Override
+    public void copyPolygonsFrom(ModelPart.Cube cube) {
+        ModelPart.Polygon[] otherPoly = ((CubeExtender)cube).getPolygons();
+        for (int i = 0; i < otherPoly.length; ++i) {
+            ModelPart.Vertex[] nVertices = new ModelPart.Vertex[] {
+                    otherPoly[i].vertices[0],
+                    otherPoly[i].vertices[1],
+                    otherPoly[i].vertices[2],
+                    otherPoly[i].vertices[3]
+            };
+
+            this.polygons[i] = new ModelPart.Polygon(nVertices, 0.0f, 0.0f, 0.0f, 0.0f,
+                    1.0f, 1.0f, false, Direction.getNearest(otherPoly[i].normal.x(), otherPoly[i].normal.y(), otherPoly[i].normal.z()));
+
+            for (int v = 0; v < this.polygons[i].vertices.length; ++v) {
+                final ModelPart.Vertex otherVert = otherPoly[i].vertices[v];
+
+                // Deep copy
+                this.polygons[i].vertices[v] = otherVert.remap(otherVert.u, otherVert.v);
+            }
+        }
+    }
 }

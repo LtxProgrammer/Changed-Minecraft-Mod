@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
@@ -54,7 +55,7 @@ public class EventHandlerClient {
             }
         }
 
-        if (!player.isRemoved() && !player.isSpectator()) {
+        if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.isCapturing()) {
             if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
                 event.setCanceled(true);
             else if (ProcessTransfur.isPlayerLatex(player)) {

@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -35,12 +36,23 @@ public class FormRenderHandler {
             variant.sync(player);
             variant.getLatexEntity().setCustomNameVisible(true);
 
-            if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
+            if (variant.transfurProgression < 1f) {
+                TransfurAnimator.startCapture();
+
+                renderLiving(player, stack, buffer, light, partialTick);
                 renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+
+                TransfurAnimator.endCapture();
+
+                TransfurAnimator.renderTransfurringPlayer(player, variant, stack, buffer, light, partialTick);
+            } else {
+                if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
+                    renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+            }
         });
     }
 
-    private static void renderLiving(LivingEntity living, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderLiving(LivingEntity living, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         if (living == null) return;
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
         renderer.render(living, living.getYRot(), partialTick, stack, buffer, light);

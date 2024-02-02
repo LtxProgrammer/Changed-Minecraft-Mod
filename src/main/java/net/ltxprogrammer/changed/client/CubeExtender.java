@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.core.Direction;
 
@@ -11,4 +12,6 @@ public interface CubeExtender {
     Vector3f getVisualMax();
     UVPair getUV(Vector3f surfacePoint);
     void removeSides(Set<Direction> directions);
+    ModelPart.Polygon[] getPolygons();
+    void copyPolygonsFrom(ModelPart.Cube cube);
 }

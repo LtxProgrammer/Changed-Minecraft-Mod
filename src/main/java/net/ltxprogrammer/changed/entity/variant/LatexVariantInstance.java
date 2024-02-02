@@ -78,6 +78,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
 
+    public float transfurProgression = 0.0f;
+    public boolean willSurviveTransfur = true;
+
     public LatexVariantInstance(LatexVariant<T> parent, Player host) {
         this.parent = parent;
         this.entity = parent.generateForm(host, host.level);
@@ -411,6 +414,19 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (player == null) return;
 
         ageAsVariant++;
+        if (transfurProgression < 1f) {
+            transfurProgression += 0.005f; // TF takes 10 seconds
+
+            if (transfurProgression >= 1f && !willSurviveTransfur) {
+                this.getParent().replaceEntity(player);
+                return;
+            }
+        }
+
+        if (transfurProgression >= 1f) {
+            if (player instanceof ServerPlayer serverPlayer)
+                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
+        }
 
         player.refreshDimensions();
         if (player.isOnGround())

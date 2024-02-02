@@ -73,6 +73,7 @@
     "render.ItemInHandRendererMixin",
     "render.LevelRendererMixin",
     "render.ModelBakeryMixin",
+    "render.ModelPartMixin",
     "render.PlayerRendererMixin",
     "render.PoseStackMixin",
     "render.RenderTypeMixin",

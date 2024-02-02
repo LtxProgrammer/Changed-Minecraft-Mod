@@ -331,9 +331,6 @@ public class ProcessTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
 
-        if (player instanceof ServerPlayer serverPlayer && variant != null)
-            ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, variant);
-
         var oldVariant = playerDataExtension.getLatexVariant();
         if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
             return oldVariant;
