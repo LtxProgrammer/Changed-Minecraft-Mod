@@ -57,6 +57,7 @@ public enum LimbCoverTransition {
 
     public static final Codec<LimbCoverTransition> CODEC = ResourceLocation.CODEC.xmap(LimbCoverTransition::getFromTransition, LimbCoverTransition::getTransition);
     public static final ResourceLocation FULL_COVER = Changed.modResource("textures/models/latex_cover/full.png");
+    public static final ResourceLocation LATEX_CUBE = Changed.modResource("textures/models/latex_cover/latex_cube.png");
     private static final int FRAME_COUNT = 8;
 
     private final ResourceLocation transition;

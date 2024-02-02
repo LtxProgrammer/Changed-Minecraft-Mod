@@ -20,6 +20,7 @@ public class TransfurHelper {
     protected final ModelPart TailedTorso;
     protected final ModelPart FeminineTorso;
     protected final ModelPart FeminineTorsoAlt;
+    protected final ModelPart SnoutedHead;
 
     protected TransfurHelper(ModelPart root) {
         this.DigitigradeLeftLeg = root.getChild("DigitigradeLeftLeg");
@@ -27,6 +28,7 @@ public class TransfurHelper {
         this.TailedTorso = root.getChild("TailedTorso");
         this.FeminineTorso = root.getChild("FeminineTorso");
         this.FeminineTorsoAlt = root.getChild("FeminineTorsoAlt");
+        this.SnoutedHead = root.getChild("SnoutedHead");
     }
 
     private static EntityModelSet getModelSet() {
@@ -47,7 +49,7 @@ public class TransfurHelper {
 
             PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
         }
@@ -62,7 +64,7 @@ public class TransfurHelper {
 
             PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -4.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
         }
@@ -113,6 +115,14 @@ public class TransfurHelper {
 
             PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(58, 2).addBox(-1.0F, 0.25F, -0.5F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
         }
+
+        // SNOUTED HEAD
+        {
+            PartDefinition SnoutedHead = partdefinition.addOrReplaceChild("SnoutedHead", CubeListBuilder.create().texOffs(-6, -6).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
+                    .texOffs(-1, -1).addBox(-2.0F, -3.0F, -4.0F, 4.0F, 2.0F, 3.0F, CubeDeformation.NONE)
+                    .texOffs(-1, -1).addBox(-2.0F, -1.0F, -4.0F, 4.0F, 1.0F, 3.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        }
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
@@ -130,11 +140,15 @@ public class TransfurHelper {
         return INSTANCE.get().TailedTorso;
     }
 
+    public static ModelPart getFeminineTorso() {
+        return INSTANCE.get().FeminineTorso;
+    }
+
     public static ModelPart getFeminineTorsoAlt() {
         return INSTANCE.get().FeminineTorsoAlt;
     }
 
-    public static ModelPart getFeminineTorso() {
-        return INSTANCE.get().FeminineTorso;
+    public static ModelPart getSnoutedHead() {
+        return INSTANCE.get().SnoutedHead;
     }
 }

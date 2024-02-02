@@ -63,6 +63,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
     @Nullable
     public ModelPart getTransfurHelperModel(Limb limb) {
         return switch (limb) {
+            case HEAD -> TransfurHelper.getSnoutedHead();
             case TORSO -> TransfurHelper.getTailedTorso();
             case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg();
             case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg();

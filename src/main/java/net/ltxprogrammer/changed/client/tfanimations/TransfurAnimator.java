@@ -143,6 +143,9 @@ public class TransfurAnimator {
         );
     }
 
+    private static final float GOOP_CUBE_WIDTH = 16.0f;
+    private static final float GOOP_CUBE_HEIGHT = 16.0f;
+
     private static ModelPart.Polygon lerpPolygon(ModelPart.Polygon a, ModelPart.Polygon b, float lerp) {
         ModelPart.Polygon ret = new ModelPart.Polygon(a.vertices, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false,
                 Direction.getNearest(a.normal.x(), a.normal.y(), a.normal.z()));
@@ -150,6 +153,28 @@ public class TransfurAnimator {
         for (int i = 0; i < ret.vertices.length; ++i) {
             ret.vertices[i] = lerpVertex(a.vertices[i], b.vertices[i], lerp);
         }
+
+        float polygonWidth;
+        float polygonHeight;
+
+        if (Mth.abs(a.normal.x()) > 0f) {
+            polygonWidth = Mth.abs(ret.vertices[1].pos.z() - ret.vertices[0].pos.z());
+            polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
+        } else if (Mth.abs(a.normal.y()) > 0f) {
+            polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
+            polygonHeight = Mth.abs(ret.vertices[2].pos.z() - ret.vertices[1].pos.z());
+        } else {
+            polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
+            polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
+        }
+
+        polygonWidth /= GOOP_CUBE_WIDTH;
+        polygonHeight /= GOOP_CUBE_HEIGHT;
+
+        ret.vertices[0] = ret.vertices[0].remap(polygonWidth, 0.0f);
+        ret.vertices[1] = ret.vertices[1].remap(0.0f, 0.0f);
+        ret.vertices[2] = ret.vertices[2].remap(0.0f, polygonHeight);
+        ret.vertices[3] = ret.vertices[3].remap(polygonWidth, polygonHeight);
 
         return ret;
     }
@@ -262,7 +287,7 @@ public class TransfurAnimator {
         final ModelPart transitionPart = transitionModelPart(before, after, morphProgress);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);
 
-        final var vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(LimbCoverTransition.FULL_COVER));
+        final var vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(LimbCoverTransition.LATEX_CUBE));
         final int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
         stack.pushPose();
@@ -297,6 +322,17 @@ public class TransfurAnimator {
 
     }
 
+    /*private static void renderCoveringPlayer(Player player, HumanoidModel<?> beforeModel, LatexHumanoidModel<?> afterModel, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+        forceRenderPlayer = true;
+        FormRenderHandler.renderLiving(player, stack, buffer, light, partialTick);
+
+        Arrays.stream(Limb.values()).forEach(limb -> {
+            renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, partialTick);
+        });
+
+        forceRenderPlayer = false;
+    }*/
+
     public static void renderTransfurringPlayer(Player player, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
@@ -308,8 +344,9 @@ public class TransfurAnimator {
 
         if (!(latexRenderer instanceof LatexHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
 
-        final float morphProgress = getMorphProgression(variant.transfurProgression);
-        final float morphAlpha = getMorphAlpha(variant.transfurProgression);
+        final float transfurProgression = variant.getTransfurProgression(partialTick);
+        final float morphProgress = getMorphProgression(transfurProgression);
+        final float morphAlpha = getMorphAlpha(transfurProgression);
 
         if (morphAlpha < 1f) {
             if (morphProgress < 0.5f) {

@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -78,8 +79,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
 
-    public float transfurProgression = 0.0f;
+    private float transfurProgressionO = 0.0f;
+    private float transfurProgression = 0.0f;
     public boolean willSurviveTransfur = true;
+
+    public float getTransfurProgression(float partial) {
+        return Mth.lerp(partial, transfurProgressionO, transfurProgression);
+    }
 
     public LatexVariantInstance(LatexVariant<T> parent, Player host) {
         this.parent = parent;
@@ -414,6 +420,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (player == null) return;
 
         ageAsVariant++;
+
+        transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
             transfurProgression += 0.005f; // TF takes 10 seconds
 

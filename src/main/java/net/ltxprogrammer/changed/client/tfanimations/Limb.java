@@ -19,22 +19,30 @@ public enum Limb {
         if (model instanceof DoubleArmedModel doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.LEFT);
         return null;
-    }),
+    }, false),
     RIGHT_ARM2(model -> model.rightArm, model -> {
         if (model instanceof DoubleArmedModel doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.RIGHT);
         return null;
-    }),
+    }, false),
 
     LEFT_LEG(model -> model.leftLeg, model -> model.getLeg(HumanoidArm.LEFT)),
     RIGHT_LEG(model -> model.rightLeg, model -> model.getLeg(HumanoidArm.RIGHT));
 
     private final Function<HumanoidModel<?>, ModelPart> getModelPartFn;
     private final Function<LatexHumanoidModel<?>, ModelPart> getLatexModelPartFn;
+    private final boolean isVanillaPart;
 
     Limb(Function<HumanoidModel<?>, ModelPart> getModelPartFn, Function<LatexHumanoidModel<?>, ModelPart> getLatexModelPartFn) {
         this.getModelPartFn = getModelPartFn;
         this.getLatexModelPartFn = getLatexModelPartFn;
+        this.isVanillaPart = true;
+    }
+
+    Limb(Function<HumanoidModel<?>, ModelPart> getModelPartFn, Function<LatexHumanoidModel<?>, ModelPart> getLatexModelPartFn, boolean isVanillaPart) {
+        this.getModelPartFn = getModelPartFn;
+        this.getLatexModelPartFn = getLatexModelPartFn;
+        this.isVanillaPart = isVanillaPart;
     }
 
     public ModelPart getModelPart(HumanoidModel<?> model) {
@@ -43,5 +51,9 @@ public enum Limb {
 
     public ModelPart getModelPart(LatexHumanoidModel<?> model) {
         return getLatexModelPartFn.apply(model);
+    }
+
+    public boolean isVanillaPart() {
+        return isVanillaPart;
     }
 }
