@@ -1,5 +1,5 @@
 {
-  "parent": "changed:custom/bedside_iv_rack",
+  "parent": "changed:custom/bedside_iv_rack_upper",
   "textures": {
     "all": "changed:blocks/bedside_iv_rack",
     "particle": "changed:blocks/bedside_iv_rack",

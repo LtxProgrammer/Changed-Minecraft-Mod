@@ -42,8 +42,8 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
 
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
-    public static final VoxelShape SHAPE_STEM = Block.box(7.5D, 4.0D, 7.5D, 8.5D, 27.0D, 8.5D);
-    public static final VoxelShape SHAPE_TOP = Block.box(2.0D, 27.0D, 7.5D, 14.0D, 32.0D, 8.5D);
+    public static final VoxelShape SHAPE_STEM = Block.box(7.5D, 4.0D, 7.5D, 8.5D, 25.0D, 8.5D);
+    public static final VoxelShape SHAPE_TOP = Block.box(2.5D, 25.0D, 7.5D, 13.5D, 30.0D, 8.5D);
     public static final VoxelShape SHAPE_WHOLE = Shapes.or(SHAPE_BASE, SHAPE_STEM, SHAPE_TOP);
 
     public BedsideIVRack() {
@@ -133,11 +133,9 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
         p_52901_.add(FULL);
     }
 
-    public RenderShape getRenderShape(BlockState p_54559_) {
-        if (p_54559_.getValue(HALF) == DoubleBlockHalf.LOWER)
-            return RenderShape.MODEL;
-        else
-            return RenderShape.INVISIBLE;
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     public VoxelShape getOcclusionShape(BlockState p_54584_, BlockGetter p_54585_, BlockPos p_54586_) {
