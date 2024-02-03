@@ -362,7 +362,7 @@ public class TransfurAnimator {
         final var vertexConsumer = buffer.getBuffer(alpha >= 1f ? RenderType.entityCutoutNoCull(
                         transition.getTextureForProgress(progress)) : RenderType.entityTranslucent(transition.getTextureForProgress(progress))
         );
-        final Color3 color = variant.getLatexEntity().getTransfurColor();
+        final Color3 color = variant.getTransfurColor();
 
         copiedPart.loadPose(pose.pose);
         copiedPart.render(stack, vertexConsumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0.0f), color.red(), color.green(), color.blue(), alpha);
@@ -416,7 +416,7 @@ public class TransfurAnimator {
         if (morphAlpha <= 0f)
             return; // Don't bother rendering
 
-        final var colors = variant.getLatexEntity().getTransfurColor();
+        final var colors = variant.getTransfurColor();
         renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getLatexEntity()),
                 morphProgress, colors, morphAlpha, stack, buffer, light, partialTick);
     }

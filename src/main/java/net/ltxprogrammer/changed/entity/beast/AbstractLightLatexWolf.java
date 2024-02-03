@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public abstract class AbstractLightLatexWolf extends LatexEntity implements Gend
     }
 
     @Override
-    public Color3 getTransfurColor() {
+    public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.WHITE;
     }
 

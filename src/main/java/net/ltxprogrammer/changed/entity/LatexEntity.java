@@ -518,7 +518,7 @@ public abstract class LatexEntity extends Monster {
 
     public abstract Color3 getDripColor();
 
-    public Color3 getTransfurColor() { return Color3.WHITE; }
+    public Color3 getTransfurColor(TransfurCause cause) { return Color3.WHITE; }
 
     public float getDripRate(float damage) {
         return Mth.lerp(damage, 0.02f, 0.1f); // 1/50 -> 1/10

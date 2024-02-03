@@ -3,6 +3,9 @@ package net.ltxprogrammer.changed.entity;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.util.Mth;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 public enum TransfurCause {
     ATTACK_REPLICATE_LEFT(
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
@@ -59,7 +62,12 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
-            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb); // RIGHT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
+
+    // Specific causes that inherit from generic causes
+    DARK_LATEX_CRYSTAL(FOOT_HAZARD_RIGHT),
+    LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),
+    SQUID_DOG_INKBALL(GRAB_REPLICATE);
 
     private static float firstLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.0f, 0.33333f, 0.0f, 1.0f), 0.0f, 1.0f);
@@ -79,6 +87,23 @@ public enum TransfurCause {
 
     private final LimbCoverTransition headTransition, torsoTransition, leftArmTransition, rightArmTransition, leftLegTransition, rightLegTransition;
     private final Float2FloatFunction headTiming, torsoTiming, leftArmTiming, rightArmTiming, leftLegTiming, rightLegTiming;
+    private final @Nullable TransfurCause inherits;
+
+    TransfurCause(TransfurCause inherit) {
+        this.headTiming = inherit.headTiming;
+        this.torsoTiming = inherit.torsoTiming;
+        this.leftArmTiming = inherit.leftArmTiming;
+        this.rightArmTiming = inherit.rightArmTiming;
+        this.leftLegTiming = inherit.leftLegTiming;
+        this.rightLegTiming = inherit.rightLegTiming;
+        this.headTransition = inherit.headTransition;
+        this.torsoTransition = inherit.torsoTransition;
+        this.leftArmTransition = inherit.leftArmTransition;
+        this.rightArmTransition = inherit.rightArmTransition;
+        this.leftLegTransition = inherit.leftLegTransition;
+        this.rightLegTransition = inherit.rightLegTransition;
+        this.inherits = inherit;
+    }
 
     TransfurCause(
             LimbCoverTransition headTransition, Float2FloatFunction headTiming,
@@ -93,13 +118,18 @@ public enum TransfurCause {
         this.rightArmTiming = rightArmTiming;
         this.leftLegTiming = leftLegTiming;
         this.rightLegTiming = rightLegTiming;
-
         this.headTransition = headTransition;
         this.torsoTransition = torsoTransition;
         this.leftArmTransition = leftArmTransition;
         this.rightArmTransition = rightArmTransition;
         this.leftLegTransition = leftLegTransition;
         this.rightLegTransition = rightLegTransition;
+
+        this.inherits = null;
+    }
+
+    public Optional<TransfurCause> getParent() {
+        return Optional.ofNullable(inherits);
     }
 
     public float getHeadProgress(float totalProgress) {

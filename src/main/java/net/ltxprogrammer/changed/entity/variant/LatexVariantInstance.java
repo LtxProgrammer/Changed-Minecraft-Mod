@@ -16,6 +16,7 @@ import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.nbt.CompoundTag;
@@ -89,6 +90,10 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public float getMorphProgression(float partial) {
         return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+    }
+
+    public Color3 getTransfurColor() {
+        return getLatexEntity().getTransfurColor(this.cause);
     }
 
     public LatexVariantInstance(LatexVariant<T> parent, Player host) {
