@@ -85,6 +85,7 @@ public enum TransfurCause {
     LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),
     SQUID_DOG_INKBALL(GRAB_REPLICATE),
     SYRINGE(ATTACK_REPLICATE_LEFT),
+    PINK_PANTS(WAIST_HAZARD),
     WHITE_LATEX(GRAB_REPLICATE);
 
     private static float firstLimb(float totalProgress) {
