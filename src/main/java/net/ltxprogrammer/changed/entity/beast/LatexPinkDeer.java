@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -29,5 +30,13 @@ public class LatexPinkDeer extends LatexPinkWyvern {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
+    }
+
+    @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        if (cause == TransfurCause.PINK_PANTS)
+            return Color3.fromInt(0xd8bc99);
+        else
+            return Color3.fromInt(0xf7aebe);
     }
 }

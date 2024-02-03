@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -64,5 +65,9 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#8ad6e7");
     }
 }

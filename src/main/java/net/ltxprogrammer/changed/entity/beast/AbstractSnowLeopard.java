@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.GenderedEntity;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -31,5 +28,9 @@ public abstract class AbstractSnowLeopard extends LatexEntity implements Gendere
 
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#9c9c9c");
     }
 }

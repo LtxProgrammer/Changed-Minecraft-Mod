@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.ai.DudNavigator;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -95,6 +96,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.NONE;
+    }
+
+    @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
     }
 
     @Override
