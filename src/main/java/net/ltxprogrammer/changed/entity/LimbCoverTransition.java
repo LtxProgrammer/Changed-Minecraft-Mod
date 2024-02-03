@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.client.tfanimations;
+package net.ltxprogrammer.changed.entity;
 
 import com.mojang.serialization.Codec;
 import net.ltxprogrammer.changed.Changed;

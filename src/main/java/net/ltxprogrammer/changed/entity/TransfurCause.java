@@ -4,15 +4,62 @@ import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.util.Mth;
 
 public enum TransfurCause {
-    ATTACK_REPLICATE_LEFT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb),
-    ATTACK_REPLICATE_RIGHT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::thirdLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb),
-    GRAB_REPLICATE(TransfurCause::secondLimb, TransfurCause::firstLimb, TransfurCause::secondLimb, TransfurCause::secondLimb, TransfurCause::secondLimb, TransfurCause::secondLimb),
-    FOOT_HAZARD_LEFT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb),
-    FOOT_HAZARD_RIGHT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::firstLimb),
-    WALL_HAZARD_LEFT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb),
-    WALL_HAZARD_RIGHT(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::thirdLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb),
-    CEILING_HAZARD(TransfurCause::firstLimb, TransfurCause::secondLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb),
-    IV_RACK(TransfurCause::thirdLimb, TransfurCause::secondLimb, TransfurCause::firstLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb, TransfurCause::thirdLimb);
+    ATTACK_REPLICATE_LEFT(
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_ARM, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_ATTACK, TransfurCause::firstLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
+    ATTACK_REPLICATE_RIGHT(
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_ARM, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT ARM
+            LimbCoverTransition.COVER_ATTACK, TransfurCause::firstLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
+    GRAB_REPLICATE(
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // HEAD
+            LimbCoverTransition.COVER_ATTACK, TransfurCause::firstLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb), // RIGHT LEG
+    FOOT_HAZARD_LEFT(
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb), // RIGHT LEG
+    FOOT_HAZARD_RIGHT(
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT LEG
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb), // RIGHT LEG
+    WALL_HAZARD_LEFT(
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb),
+    WALL_HAZARD_RIGHT(
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
+    CEILING_HAZARD(
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_HEAD, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb); // RIGHT LEG
 
     private static float firstLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.0f, 0.33333f, 0.0f, 1.0f), 0.0f, 1.0f);
@@ -22,42 +69,84 @@ public enum TransfurCause {
         return Mth.clamp(Mth.map(totalProgress, 0.33333f, 0.66667f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
 
+    private static float secondHalfLimb(float totalProgress) {
+        return Mth.clamp(Mth.map(totalProgress, 0.5f, 0.83333f, 0.0f, 1.0f), 0.0f, 1.0f);
+    }
+
     private static float thirdLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.66667f, 1.0f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
 
-    private final Float2FloatFunction head, torso, leftArm, rightArm, leftLeg, rightLeg;
+    private final LimbCoverTransition headTransition, torsoTransition, leftArmTransition, rightArmTransition, leftLegTransition, rightLegTransition;
+    private final Float2FloatFunction headTiming, torsoTiming, leftArmTiming, rightArmTiming, leftLegTiming, rightLegTiming;
 
-    TransfurCause(Float2FloatFunction head, Float2FloatFunction torso, Float2FloatFunction leftArm, Float2FloatFunction rightArm, Float2FloatFunction leftLeg, Float2FloatFunction rightLeg) {
-        this.head = head;
-        this.torso = torso;
-        this.leftArm = leftArm;
-        this.rightArm = rightArm;
-        this.leftLeg = leftLeg;
-        this.rightLeg = rightLeg;
+    TransfurCause(
+            LimbCoverTransition headTransition, Float2FloatFunction headTiming,
+            LimbCoverTransition torsoTransition, Float2FloatFunction torsoTiming,
+            LimbCoverTransition leftArmTransition, Float2FloatFunction leftArmTiming,
+            LimbCoverTransition rightArmTransition, Float2FloatFunction rightArmTiming,
+            LimbCoverTransition leftLegTransition, Float2FloatFunction leftLegTiming,
+            LimbCoverTransition rightLegTransition, Float2FloatFunction rightLegTiming) {
+        this.headTiming = headTiming;
+        this.torsoTiming = torsoTiming;
+        this.leftArmTiming = leftArmTiming;
+        this.rightArmTiming = rightArmTiming;
+        this.leftLegTiming = leftLegTiming;
+        this.rightLegTiming = rightLegTiming;
+
+        this.headTransition = headTransition;
+        this.torsoTransition = torsoTransition;
+        this.leftArmTransition = leftArmTransition;
+        this.rightArmTransition = rightArmTransition;
+        this.leftLegTransition = leftLegTransition;
+        this.rightLegTransition = rightLegTransition;
     }
 
     public float getHeadProgress(float totalProgress) {
-        return head.get(totalProgress);
+        return headTiming.get(totalProgress);
     }
 
     public float getTorsoProgress(float totalProgress) {
-        return torso.get(totalProgress);
+        return torsoTiming.get(totalProgress);
     }
 
     public float getLeftArmProgress(float totalProgress) {
-        return leftArm.get(totalProgress);
+        return leftArmTiming.get(totalProgress);
     }
 
     public float getRightArmProgress(float totalProgress) {
-        return rightArm.get(totalProgress);
+        return rightArmTiming.get(totalProgress);
     }
 
     public float getLeftLegProgress(float totalProgress) {
-        return leftLeg.get(totalProgress);
+        return leftLegTiming.get(totalProgress);
     }
 
     public float getRightLegProgress(float totalProgress) {
-        return rightLeg.get(totalProgress);
+        return rightLegTiming.get(totalProgress);
+    }
+
+    public LimbCoverTransition getHeadTransition() {
+        return headTransition;
+    }
+
+    public LimbCoverTransition getTorsoTransition() {
+        return torsoTransition;
+    }
+
+    public LimbCoverTransition getLeftArmTransition() {
+        return leftArmTransition;
+    }
+
+    public LimbCoverTransition getRightArmTransition() {
+        return rightArmTransition;
+    }
+
+    public LimbCoverTransition getLeftLegTransition() {
+        return leftLegTransition;
+    }
+
+    public LimbCoverTransition getRightLegTransition() {
+        return rightLegTransition;
     }
 }

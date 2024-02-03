@@ -6,9 +6,9 @@ import com.mojang.math.Matrix4f;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
-import net.ltxprogrammer.changed.client.gui.AbilityRadialScreen;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.entity.LimbCoverTransition;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.Transition;
@@ -338,6 +338,16 @@ public class TransfurAnimator {
             default -> 1.0f;
         } * coverAlpha;
 
+        final LimbCoverTransition transition = switch (limb) {
+            case HEAD -> variant.cause.getHeadTransition();
+            case TORSO -> variant.cause.getTorsoTransition();
+            case LEFT_ARM -> variant.cause.getLeftArmTransition();
+            case RIGHT_ARM -> variant.cause.getRightArmTransition();
+            case LEFT_LEG -> variant.cause.getLeftLegTransition();
+            case RIGHT_LEG -> variant.cause.getRightLegTransition();
+            default -> LimbCoverTransition.INSTANT;
+        };
+
         if (progress <= 0f)
             return;
 
@@ -347,8 +357,6 @@ public class TransfurAnimator {
         stack.pushPose();
         ((PoseStackExtender)stack).setPose(pose.matrix);
         stack.scale(1.005f, 1.005f, 1.005f);
-
-        final var transition = LimbCoverTransition.COVER_START;
 
         final float alpha = transition.getAlphaForProgress(progress);
         final var vertexConsumer = buffer.getBuffer(alpha >= 1f ? RenderType.entityCutoutNoCull(
