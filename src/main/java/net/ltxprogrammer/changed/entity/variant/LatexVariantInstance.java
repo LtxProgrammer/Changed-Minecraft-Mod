@@ -70,15 +70,50 @@ public class LatexVariantInstance<T extends LatexEntity> {
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
-    protected float lastSwimMul = 1F;
     private boolean dead;
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
 
     private float transfurProgressionO = 0.0f;
-    private float transfurProgression = 0.0f;
+    public float transfurProgression = 0.0f;
     public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
     public boolean willSurviveTransfur = true;
+
+    public CompoundTag save() {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("ageAsVariant", ageAsVariant);
+        tag.putInt("air", air);
+        tag.putInt("jumpCharges", jumpCharges);
+        tag.putBoolean("dead", dead);
+        tag.putInt("ticksBreathingUnderwater", ticksBreathingUnderwater);
+        tag.putInt("ticksWhiteLatex", ticksWhiteLatex);
+
+        tag.putFloat("transfurProgressionO", transfurProgressionO);
+        tag.putFloat("transfurProgression", transfurProgression);
+        tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
+
+        tag.putString("transfurCause", cause.name());
+
+        tag.put("abilities", this.saveAbilities());
+        return tag;
+    }
+
+    public void load(CompoundTag tag) {
+        ageAsVariant = tag.getInt("ageAsVariant");
+        air = tag.getInt("air");
+        jumpCharges = tag.getInt("jumpCharges");
+        dead = tag.getBoolean("dead");
+        ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
+        ticksWhiteLatex = tag.getInt("ticksWhiteLatex");
+
+        transfurProgressionO = tag.getFloat("transfurProgressionO");
+        transfurProgression = tag.getFloat("transfurProgression");
+        willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
+
+        cause = TransfurCause.valueOf(tag.getString("transfurCause"));
+
+        this.loadAbilities(tag.getCompound("abilities"));
+    }
 
     public float getTransfurProgression(float partial) {
         return Mth.lerp(partial, transfurProgressionO, transfurProgression);
@@ -223,7 +258,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             Pale.tickPaleExposure(event.player);
             ProcessTransfur.ifPlayerLatex(event.player, instance -> {
                 if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
-                    ProcessTransfur.setPlayerLatexVariant(event.player, null);
+                    ProcessTransfur.removePlayerLatexVariant(event.player);
                     return;
                 }
 
@@ -254,7 +289,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
         if (event.getEntityLiving() instanceof Player player) {
             ProcessTransfur.ifPlayerLatex(player, instance -> {
                 if (instance.isDead())
-                    ProcessTransfur.setPlayerLatexVariant(player, null);
+                    ProcessTransfur.removePlayerLatexVariant(player);
             });
         }
     }
@@ -443,7 +478,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
-            transfurProgression += 0.005f; // TF takes 10 seconds
+            transfurProgression += (1.0f / cause.getDuration()) * 0.05f;
 
             if (transfurProgression >= 1f && !willSurviveTransfur) {
                 this.getParent().replaceEntity(player);

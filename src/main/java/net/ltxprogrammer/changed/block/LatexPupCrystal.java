@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -137,7 +139,7 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
                 return;
             this.extend(state, level, pos);
             if (!level.isClientSide) {
-                if (ProcessTransfur.progressTransfur(le, 8.3f, variant)) {
+                if (ProcessTransfur.progressTransfur(le, 8.3f, variant, TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL))) {
                     for (int i = 1; i < multiply; ++i) {
                         variant.spawnAtEntity(le);
                     }

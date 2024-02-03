@@ -23,7 +23,7 @@ public class SwitchGenderAbility extends SimpleAbility {
             var newVariantId = Gender.switchGenderedForm(variant.getFormId());
             if (!newVariantId.equals(variant.getFormId())) {
                 var newVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(newVariantId);
-                ProcessTransfur.setPlayerLatexVariant(player, newVariant);
+                ProcessTransfur.changeTransfur(player, newVariant);
                 ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
             }
             player.setHealth(beforeHealth);

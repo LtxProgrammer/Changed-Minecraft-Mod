@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.entity.projectile;
 
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -55,7 +57,7 @@ public class LatexInkball extends ThrowableItemProjectile {
             return;
 
         ProcessTransfur.progressTransfur(livingEntity, 6.0f,
-                LatexVariant.LATEX_SQUID_DOG.randomGender(hitResult.getEntity().level.random));
+                LatexVariant.LATEX_SQUID_DOG.randomGender(hitResult.getEntity().level.random), TransfurContext.hazard(TransfurCause.SQUID_DOG_INKBALL));
     }
 
     protected void onHit(HitResult hitResult) {

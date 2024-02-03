@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
@@ -59,7 +61,7 @@ public class DarkLatexMask extends Item implements WearableItem {
             return;
         }
 
-        if (ProcessTransfur.progressTransfur(entity, 11.0f, variant))
+        if (ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)))
             itemStack.shrink(1);
     }
 

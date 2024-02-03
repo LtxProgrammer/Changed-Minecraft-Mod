@@ -63,11 +63,29 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
+    WAIST_HAZARD(
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEGS, TransfurCause::firstLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::firstLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::firstLimb), // RIGHT LEG
+    FACE_HAZARD(
+            LimbCoverTransition.COVER_FROM_FACE, TransfurCause::firstLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_HEAD, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
 
     // Specific causes that inherit from generic causes
     DARK_LATEX_CRYSTAL(FOOT_HAZARD_RIGHT),
+    LATEX_PUDDLE(FOOT_HAZARD_RIGHT),
+    LATEX_SYRINGE_FLOOR(FOOT_HAZARD_RIGHT),
     LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),
-    SQUID_DOG_INKBALL(GRAB_REPLICATE);
+    SQUID_DOG_INKBALL(GRAB_REPLICATE),
+    SYRINGE(ATTACK_REPLICATE_LEFT),
+    WHITE_LATEX(GRAB_REPLICATE);
 
     private static float firstLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.0f, 0.33333f, 0.0f, 1.0f), 0.0f, 1.0f);
@@ -88,8 +106,13 @@ public enum TransfurCause {
     private final LimbCoverTransition headTransition, torsoTransition, leftArmTransition, rightArmTransition, leftLegTransition, rightLegTransition;
     private final Float2FloatFunction headTiming, torsoTiming, leftArmTiming, rightArmTiming, leftLegTiming, rightLegTiming;
     private final @Nullable TransfurCause inherits;
+    private final float duration;
 
     TransfurCause(TransfurCause inherit) {
+        this(inherit, 10.0f);
+    }
+
+    TransfurCause(TransfurCause inherit, float duration) {
         this.headTiming = inherit.headTiming;
         this.torsoTiming = inherit.torsoTiming;
         this.leftArmTiming = inherit.leftArmTiming;
@@ -102,7 +125,9 @@ public enum TransfurCause {
         this.rightArmTransition = inherit.rightArmTransition;
         this.leftLegTransition = inherit.leftLegTransition;
         this.rightLegTransition = inherit.rightLegTransition;
+
         this.inherits = inherit;
+        this.duration = duration;
     }
 
     TransfurCause(
@@ -126,6 +151,32 @@ public enum TransfurCause {
         this.rightLegTransition = rightLegTransition;
 
         this.inherits = null;
+        this.duration = 10.0f;
+    }
+
+    TransfurCause(
+            LimbCoverTransition headTransition, Float2FloatFunction headTiming,
+            LimbCoverTransition torsoTransition, Float2FloatFunction torsoTiming,
+            LimbCoverTransition leftArmTransition, Float2FloatFunction leftArmTiming,
+            LimbCoverTransition rightArmTransition, Float2FloatFunction rightArmTiming,
+            LimbCoverTransition leftLegTransition, Float2FloatFunction leftLegTiming,
+            LimbCoverTransition rightLegTransition, Float2FloatFunction rightLegTiming,
+            float duration) {
+        this.headTiming = headTiming;
+        this.torsoTiming = torsoTiming;
+        this.leftArmTiming = leftArmTiming;
+        this.rightArmTiming = rightArmTiming;
+        this.leftLegTiming = leftLegTiming;
+        this.rightLegTiming = rightLegTiming;
+        this.headTransition = headTransition;
+        this.torsoTransition = torsoTransition;
+        this.leftArmTransition = leftArmTransition;
+        this.rightArmTransition = rightArmTransition;
+        this.leftLegTransition = leftLegTransition;
+        this.rightLegTransition = rightLegTransition;
+
+        this.inherits = null;
+        this.duration = duration;
     }
 
     public Optional<TransfurCause> getParent() {
@@ -178,5 +229,9 @@ public enum TransfurCause {
 
     public LimbCoverTransition getRightLegTransition() {
         return rightLegTransition;
+    }
+
+    public float getDuration() {
+        return duration;
     }
 }

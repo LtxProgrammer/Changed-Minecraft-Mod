@@ -2,8 +2,11 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -49,7 +52,8 @@ public class AbstractLatexGoo extends ItemNameBlockItem {
             if (variant.getLatexType().isHostileTo(type))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
-        ProcessTransfur.progressTransfur(entity, 11.0f, variants.get(level.getRandom().nextInt(variants.size())));
+        final var variant = ChangedRegistry.LATEX_VARIANT.get().getValue(variants.get(level.getRandom().nextInt(variants.size())));
+        ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
         return super.finishUsingItem(itemStack, level, entity);
     }
 

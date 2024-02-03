@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.Util;
@@ -53,7 +55,7 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (variants.isEmpty()) return;
         if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
-            if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, Util.getRandom(variants, level.random)))
+            if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, Util.getRandom(variants, level.random), TransfurContext.hazard(TransfurCause.LATEX_WALL_SPLOTCH)))
                 level.removeBlock(pos, false);
         }
     }

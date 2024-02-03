@@ -12,7 +12,6 @@ import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
@@ -100,7 +99,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public LatexVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT);
+    public float transfurProgress = 0.0f;
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique
@@ -120,12 +119,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @NotNull
     @Override
-    public ProcessTransfur.TransfurProgress getTransfurProgress() {
+    public float getTransfurProgress() {
         return transfurProgress;
     }
 
     @Override
-    public void setTransfurProgress(@NotNull ProcessTransfur.TransfurProgress transfurProgress) {
+    public void setTransfurProgress(@NotNull float transfurProgress) {
         this.transfurProgress = transfurProgress;
     }
 

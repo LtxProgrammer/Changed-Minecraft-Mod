@@ -53,7 +53,11 @@ public enum LimbCoverTransition {
     /**
      * This transition is for the torso, latex spreads from the legs, down to the other limbs
      */
-    COVER_FROM_LEGS(Changed.modResource("cover_from_legs"), false, true, false, false);
+    COVER_FROM_LEGS(Changed.modResource("cover_from_legs"), false, true, false, false),
+    /**
+     * This transition is for the head, latex spreads from the face
+     */
+    COVER_FROM_FACE(Changed.modResource("cover_from_face"), true, false, false, false);
 
     public static final Codec<LimbCoverTransition> CODEC = ResourceLocation.CODEC.xmap(LimbCoverTransition::getFromTransition, LimbCoverTransition::getTransition);
     public static final ResourceLocation FULL_COVER = Changed.modResource("textures/models/latex_cover/full.png");

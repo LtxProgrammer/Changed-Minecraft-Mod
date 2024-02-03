@@ -149,7 +149,7 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
         if (ProcessTransfur.ifPlayerLatex(underlyingPlayer, variant -> {
             if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
                 var newVariant = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random);
-                ProcessTransfur.setPlayerLatexVariant(underlyingPlayer, newVariant);
+                ProcessTransfur.changeTransfur(underlyingPlayer, newVariant);
                 ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
                 underlyingPlayer.heal(12.0f);
             }
