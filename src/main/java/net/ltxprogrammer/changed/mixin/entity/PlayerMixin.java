@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -176,11 +177,24 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         }
     }
 
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
     public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
-        if (ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
-        }));
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            final float morphProgress = variant.getMorphProgression();
+
+            if (morphProgress < 1f) {
+                LatexEntity latexEntity = variant.getLatexEntity();
+
+                final var playerDim = callback.getReturnValue();
+                final var latexDim = latexEntity.getDimensions(pose);
+                float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
+                float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
+
+                callback.setReturnValue(new EntityDimensions(width, height, latexDim.fixed));
+            } else {
+                callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
+            }
+        });
     }
 
     @Nullable

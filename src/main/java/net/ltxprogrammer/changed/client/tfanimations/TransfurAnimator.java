@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
@@ -312,15 +313,11 @@ public class TransfurAnimator {
     }
 
     private static float getCoverProgression(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.0f, 0.4f, 0.0f, 1.0f), 0.0f, 1.0f);
+        return Mth.clamp(Mth.map(transfurProgression, 0.0f, 0.38f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
 
     private static float getCoverAlpha(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.4f, 0.45f, 1.0f, 0.0f), 0.0f, 1.0f);
-    }
-
-    private static float getMorphProgression(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f);
+        return Mth.clamp(Mth.map(transfurProgression, 0.38f, 0.45f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
     private static float getMorphAlpha(float transfurProgression) {
@@ -328,11 +325,6 @@ public class TransfurAnimator {
             return Mth.clamp(Mth.map(transfurProgression, 0.35f, 0.4f, 0.0f, 1.0f), 0.0f, 1.0f);
         else
             return Mth.clamp(Mth.map(transfurProgression, 0.8f, 0.85f, 1.0f, 0.0f), 0.0f, 1.0f);
-    }
-
-    static float easeInOutSine(float x) {
-        return -(Mth.cos(Mth.PI * x) - 1) / 2;
-
     }
 
     private static void renderCoveringLimb(LivingEntity entity, LatexVariantInstance<?> variant, float coverProgress, float coverAlpha, ModelPart part, Limb limb, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
@@ -354,6 +346,7 @@ public class TransfurAnimator {
 
         stack.pushPose();
         ((PoseStackExtender)stack).setPose(pose.matrix);
+        stack.scale(1.005f, 1.005f, 1.005f);
 
         final var transition = LimbCoverTransition.COVER_START;
 
@@ -381,17 +374,17 @@ public class TransfurAnimator {
         if (!(latexRenderer instanceof LatexHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
 
         final float transfurProgression = variant.getTransfurProgression(partialTick);
-        final float coverProgress = easeInOutSine(getCoverProgression(transfurProgression));
-        final float coverAlpha = easeInOutSine(getCoverAlpha(transfurProgression));
-        final float morphProgress = easeInOutSine(getMorphProgression(transfurProgression));
-        final float morphAlpha = easeInOutSine(getMorphAlpha(transfurProgression));
+        final float coverProgress = getCoverProgression(transfurProgression);
+        final float coverAlpha = Transition.easeInOutSine(getCoverAlpha(transfurProgression));
+        final float morphProgress = variant.getMorphProgression(partialTick);
+        final float morphAlpha = Transition.easeInOutSine(getMorphAlpha(transfurProgression));
 
-        if (morphAlpha < 1f) { // Render
-            if (coverProgress < 1f) {
+        if (morphAlpha < 1f) { // Render normal living entity, when they are still seen
+            if (coverProgress < 1f) { // Render player, being covered
                 forceRenderPlayer = true;
                 FormRenderHandler.renderLiving(player, stack, buffer, light, partialTick);
                 forceRenderPlayer = false;
-            } else
+            } else if (morphProgress > 0.5f) // Render latex at the end
                 FormRenderHandler.renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
         }
 

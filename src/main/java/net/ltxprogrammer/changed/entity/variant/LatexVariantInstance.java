@@ -17,16 +17,14 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -83,6 +81,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public float getTransfurProgression(float partial) {
         return Mth.lerp(partial, transfurProgressionO, transfurProgression);
+    }
+
+    public float getMorphProgression() {
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+    }
+
+    public float getMorphProgression(float partial) {
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
     }
 
     public LatexVariantInstance(LatexVariant<T> parent, Player host) {
@@ -182,9 +188,20 @@ public class LatexVariantInstance<T extends LatexEntity> {
             if (player.isAddedToWorld()) {
                 ProcessTransfur.ifPlayerLatex(player, variant -> {
                     LatexEntity latexEntity = variant.getLatexEntity();
+                    final float morphProgress = variant.getMorphProgression();
 
-                    event.setNewSize(latexEntity.getDimensions(event.getPose()));
-                    event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                    if (morphProgress < 1f) {
+                        final var playerDim = player.getDimensions(event.getPose());
+                        final var latexDim = latexEntity.getDimensions(event.getPose());
+                        float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
+                        float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
+
+                        event.setNewSize(new EntityDimensions(width, height, latexDim.fixed));
+                        event.setNewEyeHeight(Mth.lerp(morphProgress, player.getEyeHeight(event.getPose()), latexEntity.getEyeHeight(event.getPose())));
+                    } else {
+                        event.setNewSize(latexEntity.getDimensions(event.getPose()));
+                        event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
+                    }
                 });
 
                 if (player instanceof PlayerDataExtension extension && extension.getPlayerMover() != null) {
