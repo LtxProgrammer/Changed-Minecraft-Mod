@@ -19,6 +19,11 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
     }
 
     @Override
+    public Color3 getTransfurColor() {
+        return Color3.fromInt(0x101010);
+    }
+
+    @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
     }

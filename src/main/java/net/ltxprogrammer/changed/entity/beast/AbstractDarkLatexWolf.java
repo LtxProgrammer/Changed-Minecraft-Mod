@@ -25,6 +25,11 @@ public abstract class AbstractDarkLatexWolf extends AbstractDarkLatexEntity impl
     }
 
     @Override
+    public Color3 getTransfurColor() {
+        return Color3.DARK;
+    }
+
+    @Override
     public boolean isMaskless() {
         return false;
     }

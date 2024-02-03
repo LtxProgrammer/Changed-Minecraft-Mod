@@ -5,10 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
@@ -81,6 +78,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     private float transfurProgressionO = 0.0f;
     private float transfurProgression = 0.0f;
+    public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
     public boolean willSurviveTransfur = true;
 
     public float getTransfurProgression(float partial) {

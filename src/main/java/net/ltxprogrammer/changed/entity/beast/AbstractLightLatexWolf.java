@@ -26,6 +26,11 @@ public abstract class AbstractLightLatexWolf extends LatexEntity implements Gend
     }
 
     @Override
+    public Color3 getTransfurColor() {
+        return Color3.WHITE;
+    }
+
+    @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
     }

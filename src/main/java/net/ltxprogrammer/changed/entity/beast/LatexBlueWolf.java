@@ -44,4 +44,8 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
     public Color3 getDripColor() {
         return Color3.getColor("#8ad6e7");
     }
+
+    public Color3 getTransfurColor() {
+        return Color3.getColor("#8ad6e7");
+    }
 }
