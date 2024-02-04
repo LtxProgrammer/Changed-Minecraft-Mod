@@ -110,7 +110,7 @@ public enum TransfurCause {
     private final float duration;
 
     TransfurCause(TransfurCause inherit) {
-        this(inherit, 10.0f);
+        this(inherit, 6.0f);
     }
 
     TransfurCause(TransfurCause inherit, float duration) {
@@ -152,7 +152,7 @@ public enum TransfurCause {
         this.rightLegTransition = rightLegTransition;
 
         this.inherits = null;
-        this.duration = 10.0f;
+        this.duration = 6.0f;
     }
 
     TransfurCause(

@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -487,6 +488,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
             transfurProgression += (1.0f / cause.getDuration()) * 0.05f;
+            if (!player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
+                transfurProgressionO = 1f;
+                transfurProgression = 1f;
+            }
+
+            if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
+                willSurviveTransfur = true;
+            }
 
             if (transfurProgression >= 1f && !willSurviveTransfur) {
                 this.getParent().replaceEntity(player);
