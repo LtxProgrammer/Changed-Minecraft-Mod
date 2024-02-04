@@ -67,20 +67,19 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             }
         }
         if (tag.contains("LatexVariant")) {
-            ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
-            if (tag.contains("LatexVariantAge")) {
-                ProcessTransfur.ifPlayerLatex(this, variant -> {
+            final var variant = ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
+            if (tag.contains("LatexVariantData"))
+                variant.load(tag.getCompound("LatexVariantData"));
+            else {
+                if (tag.contains("LatexVariantAge"))
                     variant.ageAsVariant = tag.getInt("LatexVariantAge");
-                });
+                if (tag.contains("LatexAbilities"))
+                    variant.loadAbilities(tag.getCompound("LatexAbilities"));
             }
-        }
 
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
-            if (tag.contains("LatexAbilities"))
-                variant.loadAbilities(tag.getCompound("LatexAbilities"));
             if (tag.contains("LatexData"))
                 variant.getLatexEntity().readPlayerVariantData(tag.getCompound("LatexData"));
-        });
+        }
 
         if (tag.contains("PlayerMover")) {
             try {
@@ -101,8 +100,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
         ProcessTransfur.ifPlayerLatex(this, variant -> {
             TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
-            tag.put("LatexAbilities", variant.saveAbilities());
-            tag.putInt("LatexVariantAge", variant.ageAsVariant);
+            tag.put("LatexVariantData", variant.save());
 
             var entityData = variant.getLatexEntity().savePlayerVariantData();
             if (!entityData.isEmpty())
