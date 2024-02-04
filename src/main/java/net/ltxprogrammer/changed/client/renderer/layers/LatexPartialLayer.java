@@ -6,12 +6,14 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 
 public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & LatexHumanoidModelInterface<T, M>> extends RenderLayer<T, M> {
     private final M model;
@@ -31,7 +33,7 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
             if (flag) {
                 vertexconsumer = bufferSource.getBuffer(RenderType.outline(texture));
             } else {
-                vertexconsumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(texture));
+                vertexconsumer = bufferSource.getBuffer(renderType());
             }
 
             this.model.getAnimator().setupVariables(entity, partialTicks);
@@ -46,5 +48,13 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
 
     public ResourceLocation getTexture() {
         return texture;
+    }
+
+    public RenderType renderType() {
+        return RenderType.entityCutoutNoCull(texture);
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return model.getArm(arm);
     }
 }

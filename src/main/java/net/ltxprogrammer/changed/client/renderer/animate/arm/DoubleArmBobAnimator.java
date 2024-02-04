@@ -8,13 +8,13 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import org.jetbrains.annotations.NotNull;
 
-public class SquidDogArmBobAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
+public class DoubleArmBobAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
     public final ModelPart upperLeftArm;
     public final ModelPart upperRightArm;
     public final ModelPart lowerLeftArm;
     public final ModelPart lowerRightArm;
 
-    public SquidDogArmBobAnimator(ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+    public DoubleArmBobAnimator(ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         this.upperLeftArm = upperLeftArm;
         this.upperRightArm = upperRightArm;
         this.lowerLeftArm = lowerLeftArm;

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
@@ -668,6 +669,18 @@ public abstract class LatexEntity extends Monster {
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {
+
+    }
+
+    public void onReplicateOther(IAbstractLatex other, LatexVariant<?> variant) {
+
+    }
+
+    public CompoundTag savePlayerVariantData() {
+        return new CompoundTag();
+    }
+
+    public void readPlayerVariantData(CompoundTag tag) {
 
     }
 }

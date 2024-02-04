@@ -82,7 +82,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
     public static final LatexVariant<DarkLatexWolfPartial> DARK_LATEX_WOLF_PARTIAL = register(Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL)
-            .groundSpeed(1.0F).swimSpeed(1.0f).faction(LatexType.DARK_LATEX)
+            .groundSpeed(1.025f).swimSpeed(0.975f).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE)
             .build(Changed.modResource("form_dark_latex_wolf_partial")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(ChangedEntities.DARK_LATEX_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX)
@@ -117,6 +117,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexHuman> LATEX_HUMAN = register(Builder.of(ChangedEntities.LATEX_HUMAN)
+            .groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.6f)
+            .build(Changed.modResource("form_latex_human")));
     public static final LatexVariant<LatexFennecFox> LATEX_FENNEC_FOX = register(Builder.of(ChangedEntities.LATEX_FENNEC_FOX)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_fennec_fox")));

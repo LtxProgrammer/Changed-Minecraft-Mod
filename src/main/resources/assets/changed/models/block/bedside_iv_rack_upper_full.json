@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/bedside_iv_rack_upper",
+  "textures": {
+    "all": "changed:blocks/bedside_iv_rack_full",
+    "particle": "changed:blocks/bedside_iv_rack_full",
+    "1": "changed:blocks/bedside_iv_rack_full"
+  }
+}

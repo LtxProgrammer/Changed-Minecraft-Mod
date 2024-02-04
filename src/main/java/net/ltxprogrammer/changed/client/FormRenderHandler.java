@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomCoatLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
@@ -95,6 +96,11 @@ public class FormRenderHandler {
                         }
                         if (layer instanceof LatexTranslucentLayer<?,?> gelLayer)
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(gelLayer.getTexture())), light, 1F);
+                        if (layer instanceof LatexPartialLayer partialLayer) {
+                            partialLayer.getModel().setupAnim(livingInstance, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+                            ((LatexHumanoidModelInterface)partialLayer.getModel()).setupHand();
+                            renderModelPartWithTexture(partialLayer.getArm(handSide), stackCorrector, stack, buffer.getBuffer(partialLayer.renderType()), light, 1F);
+                        }
                     }
                 }
 
