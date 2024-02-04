@@ -68,6 +68,6 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {
-        return Color3.getColor("#8ad6e7");
+        return Color3.GRAY;
     }
 }
