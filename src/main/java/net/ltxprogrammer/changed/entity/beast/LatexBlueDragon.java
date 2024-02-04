@@ -39,4 +39,8 @@ public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable, 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
     }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#eef9ff");
+    }
 }

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PatronOC;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -31,5 +32,9 @@ public class LatexBeifeng extends AbstractLatexWolf implements DarkLatexEntity, 
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.getAll();
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#51659d");
     }
 }

@@ -67,7 +67,8 @@ public enum TransfurCause {
     // Specific causes that inherit from generic causes
     DARK_LATEX_CRYSTAL(FOOT_HAZARD_RIGHT),
     LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),
-    SQUID_DOG_INKBALL(GRAB_REPLICATE);
+    SQUID_DOG_INKBALL(GRAB_REPLICATE),
+    PINK_PANTS(GRAB_REPLICATE);
 
     private static float firstLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.0f, 0.33333f, 0.0f, 1.0f), 0.0f, 1.0f);
