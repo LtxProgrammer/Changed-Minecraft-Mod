@@ -433,8 +433,12 @@ public class TransfurAnimator {
         capturingPose = false;
     }
 
-    public static boolean isCapturing() {
+    public static boolean shouldRenderHuman() {
         return capturingPose || forceRenderPlayer;
+    }
+
+    public static boolean isCapturing() {
+        return capturingPose;
     }
 
     public static boolean capture(ModelPart part, PoseStack pose) {

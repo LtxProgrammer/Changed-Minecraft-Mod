@@ -106,8 +106,12 @@ public class LatexVariantInstance<T extends LatexEntity> {
         ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
         ticksWhiteLatex = tag.getInt("ticksWhiteLatex");
 
-        transfurProgressionO = tag.getFloat("transfurProgressionO");
-        transfurProgression = tag.getFloat("transfurProgression");
+        final float taggedProgress = tag.getFloat("transfurProgression");
+        if (Mth.abs(transfurProgression - taggedProgress) > 0.5f) { // Prevent sync shudder
+            transfurProgressionO = tag.getFloat("transfurProgressionO");
+            transfurProgression = tag.getFloat("transfurProgression");
+        }
+
         willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
 
         cause = TransfurCause.valueOf(tag.getString("transfurCause"));
@@ -165,6 +169,10 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public T getLatexEntity() {
         return entity;
+    }
+
+    public Player getHost() {
+        return host;
     }
 
     public <A extends AbstractAbilityInstance> boolean hasAbility(AbstractAbility<A> ability) {

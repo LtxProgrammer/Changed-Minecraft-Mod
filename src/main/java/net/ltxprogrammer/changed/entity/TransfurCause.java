@@ -71,7 +71,7 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::firstLimb, // LEFT LEG
             LimbCoverTransition.COVER_START, TransfurCause::firstLimb), // RIGHT LEG
     FACE_HAZARD(
-            LimbCoverTransition.COVER_FROM_FACE, TransfurCause::firstLimb, // HEAD
+            LimbCoverTransition.COVER_ATTACK, TransfurCause::firstLimb, // HEAD
             LimbCoverTransition.COVER_FROM_HEAD, TransfurCause::secondLimb, // TORSO
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM

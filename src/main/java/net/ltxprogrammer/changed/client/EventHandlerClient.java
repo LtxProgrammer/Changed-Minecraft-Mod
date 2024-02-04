@@ -55,7 +55,7 @@ public class EventHandlerClient {
             }
         }
 
-        if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.isCapturing()) {
+        if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.shouldRenderHuman()) {
             if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
                 event.setCanceled(true);
             else if (ProcessTransfur.isPlayerLatex(player)) {
