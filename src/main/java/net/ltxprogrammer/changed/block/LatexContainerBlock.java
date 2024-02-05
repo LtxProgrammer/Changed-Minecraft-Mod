@@ -190,6 +190,14 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
                 ProcessTransfur.progressTransfur(livingEntity, 15.0f, LatexVariant.DARK_LATEX_WOLF_PARTIAL);
             });
         });
+        blockEntity.ifPresent(container -> {
+            if (container.getFillType() != LatexType.WHITE_LATEX || container.getFillLevel() == 0)
+                return;
+
+            level.getEntitiesOfClass(LivingEntity.class, new AABB(pos)).forEach(livingEntity -> {
+                ProcessTransfur.progressTransfur(livingEntity, 15.0f, LatexVariant.WHITE_LATEX_WOLF);
+            });
+        });
 
         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
     }
