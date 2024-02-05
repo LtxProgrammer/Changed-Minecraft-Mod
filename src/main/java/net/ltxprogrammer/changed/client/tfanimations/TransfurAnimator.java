@@ -323,6 +323,8 @@ public class TransfurAnimator {
         Arrays.stream(Limb.values()).forEach(limb -> {
             if (ChangedCompatibility.isFirstPersonRendering() && limb == Limb.HEAD)
                 return;
+            if (ChangedCompatibility.isFirstPersonRendering() && entity.isSwimming() && limb == Limb.TORSO)
+                return;
 
             renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, partialTick);
         });
@@ -333,12 +335,12 @@ public class TransfurAnimator {
     }
 
     private static float getCoverAlpha(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.33f, 0.40f, 1.0f, 0.0f), 0.0f, 1.0f);
+        return Mth.clamp(Mth.map(transfurProgression, 0.33f, 0.45f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
     private static float getMorphAlpha(float transfurProgression) {
         if (transfurProgression < 0.5f)
-            return Mth.clamp(Mth.map(transfurProgression, 0.35f, 0.4f, 0.0f, 1.0f), 0.0f, 1.0f);
+            return Mth.clamp(Mth.map(transfurProgression, 0.35f, 0.45f, 0.0f, 1.0f), 0.0f, 1.0f);
         else
             return Mth.clamp(Mth.map(transfurProgression, 0.8f, 0.85f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
@@ -382,6 +384,7 @@ public class TransfurAnimator {
         stack.pushPose();
         ((PoseStackExtender)stack).setPose(pose.matrix);
         stack.scale(1.005f, 1.005f, 1.005f);
+        stack.translate(0.0f, -0.0025f, 0.0f);
 
         final float alpha = transition.getAlphaForProgress(progress);
         final var vertexConsumer = buffer.getBuffer(alpha >= 1f ? RenderType.entityCutoutNoCull(
@@ -425,15 +428,17 @@ public class TransfurAnimator {
         if (coverAlpha > 0f) {
             if (!ChangedCompatibility.isFirstPersonRendering()) {
                 renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.head, Limb.HEAD, stack, buffer, light, partialTick);
-                renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.hat, Limb.HEAD, stack, buffer, light, partialTick);
+                renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerHumanoidModel.hat, Limb.HEAD, stack, buffer, light, partialTick);
             }
-            renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.body, Limb.TORSO, stack, buffer, light, partialTick);
+            if (!(ChangedCompatibility.isFirstPersonRendering() && player.isSwimming()))
+                renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.body, Limb.TORSO, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.leftArm, Limb.LEFT_ARM, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.leftLeg, Limb.LEFT_LEG, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.rightLeg, Limb.RIGHT_LEG, stack, buffer, light, partialTick);
             if (playerHumanoidModel instanceof PlayerModel<?> playerModel) {
-                renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerModel.jacket, Limb.TORSO, stack, buffer, light, partialTick);
+                if (!(ChangedCompatibility.isFirstPersonRendering() && player.isSwimming()))
+                    renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerModel.jacket, Limb.TORSO, stack, buffer, light, partialTick);
                 renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, light, partialTick);
                 renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, light, partialTick);
                 renderCoveringLimb(player, variant, coverProgress, coverAlpha, playerModel.leftPants, Limb.LEFT_LEG, stack, buffer, light, partialTick);

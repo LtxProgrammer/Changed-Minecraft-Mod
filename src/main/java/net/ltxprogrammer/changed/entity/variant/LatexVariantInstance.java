@@ -125,11 +125,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public float getMorphProgression() {
-        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
     }
 
     public float getMorphProgression(float partial) {
-        return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.4f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
     }
 
     public Color3 getTransfurColor() {
