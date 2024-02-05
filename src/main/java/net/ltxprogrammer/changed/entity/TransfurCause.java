@@ -37,21 +37,21 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb), // RIGHT LEG
     FOOT_HAZARD_RIGHT(
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // HEAD
-            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_FROM_RIGHT_LEG, TransfurCause::secondLimb, // TORSO
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT ARM
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT LEG
             LimbCoverTransition.COVER_END, TransfurCause::firstLimb), // RIGHT LEG
     WALL_HAZARD_LEFT(
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
-            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_FROM_LEFT_ARM, TransfurCause::secondLimb, // TORSO
             LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // LEFT ARM
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb),
     WALL_HAZARD_RIGHT(
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // HEAD
-            LimbCoverTransition.COVER_FROM_LEFT_LEG, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_FROM_RIGHT_ARM, TransfurCause::secondLimb, // TORSO
             LimbCoverTransition.COVER_START, TransfurCause::secondHalfLimb, // LEFT ARM
             LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT LEG
