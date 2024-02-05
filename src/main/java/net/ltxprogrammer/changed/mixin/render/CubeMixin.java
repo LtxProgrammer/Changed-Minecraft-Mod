@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeExtender;
@@ -111,5 +110,47 @@ public abstract class CubeMixin implements CubeExtender {
                 this.polygons[i].vertices[v] = otherVert.remap(otherVert.u, otherVert.v);
             }
         }
+    }
+
+    @Unique
+    private void extendVertex(ModelPart.Polygon poly, int vertex, float x, float y, float z) {
+        poly.vertices[vertex] = new ModelPart.Vertex(
+                poly.vertices[vertex].pos.x() + x,
+                poly.vertices[vertex].pos.y() + y,
+                poly.vertices[vertex].pos.z() + z,
+                poly.vertices[vertex].u, poly.vertices[vertex].v);
+    }
+
+    @Override
+    public void extendCube(float x, float y, float z) {
+        extendVertex(this.polygons[0], 0, x, -y, z);
+        extendVertex(this.polygons[0], 1, x, -y, -z);
+        extendVertex(this.polygons[0], 2, x, y, -z);
+        extendVertex(this.polygons[0], 3, x, y, z);
+        
+        extendVertex(this.polygons[1], 0, -x, -y, -z);
+        extendVertex(this.polygons[1], 1, -x, -y, z);
+        extendVertex(this.polygons[1], 2, -x, y, z);
+        extendVertex(this.polygons[1], 3, -x, y, -z);
+        
+        extendVertex(this.polygons[2], 0, x, -y, z);
+        extendVertex(this.polygons[2], 1, -x, -y, z);
+        extendVertex(this.polygons[2], 2, -x, -y, -z);
+        extendVertex(this.polygons[2], 3, x, -y, -z);
+        
+        extendVertex(this.polygons[3], 0, x, y, -z);
+        extendVertex(this.polygons[3], 1, -x, y, -z);
+        extendVertex(this.polygons[3], 2, -x, y, z);
+        extendVertex(this.polygons[3], 3, x, y, z);
+
+        extendVertex(this.polygons[4], 0, x, -y, -z);
+        extendVertex(this.polygons[4], 1, -x, -y, -z);
+        extendVertex(this.polygons[4], 2, -x, y, -z);
+        extendVertex(this.polygons[4], 3, x, y, -z);
+
+        extendVertex(this.polygons[5], 0, -x, -y, z);
+        extendVertex(this.polygons[5], 1, x, -y, z);
+        extendVertex(this.polygons[5], 2, x, y, z);
+        extendVertex(this.polygons[5], 3, -x, y, z);
     }
 }

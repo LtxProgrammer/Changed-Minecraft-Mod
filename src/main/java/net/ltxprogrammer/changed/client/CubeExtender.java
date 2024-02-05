@@ -14,4 +14,5 @@ public interface CubeExtender {
     void removeSides(Set<Direction> directions);
     ModelPart.Polygon[] getPolygons();
     void copyPolygonsFrom(ModelPart.Cube cube);
+    void extendCube(float x, float y, float z);
 }

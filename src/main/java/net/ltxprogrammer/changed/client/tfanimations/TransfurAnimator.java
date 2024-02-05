@@ -343,6 +343,13 @@ public class TransfurAnimator {
             return Mth.clamp(Mth.map(transfurProgression, 0.8f, 0.85f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
+    private static ModelPart extendModelPartCubes(ModelPart part, float x, float y, float z) {
+        part.cubes.forEach(cube -> ((CubeExtender)cube).extendCube(x, y, z));
+        part.children.values().forEach(child -> extendModelPartCubes(child, x, y, z));
+
+        return part;
+    }
+
     private static void renderCoveringLimb(LivingEntity entity, LatexVariantInstance<?> variant, float coverProgress, float coverAlpha, ModelPart part, Limb limb, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final float progress = switch (limb) {
             case HEAD -> variant.cause.getHeadProgress(coverProgress);
@@ -352,7 +359,7 @@ public class TransfurAnimator {
             case LEFT_LEG -> variant.cause.getLeftLegProgress(coverProgress);
             case RIGHT_LEG -> variant.cause.getRightLegProgress(coverProgress);
             default -> 1.0f;
-        } * coverAlpha;
+        };
 
         final LimbCoverTransition transition = switch (limb) {
             case HEAD -> variant.cause.getHeadTransition();
@@ -367,7 +374,9 @@ public class TransfurAnimator {
         if (progress <= 0f)
             return;
 
-        final ModelPart copiedPart = deepCopyPart(part);
+        final float shrink = (coverAlpha - 1.0f) * 0.5f;
+
+        final ModelPart copiedPart = extendModelPartCubes(deepCopyPart(part), shrink, shrink, shrink);
         final ModelPose pose = CAPTURED_MODELS.get(part);
 
         stack.pushPose();
