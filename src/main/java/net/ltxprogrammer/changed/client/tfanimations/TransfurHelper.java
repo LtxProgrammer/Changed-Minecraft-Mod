@@ -21,6 +21,7 @@ public class TransfurHelper {
     protected final ModelPart FeminineTorso;
     protected final ModelPart FeminineTorsoAlt;
     protected final ModelPart SnoutedHead;
+    protected final ModelPart Legless;
 
     protected TransfurHelper(ModelPart root) {
         this.DigitigradeLeftLeg = root.getChild("DigitigradeLeftLeg");
@@ -29,6 +30,7 @@ public class TransfurHelper {
         this.FeminineTorso = root.getChild("FeminineTorso");
         this.FeminineTorsoAlt = root.getChild("FeminineTorsoAlt");
         this.SnoutedHead = root.getChild("SnoutedHead");
+        this.Legless = root.getChild("Legless");
     }
 
     private static EntityModelSet getModelSet() {
@@ -123,6 +125,16 @@ public class TransfurHelper {
                     .texOffs(-1, -1).addBox(-2.0F, -1.0F, -4.0F, 4.0F, 1.0F, 3.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         }
+        
+        // LEGLESS
+        {
+            PartDefinition Legless = partdefinition.addOrReplaceChild("Legless", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 12.0F, 0.0F));
+
+            PartDefinition LowerAbdomen = Legless.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.0F, 0.0F));
+
+            PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.0F, 0.0F));
+        }
+        
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
@@ -150,5 +162,9 @@ public class TransfurHelper {
 
     public static ModelPart getSnoutedHead() {
         return INSTANCE.get().SnoutedHead;
+    }
+
+    public static ModelPart getLegless() {
+        return INSTANCE.get().Legless;
     }
 }

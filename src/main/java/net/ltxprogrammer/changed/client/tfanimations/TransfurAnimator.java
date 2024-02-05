@@ -32,7 +32,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class TransfurAnimator {
-    public record ModelPose(PoseStack.Pose matrix, PartPose pose) {}
+    public record ModelPose(PoseStack.Pose matrix, PartPose pose) {
+        public ModelPose translate(float x, float y, float z) {
+            return new ModelPose(matrix, PartPose.offsetAndRotation(
+                    pose.x + x,
+                    pose.y + y,
+                    pose.z + z,
+                    pose.xRot,
+                    pose.yRot,
+                    pose.zRot
+            ));
+        }
+    }
     public static final ModelPose NULL_POSE = new ModelPose(null, PartPose.ZERO);
 
     private static final Map<ModelPart, ModelPose> CAPTURED_MODELS = new HashMap<>();
@@ -282,9 +293,10 @@ public class TransfurAnimator {
         if (before == null || after == null)
             return;
 
-        final ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
+        ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
 
+        beforePose = limb.adjustModelPose(beforePose);
         before = maybeReplaceWithHelper(afterModel, limb, before);
 
         final ModelPart transitionPart = transitionModelPart(before, after, morphProgress);

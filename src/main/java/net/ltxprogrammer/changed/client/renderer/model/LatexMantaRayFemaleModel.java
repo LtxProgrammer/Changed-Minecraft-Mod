@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFemale> implements LatexHumanoidModelInterface<LatexMantaRayFemale, LatexMantaRayFemaleModel> {
+public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFemale> implements LatexHumanoidModelInterface<LatexMantaRayFemale, LatexMantaRayFemaleModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_manta_ray_female"), "main");
     private final ModelPart RightArm;
@@ -51,14 +51,6 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
                 Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"),
                 Tail.getChild("Joint").getChild("Joint2").getChild("Joint3").getChild("Joint4")
         )));
-    }
-
-    @Nullable
-    @Override
-    public ModelPart getTransfurHelperModel(Limb limb) {
-        if (limb == Limb.TORSO)
-            return TransfurHelper.getFeminineTorsoAlt();
-        return super.getTransfurHelperModel(limb);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -195,7 +187,22 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
         return Abdomen;
+    }
+
+    @Nullable
+    @Override
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoAlt();
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getHead() {
@@ -220,7 +227,7 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
         return animator;
     }
 
-    public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexMantaRayFemale, Remodel> {
+    public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexMantaRayFemale, Remodel> implements LeglessModel {
         private final ModelPart RightArm;
         private final ModelPart LeftArm;
         private final ModelPart Head;
@@ -325,7 +332,22 @@ public class LatexMantaRayFemaleModel extends LatexHumanoidModel<LatexMantaRayFe
         }
 
         public ModelPart getLeg(HumanoidArm p_102852_) {
+            return null;
+        }
+
+        @Override
+        public ModelPart getAbdomen() {
             return Abdomen;
+        }
+
+        @Nullable
+        @Override
+        public ModelPart getTransfurHelperModel(Limb limb) {
+            if (limb == Limb.ABDOMEN)
+                return TransfurHelper.getLegless();
+            if (limb == Limb.TORSO)
+                return TransfurHelper.getFeminineTorso();
+            return super.getTransfurHelperModel(limb);
         }
 
         public ModelPart getHead() {

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements LatexHumanoidModelInterface<LatexSiren, LatexSirenModel> {
+public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements LatexHumanoidModelInterface<LatexSiren, LatexSirenModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_siren"), "main");
     private final ModelPart RightArm;
@@ -51,14 +51,6 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
                 Tail.getChild("Joint").getChild("Joint2").getChild("Joint3"),
                 Tail.getChild("Joint").getChild("Joint2").getChild("Joint3").getChild("Joint4")
         )));
-    }
-
-    @Nullable
-    @Override
-    public ModelPart getTransfurHelperModel(Limb limb) {
-        if (limb == Limb.TORSO)
-            return TransfurHelper.getFeminineTorsoAlt();
-        return super.getTransfurHelperModel(limb);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -209,7 +201,22 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
         return Abdomen;
+    }
+
+    @Nullable
+    @Override
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoAlt();
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getHead() {
@@ -234,7 +241,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
         return animator;
     }
 
-    public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexSiren, Remodel> {
+    public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexSiren, Remodel> implements LeglessModel {
         private final ModelPart RightArm;
         private final ModelPart LeftArm;
         private final ModelPart Head;
@@ -339,7 +346,22 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
         }
 
         public ModelPart getLeg(HumanoidArm p_102852_) {
+            return null;
+        }
+
+        @Override
+        public ModelPart getAbdomen() {
             return Abdomen;
+        }
+
+        @Nullable
+        @Override
+        public ModelPart getTransfurHelperModel(Limb limb) {
+            if (limb == Limb.ABDOMEN)
+                return TransfurHelper.getLegless();
+            if (limb == Limb.TORSO)
+                return TransfurHelper.getFeminineTorso();
+            return super.getTransfurHelperModel(limb);
         }
 
         public ModelPart getHead() {

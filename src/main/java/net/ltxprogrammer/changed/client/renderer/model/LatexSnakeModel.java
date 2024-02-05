@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,11 +19,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements LatexHumanoidModelInterface<LatexSnake, LatexSnakeModel> {
+public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements LatexHumanoidModelInterface<LatexSnake, LatexSnakeModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_snake"), "main");
     private final ModelPart RightArm;
@@ -133,7 +136,20 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
         return Abdomen;
+    }
+
+    @Nullable
+    @Override
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getHead() {
