@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Музыка Changed",
   
   "ability.changed.access_saddle": "Седло",
-  "ability.changed.extra_hands": "Дополнительные руки",
   "ability.changed.switch_transfur_mode": "Смена режима трансфурмации",
   "ability.changed.switch_transfur_mode.select": "Режим трансфурмации теперь: %s",
   "ability.changed.create_cobweb": "Создать паутину",
@@ -489,7 +488,7 @@
   "changed:advancements.main.tame_a_latex.title": "Странный друг",
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
-  "changed:advancements.main.kill_all_latex.title": "Совершенно невменяемый",
+  "changed:advancements.main.kill_all_latex.title": "Совсем невменяемый",
   "changed.advancements.main.kill_all_latex.description": "Убейте все виды латекса.",
 
   "changed.tutorial.select_ability.title": "Выберите способность",
