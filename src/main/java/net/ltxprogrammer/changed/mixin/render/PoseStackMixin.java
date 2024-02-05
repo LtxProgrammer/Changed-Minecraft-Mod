@@ -48,4 +48,11 @@ public abstract class PoseStackMixin implements PoseStackExtender {
         l.pose().load(pose);
         l.normal().load(normal);
     }
+
+    @Override
+    public PoseStack.Pose copyLast() {
+        PoseStack nstack = new PoseStack();
+        ((PoseStackExtender)nstack).setPose(last().pose(), last().normal());
+        return nstack.last();
+    }
 }

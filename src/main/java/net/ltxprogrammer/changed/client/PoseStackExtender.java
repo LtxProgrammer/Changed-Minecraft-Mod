@@ -18,4 +18,6 @@ public interface PoseStackExtender {
 
     void setPose(PoseStack.Pose pose);
     void setPose(Matrix4f pose, Matrix3f normal);
+
+    PoseStack.Pose copyLast();
 }

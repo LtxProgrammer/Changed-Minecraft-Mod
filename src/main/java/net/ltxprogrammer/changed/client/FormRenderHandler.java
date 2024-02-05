@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -33,6 +34,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FormRenderHandler {
     public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ChangedCompatibility.freezeIsFirstPersonRendering();
+
             variant.sync(player);
             variant.getLatexEntity().setCustomNameVisible(true);
 
@@ -44,11 +47,15 @@ public class FormRenderHandler {
 
                 TransfurAnimator.endCapture();
 
+                ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
+
                 TransfurAnimator.renderTransfurringPlayer(player, variant, stack, buffer, light, partialTick);
             } else {
                 if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
                     renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
             }
+
+            ChangedCompatibility.thawIsFirstPersonRendering();
         });
     }
 

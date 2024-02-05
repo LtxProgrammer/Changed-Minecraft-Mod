@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.Minecraft;
@@ -308,16 +309,19 @@ public class TransfurAnimator {
 
     public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, LatexHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         Arrays.stream(Limb.values()).forEach(limb -> {
+            if (ChangedCompatibility.isFirstPersonRendering() && limb == Limb.HEAD)
+                return;
+
             renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, partialTick);
         });
     }
 
     private static float getCoverProgression(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.0f, 0.38f, 0.0f, 1.0f), 0.0f, 1.0f);
+        return Mth.clamp(Mth.map(transfurProgression, 0.0f, 0.33f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
 
     private static float getCoverAlpha(float transfurProgression) {
-        return Mth.clamp(Mth.map(transfurProgression, 0.38f, 0.45f, 1.0f, 0.0f), 0.0f, 1.0f);
+        return Mth.clamp(Mth.map(transfurProgression, 0.33f, 0.40f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
     private static float getMorphAlpha(float transfurProgression) {
@@ -391,14 +395,17 @@ public class TransfurAnimator {
             if (coverProgress < 1f) { // Render player, being covered
                 forceRenderPlayer = true;
                 FormRenderHandler.renderLiving(player, stack, buffer, light, partialTick);
+                ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
                 forceRenderPlayer = false;
             } else if (morphProgress > 0.5f) // Render latex at the end
                 FormRenderHandler.renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
         }
 
         if (coverAlpha > 0f) {
-            renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.head, Limb.HEAD, stack, buffer, light, partialTick);
-            renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.hat, Limb.HEAD, stack, buffer, light, partialTick);
+            if (!ChangedCompatibility.isFirstPersonRendering()) {
+                renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.head, Limb.HEAD, stack, buffer, light, partialTick);
+                renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.hat, Limb.HEAD, stack, buffer, light, partialTick);
+            }
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.body, Limb.TORSO, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.leftArm, Limb.LEFT_ARM, stack, buffer, light, partialTick);
             renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, light, partialTick);
@@ -446,7 +453,7 @@ public class TransfurAnimator {
             return false;
 
         if (!CAPTURED_MODELS.containsKey(part)) {
-            CAPTURED_MODELS.put(part, new ModelPose(pose.last(), part.storePose()));
+            CAPTURED_MODELS.put(part, new ModelPose(((PoseStackExtender)pose).copyLast(), part.storePose()));
         }
 
         return true;

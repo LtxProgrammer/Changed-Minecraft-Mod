@@ -17,11 +17,20 @@ import java.util.Map;
 public abstract class ModelPartMixin {
     @Shadow @Final public Map<String, ModelPart> children;
 
-    @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;translateAndRotate(Lcom/mojang/blaze3d/vertex/PoseStack;)V"), cancellable = true)
+    @Shadow public boolean visible;
+
+    @Shadow public abstract void translateAndRotate(PoseStack p_104300_);
+
+    @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At("HEAD"), cancellable = true)
     public void orCapture(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
-        if (TransfurAnimator.capture((ModelPart)(Object)this, pose)) {
-            for(ModelPart modelpart : this.children.values()) {
-                modelpart.render(pose, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        if (TransfurAnimator.isCapturing()) {
+            pose.pushPose();
+
+            if (TransfurAnimator.capture((ModelPart)(Object)this, pose)) {
+                this.translateAndRotate(pose);
+                for(ModelPart modelpart : this.children.values()) {
+                    modelpart.render(pose, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
             }
 
             pose.popPose();
