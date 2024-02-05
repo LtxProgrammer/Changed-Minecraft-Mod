@@ -183,19 +183,19 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
         } // Container fell in fluid
 
         blockEntity.ifPresent(container -> {
-            if (container.getFillType() != LatexType.DARK_LATEX || container.getFillLevel() == 0)
+            if (container.getFillLevel() == 0)
+                return;
+            final var variant = switch (container.getFillType()) {
+                case DARK_LATEX -> LatexVariant.DARK_LATEX_WOLF_PARTIAL;
+                case WHITE_LATEX -> LatexVariant.WHITE_LATEX_WOLF;
+                default -> null;
+            };
+
+            if (variant == null)
                 return;
 
             level.getEntitiesOfClass(LivingEntity.class, new AABB(pos)).forEach(livingEntity -> {
-                ProcessTransfur.progressTransfur(livingEntity, 15.0f, LatexVariant.DARK_LATEX_WOLF_PARTIAL);
-            });
-        });
-        blockEntity.ifPresent(container -> {
-            if (container.getFillType() != LatexType.WHITE_LATEX || container.getFillLevel() == 0)
-                return;
-
-            level.getEntitiesOfClass(LivingEntity.class, new AABB(pos)).forEach(livingEntity -> {
-                ProcessTransfur.progressTransfur(livingEntity, 15.0f, LatexVariant.WHITE_LATEX_WOLF);
+                ProcessTransfur.progressTransfur(livingEntity, 15.0f, variant);
             });
         });
 
