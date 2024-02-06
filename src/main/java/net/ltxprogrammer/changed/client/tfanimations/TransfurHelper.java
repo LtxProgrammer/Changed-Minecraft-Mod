@@ -43,7 +43,9 @@ public class TransfurHelper {
 
         // DIGI LEFT
         {
-            PartDefinition DigitigradeLeftLeg = partdefinition.addOrReplaceChild("DigitigradeLeftLeg", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(2.0F, 12.0F, 0.0F));
+            PartDefinition DigitigradeLeftLeg = partdefinition.addOrReplaceChild("DigitigradeLeftLeg", CubeListBuilder.create(), PartPose.offset(2.0F, 12.0F, 0.0F));
+
+            PartDefinition LeftThigh_r1 = DigitigradeLeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition LeftLowerLeg = DigitigradeLeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
@@ -58,7 +60,9 @@ public class TransfurHelper {
 
         // DIGI RIGHT
         {
-            PartDefinition DigitigradeRightLeg = partdefinition.addOrReplaceChild("DigitigradeRightLeg", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-2.0F, 12.0F, 0.0F));
+            PartDefinition DigitigradeRightLeg = partdefinition.addOrReplaceChild("DigitigradeRightLeg", CubeListBuilder.create(), PartPose.offset(-2.0F, 12.0F, 0.0F));
+
+            PartDefinition RightThigh_r1 = DigitigradeRightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightLowerLeg = DigitigradeRightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
