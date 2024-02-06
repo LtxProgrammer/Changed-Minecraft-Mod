@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Музыка Changed",
   
   "ability.changed.access_saddle": "Седло",
-  "ability.changed.extra_hands": "Дополнительные руки",
   "ability.changed.switch_transfur_mode": "Смена режима трансфурмации",
   "ability.changed.switch_transfur_mode.select": "Режим трансфурмации теперь: %s",
   "ability.changed.create_cobweb": "Создать паутину",
@@ -303,6 +302,7 @@
   "entity.changed.latex_crystal_wolf_horned": "Рогатый кристальный волк",
   "entity.changed.latex_deer": "Латексный олень",
   "entity.changed.latex_fennec_fox": "Латексный фенек",
+  "entity.changed.latex_human": "Латексный человек",
   "entity.changed.latex_hypno_cat": "Латексный гипно-кот",
   "entity.changed.latex_keon_wolf": "Латексный серебряный лис",
   "entity.changed.latex_leaf": "Латексный листянная рептилия",
@@ -318,7 +318,7 @@
   "entity.changed.latex_pink_deer": "Латексный розовый олень",
   "entity.changed.latex_pink_wyvern": "Латексная розовая виверна",
   "entity.changed.latex_pink_yuin_dragon": "Латексный розовый Юин дракон",
-  "entity.changed.latex_purple_fox": "Латексный розовый лис",
+  "entity.changed.latex_purple_fox": "Латексный фиолетовый лис",
   "entity.changed.latex_raccoon": "Латексный енот",
   "entity.changed.latex_red_dragon": "Латексный красный дракон",
   "entity.changed.latex_red_panda": "Латексная красная панда",
@@ -488,7 +488,7 @@
   "changed:advancements.main.tame_a_latex.title": "Странный друг",
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
-  "changed:advancements.main.kill_all_latex.title": "Совершенно невменяемый",
+  "changed:advancements.main.kill_all_latex.title": "Совсем невменяемый",
   "changed.advancements.main.kill_all_latex.description": "Убейте все виды латекса.",
 
   "changed.tutorial.select_ability.title": "Выберите способность",
