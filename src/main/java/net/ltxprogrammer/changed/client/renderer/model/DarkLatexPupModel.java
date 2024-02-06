@@ -234,6 +234,7 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
             this.RightFrontLeg.zRot = f / 2.0F;
             this.LeftFrontLeg.zRot = f / 2.0F;
         }
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {

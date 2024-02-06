@@ -141,6 +141,7 @@ public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> im
     @Override
     public void setupAnim(LatexWhiteTiger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {

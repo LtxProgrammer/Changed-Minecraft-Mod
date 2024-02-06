@@ -190,6 +190,7 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
     @Override
     public void setupAnim(@NotNull LatexMedusaCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {

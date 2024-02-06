@@ -147,6 +147,7 @@ public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implem
 	@Override
 	public void setupAnim(LatexHypnoCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 
 	public ModelPart getArm(HumanoidArm p_102852_) {
