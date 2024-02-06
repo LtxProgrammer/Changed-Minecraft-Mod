@@ -27,6 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class TransfurAnimator {
             ));
         }
     }
-    public static final ModelPose NULL_POSE = new ModelPose(null, PartPose.ZERO);
+    public static final ModelPose NULL_POSE = new ModelPose(new PoseStack().last(), PartPose.ZERO);
 
     private static final Map<ModelPart, ModelPose> CAPTURED_MODELS = new HashMap<>();
 
@@ -264,6 +265,17 @@ public class TransfurAnimator {
         return a;
     }
 
+    public static PartPose lerpPartPose(PartPose before, PartPose after, float lerp) {
+        return PartPose.offsetAndRotation(
+                Mth.lerp(lerp, before.x, after.x),
+                Mth.lerp(lerp, before.y, after.y),
+                Mth.lerp(lerp, before.z, after.z),
+                Mth.lerp(lerp, before.xRot, after.xRot),
+                Mth.lerp(lerp, before.yRot, after.yRot),
+                Mth.lerp(lerp, before.zRot, after.zRot)
+        );
+    }
+
     private static ModelPose transitionModelPose(ModelPose before, ModelPose after, float lerp) {
         var tmp = new PoseStack();
         tmp.pushPose();
@@ -272,14 +284,7 @@ public class TransfurAnimator {
         Matrix3f n = lerpMatrix(before.matrix.normal().copy(), after.matrix.normal().copy(), lerp);
         ((PoseStackExtender)tmp).setPose(m, n);
 
-        return new ModelPose(tmp.last(), PartPose.offsetAndRotation(
-                Mth.lerp(lerp, before.pose.x, after.pose.x),
-                Mth.lerp(lerp, before.pose.y, after.pose.y),
-                Mth.lerp(lerp, before.pose.z, after.pose.z),
-                Mth.lerp(lerp, before.pose.xRot, after.pose.xRot),
-                Mth.lerp(lerp, before.pose.yRot, after.pose.yRot),
-                Mth.lerp(lerp, before.pose.zRot, after.pose.zRot)
-        ));
+        return new ModelPose(tmp.last(), lerpPartPose(before.pose, after.pose, lerp));
     }
 
     private static ModelPart maybeReplaceWithHelper(LatexHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
@@ -313,6 +318,7 @@ public class TransfurAnimator {
         ((PoseStackExtender)stack).setPose(transitionPose.matrix);
 
         transitionPart.loadPose(transitionPose.pose);
+
         transitionPart.render(stack, vertexConsumer, light, overlay, color.red(), color.green(), color.blue(), alpha);
         //transitionPart.loadPose(beforePose.pose);
 

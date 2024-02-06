@@ -121,7 +121,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public float getTransfurProgression(float partial) {
-        return Mth.lerp(partial, transfurProgressionO, transfurProgression);
+        return Mth.lerp(Mth.positiveModulo(partial, 1.0f), transfurProgressionO, transfurProgression);
     }
 
     public float getMorphProgression() {

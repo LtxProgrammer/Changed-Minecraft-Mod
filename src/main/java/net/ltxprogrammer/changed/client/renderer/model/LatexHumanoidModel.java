@@ -5,10 +5,10 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.tfanimations.Limb;
-import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
+import net.ltxprogrammer.changed.client.tfanimations.*;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -27,9 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
@@ -55,6 +53,24 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
             getHead().visible = true;
             getTorso().visible = true;
         }
+    }
+
+    private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
+    @Override
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
+            if (variant.transfurProgression < 1f) {
+                final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
+                    final var anim = TransfurAnimations.CAUSE_ASSOCIATION.get(variant.cause);
+                    return anim != null ? anim.createInstance(this) : null;
+                });
+
+                if (instance != null)
+                    instance.animate(this, variant.getTransfurProgression(ageInTicks));
+            } else {
+                cachedAnimationInstance.remove(entity);
+            }
+        });
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);

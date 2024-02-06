@@ -1,0 +1,88 @@
+package net.ltxprogrammer.changed.client.tfanimations;
+
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.util.Transition;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.util.Mth;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class AnimationInstance {
+    private final AnimationDefinition animation;
+    private final Map<Limb, PartPose> baseline = new HashMap<>();
+
+    public AnimationInstance(AnimationDefinition animation) {
+        this.animation = animation;
+    }
+
+    public void captureBaseline(HumanoidModel<?> model) {
+        /* Capture model position baseline */
+        Arrays.stream(Limb.values()).filter(Limb::isVanillaPart).forEach(limb -> {
+            baseline.computeIfAbsent(limb, l -> l.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        });
+    }
+
+    public void captureBaseline(LatexHumanoidModel<?> model) {
+        /* Capture model position baseline */
+        Arrays.stream(Limb.values()).filter(Limb::isVanillaPart).forEach(limb -> {
+            baseline.computeIfAbsent(limb, l -> l.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        });
+    }
+
+    public void animate(HumanoidModel<?> model, float time) {
+        captureBaseline(model);
+
+        final float in = Mth.clamp(Mth.map(time * animation.length, 0.0f, animation.transitionDuration, 1.0f, 0.0f), 0.0f, 1.0f);
+        final float out = Mth.clamp(Mth.map(time * animation.length, animation.length - animation.transitionDuration, animation.length, 0.0f, 1.0f), 0.0f, 1.0f);
+        final float transition = Transition.easeInOutSine(Mth.clamp(in + out, 0.0f, 1.0f));
+
+        animation.channels.forEach((limb, animationChannels) -> {
+            if (!limb.isVanillaPart())
+                return;
+            final var part = limb.getModelPart(model);
+            if (part == null)
+                return;
+
+            final var base = baseline.get(limb);
+            animationChannels.forEach(channel -> {
+                channel.animate(animation, part, time * animation.length);
+                if (base != null && channel.getTarget() == AnimationChannel.Targets.POSITION) {
+                    part.x += base.x;
+                    part.y += base.y;
+                    part.z += base.z;
+                }
+            });
+
+            part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
+        });
+    }
+
+    public void animate(LatexHumanoidModel<?> model, float time) {
+        captureBaseline(model);
+
+        final float in = Mth.clamp(Mth.map(time * animation.length, 0.0f, animation.transitionDuration, 1.0f, 0.0f), 0.0f, 1.0f);
+        final float out = Mth.clamp(Mth.map(time * animation.length, animation.length - animation.transitionDuration, animation.length, 0.0f, 1.0f), 0.0f, 1.0f);
+        final float transition = Transition.easeInOutSine(Mth.clamp(in + out, 0.0f, 1.0f));
+
+        animation.channels.forEach((limb, animationChannels) -> {
+            final var part = limb.getModelPart(model);
+            if (part == null)
+                return;
+
+            final var base = baseline.get(limb);
+            animationChannels.forEach(channel -> {
+                channel.animate(animation, part, time * animation.length);
+                if (base != null && channel.getTarget() == AnimationChannel.Targets.POSITION) {
+                    part.x += base.x;
+                    part.y += base.y;
+                    part.z += base.z;
+                }
+            });
+            part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
+        });
+    }
+}

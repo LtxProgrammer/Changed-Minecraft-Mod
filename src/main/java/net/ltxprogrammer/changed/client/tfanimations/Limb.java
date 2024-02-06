@@ -7,6 +7,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 public enum Limb {
@@ -56,8 +57,16 @@ public enum Limb {
         return getModelPartFn.apply(model);
     }
 
+    public Optional<ModelPart> getModelPartSafe(HumanoidModel<?> model) {
+        return Optional.ofNullable(getModelPartFn.apply(model));
+    }
+
     public ModelPart getModelPart(LatexHumanoidModel<?> model) {
         return getLatexModelPartFn.apply(model);
+    }
+
+    public Optional<ModelPart> getModelPartSafe(LatexHumanoidModel<?> model) {
+        return Optional.ofNullable(getLatexModelPartFn.apply(model));
     }
 
     public boolean isVanillaPart() {
