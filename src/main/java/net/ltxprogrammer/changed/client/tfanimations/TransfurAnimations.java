@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransfurAnimations {
+    // TODO this animation is just a stand-in to get the animator code set up
     public static final AnimationDefinition BASIC_ANIMATION = AnimationDefinition.Builder.withLength(3.0F)
             .addAnimation(Limb.RIGHT_LEG, new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(-45.1462F, 24.3051F, 22.2691F), AnimationChannel.Interpolations.LINEAR),
