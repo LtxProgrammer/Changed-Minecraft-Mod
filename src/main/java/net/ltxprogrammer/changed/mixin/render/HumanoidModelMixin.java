@@ -84,7 +84,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 });
 
                 if (instance != null)
-                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks));
+                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
             } else {
                 cachedAnimationInstance.remove(entity);
             }

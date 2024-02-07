@@ -66,7 +66,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
                 });
 
                 if (instance != null)
-                    instance.animate(this, variant.getTransfurProgression(ageInTicks));
+                    instance.animate(this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
             } else {
                 cachedAnimationInstance.remove(entity);
             }

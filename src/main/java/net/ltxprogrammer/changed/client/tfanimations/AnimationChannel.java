@@ -21,7 +21,7 @@ public class AnimationChannel {
     public AnimationChannel(Targets target, Keyframe... keyframes) {
         this.target = target;
         this.keyframes = Arrays.asList(keyframes);
-        this.keyframes.sort((k1, k2) -> Float.compare(k2.getTime(), k1.getTime()));
+        this.keyframes.sort((k1, k2) -> Float.compare(k1.getTime(), k2.getTime()));
     }
 
     private Pair<Keyframe, Keyframe> getKeyframePair(float time) {
