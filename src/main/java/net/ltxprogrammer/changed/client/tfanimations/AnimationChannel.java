@@ -86,7 +86,7 @@ public class AnimationChannel {
 
     public enum Interpolations implements Float2FloatFunction {
         LINEAR(Transition::linear),
-        CATMULLROM(Transition::easeInOutSine);
+        CATMULLROM(Transition::easeInOutSine); // TODO actual spline interpolation
 
         private final Float2FloatFunction fn;
 

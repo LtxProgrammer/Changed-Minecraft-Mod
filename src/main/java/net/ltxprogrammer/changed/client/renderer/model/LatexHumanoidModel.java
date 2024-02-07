@@ -61,7 +61,7 @@ public abstract class LatexHumanoidModel<T extends LatexEntity> extends EntityMo
         ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
             if (variant.transfurProgression < 1f) {
                 final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
-                    final var anim = TransfurAnimations.CAUSE_ASSOCIATION.get(variant.cause);
+                    final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);
                     return anim != null ? anim.createInstance(this) : null;
                 });
 

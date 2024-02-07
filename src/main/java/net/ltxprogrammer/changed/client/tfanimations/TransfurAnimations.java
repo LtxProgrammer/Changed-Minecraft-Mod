@@ -20,8 +20,8 @@ public class TransfurAnimations {
                     new Keyframe(3.3333F, KeyframeAnimations.degreeVec(4.48F, -1.36F, 0.72F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.0F, KeyframeAnimations.degreeVec(4.48F, -1.36F, 0.72F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(4.7083F, KeyframeAnimations.degreeVec(27.3469F, 10.223F, 5.4417F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(5.5417F, KeyframeAnimations.degreeVec(27.3469F, 10.223F, 5.4417F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(6.0F, KeyframeAnimations.degreeVec(9.48F, -1.36F, 0.72F), AnimationChannel.Interpolations.CATMULLROM)
+                    new Keyframe(5.5417F, KeyframeAnimations.degreeVec(27.3469F, 10.223F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(6.0F, KeyframeAnimations.degreeVec(9.48F, -1.36F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .addAnimation(Limb.RIGHT_ARM, new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -59,4 +59,11 @@ public class TransfurAnimations {
     public static final Map<TransfurCause, AnimationDefinition> CAUSE_ASSOCIATION = Util.make(new HashMap<>(), map -> {
         map.put(TransfurCause.GRAB_REPLICATE, BASIC_ANIMATION);
     });
+
+    public static AnimationDefinition getAnimationFromCause(TransfurCause cause) {
+        if (!CAUSE_ASSOCIATION.containsKey(cause) && cause.getParent().isPresent())
+            return getAnimationFromCause(cause.getParent().get());
+        else
+            return CAUSE_ASSOCIATION.getOrDefault(cause, BASIC_ANIMATION);
+    }
 }
