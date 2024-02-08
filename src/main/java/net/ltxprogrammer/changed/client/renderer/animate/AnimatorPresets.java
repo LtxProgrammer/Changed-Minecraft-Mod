@@ -721,6 +721,21 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> leglessShark(ModelPart head, ModelPart torso,
+                                                                                                               ModelPart leftArm, ModelPart rightArm,
+                                                                                                               ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                               ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new SharkHeadSwimAnimator<>(head))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
+                    .addCameraAnimator(new SharkCameraSwimAnimator<>());
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLegs(ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart frontLeftLeg, ModelPart frontRightLeg,
                                                                                                            ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
