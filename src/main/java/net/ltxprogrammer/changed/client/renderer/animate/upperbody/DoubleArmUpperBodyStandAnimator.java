@@ -39,7 +39,7 @@ public class DoubleArmUpperBodyStandAnimator<T extends LatexEntity, M extends En
         torso.xRot = Mth.lerp(core.ageLerp, (float)Math.PI / 50.0f, (float)Math.PI / 42.0f);
         torso.xRot = Mth.lerp(limbSwingAmount, torso.xRot, 0.0f);
 
-        torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.hipOffset + (12.0f - core.legLength);
+        torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.calculateTorsoPositionY();
         head.y = torso.y + Mth.lerp(limbSwingAmount, 0.15f, 0.025f);
         upperLeftArm.y = torso.y + 2.0f;
         upperRightArm.y = torso.y + 2.0f;

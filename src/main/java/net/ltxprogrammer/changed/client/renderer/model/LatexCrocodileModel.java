@@ -40,7 +40,8 @@ public class LatexCrocodileModel extends LatexHumanoidModel<LatexCrocodile> impl
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
         animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
-                .hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
+                .hipOffset(-1.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
+        animator.torsoWidth = 6.0f;
     }
 
     public static LayerDefinition createBodyLayer() {

@@ -29,6 +29,14 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float armLength = 12.0f;
     public float legLength = 12.0f;
 
+    public float calculateTorsoPositionY() {
+        return hipOffset + (12.0f - legLength) + (12.0f - torsoLength);
+    }
+
+    public float calculateLegPositionY() {
+        return hipOffset + (12.0f - legLength) + 12.0f;
+    }
+
     private final HumanoidModel<?> propertyModel;
     private final Map<Integer, Runnable> setupHandsRunnable = new HashMap<>();
     private final EnumMap<AnimateStage, List<Animator<T, M>>> animators;

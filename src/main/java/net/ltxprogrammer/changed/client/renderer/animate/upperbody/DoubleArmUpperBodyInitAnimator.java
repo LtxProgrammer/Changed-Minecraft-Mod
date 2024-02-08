@@ -30,7 +30,7 @@ public class DoubleArmUpperBodyInitAnimator<T extends LatexEntity, M extends Ent
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
-        torso.y = core.hipOffset + (12.0f - core.legLength);
+        torso.y = core.calculateTorsoPositionY();
         float f = 1.0F;
         if (fallFlying) {
             f = (float)entity.getDeltaMovement().lengthSqr();

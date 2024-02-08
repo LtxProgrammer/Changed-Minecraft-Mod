@@ -31,6 +31,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
+    private final ModelPart Mask;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
     private final LatexAnimator<DarkLatexYufeng, DarkLatexYufengModel> animator;
@@ -40,6 +41,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");
+        this.Mask = Head.getChild("Mask");
         this.Torso = root.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
@@ -67,6 +69,10 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
 
                         leftWingRoot, leftWingRoot.getChild("leftSecondaries"), leftWingRoot.getChild("leftSecondaries").getChild("leftTertiaries"),
                         rightWingRoot, rightWingRoot.getChild("rightSecondaries"), rightWingRoot.getChild("rightSecondaries").getChild("rightTertiaries")));
+    }
+
+    public boolean isPartNotMask(ModelPart part) {
+        return Mask.getAllParts().noneMatch(part::equals);
     }
 
     public static LayerDefinition createBodyLayer() {
