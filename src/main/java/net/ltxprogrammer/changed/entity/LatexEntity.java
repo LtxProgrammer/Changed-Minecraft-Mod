@@ -24,6 +24,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -569,6 +570,13 @@ public abstract class LatexEntity extends Monster {
                 simulator.tick(deltaVelocity);
             });
         });
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (this.tickCount < 30)
+            return false; //
+        return super.hurt(source, amount);
     }
 
     public double getPassengersRidingOffset() {

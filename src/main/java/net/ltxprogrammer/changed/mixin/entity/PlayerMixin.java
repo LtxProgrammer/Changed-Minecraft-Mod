@@ -95,6 +95,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         }
     }
 
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    public void orNotHurt(DamageSource p_36154_, float p_36155_, CallbackInfoReturnable<Boolean> cir) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            if (variant.ageAsVariant < 30)
+                cir.cancel();
+        });
+    }
+
     // ADDITIONAL DATA
     @Unique
     public LatexVariantInstance<?> latexVariant = null;
