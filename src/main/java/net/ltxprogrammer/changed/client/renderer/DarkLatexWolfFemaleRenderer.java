@@ -16,7 +16,7 @@ public class DarkLatexWolfFemaleRenderer extends LatexHumanoidRenderer<DarkLatex
 		super(context, new DarkLatexWolfFemaleModel(context.bakeLayer(DarkLatexWolfFemaleModel.LAYER_LOCATION)),
 				ArmorLatexFemaleWolfModel::new, ArmorLatexFemaleWolfModel.INNER_ARMOR, ArmorLatexFemaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
-		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#303030")),
+		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
 				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
 				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));
 	}
