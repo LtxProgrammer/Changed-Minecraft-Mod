@@ -22,9 +22,9 @@ public class UpperBodyCrouchAnimator<T extends LatexEntity, M extends EntityMode
         rightArm.xRot += 0.4F;
         leftArm.xRot += 0.4F;
 
-        head.y = 4.2F + core.hipOffset + (12.0f - core.legLength);;
-        torso.y = 3.2F + core.hipOffset + (12.0f - core.legLength);;
-        leftArm.y = 5.2F + core.hipOffset + (12.0f - core.legLength);;
-        rightArm.y = 5.2F + core.hipOffset + (12.0f - core.legLength);;
+        torso.y = 4.2f + core.calculateTorsoPositionY();
+        head.y = torso.y;
+        leftArm.y = 2.0F + torso.y;
+        rightArm.y = 2.0F + torso.y;
     }
 }
