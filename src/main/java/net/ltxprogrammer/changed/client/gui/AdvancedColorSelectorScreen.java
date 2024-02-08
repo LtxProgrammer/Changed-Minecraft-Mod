@@ -1,9 +1,12 @@
 package net.ltxprogrammer.changed.client.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.ProgressOption;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -14,11 +17,13 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class AdvancedColorSelectorScreen extends Screen {
     private final Screen lastScreen;
     private final ColorSelector field;
+    private static final ResourceLocation GRADIENT = Changed.modResource("textures/gui/gradient.png");
 
     public AdvancedColorSelectorScreen(Screen parent, ColorSelector field) {
         super(field.getName());
@@ -58,6 +63,25 @@ public class AdvancedColorSelectorScreen extends Screen {
         return new AbstractSliderButton(x, y, width, height, TextComponent.EMPTY, field.colorGetter.get().dot(color)) {
             {
                 this.updateMessage();
+            }
+
+            @Override
+            protected void renderBg(PoseStack pose, Minecraft minecraft, int x, int y) {
+                var baseColor = field.colorGetter.get();
+                float r = baseColor.red() * (1.0f - color.red());
+                float g = baseColor.green() * (1.0f - color.green());
+                float b = baseColor.blue() * (1.0f - color.blue());
+
+                RenderSystem.setShaderTexture(0, GRADIENT);
+                RenderSystem.setShaderColor(r, g, b, 1.0F);
+                blit(pose, this.x, this.y, 0, 20, 310, 20, 310,40);
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE/*, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE*/);
+                RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1.0F);
+                blit(pose, this.x, this.y, 0, 0, 310, 20, 310,40);
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+                super.renderBg(pose, minecraft, x, y);
             }
 
             protected void updateMessage() {
