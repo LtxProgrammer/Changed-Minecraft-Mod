@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.TextBlockEntity;
+import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.world.inventory.NoteMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -26,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +53,7 @@ public class Note extends AbstractCustomShapeEntityBlock implements TextMenuProv
             return InteractionResult.SUCCESS;
         } else {
             if (level.getBlockEntity(pos) instanceof MenuProvider provider) {
-                player.openMenu(provider);
+                this.openMenu(player, provider, pos);
                 return InteractionResult.CONSUME;
             }
         }
@@ -61,8 +64,8 @@ public class Note extends AbstractCustomShapeEntityBlock implements TextMenuProv
     @Override
     public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity entity, ItemStack itemStack) {
         super.setPlacedBy(level, blockPos, blockState, entity, itemStack);
-        if (entity instanceof Player player)
-            player.openMenu(getMenuProvider(blockState, level, blockPos));
+        if (entity instanceof ServerPlayer player)
+            this.openMenu(player, getMenuProvider(blockState, level, blockPos), blockPos);
     }
 
     @Override

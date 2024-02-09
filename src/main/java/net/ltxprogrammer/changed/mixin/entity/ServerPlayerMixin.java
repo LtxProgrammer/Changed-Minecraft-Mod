@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.ltxprogrammer.changed.world.inventory.SpecialLoadingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
@@ -18,7 +17,6 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.PacketDistributor;
@@ -31,12 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerPlayerMixin extends Player implements PlayerDataExtension {
     public ServerPlayerMixin(Level p_36114_, BlockPos p_36115_, float p_36116_, GameProfile p_36117_) {
         super(p_36114_, p_36115_, p_36116_, p_36117_);
-    }
-
-    @Inject(method = "initMenu", at = @At("TAIL"))
-    public void initMenu(AbstractContainerMenu p_143400_, CallbackInfo ci) {
-        if (p_143400_ instanceof SpecialLoadingMenu special)
-            special.afterInit(p_143400_);
     }
 
     @Inject(method = "restoreFrom", at = @At("HEAD"))

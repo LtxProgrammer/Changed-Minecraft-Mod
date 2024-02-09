@@ -75,7 +75,7 @@ public class AdvancedColorSelectorScreen extends Screen {
                 RenderSystem.setShaderTexture(0, GRADIENT);
                 RenderSystem.setShaderColor(r, g, b, 1.0F);
                 blit(pose, this.x, this.y, 0, 20, 310, 20, 310,40);
-                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE/*, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE*/);
+                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
                 RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), 1.0F);
                 blit(pose, this.x, this.y, 0, 0, 310, 20, 310,40);
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
