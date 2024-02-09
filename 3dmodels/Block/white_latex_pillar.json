@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "white_latex_pillar",
-		"particle": "white_latex_pillar"
+		"0": "changed:white_latex_pillar",
+		"particle": "changed:white_latex_pillar"
 	},
 	"elements": [
 		{

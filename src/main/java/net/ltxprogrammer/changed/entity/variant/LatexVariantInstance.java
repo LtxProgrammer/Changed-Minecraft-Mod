@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
@@ -595,6 +596,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
     public CompoundTag saveAbilities() {
         CompoundTag tagAbilities = new CompoundTag();
+        ResourceLocation selectedKey = ChangedRegistry.ABILITY.get().getKey(this.selectedAbility);
+        if (selectedKey != null)
+            TagUtil.putResourceLocation(tagAbilities, "selectedAbility", selectedKey);
         abilityInstances.forEach((name, ability) -> {
             CompoundTag tagAbility = new CompoundTag();
             ability.saveData(tagAbility);
@@ -605,6 +609,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public void loadAbilities(CompoundTag tagAbilities) {
+        if (tagAbilities.contains("selectedAbility")) {
+            var savedSelected = ChangedRegistry.ABILITY.get().getValue(TagUtil.getResourceLocation(tagAbilities, "selectedAbility"));
+            if (abilityInstances.containsKey(savedSelected))
+                this.selectedAbility = savedSelected;
+        }
         abilityInstances.forEach((name, instance) -> {
             String abName = Objects.requireNonNull(name.getRegistryName()).toString();
             if (!tagAbilities.contains(abName))

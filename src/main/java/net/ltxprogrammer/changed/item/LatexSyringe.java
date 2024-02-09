@@ -195,15 +195,18 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
-        return MinecraftForge.EVENT_BUS.post(
+        if (MinecraftForge.EVENT_BUS.post(
                 new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
                         context.getPlayer(),
                         context.getItemInHand(),
-                        Syringe.getVariant(context.getItemInHand()))) ?
-                InteractionResult.sidedSuccess(context.getLevel().isClientSide) :
-                super.useOn(context);
+                        Syringe.getVariant(context.getItemInHand()))))
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+        if (context.getPlayer() != null && context.getPlayer().isCrouching())
+            return super.useOn(context);
+
+        return InteractionResult.PASS;
     }
 
     @Override

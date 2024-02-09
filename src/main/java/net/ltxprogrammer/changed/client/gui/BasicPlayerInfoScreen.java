@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.EyeStyle;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
@@ -11,14 +10,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 
 public class BasicPlayerInfoScreen extends Screen {
     private final Screen lastScreen;
     private final @Nullable Player player;
+    private @Nullable Runnable toolTip = null;
 
     public BasicPlayerInfoScreen(Screen parent) {
         super(new TranslatableComponent("changed.config.bpi.screen"));
@@ -30,6 +28,10 @@ public class BasicPlayerInfoScreen extends Screen {
         super(new TranslatableComponent("changed.config.bpi.screen"));
         this.lastScreen = parent;
         this.player = player;
+    }
+
+    public void setToolTip(Runnable fn) {
+        this.toolTip = fn;
     }
 
     @Override
@@ -50,11 +52,21 @@ public class BasicPlayerInfoScreen extends Screen {
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.hair_color"),
                 bpi::getHairColor, bpi::setHairColor));
         i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color"),
-                bpi::getIrisColor, bpi::setIrisColor));
-        i++;
         this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.sclera_color"),
                 bpi::getScleraColor, bpi::setScleraColor));
+        i++;
+        var rightIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
+                bpi::getRightIrisColor, bpi::setRightIrisColor));
+        i++;
+        var leftIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
+                bpi::getLeftIrisColor, bpi::setLeftIrisColor));
+        this.addRenderableWidget(new Button((this.width / 2 - 155 + i % 2 * 160) + 110, (this.height / 6 + 24 * (i >> 1)) + 24, 40, 20, new TranslatableComponent("changed.config.bpi.iris_color.sync"),
+                button -> {
+                    leftIris.setValue(rightIris.getValue());
+                    //bpi.setLeftIrisColor(bpi.getRightIrisColor());
+                }, (button, stack, x, y) -> {
+                    setToolTip(() -> this.renderTooltip(stack, new TranslatableComponent("changed.config.bpi.iris_color.sync_tooltip"), x, y));
+                }));
         i++;
         this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.eye_style", bpi.getEyeStyle().getName()), button -> {
             var style = bpi.getEyeStyle();
@@ -67,7 +79,7 @@ public class BasicPlayerInfoScreen extends Screen {
             bpi.setEyeStyle(style);
             button.setMessage(new TranslatableComponent("changed.config.bpi.eye_style", style.getName()));
         }));
-        i++;
+        i += 2;
         this.addRenderableWidget(new Checkbox(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.override_dl_iris"), bpi.isOverrideIrisOnDarkLatex()) {
             @Override
             public void onPress() {
@@ -97,5 +109,9 @@ public class BasicPlayerInfoScreen extends Screen {
         this.renderBackground(poseStack);
         drawCenteredString(poseStack, this.font, this.title, this.width / 2, 15, 16777215);
         super.render(poseStack, p_96563_, p_96564_, p_96565_);
+        if (toolTip != null) {
+            toolTip.run();
+            toolTip = null;
+        }
     }
 }

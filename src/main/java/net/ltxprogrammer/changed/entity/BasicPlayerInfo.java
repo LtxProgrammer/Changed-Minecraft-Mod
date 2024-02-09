@@ -14,7 +14,8 @@ public class BasicPlayerInfo {
     // Default values here are based on Colin's properties
     // When the player is TF'd these values will copy over to the latex representative
     private Color3 hairColor = new Color3(0.36f, 0.28f, 0.26f);
-    private Color3 irisColor = new Color3(0.0f, 0.5f, 1.0f);
+    private Color3 irisLeftColor = new Color3(0.0f, 0.5f, 1.0f);
+    private Color3 irisRightColor = new Color3(0.0f, 0.5f, 1.0f);
     private Color3 scleraColor = Color3.WHITE;
     private boolean overrideIrisOnDarkLatex = false;
     private EyeStyle eyeStyle = EyeStyle.V2;
@@ -53,7 +54,8 @@ public class BasicPlayerInfo {
     public static BasicPlayerInfo random(Random random) {
         BasicPlayerInfo info = new BasicPlayerInfo();
         info.hairColor = Util.getRandom(HAIR_COLORS, random);
-        info.irisColor = Util.getRandom(IRIS_COLORS, random);
+        info.irisLeftColor = Util.getRandom(IRIS_COLORS, random);
+        info.irisRightColor = random.nextFloat() > 0.05f ? info.irisLeftColor : Util.getRandom(IRIS_COLORS, random); // 5% for dichrome eyes
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         info.overrideOthersToMatchStyle = false;
         return info;
@@ -63,8 +65,12 @@ public class BasicPlayerInfo {
         this.hairColor = hairColor;
     }
 
-    public void setIrisColor(Color3 irisColor) {
-        this.irisColor = irisColor;
+    public void setLeftIrisColor(Color3 irisColor) {
+        this.irisLeftColor = irisColor;
+    }
+
+    public void setRightIrisColor(Color3 irisColor) {
+        this.irisRightColor = irisColor;
     }
 
     public void setScleraColor(Color3 scleraColor) {
@@ -87,8 +93,12 @@ public class BasicPlayerInfo {
         return hairColor;
     }
 
-    public Color3 getIrisColor() {
-        return irisColor;
+    public Color3 getLeftIrisColor() {
+        return irisLeftColor;
+    }
+
+    public Color3 getRightIrisColor() {
+        return irisRightColor;
     }
 
     public Color3 getScleraColor() {
@@ -115,7 +125,8 @@ public class BasicPlayerInfo {
 
     public void save(CompoundTag tag) {
         tag.putInt("hair", hairColor.toInt());
-        tag.putInt("iris", irisColor.toInt());
+        tag.putInt("irisLeft", irisLeftColor.toInt());
+        tag.putInt("irisRight", irisRightColor.toInt());
         tag.putInt("sclera", scleraColor.toInt());
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
         tag.putInt("eyeStyle", eyeStyle.ordinal());
@@ -124,7 +135,13 @@ public class BasicPlayerInfo {
 
     public void load(CompoundTag tag) {
         this.hairColor = Color3.fromInt(tag.getInt("hair"));
-        this.irisColor = Color3.fromInt(tag.getInt("iris"));
+        if (tag.contains("iris")) {
+            this.irisLeftColor = Color3.fromInt(tag.getInt("iris"));
+            this.irisRightColor = this.irisLeftColor;
+        } else {
+            this.irisLeftColor = Color3.fromInt(tag.getInt("irisLeft"));
+            this.irisRightColor = Color3.fromInt(tag.getInt("irisRight"));
+        }
         this.scleraColor = Color3.fromInt(tag.getInt("sclera"));
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
         this.eyeStyle = EyeStyle.values()[tag.getInt("eyeStyle")];

@@ -25,30 +25,46 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
     private final RenderLayerParent<T, M> parent;
     private final M model;
     private final Minecraft minecraft;
     private final @Nullable ResourceLocation alternateTexture;
+    private final Predicate<ModelPart> canPartDrip;
 
     private static final NativeImage MISSING_TEXTURE = new NativeImage(1, 1, false);
     private static final Map<ResourceLocation, NativeImage> cachedTextures = new HashMap<>();
 
+    private static boolean always(ModelPart part) {
+        return true;
+    }
+
     public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model) {
+        this(parent, model, LatexParticlesLayer::always);
+    }
+
+    public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model, LatexTranslucentLayer<T, M> translucentLayer) {
+        this(parent, model, translucentLayer, LatexParticlesLayer::always);
+    }
+
+    public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model, Predicate<ModelPart> canPartDrip) {
         super(parent);
         this.parent = parent;
         this.model = model;
         this.minecraft = Minecraft.getInstance();
         this.alternateTexture = null;
+        this.canPartDrip = canPartDrip;
     }
 
-    public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model, LatexTranslucentLayer<T, M> translucentLayer) {
+    public LatexParticlesLayer(RenderLayerParent<T, M> parent, M model, LatexTranslucentLayer<T, M> translucentLayer, Predicate<ModelPart> canPartDrip) {
         super(parent);
         this.parent = parent;
         this.model = model;
         this.minecraft = Minecraft.getInstance();
         this.alternateTexture = translucentLayer.getTexture();
+        this.canPartDrip = canPartDrip;
     }
 
     public static void purgeTextureCache() {
@@ -122,7 +138,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
     }
 
     public void createNewDripParticle(LatexEntity entity) {
-        var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).toList();
+        var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
         if (partsWithCubes.isEmpty())
             return;
 

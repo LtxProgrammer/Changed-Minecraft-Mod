@@ -72,7 +72,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     }
 
     public static final GenderedVariant<LightLatexWolfMale, LightLatexWolfFemale> LIGHT_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.LIGHT_LATEX_WOLF_MALE, ChangedEntities.LIGHT_LATEX_WOLF_FEMALE)
-            .addAbility(ChangedAbilities.SWITCH_GENDER).split(Builder::ignored, Builder::absorbing)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER).split(Builder::ignored, Builder::absorbing)
             .buildGendered(Changed.modResource("form_light_latex_wolf")));
 
     public static final LatexVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(ChangedEntities.AEROSOL_LATEX_WOLF)
@@ -81,6 +81,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<DarkLatexDragon> DARK_LATEX_DRAGON = register(Builder.of(ChangedEntities.DARK_LATEX_DRAGON)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_dragon")));
+    public static final LatexVariant<DarkLatexWolfPartial> DARK_LATEX_WOLF_PARTIAL = register(Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL)
+            .groundSpeed(1.025f).swimSpeed(0.975f).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE)
+            .build(Changed.modResource("form_dark_latex_wolf_partial")));
     public static final LatexVariant<DarkLatexYufeng> DARK_LATEX_YUFENG = register(Builder.of(ChangedEntities.DARK_LATEX_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX)
             .build(Changed.modResource("form_dark_latex_yufeng")));
@@ -114,6 +117,12 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<LatexHuman> LATEX_HUMAN = register(Builder.of(ChangedEntities.LATEX_HUMAN)
+            .groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.6f)
+            .build(Changed.modResource("form_latex_human")));
+    public static final LatexVariant<LatexFennecFox> LATEX_FENNEC_FOX = register(Builder.of(ChangedEntities.LATEX_FENNEC_FOX)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f)
+            .build(Changed.modResource("form_latex_fennec_fox")));
     public static final LatexVariant<LatexHypnoCat> LATEX_HYPNO_CAT = register(Builder.of(ChangedEntities.LATEX_HYPNO_CAT)
             .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.HYPNOSIS)
             .build(Changed.modResource("form_latex_hypno_cat")));
@@ -211,8 +220,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX)
             .build(Changed.modResource("form_white_latex_wolf")));
 
-    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(LIGHT_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
-            .split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
+    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
             .buildGendered(Changed.modResource("form_dark_latex_wolf")));
     public static final LatexVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_PUP)
             .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE)
@@ -446,6 +455,14 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             ProcessTransfur.killPlayerBy(player, newEntity);
+        } else if (entity instanceof LatexEntity latexEntity) {
+            newEntity.getBasicPlayerInfo().copyFrom(latexEntity.getBasicPlayerInfo());
+            // Take armor and held items
+            Arrays.stream(EquipmentSlot.values()).forEach(slot -> {
+                newEntity.setItemSlot(slot, entity.getItemBySlot(slot).copy());
+            });
+
+            latexEntity.discard();
         } else {
             // Take armor
             Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(slot -> {
@@ -621,7 +638,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         public Builder<T> extraHands() {
-            return addAbility(ChangedAbilities.EXTRA_HANDS).addAbility(ChangedAbilities.SWITCH_HANDS);
+            return addAbility(ChangedAbilities.SWITCH_HANDS);
         }
 
         public Builder<T> rideable() {

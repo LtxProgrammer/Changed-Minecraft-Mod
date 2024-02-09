@@ -1,16 +1,52 @@
 package net.ltxprogrammer.changed.init;
 
+import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
+import net.ltxprogrammer.changed.entity.beast.LatexHuman;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
+import java.util.Map;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedEntityRenderers {
+    private static Map<String, EntityRenderer<? extends DarkLatexWolfPartial>> partialRenderers = ImmutableMap.of();
+    private static Map<String, EntityRenderer<? extends LatexHuman>> humanRenderers = ImmutableMap.of();
+
+    @Nullable
+    public static <T extends Entity> EntityRenderer<? super T> getRenderer(T entity) {
+        if (entity instanceof DarkLatexWolfPartial partial) {
+            String s = partial.getModelName();
+            EntityRenderer<? extends DarkLatexWolfPartial> entityrenderer = partialRenderers.get(s);
+            return (EntityRenderer) (entityrenderer != null ? entityrenderer : partialRenderers.get("default"));
+        } else if (entity instanceof LatexHuman human) {
+            String s = human.getModelName();
+            EntityRenderer<? extends LatexHuman> entityrenderer = humanRenderers.get(s);
+            return (EntityRenderer) (entityrenderer != null ? entityrenderer : humanRenderers.get("default"));
+        }
+
+        return null; // Default to registered renderer
+    }
+
+    public static void registerComplexRenderers(EntityRendererProvider.Context context) {
+        partialRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends DarkLatexWolfPartial>>()
+                .put("default", new DarkLatexWolfPartialRenderer(context, false))
+                .put("slim", new DarkLatexWolfPartialRenderer(context, true)).build();
+        humanRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends LatexHuman>>()
+                .put("default", new LatexHumanRenderer(context, false))
+                .put("slim", new LatexHumanRenderer(context, true)).build();
+    }
+
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         final boolean useNewModels = Changed.config.client.useNewModels.get();
@@ -23,6 +59,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
+        //event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), DarkLatexWolfPartialRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_PUP.get(), DarkLatexPupRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
@@ -36,6 +73,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF.get(), LatexCrystalWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_CRYSTAL_WOLF_HORNED.get(), LatexCrystalWolfHornedRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_DEER.get(), LatexDeerRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_FENNEC_FOX.get(), LatexFennecFoxRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(), LatexHypnoCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_KEON_WOLF.get(), LatexKeonWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_LEAF.get(), LatexLeafRenderer::new);
@@ -46,8 +84,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_MEDUSA_CAT.get(), LatexMedusaCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MIMIC_PLANT.get(), LatexMimicPlantRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MING_CAT.get(), LatexMingCatRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_MERMAID_SHARK.get(),
-                useNewModels ? LatexMermaidSharkRenderer.Remodel::new : LatexMermaidSharkRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MERMAID_SHARK.get(), LatexMermaidSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MOTH.get(), LatexMothRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ORCA.get(), LatexOrcaRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_OTTER.get(), LatexOtterRenderer::new);
@@ -63,8 +100,7 @@ public class ChangedEntityRenderers {
                 /*useNewModels ? LatexSharkFemaleRenderer.Remodel::new :*/ LatexSharkFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SHARK_MALE.get(),
                 /*useNewModels ? LatexSharkMaleRenderer.Remodel::new :*/ LatexSharkMaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_SIREN.get(),
-                useNewModels ? LatexSirenRenderer.Remodel::new : LatexSirenRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_SIREN.get(), LatexSirenRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNAKE.get(), LatexSnakeRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNIPER_DOG.get(), LatexSniperDogRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE.get(), LatexSnowLeopardFemaleRenderer::new);

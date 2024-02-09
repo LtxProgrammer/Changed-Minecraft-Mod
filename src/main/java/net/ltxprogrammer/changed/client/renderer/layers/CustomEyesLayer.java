@@ -74,23 +74,36 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
     public static final ModelLayerLocation HEAD = new ModelLayerLocation(Changed.modResource("head"), "main");
     private final ModelPart head;
     private final ColorFunction<T> scleraColorFn;
-    private final ColorFunction<T> irisColorFn;
+    private final ColorFunction<T> irisColorLeftFn;
+    private final ColorFunction<T> irisColorRightFn;
     private final ColorFunction<T> eyeBrowsColorFn;
 
     public static <T extends LatexEntity> ColorData noRender(T entity, BasicPlayerInfo bpi) {
         return null;
     }
 
-    public static <T extends LatexEntity> ColorData irisColor(T entity, BasicPlayerInfo bpi) {
-        return ColorData.ofColor(bpi.getIrisColor());
+    public static <T extends LatexEntity> ColorData irisColorLeft(T entity, BasicPlayerInfo bpi) {
+        return ColorData.ofColor(bpi.getLeftIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorData glowingIrisColor(T entity, BasicPlayerInfo bpi) {
-        return ColorData.ofEmissiveColor(bpi.getIrisColor());
+    public static <T extends LatexEntity> ColorData irisColorRight(T entity, BasicPlayerInfo bpi) {
+        return ColorData.ofColor(bpi.getRightIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> translucentIrisColor(float alpha) {
-        return (entity, bpi) -> ColorData.ofTranslucentColor(bpi.getIrisColor(), alpha);
+    public static <T extends LatexEntity> ColorData glowingIrisColorLeft(T entity, BasicPlayerInfo bpi) {
+        return ColorData.ofEmissiveColor(bpi.getLeftIrisColor());
+    }
+
+    public static <T extends LatexEntity> ColorData glowingIrisColorRight(T entity, BasicPlayerInfo bpi) {
+        return ColorData.ofEmissiveColor(bpi.getRightIrisColor());
+    }
+
+    public static <T extends LatexEntity> ColorFunction<T> translucentIrisColorLeft(float alpha) {
+        return (entity, bpi) -> ColorData.ofTranslucentColor(bpi.getLeftIrisColor(), alpha);
+    }
+
+    public static <T extends LatexEntity> ColorFunction<T> translucentIrisColorRight(float alpha) {
+        return (entity, bpi) -> ColorData.ofTranslucentColor(bpi.getRightIrisColor(), alpha);
     }
 
     public static <T extends LatexEntity> ColorData scleraColor(T entity, BasicPlayerInfo bpi) {
@@ -113,24 +126,33 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         return (entity, bpi) -> ColorData.ofTranslucentColor(color, alpha);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedIfNotDarkLatexOverride(Color3 color) {
-        return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getIrisColor() : color);
+    public static <T extends LatexEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideLeft(Color3 color) {
+        return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getLeftIrisColor() : color);
+    }
+
+    public static <T extends LatexEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideRight(Color3 color) {
+        return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getRightIrisColor() : color);
     }
 
     public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
-        this(parent, modelSet, CustomEyesLayer::scleraColor, CustomEyesLayer::irisColor, CustomEyesLayer::noRender);
+        this(parent, modelSet, CustomEyesLayer::scleraColor, CustomEyesLayer::irisColorLeft, CustomEyesLayer::irisColorRight, CustomEyesLayer::noRender);
     }
 
-    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet, ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorFn) {
-        this(parent, modelSet, scleraColorFn, irisColorFn, CustomEyesLayer::noRender);
+    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet, ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorDualFn) {
+        this(parent, modelSet, scleraColorFn, irisColorDualFn, irisColorDualFn);
+    }
+
+    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet, ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorLeftFn, ColorFunction<T> irisColorRightFn) {
+        this(parent, modelSet, scleraColorFn, irisColorLeftFn, irisColorRightFn, CustomEyesLayer::noRender);
     }
 
     public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet,
-                           ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorFn, ColorFunction<T> eyeBrowsColorFn) {
+                           ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorLeftFn, ColorFunction<T> irisColorRightFn, ColorFunction<T> eyeBrowsColorFn) {
         super(parent);
         this.head = modelSet.bakeLayer(HEAD);
         this.scleraColorFn = scleraColorFn;
-        this.irisColorFn = irisColorFn;
+        this.irisColorLeftFn = irisColorLeftFn;
+        this.irisColorRightFn = irisColorRightFn;
         this.eyeBrowsColorFn = eyeBrowsColorFn;
     }
 
@@ -166,8 +188,11 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         scleraColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getSclera())), packedLight, overlay, data.color, data.alpha);
         });
-        irisColorFn.getColorSafe(entity, info).ifPresent(data -> {
-            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getIris())), packedLight, overlay, data.color, data.alpha);
+        irisColorLeftFn.getColorSafe(entity, info).ifPresent(data -> {
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getLeftIris())), packedLight, overlay, data.color, data.alpha);
+        });
+        irisColorRightFn.getColorSafe(entity, info).ifPresent(data -> {
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getRightIris())), packedLight, overlay, data.color, data.alpha);
         });
         eyeBrowsColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);

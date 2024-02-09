@@ -1,16 +1,20 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.UVPair;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Set;
 
 @Mixin(ModelPart.Cube.class)
 public abstract class CubeMixin implements CubeExtender {
@@ -66,5 +70,18 @@ public abstract class CubeMixin implements CubeExtender {
         float vY = Mth.lerp(xLerp, surface.vertices[3].v, surface.vertices[2].v);
 
         return new UVPair(Mth.lerp(yLerp, uX, uY), Mth.lerp(yLerp, vX, vY));
+    }
+
+    @Unique
+    private static final ModelPart.Vertex NULL_VERTEX = new ModelPart.Vertex(0, 0, 0, 0, 0);
+
+    @Override
+    public void removeSides(Set<Direction> directions) {
+        for (var dir : directions) {
+            Vector3f step = dir.getAxis() == Direction.Axis.Y ? dir.getOpposite().step() : dir.step();
+            for (ModelPart.Polygon polygon : polygons)
+                if (polygon.normal.equals(step))
+                    Arrays.fill(polygon.vertices, NULL_VERTEX);
+        }
     }
 }

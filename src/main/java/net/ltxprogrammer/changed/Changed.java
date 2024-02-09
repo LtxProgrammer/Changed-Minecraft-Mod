@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -113,6 +114,11 @@ public class Changed {
                 Changed.LOGGER.error("Failed to load Patreon Benefits. Patrons will not receive benefits visible to this client.");
                 ex.printStackTrace();
             }
+        });
+        event.enqueueWork(() -> {
+            ComposterBlock.COMPOSTABLES.put(ChangedBlocks.ORANGE_TREE_LEAVES.get().asItem(), 0.3F);
+            ComposterBlock.COMPOSTABLES.put(ChangedBlocks.ORANGE_TREE_SAPLING.get().asItem(), 0.3F);
+            ComposterBlock.COMPOSTABLES.put(ChangedItems.ORANGE.get(), 0.65F);
         });
     }
 

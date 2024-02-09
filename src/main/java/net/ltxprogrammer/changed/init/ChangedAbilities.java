@@ -11,7 +11,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class ChangedAbilities {
     public static final DeferredRegister<AbstractAbility<?>> REGISTRY = ChangedRegistry.ABILITY.createDeferred(Changed.MODID);
 
-    public static RegistryObject<ExtraHandsAbility> EXTRA_HANDS = REGISTRY.register("extra_hands", ExtraHandsAbility::new);
     public static RegistryObject<AccessSaddleAbility> ACCESS_SADDLE = REGISTRY.register("access_saddle", AccessSaddleAbility::new);
     public static RegistryObject<SwitchTransfurModeAbility> SWITCH_TRANSFUR_MODE = REGISTRY.register("switch_transfur_mode", SwitchTransfurModeAbility::new);
     public static RegistryObject<SimpleCreateItemAbility> CREATE_COBWEB = REGISTRY.register("create_cobweb",

@@ -31,6 +31,7 @@ public class DarkLatexWolfFemaleModel extends LatexHumanoidModel<DarkLatexWolfFe
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
+    private final ModelPart Mask;
     private final LatexAnimator<DarkLatexWolfFemale, DarkLatexWolfFemaleModel> animator;
 
     public DarkLatexWolfFemaleModel(ModelPart root) {
@@ -38,6 +39,7 @@ public class DarkLatexWolfFemaleModel extends LatexHumanoidModel<DarkLatexWolfFe
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");
+        this.Mask = Head.getChild("Mask");
         this.Torso = root.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
@@ -58,6 +60,10 @@ public class DarkLatexWolfFemaleModel extends LatexHumanoidModel<DarkLatexWolfFe
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+    }
+
+    public boolean isPartNotMask(ModelPart part) {
+        return Mask.getAllParts().noneMatch(part::equals);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -138,9 +144,9 @@ public class DarkLatexWolfFemaleModel extends LatexHumanoidModel<DarkLatexWolfFe
 
         PartDefinition Base_r2 = TailSecondary.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 35).addBox(-2.5F, -0.45F, -2.1F, 5.0F, 7.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, 0.5F, 0.0F, 1.4835F, 0.0F, 0.0F));
 
-        PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.offset(0.0F, 0.75F, 2.5F));
+        PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.offset(0.0F, 1.25F, 5.0F));
 
-        PartDefinition Base_r3 = TailTertiary.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(29, 57).addBox(-2.0F, -1.2F, -1.95F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, 0.0F, 4.0F, 1.8326F, 0.0F, 0.0F));
+        PartDefinition Base_r3 = TailTertiary.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(29, 57).addBox(-2.0F, -1.2F, -1.95F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, -0.5F, 1.5F, 1.8326F, 0.0F, 0.0F));
 
         PartDefinition Plantoids = Torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F));
 

@@ -44,8 +44,9 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         ServerPlayer self = (ServerPlayer)(Object)this;
         if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
             ProcessTransfur.ifPlayerLatex(player, oldVariant -> {
-                ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent())
-                        .loadAbilities(oldVariant.saveAbilities());
+                var newVariant = ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent());
+                newVariant.loadAbilities(oldVariant.saveAbilities());
+                newVariant.getLatexEntity().readPlayerVariantData(oldVariant.getLatexEntity().savePlayerVariantData());
             });
         }
     }
@@ -78,6 +79,8 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         ProcessTransfur.ifPlayerLatex(this, variant -> {
             if (tag.contains("LatexAbilities"))
                 variant.loadAbilities(tag.getCompound("LatexAbilities"));
+            if (tag.contains("LatexData"))
+                variant.getLatexEntity().readPlayerVariantData(tag.getCompound("LatexData"));
         });
 
         if (tag.contains("PlayerMover")) {
@@ -102,6 +105,10 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
             tag.put("LatexAbilities", variant.saveAbilities());
             tag.putInt("LatexVariantAge", variant.ageAsVariant);
+
+            var entityData = variant.getLatexEntity().savePlayerVariantData();
+            if (!entityData.isEmpty())
+                tag.put("LatexData", entityData);
         });
         var mover = getPlayerMover();
         if (mover != null) {

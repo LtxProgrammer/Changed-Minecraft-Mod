@@ -42,7 +42,7 @@ public class LatexSharkFemaleModel extends LatexHumanoidModel<LatexSharkFemale> 
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
 		animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
-				.hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
+				.hipOffset(-1.0f).legLength(16.0f).armLength(16.0f).torsoLength(16.0f);
 	}
 
 
