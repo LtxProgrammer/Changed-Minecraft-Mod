@@ -205,6 +205,12 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::mountainSpawning);
+    public static final RegistryObject<EntityType<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = registerReducedSpawn("phage_latex_wolf_male", 0x393939, 0x3499ff,
+            EntityType.Builder.of(PhageLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<PhageLatexWolfFemale>> PHAGE_LATEX_WOLF_FEMALE = registerReducedSpawn("phage_latex_wolf_female", 0x393939, 0x3499ff,
+            EntityType.Builder.of(PhageLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LatexBeifeng>> LATEX_BEIFENG = registerReducedSpawn("latex_beifeng", 0x51659D, 0xFFE852,
             EntityType.Builder.of(LatexBeifeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::undergroundSpawning);

@@ -62,6 +62,8 @@ public class ChangedEntityRenderers {
         //event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), DarkLatexWolfPartialRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_PUP.get(), DarkLatexPupRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.PHAGE_LATEX_WOLF_FEMALE.get(), PhageLatexWolfFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.PHAGE_LATEX_WOLF_MALE.get(), PhageLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_ALIEN.get(), LatexAlienRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_BEE.get(), LatexBeeRenderer::new);

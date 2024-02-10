@@ -223,6 +223,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
             .buildGendered(Changed.modResource("form_dark_latex_wolf")));
+    public static final GenderedVariant<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.PHAGE_LATEX_WOLF_MALE, ChangedEntities.PHAGE_LATEX_WOLF_FEMALE)
+            .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
+            .buildGendered(Changed.modResource("form_phage_latex_wolf")));
     public static final LatexVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_PUP)
             .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE)
             .build(Changed.modResource("form_dark_latex_pup")));
