@@ -349,6 +349,8 @@
   "entity.changed.light_latex_wolf_organic": "Organikus világos farkas",
   "entity.changed.shark": "Cápa",
   "entity.changed.white_latex_wolf": "Fehér latex farkas",
+  "entity.changed.phage_latex_wolf_female": "Nőstény bakteriofág latex farkas",
+  "entity.changed.phage_latex_wolf_male": "Hím bakteriofág latex farkas",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Gáz farkasidéző tojás",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Nőstény sötét latex farkasidéző tojás",
@@ -414,6 +416,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Organikus világos farkasidéző tojás",
   "item.changed.shark_spawn_egg": "Cápaidéző tojás",
   "item.changed.white_latex_wolf_spawn_egg": "Fehér latex farkasidéző tojás",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "Nőstény bakteriofág latex farkasidéző tojás",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "Hím bakteriofág latex farkasidéző tojás",
 
   "changed.patreon.level0": "Discord tag",
   "changed.patreon.level1": "1. szint",
