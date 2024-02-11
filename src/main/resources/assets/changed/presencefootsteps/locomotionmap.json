@@ -61,5 +61,7 @@
   "changed:latex_yuin": "BIPED",
   "changed:milk_pudding": "BIPED",
   "changed:shark": "BIPED",
-  "changed:white_latex_wolf": "BIPED"
+  "changed:white_latex_wolf": "BIPED",
+  "changed:phage_latex_wolf_female": "BIPED",
+  "changed:phage_latex_wolf_male": "BIPED"
 }

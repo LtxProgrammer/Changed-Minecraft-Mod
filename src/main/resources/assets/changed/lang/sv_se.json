@@ -350,6 +350,8 @@
   "entity.changed.light_latex_wolf_organic": "Organisk ljusvarg",
   "entity.changed.shark": "Haj",
   "entity.changed.white_latex_wolf": "Vit latexvarg",
+  "entity.changed.phage_latex_wolf_female": "Kvinnlig bakteriofag latexvarg",
+  "entity.changed.phage_latex_wolf_male": "Manlig bakteriofag latexvarg",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Skapelseägg för gas latex varg",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Skapelseägg för kvinnlig mörk latexvarg",
@@ -415,6 +417,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Skapelseägg för organisk ljusvarg",
   "item.changed.shark_spawn_egg": "Skapelseägg för haj",
   "item.changed.white_latex_wolf_spawn_egg": "Skapelseägg för vit latexvarg",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "Skapelseägg för kvinnlig bakteriofag latexvarg",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "Skapelseägg för manlig bakteriofag latexvarg",
 
   "changed.patreon.level0": "Discord Medlem",
   "changed.patreon.level1": "Nivå 1",

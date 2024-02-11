@@ -349,6 +349,8 @@
   "entity.changed.light_latex_wolf_organic": "Organic Light Wolf",
   "entity.changed.shark": "Shark",
   "entity.changed.white_latex_wolf": "White Latex Wolf",
+  "entity.changed.phage_latex_wolf_female": "Female Phage Latex Wolf",
+  "entity.changed.phage_latex_wolf_male": "Male Phage Latex Wolf",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Gas Latex Wolf Spawn Egg",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Female Dark Latex Wolf Spawn Egg",
@@ -414,6 +416,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Organic Light Wolf Spawn Egg",
   "item.changed.shark_spawn_egg": "Shark Spawn Egg",
   "item.changed.white_latex_wolf_spawn_egg": "White Latex Wolf Spawn Egg",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "Female Phage Latex Wolf Spawn Egg",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "Male Phage Latex Wolf Spawn Egg",
 
   "changed.patreon.level0": "Discord Member",
   "changed.patreon.level1": "Tier 1",
