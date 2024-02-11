@@ -350,6 +350,8 @@
   "entity.changed.light_latex_wolf_organic": "Organisk lyse ulv",
   "entity.changed.shark": "Hai",
   "entity.changed.white_latex_wolf": "Hvit lateks ulv",
+  "entity.changed.phage_latex_wolf_female": "Kvinnelig bakteriofag lateks ulv",
+  "entity.changed.phage_latex_wolf_male": "Mannlig bakteriofag lateks ulv",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Fremkallingsegg for gass lateks ulv",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig mørk lateks ulv",
@@ -415,6 +417,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Fremkallingsegg for organisk lyse ulv",
   "item.changed.shark_spawn_egg": "Fremkallingsegg for hai",
   "item.changed.white_latex_wolf_spawn_egg": "Fremkallingsegg for hvit lateks ulv",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig bakteriofag lateks ulv",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig bakteriofag lateks ulv",
 
   "changed.patreon.level0": "Discord Medlem",
   "changed.patreon.level1": "Nivå 1",
