@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate;
 
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
@@ -51,7 +51,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
     public float swimAmount = 0.0F;
     public float flyAmount = 0.0F;
     public float fallFlyingAmount = 0.0F;
-    public LatexHumanoidModel.GrabState grabState = LatexHumanoidModel.GrabState.EMPTY;
+    public AdvancedHumanoidModel.GrabState grabState = AdvancedHumanoidModel.GrabState.EMPTY;
 
     public float ageLerp = 0.0F;
     public float reachOut = 0.0F;
@@ -67,7 +67,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         swimAmount = 0.0F;
         ageLerp = 0.0F;
         reachOut = 0.0F;
-        grabState = LatexHumanoidModel.GrabState.EMPTY;
+        grabState = AdvancedHumanoidModel.GrabState.EMPTY;
     }
 
     protected float distanceTo(@NotNull T entity, @NotNull Entity other, float partialTicks) {
@@ -115,12 +115,12 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
             leftArmPose = humanoidmodel$armpose;
         }
 
-        grabState = LatexHumanoidModel.GrabState.EMPTY;
+        grabState = AdvancedHumanoidModel.GrabState.EMPTY;
         entity.ifAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), instance -> {
             if (instance.shouldAnimateArms())
-                grabState = LatexHumanoidModel.GrabState.HOLD;
+                grabState = AdvancedHumanoidModel.GrabState.HOLD;
             else if (instance.getController().getHoldTicks() > 0 && instance.grabbedEntity == null)
-                grabState = LatexHumanoidModel.GrabState.REACH;
+                grabState = AdvancedHumanoidModel.GrabState.REACH;
         });
     }
 
@@ -240,7 +240,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         return this;
     }
 
-    public static enum AnimateStage implements BiPredicate<LatexAnimator<?,?>, LatexEntity> {
+    public static enum AnimateStage implements BiPredicate<HumanoidAnimator<?,?>, ChangedEntity> {
         INIT,
         RIDE((animator, latex) -> animator.entityModel.riding),
         SLEEP((animator, latex) -> latex.isSleeping()),
@@ -255,22 +255,22 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
 
         public static final List<AnimateStage> ORDER = List.of(INIT, RIDE, SLEEP, ATTACK, CROUCH, STAND, BOB, CREATIVE_FLY, FALL_FLY, SWIM, FINAL);
 
-        private final BiPredicate<LatexAnimator<?,?>, LatexEntity> predicate;
+        private final BiPredicate<HumanoidAnimator<?,?>, ChangedEntity> predicate;
 
         AnimateStage() {
             this.predicate = AnimateStage::always;
         }
 
-        AnimateStage(BiPredicate<LatexAnimator<?,?>, LatexEntity> predicate) {
+        AnimateStage(BiPredicate<HumanoidAnimator<?,?>, ChangedEntity> predicate) {
             this.predicate = predicate;
         }
 
         @Override
-        public boolean test(LatexAnimator<?, ?> animator, LatexEntity latex) {
+        public boolean test(HumanoidAnimator<?, ?> animator, ChangedEntity latex) {
             return predicate.test(animator, latex);
         }
 
-        private static boolean always(LatexAnimator<?,?> animator, LatexEntity entity) {
+        private static boolean always(HumanoidAnimator<?,?> animator, ChangedEntity entity) {
             return true;
         }
     }

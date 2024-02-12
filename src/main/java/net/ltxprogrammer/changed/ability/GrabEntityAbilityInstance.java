@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -25,7 +25,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Nullable
     public LivingEntity grabbedEntity = null;
     @Nullable
-    public LatexEntity syncEntity = null;
+    public ChangedEntity syncEntity = null;
     public boolean grabbedHasControl = false;
     public boolean suited = false;
     public float grabStrength = 0.0f;
@@ -53,7 +53,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         return Mth.lerp(partialTicks, suitTransitionO, suitTransition) / 3.0f;
     }
 
-    public LivingEntity getHoveredEntity(IAbstractLatex entity) {
+    public LivingEntity getHoveredEntity(IAbstractChangedEntity entity) {
         if (!(entity.getEntity() instanceof Player player))
             return null;
 
@@ -70,7 +70,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         return null;
     }
 
-    public GrabEntityAbilityInstance(AbstractAbility<?> ability, IAbstractLatex entity) {
+    public GrabEntityAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 
@@ -118,8 +118,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     private void prepareSyncEntity(LivingEntity syncTo) {
-        this.syncEntity = (LatexEntity) this.entity.getLatexEntity().getType().create(this.entity.getLevel());
-        this.syncEntity.setId(LatexVariant.getNextEntId());
+        this.syncEntity = (ChangedEntity) this.entity.getLatexEntity().getType().create(this.entity.getLevel());
+        this.syncEntity.setId(TransfurVariant.getNextEntId());
         CompoundTag tag = new CompoundTag();
         this.entity.getLatexEntity().saveWithoutId(tag);
         this.syncEntity.load(tag);
@@ -206,9 +206,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.grabbedEntity.noPhysics = !this.grabbedHasControl;
 
             if (!grabbedHasControl)
-                LatexVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
+                TransfurVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
             else
-                LatexVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
+                TransfurVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
 
             if (this.entity.getEntity() instanceof Player player && (player.isDeadOrDying() || player.isRemoved() || player.isSpectator())) {
                 this.releaseEntity();

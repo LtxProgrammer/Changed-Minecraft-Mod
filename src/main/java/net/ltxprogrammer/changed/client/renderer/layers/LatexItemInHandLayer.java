@@ -50,7 +50,7 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(pose, false);
         boolean flag = arm == HumanoidArm.LEFT;
-        /*var list = LatexHumanoidModel.findLargestCube(modelpart);
+        /*var list = AdvancedHumanoidModel.findLargestCube(modelpart);
         if (list.isEmpty()) {
             pose.popPose();
             return;

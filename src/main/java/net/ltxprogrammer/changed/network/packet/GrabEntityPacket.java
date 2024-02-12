@@ -74,7 +74,7 @@ public class GrabEntityPacket implements ChangedPacket {
                 return; // Invalid, sender cannot dictate other entities grab action
             }
 
-            ProcessTransfur.ifPlayerLatex(sender, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(sender, variant -> {
                 var ability = variant.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
                 if (ability == null)
                     return;
@@ -107,7 +107,7 @@ public class GrabEntityPacket implements ChangedPacket {
             if (!(source instanceof LivingEntity livingSource)) return;
             if (!(target instanceof LivingEntity livingTarget)) return;
 
-            ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(livingSource), variant -> {
+            ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(livingSource), variant -> {
                 variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), ability -> {
                     switch (type) {
                         case RELEASE -> ability.releaseEntity();
@@ -155,7 +155,7 @@ public class GrabEntityPacket implements ChangedPacket {
         public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
             var sender = contextSupplier.get().getSender();
             if (sender != null) {
-                ProcessTransfur.ifPlayerLatex(sender, variant -> {
+                ProcessTransfur.ifPlayerTransfurred(sender, variant -> {
                     variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), instance -> {
                         instance.attackDown = this.attackKey;
                         instance.useDown = this.useKey;

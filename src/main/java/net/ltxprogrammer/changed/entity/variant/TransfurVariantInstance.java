@@ -150,7 +150,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             return;
         }
 
-        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
             if (!variant.getItemUseMode().canUseHand(event.getHand()))
                 event.setCanceled(true);
         });

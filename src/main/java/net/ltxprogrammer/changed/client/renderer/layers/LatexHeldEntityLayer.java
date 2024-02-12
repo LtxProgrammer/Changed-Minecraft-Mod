@@ -3,9 +3,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
-public class LatexHeldEntityLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexHeldEntityLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
     private final ModelPart torso;
 
     public LatexHeldEntityLayer(RenderLayerParent<T, M> parent) {
@@ -29,7 +29,7 @@ public class LatexHeldEntityLayer<T extends LatexEntity, M extends LatexHumanoid
         if (ability.grabbedEntity == null) return;
         if (ability.suited) return;
 
-        LatexVariantInstance.syncEntityPosRotWithEntity(ability.grabbedEntity, entity);
+        TransfurVariantInstance.syncEntityPosRotWithEntity(ability.grabbedEntity, entity);
         pose.pushPose();
         torso.translateAndRotate(pose);
 

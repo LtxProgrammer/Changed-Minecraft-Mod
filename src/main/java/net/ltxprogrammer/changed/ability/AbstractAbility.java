@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -257,7 +257,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     // Broadcast changes to clients
-    public final void setDirty(IAbstractLatex entity) {
+    public final void setDirty(IAbstractChangedEntity entity) {
         CompoundTag data = new CompoundTag();
         saveData(data, entity);
 
@@ -283,10 +283,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public static <T extends AbstractAbilityInstance> T getAbilityInstance(LivingEntity livingEntity, AbstractAbility<T> ability) {
         if (livingEntity == null) return null;
 
-        if (livingEntity instanceof LatexEntity latex)
+        if (livingEntity instanceof ChangedEntity latex)
             return latex.getAbilityInstance(ability);
         else if (livingEntity instanceof Player player) {
-            var latexInstance = ProcessTransfur.getPlayerLatexVariant(player);
+            var latexInstance = ProcessTransfur.getPlayerTransfurVariant(player);
             if (latexInstance == null)
                 return null;
             return latexInstance.getAbilityInstance(ability);

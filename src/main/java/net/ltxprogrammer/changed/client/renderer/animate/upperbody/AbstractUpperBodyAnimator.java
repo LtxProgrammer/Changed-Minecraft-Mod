@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;

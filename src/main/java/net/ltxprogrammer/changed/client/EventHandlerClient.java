@@ -4,10 +4,10 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -58,7 +58,7 @@ public class EventHandlerClient {
                     grabAbility.syncEntity.mirrorLiving(event.getEntity());
 
                     if (event.getEntity() instanceof Player player) {
-                        LatexVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
+                        TransfurVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
                     }
 
                     FormRenderHandler.renderLiving(grabAbility.syncEntity, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
@@ -142,7 +142,7 @@ public class EventHandlerClient {
         if (event.isAttack() || event.isUseItem()) {
             LocalPlayer localPlayer = Minecraft.getInstance().player;
 
-            ProcessTransfur.ifPlayerLatex(localPlayer, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(localPlayer, variant -> {
                 variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), ability -> {
                     if (ability.grabbedEntity != null && !ability.suited) {
                         event.setCanceled(true);
