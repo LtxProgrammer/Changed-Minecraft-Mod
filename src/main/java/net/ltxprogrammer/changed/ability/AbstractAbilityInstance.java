@@ -5,10 +5,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public abstract class AbstractAbilityInstance {
     public final AbstractAbility<?> ability;
-    public final IAbstractLatex entity;
+    public final IAbstractChangedEntity entity;
     private final AbstractAbility.Controller controller;
 
-    public AbstractAbilityInstance(AbstractAbility<?> ability, IAbstractLatex entity) {
+    public AbstractAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         this.ability = ability;
         this.entity = entity;
 

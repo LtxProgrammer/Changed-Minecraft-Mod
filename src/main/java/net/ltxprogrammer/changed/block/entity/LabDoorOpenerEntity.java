@@ -1,10 +1,9 @@
 package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.block.AbstractLabDoor;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedTags;
-import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +30,7 @@ public class LabDoorOpenerEntity extends BlockEntity {
             return !player.isSpectator();
         if (entity.getType().is(ChangedTags.EntityTypes.CANNOT_OPEN_LAB_DOORS))
             return false;
-        if (entity instanceof LatexEntity)
+        if (entity instanceof ChangedEntity)
             return true;
         return entity.getType().is(ChangedTags.EntityTypes.CAN_OPEN_LAB_DOORS);
     }

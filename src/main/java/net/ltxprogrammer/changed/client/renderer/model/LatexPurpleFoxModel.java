@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.beast.LatexPurpleFox;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.beast.GooPurpleFox;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> implements LatexHumanoidModelInterface<LatexPurpleFox, LatexPurpleFoxModel> {
+public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> implements AdvancedHumanoidModelInterface<GooPurpleFox, LatexPurpleFoxModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_purple_fox"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexPurpleFox, LatexPurpleFoxModel> animator;
+    private final HumanoidAnimator<GooPurpleFox, LatexPurpleFoxModel> animator;
 
     public LatexPurpleFoxModel(ModelPart root) {
         super(root);
@@ -45,7 +45,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -132,7 +132,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
     }
 
     @Override
-    public void prepareMobModel(LatexPurpleFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(GooPurpleFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -141,7 +141,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
     }
 
     @Override
-    public void setupAnim(LatexPurpleFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(GooPurpleFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -168,7 +168,7 @@ public class LatexPurpleFoxModel extends LatexHumanoidModel<LatexPurpleFox> impl
     }
 
     @Override
-    public LatexAnimator<LatexPurpleFox, LatexPurpleFoxModel> getAnimator() {
+    public HumanoidAnimator<GooPurpleFox, LatexPurpleFoxModel> getAnimator() {
         return animator;
     }
 }

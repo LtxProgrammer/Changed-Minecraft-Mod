@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.block.entity;
 
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.item.AbstractLatexBucket;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractGooBucket;
+import net.ltxprogrammer.changed.item.AbstractGooItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 
 public class LatexContainerBlockEntity extends BlockEntity {
-    private LatexType currentType = LatexType.NEUTRAL;
+    private GooType currentType = GooType.NEUTRAL;
     private byte fillLevel = 0;
 
     public LatexContainerBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -32,7 +32,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("LatexType")) currentType = LatexType.valueOf(tag.getString("LatexType"));
+        if (tag.contains("LatexType")) currentType = GooType.valueOf(tag.getString("LatexType"));
         if (tag.contains("FillLevel")) fillLevel = tag.getByte("FillLevel");
     }
 
@@ -56,7 +56,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
     public ItemStack tryUse(ItemStack itemStack) {
         // Remove goo
         if (itemStack.isEmpty()) {
-            if (currentType == LatexType.NEUTRAL || fillLevel == 0)
+            if (currentType == GooType.NEUTRAL || fillLevel == 0)
                 return null;
             else {
                 fillLevel--;
@@ -65,7 +65,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
                 return new ItemStack(currentType.goo.get());
             }
         } else if (itemStack.is(Items.BUCKET)) {
-            if (currentType == LatexType.NEUTRAL || fillLevel < 4)
+            if (currentType == GooType.NEUTRAL || fillLevel < 4)
                 return null;
             else {
                 fillLevel -= 4;
@@ -77,11 +77,11 @@ public class LatexContainerBlockEntity extends BlockEntity {
         }
 
         // Insert goo
-        if (itemStack.getItem() instanceof AbstractLatexGoo goo) {
+        if (itemStack.getItem() instanceof AbstractGooItem goo) {
             var type = goo.getLatexType();
-            if (type == LatexType.NEUTRAL || fillLevel >= 16)
+            if (type == GooType.NEUTRAL || fillLevel >= 16)
                 return null;
-            if (currentType == LatexType.NEUTRAL || currentType == type || fillLevel == 0) {
+            if (currentType == GooType.NEUTRAL || currentType == type || fillLevel == 0) {
                 currentType = type;
                 fillLevel++;
                 this.markUpdated();
@@ -89,11 +89,11 @@ public class LatexContainerBlockEntity extends BlockEntity {
                 itemStack.shrink(1);
                 return ItemStack.EMPTY;
             }
-        } else if (itemStack.getItem() instanceof AbstractLatexBucket latexBucket) {
+        } else if (itemStack.getItem() instanceof AbstractGooBucket latexBucket) {
             var type = latexBucket.getLatexType();
-            if (type == null || type == LatexType.NEUTRAL || fillLevel > 12)
+            if (type == null || type == GooType.NEUTRAL || fillLevel > 12)
                 return null;
-            if (currentType == LatexType.NEUTRAL || currentType == type || fillLevel == 0) {
+            if (currentType == GooType.NEUTRAL || currentType == type || fillLevel == 0) {
                 currentType = type;
                 fillLevel += 4;
                 this.markUpdated();
@@ -110,7 +110,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
         return fillLevel;
     }
 
-    public LatexType getFillType() {
+    public GooType getFillType() {
         return currentType;
     }
 }

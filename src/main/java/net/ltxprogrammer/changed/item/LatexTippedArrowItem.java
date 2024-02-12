@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -57,7 +57,7 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
 
     public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
         if (this.allowdedIn(p_43356_)) {
-            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS) {
+            for(ResourceLocation variant : TransfurVariant.PUBLIC_LATEX_FORMS) {
                 p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
             }
         }

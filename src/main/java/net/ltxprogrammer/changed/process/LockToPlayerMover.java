@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.process;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -49,7 +49,7 @@ public class LockToPlayerMover extends PlayerMover<LockToPlayerMover.Instance> {
             if (host == null)
                 return;
 
-            LatexVariantInstance.syncEntityPosRotWithEntity(player, host);
+            TransfurVariantInstance.syncEntityPosRotWithEntity(player, host);
         }
 
         @Override

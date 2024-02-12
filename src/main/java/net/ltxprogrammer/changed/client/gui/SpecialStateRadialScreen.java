@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.SingleRunnable;
@@ -28,7 +28,7 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
             this.special = specialLatex;
         else
             throw new IllegalArgumentException("Variant is not special latex!");
-        this.states = new ArrayList<>(specialLatex.specialLatexForm.entityData().keySet());
+        this.states = new ArrayList<>(specialLatex.specialForm.entityData().keySet());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
         this.special.wantedState = states.get(section);
-        ChangedAbilities.getAbility(ChangedAbilities.SELECT_SPECIAL_STATE.getId()).setDirty(IAbstractLatex.forPlayer(menu.player));
+        ChangedAbilities.getAbility(ChangedAbilities.SELECT_SPECIAL_STATE.getId()).setDirty(IAbstractChangedEntity.forPlayer(menu.player));
         return true;
     }
 

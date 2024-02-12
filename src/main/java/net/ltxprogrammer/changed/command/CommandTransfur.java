@@ -5,7 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
@@ -37,8 +37,8 @@ public class CommandTransfur {
     private static final SimpleCommandExceptionType NO_SPECIAL_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.no_special_form"));
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_LATEX_FORMS = SuggestionProviders.register(Changed.modResource("latex_forms"), (p_121667_, p_121668_) -> {
-        var list = new ArrayList<>(LatexVariant.PUBLIC_LATEX_FORMS);
-        list.add(LatexVariant.SPECIAL_LATEX);
+        var list = new ArrayList<>(TransfurVariant.PUBLIC_LATEX_FORMS);
+        list.add(TransfurVariant.SPECIAL_LATEX);
         return SharedSuggestionProvider.suggestResource(list, p_121668_);
     });
 
@@ -71,15 +71,15 @@ public class CommandTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
-        if (LatexVariant.PUBLIC_LATEX_FORMS.contains(form)) {
-            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(form), true);
+        if (TransfurVariant.PUBLIC_LATEX_FORMS.contains(form)) {
+            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true);
         }
-        else if (form.equals(LatexVariant.SPECIAL_LATEX)) {
+        else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
-            if (!LatexVariant.SPECIAL_LATEX_FORMS.contains(key))
+            if (!TransfurVariant.SPECIAL_LATEX_FORMS.contains(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(key), true);
+            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), true);
         }
         else
             throw NOT_LATEX_FORM.create();
@@ -87,10 +87,10 @@ public class CommandTransfur {
     }
 
     private static int untransfurPlayer(CommandSourceStack source, ServerPlayer player) {
-        ProcessTransfur.ifPlayerLatex(player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             variant.unhookAll(player);
             ProcessTransfur.setPlayerLatexVariant(player, null);
-            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT));
+            ProcessTransfur.setPlayerTransfurProgress(player, new ProcessTransfur.TransfurProgress(0, TransfurVariant.FALLBACK_VARIANT));
         });
         return Command.SINGLE_SUCCESS;
     }

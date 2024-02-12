@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -36,10 +36,10 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
-    private final LatexVariant<?> variant;
+    private final TransfurVariant<?> variant;
     private final Supplier<? extends Item> crystal;
 
-    public AbstractLatexCrystal(LatexVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
+    public AbstractLatexCrystal(TransfurVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
         super(p_53514_);
         this.variant = variant;
         this.crystal = crystal;
@@ -61,12 +61,12 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
     }
 
     protected boolean mayPlaceOn(BlockState p_51042_, BlockGetter p_51043_, BlockPos p_51044_) {
-        return p_51042_.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == LatexType.DARK_LATEX;
+        return p_51042_.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == GooType.BLACK_GOO;
     }
 
     public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
         BlockState blockStateOn = p_52888_.getBlockState(p_52889_.below());
-        return blockState.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
+        return blockState.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == GooType.BLACK_GOO;
     }
 
     @Override
@@ -79,7 +79,7 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
 
         if (variant == null) return;
 
-        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
+        if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
                 return;
             if (!level.isClientSide) {

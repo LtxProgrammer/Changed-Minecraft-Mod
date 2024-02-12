@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,7 +16,7 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 public abstract class ItemBlockRenderTypesMixin {
     @Inject(method = "canRenderInLayer(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/RenderType;)Z", at = @At("HEAD"), cancellable = true)
     private static void canCoveredBlockRenderInLayer(BlockState state, RenderType type, CallbackInfoReturnable<Boolean> callback) {
-        if (!state.getProperties().contains(COVERED) || state.getValue(COVERED) == LatexType.NEUTRAL)
+        if (!state.getProperties().contains(COVERED) || state.getValue(COVERED) == GooType.NEUTRAL)
             return;
 
         if (type == RenderType.solid() || type == RenderType.cutoutMipped() || type == RenderType.cutout()) {
@@ -25,10 +25,10 @@ public abstract class ItemBlockRenderTypesMixin {
         }
 
         if (type == LatexCoveredBlocks.latexSolid())
-            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.solid()));
+            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, GooType.NEUTRAL), RenderType.solid()));
         else if (type == LatexCoveredBlocks.latexCutoutMipped())
-            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutoutMipped()));
+            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, GooType.NEUTRAL), RenderType.cutoutMipped()));
         else if (type == LatexCoveredBlocks.latexCutout())
-            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutout()));
+            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, GooType.NEUTRAL), RenderType.cutout()));
     }
 }

@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -70,7 +69,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
         return super.use(state, level, pos, player, hand, hitResult);
     }
 
-    private int processBreak(Level level, BlockPos blockPos, LatexType type, int remaining, AtomicBoolean placedFluid) {
+    private int processBreak(Level level, BlockPos blockPos, GooType type, int remaining, AtomicBoolean placedFluid) {
         if (remaining == 16) {
             var pupType = type.pup.get();
             if (pupType != null) {
@@ -122,7 +121,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
         var blockEntity = getBlockEntity(state, level, blockPos);
         super.onRemove(state, level, blockPos, newState, noSimulate);
 
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER && blockEntity != null && blockEntity.getFillType() != LatexType.NEUTRAL &&
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER && blockEntity != null && blockEntity.getFillType() != GooType.NEUTRAL &&
                 blockEntity.getFillLevel() > 0 && !noSimulate) {
             int fill = blockEntity.getFillLevel();
             AtomicBoolean atomic = new AtomicBoolean(false);
@@ -186,8 +185,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
             if (container.getFillLevel() == 0)
                 return;
             final var variant = switch (container.getFillType()) {
-                case DARK_LATEX -> LatexVariant.DARK_LATEX_WOLF_PARTIAL;
-                case WHITE_LATEX -> LatexVariant.WHITE_LATEX_WOLF;
+                case BLACK_GOO -> TransfurVariant.DARK_LATEX_WOLF_PARTIAL;
+                case PURE_WHITE_GOO -> TransfurVariant.WHITE_LATEX_WOLF;
                 default -> null;
             };
 

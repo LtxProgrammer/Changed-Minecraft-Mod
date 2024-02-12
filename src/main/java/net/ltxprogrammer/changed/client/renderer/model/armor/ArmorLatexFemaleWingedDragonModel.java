@@ -4,9 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.item.Shorts;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -19,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexFemaleWingedDragonModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleWingedDragonModel<T>> {
+public class ArmorLatexFemaleWingedDragonModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleWingedDragonModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_winged_dragon_female_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_winged_dragon_female_unified")).get();
 
@@ -32,7 +31,7 @@ public class ArmorLatexFemaleWingedDragonModel<T extends LatexEntity> extends La
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexAnimator<T, ArmorLatexFemaleWingedDragonModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexFemaleWingedDragonModel<T>> animator;
 
     public ArmorLatexFemaleWingedDragonModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -56,7 +55,7 @@ public class ArmorLatexFemaleWingedDragonModel<T extends LatexEntity> extends La
         var leftWingRoot = LeftWing.getChild("leftWingRoot");
         var rightWingRoot = RightWing.getChild("rightWingRoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wingedDragonLike(Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad"),
@@ -143,7 +142,7 @@ public class ArmorLatexFemaleWingedDragonModel<T extends LatexEntity> extends La
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexFemaleWingedDragonModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexFemaleWingedDragonModel<T>> getAnimator() {
         return animator;
     }
 }

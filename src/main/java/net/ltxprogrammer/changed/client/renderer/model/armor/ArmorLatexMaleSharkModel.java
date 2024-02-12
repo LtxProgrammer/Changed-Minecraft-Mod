@@ -4,9 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.item.Shorts;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -19,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexMaleSharkModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSharkModel<T>> {
+public class ArmorLatexMaleSharkModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSharkModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_male_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_male_unified")).get();
 
@@ -30,7 +29,7 @@ public class ArmorLatexMaleSharkModel<T extends LatexEntity> extends LatexHumano
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
     private final ModelPart Tail;
-    private final LatexAnimator<T, ArmorLatexMaleSharkModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexMaleSharkModel<T>> animator;
 
     public ArmorLatexMaleSharkModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -49,7 +48,7 @@ public class ArmorLatexMaleSharkModel<T extends LatexEntity> extends LatexHumano
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.sharkLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary),
@@ -111,7 +110,7 @@ public class ArmorLatexMaleSharkModel<T extends LatexEntity> extends LatexHumano
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexMaleSharkModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleSharkModel<T>> getAnimator() {
         return animator;
     }
 }

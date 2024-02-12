@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & LatexHumanoidModelInterface<T, M>> extends RenderLayer<T, M> {
+public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & AdvancedHumanoidModelInterface<T, M>> extends RenderLayer<T, M> {
     private final M model;
     private final ResourceLocation texture;
 
@@ -42,7 +42,7 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
         }
     }
 
-    public LatexHumanoidModel<T> getModel() {
+    public AdvancedHumanoidModel<T> getModel() {
         return model;
     }
 

@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexRaccoon extends LatexEntity {
+public class LatexRaccoon extends ChangedEntity {
     public LatexRaccoon(EntityType<? extends LatexRaccoon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -25,8 +25,8 @@ public class LatexRaccoon extends LatexEntity {
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     @Override

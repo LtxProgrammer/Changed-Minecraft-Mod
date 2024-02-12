@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.beast.GooMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
+public class ArmorMermaidSharkAbdomenModel<T extends GooMermaidShark> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -29,7 +29,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
 
     public ArmorMermaidSharkAbdomenModel(ModelPart root) {
         this.Torso = root.getChild("Torso");
@@ -37,7 +37,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
                         Tail.getChild("Joint"))))
                 .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART));
     }
@@ -72,7 +72,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
     }
 
     @Override
-    public LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
         return animator;
     }
 
@@ -89,7 +89,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         }
     }
 
-    public static class Remodel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, Remodel<T>> {
+    public static class Remodel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, Remodel<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen_remodel")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen_remodel")).get();
         public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -99,7 +99,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         private final ModelPart LowerAbdomen;
         private final ModelPart Tail;
         private final ModelPart Joint;
-        private final LatexAnimator<T, Remodel<T>> animator;
+        private final HumanoidAnimator<T, Remodel<T>> animator;
 
         public Remodel(ModelPart root) {
             this.Torso = root.getChild("Torso");
@@ -108,7 +108,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
             this.Tail = LowerAbdomen.getChild("Tail");
             this.Joint = Tail.getChild("Joint");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
                             Joint,
                             Joint.getChild("Joint2"))))
                     .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART)).hipOffset(0.0f);
@@ -147,7 +147,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexMermaidShark> extends 
         }
 
         @Override
-        public LatexAnimator<T, Remodel<T>> getAnimator() {
+        public HumanoidAnimator<T, Remodel<T>> getAnimator() {
             return animator;
         }
 

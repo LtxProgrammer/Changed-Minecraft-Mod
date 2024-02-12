@@ -13,7 +13,7 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
         super(SimpleAbilityInstance::new);
     }
 
-    public LivingEntity getHoveredEntity(IAbstractLatex entity) {
+    public LivingEntity getHoveredEntity(IAbstractChangedEntity entity) {
         if (!(entity.getEntity() instanceof Player player))
             return null;
 
@@ -27,7 +27,7 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
     }
 
     @Override
-    public void tickCharge(IAbstractLatex entity, float ticks) {
+    public void tickCharge(IAbstractChangedEntity entity, float ticks) {
         var enemy = this.getHoveredEntity(entity);
         if (enemy != null) {
             entity.getEntity().xxa = (float)entity.getEntity().getLookAngle().x;
@@ -36,12 +36,12 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.INSTANT;
     }
 
     @Override
-    public void startUsing(IAbstractLatex entity) {
+    public void startUsing(IAbstractChangedEntity entity) {
         if (entity.getEntity() instanceof PlayerDataExtension ext) {
             var enemy = this.getHoveredEntity(entity);
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), enemy));
@@ -49,7 +49,7 @@ public class HoldEntityAbility extends AbstractAbility<SimpleAbilityInstance> {
     }
 
     @Override
-    public void stopUsing(IAbstractLatex entity) {
+    public void stopUsing(IAbstractChangedEntity entity) {
         super.stopUsing(entity);
     }
 }

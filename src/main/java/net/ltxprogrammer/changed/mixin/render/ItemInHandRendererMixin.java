@@ -77,7 +77,7 @@ public abstract class ItemInHandRendererMixin {
 
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"), cancellable = true)
     public void renderHandsWithItems(float partialTicks, PoseStack pose, MultiBufferSource.BufferSource bufferSource, LocalPlayer player, int color, CallbackInfo callback) {
-        ProcessTransfur.ifPlayerLatex(player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             var itemUseMode = variant.getParent().itemUseMode;
             if (itemUseMode == UseItemMode.NONE)
                 callback.cancel();

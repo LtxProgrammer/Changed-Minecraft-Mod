@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.ElytraModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
-public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexElytraLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
     private static final ResourceLocation WINGS_LOCATION = new ResourceLocation("textures/entity/elytra.png");
     private final ElytraModel<T> elytraModel;
 
@@ -90,7 +90,7 @@ public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidMode
             }
 
             p_116951_.pushPose();
-            if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface) {
+            if (this.getParentModel() instanceof AdvancedHumanoidModelInterface modelInterface) {
                 p_116951_.translate(0.0D, 0.0D + ((12.0f - modelInterface.getAnimator().legLength) / 8.0f), 0.125D + (modelInterface.getAnimator().forwardOffset / 16.0f));
             }
 

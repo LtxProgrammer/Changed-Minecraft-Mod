@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class OrcaUpperBodySwimAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public class OrcaUpperBodySwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public static final float SWIM_RATE = 0.333333334f * 0.75f;
     public static final float SWIM_SCALE = 1.5f;
     public static final float TORSO_SWAY_SCALE = 0.2f;
@@ -17,8 +17,8 @@ public class OrcaUpperBodySwimAnimator<T extends LatexEntity, M extends EntityMo
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.SWIM;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.SWIM;
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexRedDragon extends LatexEntity implements PatronOC {
+public class LatexRedDragon extends ChangedEntity implements PatronOC {
     public LatexRedDragon(EntityType<? extends LatexRedDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -25,8 +25,8 @@ public class LatexRedDragon extends LatexEntity implements PatronOC {
     public int getTicksRequiredToFreeze() {  return 140; }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     @Override

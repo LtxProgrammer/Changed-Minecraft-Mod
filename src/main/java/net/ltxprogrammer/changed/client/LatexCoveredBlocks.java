@@ -12,8 +12,8 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.item.AbstractGooItem;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -65,12 +65,12 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 public abstract class LatexCoveredBlocks {
     public static final Logger LOGGER = LogUtils.getLogger();
-    private static final ImmutableMap<LatexType, MixedTexture.OverlayBlock> TYPE_OVERLAY = ImmutableMap.of(
-            LatexType.DARK_LATEX, new MixedTexture.OverlayBlock(
+    private static final ImmutableMap<GooType, MixedTexture.OverlayBlock> TYPE_OVERLAY = ImmutableMap.of(
+            GooType.BLACK_GOO, new MixedTexture.OverlayBlock(
                     Changed.modResource("blocks/dark_latex_block_top"),
                     Changed.modResource("blocks/dark_latex_block_side"),
                     Changed.modResource("blocks/dark_latex_block_bottom")),
-            LatexType.WHITE_LATEX, new MixedTexture.OverlayBlock(
+            GooType.PURE_WHITE_GOO, new MixedTexture.OverlayBlock(
                     Changed.modResource("blocks/white_latex_block"),
                     Changed.modResource("blocks/white_latex_block"),
                     Changed.modResource("blocks/white_latex_block")));
@@ -339,17 +339,17 @@ public abstract class LatexCoveredBlocks {
         return new Material(LATEX_COVER_ATLAS, name);
     }
 
-    private static ResourceLocation getDefaultLatexCover(LatexType type) {
+    private static ResourceLocation getDefaultLatexCover(GooType type) {
         return Changed.modResource("builtin/" + type.getSerializedName());
     }
 
-    private static final Function<LatexType, ResourceLocation> getDefaultLatexCoverCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexCover);
+    private static final Function<GooType, ResourceLocation> getDefaultLatexCoverCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexCover);
 
-    private static ModelResourceLocation getDefaultLatexModel(LatexType type) {
+    private static ModelResourceLocation getDefaultLatexModel(GooType type) {
         return new ModelResourceLocation(getDefaultLatexCoverCached.apply(type), "block");
     }
 
-    private static final Function<LatexType, ModelResourceLocation> getDefaultLatexModelCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexModel);
+    private static final Function<GooType, ModelResourceLocation> getDefaultLatexModelCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexModel);
 
     private static boolean namespaceQualifiesForCheap(String sourceNamespace) { // Maybe allow configuring preserved namespaces
         if (sourceNamespace.equals("minecraft"))
@@ -364,7 +364,7 @@ public abstract class LatexCoveredBlocks {
         if (!namespaceQualifiesForCheap(sourceNamespace))
             return false;
 
-        if (Changed.config.client.fastAndCheapLatexBlocks.get())
+        if (Changed.config.client.fastAndCheapGooBlocks.get())
             return true;
 
         var parentName = blockModel.getParentLocation();
@@ -400,7 +400,7 @@ public abstract class LatexCoveredBlocks {
         return qualifiesForCheap(registrar, sourceNamespace, parentBlockModel);
     }
 
-    private static Function<ResourceLocation, UnbakedModel> createLatexModel(Registrar registrar, BlockModel blockModel, MixedTexture.OverlayBlock overlay, LatexType type, String nameAppend) {
+    private static Function<ResourceLocation, UnbakedModel> createLatexModel(Registrar registrar, BlockModel blockModel, MixedTexture.OverlayBlock overlay, GooType type, String nameAppend) {
         return name -> {
             Map<String, Either<Material, String>> injectedTextures = new HashMap<>();
 
@@ -437,7 +437,7 @@ public abstract class LatexCoveredBlocks {
         };
     }
 
-    private static Function<Variant, Variant> createLatexVariant(Registrar registrar, LatexType type, AtomicBoolean allGeneric) {
+    private static Function<Variant, Variant> createLatexVariant(Registrar registrar, GooType type, AtomicBoolean allGeneric) {
         return variant -> {
             MixedTexture.OverlayBlock overlay = TYPE_OVERLAY.get(type);
 
@@ -468,7 +468,7 @@ public abstract class LatexCoveredBlocks {
     }
 
     @Nullable
-    private static UnbakedModel overWriteMultiPart(Registrar registrar, MultiPart multiPart, ModelResourceLocation model, BlockState state, LatexType type) {
+    private static UnbakedModel overWriteMultiPart(Registrar registrar, MultiPart multiPart, ModelResourceLocation model, BlockState state, GooType type) {
         AtomicBoolean allGeneric = new AtomicBoolean(true);
         var newSelectors = multiPart.getSelectors().stream().map(selector -> {
             var newVariants = selector.getVariant().getVariants().stream().map(createLatexVariant(registrar, type, allGeneric)).collect(Collectors.toList());
@@ -481,22 +481,22 @@ public abstract class LatexCoveredBlocks {
     }
 
     @Nullable
-    private static UnbakedModel overWriteMultiVariant(Registrar registrar, MultiVariant multiVariant, ModelResourceLocation model, BlockState state, LatexType type) {
+    private static UnbakedModel overWriteMultiVariant(Registrar registrar, MultiVariant multiVariant, ModelResourceLocation model, BlockState state, GooType type) {
         AtomicBoolean allGeneric = new AtomicBoolean(true);
         var newVariants = multiVariant.getVariants().stream().map(createLatexVariant(registrar, type, allGeneric)).toList();
 
         return allGeneric.get() ? null : new MultiVariant(newVariants);
     }
 
-    protected static void coverBlock(Registrar registrar, BlockState state, LatexType type) {
+    protected static void coverBlock(Registrar registrar, BlockState state, GooType type) {
         var coveredModelName = BlockModelShaper.stateToModelLocation(state);
 
-        if (Changed.config.client.fastAndCheapLatexBlocks.get() && namespaceQualifiesForCheap(coveredModelName.getNamespace())) {
+        if (Changed.config.client.fastAndCheapGooBlocks.get() && namespaceQualifiesForCheap(coveredModelName.getNamespace())) {
             registrar.registerPreBaked(coveredModelName, getDefaultLatexModelCached.apply(type)); // Register a generic 1x1x1 block reference
             return;
         }
 
-        var baseModelName = BlockModelShaper.stateToModelLocation(state.setValue(COVERED, LatexType.NEUTRAL));
+        var baseModelName = BlockModelShaper.stateToModelLocation(state.setValue(COVERED, GooType.NEUTRAL));
         var baseModel = registrar.getModel(baseModelName);
         UnbakedModel newModel = null;
 
@@ -561,7 +561,7 @@ public abstract class LatexCoveredBlocks {
         @SubscribeEvent
         public static void onInitModelBaking(ModelRegistryEvent event) {
             // This step should have already completed by this point, but race conditions will be race conditions
-            AbstractLatexGoo.removeLatexCoveredStates();
+            AbstractGooItem.removeLatexCoveredStates();
         }
 
         @SubscribeEvent
@@ -573,7 +573,7 @@ public abstract class LatexCoveredBlocks {
             LOGGER.info("Gathering blocks to cover");
 
             HashSet<ResourceLocation> notCoverable = new HashSet<>();
-            MinecraftForge.EVENT_BUS.post(new AbstractLatexGoo.GatherNonCoverableBlocksEvent(notCoverable));
+            MinecraftForge.EVENT_BUS.post(new AbstractGooItem.GatherNonCoverableBlocksEvent(notCoverable));
 
             List<Block> toCover = Registry.BLOCK.stream().filter(block -> {
                 if (!block.getStateDefinition().getProperties().contains(COVERED))
@@ -585,12 +585,12 @@ public abstract class LatexCoveredBlocks {
             Stopwatch timerPart = Stopwatch.createStarted();
 
             if (!registrar.mixTextures) { // Register default textures
-                if (Changed.config.client.fastAndCheapLatexBlocks.get()) {
+                if (Changed.config.client.fastAndCheapGooBlocks.get()) {
                     LOGGER.info("Fast and cheap block generation selected!");
                 }
 
-                Arrays.stream(LatexType.values()).forEach(type -> {
-                    if (type == LatexType.NEUTRAL)
+                Arrays.stream(GooType.values()).forEach(type -> {
+                    if (type == GooType.NEUTRAL)
                         return;
 
                     var name = getDefaultLatexCoverCached.apply(type);
@@ -613,7 +613,7 @@ public abstract class LatexCoveredBlocks {
             AtomicInteger index = new AtomicInteger(0);
             toCover.forEach(block -> {
                 block.getStateDefinition().getPossibleStates().forEach((state) -> {
-                    if (state.getValue(COVERED) != LatexType.NEUTRAL)
+                    if (state.getValue(COVERED) != GooType.NEUTRAL)
                         coverBlock(registrar, state, state.getValue(COVERED));
                 });
                 int currentIndex = index.incrementAndGet();

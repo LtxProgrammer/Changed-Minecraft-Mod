@@ -7,26 +7,26 @@ import net.minecraft.world.SimpleMenuProvider;
 
 public class SelectSpecialStateAbility extends SimpleAbility {
     @Override
-    public boolean canUse(IAbstractLatex entity) {
+    public boolean canUse(IAbstractChangedEntity entity) {
         return entity.getLatexEntity() instanceof SpecialLatex;
     }
 
     @Override
-    public void startUsing(IAbstractLatex entity) {
+    public void startUsing(IAbstractChangedEntity entity) {
         super.startUsing(entity);
         entity.openMenu(new SimpleMenuProvider((id, inv, plr) ->
                 new SpecialStateRadialMenu(id, inv, null), SpecialStateRadialMenu.CONTAINER_TITLE));
     }
 
     @Override
-    public void saveData(CompoundTag tag, IAbstractLatex entity) {
+    public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.saveData(tag, entity);
         if (entity.getLatexEntity() instanceof SpecialLatex specialLatex)
             tag.putString("State", specialLatex.wantedState);
     }
 
     @Override
-    public void readData(CompoundTag tag, IAbstractLatex entity) {
+    public void readData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.readData(tag, entity);
         if (tag.contains("State") && entity.getLatexEntity() instanceof SpecialLatex specialLatex)
             specialLatex.wantedState = tag.getString("State");

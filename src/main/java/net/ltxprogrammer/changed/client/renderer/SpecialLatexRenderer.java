@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.SpecialLatexModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSpecialLatexModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.util.DynamicClient;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, SpecialLatexModel, ArmorSpecialLatexModel<SpecialLatex>> {
+public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex, SpecialLatexModel, ArmorSpecialLatexModel<SpecialLatex>> {
     private static final Map<Pair<UUID, String>, SpecialLatexRenderer> SPECIAL_RENDERERS = new HashMap<>();
     private final EntityRendererProvider.Context context;
     private final boolean isDelegate;
@@ -55,12 +55,12 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     }
 
     public SpecialLatexRenderer getAndCacheFor(SpecialLatex entity) {
-        if (!entity.specialLatexForm.modelData().containsKey(entity.wantedState))
+        if (!entity.specialForm.modelData().containsKey(entity.wantedState))
             return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
-                    new SpecialLatexRenderer(this.context, entity.specialLatexForm.getDefaultModel()));
+                    new SpecialLatexRenderer(this.context, entity.specialForm.getDefaultModel()));
 
         return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
-                new SpecialLatexRenderer(this.context, entity.specialLatexForm.modelData().get(pair.getSecond())));
+                new SpecialLatexRenderer(this.context, entity.specialForm.modelData().get(pair.getSecond())));
     }
 
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
@@ -109,11 +109,11 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
 
     @Override
     public ResourceLocation getTextureLocation(SpecialLatex latex) {
-        return latex.specialLatexForm != null ? latex.specialLatexForm.modelData().get(latex.wantedState).texture() :
+        return latex.specialForm != null ? latex.specialForm.modelData().get(latex.wantedState).texture() :
                 Changed.modResource("textures/delay_loaded_latex.png");
     }
 
-    public LatexHumanoidModel<SpecialLatex> getModel(LatexEntity entity) {
+    public AdvancedHumanoidModel<SpecialLatex> getModel(ChangedEntity entity) {
         if (entity instanceof SpecialLatex specialLatex) {
             var opt = runIfValid(specialLatex, renderer -> { return renderer.getModel(); });
             if (opt.isEmpty())

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
@@ -20,8 +20,8 @@ public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWa
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     @Override

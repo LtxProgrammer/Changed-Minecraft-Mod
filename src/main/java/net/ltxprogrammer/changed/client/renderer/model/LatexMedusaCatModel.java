@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexMedusaCat;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> implements LatexHumanoidModelInterface<LatexMedusaCat, LatexMedusaCatModel> {
+public class LatexMedusaCatModel extends AdvancedHumanoidModel<LatexMedusaCat> implements AdvancedHumanoidModelInterface<LatexMedusaCat, LatexMedusaCatModel> {
         // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
         public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_medusa_cat"), "main");
         private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
         private final ModelPart Head;
         private final ModelPart Torso;
         private final ModelPart Tail;
-        private final LatexAnimator<LatexMedusaCat, LatexMedusaCatModel> animator;
+        private final HumanoidAnimator<LatexMedusaCat, LatexMedusaCatModel> animator;
 
         public LatexMedusaCatModel(ModelPart root) {
             super(root);
@@ -46,7 +46,7 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
             var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
             var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-            animator = LatexAnimator.of(this).hipOffset(-1.5f)
+            animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                     .addPreset(AnimatorPresets.catLike(
                             Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                             Torso, LeftArm, RightArm,
@@ -182,7 +182,7 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type == CorrectorType.HAIR)
             corrector.translate(0.0f, 0.5f / 15.0f, 0.0f);
         else if (type == CorrectorType.LOWER_HAIR)
@@ -213,7 +213,7 @@ public class LatexMedusaCatModel extends LatexHumanoidModel<LatexMedusaCat> impl
     }
 
     @Override
-    public LatexAnimator<LatexMedusaCat, LatexMedusaCatModel> getAnimator() {
+    public HumanoidAnimator<LatexMedusaCat, LatexMedusaCatModel> getAnimator() {
         return animator;
     }
 }

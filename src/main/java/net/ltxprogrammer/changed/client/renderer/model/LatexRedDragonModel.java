@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexRedDragon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> implements LatexHumanoidModelInterface<LatexRedDragon, LatexRedDragonModel> {
+public class LatexRedDragonModel extends AdvancedHumanoidModel<LatexRedDragon> implements AdvancedHumanoidModelInterface<LatexRedDragon, LatexRedDragonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_red_dragon"), "main");
     private final ModelPart RightLeg;
@@ -33,7 +33,7 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexAnimator<LatexRedDragon, LatexRedDragonModel> animator;
+    private final HumanoidAnimator<LatexRedDragon, LatexRedDragonModel> animator;
 
     public LatexRedDragonModel(ModelPart root) {
         super(root);
@@ -59,7 +59,7 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
         var leftWingRoot = LeftWing.getChild("leftWingRoot");
         var rightWingRoot = RightWing.getChild("rightWingRoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wingedDragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -254,7 +254,7 @@ public class LatexRedDragonModel extends LatexHumanoidModel<LatexRedDragon> impl
 
 
     @Override
-    public LatexAnimator<LatexRedDragon, LatexRedDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexRedDragon, LatexRedDragonModel> getAnimator() {
         return animator;
     }
 }

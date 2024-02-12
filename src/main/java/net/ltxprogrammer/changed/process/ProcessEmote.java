@@ -18,7 +18,7 @@ public class ProcessEmote {
         if (!player.level.isClientSide) {
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new EmotePacket(player.getUUID(), emote));
         } else {
-            ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 ProcessEmote.rawEmote(variant.getLatexEntity(), emote);
             }, () -> {
                 ProcessEmote.rawEmote(player, emote);

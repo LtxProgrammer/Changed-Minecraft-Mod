@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity.projectile;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -21,13 +21,13 @@ import org.jetbrains.annotations.NotNull;
 public class GasParticle extends ThrowableProjectile {
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(GasParticle.class, EntityDataSerializers.INT);
     public static final int DISSIPATE_TIME = 15;
-    public LatexVariant<?> variant = null;
+    public TransfurVariant<?> variant = null;
 
     public GasParticle(EntityType<? extends GasParticle> type, Level level) {
         super(type, level);
     }
 
-    public GasParticle setVariant(LatexVariant<?> variant) {
+    public GasParticle setVariant(TransfurVariant<?> variant) {
         this.variant = variant; return this;
     }
 
@@ -45,13 +45,13 @@ public class GasParticle extends ThrowableProjectile {
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("LatexVariant"))
-            this.variant = ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "LatexVariant"));
+            this.variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "LatexVariant"));
     }
 
     @Override
     protected boolean canHitEntity(@NotNull Entity entity) {
         if (entity instanceof LivingEntity livingEntity)
-            return LatexVariant.getEntityVariant(livingEntity) == null;
+            return TransfurVariant.getEntityVariant(livingEntity) == null;
         else
             return false;
     }

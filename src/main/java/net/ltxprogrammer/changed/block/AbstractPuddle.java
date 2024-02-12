@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -15,9 +15,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatexCoverableBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.0D, 15.0D);
-    protected final LatexVariant<?> variant;
+    protected final TransfurVariant<?> variant;
 
-    public AbstractPuddle(Properties properties, LatexVariant<?> variant) {
+    public AbstractPuddle(Properties properties, TransfurVariant<?> variant) {
         super(properties);
         this.variant = variant;
     }

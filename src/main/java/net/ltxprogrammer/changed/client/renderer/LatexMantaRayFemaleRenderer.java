@@ -4,12 +4,12 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorAbdomenModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel;
-import net.ltxprogrammer.changed.entity.beast.LatexMantaRayFemale;
+import net.ltxprogrammer.changed.entity.beast.GooMantaRayFemale;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMantaRayFemale, LatexMantaRayFemaleModel, ArmorUpperBodyModel<LatexMantaRayFemale>> {
+public class LatexMantaRayFemaleRenderer extends AdvancedHumanoidRenderer<GooMantaRayFemale, LatexMantaRayFemaleModel, ArmorUpperBodyModel<GooMantaRayFemale>> {
     public LatexMantaRayFemaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMantaRayFemaleModel(context.bakeLayer(LatexMantaRayFemaleModel.LAYER_LOCATION)),
                 ArmorUpperBodyModel::new, ArmorUpperBodyModel.INNER_ARMOR, ArmorUpperBodyModel.OUTER_ARMOR,
@@ -18,11 +18,11 @@ public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMant
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LatexMantaRayFemale p_114482_) {
+    public ResourceLocation getTextureLocation(GooMantaRayFemale p_114482_) {
         return Changed.modResource("textures/latex_manta_ray_female.png");
     }
 
-    public static class Remodel extends LatexHumanoidRenderer<LatexMantaRayFemale, LatexMantaRayFemaleModel.Remodel, ArmorUpperBodyModel.RemodelFemale<LatexMantaRayFemale>> {
+    public static class Remodel extends AdvancedHumanoidRenderer<GooMantaRayFemale, LatexMantaRayFemaleModel.Remodel, ArmorUpperBodyModel.RemodelFemale<GooMantaRayFemale>> {
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new LatexMantaRayFemaleModel.Remodel(context.bakeLayer(LatexMantaRayFemaleModel.LAYER_LOCATION)),
                     ArmorUpperBodyModel.RemodelFemale::new, ArmorUpperBodyModel.RemodelFemale.INNER_ARMOR, ArmorUpperBodyModel.RemodelFemale.OUTER_ARMOR,
@@ -31,7 +31,7 @@ public class LatexMantaRayFemaleRenderer extends LatexHumanoidRenderer<LatexMant
         }
 
         @Override
-        public ResourceLocation getTextureLocation(LatexMantaRayFemale p_114482_) {
+        public ResourceLocation getTextureLocation(GooMantaRayFemale p_114482_) {
             return Changed.modResource("textures/remodel/latex_manta_ray_female.png");
         }
     }

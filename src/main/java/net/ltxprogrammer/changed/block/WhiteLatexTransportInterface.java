@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -45,13 +45,13 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     }
 
     static void entityEnterLatex(LivingEntity entity, BlockPos pos) {
-        if (LatexVariant.getEntityVariant(entity) != null && !(LatexVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.WHITE_LATEX_SWIMMING)))
+        if (TransfurVariant.getEntityVariant(entity) != null && !(TransfurVariant.getEntityVariant(entity).getEntityType().is(ChangedTags.EntityTypes.WHITE_LATEX_SWIMMING)))
             return;
 
         if (isEntityInWhiteLatex(entity) || entity.isDeadOrDying())
             return;
 
-        ProcessTransfur.transfur(entity, entity.level, LatexVariant.WHITE_LATEX_WOLF, false);
+        ProcessTransfur.transfur(entity, entity.level, TransfurVariant.WHITE_LATEX_WOLF, false);
 
         entity.getPersistentData().putBoolean(TRANSPORT_TAG, true);
         whiteLatexNoCollideMap.put(entity, true);
@@ -71,7 +71,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         static boolean whiteLatex(BlockState blockState) {
             if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
                 return transportInterface.allowTransport(blockState);
-            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
+            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == GooType.PURE_WHITE_GOO);
         }
 
         static boolean interactionCollide(LivingEntity entity, BlockPos pos, BlockState state) {
@@ -93,20 +93,20 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
             if (!isEntityInWhiteLatex(event.player)) {
                 if ((colliding && whiteLatex(blockState)) || (collidingEye && whiteLatex(blockStateEye))) {
-                    ProcessTransfur.ifPlayerLatex(event.player, variant -> {
-                        if (variant.getLatexType() == LatexType.WHITE_LATEX)
+                    ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
+                        if (variant.getGooType() == GooType.PURE_WHITE_GOO)
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
-                        else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                        else if (variant.getGooType().isHostileTo(GooType.PURE_WHITE_GOO))
                             event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
                     }, () -> {
-                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, LatexVariant.WHITE_LATEX_WOLF))
+                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, TransfurVariant.WHITE_LATEX_WOLF))
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     });
                 }
             }
 
             else {
-                var form = ProcessTransfur.getPlayerLatexVariant(event.player);
+                var form = ProcessTransfur.getPlayerTransfurVariant(event.player);
 
                 event.player.setPose(Pose.SWIMMING);
                 event.player.refreshDimensions();
@@ -120,7 +120,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 if (form != null)
                     form.ticksWhiteLatex++;
                 else
-                    ProcessTransfur.transfur(event.player, event.player.level, LatexVariant.WHITE_LATEX_WOLF, false);
+                    ProcessTransfur.transfur(event.player, event.player.level, TransfurVariant.WHITE_LATEX_WOLF, false);
 
                 if (!(whiteLatex(blockState) || whiteLatex(blockStateEye))) {
                     whiteLatexNoCollideMap.remove(event.player);

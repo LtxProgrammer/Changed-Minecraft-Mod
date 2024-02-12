@@ -1,8 +1,7 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Pehkui;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -15,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import virtuoel.pehkui.util.PehkuiEntityExtensions;
 import virtuoel.pehkui.util.ScaleUtils;
 
-@Mixin(value = { LatexEntity.class, SpecialLatex.class }, remap = false)
+@Mixin(value = { ChangedEntity.class, SpecialLatex.class }, remap = false)
 public abstract class LatexEntityMixin extends Monster implements PehkuiEntityExtensions {
     protected LatexEntityMixin(EntityType<? extends Monster> type, Level level) {
         super(type, level);

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexPinkDeer;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexPinkDeerModel extends LatexHumanoidModel<LatexPinkDeer> implements LatexHumanoidModelInterface<LatexPinkDeer, LatexPinkDeerModel> {
+public class LatexPinkDeerModel extends AdvancedHumanoidModel<LatexPinkDeer> implements AdvancedHumanoidModelInterface<LatexPinkDeer, LatexPinkDeerModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_pink_deer"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class LatexPinkDeerModel extends LatexHumanoidModel<LatexPinkDeer> implem
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexPinkDeer, LatexPinkDeerModel> animator;
+    private final HumanoidAnimator<LatexPinkDeer, LatexPinkDeerModel> animator;
 
     public LatexPinkDeerModel(ModelPart root) {
         super(root);
@@ -52,7 +52,7 @@ public class LatexPinkDeerModel extends LatexHumanoidModel<LatexPinkDeer> implem
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -192,7 +192,7 @@ public class LatexPinkDeerModel extends LatexHumanoidModel<LatexPinkDeer> implem
     }
 
     @Override
-    public LatexAnimator<LatexPinkDeer, LatexPinkDeerModel> getAnimator() {
+    public HumanoidAnimator<LatexPinkDeer, LatexPinkDeerModel> getAnimator() {
         return animator;
     }
 }

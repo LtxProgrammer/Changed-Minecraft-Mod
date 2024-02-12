@@ -3,9 +3,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -22,10 +22,8 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
-public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEntity> extends RenderLayer<T, M> {
+public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends ChangedEntity> extends RenderLayer<T, M> {
     public static class ColorData {
         public final Color3 color;
         public final float alpha;
@@ -54,7 +52,7 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
         }
     }
 
-    public interface ColorFunction<T extends LatexEntity> extends BiFunction<T, BasicPlayerInfo, ColorData> {
+    public interface ColorFunction<T extends ChangedEntity> extends BiFunction<T, BasicPlayerInfo, ColorData> {
         @Nullable
         ColorData getColor(T entity, BasicPlayerInfo bpi);
 
@@ -78,59 +76,59 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
     private final ColorFunction<T> irisColorRightFn;
     private final ColorFunction<T> eyeBrowsColorFn;
 
-    public static <T extends LatexEntity> ColorData noRender(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData noRender(T entity, BasicPlayerInfo bpi) {
         return null;
     }
 
-    public static <T extends LatexEntity> ColorData irisColorLeft(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData irisColorLeft(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofColor(bpi.getLeftIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorData irisColorRight(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData irisColorRight(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofColor(bpi.getRightIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorData glowingIrisColorLeft(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData glowingIrisColorLeft(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofEmissiveColor(bpi.getLeftIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorData glowingIrisColorRight(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData glowingIrisColorRight(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofEmissiveColor(bpi.getRightIrisColor());
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> translucentIrisColorLeft(float alpha) {
+    public static <T extends ChangedEntity> ColorFunction<T> translucentIrisColorLeft(float alpha) {
         return (entity, bpi) -> ColorData.ofTranslucentColor(bpi.getLeftIrisColor(), alpha);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> translucentIrisColorRight(float alpha) {
+    public static <T extends ChangedEntity> ColorFunction<T> translucentIrisColorRight(float alpha) {
         return (entity, bpi) -> ColorData.ofTranslucentColor(bpi.getRightIrisColor(), alpha);
     }
 
-    public static <T extends LatexEntity> ColorData scleraColor(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData scleraColor(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofColor(bpi.getScleraColor());
     }
 
-    public static <T extends LatexEntity> ColorData hairColor(T entity, BasicPlayerInfo bpi) {
+    public static <T extends ChangedEntity> ColorData hairColor(T entity, BasicPlayerInfo bpi) {
         return ColorData.ofColor(bpi.getHairColor());
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedColor(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedColor(Color3 color) {
         return (entity, bpi) -> ColorData.ofColor(color);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedColorGlowing(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedColorGlowing(Color3 color) {
         return (entity, bpi) -> ColorData.ofEmissiveColor(color);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedColor(Color3 color, float alpha) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedColor(Color3 color, float alpha) {
         return (entity, bpi) -> ColorData.ofTranslucentColor(color, alpha);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideLeft(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotBlackGooOverrideLeft(Color3 color) {
         return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getLeftIrisColor() : color);
     }
 
-    public static <T extends LatexEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideRight(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotBlackGooOverrideRight(Color3 color) {
         return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getRightIrisColor() : color);
     }
 

@@ -9,7 +9,7 @@ public class SwitchHandsAbilityInstance extends AbstractAbilityInstance {
     public ItemStack extraLeftHand = ItemStack.EMPTY;
     public ItemStack extraRightHand = ItemStack.EMPTY;
 
-    public SwitchHandsAbilityInstance(AbstractAbility<?> ability, IAbstractLatex entity) {
+    public SwitchHandsAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 

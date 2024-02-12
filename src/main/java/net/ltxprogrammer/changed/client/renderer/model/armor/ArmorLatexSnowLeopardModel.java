@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSnowLeopardModel<T>> {
+public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSnowLeopardModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard")).get();
 
@@ -30,7 +30,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorLatexSnowLeopardModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexSnowLeopardModel<T>> animator;
 
     public ArmorLatexSnowLeopardModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -41,7 +41,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -115,11 +115,11 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexSnowLeopardModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexSnowLeopardModel<T>> getAnimator() {
         return animator;
     }
 
-    public static class RemodelMale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
+    public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard_male")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard_male")).get();
 
@@ -130,7 +130,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
         private final ModelPart RightLeg;
         private final ModelPart LeftArm;
         private final ModelPart RightArm;
-        private final LatexAnimator<T, RemodelMale<T>> animator;
+        private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
         public RemodelMale(ModelPart modelPart) {
             this.Head = modelPart.getChild("Head");
@@ -141,7 +141,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -205,12 +205,12 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
         }
 
         @Override
-        public LatexAnimator<T, RemodelMale<T>> getAnimator() {
+        public HumanoidAnimator<T, RemodelMale<T>> getAnimator() {
             return animator;
         }
     }
 
-    public static class RemodelFemale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
+    public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard_female")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard_female")).get();
 
@@ -221,7 +221,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
         private final ModelPart RightLeg;
         private final ModelPart LeftArm;
         private final ModelPart RightArm;
-        private final LatexAnimator<T, RemodelFemale<T>> animator;
+        private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
         public RemodelFemale(ModelPart modelPart) {
             this.Head = modelPart.getChild("Head");
@@ -232,7 +232,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -299,7 +299,7 @@ public class ArmorLatexSnowLeopardModel<T extends LatexEntity> extends LatexHuma
         }
 
         @Override
-        public LatexAnimator<T, RemodelFemale<T>> getAnimator() {
+        public HumanoidAnimator<T, RemodelFemale<T>> getAnimator() {
             return animator;
         }
     }

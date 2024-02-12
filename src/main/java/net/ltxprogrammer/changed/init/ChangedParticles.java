@@ -24,7 +24,7 @@ import java.util.function.Function;
 public class ChangedParticles {
     private static final Map<ResourceLocation, ParticleType<?>> REGISTRY = new HashMap<>();
 
-    public static final ParticleType<ColoredParticleOption> DRIPPING_LATEX = register(Changed.modResource("dripping_latex"),
+    public static final ParticleType<ColoredParticleOption> DRIPPING_GOO = register(Changed.modResource("dripping_latex"),
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
     public static final ParticleType<ColoredParticleOption> GAS = register(Changed.modResource("gas"),
             ColoredParticleOption.DESERIALIZER, ColoredParticleOption::codec);
@@ -33,8 +33,8 @@ public class ChangedParticles {
     public static final SimpleParticleType TSC_SWEEP_ATTACK = (SimpleParticleType)register(Changed.modResource("tsc_sweep_attack"),
             new SimpleParticleType(false));
 
-    public static ColoredParticleOption drippingLatex(Color3 color) {
-        return new ColoredParticleOption(DRIPPING_LATEX, color);
+    public static ColoredParticleOption drippingGoo(Color3 color) {
+        return new ColoredParticleOption(DRIPPING_GOO, color);
     }
 
     public static ColoredParticleOption gas(Color3 color) {
@@ -71,7 +71,7 @@ public class ChangedParticles {
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent event) {
         var engine = Minecraft.getInstance().particleEngine;
-        engine.register(DRIPPING_LATEX, LatexDripParticle.Provider::new);
+        engine.register(DRIPPING_GOO, GooDripParticle.Provider::new);
         engine.register(GAS, GasParticle.Provider::new);
         engine.register(EMOTE, EmoteParticle.Provider::new);
         engine.register(TSC_SWEEP_ATTACK, TscSweepParticle.Provider::new);

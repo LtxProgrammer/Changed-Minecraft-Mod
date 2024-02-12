@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PhageLatexWolfMale extends AbstractDarkLatexWolf {
+public class PhageLatexWolfMale extends AbstractBlackGooWolf {
     public PhageLatexWolfMale(EntityType<? extends PhageLatexWolfMale> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

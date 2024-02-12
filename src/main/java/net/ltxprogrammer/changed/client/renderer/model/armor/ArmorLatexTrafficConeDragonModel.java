@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,9 +19,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-import static net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel.process;
+import static net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel.process;
 
-public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexTrafficConeDragonModel<T>> {
+public class ArmorLatexTrafficConeDragonModel <T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexTrafficConeDragonModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon")).get();
 
@@ -32,7 +32,7 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorLatexTrafficConeDragonModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexTrafficConeDragonModel<T>> animator;
 
     public ArmorLatexTrafficConeDragonModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -43,7 +43,7 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -119,11 +119,11 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexTrafficConeDragonModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexTrafficConeDragonModel<T>> getAnimator() {
         return animator;
     }
 
-    public static class RemodelMale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
+    public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon_male")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_traffic_cone_dragon_male")).get();
 
@@ -134,7 +134,7 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
         private final ModelPart RightLeg;
         private final ModelPart LeftArm;
         private final ModelPart RightArm;
-        private final LatexAnimator<T, RemodelMale<T>> animator;
+        private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
         public RemodelMale(ModelPart modelPart) {
             this.Head = modelPart.getChild("Head");
@@ -145,7 +145,7 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -211,7 +211,7 @@ public class ArmorLatexTrafficConeDragonModel <T extends LatexEntity> extends La
         }
 
         @Override
-        public LatexAnimator<T, RemodelMale<T>> getAnimator() {
+        public HumanoidAnimator<T, RemodelMale<T>> getAnimator() {
             return animator;
         }
     }

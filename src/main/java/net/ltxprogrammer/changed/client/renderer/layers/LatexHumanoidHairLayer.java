@@ -2,13 +2,13 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.HairModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexHumanoidHairLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
     private final HairModel modelUpper;
     private final HairModel modelLower;
 
@@ -40,7 +40,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
 
         pose.pushPose();
         pose.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
-        if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
+        if (this.getParentModel() instanceof AdvancedHumanoidModelInterface modelInterface)
             pose.mulPoseMatrix(modelInterface.getPlacementCorrectors(CorrectorType.LOWER_HAIR).last().pose());
         int colorLayer = 0;
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
@@ -54,7 +54,7 @@ public class LatexHumanoidHairLayer<T extends LatexEntity, M extends LatexHumano
         pose.popPose();
         pose.pushPose();
         head.translateAndRotate(pose);
-        if (this.getParentModel() instanceof LatexHumanoidModelInterface modelInterface)
+        if (this.getParentModel() instanceof AdvancedHumanoidModelInterface modelInterface)
             pose.mulPoseMatrix(modelInterface.getPlacementCorrectors(CorrectorType.HAIR).last().pose());
         for (ResourceLocation layer : style.textureLayers) {
             Color3 color = entity.getHairColor(colorLayer);

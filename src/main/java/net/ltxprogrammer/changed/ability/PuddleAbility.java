@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
+import net.ltxprogrammer.changed.entity.beast.BlackGooPup;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -8,15 +8,15 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class PuddleAbility extends SimpleAbility {
     @Override
-    public void startUsing(IAbstractLatex entity) {
-        if (entity.getLatexEntity() instanceof DarkLatexPup pup) {
+    public void startUsing(IAbstractChangedEntity entity) {
+        if (entity.getLatexEntity() instanceof BlackGooPup pup) {
             entity.getEntity().playSound(ChangedSounds.POISON, 1, 1);
             pup.setPuddle(true);
         }
     }
 
     @Override
-    public void tick(IAbstractLatex entity) {
+    public void tick(IAbstractChangedEntity entity) {
         entity.getEntity().setDeltaMovement(0, Math.min(entity.getEntity().getDeltaMovement().y, 0), 0);
         entity.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 5, false, false, false));
 
@@ -28,14 +28,14 @@ public class PuddleAbility extends SimpleAbility {
     }
 
     @Override
-    public void stopUsing(IAbstractLatex entity) {
-        if (entity.getLatexEntity() instanceof DarkLatexPup pup) {
+    public void stopUsing(IAbstractChangedEntity entity) {
+        if (entity.getLatexEntity() instanceof BlackGooPup pup) {
             pup.setPuddle(false);
         }
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.HOLD;
     }
 }

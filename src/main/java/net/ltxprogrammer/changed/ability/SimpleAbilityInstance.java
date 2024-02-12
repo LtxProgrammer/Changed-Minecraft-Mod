@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.ability;
 import net.minecraft.nbt.CompoundTag;
 
 public class SimpleAbilityInstance extends AbstractAbilityInstance {
-    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, IAbstractLatex entity) {
+    public SimpleAbilityInstance(AbstractAbility<SimpleAbilityInstance> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 

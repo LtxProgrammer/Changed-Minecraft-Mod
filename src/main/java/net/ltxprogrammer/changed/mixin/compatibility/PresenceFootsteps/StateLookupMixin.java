@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps;
 
 import eu.ha3.presencefootsteps.world.Lookup;
 import eu.ha3.presencefootsteps.world.StateLookup;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,7 +18,7 @@ public abstract class StateLookupMixin implements Lookup<BlockState> {
 
     @Inject(method = "getAssociation(Lnet/minecraft/world/level/block/state/BlockState;Ljava/lang/String;)Ljava/lang/String;", at = @At("HEAD"), cancellable = true)
     public void getAssociation(BlockState state, String substrate, CallbackInfoReturnable<String> callback) {
-        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
+        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != GooType.NEUTRAL) {
             callback.setReturnValue(this.getAssociation(state.getValue(COVERED).block.get().defaultBlockState(), substrate));
         }
     }

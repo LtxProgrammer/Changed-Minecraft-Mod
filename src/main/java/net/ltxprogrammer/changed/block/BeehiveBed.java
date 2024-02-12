@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.beast.LatexBee;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.beast.GooBee;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -80,7 +80,7 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
     }
 
     private boolean kickBeeOutOfBed(Level level, BlockPos pos) {
-        List<LatexBee> list = level.getEntitiesOfClass(LatexBee.class, new AABB(pos), LivingEntity::isSleeping);
+        List<GooBee> list = level.getEntitiesOfClass(GooBee.class, new AABB(pos), LivingEntity::isSleeping);
         if (list.isEmpty()) {
             return false;
         } else {
@@ -105,7 +105,7 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
                 }
             }
 
-            if (!ProcessTransfur.ifPlayerLatex(player, variant -> variant.is(LatexVariant.LATEX_BEE), () -> false)) {
+            if (!ProcessTransfur.ifPlayerTransfurred(player, variant -> variant.is(TransfurVariant.LATEX_BEE), () -> false)) {
                 return InteractionResult.SUCCESS;
             }
 

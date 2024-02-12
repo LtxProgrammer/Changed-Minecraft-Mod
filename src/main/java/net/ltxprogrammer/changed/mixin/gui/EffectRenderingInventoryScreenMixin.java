@@ -34,7 +34,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
     private void renderBackgrounds(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> effects, boolean wide, CallbackInfo callback) {
         if (!Changed.config.client.useGoopyInventory.get())
             return;
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
                 return;
 

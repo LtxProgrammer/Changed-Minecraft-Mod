@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.block;
 
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -21,20 +21,20 @@ public abstract class SpreadingSnowyDirtBlockMixin extends SnowyDirtBlock {
 
     @Inject(method = "canBeGrass", at = @At("HEAD"), cancellable = true)
     private static void canBeGrass(BlockState blockState, LevelReader level, BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != LatexType.NEUTRAL) {
+        if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != GooType.NEUTRAL) {
             callbackInfoReturnable.setReturnValue(false);
         }
     }
 
     @Inject(method = "canPropagate", at = @At("HEAD"), cancellable = true)
     private static void canPropagate(BlockState blockState, LevelReader level, BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != LatexType.NEUTRAL) {
+        if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != GooType.NEUTRAL) {
             callbackInfoReturnable.setReturnValue(false);
         }
 
         else {
             blockState = level.getBlockState(blockPos);
-            if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != LatexType.NEUTRAL) {
+            if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) != GooType.NEUTRAL) {
                 callbackInfoReturnable.setReturnValue(false);
             }
         }

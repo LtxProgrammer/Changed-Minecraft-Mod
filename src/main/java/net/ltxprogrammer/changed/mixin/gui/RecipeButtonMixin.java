@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
@@ -69,10 +69,10 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
             ResourceLocation formId = infuserRecipe.form;
             if (infuserRecipe.gendered)
                 formId = new ResourceLocation(formId + "/" + activeGender.toString().toLowerCase());
-            LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(formId);
+            TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formId);
             if (variant == null)
                 return;
-            LatexEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());
+            ChangedEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());
             entity.tickCount = (int)time;
 
             InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, isHoveredOrFocused() ? 40 : 10, (float) (Math.sin(time / 60.0f) * 60.0f), 0.0f, entity);

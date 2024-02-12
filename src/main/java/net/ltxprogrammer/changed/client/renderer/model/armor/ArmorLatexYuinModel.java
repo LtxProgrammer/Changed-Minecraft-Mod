@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexYuinModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexYuinModel<T>> {
+public class ArmorLatexYuinModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexYuinModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_yuin")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_yuin")).get();
 
@@ -30,7 +30,7 @@ public class ArmorLatexYuinModel<T extends LatexEntity> extends LatexHumanoidArm
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorLatexYuinModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexYuinModel<T>> animator;
 
     public ArmorLatexYuinModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -41,7 +41,7 @@ public class ArmorLatexYuinModel<T extends LatexEntity> extends LatexHumanoidArm
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -115,7 +115,7 @@ public class ArmorLatexYuinModel<T extends LatexEntity> extends LatexHumanoidArm
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexYuinModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexYuinModel<T>> getAnimator() {
         return animator;
     }
 }

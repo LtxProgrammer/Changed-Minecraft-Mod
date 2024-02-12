@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorUpperBodyModel<T>> {
+public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorUpperBodyModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -28,7 +28,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
     private final ModelPart Torso;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorUpperBodyModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorUpperBodyModel<T>> animator;
 
     public ArmorUpperBodyModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -36,7 +36,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         this.LeftArm = root.getChild("LeftArm");
         this.RightArm = root.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
                 .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm));
     }
 
@@ -60,7 +60,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
     }
 
     @Override
-    public LatexAnimator<T, ArmorUpperBodyModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorUpperBodyModel<T>> getAnimator() {
         return animator;
     }
 
@@ -76,7 +76,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         }
     }
 
-    public static class RemodelMale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
+    public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_male")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_male")).get();
 
@@ -84,7 +84,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         private final ModelPart Torso;
         private final ModelPart LeftArm;
         private final ModelPart RightArm;
-        private final LatexAnimator<T, RemodelMale<T>> animator;
+        private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
         public RemodelMale(ModelPart modelPart) {
             this.Head = modelPart.getChild("Head");
@@ -92,7 +92,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
                     .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm)).hipOffset(0.0f);
         }
 
@@ -124,12 +124,12 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         }
 
         @Override
-        public LatexAnimator<T, RemodelMale<T>> getAnimator() {
+        public HumanoidAnimator<T, RemodelMale<T>> getAnimator() {
             return animator;
         }
     }
 
-    public static class RemodelFemale<T extends LatexEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
+    public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_female")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_female")).get();
 
@@ -137,7 +137,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         private final ModelPart Torso;
         private final ModelPart LeftArm;
         private final ModelPart RightArm;
-        private final LatexAnimator<T, RemodelFemale<T>> animator;
+        private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
         public RemodelFemale(ModelPart modelPart) {
             this.Head = modelPart.getChild("Head");
@@ -145,7 +145,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
             this.LeftArm = modelPart.getChild("LeftArm");
             this.RightArm = modelPart.getChild("RightArm");
 
-            this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
+            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
                     .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm)).hipOffset(0.0f);
         }
 
@@ -180,7 +180,7 @@ public class ArmorUpperBodyModel<T extends LatexEntity> extends LatexHumanoidArm
         }
 
         @Override
-        public LatexAnimator<T, RemodelFemale<T>> getAnimator() {
+        public HumanoidAnimator<T, RemodelFemale<T>> getAnimator() {
             return animator;
         }
     }

@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.beast.LatexKeonWolf;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.beast.GooKeonWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implements LatexHumanoidModelInterface<LatexKeonWolf, LatexKeonWolfModel> {
+public class LatexKeonWolfModel extends AdvancedHumanoidModel<GooKeonWolf> implements AdvancedHumanoidModelInterface<GooKeonWolf, LatexKeonWolfModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_keon_wolf"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implem
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexKeonWolf, LatexKeonWolfModel> animator;
+    private final HumanoidAnimator<GooKeonWolf, LatexKeonWolfModel> animator;
 
     public LatexKeonWolfModel(ModelPart root) {
         super(root);
@@ -45,7 +45,7 @@ public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implem
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -132,7 +132,7 @@ public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implem
     }
 
     @Override
-    public void prepareMobModel(LatexKeonWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(GooKeonWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -141,12 +141,12 @@ public class LatexKeonWolfModel extends LatexHumanoidModel<LatexKeonWolf> implem
     }
 
     @Override
-    public LatexAnimator<LatexKeonWolf, LatexKeonWolfModel> getAnimator() {
+    public HumanoidAnimator<GooKeonWolf, LatexKeonWolfModel> getAnimator() {
         return animator;
     }
 
     @Override
-    public void setupAnim(LatexKeonWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(GooKeonWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 

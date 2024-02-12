@@ -15,9 +15,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +48,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> cacheGeneratedTextures;
         public final ForgeConfigSpec.ConfigValue<Boolean> memCacheBaseImages;
         public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
-        public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
+        public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapGooBlocks;
 
         public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
@@ -69,7 +66,7 @@ public class ChangedConfig {
             builder.comment("Large modpacks will eat up all your memory if unique textures are generated for every block, this will apply a generic texture for all cube like models");
             generateUniqueTexturesForAllBlocks = builder.define("generateUniqueTexturesForAllBlocks", true);
             builder.comment("Got a lot of mods? Unique model generation will be limited to minecraft and changed");
-            fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
+            fastAndCheapGooBlocks = builder.define("fastAndCheapGooBlocks", false);
         }
 
         @Override

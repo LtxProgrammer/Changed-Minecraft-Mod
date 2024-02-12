@@ -58,7 +58,7 @@ public abstract class GuiMixin extends GuiComponent {
         if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
             if (ProcessTransfur.isPlayerOrganic(player))
                 return;
-            ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 var colors = LatexAbilityRadialScreen.getColors(variant);
                 var color = type == Gui.HeartType.NORMAL ? colors.background() : colors.foreground();
                 RenderSystem.setShaderTexture(0, GUI_LATEX_HEARTS);
@@ -76,7 +76,7 @@ public abstract class GuiMixin extends GuiComponent {
     protected void renderEffects(PoseStack poseStack, CallbackInfo callback) {
         if (!Changed.config.client.useGoopyInventory.get())
             return;
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
                 return;
 
@@ -161,7 +161,7 @@ public abstract class GuiMixin extends GuiComponent {
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     protected void renderHotbar(float partialTicks, PoseStack pose, CallbackInfo callback) {
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (!variant.getParent().itemUseMode.showHotbar) {
                 callback.cancel();
                 
@@ -179,7 +179,7 @@ public abstract class GuiMixin extends GuiComponent {
 
     @Inject(method = "renderSelectedItemName", at = @At("HEAD"), cancellable = true)
     public void renderSelectedItemName(PoseStack pose, CallbackInfo callback) {
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (!variant.getParent().itemUseMode.showHotbar)
                 callback.cancel();
         });

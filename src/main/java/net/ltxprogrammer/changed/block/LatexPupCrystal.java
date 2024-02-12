@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -39,11 +39,11 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     public static final VoxelShape SHAPE_SMALL = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 4.0D, 12.0D);
 
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
-    private final LatexVariant<?> variant;
+    private final TransfurVariant<?> variant;
     private final int multiply;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-    public LatexPupCrystal(LatexVariant<?> variant, int multiply, Supplier<? extends Item> crystal, Properties properties) {
+    public LatexPupCrystal(TransfurVariant<?> variant, int multiply, Supplier<? extends Item> crystal, Properties properties) {
         super(variant, crystal, properties);
         this.variant = variant;
         this.multiply = multiply;
@@ -132,7 +132,7 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
 
         if (variant == null) return;
 
-        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity) && !le.isDeadOrDying()) {
+        if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity) && !le.isDeadOrDying()) {
             if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
                 return;
             this.extend(state, level, pos);

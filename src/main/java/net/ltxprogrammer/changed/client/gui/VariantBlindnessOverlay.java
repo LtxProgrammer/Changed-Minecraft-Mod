@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -33,16 +33,16 @@ public class VariantBlindnessOverlay {
             Player player = Minecraft.getInstance().player;
             if (player == null || !ProcessTransfur.isPlayerLatex(player))
                 return;
-            var variant = ProcessTransfur.getPlayerLatexVariant(player);
-            if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
+            var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+            if (variant == null || variant.getGooType() == GooType.NEUTRAL)
                 return;
             if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && (darkLatex.isMaskless()
                 || player.hasEffect(MobEffects.NIGHT_VISION)))
                 return;
-            float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
+            float color = variant.getGooType() == GooType.BLACK_GOO ? 0.0F : 1.0F;
             float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
             float alpha;
-            if (variant.getLatexType() == LatexType.DARK_LATEX)
+            if (variant.getGooType() == GooType.BLACK_GOO)
                 alpha = Mth.lerp(0.65F, alphaO, darkness * ALPHA);
             else
                 alpha = ALPHA * Minecraft.getInstance().options.screenEffectScale;

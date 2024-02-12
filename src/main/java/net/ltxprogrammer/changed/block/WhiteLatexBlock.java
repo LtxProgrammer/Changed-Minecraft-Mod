@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractGooItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +43,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTransportInterface {
     public WhiteLatexBlock(Properties p_49795_) {
-        super(p_49795_, LatexType.WHITE_LATEX, ChangedItems.WHITE_LATEX_GOO);
+        super(p_49795_, GooType.PURE_WHITE_GOO, ChangedItems.WHITE_LATEX_GOO);
     }
 
     public boolean skipRendering(BlockState p_53972_, BlockState p_53973_, Direction p_53974_) {
@@ -66,8 +66,8 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
-        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
+        TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant != null && variant.getGooType() == GooType.PURE_WHITE_GOO &&
                 /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
             if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
                 return super.use(state, level, pos, player, hand, hitResult);
@@ -85,19 +85,19 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
             if (isTargetNearby.get())
                 return; // Early out
 
-            var latexType = LatexType.getEntityLatexType(livingEntity);
-            if (latexType != null && latexType.isHostileTo(LatexType.WHITE_LATEX)) {
+            var latexType = GooType.getEntityGooType(livingEntity);
+            if (latexType != null && latexType.isHostileTo(GooType.PURE_WHITE_GOO)) {
                 isTargetNearby.set(true);
                 return;
             }
 
-            if (!LatexVariant.getFusionCompatible(LatexVariant.WHITE_LATEX_WOLF, livingEntity.getClass()).isEmpty()) {
+            if (!TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, livingEntity.getClass()).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
 
-            var latexVariant = LatexVariant.getEntityVariant(livingEntity);
-            if (latexVariant != null && !LatexVariant.getFusionCompatible(LatexVariant.WHITE_LATEX_WOLF, latexVariant).isEmpty()) {
+            var latexVariant = TransfurVariant.getEntityVariant(livingEntity);
+            if (latexVariant != null && !TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, latexVariant).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
@@ -120,7 +120,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
 
         BlockPos above = position.above();
         if (level.getBlockState(above).is(Blocks.AIR) && level.getBlockState(above.above()).is(Blocks.AIR)) {
-            ChangedEntities.WHITE_LATEX_WOLF.get().spawn(level, null, null, null, above, MobSpawnType.NATURAL, true, true);
+            ChangedEntities.PURE_WHITE_GOO_WOLF.get().spawn(level, null, null, null, above, MobSpawnType.NATURAL, true, true);
         }
     }
 
@@ -129,8 +129,8 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     );
 
     @SubscribeEvent
-    public static void onLatexCover(AbstractLatexGoo.CoveringBlockEvent event) {
-        if (event.latexType != LatexType.WHITE_LATEX)
+    public static void onLatexCover(AbstractGooItem.CoveringBlockEvent event) {
+        if (event.gooType != GooType.PURE_WHITE_GOO)
             return;
 
         if (event.originalState.is(Blocks.TALL_GRASS) || event.originalState.is(Blocks.LARGE_FERN) || event.originalState.is(BlockTags.TALL_FLOWERS)) {

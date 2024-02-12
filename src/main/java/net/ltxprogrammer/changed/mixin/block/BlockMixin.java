@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.util.StackUtil;
@@ -57,17 +57,17 @@ public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net
     public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance, CallbackInfo callbackInfo) {
         if (state.getFluidState().is(ChangedTags.Fluids.LATEX))
             callbackInfo.cancel();
-        else if (getLatexed(state) != LatexType.NEUTRAL && !StackUtil.isRecursive(10)) {
+        else if (getLatexed(state) != GooType.NEUTRAL && !StackUtil.isRecursive(10)) {
             getLatexed(state).block.get().fallOn(level, state, blockPos, entity, distance);
             callbackInfo.cancel();
         }
 
-        if (!(entity instanceof LivingEntity livingEntity) || (getLatexed(state) != LatexType.WHITE_LATEX && state.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()))) {
+        if (!(entity instanceof LivingEntity livingEntity) || (getLatexed(state) != GooType.PURE_WHITE_GOO && state.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()))) {
             return;
         }
 
-        LatexVariant<?> variant = LatexVariant.getEntityVariant(livingEntity);
-        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX && distance > 3.0f) {
+        TransfurVariant<?> variant = TransfurVariant.getEntityVariant(livingEntity);
+        if (variant != null && variant.getGooType() == GooType.PURE_WHITE_GOO && distance > 3.0f) {
             if (livingEntity instanceof Player player) {
                 player.moveTo(blockPos.below(), entity.getYRot(), entity.getXRot());
                 WhiteLatexTransportInterface.entityEnterLatex(player, blockPos);

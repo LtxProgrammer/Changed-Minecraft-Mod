@@ -41,7 +41,7 @@ public class VariantAbilityActivate implements ChangedPacket {
     public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ProcessTransfur.ifPlayerLatex(context.getSender(), (player, variant) -> {
+            ProcessTransfur.ifPlayerTransfurred(context.getSender(), (player, variant) -> {
                 if (ability != null)
                     variant.setSelectedAbility(ability);
 

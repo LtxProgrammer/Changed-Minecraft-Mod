@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
-import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.init.*;
@@ -59,7 +58,7 @@ public class Changed {
 
         // Initialize packet types
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
-        addNetworkMessage(MountLatexPacket.class, MountLatexPacket::new);
+        addNetworkMessage(MountTransfurPacket.class, MountTransfurPacket::new);
         addNetworkMessage(SyncSwitchPacket.class, SyncSwitchPacket::new);
         addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);
         addNetworkMessage(SyncTransfurProgressPacket.class, SyncTransfurProgressPacket::new);
@@ -71,7 +70,7 @@ public class Changed {
         addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
         addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
         addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
-        addNetworkMessage(SetLatexVariantDataPacket.class, SetLatexVariantDataPacket::new);
+        addNetworkMessage(SetTransfurVariantDataPacket.class, SetTransfurVariantDataPacket::new);
         addNetworkMessage(TugCameraPacket.class, TugCameraPacket::new);
 
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,

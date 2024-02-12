@@ -1,21 +1,20 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class WolfHeadInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractHeadAnimator<T, M> {
+public class WolfHeadInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractHeadAnimator<T, M> {
     public WolfHeadInitAnimator(ModelPart head) {
         super(head);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.INIT;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.INIT;
     }
 
     @Override
@@ -27,9 +26,9 @@ public class WolfHeadInitAnimator<T extends LatexEntity, M extends EntityModel<T
             head.xRot = (-(float)Math.PI / 4F);
         } else if (core.swimAmount > 0.0F) {
             if (entity.isVisuallySwimming()) {
-                head.xRot = LatexAnimator.rotlerpRad(core.swimAmount, head.xRot, (-(float)Math.PI / 4F));
+                head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, (-(float)Math.PI / 4F));
             } else {
-                head.xRot = LatexAnimator.rotlerpRad(core.swimAmount, head.xRot, headPitch * ((float)Math.PI / 180F));
+                head.xRot = HumanoidAnimator.rotlerpRad(core.swimAmount, head.xRot, headPitch * ((float)Math.PI / 180F));
             }
         } else {
             head.xRot = headPitch * ((float)Math.PI / 180F);

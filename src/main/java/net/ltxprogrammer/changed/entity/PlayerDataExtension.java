@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import org.jetbrains.annotations.NotNull;
@@ -9,8 +9,8 @@ import javax.annotation.Nullable;
 
 public interface PlayerDataExtension {
     @Nullable
-    LatexVariantInstance<?> getLatexVariant();
-    void setLatexVariant(@Nullable LatexVariantInstance<?> variant);
+    TransfurVariantInstance<?> getLatexVariant();
+    void setLatexVariant(@Nullable TransfurVariantInstance<?> variant);
 
     default boolean isLatex() {
         return getLatexVariant() != null;

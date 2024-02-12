@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexPinkWyvern extends LatexEntity implements PowderSnowWalkable, PatronOC {
+public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable, PatronOC {
     public LatexPinkWyvern(EntityType<? extends LatexPinkWyvern> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -20,8 +20,8 @@ public class LatexPinkWyvern extends LatexEntity implements PowderSnowWalkable, 
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     @Override

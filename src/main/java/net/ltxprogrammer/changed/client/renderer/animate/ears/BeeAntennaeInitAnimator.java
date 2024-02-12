@@ -1,20 +1,20 @@
 package net.ltxprogrammer.changed.client.renderer.animate.ears;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class BeeAntennaeInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractEarsAnimator<T, M> {
+public class BeeAntennaeInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractEarsAnimator<T, M> {
     public BeeAntennaeInitAnimator(ModelPart leftEar, ModelPart rightEar) {
         super(leftEar, rightEar);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.INIT;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.INIT;
     }
 
     @Override

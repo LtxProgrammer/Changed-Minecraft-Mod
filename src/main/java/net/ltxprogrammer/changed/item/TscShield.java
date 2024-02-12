@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -139,7 +139,7 @@ public class TscShield extends TscWeapon implements SpecializedItemRendering {
                 event.setShieldTakesDamage(true);
                 if (event.getDamageSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity source) {
                     ChangedItems.TSC_SHIELD.get().applyShock(source);
-                    if (LatexVariant.getEntityVariant(source) != null)
+                    if (TransfurVariant.getEntityVariant(source) != null)
                         source.hurt(DamageSource.mobAttack(event.getEntityLiving()), 1);
                 }
             }

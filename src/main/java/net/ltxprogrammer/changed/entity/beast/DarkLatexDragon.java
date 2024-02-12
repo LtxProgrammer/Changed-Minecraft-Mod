@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, PatronOC {
-    public DarkLatexDragon(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
+public class DarkLatexDragon extends ChangedEntity implements DarkLatexEntity, PatronOC {
+    public DarkLatexDragon(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
@@ -18,8 +18,8 @@ public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, Pat
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.DARK_LATEX;
+    public GooType getGooType() {
+        return GooType.BLACK_GOO;
     }
 
     @Override

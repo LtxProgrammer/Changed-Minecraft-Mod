@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexCrystalWolf extends AbstractLatexWolf implements DarkLatexEntity {
-    public LatexCrystalWolf(EntityType<? extends AbstractLatexWolf> p_19870_, Level p_19871_) {
+public class LatexCrystalWolf extends AbstractGooWolf implements DarkLatexEntity {
+    public LatexCrystalWolf(EntityType<? extends AbstractGooWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.util.Color3;
@@ -26,10 +26,10 @@ import java.util.List;
 public class GasCanister extends BlockItem implements SpecializedAnimations {
     public static final int CAPACITY = 400;
 
-    private final List<LatexVariant<?>> variants;
+    private final List<TransfurVariant<?>> variants;
     private final Color3 color;
 
-    public GasCanister(Block block, List<LatexVariant<?>> variants, Color3 color) {
+    public GasCanister(Block block, List<TransfurVariant<?>> variants, Color3 color) {
         super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(400));
         this.variants = variants;
         this.color = color;

@@ -4,18 +4,16 @@ import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityDimensions;
@@ -97,7 +95,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void orNotHurt(DamageSource p_36154_, float p_36155_, CallbackInfoReturnable<Boolean> cir) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
             if (variant.ageAsVariant < 30)
                 cir.cancel();
         });
@@ -105,9 +103,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     // ADDITIONAL DATA
     @Unique
-    public LatexVariantInstance<?> latexVariant = null;
+    public TransfurVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT);
+    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, TransfurVariant.FALLBACK_VARIANT);
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique
@@ -116,12 +114,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     public BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
     @Override
-    public LatexVariantInstance<?> getLatexVariant() {
+    public TransfurVariantInstance<?> getLatexVariant() {
         return latexVariant;
     }
 
     @Override
-    public void setLatexVariant(LatexVariantInstance<?> latexVariant) {
+    public void setLatexVariant(TransfurVariantInstance<?> latexVariant) {
         this.latexVariant = latexVariant;
     }
 
@@ -163,7 +161,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
                 ci.cancel();
     }
 
-    private float getFoodMul(LatexVariant<?> variant) {
+    private float getFoodMul(TransfurVariant<?> variant) {
         if (isSwimming() || this.isEyeInFluid(FluidTags.WATER) || this.isInWater()) {
             return 1.0f - (variant.swimMultiplier() - 1.0f) * 0.85f;
         }
@@ -186,7 +184,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
     public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
-        if (ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+        if (ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
             callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
         }));
     }

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexMoth;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMothModel extends LatexHumanoidModel<LatexMoth> implements LatexHumanoidModelInterface<LatexMoth, LatexMothModel> {
+public class LatexMothModel extends AdvancedHumanoidModel<LatexMoth> implements AdvancedHumanoidModelInterface<LatexMoth, LatexMothModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_moth"), "main");
     private final ModelPart RightLeg;
@@ -33,7 +33,7 @@ public class LatexMothModel extends LatexHumanoidModel<LatexMoth> implements Lat
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexAnimator<LatexMoth, LatexMothModel> animator;
+    private final HumanoidAnimator<LatexMoth, LatexMothModel> animator;
 
     public LatexMothModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexMothModel extends LatexHumanoidModel<LatexMoth> implements Lat
         this.LeftArm = root.getChild("LeftArm");
         this.RightWing = Torso.getChild("RightWing");
         this.LeftWing = Torso.getChild("LeftWing");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.dragonLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing));
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.dragonLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg, LeftWing, RightWing));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -180,7 +180,7 @@ public class LatexMothModel extends LatexHumanoidModel<LatexMoth> implements Lat
     }
 
     @Override
-    public LatexAnimator<LatexMoth, LatexMothModel> getAnimator() {
+    public HumanoidAnimator<LatexMoth, LatexMothModel> getAnimator() {
         return animator;
     }
 }

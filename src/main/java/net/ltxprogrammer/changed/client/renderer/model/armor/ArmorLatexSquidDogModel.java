@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexSquidDogModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSquidDogModel<T>> {
+public class ArmorLatexSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSquidDogModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_squid_dog")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_squid_dog")).get();
 
@@ -32,7 +32,7 @@ public class ArmorLatexSquidDogModel<T extends LatexEntity> extends LatexHumanoi
     private final ModelPart RightArm;
     private final ModelPart LeftArm2;
     private final ModelPart RightArm2;
-    private final LatexAnimator<T, ArmorLatexSquidDogModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexSquidDogModel<T>> animator;
 
     public ArmorLatexSquidDogModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -45,7 +45,7 @@ public class ArmorLatexSquidDogModel<T extends LatexEntity> extends LatexHumanoi
         this.LeftArm2 = root.getChild("LeftArm2");
         this.RightArm2 = root.getChild("RightArm2");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2)).hipOffset(-4.0f);
     }
 
@@ -126,7 +126,7 @@ public class ArmorLatexSquidDogModel<T extends LatexEntity> extends LatexHumanoi
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexSquidDogModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexSquidDogModel<T>> getAnimator() {
         return animator;
     }
 }

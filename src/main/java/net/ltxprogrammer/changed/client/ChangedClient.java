@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.layers.GooParticlesLayer;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -34,7 +34,7 @@ public class ChangedClient {
             particleSystem.render(event.getPoseStack(), minecraft.gameRenderer.lightTexture(), event.getCamera(), event.getPartialTick(), event.getFrustum());
     }
 
-    protected static void addLatexParticleToEntity(LatexEntity entity) {
+    protected static void addLatexParticleToEntity(ChangedEntity entity) {
         if (particleSystem.pauseForReload())
             return;
         if (entity.getRandom().nextFloat() > entity.getDripRate(1.0f - entity.computeHealthRatio()))
@@ -43,15 +43,15 @@ public class ChangedClient {
         if (!(renderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer))
             return;
         for (var layer : livingEntityRenderer.layers) {
-            if (layer instanceof LatexParticlesLayer<?,?> latexParticlesLayer) {
-                latexParticlesLayer.createNewDripParticle(entity);
+            if (layer instanceof GooParticlesLayer<?,?> gooParticlesLayer) {
+                gooParticlesLayer.createNewDripParticle(entity);
                 break;
             }
         }
     }
 
     protected static void addLatexParticleToEntity(Player entity) {
-        ProcessTransfur.ifPlayerLatex(entity, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(entity, variant -> {
             addLatexParticleToEntity(variant.getLatexEntity());
         });
     }
@@ -60,7 +60,7 @@ public class ChangedClient {
         if (minecraft.level != null) {
             var cameraPos = minecraft.gameRenderer.getMainCamera().getBlockPosition();
             var aabb = AABB.of(BoundingBox.fromCorners(cameraPos.offset(-64, -64, -64), cameraPos.offset(64, 64, 64)));
-            minecraft.level.getEntitiesOfClass(LatexEntity.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
+            minecraft.level.getEntitiesOfClass(ChangedEntity.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
             minecraft.level.getEntitiesOfClass(Player.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
         }
 

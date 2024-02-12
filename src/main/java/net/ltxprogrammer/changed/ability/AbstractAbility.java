@@ -185,46 +185,46 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
     }
 
-    private final BiFunction<AbstractAbility<Instance>, IAbstractLatex, Instance> ctor;
+    private final BiFunction<AbstractAbility<Instance>, IAbstractChangedEntity, Instance> ctor;
 
-    public AbstractAbility(BiFunction<AbstractAbility<Instance>, IAbstractLatex, Instance> ctor) {
+    public AbstractAbility(BiFunction<AbstractAbility<Instance>, IAbstractChangedEntity, Instance> ctor) {
         this.ctor = ctor;
     }
 
-    public Instance makeInstance(IAbstractLatex entity) {
+    public Instance makeInstance(IAbstractChangedEntity entity) {
         return ctor.apply(this, entity);
     }
 
-    public TranslatableComponent getDisplayName(IAbstractLatex entity) {
+    public TranslatableComponent getDisplayName(IAbstractChangedEntity entity) {
         return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
     }
 
-    public UseType getUseType(IAbstractLatex entity) { return UseType.INSTANT; }
-    public int getChargeTime(IAbstractLatex entity) { return 0; }
-    public int getCoolDown(IAbstractLatex entity) { return 0; }
+    public UseType getUseType(IAbstractChangedEntity entity) { return UseType.INSTANT; }
+    public int getChargeTime(IAbstractChangedEntity entity) { return 0; }
+    public int getCoolDown(IAbstractChangedEntity entity) { return 0; }
 
-    public boolean canUse(IAbstractLatex entity) { return false; }
-    public boolean canKeepUsing(IAbstractLatex entity) { return false; }
+    public boolean canUse(IAbstractChangedEntity entity) { return false; }
+    public boolean canKeepUsing(IAbstractChangedEntity entity) { return false; }
 
-    public void startUsing(IAbstractLatex entity) {}
-    public void tick(IAbstractLatex entity) {}
-    public void stopUsing(IAbstractLatex entity) {}
+    public void startUsing(IAbstractChangedEntity entity) {}
+    public void tick(IAbstractChangedEntity entity) {}
+    public void stopUsing(IAbstractChangedEntity entity) {}
 
-    public void tickCharge(IAbstractLatex entity, float ticks) {}
+    public void tickCharge(IAbstractChangedEntity entity, float ticks) {}
 
     // Called when the entity loses the variant (death or untransfur)
-    public void onRemove(IAbstractLatex entity) {}
+    public void onRemove(IAbstractChangedEntity entity) {}
 
     // A unique tag for the ability is provided when saving/reading data. If no data is saved to the tag, then readData does not run
-    public void saveData(CompoundTag tag, IAbstractLatex entity) {}
-    public void readData(CompoundTag tag, IAbstractLatex entity) {}
+    public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {}
+    public void readData(CompoundTag tag, IAbstractChangedEntity entity) {}
 
-    public ResourceLocation getTexture(IAbstractLatex entity) {
+    public ResourceLocation getTexture(IAbstractChangedEntity entity) {
         return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + ".png");
     }
 
     // Broadcast changes to clients
-    public final void setDirty(IAbstractLatex entity) {
+    public final void setDirty(IAbstractChangedEntity entity) {
         CompoundTag data = new CompoundTag();
         saveData(data, entity);
 

@@ -52,7 +52,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 menu = invMenu;
 
             if (menu != null) {
-                ProcessTransfur.ifPlayerLatex(menu.owner, variant -> {
+                ProcessTransfur.ifPlayerTransfurred(menu.owner, variant -> {
                     var originalPair = slot.getNoItemIcon();
                     if (originalPair != null && !variant.getParent().hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
                         callback.cancel();

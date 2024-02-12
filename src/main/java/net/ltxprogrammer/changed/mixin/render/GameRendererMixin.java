@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.client.ChangedShaders;
@@ -34,7 +33,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void getNightVisionScale(LivingEntity livingEntity, float p_109110_, CallbackInfoReturnable<Float> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(livingEntity), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(livingEntity), variant -> {
             if (variant.getParent().nightVision) {
                 callback.setReturnValue(1.0f);
             }
@@ -47,7 +46,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void bobView(PoseStack pose, float partialTicks, CallbackInfo callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(Minecraft.getInstance().getCameraEntity()), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(Minecraft.getInstance().getCameraEntity()), variant -> {
             if (!variant.getParent().hasLegs)
                 callback.cancel();
         });

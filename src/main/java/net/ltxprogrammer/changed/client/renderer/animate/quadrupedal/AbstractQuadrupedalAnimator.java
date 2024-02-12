@@ -1,12 +1,12 @@
 package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 
-public abstract class AbstractQuadrupedalAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
+public abstract class AbstractQuadrupedalAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
     public final ModelPart torso;
     public final ModelPart frontLeftLeg;
     public final ModelPart frontRightLeg;

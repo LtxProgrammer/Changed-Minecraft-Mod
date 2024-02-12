@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.mixin.block;
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.client.BlockRenderHelper;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
@@ -42,7 +42,7 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.*;
 public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Block> {
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, CallbackInfo callbackInfo) {
-        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
+        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != GooType.NEUTRAL) {
             callbackInfo.cancel();
 
             if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
@@ -55,7 +55,7 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
     @Inject(method = "getDrops", at = @At("RETURN"), cancellable = true)
     public void getDrops(BlockState state, LootContext.Builder builder, CallbackInfoReturnable<List<ItemStack>> callbackInfoReturnable) {
-        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != LatexType.NEUTRAL) {
+        if (state.getProperties().contains(COVERED) && state.getValue(COVERED) != GooType.NEUTRAL) {
             var goo = state.getValue(COVERED).goo;
             ArrayList<ItemStack> newList = new ArrayList<>(callbackInfoReturnable.getReturnValue());
             newList.add(goo.get().getDefaultInstance());
@@ -93,13 +93,13 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
     public void getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callbackInfoReturnable) {
-        if (getLatexed(state) == LatexType.WHITE_LATEX)
+        if (getLatexed(state) == GooType.PURE_WHITE_GOO)
             callbackInfoReturnable.setReturnValue(Shapes.empty());
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     public void getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callbackInfoReturnable) {
-        if (getLatexed(state) == LatexType.WHITE_LATEX) {
+        if (getLatexed(state) == GooType.PURE_WHITE_GOO) {
             if (context instanceof EntityCollisionContext ecc) {
                 if (ecc.getEntity() instanceof LivingEntity le) {
                     if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le))
@@ -113,12 +113,12 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
     public void use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> callbackInfoReturnable) {
         var coveredWith = getLatexed(state);
 
-        if (coveredWith != LatexType.NEUTRAL) {
+        if (coveredWith != GooType.NEUTRAL) {
             callbackInfoReturnable.setReturnValue(InteractionResult.PASS);
 
-            if (coveredWith == LatexType.WHITE_LATEX) {
-                ProcessTransfur.ifPlayerLatex(player, variant -> {
-                    if (variant.getLatexType() == LatexType.WHITE_LATEX &&
+            if (coveredWith == GooType.PURE_WHITE_GOO) {
+                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
+                    if (variant.getGooType() == GooType.PURE_WHITE_GOO &&
                             /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
                         if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
                             return;

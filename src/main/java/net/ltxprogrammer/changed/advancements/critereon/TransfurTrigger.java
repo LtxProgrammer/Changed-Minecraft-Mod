@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.advancements.critereon;
 
 import com.google.gson.JsonObject;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +16,7 @@ public class TransfurTrigger extends SimpleCriterionTrigger<TransfurTrigger.Trig
         return new TransfurTrigger.TriggerInstance(predicate, TransfurPredicate.fromJson(jsonObject));
     }
 
-    public void trigger(ServerPlayer player, LatexVariant form) {
+    public void trigger(ServerPlayer player, TransfurVariant form) {
         this.trigger(player, (predicate) -> predicate.matches(form));
     }
 
@@ -36,7 +36,7 @@ public class TransfurTrigger extends SimpleCriterionTrigger<TransfurTrigger.Trig
             return new TriggerInstance(EntityPredicate.Composite.ANY, predicate);
         }
 
-        public boolean matches(LatexVariant form) {
+        public boolean matches(TransfurVariant form) {
             return this.form.matches(form);
         }
 

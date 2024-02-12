@@ -1,15 +1,15 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractSnowLeopard extends LatexEntity implements GenderedEntity, PowderSnowWalkable {
+public abstract class AbstractSnowLeopard extends ChangedEntity implements GenderedEntity, PowderSnowWalkable {
     public AbstractSnowLeopard(EntityType<? extends AbstractSnowLeopard> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -29,7 +29,7 @@ public abstract class AbstractSnowLeopard extends LatexEntity implements Gendere
         return Color3.WHITE;
     }
 
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 }

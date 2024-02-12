@@ -6,8 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -33,7 +33,7 @@ public class AbilityOverlay {
         Gui.blit(stack, left, up, u0, v0, width, height, textureWidth, textureHeight);
     }
 
-    public static void renderBackground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
+    public static void renderBackground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, TransfurVariantInstance<?> variant, AbstractAbilityInstance selected) {
         RenderSystem.setShaderTexture(0, ABILITY_BACKGROUNDS);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(scheme.background().red(), scheme.background().green(), scheme.background().blue(), 1.0F);
@@ -55,8 +55,8 @@ public class AbilityOverlay {
         }
     }
 
-    public static void renderForeground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, LatexVariantInstance<?> variant, AbstractAbilityInstance selected) {
-        RenderSystem.setShaderTexture(0, selected.ability.getTexture(IAbstractLatex.forPlayer(player)));
+    public static void renderForeground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, TransfurVariantInstance<?> variant, AbstractAbilityInstance selected) {
+        RenderSystem.setShaderTexture(0, selected.ability.getTexture(IAbstractChangedEntity.forPlayer(player)));
         RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
         blit(stack, x, y + 4, 0, 0, 32, 32, 32, 32);
         RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
@@ -64,7 +64,7 @@ public class AbilityOverlay {
     }
 
     public static void renderSelectedAbility(Gui gui, PoseStack stack, int screenWidth, int screenHeight) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
             var ability = variant.getSelectedAbility();
             if (ability == null || ability.getUseType() == AbstractAbility.UseType.MENU)
                 return;

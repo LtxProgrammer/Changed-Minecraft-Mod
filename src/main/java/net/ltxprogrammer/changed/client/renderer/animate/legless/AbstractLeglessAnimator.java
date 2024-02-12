@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.animate.legless;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.List;
 
-public abstract class AbstractLeglessAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
+public abstract class AbstractLeglessAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
     public final ModelPart abdomen;
     public final ModelPart lowerAbdomen;
     public final ModelPart tail;

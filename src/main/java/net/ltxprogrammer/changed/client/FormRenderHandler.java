@@ -2,15 +2,15 @@ package net.ltxprogrammer.changed.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomCoatLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -31,7 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class FormRenderHandler {
     public static void renderForm(Player player, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
-        ProcessTransfur.ifPlayerLatex(player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             variant.sync(player);
             variant.getLatexEntity().setCustomNameVisible(true);
 
@@ -49,7 +49,7 @@ public class FormRenderHandler {
     public static float lastPartialTick;
 
     public static boolean renderHand(PlayerRenderer playerRenderer, PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart armwear) {
-        return ProcessTransfur.ifPlayerLatex(player, variant -> {
+        return ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             //Check if this is the player
             if(player == Minecraft.getInstance().getCameraEntity()) {
                 ModelPart handPart = null;
@@ -58,19 +58,19 @@ public class FormRenderHandler {
 
                 HumanoidArm handSide = playerRenderer.getModel().rightArm != arm ? HumanoidArm.LEFT : HumanoidArm.RIGHT; //default to right arm instead any mods override the player model
 
-                LatexEntity livingInstance = variant.getLatexEntity();
+                ChangedEntity livingInstance = variant.getLatexEntity();
                 if (livingInstance == null) return false;
                 EntityRenderer entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(livingInstance);
-                LatexHumanoidRenderer<?, ?, ?> latexRenderer = null;
+                AdvancedHumanoidRenderer<?, ?, ?> latexRenderer = null;
 
-                if (entRenderer instanceof LatexHumanoidRenderer<?,?,?> tmp) {
+                if (entRenderer instanceof AdvancedHumanoidRenderer<?,?,?> tmp) {
                     latexRenderer = tmp;
 
-                    LatexHumanoidModel entityModel = latexRenderer.getModel(livingInstance);
+                    AdvancedHumanoidModel entityModel = latexRenderer.getModel(livingInstance);
                     if (entityModel == null)
                         return true;
 
-                    LatexHumanoidModelInterface latexHumanoidModel = (LatexHumanoidModelInterface)entityModel;
+                    AdvancedHumanoidModelInterface latexHumanoidModel = (AdvancedHumanoidModelInterface)entityModel;
 
                     var controller = latexHumanoidModel.getAnimator();
 
@@ -98,7 +98,7 @@ public class FormRenderHandler {
                             renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(gelLayer.getTexture())), light, 1F);
                         if (layer instanceof LatexPartialLayer partialLayer) {
                             partialLayer.getModel().setupAnim(livingInstance, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-                            ((LatexHumanoidModelInterface)partialLayer.getModel()).setupHand();
+                            ((AdvancedHumanoidModelInterface)partialLayer.getModel()).setupHand();
                             renderModelPartWithTexture(partialLayer.getArm(handSide), stackCorrector, stack, buffer.getBuffer(partialLayer.renderType()), light, 1F);
                         }
                     }

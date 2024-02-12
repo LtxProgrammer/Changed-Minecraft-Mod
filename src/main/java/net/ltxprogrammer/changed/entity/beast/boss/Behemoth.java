@@ -1,23 +1,23 @@
 package net.ltxprogrammer.changed.entity.beast.boss;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public abstract class Behemoth extends LatexEntity {
+public abstract class Behemoth extends ChangedEntity {
     public Behemoth(EntityType<? extends Behemoth> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
         this.xpReward = 40;
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.WHITE_LATEX;
+    public GooType getGooType() {
+        return GooType.PURE_WHITE_GOO;
     }
 
     @Override
@@ -30,12 +30,12 @@ public abstract class Behemoth extends LatexEntity {
         return Color3.WHITE;
     }
 
-    public LatexVariant<?> getSelfVariant() {
+    public TransfurVariant<?> getSelfVariant() {
         return null;
     }
 
-    public LatexVariant<?> getTransfurVariant() {
-        return LatexVariant.LIGHT_LATEX_WOLF.male();
+    public TransfurVariant<?> getTransfurVariant() {
+        return TransfurVariant.WHITE_GOO_WOLF.male();
     }
 
     public void checkDespawn() {

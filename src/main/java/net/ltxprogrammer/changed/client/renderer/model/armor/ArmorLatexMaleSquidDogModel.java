@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,10 +16,9 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ArmorLatexMaleSquidDogModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> {
+public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_squid_dog_male_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_squid_dog_male_unified")).get();
 
@@ -31,7 +30,7 @@ public class ArmorLatexMaleSquidDogModel<T extends LatexEntity> extends LatexHum
     private final ModelPart RightArm;
     private final ModelPart LeftArm2;
     private final ModelPart RightArm2;
-    private final LatexAnimator<T, ArmorLatexMaleSquidDogModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> animator;
 
     public ArmorLatexMaleSquidDogModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -53,7 +52,7 @@ public class ArmorLatexMaleSquidDogModel<T extends LatexEntity> extends LatexHum
         var lowerRightTentacle = List.of(Torso.getChild("RightLowerTentacle"));
         var lowerLeftTentacle = List.of(Torso.getChild("LeftLowerTentacle"));
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(13.0f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(13.0f)
                 .addPreset(AnimatorPresets.squidDogLikeArmor(
                         Head,
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
@@ -153,7 +152,7 @@ public class ArmorLatexMaleSquidDogModel<T extends LatexEntity> extends LatexHum
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator() {
         return animator;
     }
 }

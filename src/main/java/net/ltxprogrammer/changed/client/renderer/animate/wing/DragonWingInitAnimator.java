@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.animate.wing;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class DragonWingInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractWingAnimatorV2<T, M> {
+public class DragonWingInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractWingAnimatorV2<T, M> {
     public DragonWingInitAnimator(
             ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
             ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
@@ -15,8 +15,8 @@ public class DragonWingInitAnimator<T extends LatexEntity, M extends EntityModel
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.INIT;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.INIT;
     }
 
     @Override

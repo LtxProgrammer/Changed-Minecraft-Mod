@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -52,7 +52,7 @@ public class LatexWolfCrystalBlock extends AbstractLatexIceBlock {
 
     private void triggerCrystal(BlockState blockState, Level level, BlockPos position, Entity entity) {
 
-        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity) && !le.isDeadOrDying()) {
+        if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity) && !le.isDeadOrDying()) {
             if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
                 return;
         level.scheduleTick(position, this, 20);

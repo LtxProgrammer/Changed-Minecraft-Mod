@@ -1,23 +1,19 @@
 package net.ltxprogrammer.changed.client.renderer.animate.camera;
 
 import net.ltxprogrammer.changed.client.CameraExtender;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractHeadAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingCreativeFlyAnimator.BODY_FLY_SCALE;
 import static net.ltxprogrammer.changed.client.renderer.animate.wing.DragonWingCreativeFlyAnimator.WING_FLAP_RATE;
 
-public class DragonCameraCreativeFlyAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.CameraAnimator<T, M> {
+public class DragonCameraCreativeFlyAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.CameraAnimator<T, M> {
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.CREATIVE_FLY;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.CREATIVE_FLY;
     }
 
     @Override

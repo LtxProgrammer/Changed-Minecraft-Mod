@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
+public class LatexWhiteTiger extends ChangedEntity implements PowderSnowWalkable {
     public LatexWhiteTiger(EntityType<? extends LatexWhiteTiger> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -27,8 +27,8 @@ public class LatexWhiteTiger extends LatexEntity implements PowderSnowWalkable {
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

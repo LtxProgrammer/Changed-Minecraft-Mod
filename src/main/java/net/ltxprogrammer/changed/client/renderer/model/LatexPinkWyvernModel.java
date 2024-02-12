@@ -4,10 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexPinkWyvern;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,9 +14,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
-public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> implements LatexHumanoidModelInterface<LatexPinkWyvern, LatexPinkWyvernModel> {
+public class LatexPinkWyvernModel extends AdvancedHumanoidModel<LatexPinkWyvern> implements AdvancedHumanoidModelInterface<LatexPinkWyvern, LatexPinkWyvernModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_pink_wyvern"), "main");
     private final ModelPart RightLeg;
@@ -29,7 +25,7 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexPinkWyvern, LatexPinkWyvernModel> animator;
+    private final HumanoidAnimator<LatexPinkWyvern, LatexPinkWyvernModel> animator;
 
     public LatexPinkWyvernModel(ModelPart root) {
         super(root);
@@ -50,7 +46,7 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -222,7 +218,7 @@ public class LatexPinkWyvernModel extends LatexHumanoidModel<LatexPinkWyvern> im
     }
 
     @Override
-    public LatexAnimator<LatexPinkWyvern, LatexPinkWyvernModel> getAnimator() {
+    public HumanoidAnimator<LatexPinkWyvern, LatexPinkWyvernModel> getAnimator() {
         return animator;
     }
 }

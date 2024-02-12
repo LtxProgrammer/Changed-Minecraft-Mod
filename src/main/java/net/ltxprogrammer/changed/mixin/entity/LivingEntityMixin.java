@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WearableBlock;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
@@ -57,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
     private void updateFallFlying(CallbackInfo callback) {
         if (this.level.isClientSide) return;
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (player, variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
             if (variant.getParent().canGlide) {
                 this.setSharedFlag(7, player.isFallFlying() && !player.isOnGround() && !player.isPassenger() && !player.hasEffect(MobEffects.LEVITATION));
                 callback.cancel();
@@ -67,7 +67,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "onClimbable", at = @At("HEAD"), cancellable = true)
     public void onClimbable(CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
             if (variant.getParent().canClimb && this.horizontalCollision)
                 callback.setReturnValue(true);
         });
@@ -75,14 +75,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "getJumpBoostPower", at = @At("RETURN"), cancellable = true)
     public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
             callback.setReturnValue(callback.getReturnValue() * variant.getParent().jumpStrength);
         });
     }
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
     public void hasEffect(MobEffect effect, CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
             if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(true);
             if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
@@ -94,7 +94,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
     public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
             if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
             if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
@@ -114,7 +114,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "isVisuallySwimming", at = @At("HEAD"), cancellable = true)
     private void isVisuallySwimming(CallbackInfoReturnable<Boolean> callback) {
         if ((LivingEntity)(Object)this instanceof Player player) {
-            ProcessTransfur.ifPlayerLatex(player, (variant) -> {
+            ProcessTransfur.ifPlayerTransfurred(player, (variant) -> {
                 if (variant.getLatexEntity().isVisuallySwimming())
                     callback.setReturnValue(true);
             });
@@ -146,9 +146,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
     public void canStandOnFluid(FluidState state, CallbackInfoReturnable<Boolean> callback) {
-        var variant = LatexVariant.getEntityVariant((LivingEntity)(Object)this);
+        var variant = TransfurVariant.getEntityVariant((LivingEntity)(Object)this);
         if (variant == null) return;
-        if (variant.getLatexType() == LatexType.NEUTRAL) return;
+        if (variant.getGooType() == GooType.NEUTRAL) return;
 
         if (state.getType() instanceof AbstractLatexFluid latexFluid && latexFluid.canEntityStandOn((LivingEntity)(Object)this))
             callback.setReturnValue(true);

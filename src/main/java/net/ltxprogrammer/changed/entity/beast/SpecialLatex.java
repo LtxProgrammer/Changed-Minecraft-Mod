@@ -1,10 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -24,29 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SpecialLatex extends LatexEntity {
+public class SpecialLatex extends ChangedEntity {
     private UUID assignedUUID = null;
     public String wantedState = "default";
     public List<String> possibleModels = new ArrayList<>();
-    public PatreonBenefits.SpecialForm specialLatexForm = null;
+    public PatreonBenefits.SpecialForm specialForm = null;
 
-    public SpecialLatex(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
+    public SpecialLatex(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
     
     public PatreonBenefits.EntityData getCurrentData() {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return null;
-        return specialLatexForm.entityData().getOrDefault(wantedState, specialLatexForm.getDefaultEntity());
+        return specialForm.entityData().getOrDefault(wantedState, specialForm.getDefaultEntity());
     }
 
-    public void setSpecialLatexForm(UUID uuid) {
+    public void setSpecialForm(UUID uuid) {
         this.assignedUUID = uuid;
-        this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(uuid);
+        this.specialForm = PatreonBenefits.getPlayerSpecialForm(uuid);
     }
 
     public EntityDimensions getDimensions(Pose pose) {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return super.getDimensions(pose);
 
         EntityDimensions core = getCurrentData().dimensions();
@@ -65,7 +65,7 @@ public class SpecialLatex extends LatexEntity {
 
     @Override
     public Color3 getHairColor(int layer) {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return Color3.WHITE;
         try {
             return getCurrentData().hairColors().get(layer);
@@ -78,7 +78,7 @@ public class SpecialLatex extends LatexEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return HairStyle.Collection.EMPTY;
         return getCurrentData().hairStyles();
     }
@@ -88,30 +88,30 @@ public class SpecialLatex extends LatexEntity {
     }
 
     @Override
-    public LatexType getLatexType() {
-        if (specialLatexForm == null)
-            return LatexType.NEUTRAL;
-        return specialLatexForm.variant().getLatexType();
+    public GooType getGooType() {
+        if (specialForm == null)
+            return GooType.NEUTRAL;
+        return specialForm.variant().getGooType();
     }
 
     @Override
     public TransfurMode getTransfurMode() {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return TransfurMode.REPLICATION;
-        return specialLatexForm.variant().transfurMode();
+        return specialForm.variant().transfurMode();
     }
 
     @Override
     public Color3 getDripColor() {
-        if (specialLatexForm == null)
+        if (specialForm == null)
             return null;
         return getCurrentData().dripColors().isEmpty() ? null :
                 getCurrentData().dripColors().get(level.random.nextInt(getCurrentData().dripColors().size()));
     }
 
     @Override
-    public LatexVariant<?> getTransfurVariant() {
-        return specialLatexForm.variant();
+    public TransfurVariant<?> getTransfurVariant() {
+        return specialForm.variant();
     }
 
     public static void init() {}

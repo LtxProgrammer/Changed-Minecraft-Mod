@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexMingCat extends LatexEntity implements PatronOC {
+public class LatexMingCat extends ChangedEntity implements PatronOC {
     public LatexMingCat(EntityType<? extends LatexMingCat> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -36,8 +36,8 @@ public class LatexMingCat extends LatexEntity implements PatronOC {
     }
 
     @Override
-    public LatexType getLatexType() {
-        return LatexType.NEUTRAL;
+    public GooType getGooType() {
+        return GooType.NEUTRAL;
     }
 
     @Override
