@@ -75,7 +75,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         }
 
         else ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            LatexEntity latexEntity = variant.getLatexEntity();
+            ChangedEntity latexEntity = variant.getLatexEntity();
             final float morphProgress = variant.getMorphProgression();
 
             if (morphProgress < 1f) {

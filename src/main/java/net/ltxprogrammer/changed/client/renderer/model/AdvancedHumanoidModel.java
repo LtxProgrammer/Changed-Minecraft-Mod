@@ -50,7 +50,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
     private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(entity.getUnderlyingPlayer(), variant -> {
             if (variant.transfurProgression < 1f) {
                 final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
                     final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);

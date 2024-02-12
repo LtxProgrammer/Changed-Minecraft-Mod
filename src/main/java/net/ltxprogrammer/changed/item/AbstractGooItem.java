@@ -52,7 +52,7 @@ public class AbstractGooItem extends ItemNameBlockItem {
             if (variant.getGooType().isHostileTo(type))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
-        final var variant = ChangedRegistry.LATEX_VARIANT.get().getValue(variants.get(level.getRandom().nextInt(variants.size())));
+        final var variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variants.get(level.getRandom().nextInt(variants.size())));
         ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
         return super.finishUsingItem(itemStack, level, entity);
     }

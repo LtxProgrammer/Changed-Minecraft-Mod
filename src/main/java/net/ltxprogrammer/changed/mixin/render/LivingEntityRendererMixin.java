@@ -2,16 +2,20 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import javax.annotation.Nullable;
 import java.util.List;

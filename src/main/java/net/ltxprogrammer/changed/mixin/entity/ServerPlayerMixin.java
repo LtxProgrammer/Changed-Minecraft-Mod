@@ -39,7 +39,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 if (!oldVariant.willSurviveTransfur)
                     return;
 
-                var newVariant = ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent(), oldVariant.cause, oldVariant.transfurProgression);
+                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.cause, oldVariant.transfurProgression);
                 newVariant.load(oldVariant.save());
                 newVariant.getLatexEntity().readPlayerVariantData(oldVariant.getLatexEntity().savePlayerVariantData());
             });
@@ -59,7 +59,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             }
         }
         if (tag.contains("TransfurVariant")) {
-            final var variant = ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
+            final var variant = ProcessTransfur.setPlayerTransfurVariant(this, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "TransfurVariant")));
             if (tag.contains("TransfurVariantData"))
                 variant.load(tag.getCompound("TransfurVariantData"));
             else {
@@ -90,7 +90,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
         tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
             tag.put("TransfurVariantData", variant.save());
 

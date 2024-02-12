@@ -76,7 +76,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
     private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;copyFrom(Lnet/minecraft/client/model/geom/ModelPart;)V"))
     public void setupAnimAndForceAnimation(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float p_102870_, float p_102871_, CallbackInfo ci) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
             if (variant.transfurProgression < 1f) {
                 final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
                     final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);

@@ -6,10 +6,10 @@ import com.mojang.math.Matrix4f;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.Transition;
@@ -287,12 +287,12 @@ public class TransfurAnimator {
         return new ModelPose(tmp.last(), lerpPartPose(before.pose, after.pose, lerp));
     }
 
-    private static ModelPart maybeReplaceWithHelper(LatexHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
+    private static ModelPart maybeReplaceWithHelper(AdvancedHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
         var helper = afterModel.getTransfurHelperModel(limb);
         return helper == null ? orDefault : helper;
     }
 
-    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, LatexHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         ModelPart before = limb.getModelPart(beforeModel);
         final ModelPart after = limb.getModelPart(afterModel);
         if (before == null || after == null)
@@ -325,7 +325,7 @@ public class TransfurAnimator {
         stack.popPose();
     }
 
-    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, LatexHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         Arrays.stream(Limb.values()).forEach(limb -> {
             if (ChangedCompatibility.isFirstPersonRendering() && limb == Limb.HEAD)
                 return;
@@ -358,7 +358,7 @@ public class TransfurAnimator {
         return part;
     }
 
-    private static void renderCoveringLimb(LivingEntity entity, LatexVariantInstance<?> variant, float coverProgress, float coverAlpha, ModelPart part, Limb limb, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    private static void renderCoveringLimb(LivingEntity entity, TransfurVariantInstance<?> variant, float coverProgress, float coverAlpha, ModelPart part, Limb limb, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final float progress = switch (limb) {
             case HEAD -> variant.cause.getHeadProgress(coverProgress);
             case TORSO -> variant.cause.getTorsoProgress(coverProgress);
@@ -404,7 +404,7 @@ public class TransfurAnimator {
         stack.popPose();
     }
 
-    public static void renderTransfurringPlayer(Player player, LatexVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderTransfurringPlayer(Player player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
         final var playerRenderer = dispatcher.getRenderer(player);
@@ -413,7 +413,7 @@ public class TransfurAnimator {
         if (!(playerRenderer instanceof LivingEntityRenderer<?,?> livingPlayerRenderer)) return;
         if (!(livingPlayerRenderer.getModel() instanceof HumanoidModel<?> playerHumanoidModel)) return;
 
-        if (!(latexRenderer instanceof LatexHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
+        if (!(latexRenderer instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
 
         final float transfurProgression = variant.getTransfurProgression(partialTick);
         final float coverProgress = getCoverProgression(transfurProgression);

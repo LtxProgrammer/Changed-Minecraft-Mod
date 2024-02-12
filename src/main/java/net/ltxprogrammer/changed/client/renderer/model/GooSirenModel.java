@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class GooSirenModel extends AdvancedHumanoidModel<GooSiren> implements AdvancedHumanoidModelInterface<GooSiren, GooSirenModel> {
+public class GooSirenModel extends AdvancedHumanoidModel<GooSiren> implements AdvancedHumanoidModelInterface<GooSiren, GooSirenModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_siren"), "main");
     private final ModelPart RightArm;
@@ -149,12 +149,22 @@ public class GooSirenModel extends AdvancedHumanoidModel<GooSiren> implements Ad
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    @Override
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
 
     public ModelPart getTorso() {
         return Torso;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
     }
 
     @Override

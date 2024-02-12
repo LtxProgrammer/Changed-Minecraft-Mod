@@ -57,7 +57,7 @@ public class SyncTransfurPacket implements ChangedPacket {
             changedForms.forEach((uuid, listing) -> {
                 Player player = level.getPlayerByUUID(uuid);
                 if (player != null) {
-                    final var variant = ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form), null);
+                    final var variant = ProcessTransfur.setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form), null);
                     if (variant != null)
                         variant.load(listing.data);
                 }

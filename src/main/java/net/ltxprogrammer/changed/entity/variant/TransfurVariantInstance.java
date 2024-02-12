@@ -278,12 +278,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
                     if (morphProgress < 1f) {
                         final var playerDim = player.getDimensions(event.getPose());
-                        final var latexDim = latexEntity.getDimensions(event.getPose());
+                        final var latexDim = changedEntity.getDimensions(event.getPose());
                         float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
                         float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
 
                         event.setNewSize(new EntityDimensions(width, height, latexDim.fixed));
-                        event.setNewEyeHeight(Mth.lerp(morphProgress, player.getEyeHeight(event.getPose()), latexEntity.getEyeHeight(event.getPose())));
+                        event.setNewEyeHeight(Mth.lerp(morphProgress, player.getEyeHeight(event.getPose()), changedEntity.getEyeHeight(event.getPose())));
                     } else {
                         event.setNewSize(changedEntity.getDimensions(event.getPose()));
                         event.setNewEyeHeight(changedEntity.getEyeHeight(event.getPose()));
@@ -304,7 +304,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             Pale.tickPaleExposure(event.player);
             ProcessTransfur.ifPlayerTransfurred(event.player, instance -> {
                 if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
-                    ProcessTransfur.removePlayerLatexVariant(event.player);
+                    ProcessTransfur.removePlayerTransfurVariant(event.player);
                     return;
                 }
 
@@ -335,7 +335,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (event.getEntityLiving() instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, instance -> {
                 if (instance.isDead())
-                    ProcessTransfur.removePlayerLatexVariant(player);
+                    ProcessTransfur.removePlayerTransfurVariant(player);
             });
         }
     }

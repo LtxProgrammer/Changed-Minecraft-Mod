@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
 import com.google.common.collect.ImmutableMap;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public class AnimationDefinition {
         return instance;
     }
 
-    public AnimationInstance createInstance(LatexHumanoidModel<?> model) {
+    public AnimationInstance createInstance(AdvancedHumanoidModel<?> model) {
         final var instance = new AnimationInstance(this);
         instance.captureBaseline(model);
         return instance;

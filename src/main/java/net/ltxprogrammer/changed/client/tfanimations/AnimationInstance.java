@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -26,7 +26,7 @@ public class AnimationInstance {
         });
     }
 
-    public void captureBaseline(LatexHumanoidModel<?> model) {
+    public void captureBaseline(AdvancedHumanoidModel<?> model) {
         /* Capture model position baseline */
         animation.channels.keySet().forEach(limb -> {
             baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
@@ -64,7 +64,7 @@ public class AnimationInstance {
         animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
     }
 
-    public void animate(LatexHumanoidModel<?> model, float time) {
+    public void animate(AdvancedHumanoidModel<?> model, float time) {
         captureBaseline(model);
 
         final float in = Mth.clamp(Mth.map(time, 0.0f, animation.transitionDuration, 1.0f, 0.0f), 0.0f, 1.0f);

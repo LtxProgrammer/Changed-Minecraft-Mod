@@ -183,6 +183,11 @@ public class PhageLatexWolfMaleModel extends AdvancedHumanoidModel<PhageLatexWol
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    @Override
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }

@@ -118,7 +118,7 @@ public class CommandTransfur {
     private static int untransfurPlayer(CommandSourceStack source, ServerPlayer player) {
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             variant.unhookAll(player);
-            ProcessTransfur.removePlayerLatexVariant(player);
+            ProcessTransfur.removePlayerTransfurVariant(player);
             ProcessTransfur.setPlayerTransfurProgress(player, 0.0f);
         });
         return Command.SINGLE_SUCCESS;
