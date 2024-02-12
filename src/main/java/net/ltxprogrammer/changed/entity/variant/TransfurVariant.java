@@ -519,7 +519,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             this.entityType = entityType;
             // vvv-- Add universal abilities here --vvv
             this.abilities.add(type -> type.is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.SWITCH_TRANSFUR_MODE.get());
-            //this.abilities.add(type -> type.is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.HOLD_ENTITY_ABILITY.get());
+            this.abilities.add(type -> type.is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? null : ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             //this.abilities.add(type -> ChangedAbilities.SELECT_HAIRSTYLE.get());
         }
 

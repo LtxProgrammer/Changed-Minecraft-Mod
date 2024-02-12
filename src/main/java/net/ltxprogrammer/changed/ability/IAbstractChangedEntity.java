@@ -51,7 +51,7 @@ public interface IAbstractChangedEntity {
     float getFoodLevel();
 
     void setTransfurMode(TransfurMode mode);
-    void displayClientMessage(Component message, boolean animateMessage);
+    void displayClientMessage(Component message, boolean overlayMessage);
     void drop(ItemStack stack, boolean includeName);
     void openMenu(MenuProvider menuProvider);
     void closeContainer();
@@ -172,8 +172,8 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
-            public void displayClientMessage(Component message, boolean animateMessage) {
-                player.displayClientMessage(message, animateMessage);
+            public void displayClientMessage(Component message, boolean overlayMessage) {
+                player.displayClientMessage(message, overlayMessage);
             }
 
             @Override
@@ -320,7 +320,7 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
-            public void displayClientMessage(Component message, boolean animateMessage) {
+            public void displayClientMessage(Component message, boolean overlayMessage) {
 
             }
 

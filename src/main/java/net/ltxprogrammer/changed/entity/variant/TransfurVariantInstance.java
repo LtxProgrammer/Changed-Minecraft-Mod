@@ -2,14 +2,10 @@ package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.ability.*;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -25,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,6 +39,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -137,25 +135,62 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     @SubscribeEvent
+    public static void onEntityAttack(LivingAttackEvent event) {
+        if (!(event.getSource() instanceof EntityDamageSource entityDamageSource)) return;
+
+        if (GrabEntityAbility.isEntityNoControl(entityDamageSource.getEntity())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getItemUseMode().canUseHand(event.getHand()))
+                event.setCanceled(true);
+        });
+    }
+
+    @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.canUseHand(event.getHand()))
+            if (!variant.getItemUseMode().canUseHand(event.getHand()))
                 event.setCanceled(true);
         });
     }
 
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.interactWithBlocks)
+            if (!variant.getItemUseMode().interactWithBlocks)
                 event.setCanceled(true);
         });
     }
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
+            event.setCanceled(true);
+            return;
+        }
+
         ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getParent().itemUseMode.breakBlocks)
+            if (!variant.getItemUseMode().breakBlocks)
                 event.setCanceled(true);
         });
     }
@@ -286,6 +321,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public static void syncEntityPosRotWithEntity(LivingEntity set, LivingEntity get) {
+        set.setDeltaMovement(get.getDeltaMovement());
         set.setPos(get.getX(), get.getY(), get.getZ());
         set.setXRot(get.getXRot());
         set.setYRot(get.getYRot());
@@ -315,7 +351,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
 
-        living.mirrorPlayer(player);
+        living.mirrorLiving(player);
 
         //Entity stuff
         living.setHealth(living.getMaxHealth() * (player.getHealth() / player.getMaxHealth()));
@@ -569,13 +605,17 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             instance.getController().tickCoolDown();
         }
 
+        if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
+            getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
+        }
+
         if (selectedAbility != null) {
             var instance = abilityInstances.get(selectedAbility);
             if (instance != null) {
                 var controller = instance.getController();
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
                 if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
-                    selectedAbility.getUseType(IAbstractChangedEntity.forPlayer(player)).check(abilityKeyState, oldState, controller);
+                    instance.getUseType().check(abilityKeyState, oldState, controller);
             }
         }
 
@@ -655,14 +695,24 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
-            var abstractLatex = IAbstractChangedEntity.forPlayer(this.host);
+            var instance = abilityInstances.get(ability);
 
-            if (ability.getUseType(abstractLatex) != AbstractAbility.UseType.MENU)
+            if (instance.getUseType() != AbstractAbility.UseType.MENU) {
+                if (this.selectedAbility != ability)
+                    instance.onSelected();
                 this.selectedAbility = ability;
-            else {
-                ability.startUsing(abstractLatex);
+            } else {
+                instance.startUsing();
                 this.menuAbility = ability;
             }
         }
+    }
+
+    public UseItemMode getItemUseMode() {
+        var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (instance != null && instance.shouldAnimateArms())
+            return UseItemMode.NONE;
+        else
+            return parent.itemUseMode;
     }
 }

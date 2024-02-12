@@ -150,6 +150,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WolfUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -160,6 +161,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new CatUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -170,6 +172,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -180,6 +183,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonWingedUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new WingedDragonUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCreativeFlyAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new DragonUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
@@ -191,6 +195,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -202,6 +207,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
@@ -213,6 +219,8 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> doubleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         return animator -> {
             animator.setupHands(1, upperLeftArm, upperRightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, upperLeftArm, upperRightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, lowerLeftArm, lowerRightArm))
                     .addAnimator(new DoubleArmUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new DoubleArmUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addAnimator(new DoubleArmUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))

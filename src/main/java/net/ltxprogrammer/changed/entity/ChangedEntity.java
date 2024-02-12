@@ -54,6 +54,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -156,6 +157,12 @@ public abstract class ChangedEntity extends Monster {
         } catch (Exception unused) {
             return null;
         }
+    }
+
+    public <A extends AbstractAbilityInstance> void ifAbilityInstance(AbstractAbility<A> ability, Consumer<A> consumer) {
+        A instance = getAbilityInstance(ability);
+        if (instance != null)
+            consumer.accept(instance);
     }
 
     public @NotNull HairStyle getHairStyle() {
@@ -441,7 +448,7 @@ public abstract class ChangedEntity extends Monster {
 
         var player = getUnderlyingPlayer();
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
-            mirrorPlayer(player);
+            mirrorLiving(player);
         }
 
         var variant = getSelfVariant();
@@ -451,7 +458,7 @@ public abstract class ChangedEntity extends Monster {
             this.stopRiding();
     }
     
-    public void mirrorPlayer(Player player) {
+    public void mirrorLiving(LivingEntity player) {
         TransfurVariantInstance.syncEntityPosRotWithEntity(this, player);
         
         this.swingingArm = player.swingingArm;
@@ -690,5 +697,16 @@ public abstract class ChangedEntity extends Monster {
 
     public void readPlayerVariantData(CompoundTag tag) {
 
+    }
+
+    public UseItemMode getItemUseMode() {
+        var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (instance != null && (instance.shouldAnimateArms() || instance.grabbedHasControl))
+            return UseItemMode.NONE;
+        var variant = getSelfVariant();
+        if (variant != null)
+            return getSelfVariant().itemUseMode;
+        else
+            return UseItemMode.NORMAL;
     }
 }

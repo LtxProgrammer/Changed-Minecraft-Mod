@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.DuctBlock;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.process.LockToPlayerMover;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
@@ -46,5 +45,4 @@ public abstract class PlayerMover<T extends PlayerMoverInstance<?>> extends Forg
 
     public static RegistryObject<DefaultMover> DEFAULT_MOVER = REGISTRY.register("default", DefaultMover::new);
     public static RegistryObject<DuctBlock.DuctMover> DUCT_MOVER = REGISTRY.register("duct", DuctBlock.DuctMover::new);
-    public static RegistryObject<LockToPlayerMover> LOCK_TO_PLAYER = REGISTRY.register("lock_to_player", LockToPlayerMover::new);
 }

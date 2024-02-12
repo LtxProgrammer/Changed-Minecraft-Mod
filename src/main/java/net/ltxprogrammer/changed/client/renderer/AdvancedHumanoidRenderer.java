@@ -48,6 +48,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         this.addLayer(new LatexParrotOnShoulderLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexBeeStingerLayer<>(this));
         this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
+        this.addLayer(new LatexHeldEntityLayer<>(this));
     }
 
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,

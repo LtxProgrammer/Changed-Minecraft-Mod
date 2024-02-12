@@ -2,9 +2,11 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.AbilityOverlay;
+import net.ltxprogrammer.changed.client.gui.GrabOverlay;
 import net.ltxprogrammer.changed.client.gui.TransfurProgressOverlay;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -20,4 +22,5 @@ public class ChangedOverlays {
         gui.setupOverlayRenderState(true, false);
         AbilityOverlay.renderSelectedAbility(gui, poseStack, screenWidth, screenHeight);
     });
+    public static final IIngameOverlay GRABBED_ELEMENT = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, Changed.modResourceStr("grabbed"), GrabOverlay::renderProgressBars);
 }

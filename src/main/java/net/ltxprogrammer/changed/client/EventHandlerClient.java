@@ -1,16 +1,24 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +30,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -36,6 +45,32 @@ public class EventHandlerClient {
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onRenderEntityPre(RenderLivingEvent.Pre<?, ?> event) {
+        if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
+            var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity()) {
+                event.setCanceled(true);
+            } else if (grabAbility != null && grabAbility.shouldRenderGrabbedEntity()) {
+                if (grabAbility.grabbedHasControl && grabAbility.syncEntity != null) {
+                    grabAbility.syncEntity.mirrorLiving(event.getEntity());
+
+                    if (event.getEntity() instanceof Player player) {
+                        LatexVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
+                    }
+
+                    FormRenderHandler.renderLiving(grabAbility.syncEntity, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
+                }
+            }
+            return;
+        }
+
+        var entityGrabAbility = AbstractAbility.getAbilityInstance(event.getEntity(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (entityGrabAbility != null && !entityGrabAbility.shouldRenderLatex())
+            event.setCanceled(true);
+    }
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -99,6 +134,23 @@ public class EventHandlerClient {
     @SubscribeEvent
     public void onRespawn(ClientPlayerNetworkEvent.RespawnEvent event) {
         Changed.PACKET_HANDLER.sendToServer(QueryTransfurPacket.Builder.of(event.getNewPlayer()));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onInputEvent(InputEvent.ClickInputEvent event) {
+        if (event.isAttack() || event.isUseItem()) {
+            LocalPlayer localPlayer = Minecraft.getInstance().player;
+
+            ProcessTransfur.ifPlayerLatex(localPlayer, variant -> {
+                variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), ability -> {
+                    if (ability.grabbedEntity != null && !ability.suited) {
+                        event.setCanceled(true);
+                        event.setSwingHand(false);
+                    }
+                });
+            });
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

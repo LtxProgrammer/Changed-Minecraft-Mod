@@ -1,19 +1,28 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.SyncVariantAbilityPacket;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
     public static class Controller {
         private final AbstractAbilityInstance abilityInstance;
+        private boolean startedUsing = false;
         private int chargeTicks = 0;
         private int holdTicks = 0;
         private int coolDownTicksRemaining = 0;
@@ -21,6 +30,14 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
 
         public Controller(AbstractAbilityInstance abilityInstance) {
             this.abilityInstance = abilityInstance;
+        }
+
+        public int getHoldTicks() {
+            return holdTicks;
+        }
+
+        public void resetHoldTicks() {
+            this.holdTicks = 0;
         }
 
         public void saveData(CompoundTag tag) {
@@ -36,13 +53,20 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void activateAbility() {
-            if (abilityInstance.canUse())
+            if (abilityInstance.canUse()) {
                 abilityInstance.startUsing();
+                startedUsing = true;
+            }
+
+            else
+                startedUsing = false;
         }
 
         public void tickAbility() {
-            holdTicks++;
-            abilityInstance.tick();
+            if (startedUsing) {
+                holdTicks++;
+                abilityInstance.tick();
+            }
         }
 
         public void tickCharge() {
@@ -51,7 +75,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         public void deactivateAbility() {
-            abilityInstance.stopUsing();
+            holdTicks = 0;
+            if (startedUsing) {
+                abilityInstance.stopUsing();
+                startedUsing = false;
+            }
         }
 
         public void applyCoolDown() {
@@ -195,6 +223,11 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         return ctor.apply(this, entity);
     }
 
+    @Nullable
+    public Component getSelectedDisplayText(IAbstractChangedEntity entity) {
+        return null;
+    }
+
     public TranslatableComponent getDisplayName(IAbstractChangedEntity entity) {
         return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
     }
@@ -224,7 +257,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     }
 
     // Broadcast changes to clients
-    public final void setDirty(IAbstractChangedEntity entity) {
+    public final void setDirty(IAbstractLatex entity) {
         CompoundTag data = new CompoundTag();
         saveData(data, entity);
 
@@ -244,5 +277,21 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
         else
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.entity.getUUID()));
+    }
+
+    @Nullable
+    public static <T extends AbstractAbilityInstance> T getAbilityInstance(LivingEntity livingEntity, AbstractAbility<T> ability) {
+        if (livingEntity == null) return null;
+
+        if (livingEntity instanceof LatexEntity latex)
+            return latex.getAbilityInstance(ability);
+        else if (livingEntity instanceof Player player) {
+            var latexInstance = ProcessTransfur.getPlayerLatexVariant(player);
+            if (latexInstance == null)
+                return null;
+            return latexInstance.getAbilityInstance(ability);
+        }
+
+        return null;
     }
 }
