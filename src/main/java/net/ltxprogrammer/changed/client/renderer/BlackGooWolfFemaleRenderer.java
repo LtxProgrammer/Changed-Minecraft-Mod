@@ -22,6 +22,6 @@ public class BlackGooWolfFemaleRenderer extends AdvancedHumanoidRenderer<BlackGo
 
 	@Override
 	public ResourceLocation getTextureLocation(BlackGooWolfFemale p_114482_) {
-		return Changed.modResource("textures/dark_latex_wolf_female.png");
+		return Changed.modResource("textures/black_goo_wolf_female.png");
 	}
 }

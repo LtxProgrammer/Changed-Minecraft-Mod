@@ -222,7 +222,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
     public static final GenderedVariant<BlackGooWolfMale, BlackGooWolfFemale> BLACK_GOO_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.BLACK_GOO_WOLF_MALE, ChangedEntities.BLACK_GOO_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(GooType.BLACK_GOO)
-            .buildGendered(Changed.modResource("form_dark_latex_wolf")));
+            .buildGendered(Changed.modResource("form_black_goo_wolf")));
     public static final GenderedVariant<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.PHAGE_LATEX_WOLF_MALE, ChangedEntities.PHAGE_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(GooType.BLACK_GOO)
             .buildGendered(Changed.modResource("form_phage_latex_wolf")));

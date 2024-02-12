@@ -245,8 +245,8 @@
             {
               "function": "changed:random_variant",
               "variants": [
-                "changed:form_dark_latex_wolf/male",
-                "changed:form_dark_latex_wolf/female",
+                "changed:form_black_goo_wolf/male",
+                "changed:form_black_goo_wolf/female",
                 "changed:form_dark_latex_yufeng"
               ]
             },
@@ -278,8 +278,8 @@
             {
               "function": "changed:random_variant",
               "variants": [
-                "changed:form_dark_latex_wolf/male",
-                "changed:form_dark_latex_wolf/female",
+                "changed:form_black_goo_wolf/male",
+                "changed:form_black_goo_wolf/female",
                 "changed:form_dark_latex_yufeng"
               ]
             },
