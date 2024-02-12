@@ -8,6 +8,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.GooMantaRayFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,11 +19,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayFemale> implements AdvancedHumanoidModelInterface<GooMantaRayFemale, LatexMantaRayFemaleModel> {
+public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayFemale> implements AdvancedHumanoidModelInterface<GooMantaRayFemale, LatexMantaRayFemaleModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_manta_ray_female"), "main");
     private final ModelPart RightArm;
@@ -177,10 +180,30 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
     @Override
     public void setupAnim(@NotNull GooMantaRayFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
+    }
+
+    @Nullable
+    @Override
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoAlt();
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getHead() {
@@ -205,7 +228,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
         return animator;
     }
 
-    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<GooMantaRayFemale, Remodel> {
+    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<GooMantaRayFemale, Remodel> implements LeglessModel {
         private final ModelPart RightArm;
         private final ModelPart LeftArm;
         private final ModelPart Head;
@@ -307,6 +330,25 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
 
         public ModelPart getArm(HumanoidArm p_102852_) {
             return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+        }
+
+        public ModelPart getLeg(HumanoidArm p_102852_) {
+            return null;
+        }
+
+        @Override
+        public ModelPart getAbdomen() {
+            return Abdomen;
+        }
+
+        @Nullable
+        @Override
+        public ModelPart getTransfurHelperModel(Limb limb) {
+            if (limb == Limb.ABDOMEN)
+                return TransfurHelper.getLegless();
+            if (limb == Limb.TORSO)
+                return TransfurHelper.getFeminineTorso();
+            return super.getTransfurHelperModel(limb);
         }
 
         public ModelPart getHead() {

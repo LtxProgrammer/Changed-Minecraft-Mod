@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.BedsideIVRack;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -101,7 +102,7 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
                             ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
                             if (formLocation.equals(TransfurVariant.SPECIAL_LATEX))
                                 formLocation = Changed.modResource("special/form_" + player.getUUID());
-                            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation));
+                            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), TransfurCause.SYRINGE);
                             if (tag.contains("safe") && tag.getBoolean("safe"))
                                 Pale.tryCure(player);
                         } catch (NullPointerException unused) {

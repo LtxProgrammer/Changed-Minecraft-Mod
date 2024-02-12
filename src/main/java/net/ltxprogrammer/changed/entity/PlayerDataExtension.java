@@ -17,8 +17,8 @@ public interface PlayerDataExtension {
     }
 
     @NotNull
-    ProcessTransfur.TransfurProgress getTransfurProgress();
-    void setTransfurProgress(@NotNull ProcessTransfur.TransfurProgress progress);
+    float getTransfurProgress();
+    void setTransfurProgress(@NotNull float progress);
 
     CameraUtil.TugData getTugData();
     void setTugData(CameraUtil.TugData data);

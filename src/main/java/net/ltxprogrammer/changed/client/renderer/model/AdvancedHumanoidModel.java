@@ -4,8 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
@@ -16,9 +18,8 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javax.annotation.Nullable;
+import java.util.*;
 import java.util.stream.Stream;
 
 public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
@@ -46,7 +47,37 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         }
     }
 
+    private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
+    @Override
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        ProcessTransfur.ifPlayerLatex(entity.getUnderlyingPlayer(), variant -> {
+            if (variant.transfurProgression < 1f) {
+                final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
+                    final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);
+                    return anim != null ? anim.createInstance(this) : null;
+                });
+
+                if (instance != null)
+                    instance.animate(this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
+            } else {
+                cachedAnimationInstance.remove(entity);
+            }
+        });
+    }
+
     public abstract ModelPart getArm(HumanoidArm arm);
+    public abstract ModelPart getLeg(HumanoidArm leg);
+
+    @Nullable
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        return switch (limb) {
+            case HEAD -> TransfurHelper.getSnoutedHead();
+            case TORSO -> TransfurHelper.getTailedTorso();
+            case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg();
+            case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg();
+            default -> null;
+        };
+    }
 
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
@@ -165,8 +196,9 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         }
 
         @Override
-        public final void setupAnim(T p_102618_, float p_102619_, float p_102620_, float p_102621_, float p_102622_, float p_102623_) {
-            getAnimator().setupAnim(p_102618_, p_102619_, p_102620_, p_102621_, p_102622_, p_102623_);
+        public final void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+            getAnimator().setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
 
         @Override

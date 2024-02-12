@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -30,7 +29,6 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void PlayerRenderer(EntityRendererProvider.Context context, boolean slim, CallbackInfo callback) {
-        this.addLayer(new TransfurProgressLayer(this, context.getModelSet(), slim));
         this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
     }
 
@@ -43,8 +41,8 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 
     @Inject(method = "renderHand", at = @At("RETURN"))
     private void renderHandEnd(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart armwear, CallbackInfo ci) {
-        if (!ProcessTransfur.isPlayerLatex(player)) {
-            var progress = ProcessTransfur.getPlayerTransfurProgress(player);
+        if (!ProcessTransfur.isPlayerLatex(player)) { // TODO replace with TransfurAnimator's code
+            /*var progress = ProcessTransfur.getPlayerTransfurProgress(player);
             if (progress == null || progress.progress() <= 0)
                 return;
             var color = TransfurProgressLayer.getProgressColor(progress.variant());
@@ -52,7 +50,7 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             arm.xRot = 0.0F;
             arm.render(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
             armwear.xRot = 0.0F;
-            armwear.render(stack, buffer.getBuffer(RenderType.entityTranslucent(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
+            armwear.render(stack, buffer.getBuffer(RenderType.entityTranslucent(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);*/
         }
     }
 }

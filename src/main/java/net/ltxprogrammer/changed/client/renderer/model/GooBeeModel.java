@@ -196,6 +196,7 @@ public class GooBeeModel extends AdvancedHumanoidModel<GooBee> implements Advanc
     @Override
     public void setupAnim(@NotNull GooBee entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -211,11 +212,16 @@ public class GooBeeModel extends AdvancedHumanoidModel<GooBee> implements Advanc
         };
     }
 
-    public ModelPart getLowerArm(HumanoidArm humanoidArm) {
+    @Override
+    public ModelPart getOtherArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     @Override
@@ -226,7 +232,7 @@ public class GooBeeModel extends AdvancedHumanoidModel<GooBee> implements Advanc
 
     @Override
     public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
-        this.getLowerArm(arm).translateAndRotate(poseStack);
+        this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 

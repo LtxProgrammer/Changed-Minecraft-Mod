@@ -234,10 +234,15 @@ public class BlackGooPupModel extends AdvancedHumanoidModel<BlackGooPup> impleme
             this.RightFrontLeg.zRot = f / 2.0F;
             this.LeftFrontLeg.zRot = f / 2.0F;
         }
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.LeftFrontLeg : this.RightFrontLeg;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLegBack : this.RightLegBack;
     }
 
     public ModelPart getHead() {

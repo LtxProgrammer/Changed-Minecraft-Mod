@@ -128,8 +128,29 @@ public class ChangedCompatibility {
             StaticField.of("dev.tr7zw.firstperson.FirstPersonModelCore", "isRenderingPlayer");
     public static final StaticFunction<Entity, Boolean> by_dragonsurvivalteam_dragonsurvival_util$DragonUtils$isDragon =
             StaticFunction.of("by.dragonsurvivalteam.dragonsurvival.util.DragonUtils", "isDragon", Entity.class);
+    public static Boolean frozen_isFirstPersonRendering = null;
+
+    public static void freezeIsFirstPersonRendering() {
+        frozen_isFirstPersonRendering = isFirstPersonRendering();
+    }
+
+    public static void thawIsFirstPersonRendering() {
+        frozen_isFirstPersonRendering = null;
+    }
+
+    public static void forceIsFirstPersonRenderingToFrozen() {
+        if (frozen_isFirstPersonRendering != null && dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field != null) {
+            try {
+                dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field.set(null, frozen_isFirstPersonRendering);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static boolean isFirstPersonRendering() {
+        if (frozen_isFirstPersonRendering != null)
+            return frozen_isFirstPersonRendering;
         if (dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.getOr(false))
             return true;
         return false;

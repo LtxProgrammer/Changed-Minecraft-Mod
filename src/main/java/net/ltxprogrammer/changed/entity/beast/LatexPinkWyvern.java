@@ -42,5 +42,9 @@ public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
     }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#f7aebe");
+    }
 }
 

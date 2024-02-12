@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.entity.projectile;
 
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -73,7 +75,8 @@ public class GasParticle extends ThrowableProjectile {
         super.onHitEntity(result);
 
         if (variant != null && result.getEntity() instanceof LivingEntity livingEntity) {
-            ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant);
+            ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant,
+                    TransfurContext.hazard(TransfurCause.FACE_HAZARD));
             this.discard();
         }
     }

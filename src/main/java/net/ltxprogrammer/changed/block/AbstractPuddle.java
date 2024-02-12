@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -29,7 +31,7 @@ public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatex
 
     public void entityInside(BlockState p_49314_, Level p_49315_, BlockPos p_49316_, Entity p_49317_) {
         if (!p_49315_.isClientSide && p_49317_ instanceof LivingEntity entity) {
-            if (ProcessTransfur.progressTransfur(entity, 6.0f, variant))
+            if (ProcessTransfur.progressTransfur(entity, 6.0f, variant, TransfurContext.hazard(TransfurCause.LATEX_PUDDLE)))
                 p_49315_.removeBlock(p_49316_, false);
         }
     }

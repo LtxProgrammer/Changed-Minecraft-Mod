@@ -68,14 +68,21 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         }
     }
 
-    @Inject(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F", at = @At("RETURN"), cancellable = true)
     protected void getEyeHeight(Pose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> callback) {
         if ((asEntity()) instanceof ChangedEntity le) {
             callback.setReturnValue(dimensions.height * le.getEyeHeightMul());
         }
 
         else ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getEyeHeight(pose));
+            LatexEntity latexEntity = variant.getLatexEntity();
+            final float morphProgress = variant.getMorphProgression();
+
+            if (morphProgress < 1f) {
+                //callback.setReturnValue(Mth.lerp(morphProgress, callback.getReturnValue(), latexEntity.getEyeHeight(pose)));
+            } else {
+                callback.setReturnValue(latexEntity.getEyeHeight(pose));
+            }
         });
     }
 

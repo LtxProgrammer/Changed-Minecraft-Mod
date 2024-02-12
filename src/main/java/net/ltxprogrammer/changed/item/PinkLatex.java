@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -101,7 +103,7 @@ public class PinkLatex implements ArmorMaterial {
             tag.putInt("age", age);
             if (age < 12000) // Half a minecraft day
                 return;
-            if (ProcessTransfur.progressTransfur(entity, 3.0f, TransfurVariant.LATEX_PINK_WYVERN))
+            if (ProcessTransfur.progressTransfur(entity, 3.0f, TransfurVariant.LATEX_PINK_WYVERN, TransfurContext.hazard(TransfurCause.PINK_PANTS)))
                 itemStack.shrink(1);
         }
 

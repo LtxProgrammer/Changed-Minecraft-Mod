@@ -1,6 +1,11 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import net.ltxprogrammer.changed.client.tfanimations.AnimationInstance;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
@@ -15,6 +20,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidModelMixin<T extends LivingEntity> extends AgeableListModel<T> implements ArmedModel, HeadedModel {
@@ -62,5 +70,24 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 return;
             }
         }
+    }
+
+    @Unique
+    private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;copyFrom(Lnet/minecraft/client/model/geom/ModelPart;)V"))
+    public void setupAnimAndForceAnimation(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float p_102870_, float p_102871_, CallbackInfo ci) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
+            if (variant.transfurProgression < 1f) {
+                final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
+                    final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);
+                    return anim != null ? anim.createInstance((HumanoidModel<?>)(Object)this) : null;
+                });
+
+                if (instance != null)
+                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
+            } else {
+                cachedAnimationInstance.remove(entity);
+            }
+        });
     }
 }

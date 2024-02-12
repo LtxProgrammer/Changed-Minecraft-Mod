@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -15,17 +16,17 @@ import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -70,10 +71,70 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
-    protected float lastSwimMul = 1F;
     private boolean dead;
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
+
+    private float transfurProgressionO = 0.0f;
+    public float transfurProgression = 0.0f;
+    public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
+    public boolean willSurviveTransfur = true;
+
+    public CompoundTag save() {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("ageAsVariant", ageAsVariant);
+        tag.putInt("air", air);
+        tag.putInt("jumpCharges", jumpCharges);
+        tag.putBoolean("dead", dead);
+        tag.putInt("ticksBreathingUnderwater", ticksBreathingUnderwater);
+        tag.putInt("ticksWhiteLatex", ticksWhiteLatex);
+
+        tag.putFloat("transfurProgressionO", transfurProgressionO);
+        tag.putFloat("transfurProgression", transfurProgression);
+        tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
+
+        tag.putString("transfurCause", cause.name());
+
+        tag.put("abilities", this.saveAbilities());
+        return tag;
+    }
+
+    public void load(CompoundTag tag) {
+        ageAsVariant = tag.getInt("ageAsVariant");
+        air = tag.getInt("air");
+        jumpCharges = tag.getInt("jumpCharges");
+        dead = tag.getBoolean("dead");
+        ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
+        ticksWhiteLatex = tag.getInt("ticksWhiteLatex");
+
+        final float taggedProgress = tag.getFloat("transfurProgression");
+        if (Mth.abs(transfurProgression - taggedProgress) > 0.5f) { // Prevent sync shudder
+            transfurProgressionO = tag.getFloat("transfurProgressionO");
+            transfurProgression = tag.getFloat("transfurProgression");
+        }
+
+        willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
+
+        cause = TransfurCause.valueOf(tag.getString("transfurCause"));
+
+        this.loadAbilities(tag.getCompound("abilities"));
+    }
+
+    public float getTransfurProgression(float partial) {
+        return Mth.lerp(Mth.positiveModulo(partial, 1.0f), transfurProgressionO, transfurProgression);
+    }
+
+    public float getMorphProgression() {
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+    }
+
+    public float getMorphProgression(float partial) {
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
+    }
+
+    public Color3 getTransfurColor() {
+        return getLatexEntity().getTransfurColor(this.cause);
+    }
 
     public TransfurVariantInstance(TransfurVariant<T> parent, Player host) {
         this.parent = parent;
@@ -109,6 +170,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public T getLatexEntity() {
         return entity;
+    }
+
+    public Player getHost() {
+        return host;
     }
 
     public <A extends AbstractAbilityInstance> boolean hasAbility(AbstractAbility<A> ability) {
@@ -209,9 +274,20 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             if (player.isAddedToWorld()) {
                 ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                     ChangedEntity changedEntity = variant.getLatexEntity();
+                    final float morphProgress = variant.getMorphProgression();
 
-                    event.setNewSize(changedEntity.getDimensions(event.getPose()));
-                    event.setNewEyeHeight(changedEntity.getEyeHeight(event.getPose()));
+                    if (morphProgress < 1f) {
+                        final var playerDim = player.getDimensions(event.getPose());
+                        final var latexDim = latexEntity.getDimensions(event.getPose());
+                        float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
+                        float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
+
+                        event.setNewSize(new EntityDimensions(width, height, latexDim.fixed));
+                        event.setNewEyeHeight(Mth.lerp(morphProgress, player.getEyeHeight(event.getPose()), latexEntity.getEyeHeight(event.getPose())));
+                    } else {
+                        event.setNewSize(changedEntity.getDimensions(event.getPose()));
+                        event.setNewEyeHeight(changedEntity.getEyeHeight(event.getPose()));
+                    }
                 });
 
                 if (player instanceof PlayerDataExtension extension && extension.getPlayerMover() != null) {
@@ -228,7 +304,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             Pale.tickPaleExposure(event.player);
             ProcessTransfur.ifPlayerTransfurred(event.player, instance -> {
                 if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
-                    ProcessTransfur.setPlayerLatexVariant(event.player, null);
+                    ProcessTransfur.removePlayerLatexVariant(event.player);
                     return;
                 }
 
@@ -259,7 +335,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (event.getEntityLiving() instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, instance -> {
                 if (instance.isDead())
-                    ProcessTransfur.setPlayerLatexVariant(player, null);
+                    ProcessTransfur.removePlayerLatexVariant(player);
             });
         }
     }
@@ -446,6 +522,29 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (player == null) return;
 
         ageAsVariant++;
+
+        transfurProgressionO = transfurProgression;
+        if (transfurProgression < 1f) {
+            transfurProgression += (1.0f / cause.getDuration()) * 0.05f;
+            if (!player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
+                transfurProgressionO = 1f;
+                transfurProgression = 1f;
+            }
+
+            if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
+                willSurviveTransfur = true;
+            }
+
+            if (transfurProgression >= 1f && !willSurviveTransfur) {
+                this.getParent().replaceEntity(player);
+                return;
+            }
+        }
+
+        if (transfurProgression >= 1f) {
+            if (player instanceof ServerPlayer serverPlayer)
+                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
+        }
 
         player.refreshDimensions();
         if (player.isOnGround())

@@ -17,6 +17,12 @@ import java.util.List;
 
 @Mixin(ModelPart.class)
 public abstract class ModelPartMixin implements ModelPartExtender {
+    @Shadow @Final public Map<String, ModelPart> children;
+
+    @Shadow public boolean visible;
+
+    @Shadow public abstract void translateAndRotate(PoseStack p_104300_);
+
     @Unique
     public final List<Triangle> triangles = new ArrayList<>();
 
@@ -33,5 +39,21 @@ public abstract class ModelPartMixin implements ModelPartExtender {
     @Override
     public void addTriangle(Triangle triangle) {
         this.triangles.add(triangle);
+    }
+    @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V", at = @At("HEAD"), cancellable = true)
+    public void orCapture(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, CallbackInfo ci) {
+        if (TransfurAnimator.isCapturing()) {
+            pose.pushPose();
+
+            if (TransfurAnimator.capture((ModelPart)(Object)this, pose)) {
+                this.translateAndRotate(pose);
+                for(ModelPart modelpart : this.children.values()) {
+                    modelpart.render(pose, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                }
+            }
+
+            pose.popPose();
+            ci.cancel();
+        }
     }
 }

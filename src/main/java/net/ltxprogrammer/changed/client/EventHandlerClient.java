@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
@@ -36,12 +37,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EventHandlerClient {
     @OnlyIn(Dist.CLIENT)
-    public static final BiListener<UUID, ProcessTransfur.TransfurProgress> PROGRESS_LISTENER = SyncTransfurProgressPacket.SIGNAL.addListener((uuid, progress) -> {
+    public static final BiListener<UUID, Float> PROGRESS_LISTENER = SyncTransfurProgressPacket.SIGNAL.addListener((uuid, progress) -> {
         var player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
         if (player == null)
             return;
         var oldProgress = ProcessTransfur.getPlayerTransfurProgress(player);
-        if (Math.abs(oldProgress.progress() - progress.progress()) < 0.02f && oldProgress.variant() == progress.variant()) // Prevent sync shudder
+        if (Math.abs(oldProgress - progress) < 0.02f) // Prevent sync shudder
             return;
         ProcessTransfur.setPlayerTransfurProgress(player, progress);
     });
@@ -89,7 +90,7 @@ public class EventHandlerClient {
             }
         }
 
-        if (!player.isRemoved() && !player.isSpectator()) {
+        if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.shouldRenderHuman()) {
             if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
                 event.setCanceled(true);
             else if (ProcessTransfur.isPlayerLatex(player)) {

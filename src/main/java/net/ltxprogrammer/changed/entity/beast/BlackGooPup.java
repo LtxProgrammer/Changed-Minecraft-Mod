@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.ai.DudNavigator;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -98,6 +99,11 @@ public class BlackGooPup extends AbstractBlackGooEntity {
     }
 
     @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
+    }
+
+    @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD.get();
     }
@@ -149,7 +155,7 @@ public class BlackGooPup extends AbstractBlackGooEntity {
         if (ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variant -> {
             if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
                 var newVariant = TransfurVariant.BLACK_GOO_WOLF.randomGender(level.random);
-                ProcessTransfur.setPlayerLatexVariant(underlyingPlayer, newVariant);
+                ProcessTransfur.changeTransfur(underlyingPlayer, newVariant);
                 ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
                 underlyingPlayer.heal(12.0f);
             }

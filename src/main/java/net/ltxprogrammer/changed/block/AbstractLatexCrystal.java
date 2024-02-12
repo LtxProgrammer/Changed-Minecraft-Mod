@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -83,7 +85,7 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
                 return;
             if (!level.isClientSide) {
-                ProcessTransfur.progressTransfur(le, 8.3f, variant);
+                ProcessTransfur.progressTransfur(le, 8.3f, variant, TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL));
             }
 
         }

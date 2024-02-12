@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -111,7 +112,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Unique
     public TransfurVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, TransfurVariant.FALLBACK_VARIANT);
+    public float transfurProgress = 0.0f;
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique
@@ -131,12 +132,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @NotNull
     @Override
-    public ProcessTransfur.TransfurProgress getTransfurProgress() {
+    public float getTransfurProgress() {
         return transfurProgress;
     }
 
     @Override
-    public void setTransfurProgress(@NotNull ProcessTransfur.TransfurProgress transfurProgress) {
+    public void setTransfurProgress(@NotNull float transfurProgress) {
         this.transfurProgress = transfurProgress;
     }
 
@@ -188,10 +189,23 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         }
     }
 
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
     public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
+            final float morphProgress = variant.getMorphProgression();
+
+            if (morphProgress < 1f) {
+                ChangedEntity latexEntity = variant.getLatexEntity();
+
+                final var playerDim = callback.getReturnValue();
+                final var latexDim = latexEntity.getDimensions(pose);
+                float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
+                float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
+
+                callback.setReturnValue(new EntityDimensions(width, height, latexDim.fixed));
+            } else {
+                callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
+            }
         });
     }
 

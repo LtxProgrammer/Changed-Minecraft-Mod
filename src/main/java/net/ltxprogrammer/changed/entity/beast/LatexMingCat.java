@@ -44,4 +44,8 @@ public class LatexMingCat extends ChangedEntity implements PatronOC {
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#d2a87f");
+    }
 }

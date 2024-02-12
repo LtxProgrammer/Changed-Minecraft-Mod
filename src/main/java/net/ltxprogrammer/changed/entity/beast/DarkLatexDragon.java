@@ -33,6 +33,11 @@ public class DarkLatexDragon extends ChangedEntity implements DarkLatexEntity, P
     }
 
     @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
+    }
+
+    @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
     }

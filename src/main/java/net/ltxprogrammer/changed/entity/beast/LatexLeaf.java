@@ -36,4 +36,8 @@ public class LatexLeaf extends ChangedEntity implements PatronOC {
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
     }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#bff198");
+    }
 }

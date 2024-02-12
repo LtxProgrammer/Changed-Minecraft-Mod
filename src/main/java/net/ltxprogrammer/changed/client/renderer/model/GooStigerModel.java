@@ -196,8 +196,9 @@ public class GooStigerModel extends AdvancedHumanoidModel<GooStiger> implements 
     }
 
     @Override
-    public void setupAnim(GooStiger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
-        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
+    public void setupAnim(GooStiger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
@@ -215,6 +216,10 @@ public class GooStigerModel extends AdvancedHumanoidModel<GooStiger> implements 
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -48,7 +51,8 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
         if (event.getSource() instanceof IndirectEntityDamageSource indirect) {
             if (indirect.getDirectEntity() instanceof Arrow arrow) {
                 if (arrow.getPersistentData().contains(FORM_LOCATION)) {
-                    ProcessTransfur.progressTransfur(event.getEntityLiving(), 8.0f, TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION));
+                    final var variant = ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(arrow.getPersistentData(), FORM_LOCATION));
+                    ProcessTransfur.progressTransfur(event.getEntityLiving(), 8.0f, variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
                     arrow.remove(Entity.RemovalReason.DISCARDED);
                 }
             }
