@@ -18,6 +18,6 @@ public class LightLatexWolfOrganicRenderer extends AdvancedHumanoidRenderer<Whit
 
     @Override
     public ResourceLocation getTextureLocation(WhiteWolf p_114482_) {
-        return Changed.modResource("textures/light_latex_wolf_organic.png");
+        return Changed.modResource("textures/white_wolf.png");
     }
 }

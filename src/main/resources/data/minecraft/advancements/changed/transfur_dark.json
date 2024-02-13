@@ -19,7 +19,7 @@
     "transfurred": {
       "trigger": "changed:transfur",
       "conditions": {
-        "type": "DARK_LATEX"
+        "type": "BLACK_GOO"
       }
     }
   },

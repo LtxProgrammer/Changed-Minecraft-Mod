@@ -9,8 +9,8 @@ import net.ltxprogrammer.changed.entity.beast.WhiteGooWolfFemale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightLatexWolfFemaleRenderer extends AdvancedHumanoidRenderer<WhiteGooWolfFemale, WhiteGooWolfFemaleModel, ArmorFemaleWolfModel<WhiteGooWolfFemale>> {
-    public LightLatexWolfFemaleRenderer(EntityRendererProvider.Context context) {
+public class WhiteGooWolfFemaleRenderer extends AdvancedHumanoidRenderer<WhiteGooWolfFemale, WhiteGooWolfFemaleModel, ArmorFemaleWolfModel<WhiteGooWolfFemale>> {
+    public WhiteGooWolfFemaleRenderer(EntityRendererProvider.Context context) {
         super(context, new WhiteGooWolfFemaleModel(context.bakeLayer(WhiteGooWolfFemaleModel.LAYER_LOCATION)),
                 ArmorFemaleWolfModel::new, ArmorFemaleWolfModel.INNER_ARMOR, ArmorFemaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new GooParticlesLayer<>(this, getModel()));
@@ -19,6 +19,6 @@ public class LightLatexWolfFemaleRenderer extends AdvancedHumanoidRenderer<White
 
     @Override
     public ResourceLocation getTextureLocation(WhiteGooWolfFemale p_114482_) {
-        return Changed.modResource("textures/light_latex_wolf_female.png");
+        return Changed.modResource("textures/white_goo_wolf_female.png");
     }
 }

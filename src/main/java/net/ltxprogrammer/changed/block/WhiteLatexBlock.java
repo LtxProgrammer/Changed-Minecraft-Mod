@@ -91,13 +91,13 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
                 return;
             }
 
-            if (!TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, livingEntity.getClass()).isEmpty()) {
+            if (!TransfurVariant.getFusionCompatible(TransfurVariant.PURE_WHITE_GOO_WOLF, livingEntity.getClass()).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
 
             var latexVariant = TransfurVariant.getEntityVariant(livingEntity);
-            if (latexVariant != null && !TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, latexVariant).isEmpty()) {
+            if (latexVariant != null && !TransfurVariant.getFusionCompatible(TransfurVariant.PURE_WHITE_GOO_WOLF, latexVariant).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }

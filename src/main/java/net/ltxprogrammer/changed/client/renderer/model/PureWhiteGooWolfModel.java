@@ -23,7 +23,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class PureWhiteGooWolfModel extends AdvancedHumanoidModel<PureWhiteGooWolf> implements AdvancedHumanoidModelInterface<PureWhiteGooWolf, PureWhiteGooWolfModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_latex_wolf"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("pure_white_goo_wolf"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;

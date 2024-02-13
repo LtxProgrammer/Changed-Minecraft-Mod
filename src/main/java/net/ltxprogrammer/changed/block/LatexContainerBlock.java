@@ -188,7 +188,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
                 return;
             final var variant = switch (container.getFillType()) {
                 case BLACK_GOO -> TransfurVariant.DARK_LATEX_WOLF_PARTIAL;
-                case PURE_WHITE_GOO -> TransfurVariant.WHITE_LATEX_WOLF;
+                case PURE_WHITE_GOO -> TransfurVariant.PURE_WHITE_GOO_WOLF;
                 default -> null;
             };
 

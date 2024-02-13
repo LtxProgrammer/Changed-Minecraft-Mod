@@ -2,24 +2,51 @@ package net.ltxprogrammer.changed.world;
 
 import kroppeb.stareval.Util;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ChangedDataFixer {
-    private static final HashMap<ResourceLocation, ResourceLocation> ID_REMAP = Util.make(new HashMap<>(), map -> {
-        map.put(Changed.modResource("dark_latex_wolf_male"), Changed.modResource("black_goo_wolf_male"));
-        map.put(Changed.modResource("dark_latex_wolf_male_spawn_egg"), Changed.modResource("black_goo_wolf_male_spawn_egg"));
-        map.put(Changed.modResource("form_dark_latex_wolf/male"), Changed.modResource("form_black_goo_wolf/male"));
-        map.put(Changed.modResource("dark_latex_wolf_female"), Changed.modResource("black_goo_wolf_female"));
-        map.put(Changed.modResource("dark_latex_wolf_female_spawn_egg"), Changed.modResource("black_goo_wolf_female_spawn_egg"));
-        map.put(Changed.modResource("form_dark_latex_wolf/female"), Changed.modResource("form_black_goo_wolf/female"));
+    private static <T extends Entity> ResourceLocation spawnEggHelper(RegistryObject<EntityType<T>> entity) {
+        return Objects.requireNonNull(ChangedEntities.SPAWN_EGGS.get(entity)).getId();
+    }
+
+    private static final HashMap<ResourceLocation, ResourceLocation> ENTITY_ID_REMAP = Util.make(new HashMap<>(), map -> {
+        map.put(Changed.modResource("dark_latex_wolf_male"), ChangedEntities.BLACK_GOO_WOLF_MALE.getId());
+        map.put(Changed.modResource("dark_latex_wolf_female"), ChangedEntities.BLACK_GOO_WOLF_FEMALE.getId());
+        map.put(Changed.modResource("light_latex_wolf_male"), ChangedEntities.WHITE_GOO_WOLF_MALE.getId());
+        map.put(Changed.modResource("light_latex_wolf_female"), ChangedEntities.WHITE_GOO_WOLF_FEMALE.getId());
+        map.put(Changed.modResource("white_latex_wolf"), ChangedEntities.PURE_WHITE_GOO_WOLF.getId());
+    });
+
+    private static final HashMap<ResourceLocation, ResourceLocation> ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
+        map.put(Changed.modResource("dark_latex_wolf_male_spawn_egg"), spawnEggHelper(ChangedEntities.BLACK_GOO_WOLF_MALE));
+        map.put(Changed.modResource("dark_latex_wolf_female_spawn_egg"), spawnEggHelper(ChangedEntities.BLACK_GOO_WOLF_FEMALE));
+        map.put(Changed.modResource("light_latex_wolf_male_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_GOO_WOLF_MALE));
+        map.put(Changed.modResource("light_latex_wolf_female_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_GOO_WOLF_FEMALE));
+        map.put(Changed.modResource("light_latex_wolf_organic_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_WOLF));
+        map.put(Changed.modResource("white_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.PURE_WHITE_GOO_WOLF));
+    });
+
+    private static final HashMap<ResourceLocation, ResourceLocation> VARIANT_ID_REMAP = Util.make(new HashMap<>(), map -> {
+        map.put(Changed.modResource("form_dark_latex_wolf/male"), TransfurVariant.BLACK_GOO_WOLF.male().getFormId());
+        map.put(Changed.modResource("form_dark_latex_wolf/female"), TransfurVariant.BLACK_GOO_WOLF.female().getFormId());
+        map.put(Changed.modResource("form_light_latex_wolf/male"), TransfurVariant.WHITE_GOO_WOLF.male().getFormId());
+        map.put(Changed.modResource("form_light_latex_wolf/female"), TransfurVariant.WHITE_GOO_WOLF.female().getFormId());
+        map.put(Changed.modResource("form_light_latex_wolf_organic"), TransfurVariant.WHITE_WOLF.getFormId());
+        map.put(Changed.modResource("form_white_latex_wolf"), TransfurVariant.PURE_WHITE_GOO_WOLF.getFormId());
     });
 
     private static final HashMap<String, String> TAG_REMAP = Util.make(new HashMap<>(), map -> {
@@ -29,8 +56,8 @@ public class ChangedDataFixer {
         map.put("LatexData", "TransfurData");
     });
 
-    private static ResourceLocation updateID(ResourceLocation id) {
-        return ID_REMAP.getOrDefault(id, id);
+    private static ResourceLocation updateID(Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
+        return remap.getOrDefault(id, id);
     }
 
     private static void updateTagNames(CompoundTag tag) {
@@ -46,23 +73,23 @@ public class ChangedDataFixer {
         });
     }
 
-    private static void updateID(CompoundTag tag, String idName) {
+    private static void updateID(Map<ResourceLocation, ResourceLocation> remap, CompoundTag tag, String idName) {
         if (!tag.contains(idName)) return;
         final ResourceLocation id = ResourceLocation.tryParse(tag.getString(idName));
         if (id != null)
-            tag.putString(idName, updateID(id).toString());
+            tag.putString(idName, updateID(remap, id).toString());
     }
 
     private static void updateEntity(CompoundTag entityTag) {
-        updateID(entityTag, "id");
+        updateID(ENTITY_ID_REMAP, entityTag, "id");
     }
 
     private static void updateItemTag(CompoundTag itemTag) {
-        updateID(itemTag, "form");
+        updateID(VARIANT_ID_REMAP, itemTag, "form");
     }
 
     private static void updateItem(CompoundTag itemStack) {
-        updateID(itemStack, "id");
+        updateID(ITEM_ID_REMAP, itemStack, "id");
         if (itemStack.contains("tag")) {
             updateItemTag(itemStack.getCompound("tag"));
         }
@@ -87,7 +114,7 @@ public class ChangedDataFixer {
                 });
             }
 
-            updateID(tag, "TransfurVariant");
+            updateID(VARIANT_ID_REMAP, tag, "TransfurVariant");
         });
     });
 

@@ -130,7 +130,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
                 }
             }
             else {
-                ProcessTransfur.progressTransfur(le, 4.8f, TransfurVariant.WHITE_LATEX_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                ProcessTransfur.progressTransfur(le, 4.8f, TransfurVariant.PURE_WHITE_GOO_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
             }
         } else if (entity instanceof ChangedEntity changedEntity) {
             if (changedEntity.getGooType().isHostileTo(GooType.PURE_WHITE_GOO))

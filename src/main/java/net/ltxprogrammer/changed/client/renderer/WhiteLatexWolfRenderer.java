@@ -17,6 +17,6 @@ public class WhiteLatexWolfRenderer extends AdvancedHumanoidRenderer<PureWhiteGo
 
 	@Override
 	public ResourceLocation getTextureLocation(PureWhiteGooWolf p_114482_) {
-		return Changed.modResource("textures/white_latex_drone.png");
+		return Changed.modResource("textures/pure_white_goo_wolf.png");
 	}
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class WhiteGooWolfFemaleModel extends AdvancedHumanoidModel<WhiteGooWolfFemale> implements AdvancedHumanoidModelInterface<WhiteGooWolfFemale, WhiteGooWolfFemaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_wolf_female"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_goo_wolf_female"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
