@@ -928,34 +928,6 @@
           }
         ]
       }
-    },
-    "changed:phage_latex_wolf_female": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "changed:phage_latex_wolf_female"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "changed:phage_latex_wolf_male": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "changed:phage_latex_wolf_male"
-            },
-            "entity": "this"
-          }
-        ]
-      }
     }
   },
   "requirements": [
@@ -1153,12 +1125,6 @@
     ],
     [
       "changed:white_latex_wolf"
-    ],
-    [
-      "changed:phage_latex_wolf_female"
-    ],
-    [
-      "changed:phage_latex_wolf_male"
     ]
   ]
 }
