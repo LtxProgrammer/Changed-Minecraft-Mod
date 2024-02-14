@@ -810,7 +810,7 @@ public class ProcessTransfur {
             else {
                 KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
                 MinecraftForge.EVENT_BUS.post(event);
-                keepConscious = event.keepConscious;
+                keepConscious = event.shouldKeepConscious;
             }
         }
 
