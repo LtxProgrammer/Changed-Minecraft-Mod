@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.LocalUtil;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -85,7 +86,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
             if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(true);
-            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluid(FluidTags.WATER))
                 callback.setReturnValue(true);
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(true);
@@ -97,7 +98,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
             if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
-            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER))
+            if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluid(FluidTags.WATER))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.BLINDNESS, 300, 1, false, false));

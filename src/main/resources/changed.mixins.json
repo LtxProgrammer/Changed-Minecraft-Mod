@@ -26,6 +26,7 @@
     "entity.IronGolemMixin",
     "entity.LivingEntityMixin",
     "entity.MobMixin",
+    "entity.NearestAttackableTargetGoalMixin",
     "entity.PlayerMixin",
     "entity.ProjectileUtilMixin",
     "entity.ServerPlayerMixin",
