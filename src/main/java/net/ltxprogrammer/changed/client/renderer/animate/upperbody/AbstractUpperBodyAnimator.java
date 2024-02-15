@@ -44,4 +44,12 @@ public abstract class AbstractUpperBodyAnimator<T extends LatexEntity, M extends
         humanoidModel.leftArm.copyFrom(this.leftArm);
         humanoidModel.rightArm.copyFrom(this.rightArm);
     }
+
+    @Override
+    public void copyFrom(HumanoidModel<?> humanoidModel) {
+        super.copyFrom(humanoidModel);
+        this.torso.copyFrom(humanoidModel.body);
+        this.leftArm.copyFrom(humanoidModel.leftArm);
+        this.rightArm.copyFrom(humanoidModel.rightArm);
+    }
 }

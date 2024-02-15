@@ -8,6 +8,8 @@
   "mixins": [],
   "client": [
     "HardcoreRevival.KnockoutHandlerMixin",
+    "NotEnoughAnimations.LatexAnimatorMixin",
+    "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
     "Pehkui.LatexEntityMixin",
     "Pehkui.ScaleTypeMixin",

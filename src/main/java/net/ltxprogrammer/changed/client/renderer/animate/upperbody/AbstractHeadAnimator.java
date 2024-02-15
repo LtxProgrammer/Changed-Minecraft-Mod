@@ -19,4 +19,10 @@ public abstract class AbstractHeadAnimator<T extends LatexEntity, M extends Enti
         humanoidModel.head.copyFrom(this.head);
         humanoidModel.hat.copyFrom(this.head);
     }
+
+    @Override
+    public void copyFrom(HumanoidModel<?> humanoidModel) {
+        super.copyFrom(humanoidModel);
+        this.head.copyFrom(humanoidModel.head);
+    }
 }
