@@ -197,6 +197,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public PlayerModel<?> getPropertyModelPlayer(@Nullable EquipmentSlot slot) {
         final HumanoidModel<?> humanoidModel = getPropertyModel(slot);
         humanoidModel.copyPropertiesTo((PlayerModel)this.propertyModelPlayer);
+        this.propertyModelPlayer.swimAmount = humanoidModel.swimAmount;
         this.propertyModelPlayer.leftSleeve.copyFrom(humanoidModel.leftArm);
         this.propertyModelPlayer.rightPants.copyFrom(humanoidModel.rightLeg);
         this.propertyModelPlayer.leftPants.copyFrom(humanoidModel.leftLeg);
