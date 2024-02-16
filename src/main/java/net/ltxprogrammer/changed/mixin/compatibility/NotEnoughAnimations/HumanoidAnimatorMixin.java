@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations;
 
 import dev.tr7zw.notenoughanimations.NEAnimationsLoader;
 import dev.tr7zw.notenoughanimations.access.PlayerData;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -19,8 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
-@Mixin(value = LatexAnimator.class, remap = false)
-public abstract class LatexAnimatorMixin<T extends LatexEntity> {
+@Mixin(value = HumanoidAnimator.class, remap = false)
+public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> {
     @Shadow public abstract PlayerModel<?> getPropertyModelPlayer(@Nullable EquipmentSlot slot);
     @Shadow public abstract void applyPropertyModel(HumanoidModel<?> model);
 

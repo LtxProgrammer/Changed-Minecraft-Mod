@@ -413,11 +413,11 @@ public class ProcessTransfur {
         return variant == null || variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
     }
 
-    public static Optional<LatexVariant<?>> getEntityVariant(LivingEntity livingEntity) {
-        if (livingEntity instanceof LatexEntity entity)
+    public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
+        if (livingEntity instanceof ChangedEntity entity)
             return Optional.ofNullable(entity.getSelfVariant());
         else if (livingEntity instanceof Player player)
-            return Optional.ofNullable(((PlayerDataExtension)player).getLatexVariant()).map(LatexVariantInstance::getParent);
+            return Optional.ofNullable(((PlayerDataExtension)player).getLatexVariant()).map(TransfurVariantInstance::getParent);
         return Optional.empty();
     }
 

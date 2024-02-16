@@ -9,7 +9,7 @@
   "client": [
     "FirstPerson.FirstPersonBaseMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
-    "NotEnoughAnimations.LatexAnimatorMixin",
+    "NotEnoughAnimations.HumanoidAnimatorMixin",
     "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
     "Pehkui.LatexEntityMixin",
