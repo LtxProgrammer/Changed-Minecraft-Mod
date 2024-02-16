@@ -588,12 +588,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         if(!player.level.isClientSide) {
             final double distance = 8D;
-            final double farRunSpeed = 0.5D;
-            final double nearRunSpeed = 0.6666D;
+            final double farRunSpeed = 1.0D;
+            final double nearRunSpeed = 1.2D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator())
+                if (entityClass.isAssignableFrom(AbstractVillager.class) && (parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator()))
                     continue;
+
+                final double speedScale = entityClass.isAssignableFrom(AbstractVillager.class) ? 0.5D : 1.0D;
 
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), Objects::nonNull);
                 for(var v : entitiesScared) {
@@ -609,14 +611,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                             if(path != null)
                             {
                                 double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                                v.getNavigation().moveTo(path, speed);
+                                v.getNavigation().moveTo(path, speed * speedScale);
                             }
                         }
                     }
                     else //the creature is still running away from us
                     {
                         double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                        v.getNavigation().setSpeedModifier(speed);
+                        v.getNavigation().setSpeedModifier(speed * speedScale);
                     }
 
                     if (v.getTarget() == player)

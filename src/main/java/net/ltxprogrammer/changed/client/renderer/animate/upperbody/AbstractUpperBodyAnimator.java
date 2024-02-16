@@ -52,6 +52,14 @@ public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M exten
         humanoidModel.rightArm.copyFrom(this.rightArm);
     }
 
+    @Override
+    public void copyFrom(HumanoidModel<?> humanoidModel) {
+        super.copyFrom(humanoidModel);
+        this.torso.copyFrom(humanoidModel.body);
+        this.leftArm.copyFrom(humanoidModel.leftArm);
+        this.rightArm.copyFrom(humanoidModel.rightArm);
+    }
+
     protected void poseRightArm(T entity) {
         switch(core.rightArmPose) {
             case EMPTY:

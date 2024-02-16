@@ -21,4 +21,11 @@ public abstract class AbstractBipedalAnimator<T extends ChangedEntity, M extends
         humanoidModel.leftLeg.copyFrom(this.leftLeg);
         humanoidModel.rightLeg.copyFrom(this.rightLeg);
     }
+
+    @Override
+    public void copyFrom(HumanoidModel<?> humanoidModel) {
+        super.copyFrom(humanoidModel);
+        this.leftLeg.copyFrom(humanoidModel.leftLeg);
+        this.rightLeg.copyFrom(humanoidModel.rightLeg);
+    }
 }

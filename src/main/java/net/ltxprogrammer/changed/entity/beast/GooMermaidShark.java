@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GooMermaidShark extends AbstractGenderedGooShark {
+public class GooMermaidShark extends AbstractAquaticGenderedEntity {
     public GooMermaidShark(EntityType<? extends GooMermaidShark> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

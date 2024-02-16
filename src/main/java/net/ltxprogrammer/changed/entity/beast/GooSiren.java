@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GooSiren extends AbstractGenderedGooShark {
+public class GooSiren extends AbstractAquaticGenderedEntity {
     protected final SirenSingAbilityInstance sing;
 
     public GooSiren(EntityType<? extends GooSiren> type, Level level) {

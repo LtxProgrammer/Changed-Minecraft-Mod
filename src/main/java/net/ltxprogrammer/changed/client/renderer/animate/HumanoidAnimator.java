@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -20,9 +21,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>> {
     public final M entityModel;
@@ -41,7 +45,15 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         return hipOffset + (12.0f - legLength) + 12.0f;
     }
 
+    public static ModelPart createNullPart(String... children) {
+        return new ModelPart(List.of(), Arrays.stream(children).collect(Collectors.toMap(
+                Function.identity(),
+                name -> new ModelPart(List.of(), Map.of())
+        )));
+    }
+
     private final HumanoidModel<?> propertyModel;
+    private final PlayerModel<?> propertyModelPlayer;
     private final Map<Integer, Runnable> setupHandsRunnable = new HashMap<>();
     private final EnumMap<AnimateStage, List<Animator<T, M>>> animators;
     private final EnumMap<AnimateStage, List<CameraAnimator<T, M>>> cameraAnimators;
@@ -131,18 +143,30 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         Arrays.stream(AnimateStage.values()).forEach(stage -> animators.put(stage, new ArrayList<>())); // Populate array
         Arrays.stream(AnimateStage.values()).forEach(stage -> cameraAnimators.put(stage, new ArrayList<>())); // Populate array
 
-        this.propertyModel = new HumanoidModel(new ModelPart(Collections.emptyList(),
-                Map.of("head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body",
-                        new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm",
-                        new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg",
-                        new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+        this.propertyModel = new HumanoidModel(createNullPart("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg"));
+        this.propertyModelPlayer = new PlayerModel(createNullPart("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg",
+                "ear", "cloak", "left_sleeve", "right_sleeve", "left_pants", "right_pants", "jacket"), false);
+    }
+
+    public void applyPropertyModel(HumanoidModel<?> propertyModel) {
+        leftArmPose = propertyModel.leftArmPose;
+        rightArmPose = propertyModel.rightArmPose;
+        crouching = propertyModel.crouching;
+        swimAmount = propertyModel.swimAmount;
+        entityModel.attackTime = propertyModel.attackTime;
+        entityModel.riding = propertyModel.riding;
+        entityModel.young = propertyModel.young;
+
+        for (var anim : animators.get(AnimateStage.INIT)) {
+            anim.copyFrom(propertyModel);
+        }
     }
 
     /**
      * This function is only for property purposes, and not to be directly rendered
      * @return A HumanoidModel approximating the current latex model
      */
-    public HumanoidModel<?> getPropertyModel(EquipmentSlot slot) {
+    public HumanoidModel<?> getPropertyModel(@Nullable EquipmentSlot slot) {
         propertyModel.leftArmPose = leftArmPose;
         propertyModel.rightArmPose = rightArmPose;
         propertyModel.crouching = crouching;
@@ -150,23 +174,27 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         propertyModel.attackTime = entityModel.attackTime;
         propertyModel.riding = entityModel.riding;
         propertyModel.young = entityModel.young;
-        propertyModel.setAllVisible(false);
-        switch (slot) {
-            case HEAD:
-                propertyModel.head.visible = true;
-                propertyModel.hat.visible = true;
-                break;
-            case CHEST:
-                propertyModel.body.visible = true;
-                propertyModel.leftArm.visible = true;
-                propertyModel.rightArm.visible = true;
-                break;
-            case LEGS:
-                propertyModel.body.visible = true;
-            case FEET:
-                propertyModel.leftLeg.visible = true;
-                propertyModel.rightLeg.visible = true;
-                break;
+        if (slot == null) {
+            propertyModel.setAllVisible(true);
+        } else {
+            propertyModel.setAllVisible(false);
+            switch (slot) {
+                case HEAD:
+                    propertyModel.head.visible = true;
+                    propertyModel.hat.visible = true;
+                    break;
+                case CHEST:
+                    propertyModel.body.visible = true;
+                    propertyModel.leftArm.visible = true;
+                    propertyModel.rightArm.visible = true;
+                    break;
+                case LEGS:
+                    propertyModel.body.visible = true;
+                case FEET:
+                    propertyModel.leftLeg.visible = true;
+                    propertyModel.rightLeg.visible = true;
+                    break;
+            }
         }
 
         for (var anim : animators.get(AnimateStage.INIT)) {
@@ -174,6 +202,35 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         }
 
         return propertyModel;
+    }
+
+    /**
+     * This function is only for property purposes, and not to be directly rendered
+     * @return A PlayerModel approximating the current latex model
+     */
+    public PlayerModel<?> getPropertyModelPlayer(@Nullable EquipmentSlot slot) {
+        final HumanoidModel<?> humanoidModel = getPropertyModel(slot);
+        humanoidModel.copyPropertiesTo((PlayerModel)this.propertyModelPlayer);
+        this.propertyModelPlayer.swimAmount = humanoidModel.swimAmount;
+        this.propertyModelPlayer.leftSleeve.copyFrom(humanoidModel.leftArm);
+        this.propertyModelPlayer.rightPants.copyFrom(humanoidModel.rightLeg);
+        this.propertyModelPlayer.leftPants.copyFrom(humanoidModel.leftLeg);
+        this.propertyModelPlayer.jacket.copyFrom(humanoidModel.body);
+
+        this.propertyModelPlayer.head.visible = humanoidModel.head.visible;
+        this.propertyModelPlayer.hat.visible = humanoidModel.hat.visible;
+        this.propertyModelPlayer.body.visible = humanoidModel.body.visible;
+        this.propertyModelPlayer.jacket.visible = humanoidModel.body.visible;
+        this.propertyModelPlayer.rightArm.visible = humanoidModel.rightArm.visible;
+        this.propertyModelPlayer.rightSleeve.visible = humanoidModel.rightArm.visible;
+        this.propertyModelPlayer.leftArm.visible = humanoidModel.leftArm.visible;
+        this.propertyModelPlayer.leftSleeve.visible = humanoidModel.leftArm.visible;
+        this.propertyModelPlayer.rightLeg.visible = humanoidModel.rightLeg.visible;
+        this.propertyModelPlayer.rightPants.visible = humanoidModel.rightLeg.visible;
+        this.propertyModelPlayer.leftLeg.visible = humanoidModel.leftLeg.visible;
+        this.propertyModelPlayer.leftPants.visible = humanoidModel.leftLeg.visible;
+
+        return this.propertyModelPlayer;
     }
 
     public static <T extends ChangedEntity, M extends EntityModel<T>> HumanoidAnimator<T, M> of(M entityModel) {
@@ -281,6 +338,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         public abstract AnimateStage preferredStage();
         public abstract void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch);
         public void copyTo(HumanoidModel<?> humanoidModel) {}
+        public void copyFrom(HumanoidModel<?> humanoidModel) {}
 
         protected float sinLerp(float sin, float a, float b) {
             return Mth.lerp(sin * 0.5f + 0.5f, a, b);
