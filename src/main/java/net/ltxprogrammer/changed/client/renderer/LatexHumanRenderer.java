@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel;
@@ -22,6 +23,7 @@ public class LatexHumanRenderer extends LatexHumanoidRenderer<LatexHuman, LatexH
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
+		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}
 
 	@Override
