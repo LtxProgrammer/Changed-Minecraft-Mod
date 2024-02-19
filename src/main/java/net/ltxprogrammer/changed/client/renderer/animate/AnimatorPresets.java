@@ -588,6 +588,21 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> beeLikeArmor(ModelPart head,
+                                                                                                               ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                               ModelPart tail, List<ModelPart> tailJoints, ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(doubleArmUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(dragonTail(tail, tailJoints))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new DoubleArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
+        };
+    }
+
     public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> dragonLikeOld(ModelPart head, ModelPart torso,
                                                                                                                 ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart tail, List<ModelPart> tailJoints,
