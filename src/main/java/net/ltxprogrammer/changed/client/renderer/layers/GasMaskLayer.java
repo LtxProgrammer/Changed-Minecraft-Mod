@@ -34,8 +34,8 @@ public class GasMaskLayer<T extends LivingEntity, M extends EntityModel<T> & Hea
     }
 
     public void render(PoseStack pose, MultiBufferSource bufferSource, int i, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
-        /*if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.DARK_LATEX_MASK.get()))
-            return;*/
+        if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
+            return;
         
         var mask = maskModel.getOrThrow();
 
