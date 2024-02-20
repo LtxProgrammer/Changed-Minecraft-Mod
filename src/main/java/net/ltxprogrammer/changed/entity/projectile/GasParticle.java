@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.projectile;
 
 import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.item.GasMaskItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -73,6 +75,9 @@ public class GasParticle extends ThrowableProjectile {
         super.onHitEntity(result);
 
         if (variant != null && result.getEntity() instanceof LivingEntity livingEntity) {
+            if (livingEntity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof GasMaskItem)
+                return;
+
             ProcessTransfur.progressTransfur(livingEntity, (int)Mth.lerp((float)this.tickCount / DISSIPATE_TIME, 3.5f, 0.5f), variant);
             this.discard();
         }
