@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -30,8 +31,10 @@ public class ChangedClient {
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES)
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             particleSystem.render(event.getPoseStack(), minecraft.gameRenderer.lightTexture(), event.getCamera(), event.getPartialTick(), event.getFrustum());
+            FirstPersonLayer.renderFirstPersonLayersOnFace(event.getPoseStack(), event.getCamera(), event.getPartialTick());
+        }
     }
 
     protected static void addLatexParticleToEntity(LatexEntity entity) {

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
@@ -15,7 +16,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & LatexHumanoidModelInterface<T, M>> extends RenderLayer<T, M> {
+public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & LatexHumanoidModelInterface<T, M>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
     private final M model;
     private final ResourceLocation texture;
 
@@ -56,5 +57,12 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
 
     public ModelPart getArm(HumanoidArm arm) {
         return model.getArm(arm);
+    }
+
+    @Override
+    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
+        this.getModel().setupAnim(entity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        model.setupHand();
+        FormRenderHandler.renderModelPartWithTexture(this.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(this.renderType()), packedLight, 1F);
     }
 }
