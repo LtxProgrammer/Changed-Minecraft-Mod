@@ -596,7 +596,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> beeLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> beeLikeArmor(ModelPart head,
                                                                                                                ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                                ModelPart tail, List<ModelPart> tailJoints, ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                                ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {

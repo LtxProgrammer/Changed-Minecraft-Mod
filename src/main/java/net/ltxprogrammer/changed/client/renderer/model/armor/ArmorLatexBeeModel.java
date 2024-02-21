@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexBeeModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> {
+public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
 
@@ -31,7 +31,7 @@ public class ArmorLatexBeeModel<T extends LatexEntity> extends LatexHumanoidArmo
     private final ModelPart LeftArm2;
     private final ModelPart RightArm2;
     private final ModelPart Tail;
-    private final LatexAnimator<T, ArmorLatexBeeModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexBeeModel<T>> animator;
 
     public ArmorLatexBeeModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -51,7 +51,7 @@ public class ArmorLatexBeeModel<T extends LatexEntity> extends LatexHumanoidArmo
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.beeLikeArmor(Head, Torso, LeftArm, RightArm, LeftArm2, RightArm2,
                         Tail, List.of(tailPrimary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
@@ -112,7 +112,7 @@ public class ArmorLatexBeeModel<T extends LatexEntity> extends LatexHumanoidArmo
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexBeeModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexBeeModel<T>> getAnimator() {
         return animator;
     }
 }
