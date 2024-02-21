@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,9 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
     private final AdvancedHumanoidModel<T> model;
     private final ResourceLocation texture;
 
@@ -43,5 +45,10 @@ public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHu
 
     public ResourceLocation getTexture() {
         return texture;
+    }
+
+    @Override
+    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
+        FormRenderHandler.renderModelPartWithTexture(model.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(RenderType.entityTranslucent(texture)), packedLight, 1F);
     }
 }

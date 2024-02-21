@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GooParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.GooHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMaleWolfModel;
@@ -18,6 +19,7 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<GooHuman, GooHu
 				ArmorMaleWolfModel::new, ArmorMaleWolfModel.INNER_ARMOR, ArmorMaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new GooParticlesLayer<>(this, getModel()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
+		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}
 
 	@Override
