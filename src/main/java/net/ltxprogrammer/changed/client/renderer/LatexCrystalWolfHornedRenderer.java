@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexCrystalWolfHornedModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
@@ -19,6 +20,7 @@ public class LatexCrystalWolfHornedRenderer extends LatexHumanoidRenderer<LatexC
                 CustomEyesLayer.fixedColor(Color3.parseHex("#5a5a5a")),
                 CustomEyesLayer::irisColorLeft,
                 CustomEyesLayer::irisColorRight));
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

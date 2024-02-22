@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMermaidSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkAbdomenModel;
@@ -19,6 +20,7 @@ public class LatexMermaidSharkRenderer extends LatexHumanoidRenderer<LatexMermai
                 AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

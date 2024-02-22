@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexCrocodileModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexCrocodileModel;
 import net.ltxprogrammer.changed.entity.beast.LatexCrocodile;
@@ -11,6 +12,7 @@ public class LatexCrocodileRenderer extends LatexHumanoidRenderer<LatexCrocodile
     public LatexCrocodileRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexCrocodileModel(context.bakeLayer(LatexCrocodileModel.LAYER_LOCATION)),
                 ArmorLatexCrocodileModel::new, ArmorLatexCrocodileModel.INNER_ARMOR, ArmorLatexCrocodileModel.OUTER_ARMOR, 0.5f);
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

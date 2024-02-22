@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexTrafficConeDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexBigTailDragonModel;
@@ -18,6 +19,7 @@ public class LatexTrafficConeDragonRenderer extends LatexHumanoidRenderer<LatexT
 		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
 				CustomEyesLayer.fixedColor(Color3.parseHex("#ffea86")),
 				CustomEyesLayer.fixedColor(Color3.BLACK)));
+		this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
 	}
 
 	@Override

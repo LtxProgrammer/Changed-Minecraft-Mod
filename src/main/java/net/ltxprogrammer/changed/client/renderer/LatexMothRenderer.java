@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMothModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorNoTailModel;
 import net.ltxprogrammer.changed.entity.beast.LatexMoth;
@@ -11,6 +12,7 @@ public class LatexMothRenderer extends LatexHumanoidRenderer<LatexMoth, LatexMot
     public LatexMothRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMothModel(context.bakeLayer(LatexMothModel.LAYER_LOCATION)),
                 ArmorNoTailModel::new, ArmorNoTailModel.INNER_ARMOR, ArmorNoTailModel.OUTER_ARMOR, 0.5f);
+        this.addLayer(GasMaskLayer.forNormal(this, context.getModelSet()));
     }
 
     @Override
