@@ -564,6 +564,12 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 attrib.removePermanentModifier(attributeModifierSwimSpeed.getId());
         }
 
+        if (player.isEyeInFluid(FluidTags.WATER) && parent.swimSpeed > 1F) {
+            player.setNoGravity(true);
+        } else if (parent.swimSpeed > 1F) {
+            player.setNoGravity(false);
+        }
+
         if(parent.groundSpeed != 0F && player.isOnGround()) {
             if (parent.groundSpeed > 1f) {
                 if (!player.isCrouching())
