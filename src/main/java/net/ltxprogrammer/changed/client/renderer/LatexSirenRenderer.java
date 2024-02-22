@@ -21,7 +21,7 @@ public class LatexSirenRenderer extends LatexHumanoidRenderer<LatexSiren, LatexS
                 AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
-        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
+        this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
     }
 
     @Override

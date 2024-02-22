@@ -16,7 +16,7 @@ public class LatexSharkRenderer extends LatexHumanoidRenderer<LatexShark, LatexS
                 ArmorLatexMaleSharkModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
-        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
+        this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
     }
 
     @Override

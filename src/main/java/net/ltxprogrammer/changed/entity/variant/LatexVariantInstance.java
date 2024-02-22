@@ -19,16 +19,15 @@ import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -271,11 +270,20 @@ public class LatexVariantInstance<T extends LatexEntity> {
         var dP = player.getDeltaMovement();
         if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
-                float friction = player.getLevel().getBlockState(player.blockPosition().below())
-                        .getFriction(player.getLevel(), player.blockPosition(), player);
+                float friction = EntityUtil.getFrictionOnBlock(player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                mul = Math.max(1.0, mul);
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
+            }
+        } else if (mul < 1f && dP.lengthSqr() > 0.0) {
+            if (player.isOnGround()) {
+                float friction = EntityUtil.getFrictionOnBlock(player);
+                mul = Math.min(1.0, Mth.map(friction, 1.0, 0.6, 0.95, mul));
                 if (Double.isNaN(mul)) {
                     Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
                     mul = 0.0;
@@ -541,7 +549,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
         }
 
         // Speed
-        if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
+        if(parent.swimSpeed != 0F && player.getPose() == Pose.SWIMMING) {
             if (parent.swimSpeed > 1f) {
                 var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
                 if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
@@ -550,9 +558,13 @@ public class LatexVariantInstance<T extends LatexEntity> {
             else {
                 multiplyMotion(player, parent.swimSpeed);
             }
+        } else {
+            var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
+            if (attrib != null && attrib.hasModifier(attributeModifierSwimSpeed))
+                attrib.removePermanentModifier(attributeModifierSwimSpeed.getId());
         }
 
-        if(parent.groundSpeed != 0F && !player.isInWaterOrBubble() && player.isOnGround()) {
+        if(parent.groundSpeed != 0F && player.isOnGround()) {
             if (parent.groundSpeed > 1f) {
                 if (!player.isCrouching())
                     multiplyMotion(player, parent.groundSpeed);

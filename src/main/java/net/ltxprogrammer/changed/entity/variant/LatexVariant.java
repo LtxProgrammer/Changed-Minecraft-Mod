@@ -145,7 +145,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_moth")));
     public static final LatexVariant<LatexOrca> LATEX_ORCA = register(Builder.of(ChangedEntities.LATEX_ORCA)
-            .groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills()
+            .groundSpeed(0.875f).swimSpeed(1.30f).stepSize(0.7f).gills()
             .build(Changed.modResource("form_latex_orca")));
     public static final LatexVariant<LatexOtter> LATEX_OTTER = register(Builder.of(ChangedEntities.LATEX_OTTER)
             .groundSpeed(1.05f).swimSpeed(1.2f).breatheMode(BreatheMode.STRONG)
@@ -172,7 +172,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).reducedFall()
             .build(Changed.modResource("form_latex_red_panda")));
     public static final LatexVariant<LatexShark> LATEX_SHARK = register(Builder.of(ChangedEntities.LATEX_SHARK)
-            .groundSpeed(0.875f).swimSpeed(1.40f).stepSize(0.7f).gills().absorbing()
+            .groundSpeed(0.875f).swimSpeed(1.30f).stepSize(0.7f).gills().absorbing()
             .build(Changed.modResource("form_latex_shark")));
     public static final LatexVariant<LatexSnake> LATEX_SNAKE = register(Builder.of(ChangedEntities.LATEX_SNAKE)
             .groundSpeed(1.0F).swimSpeed(0.95f).additionalHealth(6).stepSize(1.1f).noLegs().addAbility(ChangedAbilities.SLITHER)
@@ -187,7 +187,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
             .build(Changed.modResource("form_latex_stiger")));
     public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(ChangedEntities.LATEX_TIGER_SHARK)
-            .groundSpeed(0.925f).swimSpeed(1.25f).additionalHealth(10).gills().addAbility(ChangedAbilities.SUMMON_SHARKS)
+            .groundSpeed(0.925f).swimSpeed(1.2f).additionalHealth(10).gills().addAbility(ChangedAbilities.SUMMON_SHARKS)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
@@ -230,13 +230,13 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE)
             .build(Changed.modResource("form_dark_latex_pup")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
-            .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(2.9F).absorbing().additionalHealth(8).noLegs())
+            .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(1.9F).absorbing().additionalHealth(8).noLegs())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));
     public static final GenderedVariant<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARK = register(GenderedVariant.Builder.of(LatexVariant.LATEX_SHARK, ChangedEntities.LATEX_MERMAID_SHARK, ChangedEntities.LATEX_SIREN)
-            .groundSpeed(0.26F).swimSpeed(2.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.SIREN_SING)).additionalHealth(8).noLegs()
+            .groundSpeed(0.26F).swimSpeed(1.9F).split(male -> male.replicating(), female -> female.absorbing().addAbility(ChangedAbilities.SIREN_SING)).additionalHealth(8).noLegs()
             .buildGendered(Changed.modResource("form_latex_mermaid_shark")));
     public static final GenderedVariant<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSION = register(GenderedVariant.Builder.of(LATEX_SHARK, ChangedEntities.LATEX_SHARK_MALE, ChangedEntities.LATEX_SHARK_FEMALE)
-            .groundSpeed(0.9f).swimSpeed(1.5f).stepSize(0.7f).additionalHealth(8).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, Shark.class)
+            .groundSpeed(0.9f).swimSpeed(1.35f).stepSize(0.7f).additionalHealth(8).split(Builder::ignored, Builder::absorbing).fusionOf(LATEX_SHARK, Shark.class)
             .buildGendered(Changed.modResource("form_latex_shark")));
     public static final GenderedVariant<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARD = register(GenderedVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_MALE, ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE)
             .groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(BreatheMode.WEAK).reducedFall().scares(Creeper.class).split(Builder::ignored, Builder::absorbing).nightVision()
