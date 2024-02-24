@@ -658,6 +658,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.onUpdateAbilities();
         }
         player.maxUpStep = 0.6F;
+        player.setNoGravity(false);
         player.refreshDimensions();
     }
 
