@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class GasMaskItem extends Item implements WearableItem {
     public GasMaskItem() {
-        super(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
+        super(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).stacksTo(1));
     }
 
     @Override
