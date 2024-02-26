@@ -548,6 +548,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
             }
         }
 
+        if (!parent.hasLegs && player.isEyeInFluid(FluidTags.WATER))
+            player.setPose(Pose.SWIMMING);
+
         // Speed
         if(parent.swimSpeed != 0F && player.getPose() == Pose.SWIMMING) {
             if (parent.swimSpeed > 1f) {
