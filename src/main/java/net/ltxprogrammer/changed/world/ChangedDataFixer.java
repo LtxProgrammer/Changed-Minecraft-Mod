@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.world;
 
-import kroppeb.stareval.Util;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
