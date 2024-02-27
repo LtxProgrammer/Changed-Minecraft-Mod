@@ -15,20 +15,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
-@Mixin(value = PrimaryLevelData.class, remap = false)
+@Mixin(PrimaryLevelData.class)
 public abstract class PrimaryLevelDataMixin {
     @Shadow @Final private int playerDataVersion;
 
     @Shadow @Nullable private CompoundTag loadedPlayerTag;
 
-    @Inject(method = "hasConfirmedExperimentalWarning", at = @At("RETURN"), cancellable = true)
-    public void hasConfirmedExperimentalWarning(CallbackInfoReturnable<Boolean> callback) {
-        callback.setReturnValue(true);
-    }
-
     @Inject(method = "updatePlayerTag", at = @At("RETURN"))
     private void updateChangedTag(CallbackInfo callback) {
         if (this.playerDataVersion >= SharedConstants.getCurrentVersion().getWorldVersion())
             ChangedDataFixer.updateCompoundTag(DataFixTypes.PLAYER, this.loadedPlayerTag);
+    }
+
+    // FORGE
+
+    @Inject(method = "hasConfirmedExperimentalWarning", at = @At("RETURN"), cancellable = true, remap = false)
+    public void hasConfirmedExperimentalWarning(CallbackInfoReturnable<Boolean> callback) {
+        callback.setReturnValue(true);
     }
 }
