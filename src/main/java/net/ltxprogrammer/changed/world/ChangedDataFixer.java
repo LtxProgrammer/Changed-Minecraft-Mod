@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.world;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.GooType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.Util;
@@ -10,11 +11,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -49,15 +53,25 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("form_white_latex_wolf"), TransfurVariant.PURE_WHITE_GOO_WOLF.getFormId());
     });
 
+    private static final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {
+        map.put("DARK_LATEX", GooType.BLACK_GOO.name());
+        map.put("WHITE_LATEX", GooType.PURE_WHITE_GOO.name());
+    });
+
     private static final HashMap<String, String> TAG_REMAP = Util.make(new HashMap<>(), map -> {
         map.put("LatexVariant", "TransfurVariant");
         map.put("LatexVariantAge", "TransfurVariantAge");
         map.put("LatexAbilities", "TransfurAbilities");
         map.put("LatexData", "TransfurData");
+        map.put("LatexType", "GooType");
     });
 
     private static ResourceLocation updateID(Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
         return remap.getOrDefault(id, id);
+    }
+
+    private static String updateName(Map<String, String> remap, String name) {
+        return remap.getOrDefault(name, name);
     }
 
     private static void updateTagNames(CompoundTag tag) {
@@ -80,8 +94,21 @@ public class ChangedDataFixer {
             tag.putString(idName, updateID(remap, id).toString());
     }
 
+    private static void updateName(Map<String, String> remap, CompoundTag tag, String idName) {
+        if (!tag.contains(idName)) return;
+        final String id = tag.getString(idName);
+        tag.putString(idName, updateName(remap, id));
+    }
+
     private static void updateEntity(CompoundTag entityTag) {
         updateID(ENTITY_ID_REMAP, entityTag, "id");
+    }
+
+    private static void updateBlockEntity(CompoundTag entityTag) {
+        updateTagNames(entityTag);
+        updateID(ENTITY_ID_REMAP, entityTag, "id");
+
+        updateName(ENUM_REMAP, entityTag, "GooType");
     }
 
     private static void updateItemTag(CompoundTag itemTag) {
@@ -116,11 +143,27 @@ public class ChangedDataFixer {
 
             updateID(VARIANT_ID_REMAP, tag, "TransfurVariant");
         });
+        map.put(DataFixTypes.CHUNK, tag -> {
+            if (tag.get("block_entities") instanceof ListTag listTag) {
+                listTag.forEach(entityTag -> {
+                    if (entityTag instanceof CompoundTag compoundTag)
+                        updateBlockEntity(compoundTag);
+                });
+            }
+        });
     });
 
     private static final Consumer<CompoundTag> NULL_OP = tag -> {};
 
     public static void updateCompoundTag(DataFixTypes type, CompoundTag tag) {
         DATA_FIXERS.getOrDefault(type, NULL_OP).accept(tag);
+    }
+
+    public static <T extends Comparable<T>> Optional<T> updateBlockState(Property<T> property, String value) {
+        if (property instanceof EnumProperty<?>) {
+            return property.getValue(updateName(ENUM_REMAP, value.toUpperCase()).toLowerCase());
+        }
+
+        return Optional.empty();
     }
 }

@@ -25,14 +25,14 @@ public class LatexContainerBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putString("LatexType", currentType.name());
+        tag.putString("GooType", currentType.name());
         tag.putByte("FillLevel", fillLevel);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("LatexType")) currentType = GooType.valueOf(tag.getString("LatexType"));
+        if (tag.contains("GooType")) currentType = GooType.valueOf(tag.getString("GooType"));
         if (tag.contains("FillLevel")) fillLevel = tag.getByte("FillLevel");
     }
 
