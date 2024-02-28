@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
+import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -45,5 +46,11 @@ public class DarkLatexWolfPartialRenderer extends LatexHumanoidRenderer<DarkLate
 		else
 			this.model.defaultModelProperties();
 		super.render(latex, p_115456_, p_115457_, p_115458_, bufferSource, p_115460_);
+	}
+
+	@Override
+	protected void scale(DarkLatexWolfPartial entity, PoseStack pose, float partialTick) {
+		float f = 0.9375F;
+		pose.scale(0.9375F, 0.9375F, 0.9375F);
 	}
 }

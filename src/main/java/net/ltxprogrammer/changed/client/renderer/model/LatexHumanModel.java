@@ -62,11 +62,7 @@ public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements L
         Jacket = Torso.getChild("Jacket");
 
         animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
-                .addPreset(AnimatorPresets.wolfLike(
-                        Head, NULL_PART, NULL_PART,
-                        Torso, LeftArm, RightArm,
-                        NULL_PART, List.of(),
-                        LeftLeg, NULL_PART, NULL_PART, NULL_PART, RightLeg, NULL_PART, NULL_PART, NULL_PART));
+                .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
     }
 
     public void defaultModelProperties() {
