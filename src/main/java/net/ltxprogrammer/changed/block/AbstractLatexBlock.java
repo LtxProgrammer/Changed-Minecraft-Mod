@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -47,9 +48,8 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     public static LatexType getLatexed(BlockState blockState) {
         if (blockState.getProperties().contains(COVERED))
             return blockState.getValue(COVERED);
-        for (var type : LatexType.values())
-            if (blockState.is(type.block.get()))
-                return type;
+        if (blockState.getBlock() instanceof AbstractLatexBlock block)
+            return block.latexType;
         return LatexType.NEUTRAL;
     }
 
