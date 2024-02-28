@@ -14,7 +14,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,15 +68,15 @@ public class ChangedDataFixer {
         map.put("LatexType", "GooType");
     });
 
-    private static ResourceLocation updateID(Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
+    private static ResourceLocation updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
         return remap.getOrDefault(id, id);
     }
 
-    private static String updateName(Map<String, String> remap, String name) {
+    private static String updateName(@NotNull Map<String, String> remap, String name) {
         return remap.getOrDefault(name, name);
     }
 
-    private static void updateTagNames(CompoundTag tag) {
+    private static void updateTagNames(@NotNull CompoundTag tag) {
         tag.getAllKeys().stream().toList().forEach(key -> {
             if (TAG_REMAP.containsKey(key)) {
                 final var newKey = TAG_REMAP.get(key);
@@ -87,35 +89,35 @@ public class ChangedDataFixer {
         });
     }
 
-    private static void updateID(Map<ResourceLocation, ResourceLocation> remap, CompoundTag tag, String idName) {
+    private static void updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, @NotNull CompoundTag tag, String idName) {
         if (!tag.contains(idName)) return;
         final ResourceLocation id = ResourceLocation.tryParse(tag.getString(idName));
         if (id != null)
             tag.putString(idName, updateID(remap, id).toString());
     }
 
-    private static void updateName(Map<String, String> remap, CompoundTag tag, String idName) {
+    private static void updateName(@NotNull Map<String, String> remap, @NotNull CompoundTag tag, String idName) {
         if (!tag.contains(idName)) return;
         final String id = tag.getString(idName);
         tag.putString(idName, updateName(remap, id));
     }
 
-    private static void updateEntity(CompoundTag entityTag) {
+    private static void updateEntity(@NotNull CompoundTag entityTag) {
         updateID(ENTITY_ID_REMAP, entityTag, "id");
     }
 
-    private static void updateBlockEntity(CompoundTag entityTag) {
+    private static void updateBlockEntity(@NotNull CompoundTag entityTag) {
         updateTagNames(entityTag);
         updateID(ENTITY_ID_REMAP, entityTag, "id");
 
         updateName(ENUM_REMAP, entityTag, "GooType");
     }
 
-    private static void updateItemTag(CompoundTag itemTag) {
+    private static void updateItemTag(@NotNull CompoundTag itemTag) {
         updateID(VARIANT_ID_REMAP, itemTag, "form");
     }
 
-    private static void updateItem(CompoundTag itemStack) {
+    private static void updateItem(@NotNull CompoundTag itemStack) {
         updateID(ITEM_ID_REMAP, itemStack, "id");
         if (itemStack.contains("tag")) {
             updateItemTag(itemStack.getCompound("tag"));
@@ -155,11 +157,16 @@ public class ChangedDataFixer {
 
     private static final Consumer<CompoundTag> NULL_OP = tag -> {};
 
-    public static void updateCompoundTag(DataFixTypes type, CompoundTag tag) {
+    public static void updateCompoundTag(@NotNull DataFixTypes type, @Nullable CompoundTag tag) {
+        if (tag == null) {
+            Changed.LOGGER.error("Encountered null tag when updating tag for {}", type);
+            return;
+        }
+
         DATA_FIXERS.getOrDefault(type, NULL_OP).accept(tag);
     }
 
-    public static <T extends Comparable<T>> Optional<T> updateBlockState(Property<T> property, String value) {
+    public static <T extends Comparable<T>> Optional<T> updateBlockState(@NotNull Property<T> property, String value) {
         if (property instanceof EnumProperty<?>) {
             return property.getValue(updateName(ENUM_REMAP, value.toUpperCase()).toLowerCase());
         }
