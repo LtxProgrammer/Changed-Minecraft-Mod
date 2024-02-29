@@ -7,8 +7,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.GooHuman;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements AdvancedHumanoidModelInterface<GooHuman, GooHumanModel> {
+public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements LatexHumanoidModelInterface<LatexHuman, LatexHumanModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_human"), "main");
     public static final ModelLayerLocation LAYER_LOCATION_SLIM = new ModelLayerLocation(Changed.modResource("latex_human"), "main_slim");
     private final ModelPart RightLeg;
@@ -41,11 +41,11 @@ public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements Ad
     private final ModelPart Hat;
     private final ModelPart Jacket;
 
-    private final HumanoidAnimator<GooHuman, GooHumanModel> animator;
+    private final LatexAnimator<LatexHuman, LatexHumanModel> animator;
 
     private static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
 
-    public GooHumanModel(ModelPart root) {
+    public LatexHumanModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -61,12 +61,8 @@ public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements Ad
         Hat = Head.getChild("Hat");
         Jacket = Torso.getChild("Jacket");
 
-        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
-                .addPreset(AnimatorPresets.wolfLike(
-                        Head, NULL_PART, NULL_PART,
-                        Torso, LeftArm, RightArm,
-                        NULL_PART, List.of(),
-                        LeftLeg, NULL_PART, NULL_PART, NULL_PART, RightLeg, NULL_PART, NULL_PART, NULL_PART));
+        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
+                .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
     }
 
     public void defaultModelProperties() {
@@ -122,7 +118,7 @@ public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements Ad
     }
 
     @Override
-    public void prepareMobModel(GooHuman p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexHuman p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -131,17 +127,12 @@ public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements Ad
     }
 
     @Override
-    public void setupAnim(@NotNull GooHuman entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull LatexHuman entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
-    }
-
-    public ModelPart getLeg(HumanoidArm p_102852_) {
-        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -163,7 +154,7 @@ public class GooHumanModel extends AdvancedHumanoidModel<GooHuman> implements Ad
     }
 
     @Override
-    public HumanoidAnimator<GooHuman, GooHumanModel> getAnimator() {
+    public LatexAnimator<LatexHuman, LatexHumanModel> getAnimator() {
         return animator;
     }
 }

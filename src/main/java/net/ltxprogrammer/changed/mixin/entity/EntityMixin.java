@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +32,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements Nameable, EntityAccess, CommandSource, net.minecraftforge.common.extensions.IForgeEntity {
@@ -149,6 +152,18 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 }));
             }
         }
+    }
+
+    @Inject(method = "canEnterPose", at = @At("HEAD"), cancellable = true)
+    public void canEnterPose(Pose pose, CallbackInfoReturnable<Boolean> callback) {
+        if (!((Entity)(Object)this instanceof LivingEntity livingEntity)) return;
+
+        ProcessTransfur.getEntityVariant(livingEntity).flatMap(variant -> {
+            if (!variant.hasLegs && livingEntity.isEyeInFluid(FluidTags.WATER)) {
+                return Optional.of(pose == Pose.SWIMMING);
+            } else
+                return Optional.empty();
+        }).ifPresent(callback::setReturnValue);
     }
 
     @Shadow public abstract boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double scale);

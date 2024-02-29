@@ -181,7 +181,8 @@ public abstract class ChangedEntity extends Monster {
         this.eyeStyle = style != null ? style : EyeStyle.V2;
     }
 
-    public abstract Color3 getHairColor(int layer);
+    @Deprecated
+    public Color3 getHairColor(int layer) { return Color3.WHITE; }
 
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {

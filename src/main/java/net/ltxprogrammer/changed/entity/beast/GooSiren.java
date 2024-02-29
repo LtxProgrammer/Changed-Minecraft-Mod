@@ -1,10 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
 import net.ltxprogrammer.changed.ability.SirenSingAbilityInstance;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
@@ -15,12 +14,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GooSiren extends AbstractGenderedGooShark {
+public class LatexSiren extends AbstractAquaticGenderedEntity {
     protected final SirenSingAbilityInstance sing;
 
-    public GooSiren(EntityType<? extends GooSiren> type, Level level) {
+    public LatexSiren(EntityType<? extends LatexSiren> type, Level level) {
         super(type, level);
-        sing = registerAbility(ability -> this.wantToSing(), new SirenSingAbilityInstance(ChangedAbilities.SIREN_SING.get(), IAbstractChangedEntity.forChangedEntity(this)));
+        sing = registerAbility(ability -> this.wantToSing(), new SirenSingAbilityInstance(ChangedAbilities.SIREN_SING.get(), IAbstractLatex.forLatex(this)));
     }
 
     @Override
@@ -57,9 +56,5 @@ public class GooSiren extends AbstractGenderedGooShark {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
         return super.isVisuallySwimming();
-    }
-
-    public Color3 getTransfurColor(TransfurCause cause) {
-        return Color3.getColor("#969696");
     }
 }

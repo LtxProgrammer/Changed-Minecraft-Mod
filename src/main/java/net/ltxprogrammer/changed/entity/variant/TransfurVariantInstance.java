@@ -2,12 +2,15 @@ package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.ability.*;
-import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
-import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.WearableItem;
@@ -16,16 +19,14 @@ import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
-import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -40,7 +41,6 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -52,13 +52,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
-public class TransfurVariantInstance<T extends ChangedEntity> {
-    private final TransfurVariant<T> parent;
+public class LatexVariantInstance<T extends LatexEntity> {
+    private final LatexVariant<T> parent;
     private final T entity;
     private final Player host;
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
@@ -71,72 +72,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
+    protected float lastSwimMul = 1F;
     private boolean dead;
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
 
-    private float transfurProgressionO = 0.0f;
-    public float transfurProgression = 0.0f;
-    public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
-    public boolean willSurviveTransfur = true;
-
-    public CompoundTag save() {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("ageAsVariant", ageAsVariant);
-        tag.putInt("air", air);
-        tag.putInt("jumpCharges", jumpCharges);
-        tag.putBoolean("dead", dead);
-        tag.putInt("ticksBreathingUnderwater", ticksBreathingUnderwater);
-        tag.putInt("ticksWhiteLatex", ticksWhiteLatex);
-
-        tag.putFloat("transfurProgressionO", transfurProgressionO);
-        tag.putFloat("transfurProgression", transfurProgression);
-        tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
-
-        tag.putString("transfurCause", cause.name());
-
-        tag.put("abilities", this.saveAbilities());
-        return tag;
-    }
-
-    public void load(CompoundTag tag) {
-        ageAsVariant = tag.getInt("ageAsVariant");
-        air = tag.getInt("air");
-        jumpCharges = tag.getInt("jumpCharges");
-        dead = tag.getBoolean("dead");
-        ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
-        ticksWhiteLatex = tag.getInt("ticksWhiteLatex");
-
-        final float taggedProgress = tag.getFloat("transfurProgression");
-        if (Mth.abs(transfurProgression - taggedProgress) > 0.5f) { // Prevent sync shudder
-            transfurProgressionO = tag.getFloat("transfurProgressionO");
-            transfurProgression = tag.getFloat("transfurProgression");
-        }
-
-        willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
-
-        cause = TransfurCause.valueOf(tag.getString("transfurCause"));
-
-        this.loadAbilities(tag.getCompound("abilities"));
-    }
-
-    public float getTransfurProgression(float partial) {
-        return Mth.lerp(Mth.positiveModulo(partial, 1.0f), transfurProgressionO, transfurProgression);
-    }
-
-    public float getMorphProgression() {
-        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
-    }
-
-    public float getMorphProgression(float partial) {
-        return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
-    }
-
-    public Color3 getTransfurColor() {
-        return getLatexEntity().getTransfurColor(this.cause);
-    }
-
-    public TransfurVariantInstance(TransfurVariant<T> parent, Player host) {
+    public LatexVariantInstance(LatexVariant<T> parent, Player host) {
         this.parent = parent;
         this.entity = parent.generateForm(host, host.level);
         this.host = host;
@@ -147,7 +88,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         parent.abilities.forEach(abilityFunction -> {
             var ability = abilityFunction.apply(this.parent.getEntityType());
             if (ability != null)
-                builder.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
+                builder.put(ability, ability.makeInstance(IAbstractLatex.forPlayer(host)));
         });
         abilityInstances = builder.build();
         if (abilityInstances.size() > 0)
@@ -156,11 +97,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
-    public static TransfurVariantInstance<?> variantFor(@Nullable TransfurVariant<?> variant, @NotNull Player host) {
-        return variant != null ? new TransfurVariantInstance<>(variant, host) : null;
+    public static LatexVariantInstance<?> variantFor(@Nullable LatexVariant<?> variant, @NotNull Player host) {
+        return variant != null ? new LatexVariantInstance<>(variant, host) : null;
     }
 
-    public TransfurVariant<T> getParent() {
+    public LatexVariant<T> getParent() {
         return parent;
     }
 
@@ -170,10 +111,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public T getLatexEntity() {
         return entity;
-    }
-
-    public Player getHost() {
-        return host;
     }
 
     public <A extends AbstractAbilityInstance> boolean hasAbility(AbstractAbility<A> ability) {
@@ -200,69 +137,32 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     @SubscribeEvent
-    public static void onEntityAttack(LivingAttackEvent event) {
-        if (!(event.getSource() instanceof EntityDamageSource entityDamageSource)) return;
-
-        if (GrabEntityAbility.isEntityNoControl(entityDamageSource.getEntity())) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntityRightClick(PlayerInteractEvent.EntityInteract event) {
-        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
-            event.setCanceled(true);
-            return;
-        }
-
-        ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getItemUseMode().canUseHand(event.getHand()))
-                event.setCanceled(true);
-        });
-    }
-
-    @SubscribeEvent
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
-        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
-            event.setCanceled(true);
-            return;
-        }
-
-        ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getItemUseMode().canUseHand(event.getHand()))
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.canUseHand(event.getHand()))
                 event.setCanceled(true);
         });
     }
 
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
-        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
-            event.setCanceled(true);
-            return;
-        }
-
-        ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getItemUseMode().interactWithBlocks)
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.interactWithBlocks)
                 event.setCanceled(true);
         });
     }
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        if (GrabEntityAbility.isEntityNoControl(event.getPlayer())) {
-            event.setCanceled(true);
-            return;
-        }
-
-        ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getItemUseMode().breakBlocks)
+        ProcessTransfur.ifPlayerLatex(event.getPlayer(), variant -> {
+            if (!variant.getParent().itemUseMode.breakBlocks)
                 event.setCanceled(true);
         });
     }
 
     @SubscribeEvent
     public static void onLivingFallEvent(LivingFallEvent event) {
-        TransfurVariant<?> variant = TransfurVariant.getEntityVariant(event.getEntityLiving());
+        LatexVariant<?> variant = LatexVariant.getEntityVariant(event.getEntityLiving());
         if (variant != null && variant.isReducedFall()) {
             event.setDistance(0.4f * event.getDistance());
         }
@@ -272,22 +172,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public static void onSizeEvent(EntityEvent.Size event) {
         if (event.getEntity() instanceof Player player) {
             if (player.isAddedToWorld()) {
-                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                    ChangedEntity changedEntity = variant.getLatexEntity();
-                    final float morphProgress = variant.getMorphProgression();
+                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                    LatexEntity latexEntity = variant.getLatexEntity();
 
-                    if (morphProgress < 1f) {
-                        final var playerDim = player.getDimensions(event.getPose());
-                        final var latexDim = changedEntity.getDimensions(event.getPose());
-                        float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
-                        float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
-
-                        event.setNewSize(new EntityDimensions(width, height, latexDim.fixed));
-                        event.setNewEyeHeight(Mth.lerp(morphProgress, player.getEyeHeight(event.getPose()), changedEntity.getEyeHeight(event.getPose())));
-                    } else {
-                        event.setNewSize(changedEntity.getDimensions(event.getPose()));
-                        event.setNewEyeHeight(changedEntity.getEyeHeight(event.getPose()));
-                    }
+                    event.setNewSize(latexEntity.getDimensions(event.getPose()));
+                    event.setNewEyeHeight(latexEntity.getEyeHeight(event.getPose()));
                 });
 
                 if (player instanceof PlayerDataExtension extension && extension.getPlayerMover() != null) {
@@ -302,9 +191,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             Pale.tickPaleExposure(event.player);
-            ProcessTransfur.ifPlayerTransfurred(event.player, instance -> {
+            ProcessTransfur.ifPlayerLatex(event.player, instance -> {
                 if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
-                    ProcessTransfur.removePlayerTransfurVariant(event.player);
+                    ProcessTransfur.setPlayerLatexVariant(event.player, null);
                     return;
                 }
 
@@ -323,7 +212,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
-            ProcessTransfur.ifPlayerTransfurred(player, instance -> {
+            ProcessTransfur.ifPlayerLatex(player, instance -> {
                 instance.setDead();
                 instance.unhookAll(player);
             });
@@ -333,9 +222,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     @SubscribeEvent
     public static void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
-            ProcessTransfur.ifPlayerTransfurred(player, instance -> {
+            ProcessTransfur.ifPlayerLatex(player, instance -> {
                 if (instance.isDead())
-                    ProcessTransfur.removePlayerTransfurVariant(player);
+                    ProcessTransfur.setPlayerLatexVariant(player, null);
             });
         }
     }
@@ -381,11 +270,20 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         var dP = player.getDeltaMovement();
         if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
-                float friction = player.getLevel().getBlockState(player.blockPosition().below())
-                        .getFriction(player.getLevel(), player.blockPosition(), player);
+                float friction = EntityUtil.getFrictionOnBlock(player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                mul = Math.max(1.0, mul);
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
+            }
+        } else if (mul < 1f && dP.lengthSqr() > 0.0) {
+            if (player.isOnGround()) {
+                float friction = EntityUtil.getFrictionOnBlock(player);
+                mul = Math.min(1.0, Mth.map(friction, 1.0, 0.6, 0.95, mul));
                 if (Double.isNaN(mul)) {
                     Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
                     mul = 0.0;
@@ -397,7 +295,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public static void syncEntityPosRotWithEntity(LivingEntity set, LivingEntity get) {
-        set.setDeltaMovement(get.getDeltaMovement());
         set.setPos(get.getX(), get.getY(), get.getZ());
         set.setXRot(get.getXRot());
         set.setYRot(get.getYRot());
@@ -422,12 +319,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         set.moveDist = get.moveDist;
     }
 
-    public static void syncEntityAndPlayer(ChangedEntity living, Player player) {
+    public static void syncEntityAndPlayer(LatexEntity living, Player player) {
         living.tickCount = player.tickCount;
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
 
-        living.mirrorLiving(player);
+        living.mirrorPlayer(player);
 
         //Entity stuff
         living.setHealth(living.getMaxHealth() * (player.getHealth() / player.getMaxHealth()));
@@ -453,12 +350,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         specialEntityPlayerSync(living, player);
     }
 
-    private static void specialEntityPlayerSync(ChangedEntity living, Player player) {
+    private static void specialEntityPlayerSync(LatexEntity living, Player player) {
         living.setLeftHanded(player.getMainArm() == HumanoidArm.LEFT);
         living.setAggressive(player.isUsingItem());
     }
 
-    public static void syncInventory(ChangedEntity living, Player player, boolean reset) {
+    public static void syncInventory(LatexEntity living, Player player, boolean reset) {
         for (EquipmentSlot value : EquipmentSlot.values()) {
             boolean shouldReset = reset && (value == EquipmentSlot.MAINHAND || value == EquipmentSlot.OFFHAND);
             if(!ItemStack.isSameIgnoreDurability(living.getItemBySlot(value), shouldReset ? ItemStack.EMPTY : player.getItemBySlot(value))) {
@@ -498,7 +395,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (itemStack.getItem() instanceof WearableItem wearableItem)
             return wearableItem.allowedToKeepWearing(player);
 
-        if (parent == TransfurVariant.DARK_LATEX_PUP)
+        if (parent == LatexVariant.DARK_LATEX_PUP)
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
@@ -522,29 +419,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (player == null) return;
 
         ageAsVariant++;
-
-        transfurProgressionO = transfurProgression;
-        if (transfurProgression < 1f) {
-            transfurProgression += (1.0f / cause.getDuration()) * 0.05f;
-            if (!player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
-                transfurProgressionO = 1f;
-                transfurProgression = 1f;
-            }
-
-            if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
-                willSurviveTransfur = true;
-            }
-
-            if (transfurProgression >= 1f && !willSurviveTransfur) {
-                this.getParent().replaceEntity(player);
-                return;
-            }
-        }
-
-        if (transfurProgression >= 1f) {
-            if (player instanceof ServerPlayer serverPlayer)
-                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
-        }
 
         player.refreshDimensions();
         if (player.isOnGround())
@@ -573,7 +447,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
 
             if (!player.level.isClientSide) {
-                this.entity.setLatexEntityFlag(ChangedEntity.FLAG_IS_FLYING, player.getAbilities().flying);
+                this.entity.setLatexEntityFlag(LatexEntity.FLAG_IS_FLYING, player.getAbilities().flying);
             }
         }
 
@@ -588,12 +462,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         if(!player.level.isClientSide) {
             final double distance = 8D;
-            final double farRunSpeed = 0.5D;
-            final double nearRunSpeed = 0.6666D;
+            final double farRunSpeed = 1.0D;
+            final double nearRunSpeed = 1.2D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator())
+                if (entityClass.isAssignableFrom(AbstractVillager.class) && (parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator()))
                     continue;
+
+                final double speedScale = entityClass.isAssignableFrom(AbstractVillager.class) ? 0.5D : 1.0D;
 
                 List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), Objects::nonNull);
                 for(var v : entitiesScared) {
@@ -609,14 +485,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                             if(path != null)
                             {
                                 double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                                v.getNavigation().moveTo(path, speed);
+                                v.getNavigation().moveTo(path, speed * speedScale);
                             }
                         }
                     }
                     else //the creature is still running away from us
                     {
                         double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                        v.getNavigation().setSpeedModifier(speed);
+                        v.getNavigation().setSpeedModifier(speed * speedScale);
                     }
 
                     if (v.getTarget() == player)
@@ -662,7 +538,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
         }
 
-        else if (player.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == TransfurVariant.BreatheMode.WEAK) {
+        else if (player.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == LatexVariant.BreatheMode.WEAK) {
             //if the player is in water, remove more air
             if (player.isEyeInFluid(FluidTags.WATER)) {
                 int air = player.getAirSupply();
@@ -672,8 +548,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
         }
 
+        if (!parent.hasLegs && player.isEyeInFluid(FluidTags.WATER))
+            player.setPose(Pose.SWIMMING);
+
         // Speed
-        if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
+        if(parent.swimSpeed != 0F && player.getPose() == Pose.SWIMMING) {
             if (parent.swimSpeed > 1f) {
                 var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
                 if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
@@ -682,9 +561,19 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             else {
                 multiplyMotion(player, parent.swimSpeed);
             }
+        } else {
+            var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
+            if (attrib != null && attrib.hasModifier(attributeModifierSwimSpeed))
+                attrib.removePermanentModifier(attributeModifierSwimSpeed.getId());
         }
 
-        if(parent.groundSpeed != 0F && !player.isInWaterOrBubble() && player.isOnGround()) {
+        if (player.isEyeInFluid(FluidTags.WATER) && parent.swimSpeed > 1F) {
+            player.setNoGravity(true);
+        } else if (parent.swimSpeed > 1F) {
+            player.setNoGravity(false);
+        }
+
+        if(parent.groundSpeed != 0F && player.isOnGround()) {
             if (parent.groundSpeed > 1f) {
                 if (!player.isCrouching())
                     multiplyMotion(player, parent.groundSpeed);
@@ -704,17 +593,13 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             instance.getController().tickCoolDown();
         }
 
-        if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
-            getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
-        }
-
         if (selectedAbility != null) {
             var instance = abilityInstances.get(selectedAbility);
             if (instance != null) {
                 var controller = instance.getController();
                 boolean oldState = controller.exchangeKeyState(abilityKeyState);
                 if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
-                    instance.getUseType().check(abilityKeyState, oldState, controller);
+                    selectedAbility.getUseType(IAbstractLatex.forPlayer(player)).check(abilityKeyState, oldState, controller);
             }
         }
 
@@ -776,14 +661,15 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.onUpdateAbilities();
         }
         player.maxUpStep = 0.6F;
+        player.setNoGravity(false);
         player.refreshDimensions();
     }
 
-    public GooType getGooType() {
-        return parent.getGooType();
+    public LatexType getLatexType() {
+        return parent.getLatexType();
     }
 
-    public boolean is(TransfurVariant<?> variant) {
+    public boolean is(LatexVariant<?> variant) {
         return parent.is(variant);
     }
 
@@ -794,24 +680,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
-            var instance = abilityInstances.get(ability);
+            var abstractLatex = IAbstractLatex.forPlayer(this.host);
 
-            if (instance.getUseType() != AbstractAbility.UseType.MENU) {
-                if (this.selectedAbility != ability)
-                    instance.onSelected();
+            if (ability.getUseType(abstractLatex) != AbstractAbility.UseType.MENU)
                 this.selectedAbility = ability;
-            } else {
-                instance.startUsing();
+            else {
+                ability.startUsing(abstractLatex);
                 this.menuAbility = ability;
             }
         }
-    }
-
-    public UseItemMode getItemUseMode() {
-        var instance = getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-        if (instance != null && instance.shouldAnimateArms())
-            return UseItemMode.NONE;
-        else
-            return parent.itemUseMode;
     }
 }

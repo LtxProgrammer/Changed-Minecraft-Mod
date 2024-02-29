@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -9,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GooMermaidShark extends AbstractGenderedGooShark {
-    public GooMermaidShark(EntityType<? extends GooMermaidShark> p_19870_, Level p_19871_) {
+public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
+    public LatexMermaidShark(EntityType<? extends LatexMermaidShark> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
     @Override
@@ -19,8 +21,8 @@ public class GooMermaidShark extends AbstractGenderedGooShark {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override
@@ -42,9 +44,5 @@ public class GooMermaidShark extends AbstractGenderedGooShark {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
         return super.isVisuallySwimming();
-    }
-
-    public Color3 getTransfurColor(TransfurCause cause) {
-        return Color3.getColor("#969696");
     }
 }

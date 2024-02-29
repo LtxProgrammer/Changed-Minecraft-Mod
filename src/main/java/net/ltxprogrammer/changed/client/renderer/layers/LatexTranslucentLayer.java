@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -11,9 +13,10 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
-    private final AdvancedHumanoidModel<T> model;
+public class LatexTranslucentLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
+    private final LatexHumanoidModel<T> model;
     private final ResourceLocation texture;
 
     public LatexTranslucentLayer(RenderLayerParent<T, M> p_174536_, M model, ResourceLocation texture) {
@@ -37,11 +40,16 @@ public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHu
         }
     }
 
-    public AdvancedHumanoidModel<T> getModel() {
+    public LatexHumanoidModel<T> getModel() {
         return model;
     }
 
     public ResourceLocation getTexture() {
         return texture;
+    }
+
+    @Override
+    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
+        FormRenderHandler.renderModelPartWithTexture(model.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(RenderType.entityTranslucent(texture)), packedLight, 1F);
     }
 }

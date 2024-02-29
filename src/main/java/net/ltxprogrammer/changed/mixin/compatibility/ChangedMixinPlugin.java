@@ -15,6 +15,7 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
     private static final Map<String, String> MOD_ID_MAP = new ImmutableMap.Builder<String, String>()
             .put("net.ltxprogrammer.changed.mixin.compatibility.FirstPerson", "firstperson")
             .put("net.ltxprogrammer.changed.mixin.compatibility.HardcoreRevival", "hardcorerevival")
+            .put("net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations", "notenoughanimations")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Oculus", "oculus")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Pehkui", "pehkui")
             .put("net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps", "presencefootsteps")

@@ -9,6 +9,8 @@
   "client": [
     "FirstPerson.FirstPersonBaseMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
+    "NotEnoughAnimations.LatexAnimatorMixin",
+    "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
     "Pehkui.LatexEntityMixin",
     "Pehkui.ScaleTypeMixin",

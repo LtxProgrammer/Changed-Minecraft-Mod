@@ -75,28 +75,28 @@
         ]
       }
     },
-    "changed:black_goo_wolf_female": {
+    "changed:dark_latex_wolf_female": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:black_goo_wolf_female"
+              "type": "changed:dark_latex_wolf_female"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:black_goo_wolf_male": {
+    "changed:dark_latex_wolf_male": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:black_goo_wolf_male"
+              "type": "changed:dark_latex_wolf_male"
             },
             "entity": "this"
           }
@@ -845,42 +845,42 @@
         ]
       }
     },
-    "changed:white_goo_wolf_female": {
+    "changed:light_latex_wolf_female": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:white_goo_wolf_female"
+              "type": "changed:light_latex_wolf_female"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:white_goo_wolf_male": {
+    "changed:light_latex_wolf_male": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:white_goo_wolf_male"
+              "type": "changed:light_latex_wolf_male"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:white_wolf": {
+    "changed:light_latex_wolf_organic": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:white_wolf"
+              "type": "changed:light_latex_wolf_organic"
             },
             "entity": "this"
           }
@@ -915,42 +915,14 @@
         ]
       }
     },
-    "changed:pure_white_goo_wolf": {
+    "changed:white_latex_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:pure_white_goo_wolf"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "changed:phage_latex_wolf_female": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "changed:phage_latex_wolf_female"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "changed:phage_latex_wolf_male": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "changed:phage_latex_wolf_male"
+              "type": "changed:white_latex_wolf"
             },
             "entity": "this"
           }
@@ -972,10 +944,10 @@
       "changed:dark_latex_pup"
     ],
     [
-      "changed:black_goo_wolf_female"
+      "changed:dark_latex_wolf_female"
     ],
     [
-      "changed:black_goo_wolf_male"
+      "changed:dark_latex_wolf_male"
     ],
     [
       "changed:dark_latex_yufeng"
@@ -1137,13 +1109,13 @@
       "changed:light_latex_knight_fusion"
     ],
     [
-      "changed:white_goo_wolf_female"
+      "changed:light_latex_wolf_female"
     ],
     [
-      "changed:white_goo_wolf_male"
+      "changed:light_latex_wolf_male"
     ],
     [
-      "changed:white_wolf"
+      "changed:light_latex_wolf_organic"
     ],
     [
       "changed:milk_pudding"
@@ -1152,13 +1124,7 @@
       "changed:shark"
     ],
     [
-      "changed:pure_white_goo_wolf"
-    ],
-    [
-      "changed:phage_latex_wolf_female"
-    ],
-    [
-      "changed:phage_latex_wolf_male"
+      "changed:white_latex_wolf"
     ]
   ]
 }
