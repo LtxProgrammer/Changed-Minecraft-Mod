@@ -265,14 +265,31 @@ public class TransfurAnimator {
         return a;
     }
 
+    private static float wrapRadians(float angle) {
+        float f = angle % Mth.TWO_PI;
+        if (f >= Mth.PI) {
+            f -= Mth.TWO_PI;
+        }
+
+        if (f < -Mth.PI) {
+            f += Mth.TWO_PI;
+        }
+
+        return f;
+    }
+
+    private static float rotLerp(float lerp, float r0, float r1) {
+        return r0 + lerp * wrapRadians(r1 - r0);
+    }
+
     public static PartPose lerpPartPose(PartPose before, PartPose after, float lerp) {
         return PartPose.offsetAndRotation(
                 Mth.lerp(lerp, before.x, after.x),
                 Mth.lerp(lerp, before.y, after.y),
                 Mth.lerp(lerp, before.z, after.z),
-                Mth.lerp(lerp, before.xRot, after.xRot),
-                Mth.lerp(lerp, before.yRot, after.yRot),
-                Mth.lerp(lerp, before.zRot, after.zRot)
+                rotLerp(lerp, before.xRot, after.xRot),
+                rotLerp(lerp, before.yRot, after.yRot),
+                rotLerp(lerp, before.zRot, after.zRot)
         );
     }
 
