@@ -49,6 +49,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         super(p_20966_, p_20967_);
     }
 
+    @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+        });
+    }
+
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     protected void tryToStartFallFlying(CallbackInfoReturnable<Boolean> ci) {
         Player player = (Player)(Object)this;

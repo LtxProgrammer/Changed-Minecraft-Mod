@@ -96,13 +96,6 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         });
     }
 
-    @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
-    public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
-        });
-    }
-
     @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
         ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {

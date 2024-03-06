@@ -585,7 +585,7 @@ public abstract class LatexEntity extends Monster {
     }
 
     public double getMyRidingOffset() {
-        return -0.4;
+        return -0.475;
     }
 
     protected <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
