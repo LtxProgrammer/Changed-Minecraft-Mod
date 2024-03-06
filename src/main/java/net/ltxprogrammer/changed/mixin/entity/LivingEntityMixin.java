@@ -81,11 +81,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         });
     }
 
-    @Inject(method = "getJumpBoostPower", at = @At("RETURN"), cancellable = true)
-    public void getJumpBoostPower(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), (variant) -> {
-            callback.setReturnValue(callback.getReturnValue() * variant.getParent().jumpStrength);
-        });
+    @Inject(method = "getJumpPower", at = @At("RETURN"), cancellable = true)
+    public void getJumpPower(CallbackInfoReturnable<Float> callback) {
+        ProcessTransfur.getEntityVariant((LivingEntity)(Object)this).map(variant -> callback.getReturnValue() * variant.jumpStrength).ifPresent(callback::setReturnValue);
     }
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)

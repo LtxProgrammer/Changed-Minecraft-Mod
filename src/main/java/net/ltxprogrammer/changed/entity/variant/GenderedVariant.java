@@ -71,6 +71,10 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.swimSpeed = factor; this.femaleBuilder.swimSpeed = factor; return this;
         }
 
+        public Builder<M, F> jumpStrength(float factor) {
+            this.maleBuilder.jumpStrength = factor; this.femaleBuilder.jumpStrength = factor; return this;
+        }
+
         public Builder<M, F> gills() {
             return gills(false);
         }
