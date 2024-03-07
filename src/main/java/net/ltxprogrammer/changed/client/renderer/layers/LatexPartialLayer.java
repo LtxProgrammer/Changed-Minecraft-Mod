@@ -3,10 +3,13 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,6 +29,18 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
         this.texture = texture;
     }
 
+    public void prepareMobModel(T entity, float partialTicks) {
+        if (ChangedCompatibility.isFirstPersonRendering()) {
+            model.getHead().visible = false;
+            model.getTorso().visible = !entity.isVisuallySwimming();
+        }
+
+        else {
+            model.getHead().visible = true;
+            model.getTorso().visible = true;
+        }
+    }
+
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Minecraft minecraft = Minecraft.getInstance();
         boolean flag = minecraft.shouldEntityAppearGlowing(entity) && entity.isInvisible();
@@ -37,6 +52,7 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
                 vertexconsumer = bufferSource.getBuffer(renderType());
             }
 
+            this.prepareMobModel(entity, partialTicks);
             this.model.getAnimator().setupVariables(entity, partialTicks);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.model.renderToBuffer(pose, vertexconsumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
