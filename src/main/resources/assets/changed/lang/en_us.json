@@ -29,6 +29,7 @@
   "subtitles.changed.close3": "Lab door closes",
   "subtitles.changed.chime2": "Keypad grants access",
   "subtitles.changed.buzzer1": "Keypad denies access",
+  "subtitles.changed.crash": "Container breaks",
   "subtitles.changed.equip3": "Shorts rustle",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.ice2": "Crystal extends",
