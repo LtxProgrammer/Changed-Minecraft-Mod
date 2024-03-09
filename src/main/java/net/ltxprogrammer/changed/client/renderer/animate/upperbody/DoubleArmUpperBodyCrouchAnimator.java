@@ -37,7 +37,7 @@ public class DoubleArmUpperBodyCrouchAnimator<T extends LatexEntity, M extends E
         lowerRightArm.xRot += 0.55F;
         lowerLeftArm.xRot += 0.55F;
 
-        torso.y = Mth.lerp(core.ageLerp, 3.2f, 4.0f) + core.hipOffset + (12.0f - core.legLength);
+        torso.y = Mth.lerp(core.ageLerp, 3.2f, 4.0f) + core.calculateTorsoPositionY();
         head.y = torso.y + 0.5f;
         upperLeftArm.y = torso.y + 2.25f;
         upperRightArm.y = torso.y + 2.25f;

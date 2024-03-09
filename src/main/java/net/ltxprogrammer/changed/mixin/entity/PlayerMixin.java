@@ -49,6 +49,13 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         super(p_20966_, p_20967_);
     }
 
+    @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
+    public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+        });
+    }
+
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     protected void tryToStartFallFlying(CallbackInfoReturnable<Boolean> ci) {
         Player player = (Player)(Object)this;
@@ -93,6 +100,14 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
             ci.setReturnValue(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.slime_block.step")));
             ci.cancel();
         }
+    }
+
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    public void orNotHurt(DamageSource p_36154_, float p_36155_, CallbackInfoReturnable<Boolean> cir) {
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+            if (variant.ageAsVariant < 30)
+                cir.cancel();
+        });
     }
 
     // ADDITIONAL DATA

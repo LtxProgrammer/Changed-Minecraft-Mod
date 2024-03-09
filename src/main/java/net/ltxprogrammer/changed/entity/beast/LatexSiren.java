@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSiren extends AbstractGenderedLatexShark {
+public class LatexSiren extends AbstractAquaticGenderedEntity {
     protected final SirenSingAbilityInstance sing;
 
     public LatexSiren(EntityType<? extends LatexSiren> type, Level level) {

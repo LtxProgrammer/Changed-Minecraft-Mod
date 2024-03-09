@@ -114,7 +114,7 @@ public abstract class AbstractAquaticEntity extends LatexEntity implements Aquat
 
     public void updateSwimming() {
         if (!this.level.isClientSide) {
-            if (this.isInWater() && !this.isOnGround()) {
+            if (this.isInWater() && this.isEyeInFluid(FluidTags.WATER)) {
                 if (!this.wantsToSwim() && !this.level.getBlockState(this.blockPosition().above()).getFluidState().is(FluidTags.WATER)) {
                     if (this.isEffectiveAi())
                         this.navigation = this.groundNavigation;

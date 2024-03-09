@@ -24,6 +24,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -173,7 +174,8 @@ public abstract class LatexEntity extends Monster {
         this.eyeStyle = style != null ? style : EyeStyle.V2;
     }
 
-    public abstract Color3 getHairColor(int layer);
+    @Deprecated
+    public Color3 getHairColor(int layer) { return Color3.WHITE; }
 
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
@@ -571,12 +573,19 @@ public abstract class LatexEntity extends Monster {
         });
     }
 
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (this.tickCount < 30)
+            return false; //
+        return super.hurt(source, amount);
+    }
+
     public double getPassengersRidingOffset() {
         return this.isCrouching() ? -0.4 : 0.0;
     }
 
     public double getMyRidingOffset() {
-        return -0.4;
+        return -0.475;
     }
 
     protected <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexOtterModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexOtterModel;
 import net.ltxprogrammer.changed.entity.beast.LatexOtter;
@@ -11,6 +12,7 @@ public class LatexOtterRenderer extends LatexHumanoidRenderer<LatexOtter, LatexO
     public LatexOtterRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexOtterModel(context.bakeLayer(LatexOtterModel.LAYER_LOCATION)),
                 ArmorLatexOtterModel::new, ArmorLatexOtterModel.INNER_ARMOR, ArmorLatexOtterModel.OUTER_ARMOR, 0.5f);
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

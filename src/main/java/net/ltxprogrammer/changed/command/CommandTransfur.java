@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.command;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -49,6 +50,12 @@ public class CommandTransfur {
                         .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_LATEX_FORMS)
                                 .executes(context -> transfurPlayer(context.getSource(), EntityArgument.getPlayer(context, "player"), ResourceLocationArgument.getId(context, "form")))
                         )));
+        event.getDispatcher().register(Commands.literal("progresstransfur").requires(p -> p.hasPermission(2))
+                .then(Commands.argument("player", EntityArgument.player())
+                        .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_LATEX_FORMS)
+                                .then(Commands.argument("progression", FloatArgumentType.floatArg(0.0f))
+                                        .executes(context -> progressPlayerTransfur(context.getSource(), EntityArgument.getPlayer(context, "player"), ResourceLocationArgument.getId(context, "form"), FloatArgumentType.getFloat(context, "progression")))
+                                ))));
         event.getDispatcher().register(Commands.literal("untransfur").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> untransfurPlayer(context.getSource(), EntityArgument.getPlayer(context, "player")))
@@ -72,14 +79,33 @@ public class CommandTransfur {
             throw USED_BY_OTHER_MOD.create();
 
         if (LatexVariant.PUBLIC_LATEX_FORMS.contains(form)) {
-            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(form), true);
+            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(form));
         }
         else if (form.equals(LatexVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!LatexVariant.SPECIAL_LATEX_FORMS.contains(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(key), true);
+            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(key));
+        }
+        else
+            throw NOT_LATEX_FORM.create();
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int progressPlayerTransfur(CommandSourceStack source, ServerPlayer player, ResourceLocation form, float progression) throws CommandSyntaxException {
+        if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
+            throw USED_BY_OTHER_MOD.create();
+
+        if (LatexVariant.PUBLIC_LATEX_FORMS.contains(form)) {
+            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.LATEX_VARIANT.get().getValue(form));
+        }
+        else if (form.equals(LatexVariant.SPECIAL_LATEX)) {
+            ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
+            if (!LatexVariant.SPECIAL_LATEX_FORMS.contains(key))
+                throw NO_SPECIAL_FORM.create();
+
+            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.LATEX_VARIANT.get().getValue(key));
         }
         else
             throw NOT_LATEX_FORM.create();

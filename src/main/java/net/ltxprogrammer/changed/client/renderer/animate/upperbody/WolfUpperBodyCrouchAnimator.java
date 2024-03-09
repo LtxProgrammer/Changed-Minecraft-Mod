@@ -27,7 +27,7 @@ public class WolfUpperBodyCrouchAnimator<T extends LatexEntity, M extends Entity
         rightArm.xRot += 0.3F;
         leftArm.xRot += 0.3F;
 
-        torso.y = Mth.lerp(core.ageLerp, 3.2f, 4.0f) + core.hipOffset + (12.0f - core.legLength);
+        torso.y = Mth.lerp(core.ageLerp, 3.2f, 4.0f) + core.calculateTorsoPositionY();
         head.y = torso.y + 0.5f;
         leftArm.y = torso.y + 2.25f;
         rightArm.y = torso.y + 2.25f;

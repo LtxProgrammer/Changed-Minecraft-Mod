@@ -1,10 +1,12 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -88,19 +91,21 @@ public class Computer extends AbstractCustomShapeBlock {
 
     private static final Component CONTAINER_TITLE = new TranslatableComponent("container.changed.computer");
 
-    public static boolean tryUseDisk(@Nullable Player p_153567_, Level p_153568_, BlockPos p_153569_, BlockState p_153570_, ItemStack p_153571_) {
-        if (p_153567_ != null) {
-            p_153567_.openMenu(p_153570_.getMenuProvider(p_153568_, p_153569_));
+    public static boolean tryUseDisk(@Nullable Player player, Level level, BlockPos blockPos, BlockState state, ItemStack item) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            NetworkHooks.openGui(serverPlayer, getMenuProvider(item), extra -> {
+                extra.writeUtf(item.getOrCreateTag().getString("Text"));
+                extra.writeInt(player.getInventory().findSlotMatchingItem(item));
+            });
             return true;
         }
 
         return false;
     }
 
-    @Override
-    public MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
-        return new SimpleMenuProvider((p_52229_, inventory, player) -> {
-            return new ComputerMenu(p_52229_, inventory, null).setDisk(player.getItemInHand(player.getUsedItemHand()));
+    public static MenuProvider getMenuProvider(ItemStack item) {
+        return new SimpleMenuProvider((id, inventory, player) -> {
+            return new ComputerMenu(id, inventory, item);
         }, CONTAINER_TITLE);
     }
 }

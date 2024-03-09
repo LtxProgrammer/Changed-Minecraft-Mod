@@ -78,13 +78,20 @@ public class LatexParticleEngine implements PreparableReloadListener {
         particles.computeIfAbsent(particle.getRenderType(), type -> new ArrayList<>()).add(particle);
     }
 
-    public void tick() {
+    private long lastLevelTick = -1;
+    public boolean tick() {
         if (this.minecraft.level == null) {
             particles.clear();
+            return false;
         }
 
         if (pauseForReload())
-            return;
+            return false;
+
+        if (this.minecraft.level.getGameTime() == lastLevelTick)
+            return false;
+        lastLevelTick = this.minecraft.level.getGameTime();
+        // Only proceed with particles tick if the level ticked
 
         for (var particleSet : particles.values())
             for (var particle : particleSet)
@@ -93,6 +100,8 @@ public class LatexParticleEngine implements PreparableReloadListener {
         particles.values().forEach(particleSet -> {
             particleSet.removeIf(LatexParticle::shouldExpire);
         });
+
+        return true;
     }
 
     public void purgeParticles() {

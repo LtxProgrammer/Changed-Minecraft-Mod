@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -20,5 +21,6 @@ public abstract class HumanoidMobRendererMixin<T extends Mob, M extends Humanoid
     @Inject(method = "<init>(Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;Lnet/minecraft/client/model/HumanoidModel;FFFF)V", at = @At("RETURN"))
     public void PlayerRenderer(EntityRendererProvider.Context context, M p_174174_, float p_174175_, float p_174176_, float p_174177_, float p_174178_, CallbackInfo callback) {
         this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
+        this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
     }
 }

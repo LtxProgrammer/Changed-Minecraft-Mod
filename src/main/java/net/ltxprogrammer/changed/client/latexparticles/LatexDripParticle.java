@@ -6,7 +6,6 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -16,7 +15,6 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -60,7 +58,15 @@ public class LatexDripParticle extends LatexParticle {
     protected final Color3 color;
     protected final float alpha;
     private boolean attached = true;
-    private boolean prepped = false;
+    private boolean wasPreppedWhenDetached = false;
+    private boolean preppedForRender = false;
+    private boolean preppedForTick = false;
+
+    public boolean shouldRender() {
+        return attached ?
+                this.preppedForRender :
+                this.wasPreppedWhenDetached;
+    }
 
     public LatexDripParticle(SpriteSet spriteSet,
                              LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
@@ -85,7 +91,10 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     public void detach() {
-        this.attached = false;
+        if (this.attached) {
+            this.attached = false;
+            this.wasPreppedWhenDetached = this.preppedForTick;
+        }
     }
 
     @Override
@@ -107,7 +116,7 @@ public class LatexDripParticle extends LatexParticle {
             this.sprite = spriteSet.get(2, 3);
         }
 
-        if (ticksAttached > maxTicksAttached)
+        if (attached && ticksAttached > maxTicksAttached)
             detach();
         
         if (!attached) { // Gravity
@@ -132,6 +141,8 @@ public class LatexDripParticle extends LatexParticle {
                 this.zd *= 0.7F;
             }
         }
+
+        this.preppedForTick = false;
     }
     
     public void move(double xd, double yd, double zd) {
@@ -179,6 +190,8 @@ public class LatexDripParticle extends LatexParticle {
 
     @Override
     public void onCollide() {
+        if (!shouldRender())
+            return; // No sound
         Player localPlayer = UniversalDist.getLocalPlayer();
         level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP, ProcessTransfur.isPlayerLatex(localPlayer) ? SoundSource.NEUTRAL : SoundSource.HOSTILE, 0.025f, 1.0f, true);
     }
@@ -235,7 +248,8 @@ public class LatexDripParticle extends LatexParticle {
         yo = y;
         zo = z;
 
-        prepped = true;
+        preppedForRender = true;
+        preppedForTick = true;
     }
 
     @Override
@@ -284,9 +298,9 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
-        if (attached && !prepped)
+        if (!shouldRender())
             return; // No render
-        prepped = false;
+        preppedForRender = false;
 
         Vec3 vec3 = camera.getPosition();
         float lerpX = (float)(Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
