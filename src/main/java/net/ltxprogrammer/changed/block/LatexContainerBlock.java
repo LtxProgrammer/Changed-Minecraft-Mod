@@ -35,6 +35,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -232,6 +233,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     protected void falling(FallingBlockEntity blockEntity) {
+        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> blockEntity), CustomFallable.updateBlockData(blockEntity));
     }
 
     protected int getDelayAfterPlace() {
