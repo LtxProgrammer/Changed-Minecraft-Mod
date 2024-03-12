@@ -53,6 +53,7 @@
   "item.changed.dark_latex_mask": "Maska z ciemnego latexu",
   "item.changed.dark_latex_bucket": "Wiadro z ciemnym latexem",
   "item.changed.compact_disc": "Płyta CD",
+  "item.changed.gas_mask": "Maska przeciwgazowa",
   "item.changed.lab_book": "Książka laboratoryjna",
   "item.changed.latex_base": "Baza latexu",
   "item.changed.latex_beifeng_crystal_fragment": "Kawałek kryształu Beifengowego ciemnego latexu",
@@ -303,6 +304,8 @@
   "entity.changed.latex_crystal_wolf": "Kryształowy wilk",
   "entity.changed.latex_crystal_wolf_horned": "Rogaty kryształowy wilk",
   "entity.changed.latex_deer": "Latexowy jeleń",
+  "entity.changed.latex_fennec_fox": "Latexowy fenek",
+  "entity.changed.latex_human": "Latexowy człowiek",
   "entity.changed.latex_hypno_cat": "Latexowy Hipno Kot",
   "entity.changed.latex_keon_wolf": "Latexowy keon",
   "entity.changed.latex_leaf": "Latexowy liść",
@@ -348,6 +351,8 @@
   "entity.changed.light_latex_wolf_organic": "Organiczny jasny wilk",
   "entity.changed.shark": "Rekin",
   "entity.changed.white_latex_wolf": "Biały latexowy wilk",
+  "entity.changed.phage_latex_wolf_female": "Źeński Fagowy Latexowy Wilk",
+  "entity.changed.phage_latex_wolf_male": "Męski Fagowy Latexowy Wilk",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Jajo przyzywające gazowego wilka",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Jajo przyzywające żeńskiego wilka z ciemnego latexu",
@@ -367,6 +372,7 @@
   "item.changed.latex_crystal_wolf_spawn_egg": "Jajo przyzywające kryształowego wilka",
   "item.changed.latex_crystal_wolf_horned_spawn_egg": "Jajo przyzywające rogatego kryształowego wilka",
   "item.changed.latex_deer_spawn_egg": "Jajo przyzywające latexowego jelenia",
+  "item.changed.latex_fennec_fox_spawn_egg": "jajo przyzywające latexowego fenka",
   "item.changed.latex_hypno_cat_spawn_egg": "Jajo przyzywające latexowego Hipno Kota",
   "item.changed.latex_keon_wolf_spawn_egg": "Jajo przyzywające latexowego Keona",
   "item.changed.latex_leaf_spawn_egg": "Jajo przyzywające latexowy liść",
@@ -412,6 +418,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Jajo przyzywające jasnego latexowego wilka",
   "item.changed.shark_spawn_egg": "Jajo przyzywające rekina",
   "item.changed.white_latex_wolf_spawn_egg": "Jajo przyzywające białego latexowego wilka",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "jajo pryzywające źeńskiego fagowego latexowego wilka",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "jajo przyzywające męskiego fagowego latexowego wilka",
 
   "changed.patreon.level0": "Członek discorda",
   "changed.patreon.level1": "Tier 1",
@@ -486,8 +494,8 @@
 
   "changed:advancements.main.tame_a_latex.title": "Niemożliwe stało się możliwym",
   "changed:advancements.main.tame_a_latex.description": "oswój latexową bestię",
+  
   "changed:advancements.main.kill_all_latex.title": "Srebro na potwory,a łom na latex",
-
   "changed:advancements.main.kill_all_latex.description": "pokonaj każdy rodzaj latexowej bestii",
 
   "changed.tutorial.select_ability.title": "Wybierz umiejętność",
