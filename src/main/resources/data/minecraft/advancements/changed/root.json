@@ -16,16 +16,22 @@
     "background": "changed:textures/blocks/dark_latex_block_side.png"
   },
   "criteria": {
-    "know_syringe": {
-      "trigger": "minecraft:recipe_unlocked",
+    "has_latex_syringe": {
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "recipe": "changed:syringe"
+        "items": [
+          {
+            "items": [
+              "changed:latex_syringe"
+            ]
+          }
+        ]
       }
     }
   },
   "requirements": [
     [
-      "know_syringe"
+      "has_latex_syringe"
     ]
   ]
 }
