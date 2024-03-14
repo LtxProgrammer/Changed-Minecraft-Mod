@@ -25,6 +25,7 @@ public class BasicPlayerInfo {
             new Color3(0.98f, 0.85f, 0.48f), // Blond
             new Color3(0.77f, 0.49f, 0.28f), // Dirty Blond
             new Color3(0.36f, 0.28f, 0.26f), // Brown
+            new Color3(0.39f, 0.40f, 0.40f), // Gray
             new Color3(0.63f, 0.26f, 0.15f), // Light-Brown
             new Color3(0.53f, 0.22f, 0.26f), // Dark-Red
             new Color3(0.08f, 0.08f, 0.08f), // Dark-Black
@@ -36,14 +37,19 @@ public class BasicPlayerInfo {
             new Color3(0.47f, 0.54f, 0.95f), // Blurple
             new Color3(0.0f, 1.0f, 0.25f), // Lime-Green
             new Color3(0.44f, 0.85f, 0.0f), // Green
+            new Color3(0.14f, 0.90f, 0.64f), // Mint-Green
+            new Color3(0.12f, 0.74f, 0.74f), // Cyan
             new Color3(0.38f, 0.22f, 0.14f), // Brown
+            new Color3(0.64f, 0.70f, 0.54f), // Hazel
             new Color3(1.0f, 0.76f, 0.0f), // Dark-Yellow
             new Color3(1.0f, 0.92f, 0.01f), // Yellow
             new Color3(1.0f, 0.63f, 0.0f), // Orange
+            new Color3(0.82f, 0.31f, 0.16f), // Dark-Orange
             new Color3(0.85f, 0.0f, 1.0f), // Purple
             new Color3(1.0f, 0.0f, 0.4f), // Pink
             new Color3(1.0f, 0.15f, 0.0f), // Light-Red
-            new Color3(0.88f, 0.07f, 0.0f) // Red
+            new Color3(0.88f, 0.07f, 0.0f), // Red
+            new Color3(0.75f, 0.55f, 0.90f) // Lavender
     );
 
     public BasicPlayerInfo() {}
