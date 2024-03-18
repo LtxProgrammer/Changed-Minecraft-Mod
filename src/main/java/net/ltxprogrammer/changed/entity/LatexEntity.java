@@ -370,7 +370,7 @@ public abstract class LatexEntity extends Monster {
         if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
             return false;
 
-        if ((livingEntity.hasEffect(MobEffects.INVISIBILITY) || livingEntity.isInvisible()) && !livingEntity.isCurrentlyGlowing())
+        if (livingEntity.getVehicle() instanceof SeatEntity seat && seat.shouldSeatedBeInvisible())
             return false;
 
         for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS) {
