@@ -45,6 +45,7 @@
     "client.ClientLevelMixin",
     "client.ForgeHooksClientMixin",
     "client.OptionsMixin",
+    "client.SkinManagerMixin",
     "client.TutorialMixin",
     "entity.LocalPlayerMixin",
     "gui.AbstractContainerScreenMixin",

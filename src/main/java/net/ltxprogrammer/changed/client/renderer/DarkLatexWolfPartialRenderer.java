@@ -26,10 +26,11 @@ public class DarkLatexWolfPartialRenderer extends LatexHumanoidRenderer<DarkLate
 		super(context, DarkLatexWolfPartialModel.human(context.bakeLayer(
 				slim ? DarkLatexWolfPartialModel.LAYER_LOCATION_HUMAN_SLIM : DarkLatexWolfPartialModel.LAYER_LOCATION_HUMAN)),
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
-		this.addLayer(new LatexPartialLayer<>(this, DarkLatexWolfPartialModel.latex(
+		var partialModel = new LatexPartialLayer<>(this, DarkLatexWolfPartialModel.latex(
 				context.bakeLayer(slim ? DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX_SLIM : DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX)),
-				slim ? Changed.modResource("textures/dark_latex_wolf_partial_slim.png") : Changed.modResource("textures/dark_latex_wolf_partial.png")));
-		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+				slim ? Changed.modResource("textures/dark_latex_wolf_partial_slim.png") : Changed.modResource("textures/dark_latex_wolf_partial.png"));
+		this.addLayer(partialModel);
+		this.addLayer(new LatexParticlesLayer<>(this).addModel(partialModel.getModel(), entity -> partialModel.getTexture()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}

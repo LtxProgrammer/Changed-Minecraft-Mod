@@ -16,7 +16,7 @@ public class LatexBeeRenderer extends LatexHumanoidRenderer<LatexBee, LatexBeeMo
         var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_bee_translucent.png"));
         this.addLayer(translucent);
         this.addLayer(new LatexDoubleItemInHandLayer<>(this));
-        this.addLayer(new LatexParticlesLayer<>(this, getModel(), translucent));
+        this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
                 CustomEyesLayer::irisColorLeft, CustomEyesLayer::irisColorRight));
