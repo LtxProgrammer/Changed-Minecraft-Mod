@@ -34,7 +34,7 @@ public class LatexSquidDogFemaleRenderer extends LatexHumanoidRenderer<LatexSqui
 
     @Override
     protected void scale(LatexSquidDogFemale entity, PoseStack pose, float partialTick) {
-        float f = 1.1075F;
+        float f = 1.0525F;
         pose.scale(1.0525F, 1.0525F, 1.0525F);
     }
 }
