@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexFemaleSquidDogModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
-import net.ltxprogrammer.changed.entity.beast.LatexSquidDogMale;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

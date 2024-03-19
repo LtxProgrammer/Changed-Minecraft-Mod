@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexDoubleItemInHandLay
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSquidDogMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleSquidDogModel;
-import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogMale;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
