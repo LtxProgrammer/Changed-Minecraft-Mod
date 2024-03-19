@@ -452,6 +452,10 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         if (entity instanceof Mob mob) {
+            newEntity.setNoAi(mob.isNoAi());
+        }
+
+        if (entity instanceof Mob mob) {
             newEntity.setLeftHanded(mob.isLeftHanded());
         }
 

@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -429,6 +430,7 @@ public abstract class LatexEntity extends Monster {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 7.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LatexEntity.class, 7.0F, 0.2F));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Villager.class, 7.0F, 0.2F));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
         if (this instanceof PowderSnowWalkable)
