@@ -535,6 +535,8 @@
   "changed.config.bpi.iris_color.sync_tooltip": "Sincroniza a cor da íris esquerda com a cor da íris direita",
   "changed.config.bpi.sclera_color": "Cor da esclera",
   "changed.config.bpi.eye_style": "Estilo de olho: %s",
+  "changed.config.bpi.size": "Tamanho Do Modelo",
+  "changed.config.bpi.size.value": "Tamanho: %s%%",
   "changed.config.bpi.override_dl_iris": "Substituir cor da íris em variantes de látex escuro",
   "changed.config.bpi.override_all_eye_styles": "Substituir todos os estilos de olhos para corresponder"
 }
