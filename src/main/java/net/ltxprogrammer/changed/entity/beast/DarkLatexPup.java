@@ -169,8 +169,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     }
 
     protected void applyCustomizeToAged(AbstractDarkLatexEntity aged) {
+        aged.setTame(this.isTame());
         aged.setOwnerUUID(this.getOwnerUUID());
+        aged.setFollowOwner(this.isFollowingOwner());
         aged.setCustomName(this.getCustomName());
+        aged.getBasicPlayerInfo().copyFrom(this.getBasicPlayerInfo());
         aged.setUnderlyingPlayer(this.getUnderlyingPlayer());
     }
 
