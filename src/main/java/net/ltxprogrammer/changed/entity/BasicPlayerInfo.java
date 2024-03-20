@@ -67,7 +67,7 @@ public class BasicPlayerInfo {
         info.irisRightColor = random.nextFloat() > 0.05f ? info.irisLeftColor : Util.getRandom(IRIS_COLORS, random); // 5% for dichrome eyes
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         info.overrideOthersToMatchStyle = false;
-        info.size = (random.nextFloat() * random.nextFloat() * (random.nextBoolean() ? SIZE_TOLERANCE : -SIZE_TOLERANCE)) + 1.0f;
+        info.size = (random.nextFloat() * (random.nextBoolean() ? SIZE_TOLERANCE : -SIZE_TOLERANCE)) + 1.0f;
         return info;
     }
 
