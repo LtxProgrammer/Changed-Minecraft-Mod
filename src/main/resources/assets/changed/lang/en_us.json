@@ -535,6 +535,8 @@
   "changed.config.bpi.iris_color.sync_tooltip": "Syncs the Left Iris color to the Right Iris color",
   "changed.config.bpi.sclera_color": "Sclera Color",
   "changed.config.bpi.eye_style": "Eye Style: %s",
+  "changed.config.bpi.size": "Model Size",
+  "changed.config.bpi.size.value": "Size: %s%%",
   "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",
   "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match"
 }

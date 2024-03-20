@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This is basic info about the player, that they set. Currently, it is just colors for eyes, and maybe hair for latex variants.
+ * This is basic info about the player, that they set.
  */
 public class BasicPlayerInfo {
+    public static final float SIZE_TOLERANCE = 0.05f;
+
     // Default values here are based on Colin's properties
     // When the player is TF'd these values will copy over to the latex representative
     private Color3 hairColor = new Color3(0.36f, 0.28f, 0.26f);
@@ -20,6 +22,7 @@ public class BasicPlayerInfo {
     private boolean overrideIrisOnDarkLatex = false;
     private EyeStyle eyeStyle = EyeStyle.V2;
     private boolean overrideOthersToMatchStyle = false;
+    private float size = 1.0f;
 
     public static final List<Color3> HAIR_COLORS = List.of(
             new Color3(0.98f, 0.85f, 0.48f), // Blond
@@ -64,6 +67,7 @@ public class BasicPlayerInfo {
         info.irisRightColor = random.nextFloat() > 0.05f ? info.irisLeftColor : Util.getRandom(IRIS_COLORS, random); // 5% for dichrome eyes
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         info.overrideOthersToMatchStyle = false;
+        info.size = (random.nextFloat() * random.nextFloat() * (random.nextBoolean() ? SIZE_TOLERANCE : -SIZE_TOLERANCE)) + 1.0f;
         return info;
     }
 
@@ -95,6 +99,10 @@ public class BasicPlayerInfo {
         this.eyeStyle = eyeStyle;
     }
 
+    public void setSize(float size) {
+        this.size = size;
+    }
+
     public Color3 getHairColor() {
         return hairColor;
     }
@@ -123,6 +131,14 @@ public class BasicPlayerInfo {
         return eyeStyle;
     }
 
+    public float getSize() {
+        return size;
+    }
+
+    public double getSizeValueForConfiguration() {
+        return (size - 1.0f + SIZE_TOLERANCE) / (SIZE_TOLERANCE * 2);
+    }
+
     public void copyFrom(BasicPlayerInfo other) {
         var tag = new CompoundTag();
         other.save(tag);
@@ -137,6 +153,7 @@ public class BasicPlayerInfo {
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
         tag.putInt("eyeStyle", eyeStyle.ordinal());
         tag.putBoolean("overrideOthersToMatchStyle", overrideOthersToMatchStyle);
+        tag.putFloat("scale", size);
     }
 
     public void load(CompoundTag tag) {
@@ -152,5 +169,7 @@ public class BasicPlayerInfo {
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
         this.eyeStyle = EyeStyle.values()[tag.getInt("eyeStyle")];
         this.overrideOthersToMatchStyle = tag.getBoolean("overrideOthersToMatchStyle");
+        if (tag.contains("scale"))
+            this.size = tag.getFloat("scale");
     }
 }

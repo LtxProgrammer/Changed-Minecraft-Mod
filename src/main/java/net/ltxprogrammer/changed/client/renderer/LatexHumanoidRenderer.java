@@ -2,11 +2,11 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -74,7 +74,14 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
         return true;
     }
 
+    protected void scaleForBPI(BasicPlayerInfo bpi, PoseStack poseStack) {
+        float forcedLimit = Mth.clamp(bpi.getSize(), 1.0f - BasicPlayerInfo.SIZE_TOLERANCE, 1.05f + BasicPlayerInfo.SIZE_TOLERANCE);
+        poseStack.scale(forcedLimit, forcedLimit, forcedLimit);
+    }
+
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
+        this.scaleForBPI(entity.getBasicPlayerInfo(), poseStack);
+
         float swimAmount = entity.getSwimAmount(partialTicks);
         boolean upright = isEntityUprightType(entity);
         if (upright && entity.isFallFlying()) {
