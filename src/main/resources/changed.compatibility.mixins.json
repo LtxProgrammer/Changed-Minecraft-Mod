@@ -8,6 +8,8 @@
   "mixins": [],
   "client": [
     "HardcoreRevival.KnockoutHandlerMixin",
+    "Moonlight.AbstractUpperBodyAnimatorMixin",
+    "Moonlight.LatexItemInHandLayerMixin",
     "NotEnoughAnimations.LatexAnimatorMixin",
     "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
