@@ -79,14 +79,14 @@ public class CommandTransfur {
             throw USED_BY_OTHER_MOD.create();
 
         if (LatexVariant.PUBLIC_LATEX_FORMS.contains(form)) {
-            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(form));
+            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(form), true);
         }
         else if (form.equals(LatexVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!LatexVariant.SPECIAL_LATEX_FORMS.contains(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(key));
+            ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.LATEX_VARIANT.get().getValue(key), true);
         }
         else
             throw NOT_LATEX_FORM.create();
