@@ -83,7 +83,7 @@ public abstract class LatexEntity extends Monster {
     }
 
     public float getTailDragAmount(float partialTicks) {
-        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+        return Mth.lerp(partialTicks, tailDragAmountO, tailDragAmount);
     }
 
     public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {

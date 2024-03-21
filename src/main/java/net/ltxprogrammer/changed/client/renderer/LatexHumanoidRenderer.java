@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
@@ -159,5 +160,12 @@ public abstract class LatexHumanoidRenderer<T extends LatexEntity, M extends Lat
 
     public LatexHumanoidModel<T> getModel(LatexEntity entity) {
         return this.getModel();
+    }
+
+    @Override
+    public void render(T entity, float p_115456_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (this instanceof LatexHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.getAnimator().partialTicks = partialTicks;
+        super.render(entity, p_115456_, partialTicks, poseStack, bufferSource, packedLight);
     }
 }

@@ -60,6 +60,7 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
     public float flyAmount = 0.0F;
     public float fallFlyingAmount = 0.0F;
 
+    public float partialTicks = 0.0F;
     public float ageLerp = 0.0F;
     public float reachOut = 0.0F;
 
@@ -72,6 +73,8 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         flyAmount = 0.0F;
         fallFlyingAmount = 0.0F;
         swimAmount = 0.0F;
+
+        partialTicks = 0.0F;
         ageLerp = 0.0F;
         reachOut = 0.0F;
     }
@@ -91,6 +94,8 @@ public class LatexAnimator<T extends LatexEntity, M extends EntityModel<T>> {
         entityModel.attackTime = entity.getAttackAnim(partialTicks);
         entityModel.riding = shouldSit;
         entityModel.young = entity.isBaby();
+
+        this.partialTicks = partialTicks;
 
         LivingEntity target = entity.getTarget();
         reachOut = target != null ?

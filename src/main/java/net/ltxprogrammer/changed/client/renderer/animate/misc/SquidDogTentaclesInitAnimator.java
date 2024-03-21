@@ -39,9 +39,9 @@ public class SquidDogTentaclesInitAnimator<T extends LatexEntity, M extends Enti
 
         float tentacleSway = SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
         float tentacleBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
-        float tentacleDrag = entity.getTailDragAmount(ageInTicks);
-        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.VERTICAL, ageInTicks) * 0.30f;
-        float horizontalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.FORWARDS, ageInTicks) * 0.35f;
+        float tentacleDrag = entity.getTailDragAmount(this.core.partialTicks);
+        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.VERTICAL, this.core.partialTicks) * 0.30f;
+        float horizontalDrag = entity.getSimulatedSpring(SpringType.HEAVY_NORMAL, SpringType.Direction.FORWARDS, this.core.partialTicks) * 0.35f;
 
         resetTentacle(upperLeftTentacle);
         resetTentacle(upperRightTentacle);
