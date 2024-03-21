@@ -73,7 +73,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
     public static final GenderedVariant<WhiteGooWolfMale, WhiteGooWolfFemale> WHITE_GOO_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.WHITE_GOO_WOLF_MALE, ChangedEntities.WHITE_GOO_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER).split(Builder::ignored, Builder::absorbing)
-            .buildGendered(Changed.modResource("form_white_goo_wolf")));
+            .buildGendered(Changed.modResource("form_light_latex_wolf")));
 
     public static final TransfurVariant<AerosolLatexWolf> AEROSOL_LATEX_WOLF = register(Builder.of(ChangedEntities.AEROSOL_LATEX_WOLF)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
@@ -213,12 +213,12 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static final TransfurVariant<WhiteGooKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.WHITE_GOO_KNIGHT_FUSION)
             .additionalHealth(8).fusionOf(WHITE_GOO_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final TransfurVariant<WhiteWolf> WHITE_WOLF = register(Builder.of(ChangedEntities.WHITE_WOLF)
+    public static final TransfurVariant<WhiteWolf> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(ChangedEntities.WHITE_WOLF)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_white_wolf")));
-    public static final TransfurVariant<PureWhiteGooWolf> PURE_WHITE_GOO_WOLF = register(Builder.of(ChangedEntities.PURE_WHITE_GOO_WOLF)
+            .build(Changed.modResource("form_light_latex_wolf_organic")));
+    public static final TransfurVariant<PureWhiteGooWolf> WHITE_LATEX_WOLF = register(Builder.of(ChangedEntities.PURE_WHITE_GOO_WOLF)
             .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(GooType.PURE_WHITE_GOO)
-            .build(Changed.modResource("form_pure_white_goo_wolf")));
+            .build(Changed.modResource("form_white_latex_wolf")));
 
     public static final GenderedVariant<BlackGooWolfMale, BlackGooWolfFemale> BLACK_GOO_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.BLACK_GOO_WOLF_MALE, ChangedEntities.BLACK_GOO_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(GooType.BLACK_GOO)

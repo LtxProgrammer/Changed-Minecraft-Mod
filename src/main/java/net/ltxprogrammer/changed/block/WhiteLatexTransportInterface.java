@@ -53,7 +53,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         if (isEntityInWhiteLatex(entity) || entity.isDeadOrDying())
             return;
 
-        ProcessTransfur.transfur(entity, entity.level, TransfurVariant.PURE_WHITE_GOO_WOLF, false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+        ProcessTransfur.transfur(entity, entity.level, TransfurVariant.WHITE_LATEX_WOLF, false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
 
         entity.getPersistentData().putBoolean(TRANSPORT_TAG, true);
         whiteLatexNoCollideMap.put(entity, true);
@@ -101,7 +101,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                         else if (variant.getGooType().isHostileTo(GooType.PURE_WHITE_GOO))
                             event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
                     }, () -> {
-                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, TransfurVariant.PURE_WHITE_GOO_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
+                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, TransfurVariant.WHITE_LATEX_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     });
                 }
@@ -122,7 +122,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 if (form != null)
                     form.ticksWhiteLatex++;
                 else
-                    ProcessTransfur.transfur(event.player, event.player.level, TransfurVariant.PURE_WHITE_GOO_WOLF, false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                    ProcessTransfur.transfur(event.player, event.player.level, TransfurVariant.WHITE_LATEX_WOLF, false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
 
                 if (!(whiteLatex(blockState) || whiteLatex(blockStateEye))) {
                     whiteLatexNoCollideMap.remove(event.player);

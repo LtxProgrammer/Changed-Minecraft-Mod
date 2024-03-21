@@ -149,13 +149,13 @@ public class ChangedEntities {
     public static final List<BiConsumer<BiomeLoadingEvent, List<MobSpawnSettings.SpawnerData>>> SPAWNING_ENTITY = new ArrayList<>();
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, Changed.MODID);
     public static final Map<RegistryObject<? extends EntityType<?>>, RegistryObject<SimpleSpawnEggItem>> SPAWN_EGGS = new HashMap<>();
-    public static final RegistryObject<EntityType<WhiteGooWolfFemale>> WHITE_GOO_WOLF_FEMALE = register("white_goo_wolf_female", 0xFFFFFF, 0xFF927F,
+    public static final RegistryObject<EntityType<WhiteGooWolfFemale>> WHITE_GOO_WOLF_FEMALE = register("light_latex_wolf_female", 0xFFFFFF, 0xFF927F,
             EntityType.Builder.of(WhiteGooWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<WhiteGooWolfMale>> WHITE_GOO_WOLF_MALE = register("white_goo_wolf_male", 0xFFFFFF, 0xFF927F,
+    public static final RegistryObject<EntityType<WhiteGooWolfMale>> WHITE_GOO_WOLF_MALE = register("light_latex_wolf_male", 0xFFFFFF, 0xFF927F,
             EntityType.Builder.of(WhiteGooWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<WhiteWolf>> WHITE_WOLF = registerReducedSpawn("white_wolf", 0xFFFFFF, 0xFAE9E4,
+    public static final RegistryObject<EntityType<WhiteWolf>> WHITE_WOLF = registerReducedSpawn("light_latex_wolf_organic", 0xFFFFFF, 0xFAE9E4,
             EntityType.Builder.of(WhiteWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<WhiteGooKnight>> WHITE_GOO_KNIGHT = register("light_latex_knight", 0xFFFFFF, 0x1E1E1E,
@@ -344,7 +344,7 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<Shark>> SHARK = register("shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(Shark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.9F, 0.6F),
             ChangedEntities::oceanSpawning);
-    public static final RegistryObject<EntityType<PureWhiteGooWolf>> PURE_WHITE_GOO_WOLF = register("pure_white_goo_wolf", 0xFFFFFF, 0xFAFAFA,
+    public static final RegistryObject<EntityType<PureWhiteGooWolf>> PURE_WHITE_GOO_WOLF = register("white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(PureWhiteGooWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::noSpawning);
 

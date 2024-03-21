@@ -335,11 +335,11 @@
  "entity.changed.light_latex_centaur": "Кентавр зі світлого латексу",
  "entity.changed.light_latex_knight_fusion": "Великий лицар зі світлого латексу",
  "entity.changed.light_latex_knight": "Лицар зі світлого латексу",
- "entity.changed.white_goo_wolf_female": "Вовчиця зі світлого латексу",
- "entity.changed.white_goo_wolf_male": "Вовк зі світлого латексу",
- "entity.changed.white_wolf": "Органічний вовк зі світлого латексу",
+ "entity.changed.light_latex_wolf_female": "Вовчиця зі світлого латексу",
+ "entity.changed.light_latex_wolf_male": "Вовк зі світлого латексу",
+ "entity.changed.light_latex_wolf_organic": "Органічний вовк зі світлого латексу",
  "entity.changed.shark": "Дивна акула",
- "entity.changed.pure_white_goo_wolf": "Вовк з білого латексу",
+ "entity.changed.white_latex_wolf": "Вовк з білого латексу",
 
  "item.changed.aerosol_latex_wolf_spawn_egg": "Яйце виклику Газовий вовк",
  "item.changed.black_goo_wolf_female_spawn_egg": "Яйце виклику Вовчиця з темного латексу",
@@ -399,11 +399,11 @@
  "item.changed.light_latex_centaur_spawn_egg": "Яйце виклику Кентавр зі світлого латексу",
  "item.changed.light_latex_knight_fusion_spawn_egg": "Яйце виклику Великий лицар зі світлого латексу",
  "item.changed.light_latex_knight_spawn_egg": "Яйце виклику Лицар зі світлого латексу",
- "item.changed.white_goo_wolf_female_spawn_egg": "Яйце виклику Вовчиця зі світлого латексу",
- "item.changed.white_goo_wolf_male_spawn_egg": "Яйце виклику Вовк зі світлого латексу",
- "item.changed.white_wolf_spawn_egg": "Яйце виклику Органічний вовк зі світлого латексу",
+ "item.changed.light_latex_wolf_female_spawn_egg": "Яйце виклику Вовчиця зі світлого латексу",
+ "item.changed.light_latex_wolf_male_spawn_egg": "Яйце виклику Вовк зі світлого латексу",
+ "item.changed.light_latex_wolf_organic_spawn_egg": "Яйце виклику Органічний вовк зі світлого латексу",
  "item.changed.shark_spawn_egg": "Яйце виклику Дивна акула",
- "item.changed.pure_white_goo_wolf_spawn_egg": "Яйце виклику Вовк з білого латексу",
+ "item.changed.white_latex_wolf_spawn_egg": "Яйце виклику Вовк з білого латексу",
  
 "changed.patreon.level0": "Учасник Діскорд серверу",
 "changed.patreon.level1": "I рівень",
@@ -411,7 +411,7 @@
 "changed.patreon.level3": "III рівень",
 "changed.patreon.level4": "IV рівень",
 
-"changed.error.corrupted_disc": "ERR: Некоректний диск"
+"changed.error.corrupted_disc": "ERR: Некоректний диск",
 
 "changed.compact_disc.title.light_latex_wolf": "Спроба зберегти світ",
 "changed.compact_disc.content.light_latex_wolf": "У наших марних спробах знайти вакцину від вірусу під час епідемії, ми з'ясували, що тільки тварини не піддаються йому. Всі ми почали шукати спосіб об'єднати людину і тварину, в результаті ми нарешті просунулися і створили Первинний латекс, Речовина здатна змінювати ДНК за секунди. Ми нарешті ЗМОЖЕМО подолати епідемію!",
@@ -420,9 +420,9 @@
 
 "changed.compact_disc.title.dark_latex_wolf": "Таємниця за маскою",
 "changed.compact_disc.content.dark_latex_wolf": "Як було сказано раніше, тільки тварини здатні пережити лють епідемії. У наших спробах трансфурувати людей ми створили вовкоподібних істот з маскою на обличчі, змішавши наш первинний латекс і чорну фарбу. Рекомендуються подальші випробування.",
-"changed.compact_disc.title.dark_latex_yufeng": "Дракони в масках?"
+"changed.compact_disc.title.dark_latex_yufeng": "Дракони в масках?",
 "changed.compact_disc.content.dark_latex_yufeng": "Після використання тих же матеріалів, що і у вовку з темного латексу але додавши перо, ми створили істоту здатну планувати повітрям, але все ще не вміючу літати. Воно майже схоже на дракона, але тільки з маскою.",
-"changed.compact_disc.title.dark_latex_dragon": "Дракони"
+"changed.compact_disc.title.dark_latex_dragon": "Дракони",
 "changed.compact_disc.content.dark_latex_dragon": "Не дивлячись на те, що ця істота походить від вовків з темного латексу, вона на подив не має маски. Ці ті, що використовують свої задні лапи \"Дракони\" здатні планувати. Об'єднавши мембрану фантома і те ж за допомогою чого комбінуються вовки з темного латексу, створюється ДНК дракона.",
  
 "changed.compact_disc.title.latex_beifeng": "Резюме по рептиліям",
@@ -432,7 +432,7 @@
 "changed.compact_disc.content.latex_shark": "Акул що ми створили, вони дійсно можуть дихати під водою. Їхня швидкість у воді неймовірна, Але ціною мобільності на суші.",
 "changed.compact_disc.title.latex_tiger_shark": "Акули зі смужками",
 "changed.compact_disc.content.latex_tiger_shark": "Ми створили інший варіант акули на основі звичайної , цей варіант акули трохи швидше на суші, але повільніше у воді.",
-"changed.compact_disc.title.latex_orca": "Косатка"
+"changed.compact_disc.title.latex_orca": "Косатка",
 "changed.compact_disc.content.latex_orca": "Поряд з акулами, ми випадково створили косаток.",
 "changed.compact_disc.title.latex_squid_dog": "Собака... Кальмар?",
 "changed.compact_disc.content.latex_squid_dog": "Не тільки дихають під водою, також мають додаткову пару рук, що дозволяють тримати більше речей, Кальмарні Собаки",
@@ -449,7 +449,7 @@
 "changed:advancements.main.transfur.title": "Це назавжди!?",
 "changed:advancements.main.transfur.description": "Трансфурмуйтеся",
 
-"changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій..."
+"changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій...",
 "changed:advancements.main.transfur_aquatic.description": "Трансфурмуйтеся в будь-який водний латекс.",
 
 "changed:advancements.main.aquatic_swimming.title": "Я шукав \"Москву\"!",
@@ -473,7 +473,7 @@
 "changed:advancements.main.transfur_legless.title": "Ноги убік",
 "changed:advancements.main.transfur_legless.description": "Трансфурмуйтеся в будь-яку форму латексу, що не має ніг.",
 
-"changed:advancements.main.beehive_sleep.title": "Що сниться бджолам..."
+"changed:advancements.main.beehive_sleep.title": "Що сниться бджолам...",
 "changed:advancements.main.beehive_sleep.description": "Поспіть у ліжку вулика",
 
 "changed:advancements.main.tame_a_latex.title": "Дивний друг",
