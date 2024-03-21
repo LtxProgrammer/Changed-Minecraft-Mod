@@ -414,7 +414,7 @@
   "item.changed.light_latex_wolf_female_spawn_egg": "Яйцо призыва Волчица из светлого латекса",
   "item.changed.light_latex_wolf_male_spawn_egg": "Яйцо призыва Волк из светлого латекса",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Яйцо призыва Белый волк",
-  "item.changed.shark_spawn_egg": "Яйцо призыва Странная акула",
+  "item.changed.shark_spawn_egg": "Яйцо призыва Акула",
   "item.changed.white_latex_wolf_spawn_egg": "Яйцо призыва Волк из чистого белого латекса",
   "item.changed.phage_latex_wolf_female_spawn_egg": "Яйцо призыва Латексная фаговая волчица",
   "item.changed.phage_latex_wolf_male_spawn_egg": "Яйцо призыва Латексный фаговый волк",
@@ -530,9 +530,11 @@
   "changed.config.bpi.iris_color.left": "Цвет левой радужки",
   "changed.config.bpi.iris_color.right": "Цвет правой радужки",
   "changed.config.bpi.iris_color.sync": "Синхр.",
-  "changed.config.bpi.iris_color.sync_tooltip": "Синхронизирует цвет левого радужка с цветом правого радужка",
+  "changed.config.bpi.iris_color.sync_tooltip": "Синхронизирует цвет левого глаза с цветом правого глаза",
   "changed.config.bpi.sclera_color": "Цвет склеры",
   "changed.config.bpi.eye_style": "Стиль глаз: %s",
-  "changed.config.bpi.override_dl_iris": "Принудительно изменять цвет глаз тёмных латексных",
+  "changed.config.bpi.size": "Рост модели",
+  "changed.config.bpi.size.value": "Рост: %s%%",
+  "changed.config.bpi.override_dl_iris": "Принудительно изменить цвет глаз тёмных латексных",
   "changed.config.bpi.override_all_eye_styles": "Принудительно использовать оригинальный цвет глаз"
 }
