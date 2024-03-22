@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.item;
 
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,8 +27,8 @@ public abstract class ShovelItemMixin {
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = level.getBlockState(blockpos);
         Player player = context.getPlayer();
-        if (player != null && blockstate.getProperties().contains(COVERED) && blockstate.getValue(COVERED) != GooType.NEUTRAL) {
-            level.setBlockAndUpdate(blockpos, blockstate.setValue(COVERED, GooType.NEUTRAL));
+        if (player != null && blockstate.getProperties().contains(COVERED) && blockstate.getValue(COVERED) != LatexType.NEUTRAL) {
+            level.setBlockAndUpdate(blockpos, blockstate.setValue(COVERED, LatexType.NEUTRAL));
             if (player == null || (!player.isCreative() && !player.isSpectator()))
                 Block.popResource(level, blockpos, new ItemStack(blockstate.getValue(COVERED).goo.get()));
             level.playSound(context.getPlayer(), blockpos, SoundEvents.SLIME_BLOCK_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);

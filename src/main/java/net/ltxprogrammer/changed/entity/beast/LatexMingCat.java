@@ -36,8 +36,8 @@ public class LatexMingCat extends ChangedEntity implements PatronOC {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

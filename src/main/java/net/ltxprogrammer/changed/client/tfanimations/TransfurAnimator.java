@@ -425,7 +425,7 @@ public class TransfurAnimator {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
         final var playerRenderer = dispatcher.getRenderer(player);
-        final var latexRenderer = dispatcher.getRenderer(variant.getLatexEntity());
+        final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
 
         if (!(playerRenderer instanceof LivingEntityRenderer<?,?> livingPlayerRenderer)) return;
         if (!(livingPlayerRenderer.getModel() instanceof HumanoidModel<?> playerHumanoidModel)) return;
@@ -445,7 +445,7 @@ public class TransfurAnimator {
                 ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
                 forceRenderPlayer = false;
             } else if (morphProgress > 0.5f) // Render latex at the end
-                FormRenderHandler.renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+                FormRenderHandler.renderLiving(variant.getChangedEntity(), stack, buffer, light, partialTick);
         }
 
         if (coverAlpha > 0f) {
@@ -473,7 +473,7 @@ public class TransfurAnimator {
             return; // Don't bother rendering
 
         final var colors = variant.getTransfurColor();
-        renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getLatexEntity()),
+        renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
                 morphProgress, colors, morphAlpha, stack, buffer, light, partialTick);
     }
 

@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -27,11 +27,10 @@ import java.util.UUID;
 
 public interface IAbstractChangedEntity {
     @NotNull LivingEntity getEntity();
-    @NotNull ChangedEntity getLatexEntity();
+    @NotNull ChangedEntity getChangedEntity();
 
     @NotNull BlockPos getBlockPosition();
-    @Nullable
-    TransfurVariantInstance<?> getTransfurVariantInstance();
+    @Nullable TransfurVariantInstance<?> getTransfurVariantInstance();
     @NotNull Level getLevel();
     @NotNull UUID getUUID();
     @NotNull TransfurMode getTransfurMode();
@@ -61,7 +60,7 @@ public interface IAbstractChangedEntity {
 
     static IAbstractChangedEntity forPlayer(Player player) {
         Cacheable<TransfurVariantInstance<?>> instance = Cacheable.of(() -> ProcessTransfur.getPlayerTransfurVariant(player));
-        Cacheable<ChangedEntity> latex = Cacheable.of(() -> instance.get().getLatexEntity());
+        Cacheable<ChangedEntity> latex = Cacheable.of(() -> instance.get().getChangedEntity());
 
         return new IAbstractChangedEntity() {
             @Override
@@ -70,7 +69,7 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
-            public @NotNull ChangedEntity getLatexEntity() {
+            public @NotNull ChangedEntity getChangedEntity() {
                 return latex.get();
             }
 
@@ -208,21 +207,21 @@ public interface IAbstractChangedEntity {
         };
     }
 
-    static IAbstractChangedEntity forChangedEntity(ChangedEntity changedEntity) {
+    static IAbstractChangedEntity forEntity(ChangedEntity entity) {
         return new IAbstractChangedEntity() {
             @Override
             public @NotNull LivingEntity getEntity() {
-                return changedEntity;
+                return entity;
             }
 
             @Override
-            public @NotNull ChangedEntity getLatexEntity() {
-                return changedEntity;
+            public @NotNull ChangedEntity getChangedEntity() {
+                return entity;
             }
 
             @Override
             public @NotNull BlockPos getBlockPosition() {
-                return changedEntity.blockPosition();
+                return entity.blockPosition();
             }
 
             @org.jetbrains.annotations.Nullable
@@ -233,23 +232,23 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull Level getLevel() {
-                return changedEntity.level;
+                return entity.level;
             }
 
             @Override
             public @NotNull UUID getUUID() {
-                return changedEntity.getUUID();
+                return entity.getUUID();
             }
 
             @Override
             public @NotNull TransfurMode getTransfurMode() {
-                return changedEntity.getTransfurMode();
+                return entity.getTransfurMode();
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public <T extends AbstractAbilityInstance> T getAbilityInstance(AbstractAbility<T> ability) {
-                return changedEntity.getAbilityInstance(ability);
+                return entity.getAbilityInstance(ability);
             }
 
             @org.jetbrains.annotations.Nullable
@@ -260,18 +259,18 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull CompoundTag getPersistentData() {
-                return changedEntity.getPersistentData();
+                return entity.getPersistentData();
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public List<HairStyle> getValidHairStyles() {
-                return changedEntity.getValidHairStyles();
+                return entity.getValidHairStyles();
             }
 
             @Override
             public @NotNull HairStyle getHairStyle() {
-                return changedEntity.getHairStyle();
+                return entity.getHairStyle();
             }
 
             @Override
@@ -281,7 +280,7 @@ public interface IAbstractChangedEntity {
 
             @Override
             public boolean isDeadOrDying() {
-                return changedEntity.isDeadOrDying();
+                return entity.isDeadOrDying();
             }
 
             @Override
@@ -291,17 +290,17 @@ public interface IAbstractChangedEntity {
 
             @Override
             public boolean isCrouching() {
-                return changedEntity.isCrouching();
+                return entity.isCrouching();
             }
 
             @Override
             public boolean isSleeping() {
-                return changedEntity.isSleeping();
+                return entity.isSleeping();
             }
 
             @Override
             public boolean isInWaterOrBubble() {
-                return changedEntity.isInWaterOrBubble();
+                return entity.isInWaterOrBubble();
             }
 
             @Override
@@ -329,25 +328,25 @@ public interface IAbstractChangedEntity {
                 if (stack.isEmpty()) {
                     return;
                 } else {
-                    if (changedEntity.level.isClientSide) {
-                        changedEntity.swing(InteractionHand.MAIN_HAND);
+                    if (entity.level.isClientSide) {
+                        entity.swing(InteractionHand.MAIN_HAND);
                     }
 
-                    double d0 = changedEntity.getEyeY() - (double)0.3F;
-                    ItemEntity itementity = new ItemEntity(changedEntity.level, changedEntity.getX(), d0, changedEntity.getZ(), stack);
+                    double d0 = entity.getEyeY() - (double)0.3F;
+                    ItemEntity itementity = new ItemEntity(entity.level, entity.getX(), d0, entity.getZ(), stack);
                     itementity.setPickUpDelay(40);
                     if (includeName) {
-                        itementity.setThrower(changedEntity.getUUID());
+                        itementity.setThrower(entity.getUUID());
                     }
 
                     float f7 = 0.3F;
-                    float f8 = Mth.sin(changedEntity.getXRot() * ((float)Math.PI / 180F));
-                    float f2 = Mth.cos(changedEntity.getXRot() * ((float)Math.PI / 180F));
-                    float f3 = Mth.sin(changedEntity.getYRot() * ((float)Math.PI / 180F));
-                    float f4 = Mth.cos(changedEntity.getYRot() * ((float)Math.PI / 180F));
-                    float f5 = changedEntity.level.random.nextFloat() * ((float)Math.PI * 2F);
-                    float f6 = 0.02F * changedEntity.level.random.nextFloat();
-                    itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (changedEntity.level.random.nextFloat() - changedEntity.level.random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+                    float f8 = Mth.sin(entity.getXRot() * ((float)Math.PI / 180F));
+                    float f2 = Mth.cos(entity.getXRot() * ((float)Math.PI / 180F));
+                    float f3 = Mth.sin(entity.getYRot() * ((float)Math.PI / 180F));
+                    float f4 = Mth.cos(entity.getYRot() * ((float)Math.PI / 180F));
+                    float f5 = entity.level.random.nextFloat() * ((float)Math.PI * 2F);
+                    float f6 = 0.02F * entity.level.random.nextFloat();
+                    itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (entity.level.random.nextFloat() - entity.level.random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
                 }
             }
 
@@ -363,12 +362,12 @@ public interface IAbstractChangedEntity {
 
             @Override
             public void setHairStyle(HairStyle style) {
-                changedEntity.setHairStyle(style);
+                entity.setHairStyle(style);
             }
 
             @Override
             public void setEyeStyle(EyeStyle style) {
-                changedEntity.setEyeStyle(style);
+                entity.setEyeStyle(style);
             }
 
             @Override

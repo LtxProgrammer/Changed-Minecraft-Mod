@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -26,8 +26,8 @@ public class MilkPudding extends ChangedEntity {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MilkPudding extends ChangedEntity {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.WHITE_GOO_WOLF.randomGender(random);
+        return TransfurVariant.LIGHT_LATEX_WOLF.randomGender(random);
     }
 
     @Override

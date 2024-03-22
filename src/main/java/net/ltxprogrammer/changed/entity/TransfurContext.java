@@ -22,7 +22,7 @@ public class TransfurContext {
 
     public static TransfurContext npcLatexAttack(ChangedEntity latex) {
         return new TransfurContext(
-                latex.getRandom().nextBoolean() ? TransfurCause.ATTACK_REPLICATE_LEFT : TransfurCause.ATTACK_REPLICATE_RIGHT, IAbstractChangedEntity.forChangedEntity(latex)
+                latex.getRandom().nextBoolean() ? TransfurCause.ATTACK_REPLICATE_LEFT : TransfurCause.ATTACK_REPLICATE_RIGHT, IAbstractChangedEntity.forEntity(latex)
         );
     }
 

@@ -22,7 +22,7 @@ public abstract class ServerEntityMixin {
     @Inject(method = "sendDirtyEntityData", at = @At("RETURN"))
     private void andSendLatexVariant(CallbackInfo ci) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this.entity), variant -> {
-            var entity = variant.getLatexEntity();
+            var entity = variant.getChangedEntity();
 
             SynchedEntityData synchedentitydata = entity.getEntityData();
             if (synchedentitydata.isDirty()) {

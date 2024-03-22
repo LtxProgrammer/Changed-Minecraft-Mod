@@ -7,7 +7,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import net.ltxprogrammer.changed.client.renderer.layers.GooParticlesLayer;
+import net.ltxprogrammer.changed.client.ChangedClient;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -173,7 +174,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
             return new CompletableFuture[p_107303_];
         });
 
-        GooParticlesLayer.purgeTextureCache();
+        LatexParticlesLayer.purgeTextureCache();
         purgeParticles();
         isReloading = true;
 

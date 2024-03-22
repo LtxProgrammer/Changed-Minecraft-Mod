@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -28,25 +28,25 @@ public class SpecialLatex extends ChangedEntity {
     private UUID assignedUUID = null;
     public String wantedState = "default";
     public List<String> possibleModels = new ArrayList<>();
-    public PatreonBenefits.SpecialForm specialForm = null;
+    public PatreonBenefits.SpecialForm specialLatexForm = null;
 
     public SpecialLatex(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
     
     public PatreonBenefits.EntityData getCurrentData() {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return null;
-        return specialForm.entityData().getOrDefault(wantedState, specialForm.getDefaultEntity());
+        return specialLatexForm.entityData().getOrDefault(wantedState, specialLatexForm.getDefaultEntity());
     }
 
     public void setSpecialForm(UUID uuid) {
         this.assignedUUID = uuid;
-        this.specialForm = PatreonBenefits.getPlayerSpecialForm(uuid);
+        this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(uuid);
     }
 
     public EntityDimensions getDimensions(Pose pose) {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return super.getDimensions(pose);
 
         EntityDimensions core = getCurrentData().dimensions();
@@ -65,7 +65,7 @@ public class SpecialLatex extends ChangedEntity {
 
     @Override
     public Color3 getHairColor(int layer) {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return Color3.WHITE;
         try {
             return getCurrentData().hairColors().get(layer);
@@ -78,7 +78,7 @@ public class SpecialLatex extends ChangedEntity {
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return HairStyle.Collection.EMPTY;
         return getCurrentData().hairStyles();
     }
@@ -88,22 +88,22 @@ public class SpecialLatex extends ChangedEntity {
     }
 
     @Override
-    public GooType getGooType() {
-        if (specialForm == null)
-            return GooType.NEUTRAL;
-        return specialForm.variant().getGooType();
+    public LatexType getLatexType() {
+        if (specialLatexForm == null)
+            return LatexType.NEUTRAL;
+        return specialLatexForm.variant().getLatexType();
     }
 
     @Override
     public TransfurMode getTransfurMode() {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return TransfurMode.REPLICATION;
-        return specialForm.variant().transfurMode();
+        return specialLatexForm.variant().transfurMode();
     }
 
     @Override
     public Color3 getDripColor() {
-        if (specialForm == null)
+        if (specialLatexForm == null)
             return null;
         return getCurrentData().dripColors().isEmpty() ? null :
                 getCurrentData().dripColors().get(level.random.nextInt(getCurrentData().dripColors().size()));
@@ -111,7 +111,7 @@ public class SpecialLatex extends ChangedEntity {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return specialForm.variant();
+        return specialLatexForm.variant();
     }
 
     public static void init() {}

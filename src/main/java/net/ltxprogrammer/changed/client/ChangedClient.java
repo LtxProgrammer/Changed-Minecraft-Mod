@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.GooParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -46,8 +46,8 @@ public class ChangedClient {
         if (!(renderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer))
             return;
         for (var layer : livingEntityRenderer.layers) {
-            if (layer instanceof GooParticlesLayer<?,?> gooParticlesLayer) {
-                gooParticlesLayer.createNewDripParticle(entity);
+            if (layer instanceof LatexParticlesLayer<?,?> latexParticlesLayer) {
+                latexParticlesLayer.createNewDripParticle(entity);
                 break;
             }
         }
@@ -55,7 +55,7 @@ public class ChangedClient {
 
     protected static void addLatexParticleToEntity(Player entity) {
         ProcessTransfur.ifPlayerTransfurred(entity, variant -> {
-            addLatexParticleToEntity(variant.getLatexEntity());
+            addLatexParticleToEntity(variant.getChangedEntity());
         });
     }
 

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
@@ -22,8 +22,8 @@ public class LatexPinkDeer extends LatexPinkWyvern {
 
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
 

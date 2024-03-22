@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.GooMantaRayMale;
+import net.ltxprogrammer.changed.entity.beast.LatexMantaRayMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMale> implements AdvancedHumanoidModelInterface<GooMantaRayMale, LatexMantaRayMaleModel> {
+public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<LatexMantaRayMale> implements AdvancedHumanoidModelInterface<LatexMantaRayMale, LatexMantaRayMaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_manta_ray_male"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<GooMantaRayMale, LatexMantaRayMaleModel> animator;
+    private final HumanoidAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> animator;
 
     public LatexMantaRayMaleModel(ModelPart root) {
         super(root);
@@ -167,7 +167,7 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
     }
 
     @Override
-    public void prepareMobModel(GooMantaRayMale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexMantaRayMale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -176,7 +176,7 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
     }
 
     @Override
-    public void setupAnim(@NotNull GooMantaRayMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull LatexMantaRayMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -208,11 +208,11 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
     }
 
     @Override
-    public HumanoidAnimator<GooMantaRayMale, LatexMantaRayMaleModel> getAnimator() {
+    public HumanoidAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> getAnimator() {
         return animator;
     }
 
-    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<GooMantaRayMale, Remodel> {
+    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<LatexMantaRayMale, Remodel> {
         private final ModelPart RightLeg;
         private final ModelPart LeftLeg;
         private final ModelPart RightArm;
@@ -220,7 +220,7 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
         private final ModelPart Head;
         private final ModelPart Torso;
         private final ModelPart Tail;
-        private final HumanoidAnimator<GooMantaRayMale, Remodel> animator;
+        private final HumanoidAnimator<LatexMantaRayMale, Remodel> animator;
 
         public Remodel(ModelPart root) {
             super(root);
@@ -349,7 +349,7 @@ public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<GooMantaRayMal
         }
 
         @Override
-        public HumanoidAnimator<GooMantaRayMale, Remodel> getAnimator() {
+        public HumanoidAnimator<LatexMantaRayMale, Remodel> getAnimator() {
             return animator;
         }
     }

@@ -81,7 +81,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
     }
 
     public static ColorScheme getColors(TransfurVariantInstance<?> variant) {
-        if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialForm != null) {
+        if (variant.getChangedEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
             return new ColorScheme(
                     specialLatex.getCurrentData().primaryColor(),
                     specialLatex.getCurrentData().secondaryColor()

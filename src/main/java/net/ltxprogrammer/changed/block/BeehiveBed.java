@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.beast.GooBee;
+import net.ltxprogrammer.changed.entity.beast.LatexBee;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
@@ -80,7 +80,7 @@ public class BeehiveBed extends AbstractCustomShapeBlock {
     }
 
     private boolean kickBeeOutOfBed(Level level, BlockPos pos) {
-        List<GooBee> list = level.getEntitiesOfClass(GooBee.class, new AABB(pos), LivingEntity::isSleeping);
+        List<LatexBee> list = level.getEntitiesOfClass(LatexBee.class, new AABB(pos), LivingEntity::isSleeping);
         if (list.isEmpty()) {
             return false;
         } else {

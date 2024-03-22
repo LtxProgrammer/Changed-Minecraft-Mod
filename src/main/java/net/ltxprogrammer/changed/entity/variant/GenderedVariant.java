@@ -39,7 +39,7 @@ public class GenderedVariant<M extends ChangedEntity & GenderedEntity, F extends
 
     public GenderedVariant(ResourceLocation base, TransfurVariant<M> male, TransfurVariant<F> female) {
         super(null,
-                GooType.NEUTRAL, 1.0f, 1.0f, 1.0f,
+                LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
                 false, false, false, false, true,
                 UseItemMode.NORMAL, null, TransfurMode.REPLICATION, Optional.empty(),
@@ -59,7 +59,7 @@ public class GenderedVariant<M extends ChangedEntity & GenderedEntity, F extends
         }
 
 
-        public Builder<M, F> faction(GooType type) {
+        public Builder<M, F> faction(LatexType type) {
             this.maleBuilder.type = type; this.femaleBuilder.type = type; return this;
         }
 

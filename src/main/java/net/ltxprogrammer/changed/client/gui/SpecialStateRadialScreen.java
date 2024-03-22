@@ -24,11 +24,11 @@ public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialSt
         this.imageWidth = 0;
         this.imageHeight = 0;
         this.menu = menu;
-        if (menu.variant.getLatexEntity() instanceof SpecialLatex specialLatex)
+        if (menu.variant.getChangedEntity() instanceof SpecialLatex specialLatex)
             this.special = specialLatex;
         else
             throw new IllegalArgumentException("Variant is not special latex!");
-        this.states = new ArrayList<>(specialLatex.specialForm.entityData().keySet());
+        this.states = new ArrayList<>(specialLatex.specialLatexForm.entityData().keySet());
     }
 
     @Override

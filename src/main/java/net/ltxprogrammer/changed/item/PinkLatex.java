@@ -79,7 +79,7 @@ public class PinkLatex implements ArmorMaterial {
 
             if (currentVariant.is(TransfurVariant.LATEX_DEER))
                 return TransfurVariant.LATEX_PINK_DEER;
-            else if (currentVariant.is(TransfurVariant.GOO_YUIN))
+            else if (currentVariant.is(TransfurVariant.LATEX_YUIN))
                 return TransfurVariant.LATEX_PINK_YUIN_DRAGON;
             else {
                 if (livingEntity.getRandom().nextBoolean()) {

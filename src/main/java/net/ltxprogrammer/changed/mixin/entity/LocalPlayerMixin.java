@@ -4,6 +4,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.minecraft.client.ClientRecipeBook;
@@ -14,6 +15,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.tags.FluidTags;
@@ -152,8 +154,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Inject(method = "isMovingSlowly", at = @At("HEAD"), cancellable = true)
     public void isMovingSlowly(CallbackInfoReturnable<Boolean> callback) {
         ProcessTransfur.ifPlayerTransfurred(this, variant -> {
-            if (variant.getLatexEntity() != null)
-                callback.setReturnValue(variant.getLatexEntity().isMovingSlowly());
+            if (variant.getChangedEntity() != null)
+                callback.setReturnValue(variant.getChangedEntity().isMovingSlowly());
         });
     }
 

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.datafixers.DataFixer;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;

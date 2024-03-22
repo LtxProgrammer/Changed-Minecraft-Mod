@@ -5,7 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.GooFennecFox;
+import net.ltxprogrammer.changed.entity.beast.LatexFennecFox;
+import net.ltxprogrammer.changed.entity.beast.LatexPurpleFox;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexFennecFoxModel extends AdvancedHumanoidModel<GooFennecFox> implements AdvancedHumanoidModelInterface<GooFennecFox, LatexFennecFoxModel> {
+public class LatexFennecFoxModel extends AdvancedHumanoidModel<LatexFennecFox> implements AdvancedHumanoidModelInterface<LatexFennecFox, LatexFennecFoxModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_fennec_fox"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +25,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<GooFennecFox> imp
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<GooFennecFox, LatexFennecFoxModel> animator;
+    private final HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> animator;
 
     public LatexFennecFoxModel(ModelPart root) {
         super(root);
@@ -132,7 +133,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<GooFennecFox> imp
     }
 
     @Override
-    public void prepareMobModel(GooFennecFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexFennecFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -141,7 +142,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<GooFennecFox> imp
     }
 
     @Override
-    public void setupAnim(GooFennecFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LatexFennecFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -173,7 +174,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<GooFennecFox> imp
     }
 
     @Override
-    public HumanoidAnimator<GooFennecFox, LatexFennecFoxModel> getAnimator() {
+    public HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> getAnimator() {
         return animator;
     }
 }

@@ -29,8 +29,8 @@ public class LatexCrystal extends AbstractLatexCrystal {
     }
 
     private Predicate<ChangedEntity> matchesType(EntityType<?> type) {
-        return latexEntity -> {
-            return latexEntity.getType() == type;
+        return ChangedEntity -> {
+            return ChangedEntity.getType() == type;
         };
     }
 

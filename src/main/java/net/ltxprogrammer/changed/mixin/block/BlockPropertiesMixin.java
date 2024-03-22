@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -22,7 +22,7 @@ public abstract class BlockPropertiesMixin {
     @Shadow Function<BlockState, MaterialColor> materialColor;
 
     @Unique
-    private static GooType getTypeOrNeutral(BlockState state) {
+    private static LatexType getTypeOrNeutral(BlockState state) {
         @Nullable var properties = state.getValues();
         if (properties != null && properties.containsKey(AbstractLatexBlock.COVERED))
             return state.getValue(AbstractLatexBlock.COVERED);
@@ -30,7 +30,7 @@ public abstract class BlockPropertiesMixin {
             if (properties == null)
                 Changed.LOGGER.warn("BlockState has null properties! {}", state.getBlock().getClass());
 
-            return GooType.NEUTRAL;
+            return LatexType.NEUTRAL;
         }
     }
 
@@ -39,7 +39,7 @@ public abstract class BlockPropertiesMixin {
         var oldFunc = materialColor;
         materialColor = blockState -> {
             var latex = getTypeOrNeutral(blockState);
-            if (latex != GooType.NEUTRAL)
+            if (latex != LatexType.NEUTRAL)
                 return latex.materialColor; // override color
             else
                 return oldFunc.apply(blockState);
@@ -51,7 +51,7 @@ public abstract class BlockPropertiesMixin {
         var oldFunc = materialColor;
         materialColor = blockState -> {
             var latex = getTypeOrNeutral(blockState);
-            if (latex != GooType.NEUTRAL)
+            if (latex != LatexType.NEUTRAL)
                 return latex.materialColor; // override color
             else
                 return oldFunc.apply(blockState);

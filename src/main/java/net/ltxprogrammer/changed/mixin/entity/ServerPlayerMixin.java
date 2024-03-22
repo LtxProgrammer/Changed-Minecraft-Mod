@@ -41,7 +41,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
 
                 var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.cause, oldVariant.transfurProgression);
                 newVariant.load(oldVariant.save());
-                newVariant.getLatexEntity().readPlayerVariantData(oldVariant.getLatexEntity().savePlayerVariantData());
+                newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
             });
         }
     }
@@ -70,7 +70,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             }
 
             if (tag.contains("TransfurData"))
-                variant.getLatexEntity().readPlayerVariantData(tag.getCompound("LatexData"));
+                variant.getChangedEntity().readPlayerVariantData(tag.getCompound("LatexData"));
         }
 
         if (tag.contains("PlayerMover")) {
@@ -94,7 +94,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
             tag.put("TransfurVariantData", variant.save());
 
-            var entityData = variant.getLatexEntity().savePlayerVariantData();
+            var entityData = variant.getChangedEntity().savePlayerVariantData();
             if (!entityData.isEmpty())
                 tag.put("TransfurData", entityData);
         });

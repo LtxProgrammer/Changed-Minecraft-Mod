@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSniperDog extends AbstractGooWolf {
+public class LatexSniperDog extends AbstractLatexWolf {
     public LatexSniperDog(EntityType<? extends LatexSniperDog> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -21,8 +21,8 @@ public class LatexSniperDog extends AbstractGooWolf {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

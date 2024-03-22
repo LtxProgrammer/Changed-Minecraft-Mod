@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.mixin.block;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.ltxprogrammer.changed.block.PartialEntityBlock;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -39,14 +39,14 @@ public abstract class BlockStateBaseMixin extends StateHolder<Block, BlockState>
 
     @Inject(method = "isSuffocating", at = @At("HEAD"), cancellable = true)
     public void isSuffocating(BlockGetter getter, BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (getLatexed(this.asState()) == GooType.PURE_WHITE_GOO) {
+        if (getLatexed(this.asState()) == LatexType.WHITE_LATEX) {
             callbackInfoReturnable.setReturnValue(false);
         }
     }
 
     @Inject(method = "isViewBlocking", at = @At("HEAD"), cancellable = true)
     public void isViewBlocking(BlockGetter getter, BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (getLatexed(this.asState()) == GooType.PURE_WHITE_GOO) {
+        if (getLatexed(this.asState()) == LatexType.WHITE_LATEX) {
             callbackInfoReturnable.setReturnValue(false);
         }
     }

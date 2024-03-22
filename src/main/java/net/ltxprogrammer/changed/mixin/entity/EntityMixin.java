@@ -44,7 +44,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Inject(method = "getTicksRequiredToFreeze", at = @At("HEAD"), cancellable = true)
     public void getTicksRequiredToFreeze(CallbackInfoReturnable<Integer> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getTicksRequiredToFreeze());
+            callback.setReturnValue(variant.getChangedEntity().getTicksRequiredToFreeze());
         });
     }
 
@@ -75,13 +75,13 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         }
 
         else ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            ChangedEntity latexEntity = variant.getLatexEntity();
+            ChangedEntity ChangedEntity = variant.getChangedEntity();
             final float morphProgress = variant.getMorphProgression();
 
             if (morphProgress < 1f) {
-                //callback.setReturnValue(Mth.lerp(morphProgress, callback.getReturnValue(), latexEntity.getEyeHeight(pose)));
+                //callback.setReturnValue(Mth.lerp(morphProgress, callback.getReturnValue(), ChangedEntity.getEyeHeight(pose)));
             } else {
-                callback.setReturnValue(latexEntity.getEyeHeight(pose));
+                callback.setReturnValue(ChangedEntity.getEyeHeight(pose));
             }
         });
     }
@@ -89,21 +89,21 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     public void interact(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().interact(player, hand));
+            callback.setReturnValue(variant.getChangedEntity().interact(player, hand));
         });
     }
 
     @Inject(method = "getPassengersRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getPassengersRidingOffset(CallbackInfoReturnable<Double> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getPassengersRidingOffset());
+            callback.setReturnValue(variant.getChangedEntity().getPassengersRidingOffset());
         });
     }
 
     @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+            callback.setReturnValue(variant.getChangedEntity().getMyRidingOffset());
         });
     }
 

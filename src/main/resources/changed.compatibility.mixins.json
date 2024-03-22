@@ -12,7 +12,7 @@
     "NotEnoughAnimations.HumanoidAnimatorMixin",
     "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
-    "Pehkui.LatexEntityMixin",
+    "Pehkui.ChangedEntityMixin",
     "Pehkui.ScaleTypeMixin",
     "PresenceFootsteps.SoundEngineMixin",
     "PresenceFootsteps.StateLookupMixin",

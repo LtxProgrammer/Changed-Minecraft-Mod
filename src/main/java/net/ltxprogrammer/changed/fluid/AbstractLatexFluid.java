@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.fluid;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -30,14 +30,14 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
     private final List<TransfurVariant<?>> form;
-    private final GooType gooType;
-    protected AbstractLatexFluid(Properties properties, GooType gooType, List<TransfurVariant<?>> form) {
+    private final LatexType gooType;
+    protected AbstractLatexFluid(Properties properties, LatexType gooType, List<TransfurVariant<?>> form) {
         super(properties);
         this.gooType = gooType;
         this.form = form;
     }
 
-    public GooType getLatexType() {
+    public LatexType getLatexType() {
         return gooType;
     }
 

@@ -22,6 +22,8 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends ChangedEntity> extends RenderLayer<T, M> {
     public static class ColorData {
@@ -124,11 +126,11 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         return (entity, bpi) -> ColorData.ofTranslucentColor(color, alpha);
     }
 
-    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotBlackGooOverrideLeft(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideLeft(Color3 color) {
         return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getLeftIrisColor() : color);
     }
 
-    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotBlackGooOverrideRight(Color3 color) {
+    public static <T extends ChangedEntity> ColorFunction<T> fixedIfNotDarkLatexOverrideRight(Color3 color) {
         return (entity, bpi) -> ColorData.ofColor(bpi.isOverrideIrisOnDarkLatex() ? bpi.getRightIrisColor() : color);
     }
 

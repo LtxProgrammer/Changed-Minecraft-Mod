@@ -160,7 +160,7 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        boolean capableOfSleeping = ProcessTransfur.ifPlayerTransfurred(player, variant -> variant.getParent().is(ChangedTags.LatexVariants.CAN_SLEEP_ON_PILLOWS), () -> false);
+        boolean capableOfSleeping = ProcessTransfur.ifPlayerTransfurred(player, variant -> variant.getParent().is(ChangedTags.TransfurVariants.CAN_SLEEP_ON_PILLOWS), () -> false);
         boolean canSleepNow = net.minecraftforge.event.ForgeEventFactory.fireSleepingTimeCheck(player, Optional.of(pos));
 
         if (level.isClientSide) {
@@ -199,7 +199,7 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
             var variant = TransfurVariant.getEntityVariant(livingEntity);
             if (variant == null)
                 return super.isBed(state, level, pos, player);
-            return TransfurVariant.getEntityVariant(livingEntity).is(ChangedTags.LatexVariants.CAN_SLEEP_ON_PILLOWS) || super.isBed(state, level, pos, player);
+            return TransfurVariant.getEntityVariant(livingEntity).is(ChangedTags.TransfurVariants.CAN_SLEEP_ON_PILLOWS) || super.isBed(state, level, pos, player);
         }
 
         else {

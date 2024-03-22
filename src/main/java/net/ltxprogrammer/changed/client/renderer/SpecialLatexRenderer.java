@@ -55,12 +55,12 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     }
 
     public SpecialLatexRenderer getAndCacheFor(SpecialLatex entity) {
-        if (!entity.specialForm.modelData().containsKey(entity.wantedState))
+        if (!entity.specialLatexForm.modelData().containsKey(entity.wantedState))
             return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
-                    new SpecialLatexRenderer(this.context, entity.specialForm.getDefaultModel()));
+                    new SpecialLatexRenderer(this.context, entity.specialLatexForm.getDefaultModel()));
 
         return SPECIAL_RENDERERS.computeIfAbsent(new Pair<>(entity.getAssignedUUID(), entity.wantedState), pair ->
-                new SpecialLatexRenderer(this.context, entity.specialForm.modelData().get(pair.getSecond())));
+                new SpecialLatexRenderer(this.context, entity.specialLatexForm.modelData().get(pair.getSecond())));
     }
 
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
@@ -109,7 +109,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
     @Override
     public ResourceLocation getTextureLocation(SpecialLatex latex) {
-        return latex.specialForm != null ? latex.specialForm.modelData().get(latex.wantedState).texture() :
+        return latex.specialLatexForm != null ? latex.specialLatexForm.modelData().get(latex.wantedState).texture() :
                 Changed.modResource("textures/delay_loaded_latex.png");
     }
 

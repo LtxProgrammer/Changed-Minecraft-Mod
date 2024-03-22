@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.entity.projectile.GooInkball;
+import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,7 @@ public class LatexInkballItem extends Item {
         ItemStack itemstack = p_43143_.getItemInHand(p_43144_);
         p_43142_.playSound((Player)null, p_43143_.getX(), p_43143_.getY(), p_43143_.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (p_43142_.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!p_43142_.isClientSide) {
-            GooInkball inkball = new GooInkball(p_43142_, p_43143_);
+            LatexInkball inkball = new LatexInkball(p_43142_, p_43143_);
             inkball.setItem(itemstack);
             inkball.shootFromRotation(p_43143_, p_43143_.getXRot(), p_43143_.getYRot(), 0.0F, 1.5F, 1.0F);
             p_43142_.addFreshEntity(inkball);

@@ -26,8 +26,8 @@ public abstract class AbstractSnowLeopard extends ChangedEntity implements Gende
         return Color3.WHITE;
     }
 
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.WhiteGooKnightFusion;
+import net.ltxprogrammer.changed.entity.beast.LightLatexKnightFusion;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel.process;
 
-public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<WhiteGooKnightFusion, ArmorLightLatexKnightFusionModel> {
+public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<LightLatexKnightFusion, ArmorLightLatexKnightFusionModel> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_light_latex_knight_fusion")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_knight_fusion")).get();
 
@@ -32,7 +32,7 @@ public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<Wh
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final HumanoidAnimator<WhiteGooKnightFusion, ArmorLightLatexKnightFusionModel> animator;
+    private final HumanoidAnimator<LightLatexKnightFusion, ArmorLightLatexKnightFusionModel> animator;
 
     public ArmorLightLatexKnightFusionModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -84,7 +84,7 @@ public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<Wh
     }
 
     @Override
-    public void renderForSlot(WhiteGooKnightFusion entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(LightLatexKnightFusion entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (slot) {
             case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             case CHEST -> {
@@ -117,7 +117,7 @@ public class ArmorLightLatexKnightFusionModel extends LatexHumanoidArmorModel<Wh
     }
 
     @Override
-    public HumanoidAnimator<WhiteGooKnightFusion, ArmorLightLatexKnightFusionModel> getAnimator() {
+    public HumanoidAnimator<LightLatexKnightFusion, ArmorLightLatexKnightFusionModel> getAnimator() {
         return animator;
     }
 }

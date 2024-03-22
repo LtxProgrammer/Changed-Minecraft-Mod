@@ -16,7 +16,7 @@ public abstract class ScaleTypeMixin {
 
     @Inject(method = "getScaleData", at = @At("HEAD"), cancellable = true)
     public void getHostScaleData(Entity entity, CallbackInfoReturnable<ScaleData> callback) {
-        if (entity instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null)
-            callback.setReturnValue(this.getScaleData(changedEntity.getUnderlyingPlayer()));
+        if (entity instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
+            callback.setReturnValue(this.getScaleData(ChangedEntity.getUnderlyingPlayer()));
     }
 }

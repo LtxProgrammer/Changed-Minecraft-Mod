@@ -196,16 +196,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
             final float morphProgress = variant.getMorphProgression();
 
             if (morphProgress < 1f) {
-                ChangedEntity latexEntity = variant.getLatexEntity();
+                ChangedEntity ChangedEntity = variant.getChangedEntity();
 
                 final var playerDim = callback.getReturnValue();
-                final var latexDim = latexEntity.getDimensions(pose);
+                final var latexDim = ChangedEntity.getDimensions(pose);
                 float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
                 float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
 
                 callback.setReturnValue(new EntityDimensions(width, height, latexDim.fixed));
             } else {
-                callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
+                callback.setReturnValue(variant.getChangedEntity().getDimensions(pose));
             }
         });
     }

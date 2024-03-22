@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.effect.Shock;
-import net.ltxprogrammer.changed.entity.beast.GooSiren;
+import net.ltxprogrammer.changed.entity.beast.LatexSiren;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +38,7 @@ public class SirenSingAbilityInstance extends AbstractAbilityInstance {
         var self = entity.getEntity();
         var level = entity.getLevel();
 
-        if (!(self instanceof GooSiren siren) || !siren.wantToSing())
+        if (!(self instanceof LatexSiren siren) || !siren.wantToSing())
             return;
 
         if (lastSingTick < self.tickCount) {

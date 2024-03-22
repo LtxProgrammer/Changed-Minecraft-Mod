@@ -335,8 +335,8 @@ public class ProcessTransfur {
             return oldVariant;
         if (variant == null && oldVariant == null)
             return oldVariant;
-        if (oldVariant != null && oldVariant.getLatexEntity() != null)
-            oldVariant.getLatexEntity().discard();
+        if (oldVariant != null && oldVariant.getChangedEntity() != null)
+            oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
         playerDataExtension.setLatexVariant(instance);
         if (variant != null)
@@ -449,9 +449,9 @@ public class ProcessTransfur {
         }
 
         @Nullable
-        public ChangedEntity getLatexEntity() {
+        public ChangedEntity getChangedEntity() {
             if (isPlayer)
-                return this.playerVariant == null ? null : this.playerVariant.getLatexEntity();
+                return this.playerVariant == null ? null : this.playerVariant.getChangedEntity();
             else if (entity instanceof ChangedEntity changedEntity)
                 return changedEntity;
             return null;
@@ -512,7 +512,7 @@ public class ProcessTransfur {
         else return ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
             if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
                 return true;
-            else if (variant.getLatexEntity() instanceof SpecialLatex special &&
+            else if (variant.getChangedEntity() instanceof SpecialLatex special &&
                     special.getCurrentData() != null && special.getCurrentData().organic())
                 return true;
             return false;
@@ -532,7 +532,7 @@ public class ProcessTransfur {
             if (event.getEntityLiving() instanceof ChangedEntity changedEntity)
                 changedEntity.onDamagedBy(changedEntity, livingEntity);
             ifPlayerTransfurred(EntityUtil.playerOrNull(event.getEntityLiving()), (player, variant) -> {
-                variant.getLatexEntity().onDamagedBy(player, livingEntity);
+                variant.getChangedEntity().onDamagedBy(player, livingEntity);
             });
         }
 
@@ -754,8 +754,8 @@ public class ProcessTransfur {
             return;
         }
         // Check for faction immunity
-        GooType factionD = GooType.getEntityFactionGooType(event.getEntityLiving());
-        GooType factionS = GooType.getEntityFactionGooType(sourceEntity);
+        LatexType factionD = LatexType.getEntityFactionLatexType(event.getEntityLiving());
+        LatexType factionS = LatexType.getEntityFactionLatexType(sourceEntity);
         if (factionD == factionS && factionS != null) {
             event.setCanceled(true);
             return;
@@ -855,10 +855,10 @@ public class ProcessTransfur {
 
         final BiConsumer<IAbstractChangedEntity, TransfurVariant<?>> onReplicate = (iAbstractLatex, variant1) -> {
             if (context.source != null)
-                context.source.getLatexEntity().onReplicateOther(iAbstractLatex, variant1);
+                context.source.getChangedEntity().onReplicateOther(iAbstractLatex, variant1);
         };
 
-        if (!GooType.hasGooType(entity)) {
+        if (!LatexType.hasLatexType(entity)) {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             if ((keepConscious || doAnimation) && entity instanceof ServerPlayer player) {
                 var instance = setPlayerTransfurVariant(player, variant, context.cause, doAnimation ? 0.0f : 1.0f);
@@ -887,7 +887,7 @@ public class ProcessTransfur {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, variant);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
-                    onReplicate.accept(IAbstractChangedEntity.forChangedEntity(event.variant.replaceEntity(entity)), event.variant);
+                    onReplicate.accept(IAbstractChangedEntity.forEntity(event.variant.replaceEntity(entity)), event.variant);
             }
         }
 

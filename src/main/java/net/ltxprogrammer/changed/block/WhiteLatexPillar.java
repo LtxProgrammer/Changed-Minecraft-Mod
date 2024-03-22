@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -51,7 +51,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         TransfurVariantInstance variant = ProcessTransfur.getPlayerTransfurVariant(player);
-        if (variant != null && variant.getGooType() == GooType.PURE_WHITE_GOO &&
+        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
                 /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
             if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
                 return super.use(state, level, pos, player, hand, hitResult);
@@ -69,7 +69,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
         else {
             BlockState belowState = level.getBlockState(blockPos.below());
             if (belowState.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()) ||
-                    (belowState.getProperties().contains(COVERED) && belowState.getValue(COVERED) == GooType.PURE_WHITE_GOO))
+                    (belowState.getProperties().contains(COVERED) && belowState.getValue(COVERED) == LatexType.WHITE_LATEX))
                 return super.canSurvive(blockState, level, blockPos);
             else
                 return false;
@@ -79,7 +79,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
     @Override
     public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
         if (context instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() != null)
-            if (GooType.getEntityGooType(entityCollisionContext.getEntity()) == GooType.PURE_WHITE_GOO)
+            if (LatexType.getEntityLatexType(entityCollisionContext.getEntity()) == LatexType.WHITE_LATEX)
                 return Shapes.empty();
 
         return getInteractionShape(blockState, blockGetter, blockPos);
@@ -118,23 +118,23 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
-                var latexType = ProcessTransfur.getPlayerTransfurVariant(player).getGooType();
+                var latexType = ProcessTransfur.getPlayerTransfurVariant(player).getLatexType();
 
-                if (latexType == GooType.PURE_WHITE_GOO) {
+                if (latexType == LatexType.WHITE_LATEX) {
                     WhiteLatexTransportInterface.entityEnterLatex(player, pos);
                     return;
                 }
 
-                else if (latexType.isHostileTo(GooType.PURE_WHITE_GOO)) {
+                else if (latexType.isHostileTo(LatexType.WHITE_LATEX)) {
                     player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
                 }
             }
             else {
                 ProcessTransfur.progressTransfur(le, 4.8f, TransfurVariant.WHITE_LATEX_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
             }
-        } else if (entity instanceof ChangedEntity changedEntity) {
-            if (changedEntity.getGooType().isHostileTo(GooType.PURE_WHITE_GOO))
-                changedEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+        } else if (entity instanceof ChangedEntity ChangedEntity) {
+            if (ChangedEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                ChangedEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         }
         entity.makeStuckInBlock(state, new Vec3((double)0.8F, 0.75D, (double)0.8F));
     }

@@ -26,8 +26,8 @@ import java.util.List;
 
 public class DarkLatexMask extends Item implements WearableItem {
     public static final List<ResourceLocation> MASKED_LATEXES = new ArrayList<>(List.of(
-            TransfurVariant.BLACK_GOO_WOLF.male().getFormId(),
-            TransfurVariant.BLACK_GOO_WOLF.female().getFormId(),
+            TransfurVariant.DARK_LATEX_WOLF.male().getFormId(),
+            TransfurVariant.DARK_LATEX_WOLF.female().getFormId(),
             TransfurVariant.DARK_LATEX_YUFENG.getFormId()
     ));
 
@@ -52,7 +52,7 @@ public class DarkLatexMask extends Item implements WearableItem {
     public void wearTick(LivingEntity entity, ItemStack itemStack) {
         TransfurVariant<?> variant = Syringe.getVariant(itemStack);
         if (variant == null)
-            variant = TransfurVariant.BLACK_GOO_WOLF.male();
+            variant = TransfurVariant.DARK_LATEX_WOLF.male();
         if (TransfurVariant.getEntityVariant(entity) == TransfurVariant.DARK_LATEX_WOLF_PARTIAL) {
             if (entity.getRandom().nextFloat() > 0.005f) return; // 0.5% chance every tick the entity will switch TF into the mask variant
 

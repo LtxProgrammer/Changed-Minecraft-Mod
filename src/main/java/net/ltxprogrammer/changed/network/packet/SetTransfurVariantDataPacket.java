@@ -47,7 +47,7 @@ public class SetTransfurVariantDataPacket implements ChangedPacket {
             ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(player), variant -> {
                 if (packedItems == null)
                     return;
-                variant.getLatexEntity().getEntityData().assignValues(packedItems);
+                variant.getChangedEntity().getEntityData().assignValues(packedItems);
             });
             context.setPacketHandled(true);
         }

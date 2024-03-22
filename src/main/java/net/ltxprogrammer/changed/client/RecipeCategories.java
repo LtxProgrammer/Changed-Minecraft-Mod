@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import com.google.common.collect.ImmutableList;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
@@ -60,9 +60,9 @@ public class RecipeCategories {
     public static final RecipeBookCategories INFUSER_AERIAL = registerBookCategory("CHANGED_INFUSER_AERIAL", new ItemStack(Items.ELYTRA));
     public static final RecipeBookCategories INFUSER_GENDERED = registerBookCategory("CHANGED_INFUSER_GENDERED",
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.GOO_SHARK.getFormId()),
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.LATEX_SHARK.getFormId()),
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.BLACK_GOO_WOLF.female().getFormId()));
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.DARK_LATEX_WOLF.female().getFormId()));
 
     public static void registerCategories() {
         registerTypeCategories(ChangedRecipeTypes.INFUSER_BOOK, ChangedRecipeTypes.INFUSER_RECIPE, INFUSER_SEARCH, ImmutableList.of(
@@ -79,9 +79,9 @@ public class RecipeCategories {
                 categories.add(INFUSER_AQUATIC);
             if (variant.canGlide)
                 categories.add(INFUSER_AERIAL);
-            if (variant.getGooType() == GooType.BLACK_GOO)
+            if (variant.getLatexType() == LatexType.DARK_LATEX)
                 categories.add(INFUSER_DARK_LATEX);
-            if (variant.getGooType() == GooType.PURE_WHITE_GOO)
+            if (variant.getLatexType() == LatexType.WHITE_LATEX)
                 categories.add(INFUSER_WHITE_LATEX);
             if (recipe.gendered)
                 categories.add(INFUSER_GENDERED);

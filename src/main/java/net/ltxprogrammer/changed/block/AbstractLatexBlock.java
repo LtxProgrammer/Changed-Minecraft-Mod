@@ -1,12 +1,12 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
-import net.ltxprogrammer.changed.item.AbstractGooItem;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,32 +35,32 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public abstract class AbstractLatexBlock extends Block implements NonLatexCoverableBlock {
-    public static final EnumProperty<GooType> COVERED = EnumProperty.create("covered_with", GooType.class, GooType.values());
+    public static final EnumProperty<LatexType> COVERED = EnumProperty.create("covered_with", LatexType.class, LatexType.values());
 
-    private final GooType gooType;
+    private final LatexType latexType;
     private final Supplier<? extends Item> goo;
 
     public static boolean isLatexed(BlockState blockState) {
-        return getLatexed(blockState) != GooType.NEUTRAL;
+        return getLatexed(blockState) != LatexType.NEUTRAL;
     }
 
-    public static GooType getLatexed(BlockState blockState) {
+    public static LatexType getLatexed(BlockState blockState) {
         if (blockState.getProperties().contains(COVERED))
             return blockState.getValue(COVERED);
-        for (var type : GooType.values())
+        for (var type : LatexType.values())
             if (blockState.is(type.block.get()))
                 return type;
-        return GooType.NEUTRAL;
+        return LatexType.NEUTRAL;
     }
 
 
-    public AbstractLatexBlock(Properties p_49795_, GooType gooType, Supplier<? extends Item> goo) {
+    public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<? extends Item> goo) {
         super(p_49795_.randomTicks().dynamicShape());
-        this.gooType = gooType;
+        this.latexType = latexType;
         this.goo = goo;
     }
 
-    public static boolean tryCover(Level level, BlockPos relative, GooType type) {
+    public static boolean tryCover(Level level, BlockPos relative, LatexType type) {
         BlockState old = level.getBlockState(relative);
         if (!old.getProperties().contains(COVERED))
             return false;
@@ -79,7 +79,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
 
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, net.minecraftforge.common.IPlantable plantable) {
-        if (gooType != GooType.BLACK_GOO) return false;
+        if (latexType != LatexType.DARK_LATEX) return false;
 
         BlockState plant = plantable.getPlant(world, pos.relative(facing));
         if (plant.getBlock() instanceof AbstractLatexCrystal)
@@ -88,25 +88,25 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             return false;
     }
 
-    public static void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity, GooType gooType) {
-        ChangedEntity changedEntity = null;
+    public static void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity, LatexType latexType) {
+        ChangedEntity ChangedEntity = null;
 
-        if (entity instanceof ChangedEntity) changedEntity = (ChangedEntity)entity;
+        if (entity instanceof ChangedEntity) ChangedEntity = (ChangedEntity)entity;
 
         if (entity instanceof Player player) {
             TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(player);
             if (variant != null)
-                changedEntity = variant.getLatexEntity();
+                ChangedEntity = variant.getChangedEntity();
         }
 
-        if (changedEntity != null) {
-            GooType type = changedEntity.getGooType();
-            if (type == gooType) {
+        if (ChangedEntity != null) {
+            LatexType type = ChangedEntity.getLatexType();
+            if (type == latexType) {
                 if (!entity.isInWater())
                     multiplyMotion(entity, FACTION_BENEFIT);
             }
 
-            else if (type != GooType.NEUTRAL) {
+            else if (type != LatexType.NEUTRAL) {
                 multiplyMotion(entity, FACTION_HINDER);
             }
 
@@ -122,7 +122,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
 
     @Override
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
-        stepOn(level, blockPos, blockState, entity, gooType);
+        stepOn(level, blockPos, blockState, entity, latexType);
     }
 
     private static void multiplyMotion(Entity entity, float mul) {
@@ -146,7 +146,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     }
 
     // Note: see BlockMixin.java and BlockBehaviourMixin.java for context
-    public static void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, GooType gooType) {
+    public static void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random, LatexType latexType) {
         if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0) return;
         if (!level.isAreaLoaded(position, 3)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (random.nextInt(10 * level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE)) < 600) return;
@@ -162,14 +162,14 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         BlockState checkState = level.getBlockState(checkPos);
 
         if (!checkState.is(ChangedTags.Blocks.LATEX_NON_REPLACEABLE) && checkState.getProperties().contains(COVERED) &&
-                checkState.getValue(COVERED) != gooType) {
+                checkState.getValue(COVERED) != latexType) {
             if (checkPos.subtract(position).getY() > 0 && random.nextInt(3) > 0) // Reduced chance of spreading up
                 return;
 
             if (Arrays.stream(Direction.values()).noneMatch(direction -> isValidSurface(level, checkPos, checkPos.relative(direction), direction)))
                 return;
 
-            var event = new AbstractGooItem.CoveringBlockEvent(gooType, checkState, checkPos, level);
+            var event = new AbstractLatexItem.CoveringBlockEvent(latexType, checkState, checkPos, level);
             if (MinecraftForge.EVENT_BUS.post(event))
                 return;
             if (event.originalState == event.plannedState)
@@ -182,7 +182,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
         super.randomTick(state, level, position, random);
 
-        randomTick(state, level, position, random, gooType);
+        randomTick(state, level, position, random, latexType);
         latexTick(state, level, position, random);
     }
 

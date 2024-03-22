@@ -34,8 +34,8 @@ public class LatexAlien extends ChangedEntity {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

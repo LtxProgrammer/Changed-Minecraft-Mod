@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.fluid;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
@@ -31,7 +31,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
             .bucket(ChangedItems.DARK_LATEX_BUCKET).block(ChangedBlocks.DARK_LATEX_FLUID);
 
     protected DarkLatexFluid() {
-        super(PROPERTIES, GooType.BLACK_GOO, List.of(TransfurVariant.BLACK_GOO_WOLF.male(), TransfurVariant.BLACK_GOO_WOLF.female(), TransfurVariant.DARK_LATEX_YUFENG));
+        super(PROPERTIES, LatexType.DARK_LATEX, List.of(TransfurVariant.DARK_LATEX_WOLF.male(), TransfurVariant.DARK_LATEX_WOLF.female(), TransfurVariant.DARK_LATEX_YUFENG));
     }
 
     @Override
@@ -47,7 +47,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
     @Override
     public boolean canEntityStandOn(LivingEntity entity) {
         var variant = TransfurVariant.getEntityVariant(entity);
-        return variant != null && variant.getGooType() == GooType.BLACK_GOO;
+        return variant != null && variant.getLatexType() == LatexType.DARK_LATEX;
     }
 
     public static class Source extends DarkLatexFluid {

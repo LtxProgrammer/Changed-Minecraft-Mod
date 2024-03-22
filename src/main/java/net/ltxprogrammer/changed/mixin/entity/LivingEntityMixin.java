@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WearableBlock;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
@@ -131,7 +131,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     private void isVisuallySwimming(CallbackInfoReturnable<Boolean> callback) {
         if ((LivingEntity)(Object)this instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, (variant) -> {
-                if (variant.getLatexEntity().isVisuallySwimming())
+                if (variant.getChangedEntity().isVisuallySwimming())
                     callback.setReturnValue(true);
             });
         }
@@ -171,7 +171,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public void canStandOnFluid(FluidState state, CallbackInfoReturnable<Boolean> callback) {
         var variant = TransfurVariant.getEntityVariant((LivingEntity)(Object)this);
         if (variant == null) return;
-        if (variant.getGooType() == GooType.NEUTRAL) return;
+        if (variant.getLatexType() == LatexType.NEUTRAL) return;
 
         if (state.getType() instanceof AbstractLatexFluid latexFluid && latexFluid.canEntityStandOn((LivingEntity)(Object)this))
             callback.setReturnValue(true);

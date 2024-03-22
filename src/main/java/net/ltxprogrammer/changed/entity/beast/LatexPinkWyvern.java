@@ -20,8 +20,8 @@ public class LatexPinkWyvern extends ChangedEntity implements PowderSnowWalkable
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

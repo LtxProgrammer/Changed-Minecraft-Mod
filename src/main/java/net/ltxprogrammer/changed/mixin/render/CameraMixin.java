@@ -40,14 +40,14 @@ public abstract class CameraMixin implements CameraExtender {
     @Shadow @Final private Vector3f up;
 
     @Unique
-    private <T extends ChangedEntity> void adjustAnimForEntity(T latexEntity, float partialTicks) {
-        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(latexEntity) instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoid &&
-                latexHumanoid.getModel(latexEntity) instanceof AdvancedHumanoidModelInterface latexHumanoidModel) {
-            boolean shouldSit = latexEntity.isPassenger() && (latexEntity.getVehicle() != null && latexEntity.getVehicle().shouldRiderSit());
-            float f = Mth.rotLerp(partialTicks, latexEntity.yBodyRotO, latexEntity.yBodyRot);
-            float f1 = Mth.rotLerp(partialTicks, latexEntity.yHeadRotO, latexEntity.yHeadRot);
+    private <T extends ChangedEntity> void adjustAnimForEntity(T ChangedEntity, float partialTicks) {
+        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ChangedEntity) instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoid &&
+                latexHumanoid.getModel(ChangedEntity) instanceof AdvancedHumanoidModelInterface AdvancedHumanoidModel) {
+            boolean shouldSit = ChangedEntity.isPassenger() && (ChangedEntity.getVehicle() != null && ChangedEntity.getVehicle().shouldRiderSit());
+            float f = Mth.rotLerp(partialTicks, ChangedEntity.yBodyRotO, ChangedEntity.yBodyRot);
+            float f1 = Mth.rotLerp(partialTicks, ChangedEntity.yHeadRotO, ChangedEntity.yHeadRot);
             float netHeadYaw = f1 - f;
-            if (shouldSit && latexEntity.getVehicle() instanceof LivingEntity livingentity) {
+            if (shouldSit && ChangedEntity.getVehicle() instanceof LivingEntity livingentity) {
                 f = Mth.rotLerp(partialTicks, livingentity.yBodyRotO, livingentity.yBodyRot);
                 netHeadYaw = f1 - f;
                 float f3 = Mth.wrapDegrees(netHeadYaw);
@@ -67,18 +67,18 @@ public abstract class CameraMixin implements CameraExtender {
                 netHeadYaw = f1 - f;
             }
 
-            float headPitch = Mth.lerp(partialTicks, latexEntity.xRotO, latexEntity.getXRot());
-            if (LivingEntityRenderer.isEntityUpsideDown(latexEntity)) {
+            float headPitch = Mth.lerp(partialTicks, ChangedEntity.xRotO, ChangedEntity.getXRot());
+            if (LivingEntityRenderer.isEntityUpsideDown(ChangedEntity)) {
                 headPitch *= -1.0F;
                 netHeadYaw *= -1.0F;
             }
 
             float limbSwingAmount = 0.0F;
             float limbSwing = 0.0F;
-            if (!shouldSit && latexEntity.isAlive()) {
-                limbSwingAmount = Mth.lerp(partialTicks, latexEntity.animationSpeedOld, latexEntity.animationSpeed);
-                limbSwing = latexEntity.animationPosition - latexEntity.animationSpeed * (1.0F - partialTicks);
-                if (latexEntity.isBaby()) {
+            if (!shouldSit && ChangedEntity.isAlive()) {
+                limbSwingAmount = Mth.lerp(partialTicks, ChangedEntity.animationSpeedOld, ChangedEntity.animationSpeed);
+                limbSwing = ChangedEntity.animationPosition - ChangedEntity.animationSpeed * (1.0F - partialTicks);
+                if (ChangedEntity.isBaby()) {
                     limbSwing *= 3.0F;
                 }
 
@@ -87,12 +87,12 @@ public abstract class CameraMixin implements CameraExtender {
                 }
             }
 
-            var animator = latexHumanoidModel.getAnimator();
-            animator.setupVariables(latexEntity, partialTicks);
-            animator.setupCameraAnim(this, latexEntity,
+            var animator = AdvancedHumanoidModel.getAnimator();
+            animator.setupVariables(ChangedEntity, partialTicks);
+            animator.setupCameraAnim(this, ChangedEntity,
                     limbSwing,
                     limbSwingAmount,
-                    latexEntity.tickCount + partialTicks,
+                    ChangedEntity.tickCount + partialTicks,
                     netHeadYaw,
                     headPitch
             );
@@ -102,12 +102,12 @@ public abstract class CameraMixin implements CameraExtender {
     @Inject(method = "setup", at = @At("RETURN"))
     public void animateCamera(BlockGetter level, Entity entity, boolean p_90578_, boolean p_90579_, float partialTicks, CallbackInfo ci) {
         if (entity.isSpectator()) return;
-        if (entity instanceof ChangedEntity changedEntity)
-            adjustAnimForEntity(changedEntity, partialTicks);
+        if (entity instanceof ChangedEntity ChangedEntity)
+            adjustAnimForEntity(ChangedEntity, partialTicks);
 
         else if (entity instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                adjustAnimForEntity(variant.getLatexEntity(), partialTicks);
+                adjustAnimForEntity(variant.getChangedEntity(), partialTicks);
             });
         }
     }

@@ -133,7 +133,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public Color3 getTransfurColor() {
-        return getLatexEntity().getTransfurColor(this.cause);
+        return getChangedEntity().getTransfurColor(this.cause);
     }
 
     public TransfurVariantInstance(TransfurVariant<T> parent, Player host) {
@@ -168,7 +168,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return parent.getFormId();
     }
 
-    public T getLatexEntity() {
+    public T getChangedEntity() {
         return entity;
     }
 
@@ -273,7 +273,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (event.getEntity() instanceof Player player) {
             if (player.isAddedToWorld()) {
                 ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                    ChangedEntity changedEntity = variant.getLatexEntity();
+                    ChangedEntity changedEntity = variant.getChangedEntity();
                     final float morphProgress = variant.getMorphProgression();
 
                     if (morphProgress < 1f) {
@@ -311,7 +311,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 try {
                     instance.tick(event.player);
                     if (!event.player.isSpectator()) {
-                        instance.getLatexEntity().visualTick(event.player.level);
+                        instance.getChangedEntity().visualTick(event.player.level);
                     }
                 } catch (Exception x) {
                     x.printStackTrace();
@@ -573,7 +573,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
 
             if (!player.level.isClientSide) {
-                this.entity.setLatexEntityFlag(ChangedEntity.FLAG_IS_FLYING, player.getAbilities().flying);
+                this.entity.setChangedEntityFlag(ChangedEntity.FLAG_IS_FLYING, player.getAbilities().flying);
             }
         }
 
@@ -781,8 +781,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         player.refreshDimensions();
     }
 
-    public GooType getGooType() {
-        return parent.getGooType();
+    public LatexType getLatexType() {
+        return parent.getLatexType();
     }
 
     public boolean is(TransfurVariant<?> variant) {

@@ -118,10 +118,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     private void prepareSyncEntity(LivingEntity syncTo) {
-        this.syncEntity = (ChangedEntity) this.entity.getLatexEntity().getType().create(this.entity.getLevel());
+        this.syncEntity = (ChangedEntity) this.entity.getChangedEntity().getType().create(this.entity.getLevel());
         this.syncEntity.setId(TransfurVariant.getNextEntId());
         CompoundTag tag = new CompoundTag();
-        this.entity.getLatexEntity().saveWithoutId(tag);
+        this.entity.getChangedEntity().saveWithoutId(tag);
         this.syncEntity.load(tag);
 
         if (syncTo instanceof Player player) {
@@ -235,7 +235,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (attackDown && !suited) { // TODO progress absorption while suited
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getLatexEntity().getTransfurVariant()))
+                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant()))
                     this.releaseEntity();
             }
 

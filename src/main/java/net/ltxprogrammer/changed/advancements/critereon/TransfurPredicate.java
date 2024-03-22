@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.advancements.critereon;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ public class TransfurPredicate {
     @Nullable
     private final Set<TransfurVariant<?>> forms;
     @Nullable
-    private final GooType type;
+    private final LatexType type;
     private final boolean flying;
     private final boolean swimming;
     private final boolean legless;
@@ -29,7 +29,7 @@ public class TransfurPredicate {
         this.legless = false;
     }
 
-    public TransfurPredicate(GooType type) {
+    public TransfurPredicate(LatexType type) {
         this.forms = null;
         this.type = type;
         this.flying = false;
@@ -61,7 +61,7 @@ public class TransfurPredicate {
                 if (setForm.getFormId() == form.getFormId())
                     return true;
         if (type != null)
-            return form.getGooType() == type;
+            return form.getLatexType() == type;
         if (form.canGlide && flying)
             return true;
         if (form.getBreatheMode().canBreatheWater() && swimming)
@@ -75,7 +75,7 @@ public class TransfurPredicate {
         if (json != null && !json.isJsonNull()) {
             JsonObject jsonObject = GsonHelper.convertToJsonObject(json, "form");
             if (jsonObject.has("type")) {
-                final GooType type = GooType.valueOf(GsonHelper.getAsString(jsonObject, "type"));
+                final LatexType type = LatexType.valueOf(GsonHelper.getAsString(jsonObject, "type"));
                 return new TransfurPredicate(type);
             }
             if (jsonObject.has("forms")) {

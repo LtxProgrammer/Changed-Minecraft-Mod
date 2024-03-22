@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 public class SwitchGenderAbility extends SimpleAbility {
     @Override
     public boolean canUse(IAbstractChangedEntity entity) {
-        return entity.getLatexEntity() instanceof GenderedEntity && entity.getEntity() instanceof Player;
+        return entity.getChangedEntity() instanceof GenderedEntity && entity.getEntity() instanceof Player;
     }
 
     @Override

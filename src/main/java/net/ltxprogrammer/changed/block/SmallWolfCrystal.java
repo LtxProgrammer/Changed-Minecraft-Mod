@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
@@ -17,11 +17,11 @@ public class SmallWolfCrystal extends AbstractLatexCrystal {
     }
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter p_51043_, BlockPos p_51044_) {
-        return blockState.getBlock() instanceof LatexWolfCrystalBlock || blockState.getBlock() instanceof DarkLatexBlock || getLatexed(blockState) == GooType.BLACK_GOO;
+        return blockState.getBlock() instanceof LatexWolfCrystalBlock || blockState.getBlock() instanceof DarkLatexBlock || getLatexed(blockState) == LatexType.DARK_LATEX;
     }
 
     public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
         BlockState blockStateOn = p_52888_.getBlockState(p_52889_.below());
-        return blockStateOn.getBlock() instanceof LatexWolfCrystalBlock || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == GooType.BLACK_GOO;
+        return blockStateOn.getBlock() instanceof LatexWolfCrystalBlock || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
     }
 }

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.GooRedPanda;
+import net.ltxprogrammer.changed.entity.beast.LatexRedPanda;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexRedPandaModel extends AdvancedHumanoidModel<GooRedPanda> implements AdvancedHumanoidModelInterface<GooRedPanda, LatexRedPandaModel> {
+public class LatexRedPandaModel extends AdvancedHumanoidModel<LatexRedPanda> implements AdvancedHumanoidModelInterface<LatexRedPanda, LatexRedPandaModel> {
         // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
         public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_red_panda"), "main");
         private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<GooRedPanda> imple
         private final ModelPart Head;
         private final ModelPart Torso;
         private final ModelPart Tail;
-        private final HumanoidAnimator<GooRedPanda, LatexRedPandaModel> animator;
+        private final HumanoidAnimator<LatexRedPanda, LatexRedPandaModel> animator;
 
         public LatexRedPandaModel(ModelPart root) {
             super(root);
@@ -130,7 +130,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<GooRedPanda> imple
     }
 
     @Override
-    public void prepareMobModel(GooRedPanda p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexRedPanda p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -139,7 +139,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<GooRedPanda> imple
     }
 
     @Override
-    public void setupAnim(GooRedPanda entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LatexRedPanda entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -171,7 +171,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<GooRedPanda> imple
     }
 
     @Override
-    public HumanoidAnimator<GooRedPanda, LatexRedPandaModel> getAnimator() {
+    public HumanoidAnimator<LatexRedPanda, LatexRedPandaModel> getAnimator() {
         return animator;
     }
 }

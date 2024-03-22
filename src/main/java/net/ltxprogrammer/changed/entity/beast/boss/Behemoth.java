@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast.boss;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
@@ -16,8 +16,8 @@ public abstract class Behemoth extends ChangedEntity {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.PURE_WHITE_GOO;
+    public LatexType getLatexType() {
+        return LatexType.WHITE_LATEX;
     }
 
     @Override
@@ -35,7 +35,7 @@ public abstract class Behemoth extends ChangedEntity {
     }
 
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.WHITE_GOO_WOLF.male();
+        return TransfurVariant.LIGHT_LATEX_WOLF.male();
     }
 
     public void checkDespawn() {

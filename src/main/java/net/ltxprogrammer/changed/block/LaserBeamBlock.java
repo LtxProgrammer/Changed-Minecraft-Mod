@@ -79,7 +79,7 @@ public class LaserBeamBlock extends Block implements NonLatexCoverableBlock {
 
         livingEntity.getArmorSlots().forEach(itemStack -> {
             if (itemStack.is(ChangedItems.BENIGN_PANTS.get())) {
-                if (ProcessTransfur.progressTransfur(livingEntity, 11.0f, TransfurVariant.BENIGN_GOO_WOLF, TransfurContext.hazard(TransfurCause.WAIST_HAZARD)))
+                if (ProcessTransfur.progressTransfur(livingEntity, 11.0f, TransfurVariant.LATEX_BENIGN_WOLF, TransfurContext.hazard(TransfurCause.WAIST_HAZARD)))
                     itemStack.shrink(1);
             }
         });

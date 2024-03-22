@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.world.biome;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.DeferredStateProvider;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.minecraft.core.Holder;
@@ -118,17 +118,17 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
 
     @Override
     public BlockState groundBlock() {
-        return Blocks.DIRT.defaultBlockState().setValue(COVERED, GooType.BLACK_GOO);
+        return Blocks.DIRT.defaultBlockState().setValue(COVERED, LatexType.DARK_LATEX);
     }
 
     @Override
     public BlockState undergroundBlock() {
-        return Blocks.DIRT.defaultBlockState().setValue(COVERED, GooType.BLACK_GOO);
+        return Blocks.DIRT.defaultBlockState().setValue(COVERED, LatexType.DARK_LATEX);
     }
 
     @Override
     public BlockState underwaterBlock() {
-        return Blocks.DIRT.defaultBlockState().setValue(COVERED, GooType.BLACK_GOO);
+        return Blocks.DIRT.defaultBlockState().setValue(COVERED, LatexType.DARK_LATEX);
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
-import net.ltxprogrammer.changed.entity.beast.GooMantaRayFemale;
+import net.ltxprogrammer.changed.entity.beast.LatexMantaRayFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayFemale> implements AdvancedHumanoidModelInterface<GooMantaRayFemale, LatexMantaRayFemaleModel>, LeglessModel {
+public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<LatexMantaRayFemale> implements AdvancedHumanoidModelInterface<LatexMantaRayFemale, LatexMantaRayFemaleModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_manta_ray_female"), "main");
     private final ModelPart RightArm;
@@ -34,7 +34,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final HumanoidAnimator<GooMantaRayFemale, LatexMantaRayFemaleModel> animator;
+    private final HumanoidAnimator<LatexMantaRayFemale, LatexMantaRayFemaleModel> animator;
 
     public LatexMantaRayFemaleModel(ModelPart root) {
         super(root);
@@ -169,7 +169,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
     }
 
     @Override
-    public void prepareMobModel(GooMantaRayFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexMantaRayFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -178,7 +178,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
     }
 
     @Override
-    public void setupAnim(@NotNull GooMantaRayFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull LatexMantaRayFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -224,11 +224,11 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
     }
 
     @Override
-    public HumanoidAnimator<GooMantaRayFemale, LatexMantaRayFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexMantaRayFemale, LatexMantaRayFemaleModel> getAnimator() {
         return animator;
     }
 
-    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<GooMantaRayFemale, Remodel> implements LeglessModel {
+    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<LatexMantaRayFemale, Remodel> implements LeglessModel {
         private final ModelPart RightArm;
         private final ModelPart LeftArm;
         private final ModelPart Head;
@@ -236,7 +236,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
         private final ModelPart Abdomen;
         private final ModelPart LowerAbdomen;
         private final ModelPart Tail;
-        private final HumanoidAnimator<GooMantaRayFemale, Remodel> animator;
+        private final HumanoidAnimator<LatexMantaRayFemale, Remodel> animator;
 
         public Remodel(ModelPart root) {
             super(root);
@@ -369,7 +369,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<GooMantaRayF
         }
 
         @Override
-        public HumanoidAnimator<GooMantaRayFemale, Remodel> getAnimator() {
+        public HumanoidAnimator<LatexMantaRayFemale, Remodel> getAnimator() {
             return animator;
         }
     }

@@ -19,7 +19,7 @@ public class ProcessEmote {
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new EmotePacket(player.getUUID(), emote));
         } else {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                ProcessEmote.rawEmote(variant.getLatexEntity(), emote);
+                ProcessEmote.rawEmote(variant.getChangedEntity(), emote);
             }, () -> {
                 ProcessEmote.rawEmote(player, emote);
             });

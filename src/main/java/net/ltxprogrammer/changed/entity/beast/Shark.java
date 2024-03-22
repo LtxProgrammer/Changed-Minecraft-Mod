@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
@@ -38,7 +38,7 @@ public class Shark extends AbstractAquaticEntity {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return this.level.getSeaLevel() - 6 > this.getBlockY() ? TransfurVariant.LATEX_MERMAID_SHARK.randomGender(this.random) : TransfurVariant.GOO_SHARK;
+        return this.level.getSeaLevel() - 6 > this.getBlockY() ? TransfurVariant.LATEX_MERMAID_SHARK.randomGender(this.random) : TransfurVariant.LATEX_SHARK;
     }
 
     @Override
@@ -111,8 +111,8 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

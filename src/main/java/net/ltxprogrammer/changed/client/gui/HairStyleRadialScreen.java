@@ -36,7 +36,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.styles = variant.getLatexEntity().getValidHairStyles();
+        this.styles = variant.getChangedEntity().getValidHairStyles();
     }
 
     public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, ChangedEntity entity, float alpha) {
@@ -115,24 +115,24 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         x = x * 0.9;
         y = (y * 0.9) - 16;
 
-        var oldStyle = variant.getLatexEntity().getHairStyle();
-        variant.getLatexEntity().setHairStyle(styles.get(section));
+        var oldStyle = variant.getChangedEntity().getHairStyle();
+        variant.getChangedEntity().setHairStyle(styles.get(section));
         renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
                 (float)(this.leftPos) - mouseX + (int)x,
                 (float)(this.topPos) - mouseY + (int)y,
-                variant.getLatexEntity(), alpha);
-        variant.getLatexEntity().setHairStyle(oldStyle);
+                variant.getChangedEntity(), alpha);
+        variant.getChangedEntity().setHairStyle(oldStyle);
     }
 
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
-        this.variant.getLatexEntity().setHairStyle(styles.get(section));
+        this.variant.getChangedEntity().setHairStyle(styles.get(section));
         ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(IAbstractChangedEntity.forPlayer(menu.player));
         return true;
     }
 
     @Override
     public boolean isSelected(int section) {
-        return styles.size() > section && variant.getLatexEntity().getHairStyle() == styles.get(section);
+        return styles.size() > section && variant.getChangedEntity().getHairStyle() == styles.get(section);
     }
 }

@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
-import net.ltxprogrammer.changed.entity.beast.GooMermaidShark;
+import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMermaidSharkModel extends AdvancedHumanoidModel<GooMermaidShark> implements AdvancedHumanoidModelInterface<GooMermaidShark, LatexMermaidSharkModel>, LeglessModel {
+public class LatexMermaidSharkModel extends AdvancedHumanoidModel<LatexMermaidShark> implements AdvancedHumanoidModelInterface<LatexMermaidShark, LatexMermaidSharkModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_mermaid_shark"), "main");
     private final ModelPart RightArm;
@@ -34,7 +34,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<GooMermaidShar
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final HumanoidAnimator<GooMermaidShark, LatexMermaidSharkModel> animator;
+    private final HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> animator;
 
     public LatexMermaidSharkModel(ModelPart root) {
         super(root);
@@ -124,7 +124,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<GooMermaidShar
     }
 
     @Override
-    public void prepareMobModel(GooMermaidShark p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexMermaidShark p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -133,7 +133,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<GooMermaidShar
     }
 
     @Override
-    public void setupAnim(@NotNull GooMermaidShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull LatexMermaidShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -177,7 +177,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<GooMermaidShar
     }
 
     @Override
-    public HumanoidAnimator<GooMermaidShark, LatexMermaidSharkModel> getAnimator() {
+    public HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> getAnimator() {
         return animator;
     }
 }

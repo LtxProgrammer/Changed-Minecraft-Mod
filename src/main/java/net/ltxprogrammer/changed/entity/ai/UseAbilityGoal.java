@@ -22,7 +22,7 @@ public class UseAbilityGoal extends Goal {
             Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilities, ChangedEntity latex) {
         this.abilitiesCache = abilities;
         this.latex = latex;
-        this.abstractLatex = IAbstractChangedEntity.forChangedEntity(latex);
+        this.abstractLatex = IAbstractChangedEntity.forEntity(latex);
     }
 
     public AbstractAbilityInstance getSelectedAbility() {

@@ -67,7 +67,7 @@ public class ChangedTags {
         }
     }
 
-    public static class LatexVariants {
+    public static class TransfurVariants {
         public static final TagKey<TransfurVariant<?>> WOLF_LIKE = create("wolf_like");
         public static final TagKey<TransfurVariant<?>> SHARK_LIKE = create("shark_like");
         public static final TagKey<TransfurVariant<?>> CAT_LIKE = create("cat_like");

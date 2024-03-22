@@ -25,8 +25,8 @@ public class LatexRedDragon extends ChangedEntity implements PatronOC {
     public int getTicksRequiredToFreeze() {  return 140; }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

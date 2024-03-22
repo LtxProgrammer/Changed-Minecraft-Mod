@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.init.*;

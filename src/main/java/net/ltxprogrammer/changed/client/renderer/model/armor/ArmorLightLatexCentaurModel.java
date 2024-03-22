@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.WhiteGooCentaur;
+import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteGooCentaur, ArmorLightLatexCentaurModel> {
+public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<LightLatexCentaur, ArmorLightLatexCentaurModel> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
 
@@ -33,7 +33,7 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteGo
     private final ModelPart Torso;
     private final ModelPart LowerTorso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<WhiteGooCentaur, ArmorLightLatexCentaurModel> animator;
+    private final HumanoidAnimator<LightLatexCentaur, ArmorLightLatexCentaurModel> animator;
 
     public ArmorLightLatexCentaurModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -107,12 +107,12 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteGo
     }
 
     @Override
-    public HumanoidAnimator<WhiteGooCentaur, ArmorLightLatexCentaurModel> getAnimator() {
+    public HumanoidAnimator<LightLatexCentaur, ArmorLightLatexCentaurModel> getAnimator() {
         return animator;
     }
 
     @Override
-    public void renderForSlot(WhiteGooCentaur entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(LightLatexCentaur entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (slot) {
             case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             case CHEST -> {

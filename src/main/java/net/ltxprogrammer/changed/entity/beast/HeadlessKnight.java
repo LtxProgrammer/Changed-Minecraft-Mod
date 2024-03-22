@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
@@ -16,14 +16,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HeadlessKnight extends WhiteGooKnight implements LatexTaur<HeadlessKnight> {
+public class HeadlessKnight extends LightLatexKnight implements LatexTaur<HeadlessKnight> {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     @Override

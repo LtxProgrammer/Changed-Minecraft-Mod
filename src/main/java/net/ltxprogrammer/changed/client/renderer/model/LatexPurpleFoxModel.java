@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.GooPurpleFox;
+import net.ltxprogrammer.changed.entity.beast.LatexPurpleFox;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> implements AdvancedHumanoidModelInterface<GooPurpleFox, LatexPurpleFoxModel> {
+public class LatexPurpleFoxModel extends AdvancedHumanoidModel<LatexPurpleFox> implements AdvancedHumanoidModelInterface<LatexPurpleFox, LatexPurpleFoxModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_purple_fox"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> imp
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<GooPurpleFox, LatexPurpleFoxModel> animator;
+    private final HumanoidAnimator<LatexPurpleFox, LatexPurpleFoxModel> animator;
 
     public LatexPurpleFoxModel(ModelPart root) {
         super(root);
@@ -132,7 +132,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> imp
     }
 
     @Override
-    public void prepareMobModel(GooPurpleFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(LatexPurpleFox p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -141,7 +141,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> imp
     }
 
     @Override
-    public void setupAnim(GooPurpleFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LatexPurpleFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -173,7 +173,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<GooPurpleFox> imp
     }
 
     @Override
-    public HumanoidAnimator<GooPurpleFox, LatexPurpleFoxModel> getAnimator() {
+    public HumanoidAnimator<LatexPurpleFox, LatexPurpleFoxModel> getAnimator() {
         return animator;
     }
 }

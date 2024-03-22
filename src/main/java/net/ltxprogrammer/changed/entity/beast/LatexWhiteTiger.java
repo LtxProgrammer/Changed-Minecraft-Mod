@@ -27,8 +27,8 @@ public class LatexWhiteTiger extends ChangedEntity implements PowderSnowWalkable
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.NEUTRAL;
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {

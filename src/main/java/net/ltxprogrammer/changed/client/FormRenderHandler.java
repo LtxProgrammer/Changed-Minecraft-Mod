@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
-import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -15,7 +14,6 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -34,13 +32,13 @@ public class FormRenderHandler {
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ChangedCompatibility.freezeIsFirstPersonRendering();
             variant.sync(player);
-            variant.getLatexEntity().setCustomNameVisible(true);
+            variant.getChangedEntity().setCustomNameVisible(true);
 
             if (variant.getTransfurProgression(partialTick) < 1f) {
                 TransfurAnimator.startCapture();
 
                 renderLiving(player, stack, buffer, light, partialTick);
-                renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+                renderLiving(variant.getChangedEntity(), stack, buffer, light, partialTick);
 
                 TransfurAnimator.endCapture();
 
@@ -49,7 +47,7 @@ public class FormRenderHandler {
                 TransfurAnimator.renderTransfurringPlayer(player, variant, stack, buffer, light, partialTick);
             } else {
                 if (!RenderOverride.renderOverrides(player, variant, stack, buffer, light, partialTick))
-                    renderLiving(variant.getLatexEntity(), stack, buffer, light, partialTick);
+                    renderLiving(variant.getChangedEntity(), stack, buffer, light, partialTick);
             }
 
             ChangedCompatibility.thawIsFirstPersonRendering();
@@ -74,7 +72,7 @@ public class FormRenderHandler {
 
                 HumanoidArm handSide = playerRenderer.getModel().rightArm != arm ? HumanoidArm.LEFT : HumanoidArm.RIGHT; //default to right arm instead any mods override the player model
 
-                ChangedEntity livingInstance = variant.getLatexEntity();
+                ChangedEntity livingInstance = variant.getChangedEntity();
                 if (livingInstance == null) return false;
                 EntityRenderer entRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(livingInstance);
                 AdvancedHumanoidRenderer<?, ?, ?> latexRenderer = null;
@@ -86,16 +84,16 @@ public class FormRenderHandler {
                     if (entityModel == null)
                         return true;
 
-                    AdvancedHumanoidModelInterface latexHumanoidModel = (AdvancedHumanoidModelInterface)entityModel;
+                    AdvancedHumanoidModelInterface AdvancedHumanoidModel = (AdvancedHumanoidModelInterface)entityModel;
 
-                    var controller = latexHumanoidModel.getAnimator();
+                    var controller = AdvancedHumanoidModel.getAnimator();
 
                     controller.resetVariables();
                     entityModel.setupAnim(livingInstance, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-                    latexHumanoidModel.setupHand();
+                    AdvancedHumanoidModel.setupHand();
 
-                    handPart = latexHumanoidModel.getArm(handSide);
-                    stackCorrector = latexHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
+                    handPart = AdvancedHumanoidModel.getArm(handSide);
+                    stackCorrector = AdvancedHumanoidModel.getPlacementCorrectors(CorrectorType.fromArm(handSide));
                     texture = entRenderer.getTextureLocation(livingInstance);
                 }
 

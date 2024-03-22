@@ -279,11 +279,11 @@ public abstract class ChangedEntity extends Monster {
         };
     }
 
-    public abstract GooType getGooType();
+    public abstract LatexType getLatexType();
     public abstract TransfurMode getTransfurMode();
 
     public boolean isPreventingPlayerRest(Player player) {
-        return getGooType().isHostileTo(GooType.getEntityGooType(player));
+        return getLatexType().isHostileTo(LatexType.getEntityLatexType(player));
     }
 
     public float getEyeHeightMul() {
@@ -348,9 +348,9 @@ public abstract class ChangedEntity extends Monster {
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getTransfurMaxHealth());
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(40.0);
-        if (this instanceof BenignGooWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
+        if (this instanceof LatexBenignWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
         if (this instanceof DarkLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(25.0);
-        if (this instanceof PureWhiteGooEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
+        if (this instanceof WhiteLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
         if (this instanceof MilkPudding) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
         if (this instanceof LatexRaccoon) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
         if (this instanceof HeadlessKnight) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
@@ -386,7 +386,7 @@ public abstract class ChangedEntity extends Monster {
         }
         if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof ChangedEntity))
             return false;
-        if (getGooType().isHostileTo(GooType.getEntityGooType(livingEntity)))
+        if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
             return true;
         TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(livingEntity);
         if (livingEntity instanceof Player player) {
@@ -423,8 +423,8 @@ public abstract class ChangedEntity extends Monster {
             this.goalSelector.addGoal(4, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(4, new UseAbilityGoal(Cacheable.of(() -> abilities), this));
 
-        if (this instanceof PureWhiteGooEntity)
-            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, PureWhiteGooEntity.class).setAlertOthers());
+        if (this instanceof WhiteLatexEntity)
+            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers());
         else
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
@@ -652,8 +652,8 @@ public abstract class ChangedEntity extends Monster {
             info.load(tag.getCompound("LocalVariantInfo"));
             this.entityData.set(DATA_LOCAL_VARIANT_INFO, info);
         }
-        if (tag.contains("LatexEntityFlags"))
-            this.entityData.set(DATA_CHANGED_ENTITY_FLAGS, tag.getByte("LatexEntityFlags"));
+        if (tag.contains("ChangedEntityFlags"))
+            this.entityData.set(DATA_CHANGED_ENTITY_FLAGS, tag.getByte("ChangedEntityFlags"));
     }
 
     @Override
@@ -665,14 +665,14 @@ public abstract class ChangedEntity extends Monster {
             this.entityData.get(DATA_LOCAL_VARIANT_INFO).save(bpi);
             tag.put("LocalVariantInfo", bpi);
         }
-        tag.putByte("LatexEntityFlags", this.entityData.get(DATA_CHANGED_ENTITY_FLAGS));
+        tag.putByte("ChangedEntityFlags", this.entityData.get(DATA_CHANGED_ENTITY_FLAGS));
     }
 
-    public boolean getLatexEntityFlag(int id) {
+    public boolean getChangedEntityFlag(int id) {
         return (this.entityData.get(DATA_CHANGED_ENTITY_FLAGS) & (0b1 << id)) >> id == 1;
     }
 
-    public void setLatexEntityFlag(int id, boolean value) {
+    public void setChangedEntityFlag(int id, boolean value) {
         byte flags = this.entityData.get(DATA_CHANGED_ENTITY_FLAGS);
         byte givenFlag = (byte)(0b1 << id);
 
@@ -683,7 +683,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public boolean isFlying() {
-        return getLatexEntityFlag(FLAG_IS_FLYING);
+        return getChangedEntityFlag(FLAG_IS_FLYING);
     }
 
     public void onDamagedBy(LivingEntity self, LivingEntity source) {

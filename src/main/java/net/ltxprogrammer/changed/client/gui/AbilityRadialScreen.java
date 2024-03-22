@@ -65,7 +65,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
             HairStyleRadialScreen.renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
                     (float)(this.leftPos) - mouseX + (int)x,
                     (float)(this.topPos) - mouseY + (int)y,
-                    variant.getLatexEntity(), alpha);
+                    variant.getChangedEntity(), alpha);
         }
 
         else if (ability == ChangedAbilities.SELECT_SPECIAL_STATE.get()) {
@@ -75,7 +75,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
             InventoryScreen.renderEntityInInventory((int)x + this.leftPos, (int)y + 32 + this.topPos, 20,
                     (float)(this.leftPos) - mouseX + (int)x,
                     (float)(this.topPos) - mouseY + (int)y,
-                    variant.getLatexEntity());
+                    variant.getChangedEntity());
         }
 
         else {

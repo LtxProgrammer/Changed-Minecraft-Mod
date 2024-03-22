@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -73,7 +73,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         static boolean whiteLatex(BlockState blockState) {
             if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
                 return transportInterface.allowTransport(blockState);
-            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == GooType.PURE_WHITE_GOO);
+            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
         }
 
         static boolean interactionCollide(LivingEntity entity, BlockPos pos, BlockState state) {
@@ -96,9 +96,9 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
             if (!isEntityInWhiteLatex(event.player)) {
                 if ((colliding && whiteLatex(blockState)) || (collidingEye && whiteLatex(blockStateEye))) {
                     ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
-                        if (variant.getGooType() == GooType.PURE_WHITE_GOO)
+                        if (variant.getLatexType() == LatexType.WHITE_LATEX)
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
-                        else if (variant.getGooType().isHostileTo(GooType.PURE_WHITE_GOO))
+                        else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                             event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
                     }, () -> {
                         if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, TransfurVariant.WHITE_LATEX_WOLF, TransfurContext.hazard(TransfurCause.WHITE_LATEX)))

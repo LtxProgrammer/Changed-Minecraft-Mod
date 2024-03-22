@@ -1,10 +1,10 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.GooType;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.item.AbstractGooItem;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DarkLatexBlock extends AbstractLatexBlock {
     public DarkLatexBlock(Properties p_49795_) {
-        super(p_49795_, GooType.BLACK_GOO, ChangedItems.DARK_LATEX_GOO);
+        super(p_49795_, LatexType.DARK_LATEX, ChangedItems.DARK_LATEX_GOO);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class DarkLatexBlock extends AbstractLatexBlock {
     );
 
     @SubscribeEvent
-    public static void onLatexCover(AbstractGooItem.CoveringBlockEvent event) {
-        if (event.gooType != GooType.BLACK_GOO)
+    public static void onLatexCover(AbstractLatexItem.CoveringBlockEvent event) {
+        if (event.latexType != LatexType.DARK_LATEX)
             return;
 
         if (event.originalState.is(Blocks.GRASS) || event.originalState.is(BlockTags.SMALL_FLOWERS) || event.originalState.is(Blocks.FERN) || event.originalState.is(BlockTags.SAPLINGS)) {

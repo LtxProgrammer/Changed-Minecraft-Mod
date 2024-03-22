@@ -30,8 +30,8 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
     }
 
     protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_) {
-        if (p_174525_ instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null)
-            p_174525_ = changedEntity.getUnderlyingPlayer();
+        if (p_174525_ instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
+            p_174525_ = ChangedEntity.getUnderlyingPlayer();
 
         if (p_174526_.is(Items.SPYGLASS) && p_174525_.getUseItem() == p_174526_ && p_174525_.swingTime == 0) {
             this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, p_174529_, p_174530_, p_174531_);

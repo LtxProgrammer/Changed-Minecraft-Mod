@@ -18,8 +18,8 @@ public class DarkLatexDragon extends ChangedEntity implements DarkLatexEntity, P
     }
 
     @Override
-    public GooType getGooType() {
-        return GooType.BLACK_GOO;
+    public LatexType getLatexType() {
+        return LatexType.DARK_LATEX;
     }
 
     @Override
