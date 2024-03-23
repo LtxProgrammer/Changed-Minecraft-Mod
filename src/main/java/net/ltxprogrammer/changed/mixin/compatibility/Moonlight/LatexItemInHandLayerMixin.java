@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.mixin.compatibility.Moonlight;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexItemInHandLayer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.mehvahdjukaar.selene.api.IThirdPersonSpecialItemRenderer;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = LatexItemInHandLayer.class, remap = false)
-public abstract class LatexItemInHandLayerMixin<T extends LatexEntity, M extends LatexHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
+public abstract class LatexItemInHandLayerMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     public LatexItemInHandLayerMixin(RenderLayerParent<T, M> parent) {
         super(parent);
     }
@@ -35,7 +35,7 @@ public abstract class LatexItemInHandLayerMixin<T extends LatexEntity, M extends
         Item var10 = stack.getItem();
         if (var10 instanceof IThirdPersonSpecialItemRenderer) {
             IThirdPersonSpecialItemRenderer item = (IThirdPersonSpecialItemRenderer)var10;
-            item.renderThirdPersonItem((LatexHumanoidModel)this.getParentModel(), entity, stack, humanoidArm, poseStack, bufferSource, light);
+            item.renderThirdPersonItem((AdvancedHumanoidModel)this.getParentModel(), entity, stack, humanoidArm, poseStack, bufferSource, light);
             ci.cancel();
         }
 

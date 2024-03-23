@@ -165,7 +165,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
 
     @Override
     public void render(T entity, float p_115456_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (this instanceof LatexHumanoidModelInterface<?,?> modelInterface)
+        if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
             modelInterface.getAnimator().partialTicks = partialTicks;
         super.render(entity, p_115456_, partialTicks, poseStack, bufferSource, packedLight);
     }

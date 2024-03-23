@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Moonlight;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpperBodyAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.mehvahdjukaar.selene.api.IThirdPersonAnimationProvider;
 import net.mehvahdjukaar.selene.util.TwoHandedAnimation;
 import net.minecraft.client.model.EntityModel;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AbstractUpperBodyAnimator.class, remap = false)
-public abstract class AbstractUpperBodyAnimatorMixin<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
+public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
     @Unique
     public TwoHandedAnimation animationType = new TwoHandedAnimation();
 

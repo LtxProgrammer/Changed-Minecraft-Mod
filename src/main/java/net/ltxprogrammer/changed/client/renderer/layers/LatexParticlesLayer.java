@@ -35,7 +35,7 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
     private final Minecraft minecraft;
     private final Predicate<ModelPart> canPartDrip;
 
-    private final Map<LatexHumanoidModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
+    private final Map<AdvancedHumanoidModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
 
     private static final NativeImage MISSING_TEXTURE = new NativeImage(1, 1, false);
     private static final Map<ResourceLocation, NativeImage> cachedTextures = new HashMap<>();
@@ -96,12 +96,12 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         models.put(model, parent::getTextureLocation);
     }
 
-    public LatexParticlesLayer<T, M> addModel(LatexHumanoidModel<T> model) {
+    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model) {
         models.put(model, parent::getTextureLocation);
         return this;
     }
 
-    public LatexParticlesLayer<T, M> addModel(LatexHumanoidModel<T> model, Function<T, ResourceLocation> textureFetcher) {
+    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model, Function<T, ResourceLocation> textureFetcher) {
         models.put(model, textureFetcher);
         return this;
     }
@@ -176,7 +176,7 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         return new SurfacePoint(normal, tangent, vector, uv);
     }
 
-    private Optional<LatexHumanoidModel<T>> getRandomModel(Random random) {
+    private Optional<AdvancedHumanoidModel<T>> getRandomModel(Random random) {
         if (this.models.isEmpty())
             return Optional.empty();
         int indexToGet = random.nextInt(this.models.size());

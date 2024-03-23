@@ -32,7 +32,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> humanBipedal(ModelPart leftLeg, ModelPart rightLeg) {
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanBipedal(ModelPart leftLeg, ModelPart rightLeg) {
         return animator -> {
             animator
                     .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
@@ -158,7 +158,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> humanUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -465,7 +465,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> humanLike(ModelPart head,
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanLike(ModelPart head,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart leftLeg,
                                                                                                            ModelPart rightLeg) {
@@ -527,7 +527,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> deerLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> deerLikeArmor(ModelPart head,
                                                                                                                 ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                 ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -543,7 +543,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> deerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> deerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,

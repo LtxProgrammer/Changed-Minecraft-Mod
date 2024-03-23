@@ -57,8 +57,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
+            callback.setReturnValue(variant.getChangedEntity().getMyRidingOffset());
         });
     }
 
