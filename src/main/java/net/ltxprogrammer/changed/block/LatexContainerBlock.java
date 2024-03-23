@@ -1,16 +1,21 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,12 +37,13 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements NonLatexCoverableBlock, Fallable {
+public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock implements NonLatexCoverableBlock, CustomFallable {
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 24, 12.0D);
 
     public LatexContainerBlock() {
@@ -167,6 +173,11 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     @Override
+    public ResourceLocation getModelName() {
+        return new ModelResourceLocation(Changed.modResource("latex_container"), "inventory");
+    }
+
+    @Override
     public void onLand(Level level, BlockPos pos, BlockState state, BlockState fellOn, FallingBlockEntity falling) {
         var blockEntity = level.getBlockEntity(pos, ChangedBlockEntities.LATEX_CONTAINER.get());
 
@@ -183,6 +194,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
             survivedFall(level, pos, state);
             return;
         } // Container fell in fluid
+
+        level.playSound(null, pos, ChangedSounds.CRASH, SoundSource.BLOCKS, 1.0f, 1.0f);
 
         blockEntity.ifPresent(container -> {
             if (container.getFillLevel() == 0)
@@ -222,6 +235,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
     }
 
     protected void falling(FallingBlockEntity blockEntity) {
+        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> blockEntity), CustomFallable.updateBlockData(blockEntity));
     }
 
     protected int getDelayAfterPlace() {

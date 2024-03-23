@@ -45,6 +45,10 @@ public class GasMaskLayer<T extends LivingEntity, M extends EntityModel<T> & Hea
         return new GasMaskLayer<>(parent, modelSet, GasMaskModel.LAYER_LOCATION_SNOUTED);
     }
 
+    public static <T extends LivingEntity, M extends EntityModel<T> & HeadedModel> GasMaskLayer<T, M> forLargeSnouted(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
+        return new GasMaskLayer<>(parent, modelSet, GasMaskModel.LAYER_LOCATION_LARGE_SNOUTED);
+    }
+
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float p_116670_, float p_116671_, float p_116672_, float p_116673_, float p_116674_, float p_116675_) {
         if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
             return;

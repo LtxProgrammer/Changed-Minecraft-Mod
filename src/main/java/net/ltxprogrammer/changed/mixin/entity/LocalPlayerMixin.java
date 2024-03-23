@@ -125,7 +125,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
                 }
             }
 
-            if (variant.getParent().swimSpeed >= 2.0F && player.isUnderWater())
+            if (variant.getParent().swimSpeed >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
                 player.setSprinting(true);
         });
     }

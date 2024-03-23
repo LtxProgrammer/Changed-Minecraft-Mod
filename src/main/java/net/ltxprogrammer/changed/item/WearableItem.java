@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -20,7 +21,10 @@ public interface WearableItem {
                 if (itemStack.getItem() instanceof WearableItem wearableItem) {
                     if (!wearableItem.allowedToKeepWearing(event.getEntityLiving())) {
                         ItemStack nStack = itemStack.copy();
-                        Block.popResource(event.getEntityLiving().getLevel(), event.getEntityLiving().blockPosition(), nStack);
+                        if (event.getEntityLiving() instanceof Player player)
+                            player.addItem(nStack);
+                        else
+                            Block.popResource(event.getEntityLiving().level, event.getEntityLiving().blockPosition(), nStack);
                         itemStack.setCount(0);
                         return;
                     }

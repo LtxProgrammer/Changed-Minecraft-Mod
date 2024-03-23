@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This is basic info about the player, that they set. Currently, it is just colors for eyes, and maybe hair for latex variants.
+ * This is basic info about the player, that they set.
  */
 public class BasicPlayerInfo {
+    public static final float SIZE_TOLERANCE = 0.05f;
+
     // Default values here are based on Colin's properties
     // When the player is TF'd these values will copy over to the latex representative
     private Color3 hairColor = new Color3(0.36f, 0.28f, 0.26f);
@@ -20,11 +22,13 @@ public class BasicPlayerInfo {
     private boolean overrideIrisOnDarkLatex = false;
     private EyeStyle eyeStyle = EyeStyle.V2;
     private boolean overrideOthersToMatchStyle = false;
+    private float size = 1.0f;
 
     public static final List<Color3> HAIR_COLORS = List.of(
             new Color3(0.98f, 0.85f, 0.48f), // Blond
             new Color3(0.77f, 0.49f, 0.28f), // Dirty Blond
             new Color3(0.36f, 0.28f, 0.26f), // Brown
+            new Color3(0.39f, 0.40f, 0.40f), // Gray
             new Color3(0.63f, 0.26f, 0.15f), // Light-Brown
             new Color3(0.53f, 0.22f, 0.26f), // Dark-Red
             new Color3(0.08f, 0.08f, 0.08f), // Dark-Black
@@ -36,14 +40,19 @@ public class BasicPlayerInfo {
             new Color3(0.47f, 0.54f, 0.95f), // Blurple
             new Color3(0.0f, 1.0f, 0.25f), // Lime-Green
             new Color3(0.44f, 0.85f, 0.0f), // Green
+            new Color3(0.14f, 0.90f, 0.64f), // Mint-Green
+            new Color3(0.12f, 0.74f, 0.74f), // Cyan
             new Color3(0.38f, 0.22f, 0.14f), // Brown
+            new Color3(0.64f, 0.70f, 0.54f), // Hazel
             new Color3(1.0f, 0.76f, 0.0f), // Dark-Yellow
             new Color3(1.0f, 0.92f, 0.01f), // Yellow
             new Color3(1.0f, 0.63f, 0.0f), // Orange
+            new Color3(0.82f, 0.31f, 0.16f), // Dark-Orange
             new Color3(0.85f, 0.0f, 1.0f), // Purple
             new Color3(1.0f, 0.0f, 0.4f), // Pink
             new Color3(1.0f, 0.15f, 0.0f), // Light-Red
-            new Color3(0.88f, 0.07f, 0.0f) // Red
+            new Color3(0.88f, 0.07f, 0.0f), // Red
+            new Color3(0.75f, 0.55f, 0.90f) // Lavender
     );
 
     public BasicPlayerInfo() {}
@@ -58,6 +67,7 @@ public class BasicPlayerInfo {
         info.irisRightColor = random.nextFloat() > 0.05f ? info.irisLeftColor : Util.getRandom(IRIS_COLORS, random); // 5% for dichrome eyes
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         info.overrideOthersToMatchStyle = false;
+        info.size = (random.nextFloat() * (random.nextBoolean() ? SIZE_TOLERANCE : -SIZE_TOLERANCE)) + 1.0f;
         return info;
     }
 
@@ -89,6 +99,10 @@ public class BasicPlayerInfo {
         this.eyeStyle = eyeStyle;
     }
 
+    public void setSize(float size) {
+        this.size = size;
+    }
+
     public Color3 getHairColor() {
         return hairColor;
     }
@@ -117,6 +131,14 @@ public class BasicPlayerInfo {
         return eyeStyle;
     }
 
+    public float getSize() {
+        return size;
+    }
+
+    public double getSizeValueForConfiguration() {
+        return (size - 1.0f + SIZE_TOLERANCE) / (SIZE_TOLERANCE * 2);
+    }
+
     public void copyFrom(BasicPlayerInfo other) {
         var tag = new CompoundTag();
         other.save(tag);
@@ -131,6 +153,7 @@ public class BasicPlayerInfo {
         tag.putBoolean("overrideIrisOnDarkLatex", overrideIrisOnDarkLatex);
         tag.putInt("eyeStyle", eyeStyle.ordinal());
         tag.putBoolean("overrideOthersToMatchStyle", overrideOthersToMatchStyle);
+        tag.putFloat("scale", size);
     }
 
     public void load(CompoundTag tag) {
@@ -146,5 +169,7 @@ public class BasicPlayerInfo {
         this.overrideIrisOnDarkLatex = tag.getBoolean("overrideIrisOnDarkLatex");
         this.eyeStyle = EyeStyle.values()[tag.getInt("eyeStyle")];
         this.overrideOthersToMatchStyle = tag.getBoolean("overrideOthersToMatchStyle");
+        if (tag.contains("scale"))
+            this.size = tag.getFloat("scale");
     }
 }

@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class GasMaskItem extends Item implements WearableItem {
     public GasMaskItem() {
-        super(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
+        super(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).stacksTo(1));
     }
 
     @Override
@@ -35,7 +37,15 @@ public class GasMaskItem extends Item implements WearableItem {
 
     @Override
     public boolean allowedToKeepWearing(LivingEntity entity) {
-        return true;
+        return ProcessTransfur.getEntityVariant(entity).map(variant -> {
+            if (DarkLatexMask.MASKED_LATEXES.contains(variant.getFormId()))
+                return false;
+            if (variant == LatexVariant.LATEX_ALIEN)
+                return false;
+            if (variant == LatexVariant.LATEX_BENIGN_WOLF)
+                return false;
+            return true;
+        }).orElse(true);
     }
 
     @Override
@@ -43,7 +53,7 @@ public class GasMaskItem extends Item implements WearableItem {
         ItemStack itemstack = player.getItemInHand(hand);
         EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(itemstack);
         ItemStack itemstack1 = player.getItemBySlot(equipmentslot);
-        if (itemstack1.isEmpty()) {
+        if (itemstack1.isEmpty() && this.allowedToKeepWearing(player)) {
             player.setItemSlot(equipmentslot, itemstack.copy());
             if (!level.isClientSide()) {
                 player.awardStat(Stats.ITEM_USED.get(this));

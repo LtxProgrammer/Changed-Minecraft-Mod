@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexWatermelonCatModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexFemaleCatModel;
@@ -20,6 +21,7 @@ public class LatexWatermelonCatRenderer extends AdvancedHumanoidRenderer<LatexWa
                 CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#91ad3f"))));
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

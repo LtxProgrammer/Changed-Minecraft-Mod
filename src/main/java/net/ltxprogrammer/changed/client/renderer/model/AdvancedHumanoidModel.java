@@ -110,7 +110,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
     protected static final Vector3f TORSO_OFFSET = new Vector3f(0.0f, 25.5f, 0.0f);
     protected static final Vector3f RIGHT_ARM_OFFSET = new Vector3f(5.0f, 24.5f, 0.0f);
     protected static final Vector3f LEFT_ARM_OFFSET = new Vector3f(-5.0f, 24.5f, 0.0f);
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static MeshDefinition process(MeshDefinition mesh) {
         var root = mesh.getRoot();
         var head = root.getChild("Head");

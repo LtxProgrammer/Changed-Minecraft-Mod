@@ -36,6 +36,7 @@
   "subtitles.changed.close3": "Lab door closes",
   "subtitles.changed.chime2": "Keypad grants access",
   "subtitles.changed.buzzer1": "Keypad denies access",
+  "subtitles.changed.crash": "Container breaks",
   "subtitles.changed.equip3": "Shorts rustle",
   "subtitles.changed.bow2": "Box opens",
   "subtitles.changed.ice2": "Crystal extends",
@@ -478,6 +479,8 @@
   "changed.config.bpi.iris_color.sync_tooltip": "Syncs the Left Iris color to the Right Iris color",
   "changed.config.bpi.sclera_color": "Sclera Color",
   "changed.config.bpi.eye_style": "Eye Style: %s",
+  "changed.config.bpi.size": "Model Size",
+  "changed.config.bpi.size.value": "Size: %s%%",
   "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",
   "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match"
 }

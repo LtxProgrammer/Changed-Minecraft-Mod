@@ -162,7 +162,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LightLatexKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LightLatexCentaur>> WHITE_GOO_CENTAUR = register("light_latex_centaur", 0xFFFFFF, 0x1E1E1E,
-            EntityType.Builder.of(LightLatexCentaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.2F),
+            EntityType.Builder.of(LightLatexCentaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<HeadlessKnight>> HEADLESS_KNIGHT = register("headless_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(HeadlessKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 1.1F),
@@ -306,10 +306,10 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSnowLeopardFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::taigaSpawning);
     public static final RegistryObject<EntityType<LatexSquidDogFemale>> GOO_SQUID_DOG_FEMALE = register("latex_squid_dog_female", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.00F),
+            EntityType.Builder.of(LatexSquidDogFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER, LatexSquidDogFemale::createAttributes);
     public static final RegistryObject<EntityType<LatexSquidDogMale>> GOO_SQUID_DOG_MALE = register("latex_squid_dog_male", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.00F),
+            EntityType.Builder.of(LatexSquidDogMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER, LatexSquidDogMale::createAttributes);
     public static final RegistryObject<EntityType<LatexStiger>> GOO_STIGER = register("latex_stiger", 0x7b4251, 0xe0cfd9,
             EntityType.Builder.of(LatexStiger::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),

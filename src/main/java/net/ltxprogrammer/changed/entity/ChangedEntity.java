@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -83,7 +84,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public float getTailDragAmount(float partialTicks) {
-        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+        return Mth.lerp(partialTicks, tailDragAmountO, tailDragAmount);
     }
 
     public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
@@ -269,14 +270,14 @@ public abstract class ChangedEntity extends Monster {
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        return switch (Objects.requireNonNullElse(overridePose, pose)) {
+        return (switch (Objects.requireNonNullElse(overridePose, pose)) {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
             case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.2f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
             default -> core;
-        };
+        }).scale(getBasicPlayerInfo().getSize());
     }
 
     public abstract LatexType getLatexType();
@@ -377,7 +378,7 @@ public abstract class ChangedEntity extends Monster {
         if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
             return false;
 
-        if ((livingEntity.hasEffect(MobEffects.INVISIBILITY) || livingEntity.isInvisible()) && !livingEntity.isCurrentlyGlowing())
+        if (livingEntity.getVehicle() instanceof SeatEntity seat && seat.shouldSeatedBeInvisible())
             return false;
 
         for (var checkVariant : TransfurVariant.MOB_FUSION_LATEX_FORMS) {
@@ -436,6 +437,7 @@ public abstract class ChangedEntity extends Monster {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 7.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, ChangedEntity.class, 7.0F, 0.2F));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Villager.class, 7.0F, 0.2F));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
         if (this instanceof PowderSnowWalkable)
@@ -594,7 +596,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public double getMyRidingOffset() {
-        return -0.4;
+        return -0.475;
     }
 
     protected <T> T callIfNotNull(TransfurVariant<?> variant, Function<TransfurVariant<?>, T> func, T def) {

@@ -9,6 +9,8 @@
   "client": [
     "FirstPerson.FirstPersonBaseMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
+    "Moonlight.AbstractUpperBodyAnimatorMixin",
+    "Moonlight.LatexItemInHandLayerMixin",
     "NotEnoughAnimations.HumanoidAnimatorMixin",
     "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",

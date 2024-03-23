@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.ExtraJumpKeybind;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.network.packet.*;
@@ -48,6 +49,7 @@ public class Changed {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource(MODID), () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+    private static final ChangedPackets PACKETS = new ChangedPackets(PACKET_HANDLER);
     private static int messageID = 0;
 
     public Changed() {
@@ -57,27 +59,7 @@ public class Changed {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
-        // Initialize packet types
-        addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
-        addNetworkMessage(MountTransfurPacket.class, MountTransfurPacket::new);
-        addNetworkMessage(SyncSwitchPacket.class, SyncSwitchPacket::new);
-        addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);
-        addNetworkMessage(SyncTransfurProgressPacket.class, SyncTransfurProgressPacket::new);
-        addNetworkMessage(QueryTransfurPacket.class, QueryTransfurPacket::new);
-        addNetworkMessage(VariantAbilityActivate.class, VariantAbilityActivate::new);
-        addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
-        addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
-        addNetworkMessage(EmotePacket.class, EmotePacket::new);
-        addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
-        addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
-        addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
-        addNetworkMessage(SetTransfurVariantDataPacket.class, SetTransfurVariantDataPacket::new);
-        addNetworkMessage(GrabEntityPacket.class, GrabEntityPacket::new);
-        addNetworkMessage(GrabEntityPacket.KeyState.class, GrabEntityPacket.KeyState::new);
-        addNetworkMessage(TugCameraPacket.class, TugCameraPacket::new);
-
-        addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new,
-                ExtraJumpKeybind::handler);
+        PACKETS.registerPackets();
 
         instance = this;
 

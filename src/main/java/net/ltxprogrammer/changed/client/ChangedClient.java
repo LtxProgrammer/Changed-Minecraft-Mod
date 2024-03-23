@@ -37,10 +37,21 @@ public class ChangedClient {
         }
     }
 
+    public static double getAcceptableParticleDistanceSqr() {
+        return switch (minecraft.options.particles) {
+            case ALL -> 9999999999999999.0;
+            case DECREASED -> 4096.0;
+            case MINIMAL -> 256.0;
+            default -> 16384.0; // In case of a mixin
+        };
+    }
+
     protected static void addLatexParticleToEntity(ChangedEntity entity) {
         if (particleSystem.pauseForReload())
             return;
         if (entity.getRandom().nextFloat() > entity.getDripRate(1.0f - entity.computeHealthRatio()))
+            return;
+        if (minecraft.cameraEntity != null && entity.distanceToSqr(minecraft.cameraEntity) > getAcceptableParticleDistanceSqr())
             return;
         var renderer = minecraft.getEntityRenderDispatcher().getRenderer(entity);
         if (!(renderer instanceof LivingEntityRenderer<?,?> livingEntityRenderer))
@@ -60,14 +71,13 @@ public class ChangedClient {
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (minecraft.level != null) {
+        if (minecraft.level != null && particleSystem.tick()) {
             var cameraPos = minecraft.gameRenderer.getMainCamera().getBlockPosition();
             var aabb = AABB.of(BoundingBox.fromCorners(cameraPos.offset(-64, -64, -64), cameraPos.offset(64, 64, 64)));
             minecraft.level.getEntitiesOfClass(ChangedEntity.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
             minecraft.level.getEntitiesOfClass(Player.class, aabb).forEach(ChangedClient::addLatexParticleToEntity);
         }
 
-        particleSystem.tick();
         clientTicks++;
     }
 }

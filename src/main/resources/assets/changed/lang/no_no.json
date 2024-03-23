@@ -35,6 +35,7 @@
   "subtitles.changed.close3": "Laboratoriedør lukkes",
   "subtitles.changed.chime2": "Tastatur gir tilgang",
   "subtitles.changed.buzzer1": "Tastatur nektet tilgang",
+  "subtitles.changed.crash": "Beholder blir ødelagt",
   "subtitles.changed.equip3": "Bukser rasler",
   "subtitles.changed.bow2": "Eske åpnes",
   "subtitles.changed.ice2": "Krystall forlenges",
@@ -477,6 +478,8 @@
   "changed.config.bpi.iris_color.sync_tooltip": "Synkroniserer venstre regnbuehinnefarge til høyre regnbuehinnefarge",
   "changed.config.bpi.sclera_color": "Senehinnefarge",
   "changed.config.bpi.eye_style": "Øyenstil: %s",
+  "changed.config.bpi.size": "Modellstørrelse",
+  "changed.config.bpi.size.value": "Størrelse: %s%%",
   "changed.config.bpi.override_dl_iris": "Overstyre regnbuehinnefarge på mørk lateks varianter",
   "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche"
 }

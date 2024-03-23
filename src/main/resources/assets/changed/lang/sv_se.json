@@ -35,6 +35,7 @@
   "subtitles.changed.close3": "Laboratoriedörr stängs",
   "subtitles.changed.chime2": "Knappsats ger åtkomst",
   "subtitles.changed.buzzer1": "Knappsats nekar åtkomst",
+  "subtitles.changed.crash": "Behållare förstörs",
   "subtitles.changed.equip3": "Byxorna knarrar",
   "subtitles.changed.bow2": "Lådan öppnas",
   "subtitles.changed.ice2": "Kristall sträcker sig",
@@ -477,6 +478,8 @@
   "changed.config.bpi.iris_color.sync_tooltip": "Synkroniserar den vänstra regnbågshinnefärge till höger regnbågshinnefärge",
   "changed.config.bpi.sclera_color": "Ögonvitefärg",
   "changed.config.bpi.eye_style": "Ögonstil: %s",
+  "changed.config.bpi.size": "Modellstorlek",
+  "changed.config.bpi.size.value": "Storlek: %s%%",
   "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",
   "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha"
 }

@@ -6,10 +6,12 @@ import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
@@ -74,7 +76,14 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         return true;
     }
 
+    protected void scaleForBPI(BasicPlayerInfo bpi, PoseStack poseStack) {
+        float forcedLimit = Mth.clamp(bpi.getSize(), 1.0f - BasicPlayerInfo.SIZE_TOLERANCE, 1.05f + BasicPlayerInfo.SIZE_TOLERANCE);
+        poseStack.scale(forcedLimit, forcedLimit, forcedLimit);
+    }
+
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
+        this.scaleForBPI(entity.getBasicPlayerInfo(), poseStack);
+
         float swimAmount = entity.getSwimAmount(partialTicks);
         boolean upright = isEntityUprightType(entity);
         if (upright && entity.isFallFlying()) {
@@ -152,5 +161,12 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
 
     public AdvancedHumanoidModel<T> getModel(ChangedEntity entity) {
         return this.getModel();
+    }
+
+    @Override
+    public void render(T entity, float p_115456_, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (this instanceof LatexHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.getAnimator().partialTicks = partialTicks;
+        super.render(entity, p_115456_, partialTicks, poseStack, bufferSource, packedLight);
     }
 }
