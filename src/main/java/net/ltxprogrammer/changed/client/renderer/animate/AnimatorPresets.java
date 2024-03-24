@@ -818,24 +818,73 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLegs(ModelPart tail, List<ModelPart> tailJoints,
-                                                                                                           ModelPart frontLeftLeg, ModelPart frontRightLeg,
-                                                                                                           ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLegsOld(ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                              ModelPart frontLeftLeg, ModelPart frontRightLeg,
+                                                                                                              ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator.addPreset(quadrupedal(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addPreset(noSwimOrSleepTail(tail, tailJoints));
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLike(ModelPart head, ModelPart torso,
-                                                                                                           ModelPart leftArm, ModelPart rightArm,
-                                                                                                           ModelPart tail, List<ModelPart> tailJoints,
-                                                                                                           ModelPart frontLeftLeg, ModelPart frontRightLeg,
-                                                                                                           ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLegs(ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                           ModelPart lowerTorso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
+                                                                                                           ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
+                                                                                                           ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
+                                                                                                           ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
         return animator -> {
-            animator.addPreset(taurLegs(tail, tailJoints, frontLeftLeg, frontRightLeg, lowerTorso, backLeftLeg, backRightLeg))
+            animator.addAnimator(new TaurBipedalInitAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                             frontRightLeg,  frontRightLegLower,  frontRightFoot,
+                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
+                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
+                    .addAnimator(new TaurBipedalSwimAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                             frontRightLeg,  frontRightLegLower,  frontRightFoot,
+                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
+                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
+                    .addAnimator(new QuadrupedalRideAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new QuadrupedalSleepAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new TaurBipedalStandAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                            frontRightLeg,  frontRightLegLower,  frontRightFoot,
+                            backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
+                            backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
+                    .addAnimator(new TaurBipedalCrouchAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                            frontRightLeg,  frontRightLegLower,  frontRightFoot,
+                            backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
+                            backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
+                    .addAnimator(new QuadrupedalFallFlyAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addPreset(noSwimOrSleepTail(tail, tailJoints));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLikeOld(ModelPart head, ModelPart torso,
+                                                                                                              ModelPart leftArm, ModelPart rightArm,
+                                                                                                              ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                              ModelPart frontLeftLeg, ModelPart frontRightLeg,
+                                                                                                              ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
+        return animator -> {
+            animator.addPreset(taurLegsOld(tail, tailJoints, frontLeftLeg, frontRightLeg, lowerTorso, backLeftLeg, backRightLeg))
                     .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
                     .addAnimator(new HeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                           ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+                                                                                                           ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                           ModelPart lowerTorso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
+                                                                                                           ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
+                                                                                                           ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
+                                                                                                           ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
+        return animator -> {
+            animator.addPreset(taurLegs(tail, tailJoints, lowerTorso, frontLeftLeg, frontLeftLegLower, frontLeftFoot, frontRightLeg, frontRightLegLower, frontRightFoot, backLeftLeg, backLeftLegLower, backLeftFoot, backLeftPad, backRightLeg, backRightLegLower, backRightFoot, backRightPad))
+                    .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
+                    //.addPreset(wolfUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(wolfTail(tail, tailJoints))
+                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
