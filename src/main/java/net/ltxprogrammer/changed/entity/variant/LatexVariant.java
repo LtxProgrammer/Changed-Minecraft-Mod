@@ -190,7 +190,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .canClimb().extraHands().nightVision().addAbility(ChangedAbilities.CREATE_COBWEB)
             .build(Changed.modResource("form_latex_stiger")));
     public static final LatexVariant<LatexTigerShark> LATEX_TIGER_SHARK = register(Builder.of(ChangedEntities.LATEX_TIGER_SHARK)
-            .groundSpeed(0.925f).swimSpeed(1.2f).additionalHealth(10).gills().addAbility(ChangedAbilities.SUMMON_SHARKS)
+            .groundSpeed(0.925f).swimSpeed(1.2f).additionalHealth(8).gills().addAbility(ChangedAbilities.SUMMON_SHARKS)
             .build(Changed.modResource("form_latex_tiger_shark")));
     public static final LatexVariant<LatexTrafficConeDragon> LATEX_TRAFFIC_CONE_DRAGON = register(Builder.of(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON)
             .groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).absorbing()
@@ -208,7 +208,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
             .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).reducedFall().absorbing()
             .build(Changed.modResource("form_latex_yuin")));
     public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(ChangedEntities.LIGHT_LATEX_CENTAUR)
-            .groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(8).cameraZOffset(7.0f / 16.0f).rideable().reducedFall()
+            .groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(10).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall()
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<LightLatexKnight> LIGHT_LATEX_KNIGHT = register(Builder.of(ChangedEntities.LIGHT_LATEX_KNIGHT)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing()

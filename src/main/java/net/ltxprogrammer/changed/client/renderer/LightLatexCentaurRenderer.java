@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TaurChestPackLayer;
@@ -22,5 +23,11 @@ public class LightLatexCentaurRenderer extends LatexHumanoidRenderer<LightLatexC
     @Override
     public ResourceLocation getTextureLocation(LightLatexCentaur p_114482_) {
         return Changed.modResource("textures/light_latex_centaur.png");
+    }
+
+    @Override
+    protected void scale(LightLatexCentaur entity, PoseStack pose, float partialTick) {
+        super.scale(entity, pose, partialTick);
+        pose.scale(1.05f, 1.05f, 1.05f);
     }
 }

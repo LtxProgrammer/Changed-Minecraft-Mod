@@ -79,4 +79,9 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
 
         return InteractionResult.PASS;
     }
+
+    @Override
+    public boolean isAllowedToSwim() {
+        return false;
+    }
 }
