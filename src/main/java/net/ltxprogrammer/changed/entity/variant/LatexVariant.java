@@ -117,6 +117,9 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
+    public static final LatexVariant<GreenLizard> GREEN_LIZARD = register(Builder.of(ChangedEntities.GREEN_LIZARD)
+            .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
+            .build(Changed.modResource("form_green_lizard")));
     public static final LatexVariant<LatexHuman> LATEX_HUMAN = register(Builder.of(ChangedEntities.LATEX_HUMAN)
             .groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.6f)
             .build(Changed.modResource("form_latex_human")));

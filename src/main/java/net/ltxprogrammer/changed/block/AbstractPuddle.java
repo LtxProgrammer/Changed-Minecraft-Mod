@@ -9,7 +9,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -27,10 +29,24 @@ public class AbstractPuddle extends AbstractCustomShapeBlock implements NonLatex
         return canSupportRigidBlock(p_49326_, blockpos);
     }
 
+    public PushReaction getPistonPushReaction(BlockState p_52814_) {
+        return PushReaction.DESTROY;
+    }
+
     public void entityInside(BlockState p_49314_, Level p_49315_, BlockPos p_49316_, Entity p_49317_) {
         if (!p_49315_.isClientSide && p_49317_ instanceof LivingEntity entity) {
             if (ProcessTransfur.progressTransfur(entity, 6.0f, variant))
                 p_49315_.removeBlock(p_49316_, false);
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
         }
     }
 
