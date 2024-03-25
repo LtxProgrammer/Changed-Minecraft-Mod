@@ -139,7 +139,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBodyOld(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsOld(1, leftArm, rightArm)
                     .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
@@ -246,6 +246,16 @@ public class AnimatorPresets {
             animator
                     .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new AquaticHeadInitAnimator<>(head));
+        };
+    }
+
+    public static <T extends LatexEntity, M extends EntityModel<T>> Consumer<LatexAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new TaurUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new TaurUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new TaurUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new TaurUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
         };
     }
 
@@ -833,21 +843,21 @@ public class AnimatorPresets {
                                                                                                            ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
                                                                                                            ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
         return animator -> {
-            animator.addAnimator(new TaurBipedalInitAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+            animator.addAnimator(new TaurQuadrupedalInitAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
                              frontRightLeg,  frontRightLegLower,  frontRightFoot,
                              backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                              backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
-                    .addAnimator(new TaurBipedalSwimAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                    .addAnimator(new TaurQuadrupedalSwimAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
                              frontRightLeg,  frontRightLegLower,  frontRightFoot,
                              backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                              backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
                     .addAnimator(new QuadrupedalRideAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new QuadrupedalSleepAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
-                    .addAnimator(new TaurBipedalStandAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                    .addAnimator(new TaurQuadrupedalStandAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
                             frontRightLeg,  frontRightLegLower,  frontRightFoot,
                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
-                    .addAnimator(new TaurBipedalCrouchAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
+                    .addAnimator(new TaurQuadrupedalCrouchAnimator<>(lowerTorso,  frontLeftLeg,  frontLeftLegLower,  frontLeftFoot,
                             frontRightLeg,  frontRightLegLower,  frontRightFoot,
                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
@@ -863,7 +873,7 @@ public class AnimatorPresets {
                                                                                                               ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator.addPreset(taurLegsOld(tail, tailJoints, frontLeftLeg, frontRightLeg, lowerTorso, backLeftLeg, backRightLeg))
-                    .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
+                    .addPreset(taurUpperBodyOld(head, torso, leftArm, rightArm))
                     .addAnimator(new HeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
@@ -881,7 +891,6 @@ public class AnimatorPresets {
         return animator -> {
             animator.addPreset(taurLegs(tail, tailJoints, lowerTorso, frontLeftLeg, frontLeftLegLower, frontLeftFoot, frontRightLeg, frontRightLegLower, frontRightFoot, backLeftLeg, backLeftLegLower, backLeftFoot, backLeftPad, backRightLeg, backRightLegLower, backRightFoot, backRightPad))
                     .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
-                    //.addPreset(wolfUpperBody(head, torso, leftArm, rightArm))
                     .addPreset(wolfTail(tail, tailJoints))
                     .addPreset(wolfEars(leftEar, rightEar))
                     .addAnimator(new WolfHeadInitAnimator<>(head))

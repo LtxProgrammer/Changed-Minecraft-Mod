@@ -1,23 +1,22 @@
 package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.bipedal.AbstractBipedalAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class TaurBipedalInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
+public class TaurQuadrupedalInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
     public final ModelPart frontLeftLegLower, frontLeftFoot;
     public final ModelPart frontRightLegLower, frontRightFoot;
     public final ModelPart backLeftLegLower, backLeftFoot, backLeftPad;
     public final ModelPart backRightLegLower, backRightFoot, backRightPad;
 
-    public TaurBipedalInitAnimator(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
-                                   ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
-                                   ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
-                                   ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
+    public TaurQuadrupedalInitAnimator(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
+                                       ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
+                                       ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
+                                       ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
         super(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg);
         this.frontLeftLegLower = frontLeftLegLower;
         this.frontLeftFoot = frontLeftFoot;
@@ -51,7 +50,7 @@ public class TaurBipedalInitAnimator<T extends LatexEntity, M extends EntityMode
         }
 
         torso.xRot = 0.0F;
-        torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.hipOffset + (12.0f - core.legLength) + 9.0f;
+        torso.y = Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f)) + core.hipOffset + (12.0f - core.legLength) + 8.5f;
 
         frontRightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / swingSpeed;
         frontLeftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / swingSpeed;

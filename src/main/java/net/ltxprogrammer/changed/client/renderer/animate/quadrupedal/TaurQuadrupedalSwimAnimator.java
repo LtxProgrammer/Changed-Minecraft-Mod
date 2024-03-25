@@ -7,16 +7,16 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class TaurBipedalSwimAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
+public class TaurQuadrupedalSwimAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
     public final ModelPart frontLeftLegLower, frontLeftFoot;
     public final ModelPart frontRightLegLower, frontRightFoot;
     public final ModelPart backLeftLegLower, backLeftFoot, backLeftPad;
     public final ModelPart backRightLegLower, backRightFoot, backRightPad;
 
-    public TaurBipedalSwimAnimator(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
-                                   ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
-                                   ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
-                                   ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
+    public TaurQuadrupedalSwimAnimator(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
+                                       ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
+                                       ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
+                                       ModelPart backRightLeg, ModelPart backRightLegLower, ModelPart backRightFoot, ModelPart backRightPad) {
         super(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg);
         this.frontLeftLegLower = frontLeftLegLower;
         this.frontLeftFoot = frontLeftFoot;
