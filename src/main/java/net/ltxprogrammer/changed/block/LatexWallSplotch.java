@@ -80,6 +80,15 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
         builder.add(FACING, WATERLOGGED);
     }
 
+    public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return getInteractionShape(blockState, level, blockPos);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
+        return Shapes.empty();
+    }
+
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder context) {
         return List.of(new ItemStack(type.goo.get()));
