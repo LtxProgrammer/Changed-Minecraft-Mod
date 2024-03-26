@@ -207,7 +207,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public static final LatexVariant<LatexYuin> LATEX_YUIN = register(Builder.of(ChangedEntities.LATEX_YUIN)
             .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).reducedFall().absorbing()
             .build(Changed.modResource("form_latex_yuin")));
-    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(ChangedEntities.LIGHT_LATEX_CENTAUR)
+    public static final LatexVariant<LightLatexCentaur> LIGHT_LATEX_CENTAUR = register(Builder.of(ChangedEntities.LIGHT_LATEX_CENTAUR).quadrupedal()
             .groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(10).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall()
             .build(Changed.modResource("form_light_latex_centaur")));
     public static final LatexVariant<LightLatexKnight> LIGHT_LATEX_KNIGHT = register(Builder.of(ChangedEntities.LIGHT_LATEX_KNIGHT)
@@ -360,6 +360,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public final boolean canClimb;
     public final boolean nightVision;
     public final boolean noVision;
+    public final int legCount;
     public final boolean hasLegs;
     public final UseItemMode itemUseMode;
     public final List<Class<? extends PathfinderMob>> scares;
@@ -373,7 +374,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
     public LatexVariant(Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
                         float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
                         boolean reducedFall, boolean canClimb,
-                        boolean nightVision, boolean noVision, boolean hasLegs, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                        boolean nightVision, boolean noVision, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                         Optional<Pair<LatexVariant<?>, LatexVariant<?>>> fusionOf,
                         Optional<Pair<LatexVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
@@ -388,7 +389,8 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         this.extraJumpCharges = extraJumpCharges;
         this.additionalHealth = additionalHealth;
         this.nightVision = nightVision;
-        this.hasLegs = hasLegs;
+        this.legCount = legCount;
+        this.hasLegs = legCount > 0;
         this.itemUseMode = itemUseMode;
         this.abilities = ImmutableList.<Function<EntityType<?>, ? extends AbstractAbility<?>>>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
@@ -512,7 +514,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         boolean noVision = false;
         boolean canClimb = false;
         boolean nightVision = false;
-        boolean hasLegs = true;
+        int legCount = 2;
         UseItemMode itemUseMode = UseItemMode.NORMAL;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
@@ -685,12 +687,17 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
         }
 
         public Builder<T> noLegs() {
-            this.hasLegs = false;
+            this.legCount = 0;
             return this;
         }
 
         public Builder<T> hasLegs(boolean v) {
-            this.hasLegs = v;
+            this.legCount = 2;
+            return this;
+        }
+
+        public Builder<T> quadrupedal() {
+            this.legCount = 4;
             return this;
         }
 
@@ -719,7 +726,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
 
         public LatexVariant<T> build(ResourceLocation formId) {
             var variant = new LatexVariant<>(entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
-                    reducedFall, canClimb, nightVision, noVision, hasLegs, itemUseMode, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, nightVision, noVision, legCount, itemUseMode, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
             variant.setRegistryName(formId);
             return variant;
         }
@@ -848,7 +855,7 @@ public class LatexVariant<T extends LatexEntity> extends ForgeRegistryEntry<Late
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 GsonHelper.getAsBoolean(root, "nightVision", false),
                 GsonHelper.getAsBoolean(root, "noVision", false),
-                GsonHelper.getAsBoolean(root, "hasLegs", true),
+                GsonHelper.getAsInt(root, "legCount", 2),
                 UseItemMode.valueOf(GsonHelper.getAsString(root, "itemUseMode", UseItemMode.NORMAL.toString())),
                 scares,
                 TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),

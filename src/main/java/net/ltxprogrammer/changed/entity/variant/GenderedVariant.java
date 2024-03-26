@@ -41,7 +41,7 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         super(null,
                 LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
-                false, false, false, false, true,
+                false, false, false, false, 2,
                 UseItemMode.NORMAL, null, TransfurMode.REPLICATION, Optional.empty(),
                 Optional.empty(), new ArrayList<>(), 0.0F, ChangedSounds.POISON.getLocation());
         this.male = male;
@@ -159,6 +159,12 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         public Builder<M, F> noLegs() {
             this.maleBuilder.noLegs(); this.femaleBuilder.noLegs(); return this;
         }
+
+        public Builder<M, F> quadrupedal() {
+            this.legCount = 4;
+            return this;
+        }
+
         public Builder<M, F> extraHands() {
             this.maleBuilder.extraHands(); this.femaleBuilder.extraHands(); return this;
         }

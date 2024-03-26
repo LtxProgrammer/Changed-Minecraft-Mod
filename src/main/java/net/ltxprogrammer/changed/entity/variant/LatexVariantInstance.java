@@ -399,7 +399,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
-            if (parent.hasLegs)
+            if (parent.legCount == 2)
                 return true;
             else {
                 switch (armorItem.getSlot()) {
