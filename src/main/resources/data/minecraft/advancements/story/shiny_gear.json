@@ -48,7 +48,8 @@
           {
             "items": [
               "minecraft:diamond_leggings",
-              "changed:diamond_upper_abdomen_armor"
+              "changed:diamond_upper_abdomen_armor",
+              "changed:diamond_quadrupedal_leggings"
             ]
           }
         ]
@@ -61,7 +62,8 @@
           {
             "items": [
               "minecraft:diamond_boots",
-              "changed:diamond_lower_abdomen_armor"
+              "changed:diamond_lower_abdomen_armor",
+              "changed:diamond_quadrupedal_boots"
             ]
           }
         ]
