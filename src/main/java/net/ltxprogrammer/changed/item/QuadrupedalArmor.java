@@ -21,16 +21,16 @@ public class QuadrupedalArmor extends ArmorItem implements WearableItem {
         return slot == EquipmentSlot.LEGS;
     }
 
-    public static ArmorMaterial doubleDurability(ArmorMaterial material) {
+    public static ArmorMaterial increaseDurability(ArmorMaterial material) {
         return new ArmorMaterial() {
             @Override
             public int getDurabilityForSlot(EquipmentSlot slot) {
-                return material.getDurabilityForSlot(slot) * 2;
+                return (int)((float)material.getDurabilityForSlot(slot) * 1.5f);
             }
 
             @Override
             public int getDefenseForSlot(EquipmentSlot slot) {
-                return material.getDefenseForSlot(slot);
+                return material.getDefenseForSlot(slot) + 2;
             }
 
             @Override
@@ -66,11 +66,11 @@ public class QuadrupedalArmor extends ArmorItem implements WearableItem {
     }
 
     public QuadrupedalArmor(ArmorMaterial material, EquipmentSlot slot) {
-        super(doubleDurability(material), slot, new Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT));
+        super(increaseDurability(material), slot, new Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT));
     }
 
     public QuadrupedalArmor(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
-        super(doubleDurability(material), slot, properties);
+        super(increaseDurability(material), slot, properties);
     }
 
     @Override
