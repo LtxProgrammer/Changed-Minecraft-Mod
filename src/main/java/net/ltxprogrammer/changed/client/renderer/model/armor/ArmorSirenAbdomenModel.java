@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -20,18 +19,17 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
-    public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
+public class ArmorSirenAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorSirenAbdomenModel<T>> {
+    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
+    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
 
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
     private final ModelPart TailPrimary;
-    private final LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
+    private final LatexAnimator<T, ArmorSirenAbdomenModel<T>> animator;
 
-    public ArmorMermaidSharkAbdomenModel(ModelPart root) {
+    public ArmorSirenAbdomenModel(ModelPart root) {
         this.Abdomen = root.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
@@ -50,25 +48,25 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexH
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 1.5F, -2.5F, 8.0F, 2.0F, 5.0F, layer.deformation.extend(0.05F + deformationOffset)), PartPose.offset(0.0F, 8.5F, 0.0F));
+        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 1.5F, -2.5F, 8.0F, 2.0F, 5.0F, layer.deformation.extend(0.2F + deformationOffset)), PartPose.offset(0.0F, 8.0F, 0.0F));
 
-        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 7).addBox(-4.5F, -1.25F, -3.0F, 9.0F, 7.0F, 6.0F, layer.deformation.extend(-.02F + deformationOffset)), PartPose.offset(0.0F, 4.25F, 0.0F));
+        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 7).addBox(-4.5F, -1.25F, -3.0F, 9.0F, 7.0F, 6.0F, layer.deformation.extend(-0.14F + deformationOffset)), PartPose.offset(0.0F, 4.25F, 0.0F));
 
-        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(0, 20).addBox(-4.5F, 0.25F, -3.0F, 9.0F, 6.0F, 6.0F, layer.dualDeformation.extend(-0.35F + deformationOffset)), PartPose.offset(0.0F, 5.5F, 0.0F));
+        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(0, 20).addBox(-4.5F, -0.25F, -3.0F, 9.0F, 6.0F, 6.0F, layer.dualDeformation.extend(-0.45F + deformationOffset)), PartPose.offset(0.0F, 5.5F, 0.0F));
 
-        PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(30, 0).addBox(-3.5F, -0.25F, -2.5F, 7.0F, 3.0F, 5.0F, layer.altDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 4.5F, 0.0F));
+        PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(30, 0).addBox(-3.5F, -0.25F, -2.5F, 7.0F, 5.0F, 5.0F, layer.dualDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 4.5F, 0.0F));
 
-        PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create().texOffs(30, 12).addBox(-2.5F, -0.25F, -2.0F, 5.0F, 3.0F, 4.0F, layer.altDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 2.75F, 0.0F));
+        PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create().texOffs(30, 12).addBox(-2.5F, -0.25F, -2.0F, 5.0F, 5.0F, 4.0F, layer.dualDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 4.25F, 0.0F));
 
-        PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create().texOffs(47, 21).addBox(-2.0F, -0.25F, -1.5F, 4.0F, 3.0F, 3.0F, layer.altDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 2.5F, 0.0F));
+        PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create().texOffs(47, 21).addBox(-2.0F, -0.25F, -1.5F, 4.0F, 3.0F, 3.0F, layer.dualDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 4.5F, 0.0F));
 
-        PartDefinition TailQuaternary = TailTertiary.addOrReplaceChild("TailQuaternary", CubeListBuilder.create().texOffs(48, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F, layer.altDeformation.extend(deformationOffset)), PartPose.offset(0.0F, 2.75F, 0.0F));
+        PartDefinition TailQuaternary = TailTertiary.addOrReplaceChild("TailQuaternary", CubeListBuilder.create().texOffs(48, 21).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 4.0F, 3.0F, layer.dualDeformation.extend(-0.05F + deformationOffset)), PartPose.offset(0.0F, 2.55F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
     @Override
-    public LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
+    public LatexAnimator<T, ArmorSirenAbdomenModel<T>> getAnimator() {
         return animator;
     }
 
