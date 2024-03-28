@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:chainmail_quadrupedal_leggings"
+    ]
+  },
+  "criteria": {
+    "has_chainmail_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:chainmail_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:chainmail_quadrupedal_leggings"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chainmail_leggings",
+      "has_the_recipe"
+    ]
+  ]
+}
