@@ -10,6 +10,7 @@ import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -209,7 +210,10 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
                 /*else*/ {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
                     if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-                        this.setFollowOwner(!this.isFollowingOwner());
+                        boolean shouldFollow = !this.isFollowingOwner();
+                        this.setFollowOwner(shouldFollow);
+
+                        player.displayClientMessage(new TranslatableComponent(shouldFollow ? "text.changed.tamed.follow" : "text.changed.tamed.wander", this.getDisplayName()), true);
                         this.jumping = false;
                         this.navigation.stop();
                         this.setTarget((LivingEntity) null);

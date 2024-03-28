@@ -163,6 +163,8 @@
   "text.changed.game_loaded_fail": "Cannot load game.",
   "text.changed.syringe.owner": "Owner: %s",
   "text.changed.syringe.no_owner": "Cannot get player name",
+  "text.changed.tamed.wander": "%s is now wandering",
+  "text.changed.tamed.follow": "%s is now following",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
