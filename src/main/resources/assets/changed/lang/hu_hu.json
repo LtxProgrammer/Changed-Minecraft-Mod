@@ -163,6 +163,8 @@
   "text.changed.game_loaded_fail": "Nem lehet betölteni a játékot.",
   "text.changed.syringe.owner": "Tulajdonos: %s",
   "text.changed.syringe.no_owner": "Nem lehet beszerezni a játékos nevét",
+  "text.changed.tamed.wander": "%s most vándorol",
+  "text.changed.tamed.follow": "%s most követ",
 
   "effect.changed.hypercoagulation": "Hiperkoaguláció",
   "effect.changed.shock": "Sokk",
