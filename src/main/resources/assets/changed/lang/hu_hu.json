@@ -28,7 +28,7 @@
   "ability.changed.grab_entity.how_to_transfur": "Tartsa nyomva a [%s] gombot a transzfur előrehaladásához",
   "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot jelmezzé váltásához",
   "ability.changed.grab_entity.how_to_toggle_control": "Nyomja meg a [%s] gombot az irányítás váltásához",
-  
+
   "subtitles.changed.sound3": "Organikus transzfur",
   "subtitles.changed.poison": "Transzfur",
   "subtitles.changed.open2": "Ajtó nem nyílik",
@@ -90,6 +90,19 @@
   "item.changed.diamond_lower_abdomen_armor": "Gyémánt alhaspáncél",
   "item.changed.netherite_upper_abdomen_armor": "Netherit felhaspáncél",
   "item.changed.netherite_lower_abdomen_armor": "Netherit alhaspáncél",
+
+  "item.changed.leather_quadrupedal_leggings": "Négylábú bőrnadrág",
+  "item.changed.leather_quadrupedal_boots": "Négylábú bőrcsizma",
+  "item.changed.chainmail_quadrupedal_leggings": "Négylábú lánc lábszárvédő",
+  "item.changed.chainmail_quadrupedal_boots": "Négylábú láncbakancs",
+  "item.changed.iron_quadrupedal_leggings": "Négylábú vas lábszárvédő",
+  "item.changed.iron_quadrupedal_boots": "Négylábú vascsizma",
+  "item.changed.golden_quadrupedal_leggings": "Négylábú arany lábszárvédő",
+  "item.changed.golden_quadrupedal_boots": "Négylábú aranycsizma",
+  "item.changed.diamond_quadrupedal_leggings": "Négylábú gyémánt lábszárvédő",
+  "item.changed.diamond_quadrupedal_boots": "Négylábú gyémántcsizma",
+  "item.changed.netherite_quadrupedal_leggings": "Négylábú netherit lábszárvédő",
+  "item.changed.netherite_quadrupedal_boots": "Négylábú netheritcsizma",
 
   "item.changed.owo_record": "Latex hanglemez",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
@@ -157,6 +170,8 @@
   "text.changed.game_loaded_fail": "Nem lehet betölteni a játékot.",
   "text.changed.syringe.owner": "Tulajdonos: %s",
   "text.changed.syringe.no_owner": "Nem lehet beszerezni a játékos nevét",
+  "text.changed.tamed.wander": "%s most vándorol",
+  "text.changed.tamed.follow": "%s most követ",
 
   "effect.changed.hypercoagulation": "Hiperkoaguláció",
   "effect.changed.shock": "Sokk",
@@ -312,6 +327,7 @@
   "entity.changed.latex_crystal_wolf_horned": "Szarvas kristály farkas",
   "entity.changed.latex_deer": "Latex szarvas",
   "entity.changed.latex_fennec_fox": "Latex sivatagi róka",
+  "entity.changed.green_lizard": "Zöld gyík",
   "entity.changed.latex_human": "Latex ember",
   "entity.changed.latex_hypno_cat": "Latex hipnómacska",
   "entity.changed.latex_keon_wolf": "Latex keon",

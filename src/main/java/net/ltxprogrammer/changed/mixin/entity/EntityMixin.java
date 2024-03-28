@@ -59,6 +59,11 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 ci.cancel();
             }
         }
+
+        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull((Entity)(Object)this), variant -> {
+            if (!variant.getLatexEntity().isAllowedToSwim())
+                ci.setReturnValue(false);
+        });
     }
 
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)

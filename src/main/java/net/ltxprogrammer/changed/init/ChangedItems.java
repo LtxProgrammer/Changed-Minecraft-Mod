@@ -86,6 +86,31 @@ public class ChangedItems {
     public static final RegistryObject<AbdomenArmor> NETHERITE_LOWER_ABDOMEN_ARMOR = register("netherite_lower_abdomen_armor",
             () -> new AbdomenArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
 
+    public static final RegistryObject<QuadrupedalArmor> LEATHER_QUADRUPEDAL_LEGGINGS = register("leather_quadrupedal_leggings",
+            () -> new DyeableQuadrupedalArmor(ArmorMaterials.LEATHER, EquipmentSlot.LEGS));
+    public static final RegistryObject<QuadrupedalArmor> LEATHER_QUADRUPEDAL_BOOTS = register("leather_quadrupedal_boots",
+            () -> new DyeableQuadrupedalArmor(ArmorMaterials.LEATHER, EquipmentSlot.FEET));
+    public static final RegistryObject<QuadrupedalArmor> CHAINMAIL_QUADRUPEDAL_LEGGINGS = register("chainmail_quadrupedal_leggings",
+            () -> new QuadrupedalArmor(ArmorMaterials.CHAIN, EquipmentSlot.LEGS));
+    public static final RegistryObject<QuadrupedalArmor> CHAINMAIL_QUADRUPEDAL_BOOTS = register("chainmail_quadrupedal_boots",
+            () -> new QuadrupedalArmor(ArmorMaterials.CHAIN, EquipmentSlot.FEET));
+    public static final RegistryObject<QuadrupedalArmor> IRON_QUADRUPEDAL_LEGGINGS = register("iron_quadrupedal_leggings",
+            () -> new QuadrupedalArmor(ArmorMaterials.IRON, EquipmentSlot.LEGS));
+    public static final RegistryObject<QuadrupedalArmor> IRON_QUADRUPEDAL_BOOTS = register("iron_quadrupedal_boots",
+            () -> new QuadrupedalArmor(ArmorMaterials.IRON, EquipmentSlot.FEET));
+    public static final RegistryObject<QuadrupedalArmor> GOLDEN_QUADRUPEDAL_LEGGINGS = register("golden_quadrupedal_leggings",
+            () -> new QuadrupedalArmor(ArmorMaterials.GOLD, EquipmentSlot.LEGS));
+    public static final RegistryObject<QuadrupedalArmor> GOLDEN_QUADRUPEDAL_BOOTS = register("golden_quadrupedal_boots",
+            () -> new QuadrupedalArmor(ArmorMaterials.GOLD, EquipmentSlot.FEET));
+    public static final RegistryObject<QuadrupedalArmor> DIAMOND_QUADRUPEDAL_LEGGINGS = register("diamond_quadrupedal_leggings",
+            () -> new QuadrupedalArmor(ArmorMaterials.DIAMOND, EquipmentSlot.LEGS));
+    public static final RegistryObject<QuadrupedalArmor> DIAMOND_QUADRUPEDAL_BOOTS = register("diamond_quadrupedal_boots",
+            () -> new QuadrupedalArmor(ArmorMaterials.DIAMOND, EquipmentSlot.FEET));
+    public static final RegistryObject<QuadrupedalArmor> NETHERITE_QUADRUPEDAL_LEGGINGS = register("netherite_quadrupedal_leggings",
+            () -> new QuadrupedalArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
+    public static final RegistryObject<QuadrupedalArmor> NETHERITE_QUADRUPEDAL_BOOTS = register("netherite_quadrupedal_boots",
+            () -> new QuadrupedalArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
+
     // Unsure whether to keep this record, it doesn't fit with the BGM from changed
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));
     public static final RegistryObject<LatexRecordItem> BLACK_GOO_ZONE_RECORD = registerLatexRecord("black_goo_zone_record", () -> ChangedSounds.MUSIC_BLACK_GOO_ZONE);

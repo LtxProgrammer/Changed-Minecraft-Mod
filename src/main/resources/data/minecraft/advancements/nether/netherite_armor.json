@@ -37,13 +37,15 @@
           {
             "items": [
               "minecraft:netherite_leggings",
-              "changed:netherite_upper_abdomen_armor"
+              "changed:netherite_upper_abdomen_armor",
+              "changed:netherite_quadrupedal_leggings"
             ]
           },
           {
             "items": [
               "minecraft:netherite_boots",
-              "changed:netherite_lower_abdomen_armor"
+              "changed:netherite_lower_abdomen_armor",
+              "changed:netherite_quadrupedal_boots"
             ]
           }
         ]

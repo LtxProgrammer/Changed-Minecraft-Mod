@@ -644,6 +644,10 @@ public abstract class ChangedEntity extends Monster {
         return super.isVisuallySwimming();
     }
 
+    public boolean isAllowedToSwim() {
+        return true;
+    }
+
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);

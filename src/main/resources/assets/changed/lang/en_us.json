@@ -91,6 +91,19 @@
   "item.changed.netherite_upper_abdomen_armor": "Netherite Upper Abdomen Armor",
   "item.changed.netherite_lower_abdomen_armor": "Netherite Lower Abdomen Armor",
 
+  "item.changed.leather_quadrupedal_leggings": "Leather Quadrupedal Leggings",
+  "item.changed.leather_quadrupedal_boots": "Leather Quadrupedal Boots",
+  "item.changed.chainmail_quadrupedal_leggings": "Chainmail Quadrupedal Leggings",
+  "item.changed.chainmail_quadrupedal_boots": "Chainmail Quadrupedal Boots",
+  "item.changed.iron_quadrupedal_leggings": "Iron Quadrupedal Leggings",
+  "item.changed.iron_quadrupedal_boots": "Iron Quadrupedal Boots",
+  "item.changed.golden_quadrupedal_leggings": "Golden Quadrupedal Leggings",
+  "item.changed.golden_quadrupedal_boots": "Golden Quadrupedal Boots",
+  "item.changed.diamond_quadrupedal_leggings": "Diamond Quadrupedal Leggings",
+  "item.changed.diamond_quadrupedal_boots": "Diamond Quadrupedal Boots",
+  "item.changed.netherite_quadrupedal_leggings": "Netherite Quadrupedal Leggings",
+  "item.changed.netherite_quadrupedal_boots": "Netherite Quadrupedal Boots",
+
   "item.changed.owo_record": "Latex Music Disc",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
@@ -158,6 +171,8 @@
   "text.changed.game_loaded_fail": "Cannot load game.",
   "text.changed.syringe.owner": "Owner: %s",
   "text.changed.syringe.no_owner": "Cannot get player name",
+  "text.changed.tamed.wander": "%s is now wandering",
+  "text.changed.tamed.follow": "%s is now following",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",
@@ -313,6 +328,7 @@
   "entity.changed.latex_crystal_wolf_horned": "Horned Crystal Wolf",
   "entity.changed.latex_deer": "Latex Deer",
   "entity.changed.latex_fennec_fox": "Latex Fennec Fox",
+  "entity.changed.green_lizard": "Green Lizard",
   "entity.changed.latex_human": "Latex Human",
   "entity.changed.latex_hypno_cat": "Latex Hypno Cat",
   "entity.changed.latex_keon_wolf": "Latex Keon",

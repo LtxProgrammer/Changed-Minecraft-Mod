@@ -512,7 +512,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
-            if (parent.hasLegs)
+            if (parent.legCount == 2)
                 return true;
             else {
                 switch (armorItem.getSlot()) {
@@ -706,13 +706,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.setNoGravity(false);
         }
 
-        if(parent.groundSpeed != 0F && player.isOnGround()) {
-            if (parent.groundSpeed > 1f) {
-                if (!player.isCrouching())
+        if(parent.groundSpeed != 0F) {
+            if (player.isOnGround()) {
+                if (parent.groundSpeed > 1f) {
+                    if (!player.isCrouching() && !player.isInWaterOrBubble())
+                        multiplyMotion(player, parent.groundSpeed);
+                } else {
                     multiplyMotion(player, parent.groundSpeed);
-            }
-            else {
-                multiplyMotion(player, parent.groundSpeed);
+                }
             }
         }
 
