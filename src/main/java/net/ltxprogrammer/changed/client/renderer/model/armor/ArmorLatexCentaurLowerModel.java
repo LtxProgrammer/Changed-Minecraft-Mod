@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.WolfHeadInitAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexTaur;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.ltxprogrammer.changed.item.Shorts;
@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> {
+public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
 
@@ -34,7 +34,7 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
     private final ModelPart BackRightLeg;
     private final ModelPart BackLeftLeg;
     private final ModelPart LowerTorso;
-    private final LatexAnimator<T, ArmorLatexCentaurLowerModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexCentaurLowerModel<T>> animator;
 
     public ArmorLatexCentaurLowerModel(ModelPart root) {
         this.LowerTorso = root.getChild("LowerTorso");
@@ -51,7 +51,7 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
         var rightLowerLeg2 = BackRightLeg.getChild("RightLowerLeg2");
         var rightFoot2 = rightLowerLeg2.getChild("RightFoot2");
 
-        animator = LatexAnimator.of(this)
+        animator = HumanoidAnimator.of(this)
                 .addPreset(AnimatorPresets.taurLegs(EMPTY_PART, List.of(),
                         LowerTorso, FrontLeftLeg, leftLowerLeg, leftLowerLeg.getChild("LeftFoot"), FrontRightLeg, rightLowerLeg, rightLowerLeg.getChild("RightFoot"),
                         BackLeftLeg, leftLowerLeg2, leftFoot2, leftFoot2.getChild("LeftPad2"), BackRightLeg, rightLowerLeg2, rightFoot2, rightFoot2.getChild("RightPad2")))
@@ -116,7 +116,7 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexCentaurLowerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexCentaurLowerModel<T>> getAnimator() {
         return animator;
     }
 

@@ -117,7 +117,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static final TransfurVariant<LatexDeer> LATEX_DEER = register(Builder.of(ChangedEntities.LATEX_DEER)
             .groundSpeed(1.1f).swimSpeed(0.95f).stepSize(0.7f)
             .build(Changed.modResource("form_latex_deer")));
-    public static final LatexVariant<GreenLizard> GREEN_LIZARD = register(Builder.of(ChangedEntities.GREEN_LIZARD)
+    public static final TransfurVariant<GreenLizard> GREEN_LIZARD = register(Builder.of(ChangedEntities.GREEN_LIZARD)
             .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
             .build(Changed.modResource("form_green_lizard")));
     public static final TransfurVariant<LatexHuman> LATEX_HUMAN = register(Builder.of(ChangedEntities.GOO_HUMAN)

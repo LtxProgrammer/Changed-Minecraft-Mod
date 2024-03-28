@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
+public class ArmorMermaidSharkAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());

@@ -153,7 +153,7 @@ public class HeadlessKnightModel extends AdvancedHumanoidModel<HeadlessKnight> i
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {
-        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg2 : this.RightLeg2;
+        return p_102852_ == HumanoidArm.LEFT ? this.BackLeftLeg : this.BackRightLeg;
     }
 
     public ModelPart getHead() {

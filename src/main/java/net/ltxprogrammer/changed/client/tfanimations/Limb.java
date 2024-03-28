@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.tfanimations;
 import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LeglessModel;
+import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
@@ -28,14 +29,28 @@ public enum Limb {
         return null;
     }, false),
 
-    LEFT_LEG(model -> model.leftLeg, model -> model.getLeg(HumanoidArm.LEFT)),
-    RIGHT_LEG(model -> model.rightLeg, model -> model.getLeg(HumanoidArm.RIGHT)),
+    LEFT_LEG(model -> model.leftLeg, model -> {
+        if (model instanceof LowerTorsoedModel)
+            return null;
+        return model.getLeg(HumanoidArm.LEFT);
+    }),
+    RIGHT_LEG(model -> model.rightLeg, model -> {
+        if (model instanceof LowerTorsoedModel)
+            return null;
+        return model.getLeg(HumanoidArm.RIGHT);
+    }),
 
     ABDOMEN(model -> model.rightLeg, model -> {
         if (model instanceof LeglessModel leglessModel)
             return leglessModel.getAbdomen();
         return null;
-    }, false);
+    }, false),
+
+    LOWER_TORSO(model -> model.body, model -> {
+        if (model instanceof LowerTorsoedModel torsoedModel)
+            return torsoedModel.getLowerTorso();
+        return null;
+    });
 
     private final Function<HumanoidModel<?>, ModelPart> getModelPartFn;
     private final Function<AdvancedHumanoidModel<?>, ModelPart> getLatexModelPartFn;
@@ -76,6 +91,8 @@ public enum Limb {
     public TransfurAnimator.ModelPose adjustModelPose(TransfurAnimator.ModelPose pose) {
         if (this == ABDOMEN)
             return pose.translate(2.0f, 0.0f, 0.0f);
+        else if (this == LOWER_TORSO)
+            return pose.translate(0.0f, 12.0f, 0.0f);
         else
             return pose;
     }

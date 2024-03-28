@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.GreenLizard;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GreenLizardModel extends LatexHumanoidModel<GreenLizard> implements LatexHumanoidModelInterface<GreenLizard, GreenLizardModel> {
+public class GreenLizardModel extends AdvancedHumanoidModel<GreenLizard> implements AdvancedHumanoidModelInterface<GreenLizard, GreenLizardModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("green_lizard"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class GreenLizardModel extends LatexHumanoidModel<GreenLizard> implements
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<GreenLizard, GreenLizardModel> animator;
+    private final HumanoidAnimator<GreenLizard, GreenLizardModel> animator;
 
     public GreenLizardModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class GreenLizardModel extends LatexHumanoidModel<GreenLizard> implements
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -137,6 +137,10 @@ public class GreenLizardModel extends LatexHumanoidModel<GreenLizard> implements
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
@@ -156,7 +160,7 @@ public class GreenLizardModel extends LatexHumanoidModel<GreenLizard> implements
     }
 
     @Override
-    public LatexAnimator<GreenLizard, GreenLizardModel> getAnimator() {
+    public HumanoidAnimator<GreenLizard, GreenLizardModel> getAnimator() {
         return animator;
     }
 }

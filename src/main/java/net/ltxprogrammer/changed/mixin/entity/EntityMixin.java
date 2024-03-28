@@ -60,8 +60,8 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             }
         }
 
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull((Entity)(Object)this), variant -> {
-            if (!variant.getLatexEntity().isAllowedToSwim())
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull((Entity)(Object)this), variant -> {
+            if (!variant.getChangedEntity().isAllowedToSwim())
                 ci.setReturnValue(false);
         });
     }

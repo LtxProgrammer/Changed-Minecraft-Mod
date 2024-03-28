@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -12,6 +14,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -195,7 +198,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {
-        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+        return p_102852_ == HumanoidArm.LEFT ? this.FrontLeftLeg : this.FrontRightLeg;
     }
 
     public ModelPart getHead() {
@@ -204,6 +207,16 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
 
     public ModelPart getTorso() {
         return Torso;
+    }
+
+    @Nullable
+    @Override
+    public ModelPart getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.LOWER_TORSO)
+            return TransfurHelper.getTaurTorso();
+        else if (limb == Limb.TORSO)
+            return null;
+        return super.getTransfurHelperModel(limb);
     }
 
     @Override

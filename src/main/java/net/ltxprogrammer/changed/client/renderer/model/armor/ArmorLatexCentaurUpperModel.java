@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
@@ -31,7 +31,7 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<LightLa
     private final ModelPart LeftArm;
     private final ModelPart Head;
     private final ModelPart Torso;
-    private final LatexAnimator<LightLatexCentaur, ArmorLatexCentaurUpperModel> animator;
+    private final HumanoidAnimator<LightLatexCentaur, ArmorLatexCentaurUpperModel> animator;
 
     public ArmorLatexCentaurUpperModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -39,7 +39,7 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<LightLa
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
 
-        animator = LatexAnimator.of(this)
+        animator = HumanoidAnimator.of(this)
                 .addPreset(AnimatorPresets.taurUpperBody(Head, Torso, LeftArm, RightArm))
                 .addAnimator(new WolfHeadInitAnimator<>(Head))
                 .addAnimator(new ArmSwimAnimator<>(LeftArm, RightArm))
@@ -64,7 +64,7 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<LightLa
     }
 
     @Override
-    public LatexAnimator<LightLatexCentaur, ArmorLatexCentaurUpperModel> getAnimator() {
+    public HumanoidAnimator<LightLatexCentaur, ArmorLatexCentaurUpperModel> getAnimator() {
         return animator;
     }
 
