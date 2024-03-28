@@ -570,13 +570,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.setNoGravity(false);
         }
 
-        if(parent.groundSpeed != 0F && player.isOnGround()) {
-            if (parent.groundSpeed > 1f) {
-                if (!player.isCrouching())
+        if(parent.groundSpeed != 0F) {
+            if (player.isOnGround()) {
+                if (parent.groundSpeed > 1f) {
+                    if (!player.isCrouching() && !player.isInWaterOrBubble())
+                        multiplyMotion(player, parent.groundSpeed);
+                } else {
                     multiplyMotion(player, parent.groundSpeed);
-            }
-            else {
-                multiplyMotion(player, parent.groundSpeed);
+                }
             }
         }
 
