@@ -9,6 +9,8 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.WolfHeadInitAnimator;
+import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.beast.LatexTaur;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -23,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexCentaurLowerModel extends LatexHumanoidArmorModel<LightLatexCentaur, ArmorLatexCentaurLowerModel> {
+public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
 
@@ -32,7 +34,7 @@ public class ArmorLatexCentaurLowerModel extends LatexHumanoidArmorModel<LightLa
     private final ModelPart BackRightLeg;
     private final ModelPart BackLeftLeg;
     private final ModelPart LowerTorso;
-    private final LatexAnimator<LightLatexCentaur, ArmorLatexCentaurLowerModel> animator;
+    private final LatexAnimator<T, ArmorLatexCentaurLowerModel<T>> animator;
 
     public ArmorLatexCentaurLowerModel(ModelPart root) {
         this.LowerTorso = root.getChild("LowerTorso");
@@ -114,12 +116,12 @@ public class ArmorLatexCentaurLowerModel extends LatexHumanoidArmorModel<LightLa
     }
 
     @Override
-    public LatexAnimator<LightLatexCentaur, ArmorLatexCentaurLowerModel> getAnimator() {
+    public LatexAnimator<T, ArmorLatexCentaurLowerModel<T>> getAnimator() {
         return animator;
     }
 
     @Override
-    public void renderForSlot(LightLatexCentaur entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (slot) {
             case LEGS, FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
