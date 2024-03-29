@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfFemale;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -65,9 +65,8 @@ public class DarkLatexWolfFemaleModel extends AdvancedHumanoidModel<DarkLatexWol
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 
-    @Nullable
     @Override
-    public ModelPart getTransfurHelperModel(Limb limb) {
+    public HelperModel getTransfurHelperModel(Limb limb) {
         if (limb == Limb.TORSO)
             return TransfurHelper.getFeminineTorsoAlt();
         return super.getTransfurHelperModel(limb);

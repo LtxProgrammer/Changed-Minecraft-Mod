@@ -40,7 +40,7 @@ public enum Limb {
         return model.getLeg(HumanoidArm.RIGHT);
     }),
 
-    ABDOMEN(model -> model.rightLeg, model -> {
+    ABDOMEN(model -> model.body, model -> {
         if (model instanceof LeglessModel leglessModel)
             return leglessModel.getAbdomen();
         return null;
@@ -90,7 +90,7 @@ public enum Limb {
 
     public TransfurAnimator.ModelPose adjustModelPose(TransfurAnimator.ModelPose pose) {
         if (this == ABDOMEN)
-            return pose.translate(2.0f, 0.0f, 0.0f);
+            return pose.translate(0.0f, 12.0f, 0.0f);
         else if (this == LOWER_TORSO)
             return pose.translate(0.0f, 12.0f, 0.0f);
         else

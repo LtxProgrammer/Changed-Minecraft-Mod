@@ -27,7 +27,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -304,9 +303,9 @@ public class TransfurAnimator {
         return new ModelPose(tmp.last(), lerpPartPose(before.pose, after.pose, lerp));
     }
 
-    private static ModelPart maybeReplaceWithHelper(AdvancedHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
+    private static ModelPart maybeReplaceWithHelper(HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
         var helper = afterModel.getTransfurHelperModel(limb);
-        return helper == null ? orDefault : helper;
+        return helper == null ? orDefault : helper.prepareAndGet(beforeModel);
     }
 
     private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
@@ -319,7 +318,7 @@ public class TransfurAnimator {
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
 
         beforePose = limb.adjustModelPose(beforePose);
-        before = maybeReplaceWithHelper(afterModel, limb, before);
+        before = maybeReplaceWithHelper(beforeModel, afterModel, limb, before);
 
         final ModelPart transitionPart = transitionModelPart(before, after, morphProgress);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);

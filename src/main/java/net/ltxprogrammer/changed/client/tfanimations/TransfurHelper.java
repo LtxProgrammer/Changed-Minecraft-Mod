@@ -15,24 +15,35 @@ import net.minecraft.client.model.geom.builders.*;
 public class TransfurHelper {
     public static final ModelLayerLocation TRANSFUR_HELPER = new ModelLayerLocation(Changed.modResource("transfur_helper"), "main");
 
-    protected final ModelPart DigitigradeLeftLeg;
-    protected final ModelPart DigitigradeRightLeg;
-    protected final ModelPart TailedTorso;
-    protected final ModelPart FeminineTorso;
-    protected final ModelPart FeminineTorsoAlt;
-    protected final ModelPart SnoutedHead;
-    protected final ModelPart Legless;
-    protected final ModelPart TaurTorso;
+    protected final HelperModel DigitigradeLeftLeg;
+    protected final HelperModel DigitigradeRightLeg;
+    protected final HelperModel TailedTorso;
+    protected final HelperModel FeminineTorso;
+    protected final HelperModel FeminineTorsoAlt;
+    protected final HelperModel SnoutedHead;
+    protected final HelperModel Legless;
+    protected final HelperModel TaurTorso;
+
+    protected static void copyRotations(ModelPart from, ModelPart to) {
+        to.xRot = from.xRot;
+        to.yRot = from.yRot;
+        to.zRot = from.zRot;
+    }
 
     protected TransfurHelper(ModelPart root) {
-        this.DigitigradeLeftLeg = root.getChild("DigitigradeLeftLeg");
-        this.DigitigradeRightLeg = root.getChild("DigitigradeRightLeg");
-        this.TailedTorso = root.getChild("TailedTorso");
-        this.FeminineTorso = root.getChild("FeminineTorso");
-        this.FeminineTorsoAlt = root.getChild("FeminineTorsoAlt");
-        this.SnoutedHead = root.getChild("SnoutedHead");
-        this.Legless = root.getChild("Legless");
-        this.TaurTorso = root.getChild("TaurTorso");
+        this.DigitigradeLeftLeg = HelperModel.fixed(root.getChild("DigitigradeLeftLeg"));
+        this.DigitigradeRightLeg = HelperModel.fixed(root.getChild("DigitigradeRightLeg"));
+        this.TailedTorso = HelperModel.fixed(root.getChild("TailedTorso"));
+        this.FeminineTorso = HelperModel.fixed(root.getChild("FeminineTorso"));
+        this.FeminineTorsoAlt = HelperModel.fixed(root.getChild("FeminineTorsoAlt"));
+        this.SnoutedHead = HelperModel.fixed(root.getChild("SnoutedHead"));
+        this.Legless = HelperModel.fixed(root.getChild("Legless"));
+        this.TaurTorso = HelperModel.withPrepare(root.getChild("TaurTorso"), (part, model) -> {
+            copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg"));
+            copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg"));
+            copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg2"));
+            copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg2"));
+        });
     }
 
     private static EntityModelSet getModelSet() {
@@ -205,35 +216,35 @@ public class TransfurHelper {
 
     private static final Cacheable<TransfurHelper> INSTANCE = Cacheable.of(() -> new TransfurHelper(getModelSet().bakeLayer(TRANSFUR_HELPER)));
 
-    public static ModelPart getDigitigradeLeftLeg() {
+    public static HelperModel getDigitigradeLeftLeg() {
         return INSTANCE.get().DigitigradeLeftLeg;
     }
 
-    public static ModelPart getDigitigradeRightLeg() {
+    public static HelperModel getDigitigradeRightLeg() {
         return INSTANCE.get().DigitigradeRightLeg;
     }
 
-    public static ModelPart getTailedTorso() {
+    public static HelperModel getTailedTorso() {
         return INSTANCE.get().TailedTorso;
     }
 
-    public static ModelPart getFeminineTorso() {
+    public static HelperModel getFeminineTorso() {
         return INSTANCE.get().FeminineTorso;
     }
 
-    public static ModelPart getFeminineTorsoAlt() {
+    public static HelperModel getFeminineTorsoAlt() {
         return INSTANCE.get().FeminineTorsoAlt;
     }
 
-    public static ModelPart getSnoutedHead() {
+    public static HelperModel getSnoutedHead() {
         return INSTANCE.get().SnoutedHead;
     }
 
-    public static ModelPart getLegless() {
+    public static HelperModel getLegless() {
         return INSTANCE.get().Legless;
     }
 
-    public static ModelPart getTaurTorso() {
+    public static HelperModel getTaurTorso() {
         return INSTANCE.get().TaurTorso;
     }
 }
