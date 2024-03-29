@@ -84,6 +84,19 @@
   "item.changed.netherite_upper_abdomen_armor": "Netherit övre bukrustning",
   "item.changed.netherite_lower_abdomen_armor": "Netherit lägre bukrustning",
 
+  "item.changed.leather_quadrupedal_leggings": "Läder fyrfotad byxor",
+  "item.changed.leather_quadrupedal_boots": "Läder fyrfotad stövlar",
+  "item.changed.chainmail_quadrupedal_leggings": "Ringbryn fyrfotad byxor",
+  "item.changed.chainmail_quadrupedal_boots": "Ringbryn fyrfotad stövlar",
+  "item.changed.iron_quadrupedal_leggings": "Järn fyrfotad byxor",
+  "item.changed.iron_quadrupedal_boots": "Järn fyrfotad stövlar",
+  "item.changed.golden_quadrupedal_leggings": "Guld fyrfotad byxor",
+  "item.changed.golden_quadrupedal_boots": "Guld fyrfotad stövlar",
+  "item.changed.diamond_quadrupedal_leggings": "Diamant fyrfotad byxor",
+  "item.changed.diamond_quadrupedal_boots": "Diamant fyrfotad stövlar",
+  "item.changed.netherite_quadrupedal_leggings": "Netherit fyrfotad byxor",
+  "item.changed.netherite_quadrupedal_boots": "Netherit fyrfotad stövlar",
+
   "item.changed.owo_record": "Latexmusikplatta",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
@@ -150,6 +163,8 @@
   "text.changed.game_loaded_fail": "Kan inte ladda spelet.",
   "text.changed.syringe.owner": "Ägare: %s",
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
+  "text.changed.tamed.wander": "%s är nu vandrande",
+  "text.changed.tamed.follow": "%s är nu följer",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
