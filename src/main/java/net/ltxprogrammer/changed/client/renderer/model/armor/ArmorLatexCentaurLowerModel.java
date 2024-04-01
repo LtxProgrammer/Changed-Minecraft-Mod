@@ -55,16 +55,16 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
                 .addPreset(AnimatorPresets.taurLegs(EMPTY_PART, List.of(),
                         LowerTorso, FrontLeftLeg, leftLowerLeg, leftLowerLeg.getChild("LeftFoot"), FrontRightLeg, rightLowerLeg, rightLowerLeg.getChild("RightFoot"),
                         BackLeftLeg, leftLowerLeg2, leftFoot2, leftFoot2.getChild("LeftPad2"), BackRightLeg, rightLowerLeg2, rightFoot2, rightFoot2.getChild("RightPad2")))
-                .forwardOffset(-7.0f).hipOffset(-1.5f).legLength(13.5f).torsoLength(13.05f);
+                .forwardOffset(-7.0f).hipOffset(-1.5f).legLength(13.5f).torsoLength(11.05f);
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition LowerTorso = partdefinition.addOrReplaceChild("LowerTorso", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 6.0F, 19.0F, layer.altDeformation), PartPose.offset(0.0F, 6.5F, -7.0F));
+        PartDefinition LowerTorso = partdefinition.addOrReplaceChild("LowerTorso", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 6.0F, 19.0F, layer.altDeformation), PartPose.offset(0.0F, 8.5F, -7.0F));
 
-        PartDefinition LeftLeg2 = LowerTorso.addOrReplaceChild("LeftLeg2", CubeListBuilder.create(), PartPose.offset(3.5F, 4.0F, 15.875F));
+        PartDefinition LeftLeg2 = LowerTorso.addOrReplaceChild("LeftLeg2", CubeListBuilder.create(), PartPose.offset(3.5F, 2.0F, 16.375F));
 
         PartDefinition LeftThigh_r1 = LeftLeg2.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)).mirror(false), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
@@ -78,7 +78,7 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
 
         PartDefinition LeftPad2 = LeftFoot2.addOrReplaceChild("LeftPad2", CubeListBuilder.create().texOffs(0, 11).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.325F, -4.425F));
 
-        PartDefinition RightLeg2 = LowerTorso.addOrReplaceChild("RightLeg2", CubeListBuilder.create(), PartPose.offset(-3.5F, 4.0F, 15.875F));
+        PartDefinition RightLeg2 = LowerTorso.addOrReplaceChild("RightLeg2", CubeListBuilder.create(), PartPose.offset(-3.5F, 2.0F, 16.375F));
 
         PartDefinition RightThigh_r1 = RightLeg2.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
 
@@ -92,9 +92,9 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
 
         PartDefinition RightPad2 = RightFoot2.addOrReplaceChild("RightPad2", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, layer.deformation).mirror(false), PartPose.offset(0.0F, 4.325F, -4.425F));
 
-        PartDefinition LeftLeg = LowerTorso.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(3.5F, 4.0F, -0.7F));
+        PartDefinition LeftLeg = LowerTorso.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(3.5F, 2.0F, -1.7F));
 
-        PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.0F, -0.3172F, -0.0274F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)).mirror(false), PartPose.offsetAndRotation(0.25F, 0.5348F, -2.0472F, 0.3054F, 0.0F, 0.0F));
+        PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-2.0F, -6.89F, -4.2461F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)).mirror(false), PartPose.offsetAndRotation(0.25F, 5.5348F, 3.9528F, 0.0873F, 0.0F, 0.0F));
 
         PartDefinition LeftLowerLeg = LeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.25F, 5.7848F, 3.7028F));
 
@@ -102,9 +102,9 @@ public class ArmorLatexCentaurLowerModel<T extends LatexEntity & LatexTaur<T>> e
 
         PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create().texOffs(0, 11).addBox(-1.95F, 0.0F, -2.0F, 4.0F, 2.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 5.7152F, -4.3278F));
 
-        PartDefinition RightLeg = LowerTorso.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-4.0F, 4.0F, -0.7F));
+        PartDefinition RightLeg = LowerTorso.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-4.0F, 2.0F, -1.7F));
 
-        PartDefinition RightUpperLeg_r1 = RightLeg.addOrReplaceChild("RightUpperLeg_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -0.3172F, -0.0274F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)), PartPose.offsetAndRotation(0.25F, 0.5348F, -2.0472F, 0.3054F, 0.0F, 0.0F));
+        PartDefinition RightUpperLeg_r1 = RightLeg.addOrReplaceChild("RightUpperLeg_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-9.5F, -6.89F, -4.2461F, 4.0F, 7.0F, 4.0F, layer.altDeformation.extend(0.1F)), PartPose.offsetAndRotation(7.75F, 5.5348F, 3.9528F, 0.0873F, 0.0F, 0.0F));
 
         PartDefinition RightLowerLeg = RightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.7848F, 3.7028F));
 

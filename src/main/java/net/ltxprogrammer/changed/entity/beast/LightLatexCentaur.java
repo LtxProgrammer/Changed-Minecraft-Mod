@@ -68,7 +68,7 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
     }
 
     public double getPassengersRidingOffset() {
-        return super.getPassengersRidingOffset() + getTorsoYOffset(this);
+        return super.getPassengersRidingOffset() + getTorsoYOffset(this) - (2.0 / 16.0);
     }
 
     public InteractionResult mobInteract(Player p_30713_, InteractionHand p_30714_) {
