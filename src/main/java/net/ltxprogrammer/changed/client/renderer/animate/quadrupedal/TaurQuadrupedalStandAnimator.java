@@ -38,9 +38,9 @@ public class TaurQuadrupedalStandAnimator<T extends ChangedEntity, M extends Ent
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float offset = -Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f));
-        frontRightLeg.y = core.calculateLegPositionY() - 5.0f + offset + 1.25f;
-        frontLeftLeg.y = core.calculateLegPositionY() - 5.0f + offset + 1.25f;
-        backRightLeg.y = core.calculateLegPositionY() - 5.0f + offset + 1.25f;
-        backLeftLeg.y = core.calculateLegPositionY() - 5.0f + offset + 1.25f;
+        frontRightLeg.y = offset + 3.0f;
+        frontLeftLeg.y = offset + 3.0f;
+        backRightLeg.y = offset + 3.0f;
+        backLeftLeg.y = offset + 3.0f;
     }
 }

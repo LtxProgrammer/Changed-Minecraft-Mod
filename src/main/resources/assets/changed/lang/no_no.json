@@ -90,6 +90,19 @@
   "item.changed.netherite_upper_abdomen_armor": "Netheritt øvre bukrustning",
   "item.changed.netherite_lower_abdomen_armor": "Netheritt nedre bukrustning",
 
+  "item.changed.leather_quadrupedal_leggings": "Lær firbentebukser",
+  "item.changed.leather_quadrupedal_boots": "Lær firbentestøvler",
+  "item.changed.chainmail_quadrupedal_leggings": "Brynje firbenteplater",
+  "item.changed.chainmail_quadrupedal_boots": "Brynje firbentestøvler",
+  "item.changed.iron_quadrupedal_leggings": "Jern firbenteplater",
+  "item.changed.iron_quadrupedal_boots": "Jern firbentestøvler",
+  "item.changed.golden_quadrupedal_leggings": "Gull firbenteplater",
+  "item.changed.golden_quadrupedal_boots": "Gull firbentestøvler",
+  "item.changed.diamond_quadrupedal_leggings": "Diamant firbenteplater",
+  "item.changed.diamond_quadrupedal_boots": "Diamant firbentestøvler",
+  "item.changed.netherite_quadrupedal_leggings": "Netheritt firbenteplater",
+  "item.changed.netherite_quadrupedal_boots": "Netheritt firbentestøvler",
+
   "item.changed.owo_record": "Lateksmusikkplate",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
 
@@ -156,6 +169,8 @@
   "text.changed.game_loaded_fail": "Kan ikke laste spill.",
   "text.changed.syringe.owner": "Eier: %s",
   "text.changed.syringe.no_owner": "Kan ikke få spillernavn",
+  "text.changed.tamed.wander": "%s er nå vandre",
+  "text.changed.tamed.follow": "%s er nå følger",
 
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   "effect.changed.shock": "Støt",
