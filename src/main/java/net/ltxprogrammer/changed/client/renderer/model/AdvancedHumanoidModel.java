@@ -79,6 +79,10 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         };
     }
 
+    public boolean shouldPartTransfur(ModelPart part) {
+        return true;
+    }
+
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         if (this instanceof AdvancedHumanoidModelInterface modelInterface)

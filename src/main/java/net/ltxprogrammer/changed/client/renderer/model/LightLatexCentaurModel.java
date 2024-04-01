@@ -30,6 +30,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart LowerTorso;
+    private final ModelPart Saddle;
     private final ModelPart Tail;
     private final HumanoidAnimator<LightLatexCentaur, LightLatexCentaurModel> animator;
 
@@ -38,6 +39,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
         this.LowerTorso = root.getChild("LowerTorso");
+        this.Saddle = LowerTorso.getChild("Saddle");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
 
@@ -217,6 +219,11 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
         else if (limb == Limb.TORSO)
             return null;
         return super.getTransfurHelperModel(limb);
+    }
+
+    @Override
+    public boolean shouldPartTransfur(ModelPart part) {
+        return super.shouldPartTransfur(part) && part != this.Saddle;
     }
 
     @Override

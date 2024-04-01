@@ -27,8 +27,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class TransfurAnimator {
@@ -55,10 +57,23 @@ public class TransfurAnimator {
         ((CubeExtender)newCube).copyPolygonsFrom(cube);
         return newCube;
     }
-    private static ModelPart deepCopyPart(ModelPart part) {
+
+    private static ModelPart deepCopyPart(@Nullable ModelPart part) {
+        if (part == null)
+            return null;
         ModelPart copied = new ModelPart(
                 part.cubes.stream().map(TransfurAnimator::copyCube).toList(),
                 part.children.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue()))));
+        copied.loadPose(part.storePose());
+        return copied;
+    }
+
+    private static ModelPart deepCopyPart(@Nullable ModelPart part, Predicate<ModelPart> predicate) {
+        if (part == null)
+            return null;
+        ModelPart copied = new ModelPart(
+                part.cubes.stream().map(TransfurAnimator::copyCube).toList(),
+                part.children.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue(), predicate))));
         copied.loadPose(part.storePose());
         return copied;
     }
@@ -320,7 +335,8 @@ public class TransfurAnimator {
         beforePose = limb.adjustModelPose(beforePose);
         before = maybeReplaceWithHelper(beforeModel, afterModel, limb, before);
 
-        final ModelPart transitionPart = transitionModelPart(before, after, morphProgress);
+        final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);
+        final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);
 
         final var vertexConsumer = buffer.getBuffer(
