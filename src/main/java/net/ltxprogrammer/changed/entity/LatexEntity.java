@@ -66,6 +66,15 @@ public abstract class LatexEntity extends Monster {
     private EyeStyle eyeStyle;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
+    public double xCloakO;
+    public double yCloakO;
+    public double zCloakO;
+    public double xCloak;
+    public double yCloak;
+    public double zCloak;
+    public float oBob;
+    public float bob;
+
     float crouchAmount;
     float crouchAmountO;
     public float flyAmount;
@@ -88,6 +97,65 @@ public abstract class LatexEntity extends Monster {
 
     public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
         return simulatedSprings.get(direction).get(type).getSpring(partialTicks);
+    }
+
+    private void moveCloak() {
+        this.xCloakO = this.xCloak;
+        this.yCloakO = this.yCloak;
+        this.zCloakO = this.zCloak;
+        double d0 = this.getX() - this.xCloak;
+        double d1 = this.getY() - this.yCloak;
+        double d2 = this.getZ() - this.zCloak;
+        double d3 = 10.0D;
+        if (d0 > 10.0D) {
+            this.xCloak = this.getX();
+            this.xCloakO = this.xCloak;
+        }
+
+        if (d2 > 10.0D) {
+            this.zCloak = this.getZ();
+            this.zCloakO = this.zCloak;
+        }
+
+        if (d1 > 10.0D) {
+            this.yCloak = this.getY();
+            this.yCloakO = this.yCloak;
+        }
+
+        if (d0 < -10.0D) {
+            this.xCloak = this.getX();
+            this.xCloakO = this.xCloak;
+        }
+
+        if (d2 < -10.0D) {
+            this.zCloak = this.getZ();
+            this.zCloakO = this.zCloak;
+        }
+
+        if (d1 < -10.0D) {
+            this.yCloak = this.getY();
+            this.yCloakO = this.yCloak;
+        }
+
+        this.xCloak += d0 * 0.25D;
+        this.zCloak += d2 * 0.25D;
+        this.yCloak += d1 * 0.25D;
+    }
+
+    @Override
+    public void aiStep() {
+        this.oBob = this.bob;
+
+        super.aiStep();
+
+        float f;
+        if (this.onGround && !this.isDeadOrDying() && !this.isSwimming()) {
+            f = Math.min(0.1F, (float)this.getDeltaMovement().horizontalDistance());
+        } else {
+            f = 0.0F;
+        }
+
+        this.bob += (f - this.bob) * 0.4F;
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -440,6 +508,7 @@ public abstract class LatexEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
+        moveCloak();
         visualTick(this.level);
 
         var player = getUnderlyingPlayer();

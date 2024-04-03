@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.WhiteLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
@@ -15,6 +16,7 @@ public class WhiteLatexWolfRenderer extends LatexHumanoidRenderer<WhiteLatexWolf
 		super(context, new WhiteLatexWolfModel(context.bakeLayer(WhiteLatexWolfModel.LAYER_LOCATION)),
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
 	}
 

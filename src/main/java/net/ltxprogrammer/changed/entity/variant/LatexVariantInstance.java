@@ -320,6 +320,16 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public static void syncEntityAndPlayer(LatexEntity living, Player player) {
+        living.xCloak = player.xCloak;
+        living.yCloak = player.yCloak;
+        living.zCloak = player.zCloak;
+        living.xCloakO = player.xCloakO;
+        living.yCloakO = player.yCloakO;
+        living.zCloakO = player.zCloakO;
+
+        living.oBob = player.oBob;
+        living.bob = player.bob;
+
         living.tickCount = player.tickCount;
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
