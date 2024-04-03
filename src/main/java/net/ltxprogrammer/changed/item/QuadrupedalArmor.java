@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
@@ -71,6 +72,11 @@ public class QuadrupedalArmor extends ArmorItem implements WearableItem {
 
     public QuadrupedalArmor(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
         super(increaseDurability(material), slot, properties);
+    }
+
+    @Override
+    public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+        return material.getName().equals(ArmorMaterials.LEATHER.getName()) && slot == EquipmentSlot.FEET;
     }
 
     @Override
