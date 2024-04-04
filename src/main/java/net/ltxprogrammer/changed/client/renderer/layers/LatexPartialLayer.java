@@ -80,7 +80,7 @@ public class LatexPartialLayer<T extends LatexEntity, M extends LatexHumanoidMod
         this.getModel().setupAnim(entity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         model.setupHand();
         stack.pushPose();
-        stack.scale(1.015f, 1.015f, 1.015f);
+        stack.scale(ZFIGHT_OFFSET, ZFIGHT_OFFSET, ZFIGHT_OFFSET);
         FormRenderHandler.renderModelPartWithTexture(this.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(this.renderType()), packedLight, 1F);
         stack.popPose();
     }
