@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorHumanModel;
 import net.ltxprogrammer.changed.entity.beast.LatexHuman;
@@ -21,6 +22,7 @@ public class LatexHumanRenderer extends LatexHumanoidRenderer<LatexHuman, LatexH
 				slim ? ModelLayers.PLAYER_SLIM_INNER_ARMOR : ModelLayers.PLAYER_INNER_ARMOR,
 				slim ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}
