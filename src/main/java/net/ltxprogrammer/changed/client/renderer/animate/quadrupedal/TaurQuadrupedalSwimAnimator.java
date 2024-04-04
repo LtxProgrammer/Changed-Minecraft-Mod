@@ -50,5 +50,10 @@ public class TaurQuadrupedalSwimAnimator<T extends LatexEntity, M extends Entity
         frontLeftFoot.xRot = Mth.lerp(core.swimAmount, frontLeftFoot.xRot, 0.3926991F);
         //frontRightFoot.xRot = Mth.lerp(core.swimAmount, rightPad.xRot, 0.3490659F);
         //frontLeftFoot.xRot = Mth.lerp(core.swimAmount, leftPad.xRot, 0.3490659F);
+
+        frontLeftLeg.xRot += Mth.lerp(core.swimAmount, 0.0F, Mth.DEG_TO_RAD * 50);
+        frontRightLeg.xRot += Mth.lerp(core.swimAmount, 0.0F, Mth.DEG_TO_RAD * 50);
+        backRightLeg.xRot += Mth.lerp(core.swimAmount, 0.0F, Mth.DEG_TO_RAD * 80);
+        backLeftLeg.xRot += Mth.lerp(core.swimAmount, 0.0F, Mth.DEG_TO_RAD * 80);
     }
 }
