@@ -335,7 +335,7 @@ public abstract class LatexEntity extends Monster {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.2f);
+            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
             default -> core;
         }).scale(getBasicPlayerInfo().getSize());
