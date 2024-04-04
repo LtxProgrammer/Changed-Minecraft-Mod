@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexRaccoonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleCatModel;
 import net.ltxprogrammer.changed.entity.beast.LatexRaccoon;
@@ -14,6 +15,7 @@ public class LatexRaccoonRenderer extends LatexHumanoidRenderer<LatexRaccoon, La
         super(context, new LatexRaccoonModel(context.bakeLayer(LatexRaccoonModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+        this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
