@@ -47,7 +47,10 @@ public class CustomCoatLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
     public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
         var info = entity.getBasicPlayerInfo();
         var coatColor = info.getHairColor();
+        stack.pushPose();
+        stack.scale(1.015f, 1.015f, 1.015f);
         FormRenderHandler.renderModelPartWithTexture(model.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(this.getRenderTypeForColor(coatColor)), packedLight,
                 coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
+        stack.popPose();
     }
 }
