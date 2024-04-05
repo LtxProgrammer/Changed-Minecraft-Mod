@@ -46,6 +46,7 @@ public class ChangedItems {
     public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
             () -> new AbstractLatexCrystalItem(TransfurVariant.LATEX_BEIFENG));
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
+    public static final RegistryObject<LatexPotion> LATEX_POTION = register("latex_potion", () -> new LatexPotion(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
     public static final RegistryObject<AbstractLatexCrystalItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment",

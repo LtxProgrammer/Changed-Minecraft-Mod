@@ -48,6 +48,7 @@ public class InfuserRecipe implements Recipe<SimpleContainer> {
             new MapUtil.HashBuilder<Item, Function<ItemStack, ItemStack>>()
                     .put(Items.ARROW, stack -> new ItemStack(ChangedItems.LATEX_TIPPED_ARROW.get(), Math.min(stack.getCount(), 16)))
                     .put(ChangedItems.BLOOD_SYRINGE.get(), stack -> new ItemStack(ChangedItems.LATEX_SYRINGE.get()))
+                    .put(Items.GLASS_BOTTLE, stack -> new ItemStack(ChangedItems.LATEX_POTION.get()))
                     .finish();
 
     public static ItemStack getBaseFor(ItemStack stack) {

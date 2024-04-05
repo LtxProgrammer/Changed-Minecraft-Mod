@@ -71,6 +71,16 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
                                 default -> -1;
                             },
                     ChangedItems.LATEX_TIPPED_ARROW.get());
+
+            event.getItemColors().register((stack, layer) ->
+                            switch (layer) {
+                                case 0 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorBack(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                case 1 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorFront(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                default -> -1;
+                            },
+                    ChangedItems.LATEX_POTION.get());
         }
     }
 
