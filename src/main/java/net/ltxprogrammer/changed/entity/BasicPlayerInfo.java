@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 import java.util.Random;
@@ -132,7 +133,7 @@ public class BasicPlayerInfo {
     }
 
     public float getSize() {
-        return size;
+        return Mth.clamp(size, 1.0f - SIZE_TOLERANCE, 1.0f + SIZE_TOLERANCE);
     }
 
     public double getSizeValueForConfiguration() {

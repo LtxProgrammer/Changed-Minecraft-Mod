@@ -61,6 +61,7 @@ public class BasicPlayerInfoPacket implements ChangedPacket {
                     var player = level.getPlayerByUUID(uuid);
                     if (player instanceof PlayerDataExtension ext && !UniversalDist.isLocalPlayer(player)) {
                         ext.getBasicPlayerInfo().copyFrom(listing.info);
+                        player.refreshDimensions();
                     }
                 });
                 context.setPacketHandled(true);
@@ -74,8 +75,10 @@ public class BasicPlayerInfoPacket implements ChangedPacket {
         else if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
             ServerPlayer sender = context.getSender();
             if (sender != null) {
-                if (sender instanceof PlayerDataExtension ext && playerInfos.containsKey(sender.getUUID()))
+                if (sender instanceof PlayerDataExtension ext && playerInfos.containsKey(sender.getUUID())) {
                     ext.getBasicPlayerInfo().copyFrom(playerInfos.get(sender.getUUID()).info); // Keep player info state
+                    sender.refreshDimensions();
+                }
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), this);
             }
             context.setPacketHandled(true);
