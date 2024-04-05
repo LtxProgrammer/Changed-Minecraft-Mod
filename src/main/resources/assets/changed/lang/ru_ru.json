@@ -513,7 +513,7 @@
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
   "changed:advancements.main.kill_all_latex.title": "Совсем невменяемый",
-  "changed.advancements.main.kill_all_latex.description": "Убейте по одному всех видов латексных.",
+  "changed:advancements.main.kill_all_latex.description": "Убейте по одному всех видов латексных.",
 
   "changed.tutorial.select_ability.title": "Выберите способность",
   "changed.tutorial.select_ability.description": "Нажмите клавишу %s",
