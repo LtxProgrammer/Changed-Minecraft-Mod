@@ -6,7 +6,6 @@
  "itemGroup.tab_changed_music": "Музика Changed",
 
  "ability.changed.access_saddle": "Сідло",
- "ability.changed.extra_hands": "Додаткові руки",
  "ability.changed.switch_transfur_mode": "Змінити режим трансфурмації",
  "ability.changed.switch_transfur_mode.select": "Поточний режим трансфурмації: %s",
  "ability.changed.create_cobweb": "Створити павутину",
@@ -16,7 +15,8 @@
  "ability.changed.switch_hands": "Поміняти руки",
  "ability.changed.switch_gender": "Поміняти стать",
  "ability.changed.hypnosis": "Гіпноз",
- "ability.changed.changed.siren_sing": "Співати",
+ "ability.changed.siren_sing": "Співати",
+ "ability.changed.slither": "Ковзати",
  "ability.changed.puddle": "Стати калюжею",
  "ability.changed.select_hairstyle": "Вибрати зачіску",
  "ability.changed.select_special_state": "Вибір особливого стану",
@@ -29,6 +29,7 @@
  "subtitles.changed.close3": "Лабораторні двері зачиняються",
  "subtitles.changed.chime2": "Кейпад надає доступ",
  "subtitles.changed.buzzer1": "Кейпад відказує у доступі",
+ "subtitles.changed.crash": "Контейнер ламається",
  "subtitles.changed.equip3": "Шурхіт штанів",
  "subtitles.changed.bow2": "Коробка відчинилась",
  "subtitles.changed.ice2": "Кристал розрісся",
@@ -52,6 +53,7 @@
  "item.changed.dark_latex_mask": "Маска з темного латексу",
  "item.changed.dark_latex_bucket": "Відро темного латексу",
  "item.changed.compact_disc": "Диск",
+ "item.changed.gas_mask": "Протигаз",
  "item.changed.lab_book": "Лабораторна книга",
  "item.changed.latex_base": "Первинний латекс",
  "item.changed.latex_beifeng_crystal_fragment": "Фрагмент зеленого кристала",
@@ -70,10 +72,10 @@
  "item.changed.tsc_shield": "TSC Щит",
 
  "item.changed.leather_upper_abdomen_armor": "Шкіряний черевник",
- "item.changed.leather_lower_abdomen_armor": "Шкіряна хвостова броня", 
+ "item.changed.leather_lower_abdomen_armor": "Шкіряна хвостова броня",
  "item.changed.chainmail_upper_abdomen_armor": "Кольчужний черевник",
  "item.changed.chainmail_lower_abdomen_armor": "Кольчужна хвостова броня",
- "item.changed.iron_upper_abdomen_armor": "Залізний черевник", 
+ "item.changed.iron_upper_abdomen_armor": "Залізний черевник",
  "item.changed.iron_lower_abdomen_armor": "Залізна хвостова броня",
  "item.changed.golden_upper_abdomen_armor": "Золотий черевник",
  "item.changed.golden_lower_abdomen_armor": "Золота хвостова броня",
@@ -82,9 +84,22 @@
  "item.changed.netherite_upper_abdomen_armor": "Незеритовий черевник",
  "item.changed.netherite_lower_abdomen_armor": "Незеритовая хвостовая броня",
 
+ "item.changed.leather_quadrupedal_leggings": "Шкіряні чотирилапі штани",
+ "item.changed.leather_quadrupedal_boots": "Шкіряні чотирилапі чоботи",
+ "item.changed.chainmail_quadrupedal_leggings": "Кольчужні чотирилапі наголінники",
+ "item.changed.chainmail_quadrupedal_boots": "Кольчужні чотирилапі чоботи",
+ "item.changed.iron_quadrupedal_leggings": "Залізні чотирилапі наголінники",
+ "item.changed.iron_quadrupedal_boots": "Залізні чотирилапі чоботи",
+ "item.changed.golden_quadrupedal_leggings": "Золоті чотирилапі наголінники",
+ "item.changed.golden_quadrupedal_boots": "Золоті чотирилапі чоботи",
+ "item.changed.diamond_quadrupedal_leggings": "Діамантові чотирилапі наголінники",
+ "item.changed.diamond_quadrupedal_boots": "Діамантові чотирилапі чоботи",
+ "item.changed.netherite_quadrupedal_leggings": "Незеритові чотирилапі наголінники",
+ "item.changed.netherite_quadrupedal_boots": "Незеритові чотирилапі чоботи",
+
  "item.changed.owo_record": "Латексна платівка",
  "item.changed.owo_record.desc": " 'Г’wГ“' - За авторством Artemka2009",
- "item.changed.latex_music_disc": "Латексная пластинка", 
+ "item.changed.latex_music_disc": "Латексная пластинка",
  "item.changed.black_goo_zone_record.desc": "Shizi - Black Goo Zone",
  "item.changed.crystal_zone_record.desc": "Shizi - Crystal Zone",
  "item.changed.gas_room_record.desc": "Shizi - Gas Room",
@@ -144,13 +159,15 @@
  "text.changed.game_loaded_fail": "Неможливо завантажити гру.",
  "text.changed.syringe.owner": "Власник: %s",
  "text.changed.syringe.no_owner": "Неможливо отримати ім'я користувача",
- 
+ "text.changed.tamed.wander": "%s зараз блукає",
+ "text.changed.tamed.follow": "%s зараз йде слідом за Вами",
+
  "effect.changed.hypercoagulation": "Гіперкоагуляція",
  "effect.changed.shock": "Шок",
 
  "enchantment.changed.latex_protection": "Захист від латексу",
  "enchantment.changed.latex_protection.desc": "Захищає носія від трансфурмації.",
- 
+
  "block.changed.beaker": "Лабораторний стакан",
  "block.changed.bedside_iv_rack": "Крапельниця",
  "block.changed.beehive_bed": "Ліжко вулика",
@@ -166,6 +183,7 @@
  "block.changed.clipboard": "Планшет",
  "block.changed.cardboard_box_small": "Маленька картонна коробка",
  "block.changed.cardboard_box": "Висока картонна коробка",
+ "block.changed.cardboard_container": "Картонна коробка",
  "block.changed.dark_latex_block": "Блок темного латексу",
  "block.changed.dark_latex_bubble": "Бульбашка темного латексу",
  "block.changed.dark_latex_crystal_large": "Величезний темний кристал",
@@ -218,6 +236,7 @@
  "block.changed.tiles_grayblue": "Сіро-синя плитка",
  "block.changed.tiles_grayblue_bolted_connected": "Сіро-синя з'єднана плитка з болтами",
  "block.changed.tiles_grayblue_bolted": "Сіро-синя з'єднана плитка",
+ "block.changed.tiles_grayblue_connected": "З'єднані сіро-блакитні плитки",
  "block.changed.tiles_grayblue_stairs": "Сходинки з сіро-синьої плитки",
  "block.changed.tiles_gray": "Сіра плитка",
  "block.changed.tiles_gray_stairs": "Сходинки з сірої плитки",
@@ -279,6 +298,7 @@
  "entity.changed.behemoth_hand_right": "Права рука велетня",
  "entity.changed.dark_latex_wolf_female": "Вовчиця з темного латексу",
  "entity.changed.dark_latex_wolf_male": "Вовк із темного латексу",
+ "entity.changed.dark_latex_wolf_partial": "Частково вовк з темного латексу",
  "entity.changed.dark_latex_dragon": "Дракон із темного латексу",
  "entity.changed.dark_latex_pup": "Цуценя з темного латексу",
  "entity.changed.dark_latex_yufeng": "ЮФен із темного латексу",
@@ -295,6 +315,9 @@
  "entity.changed.latex_crystal_wolf": "Кристальний вовк",
  "entity.changed.latex_crystal_wolf_horned": "Рогатий кристальний вовк",
  "entity.changed.latex_deer": "Латексний олень",
+ "entity.changed.latex_fennec_fox": "Латексний фенек",
+ "entity.changed.green_lizard": "Зелений ящур",
+ "entity.changed.latex_human": "Латексна людина",
  "entity.changed.latex_hypno_cat": "Латексний гіпно-кіт",
  "entity.changed.latex_keon_wolf": "Латексний срібний лис",
  "entity.changed.latex_leaf": "Латексна листяна рептилія",
@@ -340,6 +363,8 @@
  "entity.changed.light_latex_wolf_organic": "Органічний вовк зі світлого латексу",
  "entity.changed.shark": "Дивна акула",
  "entity.changed.white_latex_wolf": "Вовк з білого латексу",
+ "entity.changed.phage_latex_wolf_female": "Латексна вовчиця-бактеріофаг",
+ "entity.changed.phage_latex_wolf_male": "Латексний вовк-бактеріофаг",
 
  "item.changed.aerosol_latex_wolf_spawn_egg": "Яйце виклику Газовий вовк",
  "item.changed.dark_latex_wolf_female_spawn_egg": "Яйце виклику Вовчиця з темного латексу",
@@ -359,6 +384,8 @@
  "item.changed.latex_crystal_wolf_spawn_egg": "Яйце виклику Кристальний вовк",
  "item.changed.latex_crystal_wolf_horned_spawn_egg": "Яйце виклику Рогатий кристальний вовк",
  "item.changed.latex_deer_spawn_egg": "Яйце виклику Латексний олень",
+ "item.changed.latex_fennec_fox_spawn_egg": "Яйце виклику Латексний фенек",
+ "item.changed.green_lizard_spawn_egg": "Яйце виклику Зелений ящур",
  "item.changed.latex_hypno_cat_spawn_egg": "Яйце виклику Латексний гіпно-кіт",
  "item.changed.latex_keon_wolf_spawn_egg": "Яйце виклику Латексний срібний лис",
  "item.changed.latex_leaf_spawn_egg": "Яйце виклику Латексна листяна рептилія",
@@ -404,153 +431,125 @@
  "item.changed.light_latex_wolf_organic_spawn_egg": "Яйце виклику Органічний вовк зі світлого латексу",
  "item.changed.shark_spawn_egg": "Яйце виклику Дивна акула",
  "item.changed.white_latex_wolf_spawn_egg": "Яйце виклику Вовк з білого латексу",
- 
-"changed.patreon.level0": "Учасник Діскорд серверу",
-"changed.patreon.level1": "I рівень",
-"changed.patreon.level2": "II рівень",
-"changed.patreon.level3": "III рівень",
-"changed.patreon.level4": "IV рівень",
-
-"changed.error.corrupted_disc": "ERR: Некоректний диск"
-
-"changed.compact_disc.title.light_latex_wolf": "Спроба зберегти світ",
-"changed.compact_disc.content.light_latex_wolf": "У наших марних спробах знайти вакцину від вірусу під час епідемії, ми з'ясували, що тільки тварини не піддаються йому. Всі ми почали шукати спосіб об'єднати людину і тварину, в результаті ми нарешті просунулися і створили Первинний латекс, Речовина здатна змінювати ДНК за секунди. Ми нарешті ЗМОЖЕМО подолати епідемію!",
-"changed.compact_disc.title.aerosol_latex_wolf": "Коричневі Вовки",
-"changed.compact_disc.content.aerosol_latex_wolf": "Після довгих безсонних ночей, Я нарешті зробив свій внесок у центр даних. Всі ці шаблонні латексні вовки такі нудні, так що Я змішав трохи коричневої фарби, і отримав, ну, щось уже не дуже прісне.",
-
-"changed.compact_disc.title.dark_latex_wolf": "Таємниця за маскою",
-"changed.compact_disc.content.dark_latex_wolf": "Як було сказано раніше, тільки тварини здатні пережити лють епідемії. У наших спробах трансфурувати людей ми створили вовкоподібних істот з маскою на обличчі, змішавши наш первинний латекс і чорну фарбу. Рекомендуються подальші випробування.",
-"changed.compact_disc.title.dark_latex_yufeng": "Дракони в масках?"
-"changed.compact_disc.content.dark_latex_yufeng": "Після використання тих же матеріалів, що і у вовку з темного латексу але додавши перо, ми створили істоту здатну планувати повітрям, але все ще не вміючу літати. Воно майже схоже на дракона, але тільки з маскою.",
-"changed.compact_disc.title.dark_latex_dragon": "Дракони"
-"changed.compact_disc.content.dark_latex_dragon": "Не дивлячись на те, що ця істота походить від вовків з темного латексу, вона на подив не має маски. Ці ті, що використовують свої задні лапи \"Дракони\" здатні планувати. Об'єднавши мембрану фантома і те ж за допомогою чого комбінуються вовки з темного латексу, створюється ДНК дракона.",
- 
-"changed.compact_disc.title.latex_beifeng": "Резюме по рептиліям",
-"changed.compact_disc.content.latex_beifeng": "Змішавши синій пігмент з первинним латексом було створено ящероподібну істоту, трохи швидша ніж звичайна латексна істота, як на суші так і у воді.",
-
-"changed.compact_disc.title.latex_shark": "Перший погляд на акул",
-"changed.compact_disc.content.latex_shark": "Акул що ми створили, вони дійсно можуть дихати під водою. Їхня швидкість у воді неймовірна, Але ціною мобільності на суші.",
-"changed.compact_disc.title.latex_tiger_shark": "Акули зі смужками",
-"changed.compact_disc.content.latex_tiger_shark": "Ми створили інший варіант акули на основі звичайної , цей варіант акули трохи швидше на суші, але повільніше у воді.",
-"changed.compact_disc.title.latex_orca": "Косатка"
-"changed.compact_disc.content.latex_orca": "Поряд з акулами, ми випадково створили косаток.",
-"changed.compact_disc.title.latex_squid_dog": "Собака... Кальмар?",
-"changed.compact_disc.content.latex_squid_dog": "Не тільки дихають під водою, також мають додаткову пару рук, що дозволяють тримати більше речей, Кальмарні Собаки",
-
-"changed.compact_disc.title.white_latex_creature": "Мінлива рідина",
-"changed.compact_disc.content.white_latex_creature": "Цей експеримент був напевно найдивнішим. Їх генетична будова дозволяла їм як би розчиняться і плавати в такому ж матеріалі що і вони самі. Потрібно більшу кількість експериментів щоб вивчити це точніше.",
-
-"changed.compact_disc.title.special_latex": "Унікальні варіанти",
-"changed.compact_disc.content.special_latex": "Завдяки прекрасним учасникам, ми змогли знайти і протестувати неймовірно велику кількість варіантів латексу. Здається, експерименти були унікальні для кожного пацієнта, з яким проводили тест.",
-
-"changed:advancements.main.root.title": "Changed",
-"changed:advancements.main.root.description": "Ласкаво просимо в майбутнє",
-
-"changed:advancements.main.transfur.title": "Це назавжди!?",
-"changed:advancements.main.transfur.description": "Трансфурмуйтеся",
-
-"changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій..."
-"changed:advancements.main.transfur_aquatic.description": "Трансфурмуйтеся в будь-який водний латекс.",
-
-"changed:advancements.main.aquatic_swimming.title": "Я шукав \"Москву\"!",
-"changed:advancements.main.aquatic_swimming.description": "Проведіть весь день підводою будучи водним латексом.",
-
-"changed:advancements.main.transfur_white.title": "Єдиний розум",
-"changed:advancements.main.transfur_white.description": "Трансфурмуйтеся в будь-який білий латекс.",
-
-"changed:advancements.main.transfur_dark.title": "Братство",
-"changed:advancements.main.transfur_dark.description": "Трансфурмуйтеся в будь-який темний латекс.",
-
-"changed:advancements.main.white_latex_fuse.title": "Сильні, коли єдині",
-"changed:advancements.main.white_latex_fuse.description": "Злійтеся воєдино в більш досконалу форму латексу.",
-
- "changed:advancements.main.transfur_aerial.title": "Злети та падіння",
-"changed:advancements.main.transfur_aerial.description": "Трансфурмуйтеся в будь-який літаючий латекс.",
-
-"changed:advancements.main.transfur_mask.title": "Зрікаючи людяність",
-"changed:advancements.main.transfur_mask.description": "Отримайте та надягніть маску з темного латексу.",
-
-"changed:advancements.main.transfur_legless.title": "Ноги убік",
-"changed:advancements.main.transfur_legless.description": "Трансфурмуйтеся в будь-яку форму латексу, що не має ніг.",
-
-"changed:advancements.main.beehive_sleep.title": "Що сниться бджолам..."
-"changed:advancements.main.beehive_sleep.description": "Поспіть у ліжку вулика",
-
-"changed:advancements.main.tame_a_latex.title": "Дивний друг",
-"changed:advancements.main.tame_a_latex.description": "Приручіть латекс",
-
-"changed.tutorial.select_ability.title": "Виберіть здатність",
-"changed.tutorial.select_ability.description": "Натисніть клавішу %s",
-"changed.tutorial.use_ability.title": "Використайте здатність",
-"changed.tutorial.use_ability.description": "Натисніть або затисніть %s",
-
-"facility.zone.red_zone": "Червона зона",
-"facility.zone.gray_zone": "Серая зона",
-"facility.zone.maintenance_zone": "Зона обслуговування",
-"facility.zone.library_zone": "Бібліотечна зона",
-"facility.zone.vent_zone": "Вентиляційна зона",
-"facility.zone.greenhouse_zone": "Теплична зона",
-"facility.zone.blue_zone": "Синя зона",
-
-"glu_block.size": "Розмір %1$sx%1$s",
-"glu_block.has_door": "Наявність дверей",
-"glu_block.zone": "Зона",
-"glu_block.joint_type": "Тип з'єднання",
-"glu_block.joint.entrance": "Вхід",
-"glu_block.joint.exit": "Вихід",
-
-"eyestyle.changed.v1": "Оригінальний",
-"eyestyle.changed.v2": "Широкий",
-"eyestyle.changed.tall": "Вузький",
-
-"changed.config.bpi.screen": "Основна інформація про гравця",
-"changed.config.bpi.hair_color": "Колір волосся",
-"changed.config.bpi.iris_color": "Колір райдужки",
-"changed.config.bpi.sclera_color": "Колір склери",
-"changed.config.bpi.eye_style": "Стиль очей: %s",
-"changed.config.bpi.override_dl_iris": "Примусова зміна кольору очей у темних латексних",
-"changed.config.bpi.override_all_eye_styles": "Примусово використовувати оригінальний колір очей" 
- 
- "ability.changed.siren_sing": "Співати",
- "ability.changed.slither": "Ковзати",
- "subtitles.changed.crash": "Контейнер ламається",
- "item.changed.gas_mask": "Протигаз",
- "item.changed.leather_quadrupedal_leggings": "Шкіряні чотирилапі штани",
- "item.changed.leather_quadrupedal_boots": "Шкіряні чотирилапі чоботи",
- "item.changed.chainmail_quadrupedal_leggings": "Кольчужні чотирилапі наголінники",
- "item.changed.chainmail_quadrupedal_boots": "Кольчужні чотирилапі чоботи",
- "item.changed.iron_quadrupedal_leggings": "Залізні чотирилапі наголінники",
- "item.changed.iron_quadrupedal_boots": "Залізні чотирилапі чоботи",
- "item.changed.golden_quadrupedal_leggings": "Золоті чотирилапі наголінники",
- "item.changed.golden_quadrupedal_boots": "Золоті чотирилапі чоботи",
- "item.changed.diamond_quadrupedal_leggings": "Діамантові чотирилапі наголінники",
- "item.changed.diamond_quadrupedal_boots": "Діамантові чотирилапі чоботи",
- "item.changed.netherite_quadrupedal_leggings": "Незеритові чотирилапі наголінники",
- "item.changed.netherite_quadrupedal_boots": "Незеритові чотирилапі чоботи",
- "text.changed.tamed.wander": "%s зараз блукає",
- "text.changed.tamed.follow": "%s зараз йде слідом за Вами",
- "block.changed.cardboard_container": "Картонна коробка",
- "block.changed.tiles_grayblue_connected": "З'єднані сіро-блакитні плитки",
- "entity.changed.dark_latex_wolf_partial": "Частково вовк з темного латексу",
- "entity.changed.latex_fennec_fox": "Латексний фенек",
- "entity.changed.green_lizard": "Зелений ящур",
- "entity.changed.latex_human": "Латексна людина",
- "entity.changed.phage_latex_wolf_female": "Латексна вовчиця-бактеріофаг",
- "entity.changed.phage_latex_wolf_male": "Латексний вовк-бактеріофаг",
- "item.changed.latex_fennec_fox_spawn_egg": "Яйце виклику Латексний фенек",
- "item.changed.green_lizard_spawn_egg": "Яйце виклику Зелений ящур",
  "item.changed.phage_latex_wolf_female_spawn_egg": "Яйце виклику Латексна вовчиця-бактеріофаг",
  "item.changed.phage_latex_wolf_male_spawn_egg": "Яйце виклику Латексний вовк-бактеріофаг",
+
+ "changed.patreon.level0": "Учасник Діскорд серверу",
+ "changed.patreon.level1": "I рівень",
+ "changed.patreon.level2": "II рівень",
+ "changed.patreon.level3": "III рівень",
+ "changed.patreon.level4": "IV рівень",
+
+ "changed.error.corrupted_disc": "ERR: Некоректний диск",
+
+ "changed.compact_disc.title.light_latex_wolf": "Спроба зберегти світ",
+ "changed.compact_disc.content.light_latex_wolf": "У наших марних спробах знайти вакцину від вірусу під час епідемії, ми з'ясували, що тільки тварини не піддаються йому. Всі ми почали шукати спосіб об'єднати людину і тварину, в результаті ми нарешті просунулися і створили Первинний латекс, Речовина здатна змінювати ДНК за секунди. Ми нарешті ЗМОЖЕМО подолати епідемію!",
+ "changed.compact_disc.title.aerosol_latex_wolf": "Коричневі Вовки",
+ "changed.compact_disc.content.aerosol_latex_wolf": "Після довгих безсонних ночей, Я нарешті зробив свій внесок у центр даних. Всі ці шаблонні латексні вовки такі нудні, так що Я змішав трохи коричневої фарби, і отримав, ну, щось уже не дуже прісне.",
+
+ "changed.compact_disc.title.dark_latex_wolf": "Таємниця за маскою",
+ "changed.compact_disc.content.dark_latex_wolf": "Як було сказано раніше, тільки тварини здатні пережити лють епідемії. У наших спробах трансфурувати людей ми створили вовкоподібних істот з маскою на обличчі, змішавши наш первинний латекс і чорну фарбу. Рекомендуються подальші випробування.",
+ "changed.compact_disc.title.dark_latex_yufeng": "Дракони в масках?",
+ "changed.compact_disc.content.dark_latex_yufeng": "Після використання тих же матеріалів, що і у вовку з темного латексу але додавши перо, ми створили істоту здатну планувати повітрям, але все ще не вміючу літати. Воно майже схоже на дракона, але тільки з маскою.",
+ "changed.compact_disc.title.dark_latex_dragon": "Дракони",
+ "changed.compact_disc.content.dark_latex_dragon": "Не дивлячись на те, що ця істота походить від вовків з темного латексу, вона на подив не має маски. Ці ті, що використовують свої задні лапи \"Дракони\" здатні планувати. Об'єднавши мембрану фантома і те ж за допомогою чого комбінуються вовки з темного латексу, створюється ДНК дракона.",
+
+ "changed.compact_disc.title.latex_beifeng": "Резюме по рептиліям",
+ "changed.compact_disc.content.latex_beifeng": "Змішавши синій пігмент з первинним латексом було створено ящероподібну істоту, трохи швидша ніж звичайна латексна істота, як на суші так і у воді.",
+
+ "changed.compact_disc.title.latex_shark": "Перший погляд на акул",
+ "changed.compact_disc.content.latex_shark": "Акул що ми створили, вони дійсно можуть дихати під водою. Їхня швидкість у воді неймовірна, Але ціною мобільності на суші.",
+ "changed.compact_disc.title.latex_tiger_shark": "Акули зі смужками",
+ "changed.compact_disc.content.latex_tiger_shark": "Ми створили інший варіант акули на основі звичайної , цей варіант акули трохи швидше на суші, але повільніше у воді.",
+ "changed.compact_disc.title.latex_orca": "Косатка",
+ "changed.compact_disc.content.latex_orca": "Поряд з акулами, ми випадково створили косаток.",
+ "changed.compact_disc.title.latex_squid_dog": "Собака... Кальмар?",
+ "changed.compact_disc.content.latex_squid_dog": "Не тільки дихають під водою, також мають додаткову пару рук, що дозволяють тримати більше речей, Кальмарні Собаки",
+
+ "changed.compact_disc.title.white_latex_creature": "Мінлива рідина",
+ "changed.compact_disc.content.white_latex_creature": "Цей експеримент був напевно найдивнішим. Їх генетична будова дозволяла їм як би розчиняться і плавати в такому ж матеріалі що і вони самі. Потрібно більшу кількість експериментів щоб вивчити це точніше.",
+
+ "changed.compact_disc.title.special_latex": "Унікальні варіанти",
+ "changed.compact_disc.content.special_latex": "Завдяки прекрасним учасникам, ми змогли знайти і протестувати неймовірно велику кількість варіантів латексу. Здається, експерименти були унікальні для кожного пацієнта, з яким проводили тест.",
+
+ "changed:advancements.main.root.title": "Changed",
+ "changed:advancements.main.root.description": "Ласкаво просимо в майбутнє",
+
+ "changed:advancements.main.transfur.title": "Це назавжди!?",
+ "changed:advancements.main.transfur.description": "Трансфурмуйтеся",
+
+ "changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій...",
+ "changed:advancements.main.transfur_aquatic.description": "Трансфурмуйтеся в будь-який водний латекс.",
+
+ "changed:advancements.main.aquatic_swimming.title": "Я шукав \"Москву\"!",
+ "changed:advancements.main.aquatic_swimming.description": "Проведіть весь день підводою будучи водним латексом.",
+
+ "changed:advancements.main.transfur_white.title": "Єдиний розум",
+ "changed:advancements.main.transfur_white.description": "Трансфурмуйтеся в будь-який білий латекс.",
+
+ "changed:advancements.main.transfur_dark.title": "Братство",
+ "changed:advancements.main.transfur_dark.description": "Трансфурмуйтеся в будь-який темний латекс.",
+
+ "changed:advancements.main.white_latex_fuse.title": "Сильні, коли єдині",
+ "changed:advancements.main.white_latex_fuse.description": "Злійтеся воєдино в більш досконалу форму латексу.",
+
+ "changed:advancements.main.transfur_aerial.title": "Злети та падіння",
+ "changed:advancements.main.transfur_aerial.description": "Трансфурмуйтеся в будь-який літаючий латекс.",
+
+ "changed:advancements.main.transfur_mask.title": "Зрікаючи людяність",
+ "changed:advancements.main.transfur_mask.description": "Отримайте та надягніть маску з темного латексу.",
+
+ "changed:advancements.main.transfur_legless.title": "Ноги убік",
+ "changed:advancements.main.transfur_legless.description": "Трансфурмуйтеся в будь-яку форму латексу, що не має ніг.",
+
+ "changed:advancements.main.beehive_sleep.title": "Що сниться бджолам...",
+ "changed:advancements.main.beehive_sleep.description": "Поспіть у ліжку вулика",
+
+ "changed:advancements.main.tame_a_latex.title": "Дивний друг",
+ "changed:advancements.main.tame_a_latex.description": "Приручіть латекс",
+
  "changed:advancements.main.kill_all_latex.title": "Вбити їх всіх!!!",
  "changed:advancements.main.kill_all_latex.description": "Убийте одного з усіх видів латексних звірів",
+
+ "changed.tutorial.select_ability.title": "Виберіть здатність",
+ "changed.tutorial.select_ability.description": "Натисніть клавішу %s",
+ "changed.tutorial.use_ability.title": "Використайте здатність",
+ "changed.tutorial.use_ability.description": "Натисніть або затисніть %s",
+
+ "facility.zone.red_zone": "Червона зона",
+ "facility.zone.gray_zone": "Серая зона",
+ "facility.zone.maintenance_zone": "Зона обслуговування",
+ "facility.zone.library_zone": "Бібліотечна зона",
+ "facility.zone.vent_zone": "Вентиляційна зона",
+ "facility.zone.greenhouse_zone": "Теплична зона",
+ "facility.zone.blue_zone": "Синя зона",
+
+ "glu_block.size": "Розмір %1$sx%1$s",
+ "glu_block.has_door": "Наявність дверей",
+ "glu_block.zone": "Зона",
+ "glu_block.joint_type": "Тип з'єднання",
+ "glu_block.joint.entrance": "Вхід",
+ "glu_block.joint.exit": "Вихід",
+
+ "eyestyle.changed.v1": "Оригінальний",
+ "eyestyle.changed.v2": "Широкий",
+ "eyestyle.changed.tall": "Вузький",
+
  "changed.config.color_picker_tooltip": "Натисніть, щоб відкрити розширений засіб вибору кольорів",
  "changed.config.color_picker_red": "Червоний: %s",
  "changed.config.color_picker_green": "Зелений: %s",
  "changed.config.color_picker_blue": "Блакитний: %s",
+
+ "changed.config.bpi.screen": "Основна інформація про гравця",
+ "changed.config.bpi.hair_color": "Колір волосся",
  "changed.config.bpi.iris_color.left": "Колір лівої райдужної оболонки",
  "changed.config.bpi.iris_color.right": "Колір правої райдужної оболонки",
  "changed.config.bpi.iris_color.sync": "Синхронізувати",
  "changed.config.bpi.iris_color.sync_tooltip": "Синхронізує колір лівої райдужної оболонки з кольором правої райдужної оболонки",
+ "changed.config.bpi.sclera_color": "Колір склери",
+ "changed.config.bpi.eye_style": "Стиль очей: %s",
  "changed.config.bpi.size": "Розмір моделі",
- "changed.config.bpi.size.value": "Розмір: %s%%"
+ "changed.config.bpi.size.value": "Розмір: %s%%",
+ "changed.config.bpi.override_dl_iris": "Примусова зміна кольору очей у темних латексних",
+ "changed.config.bpi.override_all_eye_styles": "Примусово використовувати оригінальний колір очей"
 }
