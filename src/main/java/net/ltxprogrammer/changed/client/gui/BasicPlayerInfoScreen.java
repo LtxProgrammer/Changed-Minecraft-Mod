@@ -39,6 +39,8 @@ public class BasicPlayerInfoScreen extends Screen {
     @Override
     public void removed() {
         Changed.config.saveAdditionalData();
+        if (this.player != null)
+            Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(this.player));
     }
 
     public void onClose() {
@@ -120,8 +122,6 @@ public class BasicPlayerInfoScreen extends Screen {
         i += 2;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
-            if (this.player != null)
-                Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(this.player));
             this.minecraft.setScreen(this.lastScreen);
         }));
     }
