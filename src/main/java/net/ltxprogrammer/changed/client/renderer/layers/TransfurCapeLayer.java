@@ -3,9 +3,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.TorsoedModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-public class TransfurCapeLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & TorsoedModel> extends RenderLayer<T, M> {
+public class TransfurCapeLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & TorsoedModel> extends RenderLayer<T, M> {
    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("cape"), "main");
    public static final ModelLayerLocation LAYER_LOCATION_SHORT = new ModelLayerLocation(Changed.modResource("cape_short"), "main");
    private final ModelPart Cloak;
@@ -47,11 +47,11 @@ public class TransfurCapeLayer<T extends LatexEntity, M extends LatexHumanoidMod
       this.Joint = Cloak.getChild("Joint");
    }
 
-   public static <T extends LatexEntity, M extends LatexHumanoidModel<T> & TorsoedModel> TransfurCapeLayer<T, M> normalCape(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
+   public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & TorsoedModel> TransfurCapeLayer<T, M> normalCape(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
       return new TransfurCapeLayer<>(parent, modelSet.bakeLayer(LAYER_LOCATION));
    }
 
-   public static <T extends LatexEntity, M extends LatexHumanoidModel<T> & TorsoedModel> TransfurCapeLayer<T, M> shortCape(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
+   public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & TorsoedModel> TransfurCapeLayer<T, M> shortCape(RenderLayerParent<T, M> parent, EntityModelSet modelSet) {
       return new TransfurCapeLayer<>(parent, modelSet.bakeLayer(LAYER_LOCATION_SHORT));
    }
 
@@ -96,7 +96,7 @@ public class TransfurCapeLayer<T extends LatexEntity, M extends LatexHumanoidMod
    }
 
    @Nullable
-   public static ResourceLocation getCloakTextureLocation(LatexEntity entity) {
+   public static ResourceLocation getCloakTextureLocation(ChangedEntity entity) {
       Player player = entity.getUnderlyingPlayer();
       if (!(player instanceof AbstractClientPlayer clientPlayer))
          return null;
