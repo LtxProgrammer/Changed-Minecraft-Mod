@@ -242,6 +242,7 @@ public class ProcessTransfur {
         public KeepConsciousEvent(Player player, boolean keepConscious) {
             this.player = player;
             this.keepConscious = keepConscious;
+            this.shouldKeepConscious = keepConscious;
         }
 
         @Override

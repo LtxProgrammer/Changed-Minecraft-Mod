@@ -871,7 +871,7 @@ public class AnimatorPresets {
                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
                     .addAnimator(new QuadrupedalFallFlyAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
-                    .addPreset(noSwimOrSleepTail(tail, tailJoints));
+                    .addAnimator(new WolfTailInitAnimator<>(tail, tailJoints));
         };
     }
 
@@ -900,8 +900,6 @@ public class AnimatorPresets {
         return animator -> {
             animator.addPreset(taurLegs(tail, tailJoints, lowerTorso, frontLeftLeg, frontLeftLegLower, frontLeftFoot, frontRightLeg, frontRightLegLower, frontRightFoot, backLeftLeg, backLeftLegLower, backLeftFoot, backLeftPad, backRightLeg, backRightLegLower, backRightFoot, backRightPad))
                     .addPreset(taurUpperBody(head, torso, leftArm, rightArm))
-                    .addPreset(wolfTail(tail, tailJoints))
-                    .addPreset(wolfEars(leftEar, rightEar))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))

@@ -47,7 +47,7 @@ public class LightLatexKnightFusionModel extends AdvancedHumanoidModel<LightLate
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLike(
+                .addPreset(AnimatorPresets.deerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),

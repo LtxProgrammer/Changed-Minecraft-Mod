@@ -82,6 +82,6 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
 
     @Override
     public boolean isAllowedToSwim() {
-        return false;
+        return true;
     }
 }

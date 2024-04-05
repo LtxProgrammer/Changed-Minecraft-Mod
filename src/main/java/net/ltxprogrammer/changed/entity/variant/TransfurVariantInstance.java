@@ -433,6 +433,15 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public static void syncEntityAndPlayer(ChangedEntity living, Player player) {
+        living.xCloak = player.xCloak;
+        living.yCloak = player.yCloak;
+        living.zCloak = player.zCloak;
+        living.xCloakO = player.xCloakO;
+        living.yCloakO = player.yCloakO;
+        living.zCloakO = player.zCloakO;
+
+        living.oBob = player.oBob;
+        living.bob = player.bob;
         living.tickCount = player.tickCount;
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);

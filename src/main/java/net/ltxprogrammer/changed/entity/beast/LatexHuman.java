@@ -165,7 +165,7 @@ public class LatexHuman extends ChangedEntity {
     @Override
     public void onReplicateOther(IAbstractChangedEntity other, TransfurVariant<?> variant) {
         super.onReplicateOther(other, variant);
-        if (this.getUUID() != this.getRepresentUUID()) return;
+        //if (this.getUUID() != this.getRepresentUUID()) return;
 
         if (variant == TransfurVariant.LATEX_HUMAN) {
             if (other.getChangedEntity() instanceof LatexHuman human) {

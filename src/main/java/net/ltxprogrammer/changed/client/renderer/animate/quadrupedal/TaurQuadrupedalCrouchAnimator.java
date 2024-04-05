@@ -39,9 +39,9 @@ public class TaurQuadrupedalCrouchAnimator<T extends ChangedEntity, M extends En
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float offset = -Mth.lerp(core.ageLerp, 0.0f, Mth.lerp(limbSwingAmount, 1.0f, 0.25f));
         torso.y += 2.0f;
-        frontRightLeg.y = offset + 1.0F;
-        frontLeftLeg.y = offset + 1.0F;
-        backRightLeg.y = offset + 1.0F;
-        backLeftLeg.y = offset + 1.0F;
+        frontRightLeg.y = offset - 1.0F;
+        frontLeftLeg.y = offset - 1.0F;
+        backRightLeg.y = offset - 1.0F;
+        backLeftLeg.y = offset - 1.0F;
     }
 }

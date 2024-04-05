@@ -2,10 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
@@ -25,6 +22,7 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 				slim ? Changed.modResource("textures/dark_latex_wolf_partial_slim.png") : Changed.modResource("textures/dark_latex_wolf_partial.png"));
 		this.addLayer(partialModel);
 		this.addLayer(new LatexParticlesLayer<>(this).addModel(partialModel.getModel(), entity -> partialModel.getTexture()));
+		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}
