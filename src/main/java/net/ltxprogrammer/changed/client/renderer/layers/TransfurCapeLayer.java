@@ -127,15 +127,13 @@ public class TransfurCapeLayer<T extends LatexEntity, M extends LatexHumanoidMod
 
             float f4 = Mth.lerp(partialTicks, entity.oBob, entity.bob);
             f1 += Mth.sin(Mth.lerp(partialTicks, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * f4;
-            if (entity.isCrouching()) {
-               f1 += 25.0F;
-            }
+            f1 += Math.toDegrees(this.getParentModel().getTorso().xRot);
 
             this.Cloak.copyFrom(this.getParentModel().getTorso());
             this.Cloak.xRot = 0.0F;
             this.Cloak.zRot = 0.0F;
             this.Joint.z = itemstack.isEmpty() ? 2.0F : 3.0F;
-            this.Joint.xRot = (float)Math.toRadians(6.0F + f2 / 2.0F + f1);
+            this.Joint.xRot = (float)Math.toRadians(Math.min(6.0F + f2 / 2.0F + f1, 81.0f));
             this.Joint.zRot = (float)Math.toRadians(f3 / 2.0F);
             this.Joint.yRot = (float)Math.toRadians(f3 / 2.0F);
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entitySolid(getCloakTextureLocation(entity)));
