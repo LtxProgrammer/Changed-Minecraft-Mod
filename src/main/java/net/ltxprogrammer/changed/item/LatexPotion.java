@@ -22,9 +22,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,6 +36,11 @@ public class LatexPotion extends PotionItem implements VariantHoldingBase {
     @Override
     public Item getOriginalItem() {
         return Items.GLASS_BOTTLE;
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack p_41461_) {
+        return Rarity.UNCOMMON;
     }
 
     public void appendHoverText(ItemStack p_43359_, @Nullable Level p_43360_, List<Component> p_43361_, TooltipFlag p_43362_) {
