@@ -20,6 +20,8 @@ public class ChangedPackets {
 
     public void registerPackets() {
         addNetworkMessage(CheckForUpdatesPacket.class, CheckForUpdatesPacket::new);
+        addNetworkMessage(GrabEntityPacket.class, GrabEntityPacket::new);
+        addNetworkMessage(GrabEntityPacket.KeyState.class, GrabEntityPacket.KeyState::new);
         addNetworkMessage(MountTransfurPacket.class, MountTransfurPacket::new);
         addNetworkMessage(SyncSwitchPacket.class, SyncSwitchPacket::new);
         addNetworkMessage(SyncTransfurPacket.class, SyncTransfurPacket::new);

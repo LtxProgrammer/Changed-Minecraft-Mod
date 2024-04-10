@@ -80,7 +80,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
                                         : 0xF0F0F0;
                                 default -> -1;
                             },
-                    ChangedItems.LATEX_POTION.get());
+                    ChangedItems.LATEX_FLASK.get());
         }
     }
 

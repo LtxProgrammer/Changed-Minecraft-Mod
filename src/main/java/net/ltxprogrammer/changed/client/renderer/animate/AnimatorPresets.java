@@ -261,6 +261,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new TaurUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new TaurUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new TaurUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))

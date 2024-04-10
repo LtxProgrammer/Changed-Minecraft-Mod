@@ -4,16 +4,15 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,14 +27,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class LatexPotion extends PotionItem implements VariantHoldingBase {
-    public LatexPotion(Properties properties) {
+public class LatexFlask extends PotionItem implements VariantHoldingBase {
+    public LatexFlask(Properties properties) {
         super(properties.tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
     @Override
     public Item getOriginalItem() {
-        return Items.GLASS_BOTTLE;
+        return ChangedItems.getBlockItem(ChangedBlocks.ERLENMEYER_FLASK.get());
     }
 
     @Override
@@ -92,7 +91,7 @@ public class LatexPotion extends PotionItem implements VariantHoldingBase {
                 stack.shrink(1);
             }
 
-            stack = new ItemStack(Items.GLASS_BOTTLE);
+            stack = new ItemStack(ChangedBlocks.ERLENMEYER_FLASK.get());
         }
 
         //entity.gameEvent(entity, GameEvent.DRINKING_FINISH, entity.eyeBlockPosition());
