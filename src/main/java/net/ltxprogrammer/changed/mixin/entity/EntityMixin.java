@@ -53,27 +53,10 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
     @Inject(method = "isSwimming", at = @At("HEAD"), cancellable = true)
     public void isSwimming(CallbackInfoReturnable<Boolean> ci) {
-        if (((Entity) (Object) this) instanceof LivingEntity le) {
-            if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le)) {
-                ci.setReturnValue(true);
-                ci.cancel();
-            }
-        }
-
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull((Entity)(Object)this), variant -> {
             if (!variant.getChangedEntity().isAllowedToSwim())
                 ci.setReturnValue(false);
         });
-    }
-
-    @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
-    public void isInWater(CallbackInfoReturnable<Boolean> ci) {
-        if (((Entity) (Object) this) instanceof LivingEntity le) {
-            if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le)) {
-                ci.setReturnValue(true);
-                ci.cancel();
-            }
-        }
     }
 
     @Inject(method = "getEyeHeight(Lnet/minecraft/world/entity/Pose;Lnet/minecraft/world/entity/EntityDimensions;)F", at = @At("RETURN"), cancellable = true)

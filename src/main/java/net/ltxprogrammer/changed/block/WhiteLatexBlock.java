@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -46,8 +47,8 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
         super(p_49795_, LatexType.WHITE_LATEX, ChangedItems.WHITE_LATEX_GOO);
     }
 
-    public boolean skipRendering(BlockState p_53972_, BlockState p_53973_, Direction p_53974_) {
-        return p_53973_.is(this) ? true : super.skipRendering(p_53972_, p_53973_, p_53974_);
+    public boolean skipRendering(BlockState thisState, BlockState otherState, Direction direction) {
+        return otherState.is(this) ? true : super.skipRendering(thisState, otherState, direction);
     }
 
     public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -57,12 +58,30 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         if (context instanceof EntityCollisionContext ecc) {
             if (ecc.getEntity() instanceof LivingEntity le) {
+                if (le.fallDistance > 3.0f)
+                    return Shapes.empty();
                 if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le))
                     return Shapes.empty();
             }
         }
 
         return Shapes.block();
+    }
+
+    @Override
+    public void fallOn(Level level, BlockState state, BlockPos blockPos, Entity entity, float distance) {
+        if (!(entity instanceof LivingEntity livingEntity)) {
+            super.fallOn(level, state, blockPos, entity, distance);
+            return;
+        }
+
+        TransfurVariant<?> variant = TransfurVariant.getEntityVariant(livingEntity);
+        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX && distance > 3.0f) {
+            if (livingEntity instanceof Player player)
+                WhiteLatexTransportInterface.entityEnterLatex(player, blockPos);
+        } else {
+            super.fallOn(level, state, blockPos, entity, distance);
+        }
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {

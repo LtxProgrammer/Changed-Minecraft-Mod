@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -337,6 +338,9 @@ public abstract class ChangedEntity extends Monster {
 
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
+
+        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this) || WhiteLatexTransportInterface.isEntityInWhiteLatex(this.getUnderlyingPlayer()))
+            return EntityDimensions.scalable(core.width, core.width);
 
         return (switch (Objects.requireNonNullElse(overridePose, pose)) {
             case STANDING -> core;

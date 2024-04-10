@@ -5,9 +5,7 @@ import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.data.BiListener;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -85,6 +83,13 @@ public class EventHandlerClient {
 
         if (player.vehicle != null && player.vehicle instanceof SeatEntity seat) {
             if (seat.shouldSeatedBeInvisible()) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
+        if (player instanceof PlayerDataExtension ext && ext.getPlayerMover() != null) {
+            if (ext.getPlayerMover().is(PlayerMover.WHITE_LATEX_MOVER.get())) {
                 event.setCanceled(true);
                 return;
             }

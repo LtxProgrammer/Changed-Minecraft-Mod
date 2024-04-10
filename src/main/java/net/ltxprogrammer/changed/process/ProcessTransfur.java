@@ -422,11 +422,6 @@ public class ProcessTransfur {
         return Optional.empty();
     }
 
-    @SubscribeEvent
-    public static void onWorldUnload(WorldEvent.Unload event) {
-        WhiteLatexBlock.whiteLatexNoCollideMap.clear();
-    }
-
     public static class TransfurredEntity {
         final LivingEntity entity;
         @Nullable

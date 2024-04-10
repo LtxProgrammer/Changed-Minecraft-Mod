@@ -61,19 +61,6 @@ public abstract class BlockMixin extends BlockBehaviour implements ItemLike, net
             getLatexed(state).block.get().fallOn(level, state, blockPos, entity, distance);
             callbackInfo.cancel();
         }
-
-        if (!(entity instanceof LivingEntity livingEntity) || (getLatexed(state) != LatexType.WHITE_LATEX && state.is(ChangedBlocks.WHITE_LATEX_BLOCK.get()))) {
-            return;
-        }
-
-        TransfurVariant<?> variant = TransfurVariant.getEntityVariant(livingEntity);
-        if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX && distance > 3.0f) {
-            if (livingEntity instanceof Player player) {
-                player.moveTo(blockPos.below(), entity.getYRot(), entity.getXRot());
-                WhiteLatexTransportInterface.entityEnterLatex(player, blockPos);
-            }
-            callbackInfo.cancel();
-        }
     }
 
     /*@Inject(method = "canSustainPlant", at = @At("HEAD"), cancellable = true)
