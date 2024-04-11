@@ -1,15 +1,16 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.world.inventory.NoteMenu;
 import net.ltxprogrammer.changed.world.inventory.TextMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class NoteScreen extends TextMenuScreen {
-    public NoteScreen(TextMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+public class NoteScreen extends TextMenuScreen<NoteMenu> {
+    public NoteScreen(NoteMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory.player, title);
     }
 
     @Override public int getBackgroundWidth() {

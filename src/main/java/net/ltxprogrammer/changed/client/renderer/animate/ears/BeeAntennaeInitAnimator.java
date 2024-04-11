@@ -19,7 +19,7 @@ public class BeeAntennaeInitAnimator<T extends LatexEntity, M extends EntityMode
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float tailDrag = entity.getTailDragAmount(ageInTicks);
+        float tailDrag = entity.getTailDragAmount(this.core.partialTicks);
 
         rightEar.zRot = Mth.lerp(core.ageLerp * 0.85f, -0.08726646F, 0.04363323F);
         rightEar.xRot = Mth.lerp(core.ageLerp * 0.65f, -0.08726646F, 0.04363323F);

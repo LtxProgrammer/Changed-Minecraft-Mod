@@ -72,7 +72,7 @@ public enum SpringType {
         }
 
         public float getSpring(float partialTicks) {
-            return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), springO, spring);
+            return Mth.lerp(partialTicks, springO, spring);
         }
 
         public void tick(float deltaVelocity) {

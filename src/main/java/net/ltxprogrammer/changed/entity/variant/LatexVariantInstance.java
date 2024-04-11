@@ -19,16 +19,15 @@ import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -271,11 +270,20 @@ public class LatexVariantInstance<T extends LatexEntity> {
         var dP = player.getDeltaMovement();
         if (mul > 1f && dP.lengthSqr() > 0.0) {
             if (player.isOnGround()) {
-                float friction = player.getLevel().getBlockState(player.blockPosition().below())
-                        .getFriction(player.getLevel(), player.blockPosition(), player);
+                float friction = EntityUtil.getFrictionOnBlock(player);
                 double mdP = dP.length();
                 mul = clamp(0.75, mul, lerp(mul, 0.8 * mul / Math.pow(mdP, 1.0/6.0), mdP * 3));
                 mul /= clamp(0.6, 1, friction) * 0.65 + 0.61;
+                mul = Math.max(1.0, mul);
+                if (Double.isNaN(mul)) {
+                    Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
+                    mul = 0.0;
+                }
+            }
+        } else if (mul < 1f && dP.lengthSqr() > 0.0) {
+            if (player.isOnGround()) {
+                float friction = EntityUtil.getFrictionOnBlock(player);
+                mul = Math.min(1.0, Mth.map(friction, 1.0, 0.6, 0.95, mul));
                 if (Double.isNaN(mul)) {
                     Changed.LOGGER.error("Ran into NaN multiplier, falling back to zero");
                     mul = 0.0;
@@ -312,6 +320,16 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public static void syncEntityAndPlayer(LatexEntity living, Player player) {
+        living.xCloak = player.xCloak;
+        living.yCloak = player.yCloak;
+        living.zCloak = player.zCloak;
+        living.xCloakO = player.xCloakO;
+        living.yCloakO = player.yCloakO;
+        living.zCloakO = player.zCloakO;
+
+        living.oBob = player.oBob;
+        living.bob = player.bob;
+
         living.tickCount = player.tickCount;
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
@@ -391,7 +409,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
-            if (parent.hasLegs)
+            if (parent.legCount == 2)
                 return true;
             else {
                 switch (armorItem.getSlot()) {
@@ -454,35 +472,34 @@ public class LatexVariantInstance<T extends LatexEntity> {
 
         if(!player.level.isClientSide) {
             final double distance = 8D;
-            final double farRunSpeed = 0.5D;
-            final double nearRunSpeed = 0.6666D;
+            final double farRunSpeed = 1.0D;
+            final double nearRunSpeed = 1.2D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator())
+                if (entityClass.isAssignableFrom(AbstractVillager.class) && (parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator()))
                     continue;
 
-                List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), Objects::nonNull);
-                for(var v : entitiesScared) {
+                final double speedScale = entityClass.isAssignableFrom(AbstractVillager.class) ? 0.5D : 1.0D;
+
+                List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), entity -> entity.hasLineOfSight(player));
+
+                for (var v : entitiesScared) {
                     //if the creature has no path, or the target path is < distance, make the creature run.
-                    if(v.getNavigation().getPath() == null || player.distanceToSqr(v.getNavigation().getTargetPos().getX(), v.getNavigation().getTargetPos().getY(), v.getNavigation().getTargetPos().getZ()) < distance * distance)
-                    {
+                    if (v.getNavigation().getPath() == null || player.distanceToSqr(v.getNavigation().getTargetPos().getX(), v.getNavigation().getTargetPos().getY(), v.getNavigation().getTargetPos().getZ()) < distance * distance) {
                         Vec3 vector3d = DefaultRandomPos.getPosAway(v, 16, 7, new Vec3(player.getX(), player.getY(), player.getZ()));
 
-                        if(vector3d != null && player.distanceToSqr(vector3d) > player.distanceToSqr(v))
-                        {
+                        if (vector3d != null && player.distanceToSqr(vector3d) > player.distanceToSqr(v)) {
                             Path path = v.getNavigation().createPath(vector3d.x, vector3d.y, vector3d.z, 0);
 
-                            if(path != null)
-                            {
+                            if (path != null) {
                                 double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                                v.getNavigation().moveTo(path, speed);
+                                v.getNavigation().moveTo(path, speed * speedScale);
                             }
                         }
                     }
-                    else //the creature is still running away from us
-                    {
+                    else {
                         double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                        v.getNavigation().setSpeedModifier(speed);
+                        v.getNavigation().setSpeedModifier(speed * speedScale);
                     }
 
                     if (v.getTarget() == player)
@@ -492,9 +509,8 @@ public class LatexVariantInstance<T extends LatexEntity> {
         }
 
         // Breathing
-        if(player.isAlive() && parent.breatheMode.canBreatheWater()) {
-            if(air == -100)
-            {
+        if (player.isAlive() && parent.breatheMode.canBreatheWater()) {
+            if (air == -100) {
                 air = player.getAirSupply();
             }
 
@@ -507,8 +523,9 @@ public class LatexVariantInstance<T extends LatexEntity> {
                 if (player instanceof ServerPlayer serverPlayer)
                     ChangedCriteriaTriggers.AQUATIC_BREATHE.trigger(serverPlayer, this.ticksBreathingUnderwater);
             }
-            else if (!parent.breatheMode.canBreatheAir()) //if the player is on land and the entity suffocates
-            {
+
+            //if the player is on land and the entity suffocates
+            else if (!parent.breatheMode.canBreatheAir()) {
                 //taken from decreaseAirSupply in Living Entity
                 int i = EnchantmentHelper.getRespiration(player);
                 air = i > 0 && player.getRandom().nextInt(i + 1) > 0 ? air : air - 1;
@@ -538,8 +555,11 @@ public class LatexVariantInstance<T extends LatexEntity> {
             }
         }
 
+        if (!parent.hasLegs && player.isEyeInFluid(FluidTags.WATER))
+            player.setPose(Pose.SWIMMING);
+
         // Speed
-        if(parent.swimSpeed != 0F && player.isInWaterOrBubble()) {
+        if(parent.swimSpeed != 0F && player.getPose() == Pose.SWIMMING) {
             if (parent.swimSpeed > 1f) {
                 var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
                 if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
@@ -548,15 +568,26 @@ public class LatexVariantInstance<T extends LatexEntity> {
             else {
                 multiplyMotion(player, parent.swimSpeed);
             }
+        } else {
+            var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
+            if (attrib != null && attrib.hasModifier(attributeModifierSwimSpeed))
+                attrib.removePermanentModifier(attributeModifierSwimSpeed.getId());
         }
 
-        if(parent.groundSpeed != 0F && !player.isInWaterOrBubble() && player.isOnGround()) {
-            if (parent.groundSpeed > 1f) {
-                if (!player.isCrouching())
+        if (player.isEyeInFluid(FluidTags.WATER) && parent.swimSpeed > 1F) {
+            player.setNoGravity(true);
+        } else if (parent.swimSpeed > 1F) {
+            player.setNoGravity(false);
+        }
+
+        if(parent.groundSpeed != 0F) {
+            if (player.isOnGround()) {
+                if (parent.groundSpeed > 1f) {
+                    if (!player.isCrouching() && !player.isInWaterOrBubble())
+                        multiplyMotion(player, parent.groundSpeed);
+                } else {
                     multiplyMotion(player, parent.groundSpeed);
-            }
-            else {
-                multiplyMotion(player, parent.groundSpeed);
+                }
             }
         }
 
@@ -638,6 +669,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.onUpdateAbilities();
         }
         player.maxUpStep = 0.6F;
+        player.setNoGravity(false);
         player.refreshDimensions();
     }
 

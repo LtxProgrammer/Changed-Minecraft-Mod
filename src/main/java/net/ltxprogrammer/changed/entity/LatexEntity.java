@@ -24,6 +24,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.util.GoalUtils;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -64,6 +66,15 @@ public abstract class LatexEntity extends Monster {
     private EyeStyle eyeStyle;
     private final Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>> latexAbilities = new HashMap<>();
 
+    public double xCloakO;
+    public double yCloakO;
+    public double zCloakO;
+    public double xCloak;
+    public double yCloak;
+    public double zCloak;
+    public float oBob;
+    public float bob;
+
     float crouchAmount;
     float crouchAmountO;
     public float flyAmount;
@@ -81,11 +92,70 @@ public abstract class LatexEntity extends Monster {
     }
 
     public float getTailDragAmount(float partialTicks) {
-        return Mth.lerp(Mth.positiveModulo(partialTicks, 1.0F), tailDragAmountO, tailDragAmount);
+        return Mth.lerp(partialTicks, tailDragAmountO, tailDragAmount);
     }
 
     public float getSimulatedSpring(SpringType type, SpringType.Direction direction, float partialTicks) {
         return simulatedSprings.get(direction).get(type).getSpring(partialTicks);
+    }
+
+    private void moveCloak() {
+        this.xCloakO = this.xCloak;
+        this.yCloakO = this.yCloak;
+        this.zCloakO = this.zCloak;
+        double d0 = this.getX() - this.xCloak;
+        double d1 = this.getY() - this.yCloak;
+        double d2 = this.getZ() - this.zCloak;
+        double d3 = 10.0D;
+        if (d0 > 10.0D) {
+            this.xCloak = this.getX();
+            this.xCloakO = this.xCloak;
+        }
+
+        if (d2 > 10.0D) {
+            this.zCloak = this.getZ();
+            this.zCloakO = this.zCloak;
+        }
+
+        if (d1 > 10.0D) {
+            this.yCloak = this.getY();
+            this.yCloakO = this.yCloak;
+        }
+
+        if (d0 < -10.0D) {
+            this.xCloak = this.getX();
+            this.xCloakO = this.xCloak;
+        }
+
+        if (d2 < -10.0D) {
+            this.zCloak = this.getZ();
+            this.zCloakO = this.zCloak;
+        }
+
+        if (d1 < -10.0D) {
+            this.yCloak = this.getY();
+            this.yCloakO = this.yCloak;
+        }
+
+        this.xCloak += d0 * 0.25D;
+        this.zCloak += d2 * 0.25D;
+        this.yCloak += d1 * 0.25D;
+    }
+
+    @Override
+    public void aiStep() {
+        this.oBob = this.bob;
+
+        super.aiStep();
+
+        float f;
+        if (this.onGround && !this.isDeadOrDying() && !this.isSwimming()) {
+            f = Math.min(0.1F, (float)this.getDeltaMovement().horizontalDistance());
+        } else {
+            f = 0.0F;
+        }
+
+        this.bob += (f - this.bob) * 0.4F;
     }
 
     protected static final EntityDataAccessor<OptionalInt> DATA_TARGET_ID = SynchedEntityData.defineId(LatexEntity.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
@@ -173,7 +243,8 @@ public abstract class LatexEntity extends Monster {
         this.eyeStyle = style != null ? style : EyeStyle.V2;
     }
 
-    public abstract Color3 getHairColor(int layer);
+    @Deprecated
+    public Color3 getHairColor(int layer) { return Color3.WHITE; }
 
     public HairStyle getDefaultHairStyle() {
         if (this.getValidHairStyles() != null) {
@@ -260,14 +331,14 @@ public abstract class LatexEntity extends Monster {
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        return switch (Objects.requireNonNullElse(overridePose, pose)) {
+        return (switch (Objects.requireNonNullElse(overridePose, pose)) {
             case STANDING -> core;
             case SLEEPING -> SLEEPING_DIMENSIONS;
             case FALL_FLYING, SWIMMING, SPIN_ATTACK -> EntityDimensions.scalable(core.width, core.width);
-            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.2f);
+            case CROUCHING -> EntityDimensions.scalable(core.width, core.height - 0.3f);
             case DYING -> EntityDimensions.fixed(0.2f, 0.2f);
             default -> core;
-        };
+        }).scale(getBasicPlayerInfo().getSize());
     }
 
     public abstract LatexType getLatexType();
@@ -368,7 +439,7 @@ public abstract class LatexEntity extends Monster {
         if (livingEntity instanceof Player player && ChangedCompatibility.isPlayerUsedByOtherMod(player))
             return false;
 
-        if ((livingEntity.hasEffect(MobEffects.INVISIBILITY) || livingEntity.isInvisible()) && !livingEntity.isCurrentlyGlowing())
+        if (livingEntity.getVehicle() instanceof SeatEntity seat && seat.shouldSeatedBeInvisible())
             return false;
 
         for (var checkVariant : LatexVariant.MOB_FUSION_LATEX_FORMS) {
@@ -427,6 +498,7 @@ public abstract class LatexEntity extends Monster {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 7.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LatexEntity.class, 7.0F, 0.2F));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Villager.class, 7.0F, 0.2F));
         if (!(this instanceof AquaticEntity))
             this.goalSelector.addGoal(5, new FloatGoal(this));
         if (this instanceof PowderSnowWalkable)
@@ -436,6 +508,7 @@ public abstract class LatexEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
+        moveCloak();
         visualTick(this.level);
 
         var player = getUnderlyingPlayer();
@@ -571,12 +644,19 @@ public abstract class LatexEntity extends Monster {
         });
     }
 
+    @Override
+    public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (this.tickCount < 30)
+            return false; //
+        return super.hurt(source, amount);
+    }
+
     public double getPassengersRidingOffset() {
         return this.isCrouching() ? -0.4 : 0.0;
     }
 
     public double getMyRidingOffset() {
-        return -0.4;
+        return -0.475;
     }
 
     protected <T> T callIfNotNull(LatexVariant<?> variant, Function<LatexVariant<?>, T> func, T def) {
@@ -622,6 +702,10 @@ public abstract class LatexEntity extends Monster {
         if (overridePose == Pose.SWIMMING)
             return true;
         return super.isVisuallySwimming();
+    }
+
+    public boolean isAllowedToSwim() {
+        return true;
     }
 
     @Override

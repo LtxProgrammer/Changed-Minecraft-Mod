@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexMermaidShark extends AbstractGenderedLatexShark {
+public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
     public LatexMermaidShark(EntityType<? extends LatexMermaidShark> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

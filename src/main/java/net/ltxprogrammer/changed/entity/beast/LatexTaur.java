@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -49,5 +50,15 @@ public interface LatexTaur<T extends LatexEntity> extends Saddleable {
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(player.getUUID(), underlying.getUUID()));
             }
         }
+    }
+
+    default double getTorsoYOffset(T self) {
+        final float ageAdjusted = (self.tickCount) * 0.33333334F * 0.25F * 0.15f;
+        float ageSin = Mth.sin(ageAdjusted * Mth.PI * 0.5f);
+        float ageCos = Mth.cos(ageAdjusted * Mth.PI * 0.5f);
+        float bpiSize = (self.getBasicPlayerInfo().getSize() - 1.0f) * 2.0f;
+        return Mth.lerp(Mth.lerp(1.0f - Mth.abs(Mth.positiveModulo(ageAdjusted, 2.0f) - 1.0f),
+                ageSin * ageSin * ageSin * ageSin, 1.0f - (ageCos * ageCos * ageCos * ageCos)),
+                0.95f, 0.87f) + bpiSize;
     }
 }

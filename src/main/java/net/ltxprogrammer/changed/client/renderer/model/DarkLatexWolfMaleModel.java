@@ -31,6 +31,7 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
+    private final ModelPart Mask;
     private final LatexAnimator<DarkLatexWolfMale, DarkLatexWolfMaleModel> animator;
 
     public DarkLatexWolfMaleModel(ModelPart root) {
@@ -38,6 +39,7 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");
+        this.Mask = Head.getChild("Mask");
         this.Torso = root.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
@@ -58,6 +60,10 @@ public class DarkLatexWolfMaleModel extends LatexHumanoidModel<DarkLatexWolfMale
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+    }
+
+    public boolean isPartNotMask(ModelPart part) {
+        return Mask.getAllParts().noneMatch(part::equals);
     }
 
     public static LayerDefinition createBodyLayer() {

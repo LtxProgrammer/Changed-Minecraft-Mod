@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.gui;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.entity.variant.LatexVariant;
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.inventory.SlotWrapper;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @Mixin(AbstractContainerScreen.class)
@@ -34,6 +36,21 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
             InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS, ChangedTextures.EMPTY_ARMOR_SLOT_UPPER_ABDOMEN,
             InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS, ChangedTextures.EMPTY_ARMOR_SLOT_LOWER_ABDOMEN
     );
+    @Unique
+    private static final Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> QUADRUPEDAL_SLOT_OVERRIDES = ImmutableMap.of(
+            InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS, ChangedTextures.EMPTY_ARMOR_SLOT_QUADRUPEDAL_LEGGINGS,
+            InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS, ChangedTextures.EMPTY_ARMOR_SLOT_QUADRUPEDAL_BOOTS
+    );
+
+    @Unique
+    @Nullable
+    private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> getOverridesForVariant(LatexVariant<?> variant) {
+        if (variant.legCount == 0)
+            return ABDOMEN_SLOT_OVERRIDES;
+        else if (variant.legCount == 4)
+            return QUADRUPEDAL_SLOT_OVERRIDES;
+        return null;
+    }
 
     protected AbstractContainerScreenMixin(Component title) {
         super(title);
@@ -54,9 +71,10 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
             if (menu != null) {
                 ProcessTransfur.ifPlayerLatex(menu.owner, variant -> {
                     var originalPair = slot.getNoItemIcon();
-                    if (originalPair != null && !variant.getParent().hasLegs && ABDOMEN_SLOT_OVERRIDES.containsKey(originalPair.getSecond())) {
+                    var overrides = getOverridesForVariant(variant.getParent());
+                    if (overrides != null && originalPair != null && overrides.containsKey(originalPair.getSecond())) {
                         callback.cancel();
-                        renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, ABDOMEN_SLOT_OVERRIDES.get(originalPair.getSecond())));
+                        renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, overrides.get(originalPair.getSecond())));
                     }
                 });
             }

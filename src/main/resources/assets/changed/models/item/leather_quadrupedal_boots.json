@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "changed:items/leather_quadrupedal_boots",
+    "layer1": "changed:items/leather_quadrupedal_boots_overlay"
+  }
+}

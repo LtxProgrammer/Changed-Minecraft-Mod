@@ -31,6 +31,10 @@ public class ChangedTextures {
             registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_upper_abdomen")));
     public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_LOWER_ABDOMEN =
             registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_lower_abdomen")));
+    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_QUADRUPEDAL_LEGGINGS =
+            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_quadrupedal_leggings")));
+    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_QUADRUPEDAL_BOOTS =
+            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_quadrupedal_boots")));
 
     private static void doOnRenderThread(RenderCall call) {
         if (!RenderSystem.isOnRenderThread())

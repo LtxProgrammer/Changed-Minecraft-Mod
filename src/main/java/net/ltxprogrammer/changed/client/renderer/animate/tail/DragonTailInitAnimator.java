@@ -40,8 +40,8 @@ public class DragonTailInitAnimator<T extends LatexEntity, M extends EntityModel
 
         float tailSway = 0.0f;//SWAY_SCALE * Mth.cos(ageInTicks * SWAY_RATE + (((float)Math.PI / 3.0F) * 0.75f));
         float tailBalance = Mth.cos(limbSwing * 0.6662F) * 0.125F * limbSwingAmount / f;
-        float tailDrag = entity.getTailDragAmount(ageInTicks) * 0.5f;
-        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_WEAK, SpringType.Direction.VERTICAL, ageInTicks) * 0.4f;
+        float tailDrag = entity.getTailDragAmount(this.core.partialTicks) * 0.5f;
+        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_WEAK, SpringType.Direction.VERTICAL, this.core.partialTicks) * 0.4f;
         tail.yRot = Mth.lerp(limbSwingAmount, tailSway, tailBalance) + tailDrag * 0.75F;
 
         float offset = 0.0F;

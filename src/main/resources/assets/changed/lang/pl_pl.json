@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Muzyka z Changed",
 
   "ability.changed.access_saddle": "Dosięgnij siodła",
-  "ability.changed.extra_hands": "Dodatkowe ręce",
   "ability.changed.switch_transfur_mode": "Zmień tryb transfur",
   "ability.changed.switch_transfur_mode.select": "Tryb Transfur: %s",
   "ability.changed.create_cobweb": "Stwórz pajęczynę",
@@ -30,6 +29,7 @@
   "subtitles.changed.close3": "Drzwi Laboratoryjne zamykają się",
   "subtitles.changed.chime2": "Przyznano dostęp",
   "subtitles.changed.buzzer1": "Odmówiono dostępu",
+  "subtitles.changed.crash": "Zniszczono kontener",
   "subtitles.changed.equip3": "Szorty szeleszczą",
   "subtitles.changed.bow2": "Pudło się otwiera",
   "subtitles.changed.ice2": "Kryształ się rozszerza",
@@ -53,6 +53,7 @@
   "item.changed.dark_latex_mask": "Maska z ciemnego latexu",
   "item.changed.dark_latex_bucket": "Wiadro z ciemnym latexem",
   "item.changed.compact_disc": "Płyta CD",
+  "item.changed.gas_mask": "Maska przeciwgazowa",
   "item.changed.lab_book": "Książka laboratoryjna",
   "item.changed.latex_base": "Baza latexu",
   "item.changed.latex_beifeng_crystal_fragment": "Kawałek kryształu Beifengowego ciemnego latexu",
@@ -82,6 +83,19 @@
   "item.changed.diamond_lower_abdomen_armor": "Diamentowa zbroja na dolne podbrzusze",
   "item.changed.netherite_upper_abdomen_armor": "Netherytowa zbroja na górne podbrzusze",
   "item.changed.netherite_lower_abdomen_armor": "Netherytowa zbroja na dolne podbrzusze",
+
+  "item.changed.leather_quadrupedal_leggings": "Skórzane spodnie dla czworonogów",
+  "item.changed.leather_quadrupedal_boots": "Skórzane buty dla czworonogów",
+  "item.changed.chainmail_quadrupedal_leggings": "Kołczugowe spodnie dla czworonogów",
+  "item.changed.chainmail_quadrupedal_boots": "Kołczugowe buty dla czworonogów",
+  "item.changed.iron_quadrupedal_leggings": "Żelazne spodnie dla czworonogów",
+  "item.changed.iron_quadrupedal_boots": "Żelazne buty dla czworonogów",
+  "item.changed.golden_quadrupedal_leggings": "Złote spodnie dla czworonogów",
+  "item.changed.golden_quadrupedal_boots": "Złote buty dla czworonogów",
+  "item.changed.diamond_quadrupedal_leggings": "Diamentowe spodnie dla czworonogów",
+  "item.changed.diamond_quadrupedal_boots": "Diamentowe buty dla czworonogów",
+  "item.changed.netherite_quadrupedal_leggings": "Netherytowe spodnie dla czworonogów",
+  "item.changed.netherite_quadrupedal_boots": "Netherytowe buty dla czworonogów",
 
   "item.changed.owo_record": "Latexowa płyta muzyczna",
   "item.changed.owo_record.desc": "Artemka2009 - ÒwÓ",
@@ -149,6 +163,8 @@
   "text.changed.game_loaded_fail": "Nie można wczytać gry",
   "text.changed.syringe.owner": "Właściciel: %s",
   "text.changed.syringe.no_owner": "Nie można znaleźć nazwy gracza",
+  "text.changed.tamed.wander": "%s teraz wędruje",
+  "text.changed.tamed.follow": "%s teraz podąża",
 
   "effect.changed.hypercoagulation": "Hiperkoagulacja",
   "effect.changed.shock": "Szok",
@@ -303,6 +319,9 @@
   "entity.changed.latex_crystal_wolf": "Kryształowy wilk",
   "entity.changed.latex_crystal_wolf_horned": "Rogaty kryształowy wilk",
   "entity.changed.latex_deer": "Latexowy jeleń",
+  "entity.changed.latex_fennec_fox": "Latexowy fenek",
+  "entity.changed.green_lizard": "Zielona Jaszczurka",
+  "entity.changed.latex_human": "Latexowy człowiek",
   "entity.changed.latex_hypno_cat": "Latexowy Hipno Kot",
   "entity.changed.latex_keon_wolf": "Latexowy keon",
   "entity.changed.latex_leaf": "Latexowy liść",
@@ -348,6 +367,8 @@
   "entity.changed.light_latex_wolf_organic": "Organiczny jasny wilk",
   "entity.changed.shark": "Rekin",
   "entity.changed.white_latex_wolf": "Biały latexowy wilk",
+  "entity.changed.phage_latex_wolf_female": "Źeński Fagowy Latexowy Wilk",
+  "entity.changed.phage_latex_wolf_male": "Męski Fagowy Latexowy Wilk",
 
   "item.changed.aerosol_latex_wolf_spawn_egg": "Jajo przyzywające gazowego wilka",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Jajo przyzywające żeńskiego wilka z ciemnego latexu",
@@ -367,6 +388,8 @@
   "item.changed.latex_crystal_wolf_spawn_egg": "Jajo przyzywające kryształowego wilka",
   "item.changed.latex_crystal_wolf_horned_spawn_egg": "Jajo przyzywające rogatego kryształowego wilka",
   "item.changed.latex_deer_spawn_egg": "Jajo przyzywające latexowego jelenia",
+  "item.changed.latex_fennec_fox_spawn_egg": "jajo przyzywające latexowego fenka",
+  "item.changed.green_lizard_spawn_egg": "jajo przyzywające zieloną jaszczurkę",
   "item.changed.latex_hypno_cat_spawn_egg": "Jajo przyzywające latexowego Hipno Kota",
   "item.changed.latex_keon_wolf_spawn_egg": "Jajo przyzywające latexowego Keona",
   "item.changed.latex_leaf_spawn_egg": "Jajo przyzywające latexowy liść",
@@ -412,6 +435,8 @@
   "item.changed.light_latex_wolf_organic_spawn_egg": "Jajo przyzywające jasnego latexowego wilka",
   "item.changed.shark_spawn_egg": "Jajo przyzywające rekina",
   "item.changed.white_latex_wolf_spawn_egg": "Jajo przyzywające białego latexowego wilka",
+  "item.changed.phage_latex_wolf_female_spawn_egg": "jajo pryzywające źeńskiego fagowego latexowego wilka",
+  "item.changed.phage_latex_wolf_male_spawn_egg": "jajo przyzywające męskiego fagowego latexowego wilka",
 
   "changed.patreon.level0": "Członek discorda",
   "changed.patreon.level1": "Tier 1",
@@ -486,8 +511,8 @@
 
   "changed:advancements.main.tame_a_latex.title": "Niemożliwe stało się możliwym",
   "changed:advancements.main.tame_a_latex.description": "oswój latexową bestię",
+  
   "changed:advancements.main.kill_all_latex.title": "Srebro na potwory,a łom na latex",
-
   "changed:advancements.main.kill_all_latex.description": "pokonaj każdy rodzaj latexowej bestii",
 
   "changed.tutorial.select_ability.title": "Wybierz umiejętność",
@@ -514,11 +539,21 @@
   "eyestyle.changed.v2": "Szczupłe",
   "eyestyle.changed.tall": "Wysokie",
 
+  "changed.config.color_picker_tooltip": "Zaawansowany edytor koloru oczu",
+  "changed.config.color_picker_red": "Czerwony: %s",
+  "changed.config.color_picker_green": "Zielony: %s",
+  "changed.config.color_picker_blue": "Niebieski: %s",
+
   "changed.config.bpi.screen": "Podstawowe informacje gracza",
   "changed.config.bpi.hair_color": "Kolor włosów",
-  "changed.config.bpi.iris_color": "Kolor tęczówki",
+  "changed.config.bpi.iris_color.left": "Kolor lewej tęczówki",
+  "changed.config.bpi.iris_color.right": "Kolor prawej tęczówki",
+  "changed.config.bpi.iris_color.sync": "Synchronizuj",
+  "changed.config.bpi.iris_color.sync_tooltip": "Synchronizuje kolor lewej i prawej tęczówki na kolor lewej",
   "changed.config.bpi.sclera_color": "kolor twardówki",
   "changed.config.bpi.eye_style": "Styl oczu: %s",
+  "changed.config.bpi.size": "Rozmiar modelu",
+  "changed.config.bpi.size.value": "Rozmiar: %s%%",
   "changed.config.bpi.override_dl_iris": "Zastąp kolor oczu w ciemnych latexach",
   "changed.config.bpi.override_all_eye_styles": "zastąp kolor oczu u wszystkich"
 }

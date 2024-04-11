@@ -55,6 +55,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -262,6 +263,7 @@ public class ProcessTransfur {
         public KeepConsciousEvent(Player player, boolean keepConscious) {
             this.player = player;
             this.keepConscious = keepConscious;
+            this.shouldKeepConscious = keepConscious;
         }
 
         @Override
@@ -401,6 +403,14 @@ public class ProcessTransfur {
     public static boolean isPlayerOrganic(Player player) {
         var variant = getPlayerLatexVariant(player);
         return variant == null || variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+    }
+
+    public static Optional<LatexVariant<?>> getEntityVariant(LivingEntity livingEntity) {
+        if (livingEntity instanceof LatexEntity entity)
+            return Optional.ofNullable(entity.getSelfVariant());
+        else if (livingEntity instanceof Player player)
+            return Optional.ofNullable(((PlayerDataExtension)player).getLatexVariant()).map(LatexVariantInstance::getParent);
+        return Optional.empty();
     }
 
     @SubscribeEvent
@@ -801,7 +811,7 @@ public class ProcessTransfur {
             else {
                 KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
                 MinecraftForge.EVENT_BUS.post(event);
-                keepConscious = event.keepConscious;
+                keepConscious = event.shouldKeepConscious;
             }
         }
 

@@ -1,14 +1,15 @@
 package net.ltxprogrammer.changed.client.gui;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.world.inventory.ClipboardMenu;
 import net.ltxprogrammer.changed.world.inventory.TextMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ClipboardScreen extends TextMenuScreen {
-    public ClipboardScreen(TextMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
+public class ClipboardScreen extends TextMenuScreen<ClipboardMenu> {
+    public ClipboardScreen(ClipboardMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory.player, title);
     }
 
     @Override public int getBackgroundWidth() {

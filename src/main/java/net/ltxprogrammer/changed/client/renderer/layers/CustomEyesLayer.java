@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -172,6 +173,8 @@ public class CustomEyesLayer<M extends LatexHumanoidModel<T>, T extends LatexEnt
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity.isInvisible())
+            return;
+        if (ChangedCompatibility.isFirstPersonRendering())
             return;
 
         BasicPlayerInfo info = new BasicPlayerInfo();

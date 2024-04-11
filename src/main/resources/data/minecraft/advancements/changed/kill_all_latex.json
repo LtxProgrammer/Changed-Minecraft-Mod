@@ -103,6 +103,20 @@
         ]
       }
     },
+    "changed:dark_latex_wolf_partial": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_wolf_partial"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:dark_latex_yufeng": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -279,6 +293,34 @@
             "condition": "minecraft:entity_properties",
             "predicate": {
               "type": "changed:latex_fennec_fox"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:green_lizard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:green_lizard"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_human": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_human"
             },
             "entity": "this"
           }
@@ -950,6 +992,9 @@
       "changed:dark_latex_wolf_male"
     ],
     [
+      "changed:dark_latex_wolf_partial"
+    ],
+    [
       "changed:dark_latex_yufeng"
     ],
     [
@@ -987,6 +1032,12 @@
     ],
     [
       "changed:latex_fennec_fox"
+    ],
+    [
+      "changed:green_lizard"
+    ],
+    [
+      "changed:latex_human"
     ],
     [
       "changed:latex_hypno_cat"

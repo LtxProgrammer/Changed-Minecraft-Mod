@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
 import net.ltxprogrammer.changed.entity.LatexEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
-import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -44,93 +43,22 @@ public class DoubleArmUpperBodyAttackAnimator<T extends LatexEntity, M extends E
         if (entity.isUsingItem()) {
             boolean usingMainHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
             if (usingMainHand == mainHandRight) {
-                this.poseRightArm(entity);
+                this.poseRightArmForItem(entity);
             } else {
-                this.poseLeftArm(entity);
+                this.poseLeftArmForItem(entity);
             }
         } else {
             boolean twoHanded = mainHandRight ? core.leftArmPose.isTwoHanded() : core.rightArmPose.isTwoHanded();
             if (mainHandRight != twoHanded) {
-                this.poseLeftArm(entity);
-                this.poseRightArm(entity);
+                this.poseLeftArmForItem(entity);
+                this.poseRightArmForItem(entity);
             } else {
-                this.poseRightArm(entity);
-                this.poseLeftArm(entity);
+                this.poseRightArmForItem(entity);
+                this.poseLeftArmForItem(entity);
             }
         }
 
         this.setupAttackAnimation(entity, ageInTicks);
-    }
-
-    private void poseRightArm(T entity) {
-        switch(core.rightArmPose) {
-            case EMPTY:
-                upperRightArm.yRot = 0.0F;
-                break;
-            case BLOCK:
-                upperRightArm.xRot = upperRightArm.xRot * 0.5F - 0.9424779F;
-                upperRightArm.yRot = (-(float)Math.PI / 6F);
-                break;
-            case ITEM:
-                upperRightArm.xRot = upperRightArm.xRot * 0.5F - ((float)Math.PI / 10F);
-                upperRightArm.yRot = 0.0F;
-                break;
-            case THROW_SPEAR:
-                upperRightArm.xRot = upperRightArm.xRot * 0.5F - (float)Math.PI;
-                upperRightArm.yRot = 0.0F;
-                break;
-            case BOW_AND_ARROW:
-                upperRightArm.yRot = -0.1F + head.yRot;
-                upperLeftArm.yRot = 0.1F + head.yRot + 0.4F;
-                upperRightArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                upperLeftArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                break;
-            case CROSSBOW_CHARGE:
-                AnimationUtils.animateCrossbowCharge(upperRightArm, upperLeftArm, entity, true);
-                break;
-            case CROSSBOW_HOLD:
-                AnimationUtils.animateCrossbowHold(upperRightArm, upperLeftArm, head, true);
-                break;
-            case SPYGLASS:
-                upperRightArm.xRot = Mth.clamp(head.xRot - 1.9198622F - (entity.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
-                upperRightArm.yRot = head.yRot - 0.2617994F;
-        }
-
-    }
-
-    private void poseLeftArm(T entity) {
-        switch(core.leftArmPose) {
-            case EMPTY:
-                upperLeftArm.yRot = 0.0F;
-                break;
-            case BLOCK:
-                upperLeftArm.xRot = upperLeftArm.xRot * 0.5F - 0.9424779F;
-                upperLeftArm.yRot = ((float)Math.PI / 6F);
-                break;
-            case ITEM:
-                upperLeftArm.xRot = upperLeftArm.xRot * 0.5F - ((float)Math.PI / 10F);
-                upperLeftArm.yRot = 0.0F;
-                break;
-            case THROW_SPEAR:
-                upperLeftArm.xRot = upperLeftArm.xRot * 0.5F - (float)Math.PI;
-                upperLeftArm.yRot = 0.0F;
-                break;
-            case BOW_AND_ARROW:
-                upperRightArm.yRot = -0.1F + head.yRot - 0.4F;
-                upperLeftArm.yRot = 0.1F + head.yRot;
-                upperRightArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                upperLeftArm.xRot = (-(float)Math.PI / 2F) + head.xRot;
-                break;
-            case CROSSBOW_CHARGE:
-                AnimationUtils.animateCrossbowCharge(upperRightArm, upperLeftArm, entity, true);
-                break;
-            case CROSSBOW_HOLD:
-                AnimationUtils.animateCrossbowHold(upperRightArm, upperLeftArm, head, true);
-                break;
-            case SPYGLASS:
-                upperLeftArm.xRot = Mth.clamp(head.xRot - 1.9198622F - (entity.isCrouching() ? 0.2617994F : 0.0F), -2.4F, 3.3F);
-                upperLeftArm.yRot = head.yRot + 0.2617994F;
-        }
     }
 
     protected void setupAttackAnimation(T entity, float ageInTicks) {

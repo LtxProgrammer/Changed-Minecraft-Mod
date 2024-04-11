@@ -68,7 +68,7 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
     }
 
     public double getPassengersRidingOffset() {
-        return super.getPassengersRidingOffset() + 0.8;
+        return super.getPassengersRidingOffset() + getTorsoYOffset(this) - (2.0 / 16.0);
     }
 
     public InteractionResult mobInteract(Player p_30713_, InteractionHand p_30714_) {
@@ -78,5 +78,10 @@ public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<Lig
         }
 
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean isAllowedToSwim() {
+        return true;
     }
 }

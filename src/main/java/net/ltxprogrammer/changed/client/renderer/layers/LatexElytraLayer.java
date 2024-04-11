@@ -80,8 +80,8 @@ public class LatexElytraLayer<T extends LatexEntity, M extends LatexHumanoidMode
             if (p_116954_.getUnderlyingPlayer() instanceof AbstractClientPlayer clientPlayer) {
                 if (clientPlayer.isElytraLoaded() && clientPlayer.getElytraTextureLocation() != null) {
                     resourcelocation = clientPlayer.getElytraTextureLocation();
-                } else if (clientPlayer.isCapeLoaded() && clientPlayer.getCloakTextureLocation() != null && clientPlayer.isModelPartShown(PlayerModelPart.CAPE)) {
-                    resourcelocation = clientPlayer.getCloakTextureLocation();
+                } else if (clientPlayer.isCapeLoaded() && TransfurCapeLayer.getCloakTextureLocation(p_116954_) != null && clientPlayer.isModelPartShown(PlayerModelPart.CAPE)) {
+                    resourcelocation = TransfurCapeLayer.getCloakTextureLocation(p_116954_);
                 } else {
                     resourcelocation = getElytraTexture(itemstack, p_116954_);
                 }

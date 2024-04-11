@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.LatexTranslucentLizardModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleDragonModel;
 import net.ltxprogrammer.changed.entity.beast.LatexTranslucentLizard;
@@ -17,8 +15,10 @@ public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexT
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
         var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_translucent_lizard_outer.png"));
         this.addLayer(translucent);
-        this.addLayer(new LatexParticlesLayer<>(this, getModel(), translucent));
+        this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));
+        this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#ffb84c"), 0.5f),CustomEyesLayer.fixedColor(Color3.parseHex("#a24b42"), 0.75f)));
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

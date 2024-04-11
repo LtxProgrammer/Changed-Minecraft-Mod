@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexStigerModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexStigerModel;
 import net.ltxprogrammer.changed.entity.beast.LatexStiger;
@@ -11,6 +12,7 @@ public class LatexStigerRenderer extends LatexHumanoidRenderer<LatexStiger, Late
     public LatexStigerRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexStigerModel(context.bakeLayer(LatexStigerModel.LAYER_LOCATION)),
                 ArmorLatexStigerModel::new, ArmorLatexStigerModel.INNER_ARMOR, ArmorLatexStigerModel.OUTER_ARMOR, 0.5f);
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override

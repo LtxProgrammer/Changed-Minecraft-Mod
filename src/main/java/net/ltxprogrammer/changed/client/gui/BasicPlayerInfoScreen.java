@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.screens.Screen;
@@ -37,6 +39,8 @@ public class BasicPlayerInfoScreen extends Screen {
     @Override
     public void removed() {
         Changed.config.saveAdditionalData();
+        if (this.player != null)
+            Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(this.player));
     }
 
     public void onClose() {
@@ -80,6 +84,26 @@ public class BasicPlayerInfoScreen extends Screen {
             button.setMessage(new TranslatableComponent("changed.config.bpi.eye_style", style.getName()));
         }));
         i += 2;
+        this.addRenderableWidget(new AbstractSliderButton(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.size"), bpi.getSizeValueForConfiguration()) {
+            {
+                this.updateMessage();
+            }
+
+            private double convertToScaledValue() {
+                return (this.value * BasicPlayerInfo.SIZE_TOLERANCE * 2) - BasicPlayerInfo.SIZE_TOLERANCE + 1.0;
+            }
+
+            @Override
+            protected void updateMessage() {
+                this.setMessage(new TranslatableComponent("changed.config.bpi.size.value", Math.round(convertToScaledValue() * 100)));
+            }
+
+            @Override
+            protected void applyValue() {
+                bpi.setSize((float)convertToScaledValue());
+            }
+        });
+        i += 2;
         this.addRenderableWidget(new Checkbox(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.override_dl_iris"), bpi.isOverrideIrisOnDarkLatex()) {
             @Override
             public void onPress() {
@@ -98,8 +122,6 @@ public class BasicPlayerInfoScreen extends Screen {
         i += 2;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
-            if (this.player != null)
-                Changed.PACKET_HANDLER.sendToServer(BasicPlayerInfoPacket.Builder.of(this.player));
             this.minecraft.setScreen(this.lastScreen);
         }));
     }

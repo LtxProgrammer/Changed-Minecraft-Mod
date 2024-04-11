@@ -33,10 +33,6 @@ public abstract class TextMenu extends AbstractContainerMenu implements Updateab
         this.blockState = state;
         this.textMenuBlockEntity = textMenuBlockEntity;
         this.textCopy = textMenuBlockEntity.getText();
-
-        CompoundTag data = new CompoundTag();
-        data.putString("Text", textCopy);
-        this.setDirty(data);
     }
 
     public TextMenu(MenuType<?> type, int id, Inventory inventory, FriendlyByteBuf extraData) {
@@ -46,6 +42,16 @@ public abstract class TextMenu extends AbstractContainerMenu implements Updateab
         this.blockPos = null;
         this.blockState = Blocks.AIR.defaultBlockState();
         this.textMenuBlockEntity = null;
+
+        if (extraData == null)
+            return;
+
+        this.textCopy = extraData.readUtf();
+        this.textCopyLastReceived = this.textCopy;
+    }
+
+    public boolean canEditExisting() {
+        return false;
     }
 
     @Override

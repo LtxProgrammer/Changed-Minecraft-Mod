@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.layers.CustomCoatLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexPartialLayer;
-import net.ltxprogrammer.changed.client.renderer.layers.LatexTranslucentLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
@@ -86,21 +83,8 @@ public class FormRenderHandler {
                 if(handPart != null && texture != null) {
                     renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityCutout(texture)), light, 1F);
                     for (var layer : latexRenderer.layers)  {
-                        if (layer instanceof EmissiveBodyLayer<?, ?> emissiveBodyLayer)
-                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(emissiveBodyLayer.renderType()), LightTexture.FULL_BRIGHT, 1F);
-                        if (layer instanceof CustomCoatLayer<?,?> customCoatLayer) {
-                            var info = livingInstance.getBasicPlayerInfo();
-                            var coatColor = info.getHairColor();
-                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(customCoatLayer.getRenderTypeForColor(coatColor)), light,
-                                    coatColor.red(), coatColor.green(), coatColor.blue(), 1F);
-                        }
-                        if (layer instanceof LatexTranslucentLayer<?,?> gelLayer)
-                            renderModelPartWithTexture(handPart, stackCorrector, stack, buffer.getBuffer(RenderType.entityTranslucent(gelLayer.getTexture())), light, 1F);
-                        if (layer instanceof LatexPartialLayer partialLayer) {
-                            partialLayer.getModel().setupAnim(livingInstance, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-                            ((LatexHumanoidModelInterface)partialLayer.getModel()).setupHand();
-                            renderModelPartWithTexture(partialLayer.getArm(handSide), stackCorrector, stack, buffer.getBuffer(partialLayer.renderType()), light, 1F);
-                        }
+                        if (layer instanceof FirstPersonLayer firstPersonLayer)
+                            firstPersonLayer.renderFirstPersonOnArms(stack, buffer, light, livingInstance, handSide, stackCorrector);
                     }
                 }
 

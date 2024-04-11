@@ -59,6 +59,16 @@
     ],
     "subtitle": "subtitles.changed.close3"
   },
+  "crash": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:crash",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.crash"
+  },
   "equip1": {
     "category": "neutral",
     "sounds": [

@@ -27,4 +27,15 @@ public abstract class AbstractQuadrupedalAnimator<T extends LatexEntity, M exten
         humanoidModel.leftLeg.copyFrom(this.frontLeftLeg);
         humanoidModel.rightLeg.copyFrom(this.frontRightLeg);
     }
+
+    @Override
+    public void copyFrom(HumanoidModel<?> humanoidModel) {
+        super.copyFrom(humanoidModel);
+        /*this.frontLeftLeg.xRot = humanoidModel.leftLeg.xRot;
+        this.frontLeftLeg.yRot = humanoidModel.leftLeg.yRot;
+        this.frontLeftLeg.zRot = humanoidModel.leftLeg.zRot;
+        this.frontRightLeg.xRot = humanoidModel.rightLeg.xRot;
+        this.frontRightLeg.yRot = humanoidModel.rightLeg.yRot;
+        this.frontRightLeg.zRot = humanoidModel.rightLeg.zRot;*/
+    }
 }
