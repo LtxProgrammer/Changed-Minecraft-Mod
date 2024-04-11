@@ -197,17 +197,12 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
             if (this.isTame()) {
-                /*if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    this.heal((float) itemstack.getFoodProperties(this).getNutrition());
-                    if (!player.getAbilities().instabuild) {
-                        itemstack.shrink(1);
-                    }
-
+                if (this.isTame() && this.isTameItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                    itemstack.shrink(1);
+                    this.heal(2.0F);
                     this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
                     return InteractionResult.SUCCESS;
-                }*/
-
-                /*else*/ {
+                } else {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
                     if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
                         boolean shouldFollow = !this.isFollowingOwner();
