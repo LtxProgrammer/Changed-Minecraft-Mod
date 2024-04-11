@@ -44,7 +44,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTransportInterface {
     public WhiteLatexBlock(Properties p_49795_) {
-        super(p_49795_, LatexType.WHITE_LATEX, ChangedItems.WHITE_LATEX_GOO);
+        super(p_49795_.noOcclusion(), LatexType.WHITE_LATEX, ChangedItems.WHITE_LATEX_GOO);
     }
 
     public boolean skipRendering(BlockState thisState, BlockState otherState, Direction direction) {
@@ -52,6 +52,11 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     }
 
     public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState p_60578_, BlockGetter p_60579_, BlockPos p_60580_) {
         return Shapes.empty();
     }
 
