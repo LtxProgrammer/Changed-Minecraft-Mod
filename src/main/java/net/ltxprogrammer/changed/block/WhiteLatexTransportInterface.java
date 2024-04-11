@@ -76,6 +76,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
             private Vec3 lastPos = null;
             private static final double ACCELERATION = 0.2;
             private static final double DECAY = 0.65;
+            private static final Vec3 UP = new Vec3(0.0, 1.0, 0.0);
 
             static boolean whiteLatex(BlockState blockState) {
                 if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
@@ -118,9 +119,11 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 Vec3 leftAngle = upAngle.cross(lookAngle);
 
                 Vec2 horizontal = input.getMoveVector();
+                double vertical = (input.getJumping() ? 1.0 : 0.0) + (input.getShiftKeyDown() ? -1.0 : 0.0);
 
                 Vec3 controlDir = lookAngle.multiply(horizontal.y, horizontal.y, horizontal.y)
-                        .add(leftAngle.multiply(horizontal.x, horizontal.x, horizontal.x)).multiply(ACCELERATION, ACCELERATION, ACCELERATION);
+                        .add(UP.multiply(vertical, vertical, vertical))
+                        .add(leftAngle.multiply(horizontal.x, horizontal.x, horizontal.x)).normalize().multiply(ACCELERATION, ACCELERATION, ACCELERATION);
 
                 player.move(MoverType.SELF, controlDir.add(velocity));
                 lastPos = currentPos;
@@ -168,9 +171,6 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
             if (event.phase == TickEvent.Phase.END)
                 return;
 
-            /*if (event.player.getPersistentData().contains(TRANSPORT_TAG))
-                entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));*/
-
             BlockState blockState = event.player.level.getBlockState(event.player.blockPosition());
             BlockState blockStateEye = event.player.level.getBlockState(event.player.eyeBlockPosition());
 
@@ -189,40 +189,6 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     });
                 }
-            }
-
-            else {
-                /*var form = ProcessTransfur.getPlayerTransfurVariant(event.player);
-
-                if (form != null) {
-                    form.ticksWhiteLatex++;
-                    form.getChangedEntity().overridePose = Pose.STANDING;
-                } else
-                    ProcessTransfur.transfur(event.player, event.player.level, TransfurVariant.WHITE_LATEX_WOLF, false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
-
-                event.player.setInvisible(true);
-                event.player.refreshDimensions();
-                event.player.heal(0.0625F);
-                if (event.player.tickCount % 50 == 0)
-                    event.player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
-                event.player.resetFallDistance();
-
-                multiplyMotion(event.player, 1.05F);
-                if (!(whiteLatex(blockState) || whiteLatex(blockStateEye))) {
-                    whiteLatexNoCollideMap.remove(event.player);
-                    if (form != null) {
-                        form.getChangedEntity().overridePose = null;
-                        form.ticksWhiteLatex = 0;
-                    }
-                    event.player.getPersistentData().remove(TRANSPORT_TAG);
-                    event.player.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
-                    event.player.setInvisible(false);
-                    event.player.setInvulnerable(false);
-                    event.player.refreshDimensions();
-                }
-
-                else if (event.player instanceof ServerPlayer serverPlayer && form != null)
-                    ChangedCriteriaTriggers.WHITE_LATEX_FUSE.trigger(serverPlayer, form.ticksWhiteLatex);*/
             }
         }
     }
