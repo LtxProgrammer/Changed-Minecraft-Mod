@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.block.WearableBlock;
+import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -102,9 +103,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
     public void hasEffect(MobEffect effect, CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
-            if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
-                callback.setReturnValue(true);
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            if (effect.equals(MobEffects.NIGHT_VISION)) {
+                if (variant.getParent().nightVision)
+                    callback.setReturnValue(true);
+                if (variant.getChangedEntity().getLatexType() == LatexType.WHITE_LATEX && WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
+                    callback.setReturnValue(true);
+            }
             if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluid(FluidTags.WATER))
                 callback.setReturnValue(true);
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
@@ -114,9 +119,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
     public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (variant) -> {
-            if (variant.getParent().nightVision && effect.equals(MobEffects.NIGHT_VISION))
-                callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            if (effect.equals(MobEffects.NIGHT_VISION)) {
+                if (variant.getParent().nightVision)
+                    callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
+                if (variant.getChangedEntity().getLatexType() == LatexType.WHITE_LATEX && WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
+                    callback.setReturnValue(new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 1, false, false));
+            }
             if (variant.getParent().breatheMode.canBreatheWater() && effect.equals(MobEffects.CONDUIT_POWER) && isEyeInFluid(FluidTags.WATER))
                 callback.setReturnValue(new MobEffectInstance(MobEffects.CONDUIT_POWER, 300, 1, false, false));
             if (variant.getParent().noVision && effect.equals(MobEffects.BLINDNESS))
