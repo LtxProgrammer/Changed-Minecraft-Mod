@@ -45,6 +45,7 @@
     "block.BlockColorsMixin",
     "client.ClientLevelMixin",
     "client.ForgeHooksClientMixin",
+    "client.MinecraftMixin",
     "client.OptionsMixin",
     "client.SkinManagerMixin",
     "client.TutorialMixin",
