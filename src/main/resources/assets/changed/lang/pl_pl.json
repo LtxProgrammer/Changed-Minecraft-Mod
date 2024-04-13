@@ -118,7 +118,7 @@
   "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
   "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",
 
-  "syringe.changed:form_special": "Własna strzykawka z formą patrona",
+  "syringe.changed:form_special": "strzykawka z formą patrona",
 
   "death.attack.changed:transfur": "%1$s został ztransfurrowany",
   "death.attack.changed:transfur.player": "%1$s został ztransfurrowany przez %2$s",
@@ -300,7 +300,7 @@
   "entity.changed.behemoth_head": "Głowa Begemota",
   "entity.changed.behemoth_hand_left": "Lewa ręka Begemota",
   "entity.changed.behemoth_hand_right": "Prawa ręka Begemota",
-  "entity.changed.dark_latex_wolf_female": "Żeński wilk z ciemnego latexu",
+  "entity.changed.dark_latex_wolf_female": "Żeński Wilk z ciemnego latexu",
   "entity.changed.dark_latex_wolf_male": "Męski wilk z ciemnego latexu",
   "entity.changed.dark_latex_wolf_partial": "częściowo zmieniony wilk z ciemnego latexu",
   "entity.changed.dark_latex_dragon": "Ciemny latexowy smok",
@@ -512,13 +512,13 @@
   "changed:advancements.main.tame_a_latex.title": "Niemożliwe stało się możliwym",
   "changed:advancements.main.tame_a_latex.description": "oswój latexową bestię",
   
-  "changed:advancements.main.kill_all_latex.title": "Srebro na potwory,a łom na latex",
+  "changed:advancements.main.kill_all_latex.title": "Srebro na potwory,łom na latex",
   "changed:advancements.main.kill_all_latex.description": "pokonaj każdy rodzaj latexowej bestii",
 
   "changed.tutorial.select_ability.title": "Wybierz umiejętność",
   "changed.tutorial.select_ability.description": "Naciśnij %s",
   "changed.tutorial.use_ability.title": "Użyj umiejętności",
-  "changed.tutorial.use_ability.description": "Naciśnij lub przytrzymaj %s",
+  "changed.tutorial.use_ability.description": "Naciśnij/przytrzymaj %s",
 
   "facility.zone.red_zone": "Czerwona strefa",
   "facility.zone.gray_zone": "Szara strefa",
