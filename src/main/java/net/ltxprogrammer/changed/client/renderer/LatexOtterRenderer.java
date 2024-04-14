@@ -18,7 +18,7 @@ public class LatexOtterRenderer extends LatexHumanoidRenderer<LatexOtter, LatexO
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
-        this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
+        this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
     @Override
