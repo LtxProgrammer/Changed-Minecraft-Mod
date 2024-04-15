@@ -556,4 +556,6 @@
   
   "text.changed.tamed.wander": "%s est maintenant en train d'errer",
   "text.changed.tamed.follow": "%s est maintenant en train de suivre",
+  "subtitles.changed.crash": "Un container est brisé",
+  "item.changed.gas_mask": "masque à gaz"
 }
