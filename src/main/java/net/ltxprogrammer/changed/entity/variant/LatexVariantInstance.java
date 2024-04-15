@@ -320,6 +320,16 @@ public class LatexVariantInstance<T extends LatexEntity> {
     }
 
     public static void syncEntityAndPlayer(LatexEntity living, Player player) {
+        living.xCloak = player.xCloak;
+        living.yCloak = player.yCloak;
+        living.zCloak = player.zCloak;
+        living.xCloakO = player.xCloakO;
+        living.yCloakO = player.yCloakO;
+        living.zCloakO = player.zCloakO;
+
+        living.oBob = player.oBob;
+        living.bob = player.bob;
+
         living.tickCount = player.tickCount;
         living.getActiveEffectsMap().clear();
         living.setUnderlyingPlayer(player);
@@ -399,7 +409,7 @@ public class LatexVariantInstance<T extends LatexEntity> {
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
-            if (parent.hasLegs)
+            if (parent.legCount == 2)
                 return true;
             else {
                 switch (armorItem.getSlot()) {
@@ -570,13 +580,14 @@ public class LatexVariantInstance<T extends LatexEntity> {
             player.setNoGravity(false);
         }
 
-        if(parent.groundSpeed != 0F && player.isOnGround()) {
-            if (parent.groundSpeed > 1f) {
-                if (!player.isCrouching())
+        if(parent.groundSpeed != 0F) {
+            if (player.isOnGround()) {
+                if (parent.groundSpeed > 1f) {
+                    if (!player.isCrouching() && !player.isInWaterOrBubble())
+                        multiplyMotion(player, parent.groundSpeed);
+                } else {
                     multiplyMotion(player, parent.groundSpeed);
-            }
-            else {
-                multiplyMotion(player, parent.groundSpeed);
+                }
             }
         }
 

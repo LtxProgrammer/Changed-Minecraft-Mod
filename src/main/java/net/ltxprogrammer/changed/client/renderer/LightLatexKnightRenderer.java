@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexKnightModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWhiteKnightModel;
 import net.ltxprogrammer.changed.entity.beast.LightLatexKnight;
@@ -16,6 +17,7 @@ public class LightLatexKnightRenderer extends LatexHumanoidRenderer<LightLatexKn
         super(context, new LightLatexKnightModel(context.bakeLayer(LightLatexKnightModel.LAYER_LOCATION)),
                 ArmorLatexWhiteKnightModel::new, ArmorLatexWhiteKnightModel.INNER_ARMOR, ArmorLatexWhiteKnightModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
+        this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#dfdfdf"))));

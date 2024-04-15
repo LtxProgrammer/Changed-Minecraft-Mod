@@ -17,15 +17,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.*;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -64,6 +62,31 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
         return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
+    public PushReaction getPistonPushReaction(BlockState p_52814_) {
+        return PushReaction.DESTROY;
+    }
+
+    public boolean canSurvive(BlockState p_52783_, LevelReader p_52784_, BlockPos p_52785_) {
+        return p_52784_.getBlockState(p_52785_.relative(p_52783_.getValue(FACING).getOpposite())).isFaceSturdy(p_52784_,
+                p_52785_.relative(p_52783_.getValue(FACING).getOpposite()),
+                p_52783_.getValue(FACING));
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+
+            for(Direction direction : Direction.values()) {
+                level.updateNeighborsAt(blockPos.relative(direction), this);
+            }
+
+        }
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return getInteractionShape(state, level, pos);
@@ -80,16 +103,18 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
         builder.add(FACING, WATERLOGGED);
     }
 
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder context) {
-        return List.of(new ItemStack(type.goo.get()));
+    public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return getInteractionShape(blockState, level, blockPos);
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        var direction = state.getValue(FACING).getOpposite();
-        return super.canSurvive(state, level, pos) && level.getBlockState(pos.relative(direction))
-                .isFaceSturdy(level, pos.relative(direction), direction.getOpposite(), SupportType.FULL);
+    public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
+        return Shapes.empty();
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder context) {
+        return List.of(new ItemStack(type.goo.get()));
     }
 
     @Override

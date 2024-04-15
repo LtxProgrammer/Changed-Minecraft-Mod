@@ -165,7 +165,7 @@ public class LatexHuman extends LatexEntity {
     @Override
     public void onReplicateOther(IAbstractLatex other, LatexVariant<?> variant) {
         super.onReplicateOther(other, variant);
-        if (this.getUUID() != this.getRepresentUUID()) return;
+        //if (this.getUUID() != this.getRepresentUUID()) return;
 
         if (variant == LatexVariant.LATEX_HUMAN) {
             if (other.getLatexEntity() instanceof LatexHuman human) {

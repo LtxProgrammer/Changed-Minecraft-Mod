@@ -29,6 +29,7 @@
   "subtitles.changed.close3": "Лабораторная дверь закрылась",
   "subtitles.changed.chime2": "Кейпад разрешает доступ",
   "subtitles.changed.buzzer1": "Кейпад отказывает в доступе",
+  "subtitles.changed.crash": "Контейнер разбивается",
   "subtitles.changed.equip3": "Шуршание штанов",
   "subtitles.changed.bow2": "Коробка открылась",
   "subtitles.changed.ice2": "Кристал разросся",
@@ -82,6 +83,19 @@
   "item.changed.diamond_lower_abdomen_armor": "Алмазная хвостовая броня",
   "item.changed.netherite_upper_abdomen_armor": "Незеритовый набрюшник",
   "item.changed.netherite_lower_abdomen_armor": "Незеритовая хвостовая броня",
+
+  "item.changed.leather_quadrupedal_leggings": "Кожаные поножи для четырех ног",
+  "item.changed.leather_quadrupedal_boots": "Кожаные ботинки для четырех ног",
+  "item.changed.chainmail_quadrupedal_leggings": "Кольчужные поножи для четырех ног",
+  "item.changed.chainmail_quadrupedal_boots": "Кольчужные ботинки для четырех ног",
+  "item.changed.iron_quadrupedal_leggings": "Железные поножи для четырех ног",
+  "item.changed.iron_quadrupedal_boots": "Железные ботинки для четырех ног",
+  "item.changed.golden_quadrupedal_leggings": "Золотые поножи для четырех ног",
+  "item.changed.golden_quadrupedal_boots": "Золотые ботинки для четырех ног",
+  "item.changed.diamond_quadrupedal_leggings": "Алмазные поножи для четырех ног",
+  "item.changed.diamond_quadrupedal_boots": "Алмазные ботинки для четырех ног",
+  "item.changed.netherite_quadrupedal_leggings": "Незеритовые поножи для четырех ног",
+  "item.changed.netherite_quadrupedal_boots": "Незеритовые ботинки для четырех ног",
   
   "item.changed.owo_record": "Латексная пластинка",
   "item.changed.owo_record.desc": " 'Г’wГ“' - За Авторством Artemka2009",
@@ -102,7 +116,8 @@
   "item.changed.the_white_goo_jungle_record.desc": "Shizi - The White Goo Jungle",
   "item.changed.the_white_tail_chase_part_1_record.desc": "Shizi - The White Tail Chase Part 1",
   "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
-  "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",  
+  "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe", 
+ 
   "syringe.changed:form_special": "Шприц с патреон формой",
 
   "death.attack.changed:transfur": "%1$s был трансфуррирован",
@@ -148,6 +163,8 @@
   "text.changed.game_loaded_fail": "Невозможно загрузить игру.",
   "text.changed.syringe.owner": "Владелец: %s",
   "text.changed.syringe.no_owner": "Невозможно получить имя пользователя",
+  "text.changed.tamed.wander": "%s бродит",
+  "text.changed.tamed.follow": "%s следует",
 
   "effect.changed.hypercoagulation": "Гиперкоагуляция",
   "effect.changed.shock": "Шок",
@@ -303,6 +320,7 @@
   "entity.changed.latex_crystal_wolf_horned": "Рогатый кристальный волк",
   "entity.changed.latex_deer": "Латексный олень",
   "entity.changed.latex_fennec_fox": "Латексный фенек",
+  "entity.changed.green_lizard": "Латексная зеленая ящерица",
   "entity.changed.latex_human": "Латексный человек",
   "entity.changed.latex_hypno_cat": "Латексный гипно-кот",
   "entity.changed.latex_keon_wolf": "Латексный серебряный лис",
@@ -348,7 +366,7 @@
   "entity.changed.light_latex_wolf_male": "Волк из белого латекса",
   "entity.changed.light_latex_wolf_organic": "Белый волк",
   "entity.changed.shark": "Акула",
-  "entity.changed.white_latex_wolf": "Волк из чистого белого латекса",
+  "entity.changed.white_latex_wolf": "Волк из чистого латекса",
   "entity.changed.phage_latex_wolf_female": "Латексная фаговая волчица",
   "entity.changed.phage_latex_wolf_male": "Латексный фаговый волк",
   
@@ -371,6 +389,7 @@
   "item.changed.latex_crystal_wolf_horned_spawn_egg": "Яйцо призыва Рогатый кристальный волк",
   "item.changed.latex_deer_spawn_egg": "Яйцо призыва Латексный олень",
   "item.changed.latex_fennec_fox_spawn_egg": "Яйцо призыва Латексный фенек",
+  "item.changed.green_lizard_spawn_egg": "Яйцо призыва Латексная зеленая ящерица",
   "item.changed.latex_hypno_cat_spawn_egg": "Яйцо призыва Гипно-кот",
   "item.changed.latex_keon_wolf_spawn_egg": "Яйцо призыва Латексный серебряный лис",
   "item.changed.latex_leaf_spawn_egg": "Яйцо призыва Латексная листянная рептилия",
@@ -406,7 +425,7 @@
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "Яйцо призыва Латексный Дракон-дорожный конус",
   "item.changed.latex_translucent_lizard_spawn_egg": "Яйцо призыва Латексная Просвечивающаяся рептилия",
   "item.changed.latex_watermelon_cat_spawn_egg": "Яйцо призыва Латексная арбузная кошка",
-  "item.changed.latex_white_tiger_spawn_egg": "Яйцо призыва Белый тигр",
+  "item.changed.latex_white_tiger_spawn_egg": "Яйцо призыва Латексный белый тигр",
   "item.changed.latex_yuin_spawn_egg": "Яйцо призыва Латексная Юин",
   "item.changed.light_latex_centaur_spawn_egg": "Яйцо призыва Кентавр из светлого латекса",
   "item.changed.light_latex_knight_fusion_spawn_egg": "Яйцо призыва Великий рыцарь из светлого латекса",
@@ -415,7 +434,7 @@
   "item.changed.light_latex_wolf_male_spawn_egg": "Яйцо призыва Волк из светлого латекса",
   "item.changed.light_latex_wolf_organic_spawn_egg": "Яйцо призыва Белый волк",
   "item.changed.shark_spawn_egg": "Яйцо призыва Акула",
-  "item.changed.white_latex_wolf_spawn_egg": "Яйцо призыва Волк из чистого белого латекса",
+  "item.changed.white_latex_wolf_spawn_egg": "Яйцо призыва Волк из чистого латекса",
   "item.changed.phage_latex_wolf_female_spawn_egg": "Яйцо призыва Латексная фаговая волчица",
   "item.changed.phage_latex_wolf_male_spawn_egg": "Яйцо призыва Латексный фаговый волк",
 
@@ -494,7 +513,7 @@
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
   "changed:advancements.main.kill_all_latex.title": "Совсем невменяемый",
-  "changed.advancements.main.kill_all_latex.description": "Убейте по одному всех видов латексных.",
+  "changed:advancements.main.kill_all_latex.description": "Убейте по одному всех видов латексных.",
 
   "changed.tutorial.select_ability.title": "Выберите способность",
   "changed.tutorial.select_ability.description": "Нажмите клавишу %s",

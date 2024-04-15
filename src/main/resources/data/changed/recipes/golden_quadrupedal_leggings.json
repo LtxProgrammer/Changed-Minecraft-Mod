@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#T#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:golden_leggings"
+    },
+    "T": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "result": {
+    "item": "changed:golden_quadrupedal_leggings"
+  }
+}

@@ -299,6 +299,20 @@
         ]
       }
     },
+    "changed:green_lizard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:green_lizard"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:latex_human": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1018,6 +1032,9 @@
     ],
     [
       "changed:latex_fennec_fox"
+    ],
+    [
+      "changed:green_lizard"
     ],
     [
       "changed:latex_human"

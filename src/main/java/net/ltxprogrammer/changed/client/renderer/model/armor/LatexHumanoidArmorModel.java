@@ -24,8 +24,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 
 public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends EntityModel<T>> extends EntityModel<T> implements LatexHumanoidModelInterface<T, M> {
+    public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
+
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
             PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 

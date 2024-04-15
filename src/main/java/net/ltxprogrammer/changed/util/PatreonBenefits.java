@@ -447,20 +447,36 @@ public class PatreonBenefits {
         // Load levels
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(URI.create(LINKS_DOCUMENT)).GET().build();
-        JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
-        JsonArray links = json.getAsJsonObject().get("players").getAsJsonArray();
 
-        links.forEach((element) -> {
-            JsonObject object = element.getAsJsonObject();
-            CACHED_LEVELS.put(UUID.fromString(object.get("uuid").getAsString()), Tier.ofValue(object.get("tier").getAsInt()));
-        });
+        try {
+            JsonElement json = JsonParser.parseString(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
+            JsonArray links = json.getAsJsonObject().get("players").getAsJsonArray();
+
+            links.forEach((element) -> {
+                JsonObject object = element.getAsJsonObject();
+                CACHED_LEVELS.put(UUID.fromString(object.get("uuid").getAsString()), Tier.ofValue(object.get("tier").getAsInt()));
+            });
+        } catch (Exception ex) {
+            LOGGER.error("Encountered error while fetching patronage levels");
+            throw ex;
+        }
 
         // Load forms
-        loadSpecialForms(client);
+        try {
+            loadSpecialForms(client);
+        } catch (Exception ex) {
+            LOGGER.error("Encountered error while loading special forms");
+            throw ex;
+        }
 
         // Load version
-        request = HttpRequest.newBuilder(URI.create(VERSION_DOCUMENT)).GET().build();
-        currentVersion = Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
+        try {
+            request = HttpRequest.newBuilder(URI.create(VERSION_DOCUMENT)).GET().build();
+            currentVersion = Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
+        } catch (Exception ex) {
+            LOGGER.error("Encountered error while fetching patron data version");
+            throw ex;
+        }
     }
 
     public static Tier getPlayerTier(Player player) {

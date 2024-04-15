@@ -10,6 +10,7 @@ import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -196,20 +197,18 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
             if (this.isTame()) {
-                /*if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    this.heal((float) itemstack.getFoodProperties(this).getNutrition());
-                    if (!player.getAbilities().instabuild) {
-                        itemstack.shrink(1);
-                    }
-
+                if (this.isTame() && this.isTameItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                    itemstack.shrink(1);
+                    this.heal(2.0F);
                     this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
                     return InteractionResult.SUCCESS;
-                }*/
-
-                /*else*/ {
+                } else {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
                     if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-                        this.setFollowOwner(!this.isFollowingOwner());
+                        boolean shouldFollow = !this.isFollowingOwner();
+                        this.setFollowOwner(shouldFollow);
+
+                        player.displayClientMessage(new TranslatableComponent(shouldFollow ? "text.changed.tamed.follow" : "text.changed.tamed.wander", this.getDisplayName()), true);
                         this.jumping = false;
                         this.navigation.stop();
                         this.setTarget((LivingEntity) null);

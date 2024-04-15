@@ -33,9 +33,9 @@ public class TaurChestPackLayer<T extends LatexEntity & LatexTaur<T>, M extends 
                 return;
 
             pose.pushPose();
-            ModelPart modelpart = this.getParentModel().getTorso();
+            ModelPart modelpart = this.getParentModel().getLowerTorso();
             modelpart.translateAndRotate(pose);
-            pose.translate(0.0D, entity.isCrouching() ? -14.97D / 16.0D : -15.0D / 16.0D, 7.0D / 16.0D);
+            pose.translate(0.0D, -1.51D - (2.0D / 16.0D), 7.0D / 16.0D);
             chestPackModel.renderToBuffer(pose, bufferSource.getBuffer(chestPackModel.renderType(chestPackModel.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
             pose.popPose();
         });

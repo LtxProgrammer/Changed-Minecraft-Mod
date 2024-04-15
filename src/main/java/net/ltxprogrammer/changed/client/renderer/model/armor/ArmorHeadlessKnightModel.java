@@ -39,7 +39,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
         this.RightLeg2 = LowerTorso.getChild("RightLeg2");
         this.LeftLeg2 = LowerTorso.getChild("LeftLeg2");
         this.Tail = LowerTorso.getChild("Tail");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLegs(Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
+        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLegsOld(Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
                 .forwardOffset(-7.0f);
     }
 
