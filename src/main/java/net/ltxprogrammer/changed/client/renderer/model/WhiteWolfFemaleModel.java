@@ -4,14 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.LightLatexWolfOrganic;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
+import net.ltxprogrammer.changed.entity.beast.WhiteWolfFemale;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexWolfOrganicModel extends AdvancedHumanoidModel<LightLatexWolfOrganic> implements AdvancedHumanoidModelInterface<LightLatexWolfOrganic, LightLatexWolfOrganicModel> {
+public class WhiteWolfFemaleModel extends AdvancedHumanoidModel<WhiteWolfFemale> implements AdvancedHumanoidModelInterface<WhiteWolfFemale, WhiteWolfFemaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
@@ -20,9 +23,9 @@ public class LightLatexWolfOrganicModel extends AdvancedHumanoidModel<LightLatex
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<LightLatexWolfOrganic, LightLatexWolfOrganicModel> animator;
+    private final HumanoidAnimator<WhiteWolfFemale, WhiteWolfFemaleModel> animator;
 
-    public LightLatexWolfOrganicModel(ModelPart root) {
+    public WhiteWolfFemaleModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -50,7 +53,14 @@ public class LightLatexWolfOrganicModel extends AdvancedHumanoidModel<LightLatex
     }
 
     @Override
-    public void prepareMobModel(LightLatexWolfOrganic p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoAlt();
+        return super.getTransfurHelperModel(limb);
+    }
+
+    @Override
+    public void prepareMobModel(WhiteWolfFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -59,7 +69,7 @@ public class LightLatexWolfOrganicModel extends AdvancedHumanoidModel<LightLatex
     }
 
     @Override
-    public void setupAnim(@NotNull LightLatexWolfOrganic entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull WhiteWolfFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -91,7 +101,7 @@ public class LightLatexWolfOrganicModel extends AdvancedHumanoidModel<LightLatex
     }
 
     @Override
-    public HumanoidAnimator<LightLatexWolfOrganic, LightLatexWolfOrganicModel> getAnimator() {
+    public HumanoidAnimator<WhiteWolfFemale, WhiteWolfFemaleModel> getAnimator() {
         return animator;
     }
 }
