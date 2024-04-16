@@ -148,7 +148,7 @@ public class ChangedEntities {
 
     public static final List<BiConsumer<BiomeLoadingEvent, List<MobSpawnSettings.SpawnerData>>> SPAWNING_ENTITY = new ArrayList<>();
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, Changed.MODID);
-    public static final Map<RegistryObject<? extends EntityType<?>>, RegistryObject<SimpleSpawnEggItem>> SPAWN_EGGS = new HashMap<>();
+    public static final Map<RegistryObject<? extends EntityType<?>>, RegistryObject<ForgeSpawnEggItem>> SPAWN_EGGS = new HashMap<>();
     public static final RegistryObject<EntityType<LightLatexWolfFemale>> WHITE_GOO_WOLF_FEMALE = register("light_latex_wolf_female", 0xFFFFFF, 0xFF927F,
             EntityType.Builder.of(LightLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
@@ -460,7 +460,7 @@ public class ChangedEntities {
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
         INIT_FUNC_REGISTRY.add(ChangedEntity.getInit(entityType, spawnType));
         ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, attributes));
-        RegistryObject<SimpleSpawnEggItem> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new SimpleSpawnEggItem(entityType, eggBack, eggHighlight,
+        RegistryObject<ForgeSpawnEggItem> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, eggBack, eggHighlight,
                 new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ENTITIES)));
         SPAWN_EGGS.put(entityType, spawnEggItem);
         SPAWNING_ENTITY.add((event, spawner) -> {
@@ -483,7 +483,7 @@ public class ChangedEntities {
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
         INIT_FUNC_REGISTRY.add(ChangedEntity.getInit(entityType, spawnType));
         ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, attributes));
-        RegistryObject<SimpleSpawnEggItem> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new SimpleSpawnEggItem(entityType, eggBack, eggHighlight,
+        RegistryObject<ForgeSpawnEggItem> spawnEggItem = ChangedItems.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(entityType, eggBack, eggHighlight,
                 new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ENTITIES)));
         SPAWN_EGGS.put(entityType, spawnEggItem);
         SPAWNING_ENTITY.add((event, spawner) -> {

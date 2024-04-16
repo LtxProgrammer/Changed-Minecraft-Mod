@@ -102,62 +102,6 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         return partList.get(random.nextInt(partList.size()));
     }
 
-    protected static final Vector3f HEAD_OFFSET = new Vector3f(0.0f, 26.5f, 0.0f);
-    protected static final Vector3f TORSO_OFFSET = new Vector3f(0.0f, 25.5f, 0.0f);
-    protected static final Vector3f RIGHT_ARM_OFFSET = new Vector3f(5.0f, 24.5f, 0.0f);
-    protected static final Vector3f LEFT_ARM_OFFSET = new Vector3f(-5.0f, 24.5f, 0.0f);
-    @Deprecated(forRemoval = true)
-    public static MeshDefinition process(MeshDefinition mesh) {
-        var root = mesh.getRoot();
-        var head = root.getChild("Head");
-        var torso = root.getChild("Torso");
-        var rightArm = root.getChild("RightArm");
-        var leftArm = root.getChild("LeftArm");
-
-        head.cubes.forEach(cube -> cube.origin.add(HEAD_OFFSET));
-        torso.cubes.forEach(cube -> cube.origin.add(TORSO_OFFSET));
-        rightArm.cubes.forEach(cube -> cube.origin.add(RIGHT_ARM_OFFSET));
-        leftArm.cubes.forEach(cube -> cube.origin.add(LEFT_ARM_OFFSET));
-
-        head.children.forEach((name, part) -> part.partPose = PartPose.offsetAndRotation(
-                part.partPose.x + HEAD_OFFSET.x(),
-                part.partPose.y + HEAD_OFFSET.y(),
-                part.partPose.z + HEAD_OFFSET.z(),
-                part.partPose.xRot,
-                part.partPose.yRot,
-                part.partPose.zRot)
-        );
-
-        torso.children.forEach((name, part) -> part.partPose = PartPose.offsetAndRotation(
-                part.partPose.x + TORSO_OFFSET.x(),
-                part.partPose.y + TORSO_OFFSET.y(),
-                part.partPose.z + TORSO_OFFSET.z(),
-                part.partPose.xRot,
-                part.partPose.yRot,
-                part.partPose.zRot)
-        );
-
-        rightArm.children.forEach((name, part) -> part.partPose = PartPose.offsetAndRotation(
-                part.partPose.x + RIGHT_ARM_OFFSET.x(),
-                part.partPose.y + RIGHT_ARM_OFFSET.y(),
-                part.partPose.z + RIGHT_ARM_OFFSET.z(),
-                part.partPose.xRot,
-                part.partPose.yRot,
-                part.partPose.zRot)
-        );
-
-        leftArm.children.forEach((name, part) -> part.partPose = PartPose.offsetAndRotation(
-                part.partPose.x + LEFT_ARM_OFFSET.x(),
-                part.partPose.y + LEFT_ARM_OFFSET.y(),
-                part.partPose.z + LEFT_ARM_OFFSET.z(),
-                part.partPose.xRot,
-                part.partPose.yRot,
-                part.partPose.zRot)
-        );
-
-        return mesh;
-    }
-
     public static <T> T last(List<T> list) {
         return list.get(list.size()-1);
     }
