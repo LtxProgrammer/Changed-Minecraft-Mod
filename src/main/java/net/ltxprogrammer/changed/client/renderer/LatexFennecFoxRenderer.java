@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexFennecFox;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexFennecFoxRenderer extends LatexHumanoidRenderer<LatexFennecFox, LatexFennecFoxModel, ArmorLatexMaleWolfModel<LatexFennecFox>> {
+public class LatexFennecFoxRenderer extends AdvancedHumanoidRenderer<LatexFennecFox, LatexFennecFoxModel, ArmorLatexMaleWolfModel<LatexFennecFox>> {
     public LatexFennecFoxRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexFennecFoxModel(context.bakeLayer(LatexFennecFoxModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

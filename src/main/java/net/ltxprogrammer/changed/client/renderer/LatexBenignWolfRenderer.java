@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexBenignWolf;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexBenignWolfRenderer extends LatexHumanoidRenderer<LatexBenignWolf, LatexBenignWolfModel, ArmorLatexMaleWolfModel<LatexBenignWolf>> {
+public class LatexBenignWolfRenderer extends AdvancedHumanoidRenderer<LatexBenignWolf, LatexBenignWolfModel, ArmorLatexMaleWolfModel<LatexBenignWolf>> {
     public LatexBenignWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBenignWolfModel(context.bakeLayer(LatexBenignWolfModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

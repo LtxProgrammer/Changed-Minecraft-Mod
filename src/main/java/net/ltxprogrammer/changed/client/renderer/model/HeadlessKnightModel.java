@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> implements LatexHumanoidModelInterface<HeadlessKnight, HeadlessKnightModel>, LowerTorsoedModel {
+public class HeadlessKnightModel extends AdvancedHumanoidModel<HeadlessKnight> implements AdvancedHumanoidModelInterface<HeadlessKnight, HeadlessKnightModel>, LowerTorsoedModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("headless_knight"), "main");
     private final ModelPart FrontRightLeg;
@@ -24,7 +24,7 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
     private final ModelPart BackLeftLeg;
     private final ModelPart LowerTorso;
     private final ModelPart Tail;
-    private final LatexAnimator<HeadlessKnight, HeadlessKnightModel> animator;
+    private final HumanoidAnimator<HeadlessKnight, HeadlessKnightModel> animator;
 
     public HeadlessKnightModel(ModelPart root) {
         super(root);
@@ -47,7 +47,7 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
         var rightLowerLeg2 = BackRightLeg.getChild("RightLowerLeg2");
         var rightFoot2 = rightLowerLeg2.getChild("RightFoot2");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLegs(
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.taurLegs(
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
                         LowerTorso, FrontLeftLeg, leftLowerLeg, leftLowerLeg.getChild("LeftFoot"), FrontRightLeg, rightLowerLeg, rightLowerLeg.getChild("RightFoot"),
                         BackLeftLeg, leftLowerLeg2, leftFoot2, leftFoot2.getChild("LeftPad2"), BackRightLeg, rightLowerLeg2, rightFoot2, rightFoot2.getChild("RightPad2")))
@@ -138,10 +138,11 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
     @Override
     public void setupAnim(@NotNull HeadlessKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type.isArm())
             corrector.translate(0.0f, 4.0f / 18.0f, 0.1f);
         return corrector;
@@ -149,6 +150,10 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.FrontLeftLeg : this.FrontRightLeg;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.BackLeftLeg : this.BackRightLeg;
     }
 
     public ModelPart getHead() {
@@ -165,7 +170,7 @@ public class HeadlessKnightModel extends LatexHumanoidModel<HeadlessKnight> impl
     }
 
     @Override
-    public LatexAnimator<HeadlessKnight, HeadlessKnightModel> getAnimator() {
+    public HumanoidAnimator<HeadlessKnight, HeadlessKnightModel> getAnimator() {
         return animator;
     }
 

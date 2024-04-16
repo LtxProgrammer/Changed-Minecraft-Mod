@@ -210,6 +210,7 @@ dependencies {
 
     compileOnly fg.deobf("virtuoel:Pehkui-3.7.11+1.18.2-forge:3.7.11")
     compileOnly fg.deobf("dev.tr7zw:notenoughanimations-forge-1.7.0-mc1.18.2:1.7.0")
+    implementation fg.deobf("dev.tr7zw:firstperson-forge-2.3.2-mc1.18.2:2.3.2")
 
     // Uncomment here to test the dragons
     // implementation fg.deobf("software.bernie:geckolib-forge-1.18:3.0.57")

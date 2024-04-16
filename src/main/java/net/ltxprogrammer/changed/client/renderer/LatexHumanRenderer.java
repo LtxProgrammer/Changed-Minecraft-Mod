@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexHumanRenderer extends LatexHumanoidRenderer<LatexHuman, LatexHumanModel, ArmorHumanModel<LatexHuman>> {
+public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, LatexHumanModel, ArmorHumanModel<LatexHuman>> {
 	public LatexHumanRenderer(EntityRendererProvider.Context context, boolean slim) {
 		super(context, new LatexHumanModel(context.bakeLayer(
 				slim ? LatexHumanModel.LAYER_LOCATION_SLIM : LatexHumanModel.LAYER_LOCATION)),

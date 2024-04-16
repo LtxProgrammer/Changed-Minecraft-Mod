@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
@@ -11,7 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-public class CustomLatexEntity extends LatexEntity {
+public class CustomLatexEntity extends ChangedEntity {
     public enum TorsoType {
         GENERIC,
         CHISELED,
@@ -188,7 +188,7 @@ public class CustomLatexEntity extends LatexEntity {
         setArmType(getArmType().cycle());
     }
 
-    public CustomLatexEntity(EntityType<? extends LatexEntity> type, Level level) {
+    public CustomLatexEntity(EntityType<? extends ChangedEntity> type, Level level) {
         super(type, level);
     }
 

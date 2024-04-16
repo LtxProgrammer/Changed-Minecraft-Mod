@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexBlueDragonRenderer extends LatexHumanoidRenderer<LatexBlueDragon, LatexBlueDragonModel, ArmorLatexMaleDragonModel<LatexBlueDragon>> {
+public class LatexBlueDragonRenderer extends AdvancedHumanoidRenderer<LatexBlueDragon, LatexBlueDragonModel, ArmorLatexMaleDragonModel<LatexBlueDragon>> {
     public LatexBlueDragonRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBlueDragonModel(context.bakeLayer(LatexBlueDragonModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

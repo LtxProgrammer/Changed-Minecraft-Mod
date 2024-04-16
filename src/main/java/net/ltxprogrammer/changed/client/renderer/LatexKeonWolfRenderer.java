@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexKeonWolf;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexKeonWolfRenderer extends LatexHumanoidRenderer<LatexKeonWolf, LatexKeonWolfModel, ArmorLatexMaleWolfModel<LatexKeonWolf>> {
+public class LatexKeonWolfRenderer extends AdvancedHumanoidRenderer<LatexKeonWolf, LatexKeonWolfModel, ArmorLatexMaleWolfModel<LatexKeonWolf>> {
     public LatexKeonWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexKeonWolfModel(context.bakeLayer(LatexKeonWolfModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

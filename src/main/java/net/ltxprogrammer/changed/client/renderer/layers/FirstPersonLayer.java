@@ -20,7 +20,7 @@ public interface FirstPersonLayer<T extends LivingEntity> {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity livingEntity))
             return;
         if (livingEntity instanceof PlayerDataExtension playerData && playerData.getLatexVariant() != null)
-            livingEntity = playerData.getLatexVariant().getLatexEntity();
+            livingEntity = playerData.getLatexVariant().getChangedEntity();
 
         final LivingEntity renderEntity = livingEntity;
         if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(renderEntity) instanceof LivingEntityRenderer livingEntityRenderer) {

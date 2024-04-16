@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -29,7 +29,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     private final ModelPart LeftLeg2;
     private final ModelPart LowerTorso;
     private final ModelPart Tail;
-    private final LatexAnimator<HeadlessKnight, ArmorHeadlessKnightModel> animator;
+    private final HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> animator;
 
     public ArmorHeadlessKnightModel(ModelPart root) {
         this.LowerTorso = root.getChild("LowerTorso");
@@ -39,7 +39,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
         this.RightLeg2 = LowerTorso.getChild("RightLeg2");
         this.LeftLeg2 = LowerTorso.getChild("LeftLeg2");
         this.Tail = LowerTorso.getChild("Tail");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.taurLegsOld(Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.taurLegsOld(Tail, List.of(), LeftLeg, RightLeg, LowerTorso, LeftLeg2, RightLeg2))
                 .forwardOffset(-7.0f);
     }
 
@@ -91,7 +91,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
-    public LatexAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator() {
+    public HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator() {
         return animator;
     }
 

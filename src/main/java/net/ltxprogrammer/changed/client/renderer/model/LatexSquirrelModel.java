@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSquirrel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implements LatexHumanoidModelInterface<LatexSquirrel, LatexSquirrelModel> {
+public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> implements AdvancedHumanoidModelInterface<LatexSquirrel, LatexSquirrelModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squirrel"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSquirrel, LatexSquirrelModel> animator;
+    private final HumanoidAnimator<LatexSquirrel, LatexSquirrelModel> animator;
 
     public LatexSquirrelModel(ModelPart root) {
         super(root);
@@ -35,7 +35,7 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -148,17 +148,22 @@ public class LatexSquirrelModel extends LatexHumanoidModel<LatexSquirrel> implem
     }
 
     @Override
-    public LatexAnimator<LatexSquirrel, LatexSquirrelModel> getAnimator() {
+    public HumanoidAnimator<LatexSquirrel, LatexSquirrelModel> getAnimator() {
         return animator;
     }
 
     @Override
     public void setupAnim(LatexSquirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {

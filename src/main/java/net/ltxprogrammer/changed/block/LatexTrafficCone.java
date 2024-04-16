@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -70,7 +72,7 @@ public class LatexTrafficCone extends AbstractCustomShapeBlock implements Wearab
 
     @Override
     public void wearTick(LivingEntity entity, ItemStack itemStack) {
-        if (ProcessTransfur.progressTransfur(entity, 2.5f, LatexVariant.LATEX_TRAFFIC_CONE_DRAGON))
+        if (ProcessTransfur.progressTransfur(entity, 2.5f, TransfurVariant.LATEX_TRAFFIC_CONE_DRAGON, TransfurContext.hazard(TransfurCause.CEILING_HAZARD)))
             itemStack.shrink(1);
     }
 }

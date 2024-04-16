@@ -7,12 +7,11 @@ import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.LightLatexWolfOrganicModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.LightLatexWolfOrganic;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightLatexWolfOrganicRenderer extends LatexHumanoidRenderer<LightLatexWolfOrganic, LightLatexWolfOrganicModel, ArmorLatexMaleWolfModel<LightLatexWolfOrganic>> {
+public class LightLatexWolfOrganicRenderer extends AdvancedHumanoidRenderer<LightLatexWolfOrganic, LightLatexWolfOrganicModel, ArmorLatexMaleWolfModel<LightLatexWolfOrganic>> {
     public LightLatexWolfOrganicRenderer(EntityRendererProvider.Context context) {
         super(context, new LightLatexWolfOrganicModel(context.bakeLayer(LightLatexWolfMaleModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

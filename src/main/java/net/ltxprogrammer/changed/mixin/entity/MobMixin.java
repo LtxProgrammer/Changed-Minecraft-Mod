@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ public abstract class MobMixin extends LivingEntity {
     protected void registerGoals(CallbackInfo info) {
         Mob self = (Mob)(Object)this;
         if (self.getType().is(ChangedTags.EntityTypes.HUMANOIDS) || self instanceof IronGolem || self instanceof Raider)
-            self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, LatexEntity.class, true));
+            self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, ChangedEntity.class, true));
         if (self instanceof IronGolem ironGolem)
             self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true, livingEntity -> {
                 if (ironGolem.isPlayerCreated())

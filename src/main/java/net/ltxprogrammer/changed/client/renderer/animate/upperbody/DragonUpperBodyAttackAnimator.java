@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.EntityModel;
@@ -12,22 +12,21 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class DragonUpperBodyAttackAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public class DragonUpperBodyAttackAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public DragonUpperBodyAttackAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.ATTACK;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.ATTACK;
     }
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         rightArm.yRot = 0.0F;
         leftArm.yRot = 0.0F;
-        var self = entity.getSelfVariant();
-        if (self.itemUseMode != UseItemMode.NORMAL)
+        if (entity.getItemUseMode() != UseItemMode.NORMAL)
             return;
 
         boolean mainHandRight = entity.getMainArm() == HumanoidArm.RIGHT;

@@ -6,13 +6,12 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfFemaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexFemaleWolfModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfFemale;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class DarkLatexWolfFemaleRenderer extends LatexHumanoidRenderer<DarkLatexWolfFemale, DarkLatexWolfFemaleModel, ArmorLatexFemaleWolfModel<DarkLatexWolfFemale>> {
+public class DarkLatexWolfFemaleRenderer extends AdvancedHumanoidRenderer<DarkLatexWolfFemale, DarkLatexWolfFemaleModel, ArmorLatexFemaleWolfModel<DarkLatexWolfFemale>> {
 	public DarkLatexWolfFemaleRenderer(EntityRendererProvider.Context context) {
 		super(context, new DarkLatexWolfFemaleModel(context.bakeLayer(DarkLatexWolfFemaleModel.LAYER_LOCATION)),
 				ArmorLatexFemaleWolfModel::new, ArmorLatexFemaleWolfModel.INNER_ARMOR, ArmorLatexFemaleWolfModel.OUTER_ARMOR, 0.5f);

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -66,5 +67,9 @@ public class DarkLatexWolfPartial extends AbstractDarkLatexEntity {
         if (getUnderlyingPlayer() instanceof AbstractClientPlayer clientPlayer)
             return clientPlayer.getModelName();
         return DefaultPlayerSkin.getSkinModelName(this.getUUID());
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexYuin extends LatexEntity implements PowderSnowWalkable, PatronOC {
+public class LatexYuin extends ChangedEntity implements PowderSnowWalkable, PatronOC {
     public LatexYuin(EntityType<? extends LatexYuin> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.fluid;
 
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -30,7 +30,7 @@ public abstract class WhiteLatexFluid extends AbstractLatexFluid {
             .explosionResistance(100f)
             .bucket(ChangedItems.WHITE_LATEX_BUCKET).block(ChangedBlocks.WHITE_LATEX_FLUID);
 
-    public WhiteLatexFluid() { super(PROPERTIES, LatexType.WHITE_LATEX, List.of(LatexVariant.WHITE_LATEX_WOLF)); }
+    public WhiteLatexFluid() { super(PROPERTIES, LatexType.WHITE_LATEX, List.of(TransfurVariant.WHITE_LATEX_WOLF)); }
 
     @Override
     public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {
@@ -44,7 +44,7 @@ public abstract class WhiteLatexFluid extends AbstractLatexFluid {
 
     @Override
     public boolean canEntityStandOn(LivingEntity entity) {
-        var variant = LatexVariant.getEntityVariant(entity);
+        var variant = TransfurVariant.getEntityVariant(entity);
         return variant != null && variant.getLatexType() == LatexType.WHITE_LATEX;
     }
 

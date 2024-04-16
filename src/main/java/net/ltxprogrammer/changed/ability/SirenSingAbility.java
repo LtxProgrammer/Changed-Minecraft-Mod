@@ -6,7 +6,7 @@ public class SirenSingAbility extends AbstractAbility<SirenSingAbilityInstance> 
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.HOLD;
     }
 }

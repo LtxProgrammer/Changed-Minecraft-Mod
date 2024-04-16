@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.block;
 
 import com.google.common.collect.ImmutableList;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.minecraft.core.BlockPos;
@@ -28,9 +28,9 @@ public class LatexCrystal extends AbstractLatexCrystal {
         this.spawnable = spawnable;
     }
 
-    private Predicate<LatexEntity> matchesType(EntityType<?> type) {
-        return latexEntity -> {
-            return latexEntity.getType() == type;
+    private Predicate<ChangedEntity> matchesType(EntityType<?> type) {
+        return ChangedEntity -> {
+            return ChangedEntity.getType() == type;
         };
     }
 
@@ -42,7 +42,7 @@ public class LatexCrystal extends AbstractLatexCrystal {
             return;
 
         var entityType = spawnable.get(random.nextInt(spawnable.size())).get();
-        if (level.getNearbyEntities(LatexEntity.class, TargetingConditions.forNonCombat(), null, AABB.of(
+        if (level.getNearbyEntities(ChangedEntity.class, TargetingConditions.forNonCombat(), null, AABB.of(
                 BoundingBox.fromCorners(position.offset(-50, -50, -50), position.offset(50, 50, 50)))).stream()
                 .filter(matchesType(entityType)).toList().size() > 35)
             return;

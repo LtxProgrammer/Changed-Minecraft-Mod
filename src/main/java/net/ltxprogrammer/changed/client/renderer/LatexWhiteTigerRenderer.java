@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexWhiteTiger;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexWhiteTigerRenderer extends LatexHumanoidRenderer<LatexWhiteTiger, LatexWhiteTigerModel, ArmorLatexMaleCatModel<LatexWhiteTiger>> {
+public class LatexWhiteTigerRenderer extends AdvancedHumanoidRenderer<LatexWhiteTiger, LatexWhiteTigerModel, ArmorLatexMaleCatModel<LatexWhiteTiger>> {
     public LatexWhiteTigerRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexWhiteTigerModel(context.bakeLayer(LatexWhiteTigerModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

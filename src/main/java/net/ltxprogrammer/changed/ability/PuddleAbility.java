@@ -8,19 +8,19 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class PuddleAbility extends SimpleAbility {
     @Override
-    public void startUsing(IAbstractLatex entity) {
-        if (entity.getLatexEntity() instanceof DarkLatexPup pup) {
+    public void startUsing(IAbstractChangedEntity entity) {
+        if (entity.getChangedEntity() instanceof DarkLatexPup pup) {
             entity.getEntity().playSound(ChangedSounds.POISON, 1, 1);
             pup.setPuddle(true);
         }
     }
 
     @Override
-    public void tick(IAbstractLatex entity) {
+    public void tick(IAbstractChangedEntity entity) {
         entity.getEntity().setDeltaMovement(0, Math.min(entity.getEntity().getDeltaMovement().y, 0), 0);
         entity.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 5, false, false, false));
 
-        entity.getLevel().getEntitiesOfClass(LivingEntity.class, entity.getLatexEntity().getBoundingBox().inflate(0.25, 0, 0.25)).forEach(caught -> {
+        entity.getLevel().getEntitiesOfClass(LivingEntity.class, entity.getChangedEntity().getBoundingBox().inflate(0.25, 0, 0.25)).forEach(caught -> {
             if (caught == entity.getEntity())
                 return;
             caught.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, false, false, false));
@@ -28,14 +28,14 @@ public class PuddleAbility extends SimpleAbility {
     }
 
     @Override
-    public void stopUsing(IAbstractLatex entity) {
-        if (entity.getLatexEntity() instanceof DarkLatexPup pup) {
+    public void stopUsing(IAbstractChangedEntity entity) {
+        if (entity.getChangedEntity() instanceof DarkLatexPup pup) {
             pup.setPuddle(false);
         }
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.HOLD;
     }
 }

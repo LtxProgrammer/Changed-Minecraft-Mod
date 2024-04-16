@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable, PatronOC {
+public class LatexBlueDragon extends ChangedEntity implements PowderSnowWalkable, PatronOC {
     public LatexBlueDragon(EntityType<? extends LatexBlueDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -38,5 +38,9 @@ public class LatexBlueDragon extends LatexEntity implements PowderSnowWalkable, 
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#eef9ff");
     }
 }

@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.block.entity.DroppedSyringeBlockEntity;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -44,7 +46,7 @@ public class DroppedSyringe extends Block implements EntityBlock, NonLatexCovera
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
             level.getBlockEntity(pos, ChangedBlockEntities.DROPPED_SYRINGE.get()).ifPresent(droppedSyringeBlockEntity -> {
-                if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, droppedSyringeBlockEntity.getVariant()))
+                if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, droppedSyringeBlockEntity.getVariant(), TransfurContext.hazard(TransfurCause.LATEX_SYRINGE_FLOOR)))
                     level.removeBlock(pos, false);
             });
         }

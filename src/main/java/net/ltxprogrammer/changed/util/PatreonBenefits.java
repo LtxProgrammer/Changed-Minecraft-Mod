@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.data.DeferredModelLayerLocation;
 import net.ltxprogrammer.changed.data.DelayLoadedModel;
 import net.ltxprogrammer.changed.data.OnlineResource;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.ChatFormatting;
@@ -238,7 +238,7 @@ public class PatreonBenefits {
             String defaultState,
             Map<String, EntityData> entityData,
             Map<String, ModelData> modelData,
-            LatexVariant<?> variant
+            TransfurVariant<?> variant
     ) {
         public EntityData getDefaultEntity() {
             return entityData.get(defaultState);
@@ -298,7 +298,7 @@ public class PatreonBenefits {
                     dState,
                     entities,
                     models,
-                    LatexVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject(), injectedAbilities)
+                    TransfurVariant.fromJson(Changed.modResource("special/form_" + uuid), object.get("variant").getAsJsonObject(), injectedAbilities)
             );
         }
     }
@@ -380,7 +380,7 @@ public class PatreonBenefits {
 
         AtomicInteger count = new AtomicInteger(0);
 
-        ChangedRegistry.LATEX_VARIANT.get().unfreeze();
+        ChangedRegistry.TRANSFUR_VARIANT.get().unfreeze();
         formLocations.forEach((element) -> {
             JsonObject object = element.getAsJsonObject();
             if (GsonHelper.getAsInt(object, "version", 1) > COMPATIBLE_VERSION)
@@ -405,12 +405,12 @@ public class PatreonBenefits {
             });*/
 
             CACHED_SPECIAL_FORMS.put(form.playerUUID, form);
-            LatexVariant.registerSpecial(form.variant);
-            ChangedRegistry.LATEX_VARIANT.get().register(form.variant);
+            TransfurVariant.registerSpecial(form.variant);
+            ChangedRegistry.TRANSFUR_VARIANT.get().register(form.variant);
             count.getAndIncrement();
         });
 
-        ChangedRegistry.LATEX_VARIANT.get().freeze();
+        ChangedRegistry.TRANSFUR_VARIANT.get().freeze();
         LOGGER.info("Updated {} patreon special forms", count.get());
     }
 
@@ -488,7 +488,7 @@ public class PatreonBenefits {
         return CACHED_SPECIAL_FORMS.getOrDefault(player, null);
     }
 
-    public static LatexVariant<?> getPlayerSpecialVariant(UUID player) {
+    public static TransfurVariant<?> getPlayerSpecialVariant(UUID player) {
         SpecialForm form = getPlayerSpecialForm(player);
         if (form == null)
             return null;

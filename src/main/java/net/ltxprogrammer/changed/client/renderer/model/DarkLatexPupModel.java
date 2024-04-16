@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implements LatexHumanoidModelInterface<DarkLatexPup, DarkLatexPupModel> {
+public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> implements AdvancedHumanoidModelInterface<DarkLatexPup, DarkLatexPupModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_pup"), "main");
     private final ModelPart RightLegBack;
@@ -24,7 +24,7 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
     private final ModelPart Body;
     private final ModelPart Tail;
     private final ModelPart Puddle;
-    private final LatexAnimator<DarkLatexPup, DarkLatexPupModel> animator;
+    private final HumanoidAnimator<DarkLatexPup, DarkLatexPupModel> animator;
 
     public DarkLatexPupModel(ModelPart root) {
         super(root);
@@ -37,7 +37,7 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
         this.LeftFrontLeg = root.getChild("LeftFrontLeg");
         this.Puddle = root.getChild("Puddle");
 
-        animator = LatexAnimator.of(this);
+        animator = HumanoidAnimator.of(this);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -234,10 +234,15 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
             this.RightFrontLeg.zRot = f / 2.0F;
             this.LeftFrontLeg.zRot = f / 2.0F;
         }
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.LeftFrontLeg : this.RightFrontLeg;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLegBack : this.RightLegBack;
     }
 
     public ModelPart getHead() {
@@ -260,7 +265,7 @@ public class DarkLatexPupModel extends LatexHumanoidModel<DarkLatexPup> implemen
     }
 
     @Override
-    public LatexAnimator<DarkLatexPup, DarkLatexPupModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexPup, DarkLatexPupModel> getAnimator() {
         return animator;
     }
 }

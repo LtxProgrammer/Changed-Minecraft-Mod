@@ -1,9 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-public class MilkPudding extends LatexEntity {
+public class MilkPudding extends ChangedEntity {
     public MilkPudding(EntityType<? extends MilkPudding> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -36,12 +36,12 @@ public class MilkPudding extends LatexEntity {
     }
 
     @Override
-    public LatexVariant<?> getTransfurVariant() {
-        return LatexVariant.LIGHT_LATEX_WOLF.randomGender(random);
+    public TransfurVariant<?> getTransfurVariant() {
+        return TransfurVariant.LIGHT_LATEX_WOLF.randomGender(random);
     }
 
     @Override
-    public LatexVariant<?> getSelfVariant() {
+    public TransfurVariant<?> getSelfVariant() {
         return null;
     }
 
@@ -56,7 +56,7 @@ public class MilkPudding extends LatexEntity {
     }
 
     @Override
-    public double getLatexMaxHealth() {
+    public double getTransfurMaxHealth() {
         return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 8.0);
     }
 }

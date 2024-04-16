@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.advancements.critereon;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -14,7 +14,7 @@ import java.util.Set;
 public class TransfurPredicate {
     public static final TransfurPredicate ANY = new TransfurPredicate();
     @Nullable
-    private final Set<LatexVariant<?>> forms;
+    private final Set<TransfurVariant<?>> forms;
     @Nullable
     private final LatexType type;
     private final boolean flying;
@@ -37,7 +37,7 @@ public class TransfurPredicate {
         this.legless = false;
     }
 
-    public TransfurPredicate(Set<LatexVariant<?>> forms) {
+    public TransfurPredicate(Set<TransfurVariant<?>> forms) {
         this.forms = forms;
         this.type = null;
         this.flying = false;
@@ -53,11 +53,11 @@ public class TransfurPredicate {
         this.legless = legless;
     }
 
-    public boolean matches(LatexVariant<?> form) {
+    public boolean matches(TransfurVariant<?> form) {
         if (this == ANY)
             return true;
         if (forms != null)
-            for (LatexVariant<?> setForm : forms)
+            for (TransfurVariant<?> setForm : forms)
                 if (setForm.getFormId() == form.getFormId())
                     return true;
         if (type != null)
@@ -81,15 +81,15 @@ public class TransfurPredicate {
             if (jsonObject.has("forms")) {
                 JsonArray jsonArray = GsonHelper.getAsJsonArray(jsonObject, "forms");
                 if (jsonArray != null) {
-                    ImmutableSet.Builder<LatexVariant<?>> builder = ImmutableSet.builder();
+                    ImmutableSet.Builder<TransfurVariant<?>> builder = ImmutableSet.builder();
                     for (var element : jsonArray) {
                         ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.convertToString(element, "form"));
-                        if (!LatexVariant.PUBLIC_LATEX_FORMS.contains(resourcelocation))
+                        if (!TransfurVariant.PUBLIC_LATEX_FORMS.contains(resourcelocation))
                             throw new JsonSyntaxException("Unknown form id '" + resourcelocation + "'");
-                        builder.add(ChangedRegistry.LATEX_VARIANT.get().getValue(resourcelocation));
+                        builder.add(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(resourcelocation));
                     }
 
-                    Set<LatexVariant<?>> set = builder.build();
+                    Set<TransfurVariant<?>> set = builder.build();
                     if (!set.isEmpty())
                         return new TransfurPredicate(set);
                 }

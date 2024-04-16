@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
@@ -60,9 +60,9 @@ public class RecipeCategories {
     public static final RecipeBookCategories INFUSER_AERIAL = registerBookCategory("CHANGED_INFUSER_AERIAL", new ItemStack(Items.ELYTRA));
     public static final RecipeBookCategories INFUSER_GENDERED = registerBookCategory("CHANGED_INFUSER_GENDERED",
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), LatexVariant.LATEX_SHARK.getFormId()),
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.LATEX_SHARK.getFormId()),
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), LatexVariant.DARK_LATEX_WOLF.female().getFormId()));
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.DARK_LATEX_WOLF.female().getFormId()));
 
     public static void registerCategories() {
         registerTypeCategories(ChangedRecipeTypes.INFUSER_BOOK, ChangedRecipeTypes.INFUSER_RECIPE, INFUSER_SEARCH, ImmutableList.of(
@@ -71,7 +71,7 @@ public class RecipeCategories {
             ResourceLocation form = recipe.form;
             if (recipe.gendered)
                 form = new ResourceLocation(form.toString() + "/male"); // Default male for preview
-            LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(form);
+            TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form);
             List<RecipeBookCategories> categories = new ArrayList<>();
             if (variant == null)
                 return categories;

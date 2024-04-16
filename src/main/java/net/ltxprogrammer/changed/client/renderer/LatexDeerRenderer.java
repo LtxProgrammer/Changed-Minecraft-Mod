@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexDeer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexDeerRenderer extends LatexHumanoidRenderer<LatexDeer, LatexDeerModel, ArmorLatexDeerModel<LatexDeer>> {
+public class LatexDeerRenderer extends AdvancedHumanoidRenderer<LatexDeer, LatexDeerModel, ArmorLatexDeerModel<LatexDeer>> {
     public LatexDeerRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexDeerModel(context.bakeLayer(LatexDeerModel.LAYER_LOCATION)),
                 ArmorLatexDeerModel::new, ArmorLatexDeerModel.INNER_ARMOR, ArmorLatexDeerModel.OUTER_ARMOR, 0.5f);

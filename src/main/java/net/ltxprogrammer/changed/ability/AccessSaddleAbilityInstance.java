@@ -9,7 +9,7 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
     public ItemStack saddle = ItemStack.EMPTY;
     public ItemStack chest = ItemStack.EMPTY;
 
-    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, IAbstractLatex entity) {
+    public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 

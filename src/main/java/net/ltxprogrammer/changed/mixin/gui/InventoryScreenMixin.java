@@ -41,7 +41,7 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
         if (!Changed.config.client.useGoopyInventory.get())
             return;
 
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
                 return;
 
@@ -64,7 +64,7 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
         if (!Changed.config.client.useGoopyInventory.get())
             return;
 
-        ProcessTransfur.ifPlayerLatex(this.minecraft.player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
             if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
                 return;
 

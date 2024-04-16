@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexLeafRenderer extends LatexHumanoidRenderer<LatexLeaf, LatexLeafModel, ArmorLatexBigTailDragonModel<LatexLeaf>> {
+public class LatexLeafRenderer extends AdvancedHumanoidRenderer<LatexLeaf, LatexLeafModel, ArmorLatexBigTailDragonModel<LatexLeaf>> {
     public LatexLeafRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexLeafModel(context.bakeLayer(LatexLeafModel.LAYER_LOCATION)),
                 ArmorLatexBigTailDragonModel::new, ArmorLatexBigTailDragonModel.INNER_ARMOR, ArmorLatexBigTailDragonModel.OUTER_ARMOR, 0.5f);

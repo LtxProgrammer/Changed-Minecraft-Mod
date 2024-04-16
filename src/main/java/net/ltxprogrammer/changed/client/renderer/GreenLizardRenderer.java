@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.GreenLizard;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class GreenLizardRenderer extends LatexHumanoidRenderer<GreenLizard, GreenLizardModel, ArmorLatexMaleDragonModel<GreenLizard>> {
+public class GreenLizardRenderer extends AdvancedHumanoidRenderer<GreenLizard, GreenLizardModel, ArmorLatexMaleDragonModel<GreenLizard>> {
     public GreenLizardRenderer(EntityRendererProvider.Context context) {
         super(context, new GreenLizardModel(context.bakeLayer(GreenLizardModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

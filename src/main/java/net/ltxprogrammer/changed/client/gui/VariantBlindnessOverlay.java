@@ -33,10 +33,10 @@ public class VariantBlindnessOverlay {
             Player player = Minecraft.getInstance().player;
             if (player == null || !ProcessTransfur.isPlayerLatex(player))
                 return;
-            var variant = ProcessTransfur.getPlayerLatexVariant(player);
+            var variant = ProcessTransfur.getPlayerTransfurVariant(player);
             if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
                 return;
-            if (variant.getLatexEntity() instanceof DarkLatexEntity darkLatex && (darkLatex.isMaskless()
+            if (variant.getChangedEntity() instanceof DarkLatexEntity darkLatex && (darkLatex.isMaskless()
                 || player.hasEffect(MobEffects.NIGHT_VISION)))
                 return;
             float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;

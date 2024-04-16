@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class TaurQuadrupedalStandAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
+public class TaurQuadrupedalStandAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
     public final ModelPart frontLeftLegLower, frontLeftFoot;
     public final ModelPart frontRightLegLower, frontRightFoot;
     public final ModelPart backLeftLegLower, backLeftFoot, backLeftPad;
@@ -31,8 +31,8 @@ public class TaurQuadrupedalStandAnimator<T extends LatexEntity, M extends Entit
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.STAND;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.STAND;
     }
 
     @Override

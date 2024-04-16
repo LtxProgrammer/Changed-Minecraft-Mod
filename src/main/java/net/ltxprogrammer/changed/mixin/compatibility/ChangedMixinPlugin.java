@@ -13,6 +13,7 @@ import java.util.Set;
 
 public class ChangedMixinPlugin implements IMixinConfigPlugin {
     private static final Map<String, String> MOD_ID_MAP = new ImmutableMap.Builder<String, String>()
+            .put("net.ltxprogrammer.changed.mixin.compatibility.FirstPerson", "firstperson")
             .put("net.ltxprogrammer.changed.mixin.compatibility.HardcoreRevival", "hardcorerevival")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Moonlight", "selene")
             .put("net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations", "notenoughanimations")

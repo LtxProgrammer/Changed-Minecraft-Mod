@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -25,7 +25,7 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
+        TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(player);
         if (variant != null && variant.getLatexType() == LatexType.WHITE_LATEX &&
                 /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
             if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)
@@ -41,11 +41,11 @@ public class WhiteLatexFluidBlock extends AbstractLatexFluidBlock implements Whi
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
-        if (entity instanceof LatexEntity latexEntity) {
-            if (latexEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
-                latexEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
+        if (entity instanceof ChangedEntity ChangedEntity) {
+            if (ChangedEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                ChangedEntity.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         }
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), (player, variantInstance) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), (player, variantInstance) -> {
             if (variantInstance.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                 player.hurt(ChangedDamageSources.WHITE_LATEX, 3.0f);
         });

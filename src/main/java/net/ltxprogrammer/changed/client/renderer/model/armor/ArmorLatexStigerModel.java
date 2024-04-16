@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexStigerModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> {
+public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_stiger")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_stiger")).get();
 
@@ -34,7 +34,7 @@ public class ArmorLatexStigerModel<T extends LatexEntity> extends LatexHumanoidA
     private final ModelPart RightArm2;
     private final ModelPart LeftArm3;
     private final ModelPart RightArm3;
-    private final LatexAnimator<T, ArmorLatexStigerModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexStigerModel<T>> animator;
 
     public ArmorLatexStigerModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -49,7 +49,7 @@ public class ArmorLatexStigerModel<T extends LatexEntity> extends LatexHumanoidA
         this.LeftArm3 = root.getChild("LeftArm3");
         this.RightArm3 = root.getChild("RightArm3");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .addPreset(AnimatorPresets.armSetTwo(LeftArm, RightArm, LeftArm2, RightArm2))
                 .addPreset(AnimatorPresets.armSetThree(LeftArm, RightArm, LeftArm3, RightArm3));
     }
@@ -133,7 +133,7 @@ public class ArmorLatexStigerModel<T extends LatexEntity> extends LatexHumanoidA
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexStigerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexStigerModel<T>> getAnimator() {
         return animator;
     }
 }

@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -52,7 +52,7 @@ public class DarkLatexBlock extends AbstractLatexBlock {
     );
 
     @SubscribeEvent
-    public static void onLatexCover(AbstractLatexGoo.CoveringBlockEvent event) {
+    public static void onLatexCover(AbstractLatexItem.CoveringBlockEvent event) {
         if (event.latexType != LatexType.DARK_LATEX)
             return;
 

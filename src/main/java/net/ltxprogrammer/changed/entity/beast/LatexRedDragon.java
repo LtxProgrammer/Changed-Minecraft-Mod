@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class LatexRedDragon extends LatexEntity implements PatronOC {
+public class LatexRedDragon extends ChangedEntity implements PatronOC {
     public LatexRedDragon(EntityType<? extends LatexRedDragon> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -41,5 +41,9 @@ public class LatexRedDragon extends LatexEntity implements PatronOC {
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#d496a2");
     }
 }

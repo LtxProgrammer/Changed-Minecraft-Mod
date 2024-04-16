@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexPinkDeerRenderer extends LatexHumanoidRenderer<LatexPinkDeer, LatexPinkDeerModel, ArmorLatexMaleDragonModel<LatexPinkDeer>> {
+public class LatexPinkDeerRenderer extends AdvancedHumanoidRenderer<LatexPinkDeer, LatexPinkDeerModel, ArmorLatexMaleDragonModel<LatexPinkDeer>> {
     public LatexPinkDeerRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexPinkDeerModel(context.bakeLayer(LatexPinkDeerModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

@@ -4,7 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +18,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFemale> implements LatexHumanoidModelInterface<LatexSquidDogFemale, LatexSquidDogFemaleModel>, DoubleArmedModel {
+public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDogFemale> implements AdvancedHumanoidModelInterface<LatexSquidDogFemale, LatexSquidDogFemaleModel>, DoubleArmedModel {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_female"), "main");
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -26,7 +29,7 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
     private final ModelPart LeftLeg;
     private final ModelPart RightLeg;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> animator;
+    private final HumanoidAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> animator;
 
     public LatexSquidDogFemaleModel(ModelPart root) {
         super(root);
@@ -74,13 +77,20 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
         lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentacleQuaternaryLL"));
         lowerLeftTentacle.add(last(lowerLeftTentacle).getChild("TentaclePadLL"));
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(13.0f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(13.0f)
                 .addPreset(AnimatorPresets.squidDogLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary), upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
         animator.torsoWidth = 5.2f;
+    }
+
+    @Override
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorso();
+        return super.getTransfurHelperModel(limb);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -275,12 +285,13 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
     }
 
     @Override
-    public void setupAnim(LatexSquidDogFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float HeadPitch) {
-        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, HeadPitch);
+    public void setupAnim(LatexSquidDogFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         /*if (type.isArm())
             corrector.translate(0.0f, -6f / 16.0f, 0.0f);*/
         return corrector;
@@ -294,11 +305,16 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
         };
     }
 
-    public ModelPart getLowerArm(HumanoidArm humanoidArm) {
+    @Override
+    public ModelPart getOtherArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     @Override
@@ -309,7 +325,7 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
 
     @Override
     public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
-        this.getLowerArm(arm).translateAndRotate(poseStack);
+        this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
@@ -319,7 +335,7 @@ public class LatexSquidDogFemaleModel extends LatexHumanoidModel<LatexSquidDogFe
     }
 
     @Override
-    public LatexAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> getAnimator() {
         return animator;
     }
 

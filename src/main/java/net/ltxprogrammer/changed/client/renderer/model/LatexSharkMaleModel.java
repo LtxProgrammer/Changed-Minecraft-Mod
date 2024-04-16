@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSharkMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> implements LatexHumanoidModelInterface<LatexSharkMale, LatexSharkMaleModel> {
+public class LatexSharkMaleModel extends AdvancedHumanoidModel<LatexSharkMale> implements AdvancedHumanoidModelInterface<LatexSharkMale, LatexSharkMaleModel> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_shark_male"), "main");
 	private final ModelPart RightLeg;
@@ -30,7 +30,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 	private final ModelPart Head;
 	private final ModelPart Torso;
 	private final ModelPart Tail;
-	private final LatexAnimator<LatexSharkMale, LatexSharkMaleModel> animator;
+	private final HumanoidAnimator<LatexSharkMale, LatexSharkMaleModel> animator;
 
 	public LatexSharkMaleModel(ModelPart root) {
 		super(root);
@@ -41,7 +41,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		this.Tail = Torso.getChild("Tail");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+		animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
 				.hipOffset(-1.0f).legLength(16.0f).armLength(16.0f).torsoLength(16.0f);
 	}
 
@@ -202,7 +202,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
 	}
 	public PoseStack getPlacementCorrectors(CorrectorType type) {
-		PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+		PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
 		if (type.isArm())
 			corrector.translate(0.0f, 7.0f / 14.0f, 0.0f);
 		return corrector;
@@ -213,17 +213,22 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 	}
 
 	@Override
-	public LatexAnimator<LatexSharkMale, LatexSharkMaleModel> getAnimator() {
+	public HumanoidAnimator<LatexSharkMale, LatexSharkMaleModel> getAnimator() {
 		return animator;
 	}
 
 	@Override
 	public void setupAnim(LatexSharkMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 
 	public ModelPart getArm(HumanoidArm p_102852_) {
 		return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+	}
+
+	public ModelPart getLeg(HumanoidArm p_102852_) {
+		return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 	}
 
 	public ModelPart getHead() {
@@ -244,7 +249,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 
-	public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexSharkMale, Remodel> {
+	public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<LatexSharkMale, Remodel> {
 		private final ModelPart RightLeg;
 		private final ModelPart LeftLeg;
 		private final ModelPart RightArm;
@@ -252,7 +257,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		private final ModelPart Head;
 		private final ModelPart Torso;
 		private final ModelPart Tail;
-		private final LatexAnimator<LatexSharkMale, Remodel> animator;
+		private final HumanoidAnimator<LatexSharkMale, Remodel> animator;
 
 		public Remodel(ModelPart root) {
 			super(root);
@@ -263,7 +268,7 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 			this.Tail = Torso.getChild("Tail");
 			this.RightArm = root.getChild("RightArm");
 			this.LeftArm = root.getChild("LeftArm");
-			animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+			animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
 					.hipOffset(-2.0f).legLength(14.0f).armLength(14.0f).torsoLength(14.0f);
 			animator.torsoWidth = 6.0f;
 		}
@@ -355,12 +360,16 @@ public class LatexSharkMaleModel extends LatexHumanoidModel<LatexSharkMale> impl
 		}
 
 		@Override
-		public LatexAnimator<LatexSharkMale, Remodel> getAnimator() {
+		public HumanoidAnimator<LatexSharkMale, Remodel> getAnimator() {
 			return animator;
 		}
 
 		public ModelPart getArm(HumanoidArm p_102852_) {
 			return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+		}
+
+		public ModelPart getLeg(HumanoidArm p_102852_) {
+			return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 		}
 
 		public ModelPart getHead() {

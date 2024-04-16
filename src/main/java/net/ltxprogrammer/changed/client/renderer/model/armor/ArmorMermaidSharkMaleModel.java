@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkHeadInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkHeadSwimAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkMaleModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkMaleModel<T>> {
+public class ArmorMermaidSharkMaleModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkMaleModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();
 
@@ -31,7 +31,7 @@ public class ArmorMermaidSharkMaleModel<T extends LatexEntity> extends LatexHuma
     private final ModelPart Torso;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorMermaidSharkMaleModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorMermaidSharkMaleModel<T>> animator;
 
     public ArmorMermaidSharkMaleModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -39,7 +39,7 @@ public class ArmorMermaidSharkMaleModel<T extends LatexEntity> extends LatexHuma
         this.LeftArm = root.getChild("LeftArm");
         this.RightArm = root.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
+        this.animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
                 .addPreset(AnimatorPresets.sharkUpperBody(Head, Torso, LeftArm, RightArm))
                 .addAnimator(new SharkHeadInitAnimator<>(Head))
                 .addAnimator(new SharkHeadSwimAnimator<>(Head))
@@ -69,7 +69,7 @@ public class ArmorMermaidSharkMaleModel<T extends LatexEntity> extends LatexHuma
     }
 
     @Override
-    public LatexAnimator<T, ArmorMermaidSharkMaleModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorMermaidSharkMaleModel<T>> getAnimator() {
         return animator;
     }
 

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class SummonSharksAbility extends SimpleAbility {
     @Override
-    public boolean canUse(IAbstractLatex entity) {
+    public boolean canUse(IAbstractChangedEntity entity) {
         return entity.isInWaterOrBubble();
     }
 
@@ -21,7 +21,7 @@ public class SummonSharksAbility extends SimpleAbility {
     }
 
     @Override
-    public void startUsing(IAbstractLatex entity) {
+    public void startUsing(IAbstractChangedEntity entity) {
         var level = entity.getLevel();
         if (level.isClientSide)
             return;
@@ -44,17 +44,17 @@ public class SummonSharksAbility extends SimpleAbility {
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.CHARGE_TIME;
     }
 
     @Override
-    public int getChargeTime(IAbstractLatex entity) {
+    public int getChargeTime(IAbstractChangedEntity entity) {
         return 40;
     }
 
     @Override
-    public int getCoolDown(IAbstractLatex entity) {
+    public int getCoolDown(IAbstractChangedEntity entity) {
         return 2 * 60 * 20; // 2 Minutes
     }
 }

@@ -47,7 +47,7 @@ Then replace `meshdefinition` in the return line with `process(meshdefinition)`
 ## New entity
 Of course, you can't register a model for an entity that doesn't exist yet!
 In *src/main/java/net/ltxprogrammer/changed/entity/beast* create a new Java class for your entity.
-Make sure this entity class extends `LatexEntity` or a specific already existing latex entity.
+Make sure this entity class extends `ChangedEntity` or a specific already existing latex entity.
 When you're done, don't forget to register it in `ChangedEntities` with an appropriate name, egg foreground and background color, and spawning rules.
 
 Back to your model file, replace instances of the old entity class in the class with your new entity class.

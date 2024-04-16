@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSniperDog;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSniperDogModel extends LatexHumanoidModel<LatexSniperDog> implements LatexHumanoidModelInterface<LatexSniperDog, LatexSniperDogModel> {
+public class LatexSniperDogModel extends AdvancedHumanoidModel<LatexSniperDog> implements AdvancedHumanoidModelInterface<LatexSniperDog, LatexSniperDogModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_sniper_dog"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class LatexSniperDogModel extends LatexHumanoidModel<LatexSniperDog> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSniperDog, LatexSniperDogModel> animator;
+    private final HumanoidAnimator<LatexSniperDog, LatexSniperDogModel> animator;
 
     public LatexSniperDogModel(ModelPart root) {
         super(root);
@@ -52,7 +52,7 @@ public class LatexSniperDogModel extends LatexHumanoidModel<LatexSniperDog> impl
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -150,10 +150,15 @@ public class LatexSniperDogModel extends LatexHumanoidModel<LatexSniperDog> impl
     @Override
     public void setupAnim(@NotNull LatexSniperDog entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -175,7 +180,7 @@ public class LatexSniperDogModel extends LatexHumanoidModel<LatexSniperDog> impl
     }
 
     @Override
-    public LatexAnimator<LatexSniperDog, LatexSniperDogModel> getAnimator() {
+    public HumanoidAnimator<LatexSniperDog, LatexSniperDogModel> getAnimator() {
         return animator;
     }
 }

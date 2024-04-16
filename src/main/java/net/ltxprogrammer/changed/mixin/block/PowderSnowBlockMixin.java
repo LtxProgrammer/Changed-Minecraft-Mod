@@ -16,8 +16,8 @@ public abstract class PowderSnowBlockMixin {
     private static void canEntityWalkOnPowderSnow(Entity p_154256_, CallbackInfoReturnable<Boolean> callback) {
         if (p_154256_ instanceof PowderSnowWalkable) {
             callback.setReturnValue(true);
-        } else ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(p_154256_), variant -> {
-            if (variant.getLatexEntity() instanceof PowderSnowWalkable)
+        } else ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(p_154256_), variant -> {
+            if (variant.getChangedEntity() instanceof PowderSnowWalkable)
                 callback.setReturnValue(true);
         });
     }

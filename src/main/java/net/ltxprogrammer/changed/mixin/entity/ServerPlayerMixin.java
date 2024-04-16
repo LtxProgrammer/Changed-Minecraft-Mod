@@ -5,7 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.network.packet.MountLatexPacket;
+import net.ltxprogrammer.changed.network.packet.MountTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
@@ -35,10 +35,13 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     public void restoreFrom(ServerPlayer player, boolean restore, CallbackInfo callbackInfo) {
         ServerPlayer self = (ServerPlayer)(Object)this;
         if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM) || restore) {
-            ProcessTransfur.ifPlayerLatex(player, oldVariant -> {
-                var newVariant = ProcessTransfur.setPlayerLatexVariant(self, oldVariant.getParent());
-                newVariant.loadAbilities(oldVariant.saveAbilities());
-                newVariant.getLatexEntity().readPlayerVariantData(oldVariant.getLatexEntity().savePlayerVariantData());
+            ProcessTransfur.ifPlayerTransfurred(player, oldVariant -> {
+                if (!oldVariant.willSurviveTransfur)
+                    return;
+
+                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.cause, oldVariant.transfurProgression);
+                newVariant.load(oldVariant.save());
+                newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
             });
         }
     }
@@ -50,30 +53,25 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         }
         if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType")) {
             if (tag.get("TransfurProgress") instanceof IntTag intTag) { // Adapt to old progress saving method
-                ProcessTransfur.setPlayerTransfurProgress(this,
-                        new ProcessTransfur.TransfurProgress((float)intTag.getAsInt() * 0.001f,
-                                ChangedRegistry.LATEX_VARIANT.get().getValue(new ResourceLocation(tag.getString("TransfurProgressType")))));
+                ProcessTransfur.setPlayerTransfurProgress(this, (float)intTag.getAsInt() * 0.001f);
             } else if (tag.get("TransfurProgress") instanceof FloatTag floatTag) {
-                ProcessTransfur.setPlayerTransfurProgress(this,
-                        new ProcessTransfur.TransfurProgress(floatTag.getAsFloat(),
-                                ChangedRegistry.LATEX_VARIANT.get().getValue(new ResourceLocation(tag.getString("TransfurProgressType")))));
+                ProcessTransfur.setPlayerTransfurProgress(this, floatTag.getAsFloat());
             }
         }
-        if (tag.contains("LatexVariant")) {
-            ProcessTransfur.setPlayerLatexVariantNamed(this, TagUtil.getResourceLocation(tag, "LatexVariant"));
-            if (tag.contains("LatexVariantAge")) {
-                ProcessTransfur.ifPlayerLatex(this, variant -> {
-                    variant.ageAsVariant = tag.getInt("LatexVariantAge");
-                });
+        if (tag.contains("TransfurVariant")) {
+            final var variant = ProcessTransfur.setPlayerTransfurVariant(this, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "TransfurVariant")));
+            if (tag.contains("TransfurVariantData"))
+                variant.load(tag.getCompound("TransfurVariantData"));
+            else {
+                if (tag.contains("TransfurVariantAge"))
+                    variant.ageAsVariant = tag.getInt("TransfurVariantAge");
+                if (tag.contains("TransfurAbilities"))
+                    variant.loadAbilities(tag.getCompound("TransfurAbilities"));
             }
-        }
 
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
-            if (tag.contains("LatexAbilities"))
-                variant.loadAbilities(tag.getCompound("LatexAbilities"));
-            if (tag.contains("LatexData"))
-                variant.getLatexEntity().readPlayerVariantData(tag.getCompound("LatexData"));
-        });
+            if (tag.contains("TransfurData"))
+                variant.getChangedEntity().readPlayerVariantData(tag.getCompound("LatexData"));
+        }
 
         if (tag.contains("PlayerMover")) {
             try {
@@ -91,16 +89,14 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
     protected void addAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         tag.putInt("PaleExposure", Pale.getPaleExposure(this));
-        tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this).progress());
-        tag.putString("TransfurProgressType", ProcessTransfur.getPlayerTransfurProgress(this).variant().getFormId().toString());
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
-            TagUtil.putResourceLocation(tag, "LatexVariant", variant.getFormId());
-            tag.put("LatexAbilities", variant.saveAbilities());
-            tag.putInt("LatexVariantAge", variant.ageAsVariant);
+        tag.putFloat("TransfurProgress", ProcessTransfur.getPlayerTransfurProgress(this));
+        ProcessTransfur.ifPlayerTransfurred(this, variant -> {
+            TagUtil.putResourceLocation(tag, "TransfurVariant", variant.getFormId());
+            tag.put("TransfurVariantData", variant.save());
 
-            var entityData = variant.getLatexEntity().savePlayerVariantData();
+            var entityData = variant.getChangedEntity().savePlayerVariantData();
             if (!entityData.isEmpty())
-                tag.put("LatexData", entityData);
+                tag.put("TransfurData", entityData);
         });
         var mover = getPlayerMover();
         if (mover != null) {
@@ -118,7 +114,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
     @Inject(method = "stopRiding", at = @At("HEAD"))
     public void stopRiding(CallbackInfo callbackInfo) {
         if (this.getVehicle() instanceof Player)
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountLatexPacket(getUUID(), getUUID()));
+            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new MountTransfurPacket(getUUID(), getUUID()));
     }
 
     @Override

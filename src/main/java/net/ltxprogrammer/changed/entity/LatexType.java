@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.entity;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.item.AbstractLatexBucket;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -22,10 +22,10 @@ import java.util.function.Supplier;
 
 public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL(),
-    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedEntities.DARK_LATEX_PUP, Color3.DARK, MaterialColor.COLOR_GRAY),
+    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedEntities.BLACK_GOO_PUP, Color3.DARK, MaterialColor.COLOR_GRAY),
     WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedItems.WHITE_LATEX_BUCKET, ChangedBlocks.WHITE_LATEX_BLOCK, () -> null /* null for now */, Color3.WHITE, MaterialColor.QUARTZ);
 
-    public final Supplier<? extends AbstractLatexGoo> goo;
+    public final Supplier<? extends AbstractLatexItem> goo;
     public final Supplier<? extends AbstractLatexBucket> gooBucket;
     public final Supplier<? extends Block> block;
     public final Supplier<? extends EntityType<?>> pup;
@@ -40,7 +40,7 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
         this.color = Color3.WHITE;
         this.materialColor = MaterialColor.WOOL;
     }
-    LatexType(Supplier<? extends AbstractLatexGoo> goo, Supplier<? extends AbstractLatexBucket> gooBucket, Supplier<? extends Block> block, Supplier<? extends EntityType<?>> pup, Color3 color,
+    LatexType(Supplier<? extends AbstractLatexItem> goo, Supplier<? extends AbstractLatexBucket> gooBucket, Supplier<? extends Block> block, Supplier<? extends EntityType<?>> pup, Color3 color,
               MaterialColor materialColor) {
         this.goo = goo;
         this.gooBucket = gooBucket;
@@ -51,12 +51,12 @@ public enum LatexType implements StringRepresentable, IExtensibleEnum {
     }
 
     public static LatexType getEntityLatexType(@NotNull Entity entity) {
-        if (entity instanceof LatexEntity latexEntity) {
-            return latexEntity.getLatexType();
+        if (entity instanceof ChangedEntity ChangedEntity) {
+            return ChangedEntity.getLatexType();
         }
 
         else
-            return ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), LatexVariantInstance::getLatexType, () -> null);
+            return ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), TransfurVariantInstance::getLatexType, () -> null);
     }
 
     public static boolean hasLatexType(@NotNull Entity entity) {

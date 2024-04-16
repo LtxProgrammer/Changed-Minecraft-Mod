@@ -3,12 +3,12 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.HeadInitAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorSpecialLatexModel<T>> {
+public class ArmorSpecialLatexModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorSpecialLatexModel<T>> {
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -25,7 +25,7 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<T, ArmorSpecialLatexModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorSpecialLatexModel<T>> animator;
 
     public ArmorSpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
         this.RightLeg = root.getChild("RightLeg");
@@ -35,7 +35,7 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
         this.Tail = form.animationData().hasTail() ? Torso.getChild("Tail") : null;
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this); // TODO better configuration for patreon forms
+        animator = HumanoidAnimator.of(this); // TODO better configuration for patreon forms
         animator.addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm));
         animator.addPreset(AnimatorPresets.bipedal(LeftLeg, RightLeg))
                 .addAnimator(new HeadInitAnimator<>(Head))
@@ -89,7 +89,7 @@ public class ArmorSpecialLatexModel<T extends LatexEntity> extends LatexHumanoid
     }
 
     @Override
-    public LatexAnimator<T, ArmorSpecialLatexModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorSpecialLatexModel<T>> getAnimator() {
         return animator;
     }
 }

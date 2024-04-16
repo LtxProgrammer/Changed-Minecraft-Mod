@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> implements LatexHumanoidModelInterface<WhiteLatexWolf, WhiteLatexWolfModel> {
+public class WhiteLatexWolfModel extends AdvancedHumanoidModel<WhiteLatexWolf> implements AdvancedHumanoidModelInterface<WhiteLatexWolf, WhiteLatexWolfModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_latex_wolf"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<WhiteLatexWolf, WhiteLatexWolfModel> animator;
+    private final HumanoidAnimator<WhiteLatexWolf, WhiteLatexWolfModel> animator;
 
     public WhiteLatexWolfModel(ModelPart root) {
         super(root);
@@ -52,7 +52,7 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -148,10 +148,15 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
     @Override
     public void setupAnim(@NotNull WhiteLatexWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -173,7 +178,7 @@ public class WhiteLatexWolfModel extends LatexHumanoidModel<WhiteLatexWolf> impl
     }
 
     @Override
-    public LatexAnimator<WhiteLatexWolf, WhiteLatexWolfModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexWolf, WhiteLatexWolfModel> getAnimator() {
         return animator;
     }
 }

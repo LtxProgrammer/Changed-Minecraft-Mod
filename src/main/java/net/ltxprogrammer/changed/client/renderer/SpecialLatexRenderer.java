@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.SpecialLatexModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSpecialLatexModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.util.DynamicClient;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, SpecialLatexModel, ArmorSpecialLatexModel<SpecialLatex>> {
+public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex, SpecialLatexModel, ArmorSpecialLatexModel<SpecialLatex>> {
     private static final Map<Pair<UUID, String>, SpecialLatexRenderer> SPECIAL_RENDERERS = new HashMap<>();
     private final EntityRendererProvider.Context context;
     private final boolean isDelegate;
@@ -93,7 +93,7 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
     }
 
     @Nullable
-    protected RenderType getRenderType(SpecialLatex entity, boolean p_115323_, boolean p_115324_, boolean p_115325_) {
+    public RenderType getRenderType(SpecialLatex entity, boolean p_115323_, boolean p_115324_, boolean p_115325_) {
         var opt = runIfValid(entity, renderer -> { return renderer.getRenderType(entity, p_115323_, p_115324_, p_115325_); });
         if (opt.isEmpty())
             return super.getRenderType(entity, p_115323_, p_115324_, p_115325_);
@@ -113,7 +113,7 @@ public class SpecialLatexRenderer extends LatexHumanoidRenderer<SpecialLatex, Sp
                 Changed.modResource("textures/delay_loaded_latex.png");
     }
 
-    public LatexHumanoidModel<SpecialLatex> getModel(LatexEntity entity) {
+    public AdvancedHumanoidModel<SpecialLatex> getModel(ChangedEntity entity) {
         if (entity instanceof SpecialLatex specialLatex) {
             var opt = runIfValid(specialLatex, renderer -> { return renderer.getModel(); });
             if (opt.isEmpty())

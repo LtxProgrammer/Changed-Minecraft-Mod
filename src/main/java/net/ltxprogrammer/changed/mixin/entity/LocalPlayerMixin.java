@@ -58,7 +58,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
 
     @Inject(method = "getWaterVision", at = @At("RETURN"), cancellable = true)
     private void getWaterVision(CallbackInfoReturnable<Float> callback) {
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(this, variant -> {
             if (!variant.getParent().getBreatheMode().canBreatheWater())
                 return;
             if (!this.isEyeInFluid(FluidTags.WATER))
@@ -86,7 +86,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         LocalPlayer player = (LocalPlayer)(Object)this;
         if (!player.level.isClientSide) return;
 
-        ProcessTransfur.ifPlayerLatex(player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             if (variant.getParent().canGlide) {
                 KeyboardInput kb;
                 if (input instanceof KeyboardInput k) kb = k;
@@ -153,9 +153,9 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
 
     @Inject(method = "isMovingSlowly", at = @At("HEAD"), cancellable = true)
     public void isMovingSlowly(CallbackInfoReturnable<Boolean> callback) {
-        ProcessTransfur.ifPlayerLatex(this, variant -> {
-            if (variant.getLatexEntity() != null)
-                callback.setReturnValue(variant.getLatexEntity().isMovingSlowly());
+        ProcessTransfur.ifPlayerTransfurred(this, variant -> {
+            if (variant.getChangedEntity() != null)
+                callback.setReturnValue(variant.getChangedEntity().isMovingSlowly());
         });
     }
 

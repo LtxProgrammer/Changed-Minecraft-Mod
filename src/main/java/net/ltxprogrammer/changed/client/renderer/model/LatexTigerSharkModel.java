@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexTigerShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> implements LatexHumanoidModelInterface<LatexTigerShark, LatexTigerSharkModel> {
+public class LatexTigerSharkModel extends AdvancedHumanoidModel<LatexTigerShark> implements AdvancedHumanoidModelInterface<LatexTigerShark, LatexTigerSharkModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_tiger_shark"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexTigerShark, LatexTigerSharkModel> animator;
+    private final HumanoidAnimator<LatexTigerShark, LatexTigerSharkModel> animator;
 
     public LatexTigerSharkModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.sharkLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -152,7 +152,7 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
 
     @Override
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        var corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        var corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type == CorrectorType.HAIR)
             corrector.translate(0.0f, 0.25f / 16f, 0.0f);
         return corrector;
@@ -170,10 +170,15 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
     @Override
     public void setupAnim(@NotNull LatexTigerShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -195,7 +200,7 @@ public class LatexTigerSharkModel extends LatexHumanoidModel<LatexTigerShark> im
     }
 
     @Override
-    public LatexAnimator<LatexTigerShark, LatexTigerSharkModel> getAnimator() {
+    public HumanoidAnimator<LatexTigerShark, LatexTigerSharkModel> getAnimator() {
         return animator;
     }
 }

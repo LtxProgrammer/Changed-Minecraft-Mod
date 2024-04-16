@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexHypnoCatRenderer extends LatexHumanoidRenderer<LatexHypnoCat, LatexHypnoCatModel, ArmorLatexMaleCatModel<LatexHypnoCat>> {
+public class LatexHypnoCatRenderer extends AdvancedHumanoidRenderer<LatexHypnoCat, LatexHypnoCatModel, ArmorLatexMaleCatModel<LatexHypnoCat>> {
     public LatexHypnoCatRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexHypnoCatModel(context.bakeLayer(LatexHypnoCatModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

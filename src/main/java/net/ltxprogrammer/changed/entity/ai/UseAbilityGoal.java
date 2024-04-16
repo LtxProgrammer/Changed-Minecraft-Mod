@@ -3,8 +3,8 @@ package net.ltxprogrammer.changed.entity.ai;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.CollectionUtil;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -14,15 +14,15 @@ import java.util.function.Predicate;
 
 public class UseAbilityGoal extends Goal {
     private final Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilitiesCache;
-    private final LatexEntity latex;
-    private final IAbstractLatex abstractLatex;
+    private final ChangedEntity latex;
+    private final IAbstractChangedEntity abstractLatex;
     private AbstractAbility<?> selectedAbility = null;
 
     public UseAbilityGoal(
-            Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilities, LatexEntity latex) {
+            Cacheable<Map<AbstractAbility<?>, Pair<Predicate<AbstractAbilityInstance>, AbstractAbilityInstance>>> abilities, ChangedEntity latex) {
         this.abilitiesCache = abilities;
         this.latex = latex;
-        this.abstractLatex = IAbstractLatex.forLatex(latex);
+        this.abstractLatex = IAbstractChangedEntity.forEntity(latex);
     }
 
     public AbstractAbilityInstance getSelectedAbility() {

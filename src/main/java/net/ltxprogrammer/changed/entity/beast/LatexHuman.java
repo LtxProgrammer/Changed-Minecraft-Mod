@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class LatexHuman extends LatexEntity {
+public class LatexHuman extends ChangedEntity {
     protected static final EntityDataAccessor<Optional<UUID>> DATA_PLAYER = SynchedEntityData.defineId(LatexHuman.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public LatexHuman(EntityType<? extends LatexHuman> p_19870_, Level p_19871_) {
@@ -163,12 +163,12 @@ public class LatexHuman extends LatexEntity {
     }
 
     @Override
-    public void onReplicateOther(IAbstractLatex other, LatexVariant<?> variant) {
+    public void onReplicateOther(IAbstractChangedEntity other, TransfurVariant<?> variant) {
         super.onReplicateOther(other, variant);
         //if (this.getUUID() != this.getRepresentUUID()) return;
 
-        if (variant == LatexVariant.LATEX_HUMAN) {
-            if (other.getLatexEntity() instanceof LatexHuman human) {
+        if (variant == TransfurVariant.LATEX_HUMAN) {
+            if (other.getChangedEntity() instanceof LatexHuman human) {
                 human.setRepresentPlayer(this.getRepresentUUID());
             }
         }

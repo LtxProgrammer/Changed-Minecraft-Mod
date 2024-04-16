@@ -1,10 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SpecialLatex extends LatexEntity {
+public class SpecialLatex extends ChangedEntity {
     private UUID assignedUUID = null;
     public String wantedState = "default";
     public List<String> possibleModels = new ArrayList<>();
     public PatreonBenefits.SpecialForm specialLatexForm = null;
 
-    public SpecialLatex(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
+    public SpecialLatex(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
     
@@ -40,7 +40,7 @@ public class SpecialLatex extends LatexEntity {
         return specialLatexForm.entityData().getOrDefault(wantedState, specialLatexForm.getDefaultEntity());
     }
 
-    public void setSpecialLatexForm(UUID uuid) {
+    public void setSpecialForm(UUID uuid) {
         this.assignedUUID = uuid;
         this.specialLatexForm = PatreonBenefits.getPlayerSpecialForm(uuid);
     }
@@ -110,7 +110,7 @@ public class SpecialLatex extends LatexEntity {
     }
 
     @Override
-    public LatexVariant<?> getTransfurVariant() {
+    public TransfurVariant<?> getTransfurVariant() {
         return specialLatexForm.variant();
     }
 

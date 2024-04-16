@@ -1,12 +1,11 @@
 package net.ltxprogrammer.changed.mixin.server;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.network.packet.SetLatexVariantDataPacket;
+import net.ltxprogrammer.changed.network.packet.SetTransfurVariantDataPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Final;
@@ -22,12 +21,12 @@ public abstract class ServerEntityMixin {
 
     @Inject(method = "sendDirtyEntityData", at = @At("RETURN"))
     private void andSendLatexVariant(CallbackInfo ci) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this.entity), variant -> {
-            var entity = variant.getLatexEntity();
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this.entity), variant -> {
+            var entity = variant.getChangedEntity();
 
             SynchedEntityData synchedentitydata = entity.getEntityData();
             if (synchedentitydata.isDirty()) {
-                var packet = new SetLatexVariantDataPacket(this.entity.getId(), synchedentitydata, false);
+                var packet = new SetTransfurVariantDataPacket(this.entity.getId(), synchedentitydata, false);
                 Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.entity), packet);
             }
         });

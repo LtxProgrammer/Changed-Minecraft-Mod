@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexRedPanda;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexRedPandaRenderer extends LatexHumanoidRenderer<LatexRedPanda, LatexRedPandaModel, ArmorLatexMaleCatModel<LatexRedPanda>> {
+public class LatexRedPandaRenderer extends AdvancedHumanoidRenderer<LatexRedPanda, LatexRedPandaModel, ArmorLatexMaleCatModel<LatexRedPanda>> {
     public LatexRedPandaRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexRedPandaModel(context.bakeLayer(LatexRedPandaModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

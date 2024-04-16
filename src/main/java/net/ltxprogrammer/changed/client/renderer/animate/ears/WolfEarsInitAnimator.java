@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer.animate.ears;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -10,14 +10,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
-public class WolfEarsInitAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractEarsAnimator<T, M> {
+public class WolfEarsInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractEarsAnimator<T, M> {
     public WolfEarsInitAnimator(ModelPart leftEar, ModelPart rightEar) {
         super(leftEar, rightEar);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.INIT;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.INIT;
     }
 
     @Override

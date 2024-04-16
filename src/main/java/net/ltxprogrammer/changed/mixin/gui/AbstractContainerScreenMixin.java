@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.mixin.gui;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.world.inventory.SlotWrapper;
@@ -44,7 +44,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
 
     @Unique
     @Nullable
-    private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> getOverridesForVariant(LatexVariant<?> variant) {
+    private static Map<ResourceLocation, Pair<ResourceLocation, ResourceLocation>> getOverridesForVariant(TransfurVariant<?> variant) {
         if (variant.legCount == 0)
             return ABDOMEN_SLOT_OVERRIDES;
         else if (variant.legCount == 4)
@@ -69,7 +69,7 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                 menu = invMenu;
 
             if (menu != null) {
-                ProcessTransfur.ifPlayerLatex(menu.owner, variant -> {
+                ProcessTransfur.ifPlayerTransfurred(menu.owner, variant -> {
                     var originalPair = slot.getNoItemIcon();
                     var overrides = getOverridesForVariant(variant.getParent());
                     if (overrides != null && originalPair != null && overrides.containsKey(originalPair.getSecond())) {

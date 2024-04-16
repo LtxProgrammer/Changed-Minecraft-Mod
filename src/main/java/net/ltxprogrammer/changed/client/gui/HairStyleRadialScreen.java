@@ -5,11 +5,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.HairStyleRadialMenu;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRadialMenu> {
     public final HairStyleRadialMenu menu;
-    public final LatexVariantInstance<?> variant;
+    public final TransfurVariantInstance<?> variant;
     public final List<HairStyle> styles;
     private int tickCount = 0;
 
@@ -36,10 +36,10 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         this.imageHeight = 0;
         this.menu = menu;
         this.variant = menu.variant;
-        this.styles = variant.getLatexEntity().getValidHairStyles();
+        this.styles = variant.getChangedEntity().getValidHairStyles();
     }
 
-    public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, LatexEntity entity, float alpha) {
+    public static void renderEntityHeadWithHair(int x, int y, int scale, float lookX, float lookY, ChangedEntity entity, float alpha) {
         float f = (float)Math.atan((double)(lookX / 40.0F));
         float f1 = (float)Math.atan((double)(lookY / 40.0F));
         PoseStack posestack = RenderSystem.getModelViewStack();
@@ -72,7 +72,7 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
             var renderer = dispatcher.getRenderer(entity);
-            if (renderer instanceof LatexHumanoidRenderer latexRenderer) {
+            if (renderer instanceof AdvancedHumanoidRenderer latexRenderer) {
                 var head = latexRenderer.getModel(entity).getHead();
                 boolean vis = head.visible;
                 head.visible = true;
@@ -115,24 +115,24 @@ public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRad
         x = x * 0.9;
         y = (y * 0.9) - 16;
 
-        var oldStyle = variant.getLatexEntity().getHairStyle();
-        variant.getLatexEntity().setHairStyle(styles.get(section));
+        var oldStyle = variant.getChangedEntity().getHairStyle();
+        variant.getChangedEntity().setHairStyle(styles.get(section));
         renderEntityHeadWithHair((int)x + this.leftPos, (int)y + 32 + this.topPos, 40,
                 (float)(this.leftPos) - mouseX + (int)x,
                 (float)(this.topPos) - mouseY + (int)y,
-                variant.getLatexEntity(), alpha);
-        variant.getLatexEntity().setHairStyle(oldStyle);
+                variant.getChangedEntity(), alpha);
+        variant.getChangedEntity().setHairStyle(oldStyle);
     }
 
     @Override
     public boolean handleClicked(int section, SingleRunnable close) {
-        this.variant.getLatexEntity().setHairStyle(styles.get(section));
-        ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(IAbstractLatex.forPlayer(menu.player));
+        this.variant.getChangedEntity().setHairStyle(styles.get(section));
+        ChangedAbilities.getAbility(ChangedAbilities.SELECT_HAIRSTYLE.getId()).setDirty(IAbstractChangedEntity.forPlayer(menu.player));
         return true;
     }
 
     @Override
     public boolean isSelected(int section) {
-        return styles.size() > section && variant.getLatexEntity().getHairStyle() == styles.get(section);
+        return styles.size() > section && variant.getChangedEntity().getHairStyle() == styles.get(section);
     }
 }

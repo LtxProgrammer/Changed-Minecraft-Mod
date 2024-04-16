@@ -7,7 +7,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexMantaRayMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMantaRayMaleRenderer extends LatexHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel, ArmorLatexSharkModel<LatexMantaRayMale>> {
+public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel, ArmorLatexSharkModel<LatexMantaRayMale>> {
     public LatexMantaRayMaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
                 ArmorLatexSharkModel::new, ArmorLatexSharkModel.INNER_ARMOR, ArmorLatexSharkModel.OUTER_ARMOR, 0.5f);
@@ -18,7 +18,7 @@ public class LatexMantaRayMaleRenderer extends LatexHumanoidRenderer<LatexMantaR
         return Changed.modResource("textures/latex_manta_ray_male.png");
     }
 
-    public static class Remodel extends LatexHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel.Remodel, ArmorLatexSharkModel.RemodelMale<LatexMantaRayMale>> {
+    public static class Remodel extends AdvancedHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel.Remodel, ArmorLatexSharkModel.RemodelMale<LatexMantaRayMale>> {
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new LatexMantaRayMaleModel.Remodel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
                     ArmorLatexSharkModel.RemodelMale::new, ArmorLatexSharkModel.RemodelMale.INNER_ARMOR, ArmorLatexSharkModel.RemodelMale.OUTER_ARMOR, 0.5f);

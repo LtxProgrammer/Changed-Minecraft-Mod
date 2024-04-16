@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, PatronOC {
-    public DarkLatexDragon(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
+public class DarkLatexDragon extends ChangedEntity implements DarkLatexEntity, PatronOC {
+    public DarkLatexDragon(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
@@ -30,6 +30,11 @@ public class DarkLatexDragon extends LatexEntity implements DarkLatexEntity, Pat
     @Override
     public Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? Color3.DARK : Color3.GRAY;
+    }
+
+    @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
     }
 
     @Override

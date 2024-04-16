@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexLeaf extends LatexEntity implements PatronOC {
-    public LatexLeaf(EntityType<? extends LatexEntity> p_19870_, Level p_19871_) {
+public class LatexLeaf extends ChangedEntity implements PatronOC {
+    public LatexLeaf(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
@@ -35,5 +35,9 @@ public class LatexLeaf extends LatexEntity implements PatronOC {
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#bff198");
     }
 }

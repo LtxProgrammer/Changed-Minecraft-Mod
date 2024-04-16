@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements LatexHumanoidModelInterface<LatexHuman, LatexHumanModel> {
+public class LatexHumanModel extends AdvancedHumanoidModel<LatexHuman> implements AdvancedHumanoidModelInterface<LatexHuman, LatexHumanModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_human"), "main");
     public static final ModelLayerLocation LAYER_LOCATION_SLIM = new ModelLayerLocation(Changed.modResource("latex_human"), "main_slim");
     private final ModelPart RightLeg;
@@ -41,7 +41,7 @@ public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements L
     private final ModelPart Hat;
     private final ModelPart Jacket;
 
-    private final LatexAnimator<LatexHuman, LatexHumanModel> animator;
+    private final HumanoidAnimator<LatexHuman, LatexHumanModel> animator;
 
     private static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
 
@@ -61,7 +61,7 @@ public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements L
         Hat = Head.getChild("Hat");
         Jacket = Torso.getChild("Jacket");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
                 .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
     }
 
@@ -129,10 +129,15 @@ public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements L
     @Override
     public void setupAnim(@NotNull LatexHuman entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -154,7 +159,7 @@ public class LatexHumanModel extends LatexHumanoidModel<LatexHuman> implements L
     }
 
     @Override
-    public LatexAnimator<LatexHuman, LatexHumanModel> getAnimator() {
+    public HumanoidAnimator<LatexHuman, LatexHumanModel> getAnimator() {
         return animator;
     }
 }

@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.renderer.layers.TransfurProgressLayer;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
@@ -42,8 +41,8 @@ public class TransfurProgressOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderGooOverlay(Gui gui, int screenWidth, int screenHeight) {
-        Player player = Minecraft.getInstance().player;
+    public static void renderGooOverlay(Gui gui, int screenWidth, int screenHeight) { // TODO replace with "dang-ometer"
+        /*Player player = Minecraft.getInstance().player;
         if (player == null || ProcessTransfur.isPlayerLatex(player))
             return;
         var progress = ProcessTransfur.getPlayerTransfurProgress(player);
@@ -54,6 +53,6 @@ public class TransfurProgressOverlay {
         float distance = (1.0f - tickProgress) * 20.0f;
         var color = TransfurProgressLayer.getProgressColor(progress.variant());
 
-        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, tickProgress, screenWidth, screenHeight);
+        renderTextureOverlay(gui, GOO_OUTLINE, distance, color, tickProgress, screenWidth, screenHeight);*/
     }
 }

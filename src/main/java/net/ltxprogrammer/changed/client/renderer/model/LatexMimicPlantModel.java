@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexMimicPlant;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexMimicPlantModel extends LatexHumanoidModel<LatexMimicPlant> implements LatexHumanoidModelInterface<LatexMimicPlant, LatexMimicPlantModel> {
+public class LatexMimicPlantModel extends AdvancedHumanoidModel<LatexMimicPlant> implements AdvancedHumanoidModelInterface<LatexMimicPlant, LatexMimicPlantModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_mimic_plant"), "main");
     private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexMimicPlantModel extends LatexHumanoidModel<LatexMimicPlant> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexMimicPlant, LatexMimicPlantModel> animator;
+    private final HumanoidAnimator<LatexMimicPlant, LatexMimicPlantModel> animator;
 
     public LatexMimicPlantModel(ModelPart root) {
         super(root);
@@ -35,7 +35,7 @@ public class LatexMimicPlantModel extends LatexHumanoidModel<LatexMimicPlant> im
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -144,17 +144,22 @@ public class LatexMimicPlantModel extends LatexHumanoidModel<LatexMimicPlant> im
     }
 
     @Override
-    public LatexAnimator<LatexMimicPlant, LatexMimicPlantModel> getAnimator() {
+    public HumanoidAnimator<LatexMimicPlant, LatexMimicPlantModel> getAnimator() {
         return animator;
     }
 
     @Override
     public void setupAnim(LatexMimicPlant entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {

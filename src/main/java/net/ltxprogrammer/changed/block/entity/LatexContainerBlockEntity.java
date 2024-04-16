@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.block.entity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.item.AbstractLatexBucket;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -77,7 +77,7 @@ public class LatexContainerBlockEntity extends BlockEntity {
         }
 
         // Insert goo
-        if (itemStack.getItem() instanceof AbstractLatexGoo goo) {
+        if (itemStack.getItem() instanceof AbstractLatexItem goo) {
             var type = goo.getLatexType();
             if (type == LatexType.NEUTRAL || fillLevel >= 16)
                 return null;

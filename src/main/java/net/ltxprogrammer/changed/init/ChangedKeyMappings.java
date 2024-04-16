@@ -41,7 +41,7 @@ public class ChangedKeyMappings {
                 if (event.getKey() == USE_ABILITY.getKey().getValue()) {
                     USE_ABILITY.consumeClick();
 
-                    ProcessTransfur.ifPlayerLatex(local, variant -> {
+                    ProcessTransfur.ifPlayerTransfurred(local, variant -> {
                         var newState = event.getAction() != GLFW.GLFW_RELEASE;
                         if (newState != variant.abilityKeyState) {
                             ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
@@ -53,7 +53,7 @@ public class ChangedKeyMappings {
 
                 if (event.getKey() == SELECT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     SELECT_ABILITY.consumeClick();
-                    ProcessTransfur.ifPlayerLatex(local, variant -> {
+                    ProcessTransfur.ifPlayerTransfurred(local, variant -> {
                         Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
                         ChangedTutorial.triggerOnOpenRadial();
                     });
@@ -61,7 +61,7 @@ public class ChangedKeyMappings {
 
                 if (event.getKey() == options.keyJump.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     if (!local.isOnGround())
-                        ProcessTransfur.ifPlayerLatex(local, variant -> {
+                        ProcessTransfur.ifPlayerTransfurred(local, variant -> {
                             if (!variant.getParent().canDoubleJump())
                                 return;
                             if (variant.getJumpCharges() > 0) {

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +35,10 @@ public class LatexBenignWolf extends AbstractLatexWolf {
     }
 
     public Color3 getDripColor() {
+        return Color3.getColor("#282828");
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#282828");
     }
 }

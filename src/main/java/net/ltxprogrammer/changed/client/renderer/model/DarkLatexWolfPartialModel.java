@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfPartial> implements LatexHumanoidModelInterface<DarkLatexWolfPartial, DarkLatexWolfPartialModel> {
+public class DarkLatexWolfPartialModel extends AdvancedHumanoidModel<DarkLatexWolfPartial> implements AdvancedHumanoidModelInterface<DarkLatexWolfPartial, DarkLatexWolfPartialModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION_HUMAN = new ModelLayerLocation(Changed.modResource("dark_latex_wolf_partial"), "main");
     public static final ModelLayerLocation LAYER_LOCATION_HUMAN_SLIM = new ModelLayerLocation(Changed.modResource("dark_latex_wolf_partial"), "main_slim");
@@ -48,7 +48,7 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
     private final ModelPart Hat;
     private final ModelPart Jacket;
 
-    private final LatexAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> animator;
+    private final HumanoidAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> animator;
 
     private static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
 
@@ -119,7 +119,7 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
             rightPad = NULL_PART;
         }
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, leftEar, rightEar,
                         Torso, LeftArm, RightArm,
@@ -289,10 +289,15 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
     @Override
     public void setupAnim(@NotNull DarkLatexWolfPartial entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm arm) {
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -314,7 +319,7 @@ public class DarkLatexWolfPartialModel extends LatexHumanoidModel<DarkLatexWolfP
     }
 
     @Override
-    public LatexAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> getAnimator() {
         return animator;
     }
 }

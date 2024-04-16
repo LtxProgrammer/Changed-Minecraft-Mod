@@ -1,17 +1,20 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
@@ -35,12 +38,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
     @Shadow public abstract boolean isSwimming();
+
+    @Shadow public abstract boolean isSpectator();
 
     @Nullable
     @Unique public PlayerMoverInstance<?> playerMover = null;
@@ -51,8 +57,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "getMyRidingOffset", at = @At("HEAD"), cancellable = true)
     public void getMyRidingOffset(CallbackInfoReturnable<Double> callback) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getMyRidingOffset());
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
+            callback.setReturnValue(variant.getChangedEntity().getMyRidingOffset());
         });
     }
 
@@ -104,7 +110,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void orNotHurt(DamageSource p_36154_, float p_36155_, CallbackInfoReturnable<Boolean> cir) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
             if (variant.ageAsVariant < 30)
                 cir.cancel();
         });
@@ -112,9 +118,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     // ADDITIONAL DATA
     @Unique
-    public LatexVariantInstance<?> latexVariant = null;
+    public TransfurVariantInstance<?> latexVariant = null;
     @Unique
-    public ProcessTransfur.TransfurProgress transfurProgress = new ProcessTransfur.TransfurProgress(0, LatexVariant.FALLBACK_VARIANT);
+    public float transfurProgress = 0.0f;
     @Unique
     public CameraUtil.TugData wantToLookAt;
     @Unique
@@ -123,23 +129,23 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     public BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
     @Override
-    public LatexVariantInstance<?> getLatexVariant() {
+    public TransfurVariantInstance<?> getLatexVariant() {
         return latexVariant;
     }
 
     @Override
-    public void setLatexVariant(LatexVariantInstance<?> latexVariant) {
+    public void setLatexVariant(TransfurVariantInstance<?> latexVariant) {
         this.latexVariant = latexVariant;
     }
 
     @NotNull
     @Override
-    public ProcessTransfur.TransfurProgress getTransfurProgress() {
+    public float getTransfurProgress() {
         return transfurProgress;
     }
 
     @Override
-    public void setTransfurProgress(@NotNull ProcessTransfur.TransfurProgress transfurProgress) {
+    public void setTransfurProgress(@NotNull float transfurProgress) {
         this.transfurProgress = transfurProgress;
     }
 
@@ -170,7 +176,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
                 ci.cancel();
     }
 
-    private float getFoodMul(LatexVariant<?> variant) {
+    private float getFoodMul(TransfurVariant<?> variant) {
         if (isSwimming() || this.isEyeInFluid(FluidTags.WATER) || this.isInWater()) {
             return 1.0f - (variant.swimMultiplier() - 1.0f) * 0.85f;
         }
@@ -191,11 +197,37 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         }
     }
 
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
     public void getDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> callback) {
-        if (ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(this), variant -> {
-            callback.setReturnValue(variant.getLatexEntity().getDimensions(pose));
-        }));
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
+            final float morphProgress = variant.getMorphProgression();
+
+            if (morphProgress < 1f) {
+                ChangedEntity ChangedEntity = variant.getChangedEntity();
+
+                final var playerDim = callback.getReturnValue();
+                final var latexDim = ChangedEntity.getDimensions(pose);
+                float width = Mth.lerp(morphProgress, playerDim.width, latexDim.width);
+                float height = Mth.lerp(morphProgress, playerDim.height, latexDim.height);
+
+                callback.setReturnValue(new EntityDimensions(width, height, latexDim.fixed));
+            } else {
+                callback.setReturnValue(variant.getChangedEntity().getDimensions(pose));
+            }
+        });
+    }
+
+    // TODO make interactions pass the grabbed entity
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z"))
+    public boolean isSpectatorOrGrabbed(Player player) {
+        if (player instanceof LivingEntityDataExtension ext) {
+            var grabbedBy = ext.getGrabbedBy();
+            var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (ability != null && !ability.grabbedHasControl)
+                return true;
+        }
+
+        return this.isSpectator();
     }
 
     @Nullable

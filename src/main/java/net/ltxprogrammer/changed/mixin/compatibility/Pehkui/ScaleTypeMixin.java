@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Pehkui;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,7 +16,7 @@ public abstract class ScaleTypeMixin {
 
     @Inject(method = "getScaleData", at = @At("HEAD"), cancellable = true)
     public void getHostScaleData(Entity entity, CallbackInfoReturnable<ScaleData> callback) {
-        if (entity instanceof LatexEntity latexEntity && latexEntity.getUnderlyingPlayer() != null)
-            callback.setReturnValue(this.getScaleData(latexEntity.getUnderlyingPlayer()));
+        if (entity instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
+            callback.setReturnValue(this.getScaleData(ChangedEntity.getUnderlyingPlayer()));
     }
 }

@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexBeifengRenderer extends LatexHumanoidRenderer<LatexBeifeng, LatexBeifengModel, ArmorLatexMaleDragonModel<LatexBeifeng>> {
+public class LatexBeifengRenderer extends AdvancedHumanoidRenderer<LatexBeifeng, LatexBeifengModel, ArmorLatexMaleDragonModel<LatexBeifeng>> {
     public LatexBeifengRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBeifengModel(context.bakeLayer(LatexBeifengModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

@@ -1,12 +1,12 @@
 package net.ltxprogrammer.changed.client.renderer.animate.armsets;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import org.jetbrains.annotations.NotNull;
 
-public class ArmSetThreeFinalAnimator<T extends LatexEntity, M extends EntityModel<T>> extends LatexAnimator.Animator<T, M> {
+public class ArmSetThreeFinalAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
     public final ModelPart leftArm;
     public final ModelPart rightArm;
     public final ModelPart leftArm3;
@@ -20,8 +20,8 @@ public class ArmSetThreeFinalAnimator<T extends LatexEntity, M extends EntityMod
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.FINAL;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.FINAL;
     }
 
     @Override

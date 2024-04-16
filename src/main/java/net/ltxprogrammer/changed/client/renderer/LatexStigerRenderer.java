@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexStiger;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexStigerRenderer extends LatexHumanoidRenderer<LatexStiger, LatexStigerModel, ArmorLatexStigerModel<LatexStiger>> {
+public class LatexStigerRenderer extends AdvancedHumanoidRenderer<LatexStiger, LatexStigerModel, ArmorLatexStigerModel<LatexStiger>> {
     public LatexStigerRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexStigerModel(context.bakeLayer(LatexStigerModel.LAYER_LOCATION)),
                 ArmorLatexStigerModel::new, ArmorLatexStigerModel.INNER_ARMOR, ArmorLatexStigerModel.OUTER_ARMOR, 0.5f);

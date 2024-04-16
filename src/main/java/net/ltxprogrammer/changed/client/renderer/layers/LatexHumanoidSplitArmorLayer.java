@@ -2,9 +2,9 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexHumanoidSplitArmorLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>,
+public class LatexHumanoidSplitArmorLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>,
         A extends LatexHumanoidArmorModel<T, ?>, B extends LatexHumanoidArmorModel<T, ?>> extends LatexHumanoidArmorLayer<T, M, A> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
     final B innerModelOther;

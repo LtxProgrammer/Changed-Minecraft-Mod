@@ -7,15 +7,15 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
-    public boolean canUse(IAbstractLatex entity) {
+    public boolean canUse(IAbstractChangedEntity entity) {
         return entity.getTransfurMode() != TransfurMode.NONE;
     }
 
     @Override
-    public boolean canKeepUsing(IAbstractLatex entity) { return false; }
+    public boolean canKeepUsing(IAbstractChangedEntity entity) { return false; }
 
     @Override
-    public void startUsing(IAbstractLatex entity) {
+    public void startUsing(IAbstractChangedEntity entity) {
         if (entity.getLevel().isClientSide)
             return;
 
@@ -32,25 +32,25 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     }
 
     @Override
-    public void saveData(CompoundTag tag, IAbstractLatex entity) {
+    public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.saveData(tag, entity);
         tag.putString("TransfurMode", entity.getTransfurMode().toString());
     }
 
     @Override
-    public void readData(CompoundTag tag, IAbstractLatex entity) {
+    public void readData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.readData(tag, entity);
         entity.setTransfurMode(TransfurMode.valueOf(tag.getString("TransfurMode")));
     }
 
     @Override
-    public void tick(IAbstractLatex entity) {}
+    public void tick(IAbstractChangedEntity entity) {}
 
     @Override
-    public void stopUsing(IAbstractLatex entity) {}
+    public void stopUsing(IAbstractChangedEntity entity) {}
 
     @Override
-    public ResourceLocation getTexture(IAbstractLatex entity) {
+    public ResourceLocation getTexture(IAbstractChangedEntity entity) {
         if (entity.getTransfurMode() == TransfurMode.NONE)
             return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_replication.png");
 
@@ -59,7 +59,7 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     }
 
     @Override
-    public int getCoolDown(IAbstractLatex entity) {
+    public int getCoolDown(IAbstractChangedEntity entity) {
         return 10;
     }
 }

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements LatexHumanoidModelInterface<LatexShark, LatexSharkModel> {
+public class LatexSharkModel extends AdvancedHumanoidModel<LatexShark> implements AdvancedHumanoidModelInterface<LatexShark, LatexSharkModel> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_shark"), "main");
 	private final ModelPart RightLeg;
@@ -30,7 +30,7 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 	private final ModelPart Head;
 	private final ModelPart Torso;
 	private final ModelPart Tail;
-	private final LatexAnimator<LatexShark, LatexSharkModel> animator;
+	private final HumanoidAnimator<LatexShark, LatexSharkModel> animator;
 
 	public LatexSharkModel(ModelPart root) {
 		super(root);
@@ -51,7 +51,7 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 		var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
 		var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-		animator = LatexAnimator.of(this).hipOffset(-1.5f)
+		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
 				.addPreset(AnimatorPresets.sharkLike(
 						Head, Torso, LeftArm, RightArm,
 						Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -166,17 +166,22 @@ public class LatexSharkModel extends LatexHumanoidModel<LatexShark> implements L
 	}
 
 	@Override
-	public LatexAnimator<LatexShark, LatexSharkModel> getAnimator() {
+	public HumanoidAnimator<LatexShark, LatexSharkModel> getAnimator() {
 		return animator;
 	}
 
 	@Override
 	public void setupAnim(LatexShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 
 	public ModelPart getArm(HumanoidArm p_102852_) {
 		return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+	}
+
+	public ModelPart getLeg(HumanoidArm p_102852_) {
+		return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 	}
 
 	public ModelPart getHead() {

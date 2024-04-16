@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexAlien;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexAlienModel extends LatexHumanoidModel<LatexAlien> implements LatexHumanoidModelInterface<LatexAlien, LatexAlienModel> {
+public class LatexAlienModel extends AdvancedHumanoidModel<LatexAlien> implements AdvancedHumanoidModelInterface<LatexAlien, LatexAlienModel> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_alien"), "main");
 	private final ModelPart RightLeg;
@@ -30,7 +30,7 @@ public class LatexAlienModel extends LatexHumanoidModel<LatexAlien> implements L
 	private final ModelPart Head;
 	private final ModelPart Torso;
 	private final ModelPart Tail;
-	private final LatexAnimator<LatexAlien, LatexAlienModel> animator;
+	private final HumanoidAnimator<LatexAlien, LatexAlienModel> animator;
 
 	public LatexAlienModel(ModelPart root) {
 		super(root);
@@ -41,7 +41,7 @@ public class LatexAlienModel extends LatexHumanoidModel<LatexAlien> implements L
 		this.Tail = Torso.getChild("Tail");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+		animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -130,17 +130,22 @@ public class LatexAlienModel extends LatexHumanoidModel<LatexAlien> implements L
 	}
 
 	@Override
-	public LatexAnimator<LatexAlien, LatexAlienModel> getAnimator() {
+	public HumanoidAnimator<LatexAlien, LatexAlienModel> getAnimator() {
 		return animator;
 	}
 
 	@Override
 	public void setupAnim(LatexAlien entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 
 	public ModelPart getArm(HumanoidArm p_102852_) {
 		return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+	}
+
+	public ModelPart getLeg(HumanoidArm p_102852_) {
+		return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 	}
 
 	public ModelPart getHead() {

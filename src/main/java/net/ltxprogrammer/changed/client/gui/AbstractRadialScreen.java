@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.minecraft.client.Minecraft;
@@ -80,8 +80,8 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
         }
     }
 
-    public static ColorScheme getColors(LatexVariantInstance<?> variant) {
-        if (variant.getLatexEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
+    public static ColorScheme getColors(TransfurVariantInstance<?> variant) {
+        if (variant.getChangedEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
             return new ColorScheme(
                     specialLatex.getCurrentData().primaryColor(),
                     specialLatex.getCurrentData().secondaryColor()

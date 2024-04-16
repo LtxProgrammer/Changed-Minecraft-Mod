@@ -24,7 +24,7 @@ public class VentHatchBlock extends TrapDoorBlock {
             if (entity != null) {
                 if (entity.getType().is(ChangedTags.EntityTypes.PUDDING))
                     return Shapes.empty();
-                return ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
+                return ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
                     if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.PUDDING))
                         return Shapes.empty();
                     else

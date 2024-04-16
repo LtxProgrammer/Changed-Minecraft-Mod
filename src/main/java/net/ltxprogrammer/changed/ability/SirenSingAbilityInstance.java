@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.effect.Shock;
 import net.ltxprogrammer.changed.entity.beast.LatexSiren;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -14,7 +14,7 @@ import java.util.Random;
 public class SirenSingAbilityInstance extends AbstractAbilityInstance {
     private int lastSingTick = 0;
 
-    public SirenSingAbilityInstance(AbstractAbility<?> ability, IAbstractLatex entity) {
+    public SirenSingAbilityInstance(AbstractAbility<?> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 
@@ -49,7 +49,7 @@ public class SirenSingAbilityInstance extends AbstractAbilityInstance {
 
         level.getNearbyEntities(LivingEntity.class, TargetingConditions.DEFAULT, self,
                 new AABB(self.blockPosition()).inflate(8)).forEach(livingEntity -> {
-            if (LatexVariant.getEntityVariant(livingEntity) != null)
+            if (TransfurVariant.getEntityVariant(livingEntity) != null)
                 return;
 
             Shock.setNoControlTicks(livingEntity, 5);

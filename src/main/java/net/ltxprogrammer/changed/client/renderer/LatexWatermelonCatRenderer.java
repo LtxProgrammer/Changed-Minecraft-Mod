@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexWatermelonCatRenderer extends LatexHumanoidRenderer<LatexWatermelonCat, LatexWatermelonCatModel, ArmorLatexFemaleCatModel<LatexWatermelonCat>> {
+public class LatexWatermelonCatRenderer extends AdvancedHumanoidRenderer<LatexWatermelonCat, LatexWatermelonCatModel, ArmorLatexFemaleCatModel<LatexWatermelonCat>> {
     public LatexWatermelonCatRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexWatermelonCatModel(context.bakeLayer(LatexWatermelonCatModel.LAYER_LOCATION)),
                 ArmorLatexFemaleCatModel::new, ArmorLatexFemaleCatModel.INNER_ARMOR, ArmorLatexFemaleCatModel.OUTER_ARMOR, 0.5f);

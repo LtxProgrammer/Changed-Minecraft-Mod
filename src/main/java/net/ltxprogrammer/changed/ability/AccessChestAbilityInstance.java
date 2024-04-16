@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
     final NonNullList<ItemStack> itemStacks = NonNullList.withSize(2 * 9, ItemStack.EMPTY);
 
-    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, IAbstractLatex entity) {
+    public AccessChestAbilityInstance(AbstractAbility<AccessChestAbilityInstance> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
     }
 

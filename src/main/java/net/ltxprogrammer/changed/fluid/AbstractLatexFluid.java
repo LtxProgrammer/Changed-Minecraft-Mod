@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.fluid;
 
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -27,16 +29,16 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
-    private final List<LatexVariant<?>> form;
-    private final LatexType latexType;
-    protected AbstractLatexFluid(Properties properties, LatexType latexType, List<LatexVariant<?>> form) {
+    private final List<TransfurVariant<?>> form;
+    private final LatexType gooType;
+    protected AbstractLatexFluid(Properties properties, LatexType gooType, List<TransfurVariant<?>> form) {
         super(properties);
-        this.latexType = latexType;
+        this.gooType = gooType;
         this.form = form;
     }
 
     public LatexType getLatexType() {
-        return latexType;
+        return gooType;
     }
 
     public abstract boolean canEntityStandOn(LivingEntity entity);
@@ -56,7 +58,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
         }
 
         if (fluid != null) {
-            if (LatexVariant.getEntityVariant(event.getEntityLiving()) != null) {
+            if (TransfurVariant.getEntityVariant(event.getEntityLiving()) != null) {
                 var living = event.getEntityLiving();
                 var delta = living.getDeltaMovement();
                 living.resetFallDistance();
@@ -67,11 +69,12 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
 
         if (event.getEntityLiving() instanceof Player player && ProcessTransfur.isPlayerLatex(player))
             return;
-        if (event.getEntityLiving() instanceof LatexEntity)
+        if (event.getEntityLiving() instanceof ChangedEntity)
             return;
 
         if (event.getEntityLiving().isAlive() && !event.getEntityLiving().isDeadOrDying() && fluid != null) {
-            ProcessTransfur.progressTransfur(event.getEntityLiving(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())));
+            ProcessTransfur.progressTransfur(event.getEntityLiving(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())),
+                    TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
         }
     }
 
@@ -86,7 +89,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
             if (this.is(ChangedTags.Fluids.LATEX) && otherState.is(FluidTags.LAVA)) {
                 if (blockState.getBlock() instanceof LiquidBlock) {
                     level.setBlock(pos, net.minecraftforge.event.ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, pos,
-                            Blocks.SOUL_SOIL.defaultBlockState().setValue(AbstractLatexBlock.COVERED, this.latexType)), 3);
+                            Blocks.SOUL_SOIL.defaultBlockState().setValue(AbstractLatexBlock.COVERED, this.gooType)), 3);
                 }
 
                 this.fizz(level, pos);

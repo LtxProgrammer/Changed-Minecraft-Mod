@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexTranslucentLizardRenderer extends LatexHumanoidRenderer<LatexTranslucentLizard, LatexTranslucentLizardModel, ArmorLatexMaleDragonModel<LatexTranslucentLizard>> {
+public class LatexTranslucentLizardRenderer extends AdvancedHumanoidRenderer<LatexTranslucentLizard, LatexTranslucentLizardModel, ArmorLatexMaleDragonModel<LatexTranslucentLizard>> {
     public LatexTranslucentLizardRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

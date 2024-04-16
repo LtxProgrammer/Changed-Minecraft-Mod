@@ -47,7 +47,7 @@ public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Ma
 
         this.player = inv.player;
         this.world = inv.player.level;
-        var variant = ProcessTransfur.getPlayerLatexVariant(player);
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
 
         this.internal = new ItemStackHandler(2);
 
