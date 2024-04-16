@@ -6,7 +6,6 @@
   "itemGroup.tab_changed_music": "Musique de Changed",
 
   "ability.changed.access_saddle": "Accéder à la Selle",
-  "ability.changed.extra_hands": "Mains Supplémentaires",
   "ability.changed.switch_transfur_mode": "Changement de mode Transfur",
   "ability.changed.switch_transfur_mode.select": "Le mode de transfur est maintenant : %s",
   "ability.changed.create_cobweb": "Créer une Toile d'araignée",
@@ -44,6 +43,7 @@
   "subtitles.changed.paralyze1": "Chocs d'armes",
   "subtitles.changed.paralyze3": "Annonce à l'interphone",
   "subtitles.changed.blow1": "Joueur latexé",
+  "subtitles.changed.crash": "Un container est brisé",
 
   "item.changed.benign_pants": "Short en Latex",
   "item.changed.blood_syringe": "Seringue de Sang",
@@ -53,6 +53,7 @@
   "item.changed.dark_latex_mask": "Masque de Latex Noir",
   "item.changed.dark_latex_bucket": "Seau de Latex Noir",
   "item.changed.compact_disc": "Disque Compact",
+  "item.changed.gas_mask": "masque à gaz",
   "item.changed.lab_book": "Livre de Laboratoire",
   "item.changed.latex_base": "Base de Latex",
   "item.changed.latex_beifeng_crystal_fragment": "Fragment de Cristal de Beifeng en Latex",
@@ -161,6 +162,8 @@
   "text.changed.game_loaded_fail": "Impossible de charger le jeu.",
   "text.changed.syringe.owner": "Propriétaire: %s",
   "text.changed.syringe.no_owner": "Impossible d'obtenir le nom du joueur",
+  "text.changed.tamed.wander": "%s est maintenant en train d'errer",
+  "text.changed.tamed.follow": "%s est maintenant en train de suivre",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Électrisé",
@@ -509,8 +512,8 @@
   "changed:advancements.main.tame_a_latex.title": "Une ami improbable",
   "changed:advancements.main.tame_a_latex.description": "apprivoisez un latex",
 
-   "changed:advancements.main.kill_all_latex.title": "Berserker",
- "changed:advancements.main.kill_all_latex.description": "tuer un de chaque espeèces de monstre en latex",
+  "changed:advancements.main.kill_all_latex.title": "Berserker",
+  "changed:advancements.main.kill_all_latex.description": "tuer un de chaque espeèces de monstre en latex",
 
   "changed.tutorial.select_ability.title": "Sélectionnez votre capacité",
   "changed.tutorial.select_ability.description": "Appuyer %s",
@@ -536,7 +539,7 @@
   "eyestyle.changed.v2": "Mince",
   "eyestyle.changed.tall": "Grande",
 
-   "changed.config.color_picker_tooltip": "Click pour ouvrir le selcteur de couleur avancé",
+  "changed.config.color_picker_tooltip": "Click pour ouvrir le selcteur de couleur avancé",
   "changed.config.color_picker_red": "Rouge: %s",
   "changed.config.color_picker_green": "Vert: %s",
   "changed.config.color_picker_blue": "Bleu: %s",
@@ -552,10 +555,5 @@
   "changed.config.bpi.size": "Taille du model",
   "changed.config.bpi.size.value": "Taille: %s%%",
   "changed.config.bpi.override_dl_iris": "Remplacer la couleur de l'iris sur les variantes de latex sombre",
-  "changed.config.bpi.override_all_eye_styles": "Remplacer tous les styles d'yeux par d'autres",
-  
-  "text.changed.tamed.wander": "%s est maintenant en train d'errer",
-  "text.changed.tamed.follow": "%s est maintenant en train de suivre",
-  "subtitles.changed.crash": "Un container est brisé",
-  "item.changed.gas_mask": "masque à gaz"
+  "changed.config.bpi.override_all_eye_styles": "Remplacer tous les styles d'yeux par d'autres"
 }
