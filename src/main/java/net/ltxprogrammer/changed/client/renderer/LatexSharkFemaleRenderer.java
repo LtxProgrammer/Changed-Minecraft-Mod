@@ -7,7 +7,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexSharkFemale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSharkFemaleRenderer extends LatexHumanoidRenderer<LatexSharkFemale, LatexSharkFemaleModel, ArmorLatexBuffSharkModel<LatexSharkFemale>> {
+public class LatexSharkFemaleRenderer extends AdvancedHumanoidRenderer<LatexSharkFemale, LatexSharkFemaleModel, ArmorLatexBuffSharkModel<LatexSharkFemale>> {
     public LatexSharkFemaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSharkFemaleModel(context.bakeLayer(LatexSharkFemaleModel.LAYER_LOCATION)),
                 ArmorLatexBuffSharkModel::new, ArmorLatexBuffSharkModel.INNER_ARMOR, ArmorLatexBuffSharkModel.OUTER_ARMOR, 0.5f);
@@ -18,7 +18,7 @@ public class LatexSharkFemaleRenderer extends LatexHumanoidRenderer<LatexSharkFe
         return Changed.modResource("textures/latex_shark_female.png");
     }
 
-    public static class Remodel extends LatexHumanoidRenderer<LatexSharkFemale, LatexSharkFemaleModel.Remodel, ArmorLatexBuffSharkModel<LatexSharkFemale>> {
+    public static class Remodel extends AdvancedHumanoidRenderer<LatexSharkFemale, LatexSharkFemaleModel.Remodel, ArmorLatexBuffSharkModel<LatexSharkFemale>> {
         public Remodel(EntityRendererProvider.Context context) {
             super(context, new LatexSharkFemaleModel.Remodel(context.bakeLayer(LatexSharkFemaleModel.LAYER_LOCATION)),
                     ArmorLatexBuffSharkModel::new, ArmorLatexBuffSharkModel.INNER_ARMOR, ArmorLatexBuffSharkModel.OUTER_ARMOR, 0.5f);

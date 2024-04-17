@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexOtter;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexOtterModel extends LatexHumanoidModel<LatexOtter> implements LatexHumanoidModelInterface<LatexOtter, LatexOtterModel> {
+public class LatexOtterModel extends AdvancedHumanoidModel<LatexOtter> implements AdvancedHumanoidModelInterface<LatexOtter, LatexOtterModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_otter"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexOtterModel extends LatexHumanoidModel<LatexOtter> implements L
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexOtter, LatexOtterModel> animator;
+    private final HumanoidAnimator<LatexOtter, LatexOtterModel> animator;
 
     public LatexOtterModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexOtterModel extends LatexHumanoidModel<LatexOtter> implements L
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -141,10 +141,15 @@ public class LatexOtterModel extends LatexHumanoidModel<LatexOtter> implements L
     @Override
     public void setupAnim(@NotNull LatexOtter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -166,7 +171,7 @@ public class LatexOtterModel extends LatexHumanoidModel<LatexOtter> implements L
     }
 
     @Override
-    public LatexAnimator<LatexOtter, LatexOtterModel> getAnimator() {
+    public HumanoidAnimator<LatexOtter, LatexOtterModel> getAnimator() {
         return animator;
     }
 }

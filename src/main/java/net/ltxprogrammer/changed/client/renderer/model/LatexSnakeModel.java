@@ -7,7 +7,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements LatexHumanoidModelInterface<LatexSnake, LatexSnakeModel> {
+public class LatexSnakeModel extends AdvancedHumanoidModel<LatexSnake> implements AdvancedHumanoidModelInterface<LatexSnake, LatexSnakeModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_snake"), "main");
     private final ModelPart RightArm;
@@ -31,7 +34,7 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSnake, LatexSnakeModel> animator;
+    private final HumanoidAnimator<LatexSnake, LatexSnakeModel> animator;
 
     public LatexSnakeModel(ModelPart root) {
         super(root);
@@ -42,7 +45,7 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
         this.Tail = LowerAbdomen.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.snakeLike(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                 Tail.getChild("Joint"),
                 Tail.getChild("Joint").getChild("Joint2"),
                 Tail.getChild("Joint").getChild("Joint2").getChild("Joint3")
@@ -126,10 +129,27 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
     @Override
     public void setupAnim(@NotNull LatexSnake entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
+    }
+
+    @Override
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getHead() {
@@ -150,7 +170,7 @@ public class LatexSnakeModel extends LatexHumanoidModel<LatexSnake> implements L
     }
 
     @Override
-    public LatexAnimator<LatexSnake, LatexSnakeModel> getAnimator() {
+    public HumanoidAnimator<LatexSnake, LatexSnakeModel> getAnimator() {
         return animator;
     }
 }

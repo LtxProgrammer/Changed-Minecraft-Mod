@@ -6,13 +6,17 @@ import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class DeferredSpecialLatexModel extends LatexHumanoidModel<SpecialLatex> {
+public class DeferredSpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> {
     public DeferredSpecialLatexModel(ModelPart root) {
         super(root);
     }
 
     @Override
     public ModelPart getArm(HumanoidArm arm) {
+        return null;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
         return null;
     }
 

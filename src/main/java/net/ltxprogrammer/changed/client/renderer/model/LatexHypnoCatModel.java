@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexHypnoCat;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implements LatexHumanoidModelInterface<LatexHypnoCat, LatexHypnoCatModel> {
+public class LatexHypnoCatModel extends AdvancedHumanoidModel<LatexHypnoCat> implements AdvancedHumanoidModelInterface<LatexHypnoCat, LatexHypnoCatModel> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_hypno_cat"), "main");
 	private final ModelPart RightLeg;
@@ -30,7 +30,7 @@ public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implem
 	private final ModelPart Head;
 	private final ModelPart Torso;
 	private final ModelPart Tail;
-	private final LatexAnimator<LatexHypnoCat, LatexHypnoCatModel> animator;
+	private final HumanoidAnimator<LatexHypnoCat, LatexHypnoCatModel> animator;
 
 	public LatexHypnoCatModel(ModelPart root) {
 		super(root);
@@ -51,7 +51,7 @@ public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implem
 		var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
 		var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-		animator = LatexAnimator.of(this).hipOffset(-1.5f)
+		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
 				.addPreset(AnimatorPresets.catLike(
 						Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
 						Torso, LeftArm, RightArm,
@@ -147,10 +147,15 @@ public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implem
 	@Override
 	public void setupAnim(LatexHypnoCat entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 
 	public ModelPart getArm(HumanoidArm p_102852_) {
 		return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+	}
+
+	public ModelPart getLeg(HumanoidArm p_102852_) {
+		return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
 	}
 
 	public ModelPart getHead() {
@@ -172,7 +177,7 @@ public class LatexHypnoCatModel extends LatexHumanoidModel<LatexHypnoCat> implem
 	}
 
 	@Override
-	public LatexAnimator<LatexHypnoCat, LatexHypnoCatModel> getAnimator() {
+	public HumanoidAnimator<LatexHypnoCat, LatexHypnoCatModel> getAnimator() {
 		return animator;
 	}
 }

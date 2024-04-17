@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -65,7 +65,7 @@ public class Beaker extends Block implements SimpleWaterloggedBlock, NonLatexCov
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         var itemInHand = player.getItemInHand(hand);
-        if (state.getValue(FILLED) == LatexType.NEUTRAL && itemInHand.getItem() instanceof AbstractLatexGoo goo) {
+        if (state.getValue(FILLED) == LatexType.NEUTRAL && itemInHand.getItem() instanceof AbstractLatexItem goo) {
             if (!player.isCreative())
                 itemInHand.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(FILLED, goo.getLatexType()));

@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.AerosolLatexWolf;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class AerosolLatexWolfRenderer extends LatexHumanoidRenderer<AerosolLatexWolf, AerosolLatexWolfModel, ArmorLatexMaleWolfModel<AerosolLatexWolf>> {
+public class AerosolLatexWolfRenderer extends AdvancedHumanoidRenderer<AerosolLatexWolf, AerosolLatexWolfModel, ArmorLatexMaleWolfModel<AerosolLatexWolf>> {
     public AerosolLatexWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new AerosolLatexWolfModel(context.bakeLayer( AerosolLatexWolfModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

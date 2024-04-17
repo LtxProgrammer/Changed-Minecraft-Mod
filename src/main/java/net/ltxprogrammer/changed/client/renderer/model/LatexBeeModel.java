@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexBee;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements LatexHumanoidModelInterface<LatexBee, LatexBeeModel>, DoubleArmedModel {
+public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements AdvancedHumanoidModelInterface<LatexBee, LatexBeeModel>, DoubleArmedModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_bee"), "main");
     private final ModelPart RightLeg;
@@ -33,7 +33,7 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexAnimator<LatexBee, LatexBeeModel> animator;
+    private final HumanoidAnimator<LatexBee, LatexBeeModel> animator;
 
     public LatexBeeModel(ModelPart root) {
         super(root);
@@ -57,7 +57,7 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.beeLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm2, RightArm2, LeftArm, RightArm,
@@ -197,10 +197,11 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
     @Override
     public void setupAnim(@NotNull LatexBee entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         return corrector;
     }
 
@@ -212,11 +213,16 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
         };
     }
 
-    public ModelPart getLowerArm(HumanoidArm humanoidArm) {
+    @Override
+    public ModelPart getOtherArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     @Override
@@ -227,7 +233,7 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
 
     @Override
     public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
-        this.getLowerArm(arm).translateAndRotate(poseStack);
+        this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
@@ -252,7 +258,7 @@ public class LatexBeeModel extends LatexHumanoidModel<LatexBee> implements Latex
     }
 
     @Override
-    public LatexAnimator<LatexBee, LatexBeeModel> getAnimator() {
+    public HumanoidAnimator<LatexBee, LatexBeeModel> getAnimator() {
         return animator;
     }
 }

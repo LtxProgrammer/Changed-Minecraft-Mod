@@ -1,11 +1,8 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.SimpleAbilityInstance;
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.PatronOC;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +16,7 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
 
     public LatexHypnoCat(EntityType<? extends LatexHypnoCat> type, Level level) {
         super(type, level);
-        hypnosis = registerAbility(ability -> this.wantToHypno(), new SimpleAbilityInstance(ChangedAbilities.HYPNOSIS.get(), IAbstractLatex.forLatex(this)));
+        hypnosis = registerAbility(ability -> this.wantToHypno(), new SimpleAbilityInstance(ChangedAbilities.HYPNOSIS.get(), IAbstractChangedEntity.forEntity(this)));
     }
 
     public boolean wantToHypno() {
@@ -43,5 +40,9 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return List.of(HairStyle.SHORT_MESSY.get());
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#333333");
     }
 }

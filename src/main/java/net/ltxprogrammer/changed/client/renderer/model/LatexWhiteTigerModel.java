@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexWhiteTiger;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> implements LatexHumanoidModelInterface<LatexWhiteTiger, LatexWhiteTigerModel> {
+public class LatexWhiteTigerModel extends AdvancedHumanoidModel<LatexWhiteTiger> implements AdvancedHumanoidModelInterface<LatexWhiteTiger, LatexWhiteTigerModel> {
         // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
         public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_white_tiger"), "main");
         private final ModelPart RightLeg;
@@ -24,7 +24,7 @@ public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> im
         private final ModelPart Head;
         private final ModelPart Torso;
         private final ModelPart Tail;
-        private final LatexAnimator<LatexWhiteTiger, LatexWhiteTigerModel> animator;
+        private final HumanoidAnimator<LatexWhiteTiger, LatexWhiteTigerModel> animator;
 
         public LatexWhiteTigerModel(ModelPart root) {
             super(root);
@@ -45,7 +45,7 @@ public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> im
             var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
             var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-            animator = LatexAnimator.of(this).hipOffset(-1.5f)
+            animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                     .addPreset(AnimatorPresets.catLike(
                             Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                             Torso, LeftArm, RightArm,
@@ -141,10 +141,15 @@ public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> im
     @Override
     public void setupAnim(LatexWhiteTiger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -166,7 +171,7 @@ public class LatexWhiteTigerModel extends LatexHumanoidModel<LatexWhiteTiger> im
     }
 
     @Override
-    public LatexAnimator<LatexWhiteTiger, LatexWhiteTigerModel> getAnimator() {
+    public HumanoidAnimator<LatexWhiteTiger, LatexWhiteTigerModel> getAnimator() {
         return animator;
     }
 }

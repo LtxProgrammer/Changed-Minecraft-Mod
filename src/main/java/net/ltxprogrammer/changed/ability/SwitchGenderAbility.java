@@ -10,20 +10,20 @@ import net.minecraft.world.entity.player.Player;
 
 public class SwitchGenderAbility extends SimpleAbility {
     @Override
-    public boolean canUse(IAbstractLatex entity) {
-        return entity.getLatexEntity() instanceof GenderedEntity && entity.getEntity() instanceof Player;
+    public boolean canUse(IAbstractChangedEntity entity) {
+        return entity.getChangedEntity() instanceof GenderedEntity && entity.getEntity() instanceof Player;
     }
 
     @Override
-    public void startUsing(IAbstractLatex entity) {
+    public void startUsing(IAbstractChangedEntity entity) {
         super.startUsing(entity);
 
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity.getEntity()), (player, variant) -> {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity.getEntity()), (player, variant) -> {
             float beforeHealth = player.getHealth();
             var newVariantId = Gender.switchGenderedForm(variant.getFormId());
             if (!newVariantId.equals(variant.getFormId())) {
-                var newVariant = ChangedRegistry.LATEX_VARIANT.get().getValue(newVariantId);
-                ProcessTransfur.setPlayerLatexVariant(player, newVariant);
+                var newVariant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(newVariantId);
+                ProcessTransfur.changeTransfur(player, newVariant);
                 ChangedSounds.broadcastSound(player, newVariant.sound, 1, 1);
             }
             player.setHealth(beforeHealth);
@@ -31,12 +31,12 @@ public class SwitchGenderAbility extends SimpleAbility {
     }
 
     @Override
-    public UseType getUseType(IAbstractLatex entity) {
+    public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.CHARGE_TIME;
     }
 
     @Override
-    public int getChargeTime(IAbstractLatex entity) {
+    public int getChargeTime(IAbstractChangedEntity entity) {
         return 60;
     }
 }

@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexSquirrel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSquirrelRenderer extends LatexHumanoidRenderer<LatexSquirrel, LatexSquirrelModel, ArmorNoTailModel<LatexSquirrel>> {
+public class LatexSquirrelRenderer extends AdvancedHumanoidRenderer<LatexSquirrel, LatexSquirrelModel, ArmorNoTailModel<LatexSquirrel>> {
     public LatexSquirrelRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSquirrelModel(context.bakeLayer(LatexSquirrelModel.LAYER_LOCATION)),
                 ArmorNoTailModel::new, ArmorNoTailModel.INNER_ARMOR, ArmorNoTailModel.OUTER_ARMOR, 0.5f);

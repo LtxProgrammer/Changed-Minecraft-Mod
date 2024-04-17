@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSiren;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements LatexHumanoidModelInterface<LatexSiren, LatexSirenModel> {
+public class LatexSirenModel extends AdvancedHumanoidModel<LatexSiren> implements AdvancedHumanoidModelInterface<LatexSiren, LatexSirenModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_siren"), "main");
     private final ModelPart RightArm;
@@ -31,7 +31,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSiren, LatexSirenModel> animator;
+    private final HumanoidAnimator<LatexSiren, LatexSirenModel> animator;
 
     public LatexSirenModel(ModelPart root) {
         super(root);
@@ -43,7 +43,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
                 .addPreset(AnimatorPresets.leglessShark(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                         Tail.getChild("TailPrimary"),
                         Tail.getChild("TailPrimary").getChild("TailSecondary"),
@@ -141,7 +141,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     }
 
     public PoseStack getPlacementCorrectors(CorrectorType type) {
-        PoseStack corrector = LatexHumanoidModelInterface.super.getPlacementCorrectors(type);
+        PoseStack corrector = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
         if (type == CorrectorType.HAIR)
             corrector.translate(0.0f, 0.5f / 15.0f, 0.0f);
         else if (type == CorrectorType.LOWER_HAIR)
@@ -153,12 +153,22 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    @Override
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
 
     public ModelPart getTorso() {
         return Torso;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
     }
 
     @Override
@@ -171,7 +181,7 @@ public class LatexSirenModel extends LatexHumanoidModel<LatexSiren> implements L
     }
 
     @Override
-    public LatexAnimator<LatexSiren, LatexSirenModel> getAnimator() {
+    public HumanoidAnimator<LatexSiren, LatexSirenModel> getAnimator() {
         return animator;
     }
 }

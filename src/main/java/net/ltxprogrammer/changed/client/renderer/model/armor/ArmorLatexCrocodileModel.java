@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexCrocodileModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCrocodileModel<T>> {
+public class ArmorLatexCrocodileModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCrocodileModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_crocodile")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_crocodile")).get();
 
@@ -30,7 +30,7 @@ public class ArmorLatexCrocodileModel<T extends LatexEntity> extends LatexHumano
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorLatexCrocodileModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexCrocodileModel<T>> animator;
 
     public ArmorLatexCrocodileModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -41,7 +41,7 @@ public class ArmorLatexCrocodileModel<T extends LatexEntity> extends LatexHumano
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg))
                 .hipOffset(-5.0f).legLength(16.0f).armLength(16.0f).torsoLength(18.0f);
     }
 
@@ -116,7 +116,7 @@ public class ArmorLatexCrocodileModel<T extends LatexEntity> extends LatexHumano
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexCrocodileModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexCrocodileModel<T>> getAnimator() {
         return animator;
     }
 }

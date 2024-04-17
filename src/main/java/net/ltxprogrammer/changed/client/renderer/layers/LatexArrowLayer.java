@@ -1,8 +1,8 @@
 package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Arrow;
 
-public class LatexArrowLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends LatexStuckInBodyLayer<T, M> {
+public class LatexArrowLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends LatexStuckInBodyLayer<T, M> {
     private final EntityRenderDispatcher dispatcher;
 
     public LatexArrowLayer(EntityRendererProvider.Context p_174465_, LivingEntityRenderer<T, M> p_174466_) {

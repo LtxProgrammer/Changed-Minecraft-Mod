@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexYuin;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements LatexHumanoidModelInterface<LatexYuin, LatexYuinModel> {
+public class LatexYuinModel extends AdvancedHumanoidModel<LatexYuin> implements AdvancedHumanoidModelInterface<LatexYuin, LatexYuinModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_yuin"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexYuin, LatexYuinModel> animator;
+    private final HumanoidAnimator<LatexYuin, LatexYuinModel> animator;
 
     public LatexYuinModel(ModelPart root) {
         super(root);
@@ -44,7 +44,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.deerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -138,10 +138,15 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
     @Override
     public void setupAnim(@NotNull LatexYuin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -163,7 +168,7 @@ public class LatexYuinModel extends LatexHumanoidModel<LatexYuin> implements Lat
     }
 
     @Override
-    public LatexAnimator<LatexYuin, LatexYuinModel> getAnimator() {
+    public HumanoidAnimator<LatexYuin, LatexYuinModel> getAnimator() {
         return animator;
     }
 }

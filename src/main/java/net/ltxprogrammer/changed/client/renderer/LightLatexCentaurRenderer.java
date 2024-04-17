@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightLatexCentaurRenderer extends LatexHumanoidRenderer<LightLatexCentaur, LightLatexCentaurModel, ArmorLatexCentaurUpperModel> {
+public class LightLatexCentaurRenderer extends AdvancedHumanoidRenderer<LightLatexCentaur, LightLatexCentaurModel, ArmorLatexCentaurUpperModel> {
     public LightLatexCentaurRenderer(EntityRendererProvider.Context context) {
         super(context, new LightLatexCentaurModel(context.bakeLayer(LightLatexCentaurModel.LAYER_LOCATION)),
                 ArmorLatexCentaurUpperModel::new, ArmorLatexCentaurUpperModel.INNER_ARMOR, ArmorLatexCentaurUpperModel.OUTER_ARMOR,

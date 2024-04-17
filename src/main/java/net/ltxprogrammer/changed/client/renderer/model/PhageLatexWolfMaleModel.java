@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.PhageLatexWolfMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class PhageLatexWolfMaleModel extends LatexHumanoidModel<PhageLatexWolfMale> implements LatexHumanoidModelInterface<PhageLatexWolfMale, PhageLatexWolfMaleModel> {
+public class PhageLatexWolfMaleModel extends AdvancedHumanoidModel<PhageLatexWolfMale> implements AdvancedHumanoidModelInterface<PhageLatexWolfMale, PhageLatexWolfMaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("phage_latex_wolf_male"), "main");
     private final ModelPart RightLeg;
@@ -33,7 +33,7 @@ public class PhageLatexWolfMaleModel extends LatexHumanoidModel<PhageLatexWolfMa
     private final ModelPart Torso;
     private final ModelPart Tail;
     private final ModelPart Mask;
-    private final LatexAnimator<PhageLatexWolfMale, PhageLatexWolfMaleModel> animator;
+    private final HumanoidAnimator<PhageLatexWolfMale, PhageLatexWolfMaleModel> animator;
 
     public PhageLatexWolfMaleModel(ModelPart root) {
         super(root);
@@ -55,7 +55,7 @@ public class PhageLatexWolfMaleModel extends LatexHumanoidModel<PhageLatexWolfMa
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -183,6 +183,11 @@ public class PhageLatexWolfMaleModel extends LatexHumanoidModel<PhageLatexWolfMa
         return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
     }
 
+    @Override
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
     public ModelPart getHead() {
         return this.Head;
     }
@@ -202,7 +207,7 @@ public class PhageLatexWolfMaleModel extends LatexHumanoidModel<PhageLatexWolfMa
     }
 
     @Override
-    public LatexAnimator<PhageLatexWolfMale, PhageLatexWolfMaleModel> getAnimator() {
+    public HumanoidAnimator<PhageLatexWolfMale, PhageLatexWolfMaleModel> getAnimator() {
         return animator;
     }
 }

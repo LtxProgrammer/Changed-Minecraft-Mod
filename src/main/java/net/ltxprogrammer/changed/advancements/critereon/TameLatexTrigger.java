@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.advancements.critereon;
 
 import com.google.gson.JsonObject;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +20,7 @@ public class TameLatexTrigger extends SimpleCriterionTrigger<TameLatexTrigger.Tr
         return new TriggerInstance(composite, entitypredicate$composite);
     }
 
-    public void trigger(ServerPlayer player, LatexEntity entity) {
+    public void trigger(ServerPlayer player, ChangedEntity entity) {
         LootContext lootcontext = EntityPredicate.createContext(player, entity);
         this.trigger(player, instance -> instance.matches(lootcontext));
     }

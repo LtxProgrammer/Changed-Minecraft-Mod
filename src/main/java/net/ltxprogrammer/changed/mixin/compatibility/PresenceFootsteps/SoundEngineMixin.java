@@ -32,8 +32,8 @@ public abstract class SoundEngineMixin implements PreparableReloadListener {
 
     @Inject(method = "getLocomotion", at = @At("HEAD"), cancellable = true)
     public void getLocomotion(LivingEntity entity, CallbackInfoReturnable<Locomotion> callbackInfo) {
-        ProcessTransfur.ifPlayerLatex(EntityUtil.playerOrNull(entity), variant -> {
-            callbackInfo.setReturnValue(this.isolator.getLocomotionMap().lookup(variant.getLatexEntity()));
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
+            callbackInfo.setReturnValue(this.isolator.getLocomotionMap().lookup(variant.getChangedEntity()));
         });
     }
 }

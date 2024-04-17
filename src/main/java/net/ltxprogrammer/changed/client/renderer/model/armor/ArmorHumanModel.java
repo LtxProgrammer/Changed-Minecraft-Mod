@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ArmorHumanModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorHumanModel<T>> {
+public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorHumanModel<T>> {
     private final ModelPart Head;
     private final ModelPart Hat;
     private final ModelPart Torso;
@@ -28,7 +28,7 @@ public class ArmorHumanModel<T extends LatexEntity> extends LatexHumanoidArmorMo
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorHumanModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorHumanModel<T>> animator;
 
     // Taken from HumanoidModel
     public ArmorHumanModel(ModelPart modelPart) {
@@ -40,7 +40,7 @@ public class ArmorHumanModel<T extends LatexEntity> extends LatexHumanoidArmorMo
         this.LeftArm = modelPart.getChild("left_arm");
         this.RightArm = modelPart.getChild("right_arm");
 
-        this.animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
+        this.animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
                 .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
     }
 
@@ -69,7 +69,7 @@ public class ArmorHumanModel<T extends LatexEntity> extends LatexHumanoidArmorMo
     }
 
     @Override
-    public LatexAnimator<T, ArmorHumanModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorHumanModel<T>> getAnimator() {
         return animator;
     }
 

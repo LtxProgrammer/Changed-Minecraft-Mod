@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexPinkWyvernRenderer extends LatexHumanoidRenderer<LatexPinkWyvern, LatexPinkWyvernModel, ArmorLatexMaleDragonModel<LatexPinkWyvern>> {
+public class LatexPinkWyvernRenderer extends AdvancedHumanoidRenderer<LatexPinkWyvern, LatexPinkWyvernModel, ArmorLatexMaleDragonModel<LatexPinkWyvern>> {
     public LatexPinkWyvernRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexPinkWyvernModel(context.bakeLayer(LatexPinkWyvernModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexDeer;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements LatexHumanoidModelInterface<LatexDeer, LatexDeerModel> {
+public class LatexDeerModel extends AdvancedHumanoidModel<LatexDeer> implements AdvancedHumanoidModelInterface<LatexDeer, LatexDeerModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_deer"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexDeer, LatexDeerModel> animator;
+    private final HumanoidAnimator<LatexDeer, LatexDeerModel> animator;
 
     public LatexDeerModel(ModelPart root) {
         super(root);
@@ -50,7 +50,7 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.deerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -160,10 +160,15 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
     @Override
     public void setupAnim(@NotNull LatexDeer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -185,7 +190,7 @@ public class LatexDeerModel extends LatexHumanoidModel<LatexDeer> implements Lat
     }
 
     @Override
-    public LatexAnimator<LatexDeer, LatexDeerModel> getAnimator() {
+    public HumanoidAnimator<LatexDeer, LatexDeerModel> getAnimator() {
         return animator;
     }
 }

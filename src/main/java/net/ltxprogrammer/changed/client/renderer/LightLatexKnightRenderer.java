@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightLatexKnightRenderer extends LatexHumanoidRenderer<LightLatexKnight, LightLatexKnightModel, ArmorLatexWhiteKnightModel<LightLatexKnight>> {
+public class LightLatexKnightRenderer extends AdvancedHumanoidRenderer<LightLatexKnight, LightLatexKnightModel, ArmorLatexWhiteKnightModel<LightLatexKnight>> {
     public LightLatexKnightRenderer(EntityRendererProvider.Context context) {
         super(context, new LightLatexKnightModel(context.bakeLayer(LightLatexKnightModel.LAYER_LOCATION)),
                 ArmorLatexWhiteKnightModel::new, ArmorLatexWhiteKnightModel.INNER_ARMOR, ArmorLatexWhiteKnightModel.OUTER_ARMOR, 0.5f);

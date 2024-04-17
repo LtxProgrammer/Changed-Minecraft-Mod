@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexShark;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSharkRenderer extends LatexHumanoidRenderer<LatexShark, LatexSharkModel, ArmorLatexMaleSharkModel<LatexShark>> {
+public class LatexSharkRenderer extends AdvancedHumanoidRenderer<LatexShark, LatexSharkModel, ArmorLatexMaleSharkModel<LatexShark>> {
     public LatexSharkRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSharkModel(context.bakeLayer(LatexSharkModel.LAYER_LOCATION)),
                 ArmorLatexMaleSharkModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);

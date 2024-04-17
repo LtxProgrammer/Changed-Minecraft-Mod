@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -67,16 +67,16 @@ public class ChangedTags {
         }
     }
 
-    public static class LatexVariants {
-        public static final TagKey<LatexVariant<?>> WOLF_LIKE = create("wolf_like");
-        public static final TagKey<LatexVariant<?>> SHARK_LIKE = create("shark_like");
-        public static final TagKey<LatexVariant<?>> CAT_LIKE = create("cat_like");
-        public static final TagKey<LatexVariant<?>> LEOPARD_LIKE = create("leopard_like");
+    public static class TransfurVariants {
+        public static final TagKey<TransfurVariant<?>> WOLF_LIKE = create("wolf_like");
+        public static final TagKey<TransfurVariant<?>> SHARK_LIKE = create("shark_like");
+        public static final TagKey<TransfurVariant<?>> CAT_LIKE = create("cat_like");
+        public static final TagKey<TransfurVariant<?>> LEOPARD_LIKE = create("leopard_like");
 
-        public static final TagKey<LatexVariant<?>> CAN_SLEEP_ON_PILLOWS = create("can_sleep_on_pillows");
+        public static final TagKey<TransfurVariant<?>> CAN_SLEEP_ON_PILLOWS = create("can_sleep_on_pillows");
 
-        private static TagKey<LatexVariant<?>> create(String name) {
-            return TagKey.create(ChangedRegistry.LATEX_VARIANT.key, Changed.modResource(name));
+        private static TagKey<TransfurVariant<?>> create(String name) {
+            return TagKey.create(ChangedRegistry.TRANSFUR_VARIANT.key, Changed.modResource(name));
         }
     }
 }

@@ -3,8 +3,8 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 
-public class LatexTranslucentLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
-    private final LatexHumanoidModel<T> model;
+public class LatexTranslucentLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
+    private final AdvancedHumanoidModel<T> model;
     private final ResourceLocation texture;
 
     public LatexTranslucentLayer(RenderLayerParent<T, M> p_174536_, M model, ResourceLocation texture) {
@@ -40,7 +40,7 @@ public class LatexTranslucentLayer<T extends LatexEntity, M extends LatexHumanoi
         }
     }
 
-    public LatexHumanoidModel<T> getModel() {
+    public AdvancedHumanoidModel<T> getModel() {
         return model;
     }
 

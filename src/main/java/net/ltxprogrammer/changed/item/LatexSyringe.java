@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -69,12 +71,22 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
                                 default -> -1;
                             },
                     ChangedItems.LATEX_TIPPED_ARROW.get());
+
+            event.getItemColors().register((stack, layer) ->
+                            switch (layer) {
+                                case 0 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorBack(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                case 1 -> Syringe.getVariant(stack) != null ? ChangedEntities.getEntityColorFront(Syringe.getVariant(stack).getEntityType().getRegistryName())
+                                        : 0xF0F0F0;
+                                default -> -1;
+                            },
+                    ChangedItems.LATEX_FLASK.get());
         }
     }
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         if (this.allowdedIn(tab)) {
-            for(ResourceLocation variant : LatexVariant.PUBLIC_LATEX_FORMS) {
+            for(ResourceLocation variant : TransfurVariant.PUBLIC_LATEX_FORMS) {
                 list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
             }
         }
@@ -110,14 +122,15 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
 
             else if (tag != null && tag.contains("form")) {
                 ResourceLocation formLocation = new ResourceLocation(tag.getString("form"));
-                if (formLocation.equals(LatexVariant.SPECIAL_LATEX))
+                if (formLocation.equals(TransfurVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
-                ProcessTransfur.transfur(entity, level, ChangedRegistry.LATEX_VARIANT.get().getValue(formLocation),
-                        false);
+                ProcessTransfur.transfur(entity, level, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), false,
+                        TransfurContext.hazard(TransfurCause.SYRINGE));
             }
 
             else {
-                ProcessTransfur.transfur(entity, level, LatexVariant.FALLBACK_VARIANT, player.isCreative());
+                ProcessTransfur.transfur(entity, level, TransfurVariant.FALLBACK_VARIANT, player.isCreative(),
+                        TransfurContext.hazard(TransfurCause.SYRINGE));
             }
 
             player.awardStat(Stats.ITEM_USED.get(this));
@@ -158,9 +171,9 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
         public final Player player;
 
         public final ItemStack syringe;
-        public final LatexVariant<?> syringeVariant;
+        public final TransfurVariant<?> syringeVariant;
 
-        public UsedOnBlock(BlockPos blockPos, BlockState blockState, Level level, Player player, ItemStack syringe, LatexVariant<?> syringeVariant) {
+        public UsedOnBlock(BlockPos blockPos, BlockState blockState, Level level, Player player, ItemStack syringe, TransfurVariant<?> syringeVariant) {
             this.blockPos = blockPos;
             this.blockState = blockState;
             this.level = level;
@@ -179,9 +192,9 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
         public final Player player;
 
         public final ItemStack syringe;
-        public final LatexVariant<?> syringeVariant;
+        public final TransfurVariant<?> syringeVariant;
 
-        public UsedOnEntity(LivingEntity entity, Level level, Player player, ItemStack syringe, LatexVariant<?> syringeVariant) {
+        public UsedOnEntity(LivingEntity entity, Level level, Player player, ItemStack syringe, TransfurVariant<?> syringeVariant) {
             this.entity = entity;
             this.level = level;
             this.player = player;

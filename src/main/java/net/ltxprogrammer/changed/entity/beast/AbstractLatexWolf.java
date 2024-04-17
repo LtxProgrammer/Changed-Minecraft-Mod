@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class AbstractLatexWolf extends LatexEntity {
+public abstract class AbstractLatexWolf extends ChangedEntity {
     public AbstractLatexWolf(EntityType<? extends AbstractLatexWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

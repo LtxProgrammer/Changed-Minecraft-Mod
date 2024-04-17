@@ -6,13 +6,12 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSniperDogModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexWolfModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSniperDog;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSniperDogRenderer extends LatexHumanoidRenderer<LatexSniperDog, LatexSniperDogModel, ArmorLatexMaleWolfModel<LatexSniperDog>> {
+public class LatexSniperDogRenderer extends AdvancedHumanoidRenderer<LatexSniperDog, LatexSniperDogModel, ArmorLatexMaleWolfModel<LatexSniperDog>> {
     public LatexSniperDogRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSniperDogModel(context.bakeLayer(LatexSniperDogModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:items/erlenmeyer_flask_item_overlay",
+    "layer1": "changed:items/erlenmeyer_flask_item_overlay2",
+    "layer2": "changed:items/erlenmeyer_flask_item"
+  }
+}

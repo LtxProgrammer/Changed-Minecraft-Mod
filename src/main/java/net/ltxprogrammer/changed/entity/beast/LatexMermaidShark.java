@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -44,5 +42,9 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
         return super.isVisuallySwimming();
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#969696");
     }
 }

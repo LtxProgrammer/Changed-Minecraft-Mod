@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.PipeBlock;
 import net.ltxprogrammer.changed.block.*;
-import net.ltxprogrammer.changed.block.entity.OpenableDoor;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.item.BlockEntityRenderedBlockItem;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.util.Color3;
@@ -90,8 +89,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LaserBeamBlock> LASER_BEAM = register("laser_beam", LaserBeamBlock::new, ChangedBlocks::cutoutRenderer, null);
     public static final RegistryObject<LaserEmitterBlock> LASER_EMITTER = register("laser_emitter", LaserEmitterBlock::new);
     public static final RegistryObject<LatexCrystal> LATEX_CRYSTAL = register("latex_crystal", () -> new LatexCrystal(new ImmutableList.Builder<Supplier<EntityType<? extends DarkLatexEntity>>>()
-            .add(ChangedEntities.DARK_LATEX_PUP::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST_CLUSTER).noOcclusion().noCollission().dynamicShape().strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<LatexPupCrystal> LATEX_PUP_CRYSTAL = register("latex_pup_crystal", () -> new LatexPupCrystal(LatexVariant.DARK_LATEX_PUP, 6, ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), ChangedBlocks::cutoutRenderer);
+            .add(ChangedEntities.BLACK_GOO_PUP::get).build(), ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.of(ChangedMaterials.LATEX_CRYSTAL).sound(SoundType.AMETHYST_CLUSTER).noOcclusion().noCollission().dynamicShape().strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
+    public static final RegistryObject<LatexPupCrystal> LATEX_PUP_CRYSTAL = register("latex_pup_crystal", () -> new LatexPupCrystal(TransfurVariant.DARK_LATEX_PUP, 6, ChangedItems.DARK_LATEX_CRYSTAL_FRAGMENT, BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get())), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<LatexContainerBlock> LATEX_CONTAINER = register("latex_container", LatexContainerBlock::new);
     public static final RegistryObject<LatexTrafficCone> LATEX_TRAFFIC_CONE = register("latex_traffic_cone", LatexTrafficCone::new);
     public static final RegistryObject<LatexBeifengCrystal> LATEX_BEIFENG_CRYSTAL = register("latex_beifeng_crystal", () -> new LatexBeifengCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
@@ -100,8 +99,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LatexWolfCrystal> LATEX_WOLF_CRYSTAL = register("latex_wolf_crystal", () -> new LatexWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<SmallWolfCrystal> LATEX_WOLF_CRYSTAL_SMALL = register("latex_wolf_crystal_small", () -> new SmallWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<DarkLatexCrystalLarge> DARK_LATEX_CRYSTAL_LARGE = register("dark_latex_crystal_large", () -> new DarkLatexCrystalLarge(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_FEMALE = register("light_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(0.1F), LatexVariant.LIGHT_LATEX_WOLF.female()));
-    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_MALE = register("light_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(LIGHT_LATEX_PUDDLE_FEMALE.get()), LatexVariant.LIGHT_LATEX_WOLF.male()));
+    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_FEMALE = register("light_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(0.1F), TransfurVariant.LIGHT_LATEX_WOLF.female()));
+    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_MALE = register("light_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(LIGHT_LATEX_PUDDLE_FEMALE.get()), TransfurVariant.LIGHT_LATEX_WOLF.male()));
     public static final RegistryObject<PipeBlock> PIPE = register("pipe", PipeBlock::new);
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<SpeakerBlock> SPEAKER = register("speaker", () -> new SpeakerBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())), ChangedBlocks::cutoutRenderer);
@@ -145,8 +144,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LabBlock> WALL_VENT = register("wall_vent", () -> new LabBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(2.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_WHITE = register("wall_white", () -> new LabBlock(BlockBehaviour.Properties.copy(WALL_GRAY.get()).color(MaterialColor.QUARTZ)));
     public static final RegistryObject<GasCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
-            () -> new GasCanisterBlock(List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)), null,
-            canister -> new GasCanister(canister, List.of(LatexVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)));
+            () -> new GasCanisterBlock(List.of(TransfurVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)), null,
+            canister -> new GasCanister(canister, List.of(TransfurVariant.AEROSOL_LATEX_WOLF), Color3.fromInt(0x7fbaff)));
     public static final RegistryObject<LabTable> WHITE_LAB_TABLE = register("white_lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
 
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
@@ -182,7 +181,7 @@ public class ChangedBlocks {
             BlockBehaviour.Properties.of(Material.ICE_SOLID, MaterialColor.COLOR_RED).friction(0.98F).sound(SoundType.AMETHYST).strength(2.0F, 2.0F)));
     public static final RegistryObject<WhiteLatexBlock> WHITE_LATEX_BLOCK = register("white_latex_block", () -> new WhiteLatexBlock(BlockBehaviour.Properties.copy(DARK_LATEX_BLOCK.get()).color(MaterialColor.QUARTZ).noOcclusion()
             .isViewBlocking(ChangedBlocks::never).isSuffocating(ChangedBlocks::never)));
-    public static final RegistryObject<LatexWallSplotch> WHITE_LATEX_WALL_SPLOTCH = registerNoItem("white_latex_wall_splotch", () -> new LatexWallSplotch(LatexType.WHITE_LATEX, List.of(LatexVariant.LATEX_HUMAN)));
+    public static final RegistryObject<LatexWallSplotch> WHITE_LATEX_WALL_SPLOTCH = registerNoItem("white_latex_wall_splotch", () -> new LatexWallSplotch(LatexType.WHITE_LATEX, List.of(TransfurVariant.LATEX_HUMAN)));
     public static final RegistryObject<SaplingBlock> ORANGE_TREE_SAPLING = register("orange_tree_sapling", () -> new SaplingBlock(new AbstractTreeGrower() {
         @Override
         protected Holder<? extends ConfiguredFeature<?, ?>> getConfiguredFeature(Random random, boolean p_204308_) {

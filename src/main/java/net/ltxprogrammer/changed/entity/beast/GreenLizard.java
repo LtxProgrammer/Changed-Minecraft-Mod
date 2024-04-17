@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GreenLizard extends LatexEntity {
+public class GreenLizard extends ChangedEntity {
     public GreenLizard(EntityType<? extends GreenLizard> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

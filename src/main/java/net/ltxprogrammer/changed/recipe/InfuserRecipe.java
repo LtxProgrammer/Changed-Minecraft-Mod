@@ -5,8 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.util.MapUtil;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -48,6 +48,7 @@ public class InfuserRecipe implements Recipe<SimpleContainer> {
             new MapUtil.HashBuilder<Item, Function<ItemStack, ItemStack>>()
                     .put(Items.ARROW, stack -> new ItemStack(ChangedItems.LATEX_TIPPED_ARROW.get(), Math.min(stack.getCount(), 16)))
                     .put(ChangedItems.BLOOD_SYRINGE.get(), stack -> new ItemStack(ChangedItems.LATEX_SYRINGE.get()))
+                    .put(ChangedItems.getBlockItem(ChangedBlocks.ERLENMEYER_FLASK.get()), stack -> new ItemStack(ChangedItems.LATEX_FLASK.get()))
                     .finish();
 
     public static ItemStack getBaseFor(ItemStack stack) {
@@ -154,10 +155,10 @@ public class InfuserRecipe implements Recipe<SimpleContainer> {
         ResourceLocation formId = form;
         if (gendered)
             formId = new ResourceLocation(formId + "/" + gender.toString().toLowerCase());
-        LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(formId);
+        TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formId);
         if (variant == null)
             return new TranslatableComponent("syringe." + form);
-        LatexEntity entity = ChangedEntities.getCachedEntity(level, variant.getEntityType());
+        ChangedEntity entity = ChangedEntities.getCachedEntity(level, variant.getEntityType());
         Component component = entity.getDisplayName();
         entity.remove(Entity.RemovalReason.DISCARDED);
         return component;

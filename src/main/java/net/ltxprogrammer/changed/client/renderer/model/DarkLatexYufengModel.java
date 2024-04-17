@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexYufeng;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> implements LatexHumanoidModelInterface<DarkLatexYufeng, DarkLatexYufengModel> {
+public class DarkLatexYufengModel extends AdvancedHumanoidModel<DarkLatexYufeng> implements AdvancedHumanoidModelInterface<DarkLatexYufeng, DarkLatexYufengModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_yufeng"), "main");
     private final ModelPart RightLeg;
@@ -34,7 +34,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
     private final ModelPart Mask;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final LatexAnimator<DarkLatexYufeng, DarkLatexYufengModel> animator;
+    private final HumanoidAnimator<DarkLatexYufeng, DarkLatexYufengModel> animator;
 
     public DarkLatexYufengModel(ModelPart root) {
         super(root);
@@ -61,7 +61,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
         var leftWingRoot = LeftWing.getChild("leftWingRoot");
         var rightWingRoot = RightWing.getChild("rightWingRoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wingedDragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -238,10 +238,15 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
     @Override
     public void setupAnim(@NotNull DarkLatexYufeng entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -263,7 +268,7 @@ public class DarkLatexYufengModel extends LatexHumanoidModel<DarkLatexYufeng> im
     }
 
     @Override
-    public LatexAnimator<DarkLatexYufeng, DarkLatexYufengModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexYufeng, DarkLatexYufengModel> getAnimator() {
         return animator;
     }
 }

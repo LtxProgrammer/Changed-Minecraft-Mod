@@ -9,7 +9,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LightLatexKnightFusionRenderer extends LatexHumanoidRenderer<LightLatexKnightFusion, LightLatexKnightFusionModel, ArmorLatexMaleWolfModel<LightLatexKnightFusion>> {
+public class LightLatexKnightFusionRenderer extends AdvancedHumanoidRenderer<LightLatexKnightFusion, LightLatexKnightFusionModel, ArmorLatexMaleWolfModel<LightLatexKnightFusion>> {
     public LightLatexKnightFusionRenderer(EntityRendererProvider.Context context) {
         super(context, new LightLatexKnightFusionModel(context.bakeLayer(LightLatexKnightFusionModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

@@ -33,7 +33,7 @@ public class ChangedReiPlugin implements REIClientPlugin {
 
     @Override
     public void registerItemComparators(ItemComparatorRegistry registry) {
-        registry.register(latexVariantNbt(), ChangedItems.LATEX_SYRINGE.get(), ChangedItems.LATEX_TIPPED_ARROW.get());
+        registry.register(latexVariantNbt(), ChangedItems.LATEX_SYRINGE.get(), ChangedItems.LATEX_TIPPED_ARROW.get(), ChangedItems.LATEX_FLASK.get());
     }
 
     @Override

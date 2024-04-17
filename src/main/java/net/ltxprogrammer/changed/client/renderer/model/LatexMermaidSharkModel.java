@@ -7,7 +7,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark> implements LatexHumanoidModelInterface<LatexMermaidShark, LatexMermaidSharkModel> {
+public class LatexMermaidSharkModel extends AdvancedHumanoidModel<LatexMermaidShark> implements AdvancedHumanoidModelInterface<LatexMermaidShark, LatexMermaidSharkModel>, LeglessModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_mermaid_shark"), "main");
     private final ModelPart RightArm;
@@ -31,7 +34,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexMermaidShark, LatexMermaidSharkModel> animator;
+    private final HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> animator;
 
     public LatexMermaidSharkModel(ModelPart root) {
         super(root);
@@ -43,7 +46,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
                 .addPreset(AnimatorPresets.leglessShark(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, Tail, List.of(
                 Tail.getChild("TailPrimary"),
                 Tail.getChild("TailPrimary").getChild("TailSecondary"),
@@ -132,10 +135,20 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
     @Override
     public void setupAnim(@NotNull LatexMermaidShark entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return null;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
     }
 
     public ModelPart getHead() {
@@ -144,6 +157,13 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
 
     public ModelPart getTorso() {
         return Torso;
+    }
+
+    @Override
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.ABDOMEN)
+            return TransfurHelper.getLegless();
+        return super.getTransfurHelperModel(limb);
     }
 
     @Override
@@ -156,7 +176,7 @@ public class LatexMermaidSharkModel extends LatexHumanoidModel<LatexMermaidShark
     }
 
     @Override
-    public LatexAnimator<LatexMermaidShark, LatexMermaidSharkModel> getAnimator() {
+    public HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> getAnimator() {
         return animator;
     }
 }

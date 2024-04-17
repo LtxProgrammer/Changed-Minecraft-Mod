@@ -1,20 +1,20 @@
 package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpperBodyAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import org.jetbrains.annotations.NotNull;
 
-public class TaurCrouchAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public class TaurCrouchAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public TaurCrouchAnimator(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.CROUCH;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.CROUCH;
     }
 
     @Override

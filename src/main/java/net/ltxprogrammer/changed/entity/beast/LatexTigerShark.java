@@ -1,8 +1,9 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.SimpleAbilityInstance;
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +17,7 @@ public class LatexTigerShark extends AbstractAquaticEntity {
 
     public LatexTigerShark(EntityType<? extends LatexTigerShark> type, Level level) {
         super(type, level);
-        summonSharks = registerAbility(ability -> this.wantToSummon(), new SimpleAbilityInstance(ChangedAbilities.SUMMON_SHARKS.get(), IAbstractLatex.forLatex(this)));
+        summonSharks = registerAbility(ability -> this.wantToSummon(), new SimpleAbilityInstance(ChangedAbilities.SUMMON_SHARKS.get(), IAbstractChangedEntity.forEntity(this)));
     }
 
     public boolean wantToSummon() {
@@ -35,5 +36,9 @@ public class LatexTigerShark extends AbstractAquaticEntity {
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#969696");
     }
 }

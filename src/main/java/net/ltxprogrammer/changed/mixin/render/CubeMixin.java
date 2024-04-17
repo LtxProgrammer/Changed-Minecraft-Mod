@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeExtender;
@@ -83,5 +82,75 @@ public abstract class CubeMixin implements CubeExtender {
                 if (polygon.normal.equals(step))
                     Arrays.fill(polygon.vertices, NULL_VERTEX);
         }
+    }
+
+    @Override
+    public ModelPart.Polygon[] getPolygons() {
+        return polygons;
+    }
+
+    @Override
+    public void copyPolygonsFrom(ModelPart.Cube cube) {
+        ModelPart.Polygon[] otherPoly = ((CubeExtender)cube).getPolygons();
+        for (int i = 0; i < otherPoly.length; ++i) {
+            ModelPart.Vertex[] nVertices = new ModelPart.Vertex[] {
+                    otherPoly[i].vertices[0],
+                    otherPoly[i].vertices[1],
+                    otherPoly[i].vertices[2],
+                    otherPoly[i].vertices[3]
+            };
+
+            this.polygons[i] = new ModelPart.Polygon(nVertices, 0.0f, 0.0f, 0.0f, 0.0f,
+                    1.0f, 1.0f, false, Direction.getNearest(otherPoly[i].normal.x(), otherPoly[i].normal.y(), otherPoly[i].normal.z()));
+
+            for (int v = 0; v < this.polygons[i].vertices.length; ++v) {
+                final ModelPart.Vertex otherVert = otherPoly[i].vertices[v];
+
+                // Deep copy
+                this.polygons[i].vertices[v] = otherVert.remap(otherVert.u, otherVert.v);
+            }
+        }
+    }
+
+    @Unique
+    private void extendVertex(ModelPart.Polygon poly, int vertex, float x, float y, float z) {
+        poly.vertices[vertex] = new ModelPart.Vertex(
+                poly.vertices[vertex].pos.x() + x,
+                poly.vertices[vertex].pos.y() + y,
+                poly.vertices[vertex].pos.z() + z,
+                poly.vertices[vertex].u, poly.vertices[vertex].v);
+    }
+
+    @Override
+    public void extendCube(float x, float y, float z) {
+        extendVertex(this.polygons[0], 0, x, -y, z);
+        extendVertex(this.polygons[0], 1, x, -y, -z);
+        extendVertex(this.polygons[0], 2, x, y, -z);
+        extendVertex(this.polygons[0], 3, x, y, z);
+        
+        extendVertex(this.polygons[1], 0, -x, -y, -z);
+        extendVertex(this.polygons[1], 1, -x, -y, z);
+        extendVertex(this.polygons[1], 2, -x, y, z);
+        extendVertex(this.polygons[1], 3, -x, y, -z);
+        
+        extendVertex(this.polygons[2], 0, x, -y, z);
+        extendVertex(this.polygons[2], 1, -x, -y, z);
+        extendVertex(this.polygons[2], 2, -x, -y, -z);
+        extendVertex(this.polygons[2], 3, x, -y, -z);
+        
+        extendVertex(this.polygons[3], 0, x, y, -z);
+        extendVertex(this.polygons[3], 1, -x, y, -z);
+        extendVertex(this.polygons[3], 2, -x, y, z);
+        extendVertex(this.polygons[3], 3, x, y, z);
+
+        extendVertex(this.polygons[4], 0, x, -y, -z);
+        extendVertex(this.polygons[4], 1, -x, -y, -z);
+        extendVertex(this.polygons[4], 2, -x, y, -z);
+        extendVertex(this.polygons[4], 3, x, y, -z);
+
+        extendVertex(this.polygons[5], 0, -x, -y, z);
+        extendVertex(this.polygons[5], 1, x, -y, z);
+        extendVertex(this.polygons[5], 2, x, y, z);
+        extendVertex(this.polygons[5], 3, -x, y, z);
     }
 }

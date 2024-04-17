@@ -9,13 +9,13 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexBeeRenderer extends LatexHumanoidRenderer<LatexBee, LatexBeeModel, ArmorLatexBeeModel<LatexBee>> {
+public class LatexBeeRenderer extends AdvancedHumanoidRenderer<LatexBee, LatexBeeModel, ArmorLatexBeeModel<LatexBee>> {
     public LatexBeeRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBeeModel(context.bakeLayer(LatexBeeModel.LAYER_LOCATION)),
                 ArmorLatexBeeModel::new, ArmorLatexBeeModel.INNER_ARMOR, ArmorLatexBeeModel.OUTER_ARMOR, 0.5f);
         var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_bee_translucent.png"));
         this.addLayer(translucent);
-        this.addLayer(new LatexDoubleItemInHandLayer<>(this));
+        this.addLayer(new DoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),

@@ -3,7 +3,9 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -199,8 +201,8 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
             if (container.getFillLevel() == 0)
                 return;
             final var variant = switch (container.getFillType()) {
-                case DARK_LATEX -> LatexVariant.DARK_LATEX_WOLF_PARTIAL;
-                case WHITE_LATEX -> LatexVariant.WHITE_LATEX_WOLF;
+                case DARK_LATEX -> TransfurVariant.DARK_LATEX_WOLF_PARTIAL;
+                case WHITE_LATEX -> TransfurVariant.WHITE_LATEX_WOLF;
                 default -> null;
             };
 
@@ -208,7 +210,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
                 return;
 
             level.getEntitiesOfClass(LivingEntity.class, new AABB(pos)).forEach(livingEntity -> {
-                ProcessTransfur.progressTransfur(livingEntity, 15.0f, variant);
+                ProcessTransfur.progressTransfur(livingEntity, 15.0f, variant, TransfurContext.hazard(TransfurCause.CEILING_HAZARD));
             });
         });
 

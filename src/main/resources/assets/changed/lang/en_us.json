@@ -22,6 +22,13 @@
   "ability.changed.select_special_state": "Select Special State",
   "ability.changed.summon_sharks": "Summon Sharks",
 
+  "ability.changed.grab_entity": "Grab Entity",
+  "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
+  "ability.changed.grab_entity.how_to_release": "Hold [%s] to release the entity",
+  "ability.changed.grab_entity.how_to_transfur": "Hold [%s] to progress transfur",
+  "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
+  "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
+
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open2": "Door won't open",
@@ -57,6 +64,7 @@
   "item.changed.lab_book": "Lab Book",
   "item.changed.latex_base": "Latex Base",
   "item.changed.latex_beifeng_crystal_fragment": "Latex Beifeng Crystal Shard",
+  "item.changed.latex_flask": "Latex Flask",
   "item.changed.latex_inkball": "Latex Inkball",
   "item.changed.latex_syringe": "Latex Syringe",
   "item.changed.latex_wolf_crystal_fragment": "Latex Wolf Crystal Shard",
@@ -131,6 +139,7 @@
   "death.attack.changed:fan.player": "%1$s was diced by a fan whilst fighting %2$s",
 
   "command.changed.error.not_latex_form": "Invalid latex form",
+  "command.changed.error.not_cause": "Invalid transfur cause",
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
 
@@ -364,9 +373,10 @@
   "entity.changed.light_latex_knight": "Light Latex Knight",
   "entity.changed.light_latex_wolf_female": "Female Light Latex Wolf",
   "entity.changed.light_latex_wolf_male": "Male Light Latex Wolf",
-  "entity.changed.light_latex_wolf_organic": "Organic Light Wolf",
   "entity.changed.shark": "Shark",
   "entity.changed.white_latex_wolf": "Pure White Latex Wolf",
+  "entity.changed.white_wolf_female": "Female White Wolf",
+  "entity.changed.white_wolf_male": "Male White Wolf",
   "entity.changed.phage_latex_wolf_female": "Female Phage Latex Wolf",
   "entity.changed.phage_latex_wolf_male": "Male Phage Latex Wolf",
 
@@ -432,9 +442,10 @@
   "item.changed.light_latex_knight_spawn_egg": "Light Latex Knight Spawn Egg",
   "item.changed.light_latex_wolf_female_spawn_egg": "Female Light Latex Wolf Spawn Egg",
   "item.changed.light_latex_wolf_male_spawn_egg": "Male Light Latex Wolf Spawn Egg",
-  "item.changed.light_latex_wolf_organic_spawn_egg": "Organic Light Wolf Spawn Egg",
   "item.changed.shark_spawn_egg": "Shark Spawn Egg",
   "item.changed.white_latex_wolf_spawn_egg": "Pure White Latex Wolf Spawn Egg",
+  "item.changed.white_wolf_female_spawn_egg": "White Wolf Female Spawn Egg",
+  "item.changed.white_wolf_male_spawn_egg": "White Wolf Male Spawn Egg",
   "item.changed.phage_latex_wolf_female_spawn_egg": "Female Phage Latex Wolf Spawn Egg",
   "item.changed.phage_latex_wolf_male_spawn_egg": "Male Phage Latex Wolf Spawn Egg",
 

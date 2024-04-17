@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.DarkLatexDragon;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class DarkLatexDragonRenderer extends LatexHumanoidRenderer<DarkLatexDragon, DarkLatexDragonModel, ArmorLatexMaleWingedDragonModel<DarkLatexDragon>> {
+public class DarkLatexDragonRenderer extends AdvancedHumanoidRenderer<DarkLatexDragon, DarkLatexDragonModel, ArmorLatexMaleWingedDragonModel<DarkLatexDragon>> {
     public DarkLatexDragonRenderer(EntityRendererProvider.Context context) {
         super(context, new DarkLatexDragonModel(context.bakeLayer(DarkLatexDragonModel.LAYER_LOCATION)),
                 ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);

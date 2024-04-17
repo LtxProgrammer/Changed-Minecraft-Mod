@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexBlueDragon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexBlueDragonModel extends LatexHumanoidModel<LatexBlueDragon> implements LatexHumanoidModelInterface<LatexBlueDragon, LatexBlueDragonModel> {
+public class LatexBlueDragonModel extends AdvancedHumanoidModel<LatexBlueDragon> implements AdvancedHumanoidModelInterface<LatexBlueDragon, LatexBlueDragonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_blue_dragon"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexBlueDragonModel extends LatexHumanoidModel<LatexBlueDragon> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexBlueDragon, LatexBlueDragonModel> animator;
+    private final HumanoidAnimator<LatexBlueDragon, LatexBlueDragonModel> animator;
 
     public LatexBlueDragonModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexBlueDragonModel extends LatexHumanoidModel<LatexBlueDragon> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -159,10 +159,15 @@ public class LatexBlueDragonModel extends LatexHumanoidModel<LatexBlueDragon> im
     @Override
     public void setupAnim(@NotNull LatexBlueDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -184,7 +189,7 @@ public class LatexBlueDragonModel extends LatexHumanoidModel<LatexBlueDragon> im
     }
 
     @Override
-    public LatexAnimator<LatexBlueDragon, LatexBlueDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexBlueDragon, LatexBlueDragonModel> getAnimator() {
         return animator;
     }
 }

@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -32,13 +32,13 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
-    public LatexVariant<?> getSelfVariant() {
+    public TransfurVariant<?> getSelfVariant() {
         return null;
     }
 
     @Override
-    public LatexVariant<?> getTransfurVariant() {
-        return this.level.getSeaLevel() - 6 > this.getBlockY() ? LatexVariant.LATEX_MERMAID_SHARK.randomGender(this.random) : LatexVariant.LATEX_SHARK;
+    public TransfurVariant<?> getTransfurVariant() {
+        return this.level.getSeaLevel() - 6 > this.getBlockY() ? TransfurVariant.LATEX_MERMAID_SHARK.randomGender(this.random) : TransfurVariant.LATEX_SHARK;
     }
 
     @Override

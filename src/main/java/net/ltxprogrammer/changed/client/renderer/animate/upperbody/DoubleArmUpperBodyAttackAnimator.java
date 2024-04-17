@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.EntityModel;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public class DoubleArmUpperBodyAttackAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public class DoubleArmUpperBodyAttackAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public final ModelPart upperLeftArm;
     public final ModelPart upperRightArm;
     public final ModelPart lowerLeftArm;
@@ -27,8 +27,8 @@ public class DoubleArmUpperBodyAttackAnimator<T extends LatexEntity, M extends E
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.ATTACK;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.ATTACK;
     }
 
     @Override

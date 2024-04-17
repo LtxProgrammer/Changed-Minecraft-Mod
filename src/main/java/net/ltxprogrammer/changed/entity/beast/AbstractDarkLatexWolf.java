@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -22,6 +23,11 @@ public abstract class AbstractDarkLatexWolf extends AbstractDarkLatexEntity impl
     @Override
     public Color3 getDripColor() {
         return Color3.DARK;
+    }
+
+    @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.fromInt(0x3d3d3d);
     }
 
     @Override

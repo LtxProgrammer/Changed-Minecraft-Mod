@@ -1,7 +1,8 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -37,7 +38,7 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
         return p_32368_.getY() < p_32367_.getSeaLevel() - 5;
     }
 
-    public static boolean checkAquaticLatexSpawnRules(EntityType<? extends LatexEntity> p_32350_, ServerLevelAccessor p_32351_, MobSpawnType p_32352_, BlockPos p_32353_, Random p_32354_) {
+    public static boolean checkAquaticLatexSpawnRules(EntityType<? extends ChangedEntity> p_32350_, ServerLevelAccessor p_32351_, MobSpawnType p_32352_, BlockPos p_32353_, Random p_32354_) {
         if (!p_32351_.getFluidState(p_32353_.below()).is(FluidTags.WATER)) {
             return false;
         } else {
@@ -64,5 +65,9 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.GRAY;
     }
 }

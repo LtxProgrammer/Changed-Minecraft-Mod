@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexRaccoon;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexRaccoonRenderer extends LatexHumanoidRenderer<LatexRaccoon, LatexRaccoonModel, ArmorLatexMaleCatModel<LatexRaccoon>> {
+public class LatexRaccoonRenderer extends AdvancedHumanoidRenderer<LatexRaccoon, LatexRaccoonModel, ArmorLatexMaleCatModel<LatexRaccoon>> {
     public LatexRaccoonRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexRaccoonModel(context.bakeLayer(LatexRaccoonModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

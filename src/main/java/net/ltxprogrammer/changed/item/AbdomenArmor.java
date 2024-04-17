@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,7 +43,7 @@ public class AbdomenArmor extends ArmorItem implements WearableItem {
 
     @Override
     public boolean allowedToKeepWearing(LivingEntity entity) {
-        var variant = LatexVariant.getEntityVariant(entity);
+        var variant = TransfurVariant.getEntityVariant(entity);
         return variant != null && !variant.hasLegs;
     }
 

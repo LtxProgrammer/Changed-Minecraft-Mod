@@ -4,7 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeopardFemale> implements LatexHumanoidModelInterface<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> {
+public class LatexSnowLeopardFemaleModel extends AdvancedHumanoidModel<LatexSnowLeopardFemale> implements AdvancedHumanoidModelInterface<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_snow_leopard_female"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +28,7 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> animator;
+    private final HumanoidAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> animator;
 
     public LatexSnowLeopardFemaleModel(ModelPart root) {
         super(root);
@@ -46,12 +49,19 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.catLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary, tailTertiary.getChild("TailQuaternary")),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
+    }
+
+    @Override
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoAlt();
+        return super.getTransfurHelperModel(limb);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -153,10 +163,15 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
     @Override
     public void setupAnim(@NotNull LatexSnowLeopardFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -178,7 +193,7 @@ public class LatexSnowLeopardFemaleModel extends LatexHumanoidModel<LatexSnowLeo
     }
 
     @Override
-    public LatexAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> getAnimator() {
         return animator;
     }
 }

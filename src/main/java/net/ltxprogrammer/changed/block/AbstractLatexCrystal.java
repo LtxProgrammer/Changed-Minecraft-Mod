@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -36,10 +38,10 @@ import static net.ltxprogrammer.changed.block.AbstractLatexBlock.getLatexed;
 
 public abstract class AbstractLatexCrystal extends BushBlock implements NonLatexCoverableBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
-    private final LatexVariant<?> variant;
+    private final TransfurVariant<?> variant;
     private final Supplier<? extends Item> crystal;
 
-    public AbstractLatexCrystal(LatexVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
+    public AbstractLatexCrystal(TransfurVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
         super(p_53514_);
         this.variant = variant;
         this.crystal = crystal;
@@ -79,11 +81,11 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
 
         if (variant == null) return;
 
-        if (entity instanceof LivingEntity le && !(entity instanceof LatexEntity)) {
+        if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity)) {
             if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
                 return;
             if (!level.isClientSide) {
-                ProcessTransfur.progressTransfur(le, 8.3f, variant);
+                ProcessTransfur.progressTransfur(le, 8.3f, variant, TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL));
             }
 
         }

@@ -47,7 +47,7 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
         NetworkEvent.Context context = contextSupplier.get();
         if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
             ServerPlayer sender = context.getSender();
-            ProcessTransfur.ifPlayerLatex(sender, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(sender, variant -> {
                 var ability = ChangedRegistry.ABILITY.get().getValue(id);
                 Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, sender.getUUID()));
                 if (variant.abilityInstances.containsKey(ability))
@@ -58,7 +58,7 @@ public class SyncVariantAbilityPacket implements ChangedPacket {
 
         else {
             Player affectedPlayer = Minecraft.getInstance().level.getPlayerByUUID(playerUUID);
-            ProcessTransfur.ifPlayerLatex(Minecraft.getInstance().level.getPlayerByUUID(playerUUID), variant -> {
+            ProcessTransfur.ifPlayerTransfurred(Minecraft.getInstance().level.getPlayerByUUID(playerUUID), variant -> {
                 var ability = ChangedRegistry.ABILITY.get().getValue(id);
                 if (variant.abilityInstances.containsKey(ability))
                     variant.abilityInstances.get(ability).readData(data);

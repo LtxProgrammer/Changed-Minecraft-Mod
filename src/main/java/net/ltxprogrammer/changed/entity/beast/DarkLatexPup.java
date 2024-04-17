@@ -2,9 +2,10 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.ai.DudNavigator;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -98,6 +99,11 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
     }
 
     @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.DARK;
+    }
+
+    @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD.get();
     }
@@ -146,17 +152,17 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
         age++;
 
         var underlyingPlayer = getUnderlyingPlayer();
-        if (ProcessTransfur.ifPlayerLatex(underlyingPlayer, variant -> {
+        if (ProcessTransfur.ifPlayerTransfurred(underlyingPlayer, variant -> {
             if (variant.ageAsVariant > MAX_AGE || age > MAX_AGE) {
-                var newVariant = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random);
-                ProcessTransfur.setPlayerLatexVariant(underlyingPlayer, newVariant);
+                var newVariant = TransfurVariant.DARK_LATEX_WOLF.randomGender(level.random);
+                ProcessTransfur.changeTransfur(underlyingPlayer, newVariant);
                 ChangedSounds.broadcastSound(this, newVariant.sound, 1.0f, 1.0f);
                 underlyingPlayer.heal(12.0f);
             }
         })) return;
 
         if (age > MAX_AGE) {
-            var newVariant = LatexVariant.DARK_LATEX_WOLF.randomGender(level.random);
+            var newVariant = TransfurVariant.DARK_LATEX_WOLF.randomGender(level.random);
             var wolf = newVariant.getEntityType().create(level);
             if (wolf != null) {
                 wolf.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -193,7 +199,7 @@ public class DarkLatexPup extends AbstractDarkLatexEntity {
                     itemstack.shrink(1);
                 }
 
-                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                     if (variant.getLatexType() == LatexType.DARK_LATEX && this.random.nextInt(3) == 0) { // One in 3 chance
                         this.tame(player);
                         this.navigation.stop();

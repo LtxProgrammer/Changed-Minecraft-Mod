@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,7 +16,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-public class ArmorLatexWhiteKnightModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorLatexWhiteKnightModel<T>> {
+public class ArmorLatexWhiteKnightModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexWhiteKnightModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_white_knight_unified")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_white_knight_unified")).get();
 
@@ -26,7 +26,7 @@ public class ArmorLatexWhiteKnightModel<T extends LatexEntity> extends LatexHuma
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorLatexWhiteKnightModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorLatexWhiteKnightModel<T>> animator;
 
     public ArmorLatexWhiteKnightModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -41,7 +41,7 @@ public class ArmorLatexWhiteKnightModel<T extends LatexEntity> extends LatexHuma
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.0f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.0f)
                 .addPreset(AnimatorPresets.wolfLikeArmor(Head, Torso, LeftArm, RightArm,
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
         animator.torsoLength = 14.0f;
@@ -116,7 +116,7 @@ public class ArmorLatexWhiteKnightModel<T extends LatexEntity> extends LatexHuma
     }
 
     @Override
-    public LatexAnimator<T, ArmorLatexWhiteKnightModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexWhiteKnightModel<T>> getAnimator() {
         return animator;
     }
 }

@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -45,7 +45,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
         }
     }
 
-    public static final RegistryHolder<LatexVariant<?>> LATEX_VARIANT = new RegistryHolder<LatexVariant<?>>(registryKey("latex_variant"));
+    public static final RegistryHolder<TransfurVariant<?>> TRANSFUR_VARIANT = new RegistryHolder<TransfurVariant<?>>(registryKey("latex_variant"));
     public static final RegistryHolder<AbstractAbility<?>> ABILITY = new RegistryHolder<AbstractAbility<?>>(registryKey("ability"));
     public static final RegistryHolder<HairStyle> HAIR_STYLE = new RegistryHolder<HairStyle>(registryKey("hair_style"));
     public static final RegistryHolder<PlayerMover<?>> PLAYER_MOVER = new RegistryHolder<PlayerMover<?>>(registryKey("player_mover"));
@@ -53,9 +53,9 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
-        createRegistry(event, LATEX_VARIANT.key, c(LatexVariant.class), builder -> {
+        createRegistry(event, TRANSFUR_VARIANT.key, c(TransfurVariant.class), builder -> {
             builder.hasTags();
-            builder.missing((key, network) -> LatexVariant.FALLBACK_VARIANT);
+            builder.missing((key, network) -> TransfurVariant.FALLBACK_VARIANT);
         }, null);
         createRegistry(event, ABILITY.key, c(AbstractAbility.class));
         createRegistry(event, HAIR_STYLE.key, HairStyle.class, builder -> {

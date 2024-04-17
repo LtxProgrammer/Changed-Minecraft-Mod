@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -28,7 +28,7 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final LatexAnimator<T, ArmorSnakeAbdomenModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorSnakeAbdomenModel<T>> animator;
 
     public ArmorSnakeAbdomenModel(ModelPart root) {
         this.Torso = root.getChild("Torso");
@@ -36,7 +36,7 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.legless(Abdomen, LowerAbdomen, Tail, List.of(
                         Tail.getChild("Joint"),
                         Tail.getChild("Joint").getChild("Joint2"))))
                 .addPreset(AnimatorPresets.upperBody(EMPTY_PART, Torso, EMPTY_PART, EMPTY_PART));
@@ -76,7 +76,7 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
     }
 
     @Override
-    public LatexAnimator<T, ArmorSnakeAbdomenModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorSnakeAbdomenModel<T>> getAnimator() {
         return animator;
     }
 

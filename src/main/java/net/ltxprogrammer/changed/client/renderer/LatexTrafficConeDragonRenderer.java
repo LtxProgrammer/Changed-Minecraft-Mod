@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexTrafficConeDragonRenderer extends LatexHumanoidRenderer<LatexTrafficConeDragon, LatexTrafficConeDragonModel, ArmorLatexBigTailDragonModel<LatexTrafficConeDragon>> {
+public class LatexTrafficConeDragonRenderer extends AdvancedHumanoidRenderer<LatexTrafficConeDragon, LatexTrafficConeDragonModel, ArmorLatexBigTailDragonModel<LatexTrafficConeDragon>> {
 	public LatexTrafficConeDragonRenderer(EntityRendererProvider.Context context) {
 		super(context, new LatexTrafficConeDragonModel(context.bakeLayer(LatexTrafficConeDragonModel.LAYER_LOCATION)),
 				ArmorLatexBigTailDragonModel::new, ArmorLatexBigTailDragonModel.INNER_ARMOR, ArmorLatexBigTailDragonModel.OUTER_ARMOR, 0.5f);

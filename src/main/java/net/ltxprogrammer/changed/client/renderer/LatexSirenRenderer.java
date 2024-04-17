@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSirenRenderer extends LatexHumanoidRenderer<LatexSiren, LatexSirenModel, ArmorMermaidSharkFemaleModel<LatexSiren>> {
+public class LatexSirenRenderer extends AdvancedHumanoidRenderer<LatexSiren, LatexSirenModel, ArmorMermaidSharkFemaleModel<LatexSiren>> {
     public LatexSirenRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSirenModel(context.bakeLayer(LatexSirenModel.LAYER_LOCATION)),
                 ArmorMermaidSharkFemaleModel::new, ArmorMermaidSharkFemaleModel.INNER_ARMOR, ArmorMermaidSharkFemaleModel.OUTER_ARMOR,

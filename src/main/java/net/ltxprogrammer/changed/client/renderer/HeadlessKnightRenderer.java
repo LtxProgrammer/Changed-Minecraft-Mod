@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class HeadlessKnightRenderer extends LatexHumanoidRenderer<HeadlessKnight, HeadlessKnightModel, ArmorLatexCentaurLowerModel<HeadlessKnight>> {
+public class HeadlessKnightRenderer extends AdvancedHumanoidRenderer<HeadlessKnight, HeadlessKnightModel, ArmorLatexCentaurLowerModel<HeadlessKnight>> {
     public HeadlessKnightRenderer(EntityRendererProvider.Context context) {
         super(context, new HeadlessKnightModel(context.bakeLayer(HeadlessKnightModel.LAYER_LOCATION)),
                 ArmorLatexCentaurLowerModel::new, ArmorLatexCentaurLowerModel.INNER_ARMOR, ArmorLatexCentaurLowerModel.OUTER_ARMOR, 0.7f);

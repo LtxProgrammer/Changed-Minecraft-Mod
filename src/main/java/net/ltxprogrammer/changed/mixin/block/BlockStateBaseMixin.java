@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
+import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.block.PartialEntityBlock;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,12 @@ public abstract class BlockStateBaseMixin extends StateHolder<Block, BlockState>
 
     protected BlockStateBaseMixin(Block p_61117_, ImmutableMap<Property<?>, Comparable<?>> p_61118_, MapCodec<BlockState> p_61119_) {
         super(p_61117_, p_61118_, p_61119_);
+    }
+
+    @Inject(method = "canOcclude", at = @At("HEAD"), cancellable = true)
+    public void canOcclude(CallbackInfoReturnable<Boolean> cir) {
+        if (this.getProperties().contains(AbstractLatexBlock.COVERED) && this.getValue(AbstractLatexBlock.COVERED) == LatexType.WHITE_LATEX)
+            cir.setReturnValue(false);
     }
 
     @Inject(method = "hasBlockEntity", at = @At("RETURN"), cancellable = true)

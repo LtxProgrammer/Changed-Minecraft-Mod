@@ -7,18 +7,12 @@ import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.ltxprogrammer.changed.entity.beast.LatexHuman;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.player.PlayerModelPart;
 
-public class DarkLatexWolfPartialRenderer extends LatexHumanoidRenderer<DarkLatexWolfPartial, DarkLatexWolfPartialModel, ArmorLatexMaleWolfModel<DarkLatexWolfPartial>> {
+public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkLatexWolfPartial, DarkLatexWolfPartialModel, ArmorLatexMaleWolfModel<DarkLatexWolfPartial>> {
 	public DarkLatexWolfPartialRenderer(EntityRendererProvider.Context context, boolean slim) {
 		super(context, DarkLatexWolfPartialModel.human(context.bakeLayer(
 				slim ? DarkLatexWolfPartialModel.LAYER_LOCATION_HUMAN_SLIM : DarkLatexWolfPartialModel.LAYER_LOCATION_HUMAN)),

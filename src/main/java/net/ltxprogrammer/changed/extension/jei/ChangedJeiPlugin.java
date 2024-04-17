@@ -45,6 +45,13 @@ public class ChangedJeiPlugin implements IModPlugin {
             else
                 return IIngredientSubtypeInterpreter.NONE;
         });
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ChangedItems.LATEX_FLASK.get(), (itemStack, context) -> {
+            var variant = Syringe.getVariant(itemStack);
+            if (variant != null)
+                return variant.getFormId().toString();
+            else
+                return IIngredientSubtypeInterpreter.NONE;
+        });
     }
 
     @Override

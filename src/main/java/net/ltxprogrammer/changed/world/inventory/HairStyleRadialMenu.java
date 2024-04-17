@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.world.inventory;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,7 +28,7 @@ public class HairStyleRadialMenu extends AbstractContainerMenu {
     public final ContainerData data;
     public final Level world;
     public final Player player;
-    public final LatexVariantInstance<?> variant;
+    public final TransfurVariantInstance<?> variant;
     public int x, y, z;
 
     private final Map<Integer, Slot> customSlots = new HashMap<>();
@@ -43,7 +43,7 @@ public class HairStyleRadialMenu extends AbstractContainerMenu {
         this.data = p_38972_;
         this.world = inv.player.level;
         this.player = inv.player;
-        this.variant = ProcessTransfur.getPlayerLatexVariant(player);
+        this.variant = ProcessTransfur.getPlayerTransfurVariant(player);
         this.customSlots.put(0, this.addSlot(new Slot(p_38971_, 0, 9999, 9999) {
             @Override
             public boolean mayPlace(ItemStack stack) {

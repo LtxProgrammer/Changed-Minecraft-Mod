@@ -23,7 +23,7 @@ public class ExtraJumpKeybind {
     public static void handler(ExtraJumpKeybind message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ProcessTransfur.ifPlayerLatex(context.getSender(), (player, variant) -> {
+            ProcessTransfur.ifPlayerTransfurred(context.getSender(), (player, variant) -> {
                 if (variant.getJumpCharges() > 0) {
                     variant.decJumpCharges();
                     player.jumpFromGround();

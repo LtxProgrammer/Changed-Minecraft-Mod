@@ -1,9 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.ability.IAbstractLatex;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.ability.SirenSingAbilityInstance;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.HairStyle;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
@@ -19,7 +20,7 @@ public class LatexSiren extends AbstractAquaticGenderedEntity {
 
     public LatexSiren(EntityType<? extends LatexSiren> type, Level level) {
         super(type, level);
-        sing = registerAbility(ability -> this.wantToSing(), new SirenSingAbilityInstance(ChangedAbilities.SIREN_SING.get(), IAbstractLatex.forLatex(this)));
+        sing = registerAbility(ability -> this.wantToSing(), new SirenSingAbilityInstance(ChangedAbilities.SIREN_SING.get(), IAbstractChangedEntity.forEntity(this)));
     }
 
     @Override
@@ -56,5 +57,9 @@ public class LatexSiren extends AbstractAquaticGenderedEntity {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
         return super.isVisuallySwimming();
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#969696");
     }
 }

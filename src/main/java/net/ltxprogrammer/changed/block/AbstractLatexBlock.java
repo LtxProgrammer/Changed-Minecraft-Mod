@@ -1,13 +1,13 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.LatexVariantInstance;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -89,18 +89,18 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
     }
 
     public static void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity, LatexType latexType) {
-        LatexEntity latexEntity = null;
+        ChangedEntity ChangedEntity = null;
 
-        if (entity instanceof LatexEntity) latexEntity = (LatexEntity)entity;
+        if (entity instanceof ChangedEntity) ChangedEntity = (ChangedEntity)entity;
 
         if (entity instanceof Player player) {
-            LatexVariantInstance<?> variant = ProcessTransfur.getPlayerLatexVariant(player);
+            TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(player);
             if (variant != null)
-                latexEntity = variant.getLatexEntity();
+                ChangedEntity = variant.getChangedEntity();
         }
 
-        if (latexEntity != null) {
-            LatexType type = latexEntity.getLatexType();
+        if (ChangedEntity != null) {
+            LatexType type = ChangedEntity.getLatexType();
             if (type == latexType) {
                 if (!entity.isInWater())
                     multiplyMotion(entity, FACTION_BENEFIT);
@@ -169,7 +169,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             if (Arrays.stream(Direction.values()).noneMatch(direction -> isValidSurface(level, checkPos, checkPos.relative(direction), direction)))
                 return;
 
-            var event = new AbstractLatexGoo.CoveringBlockEvent(latexType, checkState, checkPos, level);
+            var event = new AbstractLatexItem.CoveringBlockEvent(latexType, checkState, checkPos, level);
             if (MinecraftForge.EVENT_BUS.post(event))
                 return;
             if (event.originalState == event.plannedState)

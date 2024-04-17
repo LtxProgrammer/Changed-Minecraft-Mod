@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
+public class ArmorMermaidSharkAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -29,7 +29,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexH
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
     private final ModelPart TailPrimary;
-    private final LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
 
     public ArmorMermaidSharkAbdomenModel(ModelPart root) {
         this.Abdomen = root.getChild("Abdomen");
@@ -37,7 +37,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexH
         this.Tail = LowerAbdomen.getChild("Tail");
         this.TailPrimary = Tail.getChild("TailPrimary");
 
-        this.animator = LatexAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
+        this.animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
                 .addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, Tail, List.of(
                         TailPrimary,
                         TailPrimary.getChild("TailSecondary"),
@@ -68,7 +68,7 @@ public class ArmorMermaidSharkAbdomenModel<T extends LatexEntity> extends LatexH
     }
 
     @Override
-    public LatexAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorMermaidSharkAbdomenModel<T>> getAnimator() {
         return animator;
     }
 

@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.Gender;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.PowderSnowWalkable;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -42,6 +39,10 @@ public class LatexBlueWolf extends AbstractLightLatexWolf implements PowderSnowW
     }
 
     public Color3 getDripColor() {
+        return Color3.getColor("#8ad6e7");
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#8ad6e7");
     }
 }

@@ -13,7 +13,7 @@ import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.item.AbstractLatexGoo;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -561,7 +561,7 @@ public abstract class LatexCoveredBlocks {
         @SubscribeEvent
         public static void onInitModelBaking(ModelRegistryEvent event) {
             // This step should have already completed by this point, but race conditions will be race conditions
-            AbstractLatexGoo.removeLatexCoveredStates();
+            AbstractLatexItem.removeLatexCoveredStates();
         }
 
         @SubscribeEvent
@@ -573,7 +573,7 @@ public abstract class LatexCoveredBlocks {
             LOGGER.info("Gathering blocks to cover");
 
             HashSet<ResourceLocation> notCoverable = new HashSet<>();
-            MinecraftForge.EVENT_BUS.post(new AbstractLatexGoo.GatherNonCoverableBlocksEvent(notCoverable));
+            MinecraftForge.EVENT_BUS.post(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
 
             List<Block> toCover = Registry.BLOCK.stream().filter(block -> {
                 if (!block.getStateDefinition().getProperties().contains(COVERED))

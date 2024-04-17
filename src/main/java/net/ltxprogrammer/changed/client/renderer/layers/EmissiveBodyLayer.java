@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.Camera;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -37,7 +37,7 @@ public class EmissiveBodyLayer<M extends EntityModel<T>, T extends LivingEntity>
     public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
         stack.pushPose();
         stack.scale(ZFIGHT_OFFSET, ZFIGHT_OFFSET, ZFIGHT_OFFSET);
-        if (this.getParentModel() instanceof LatexHumanoidModel<?> armedModel)
+        if (this.getParentModel() instanceof AdvancedHumanoidModel<?> armedModel)
             FormRenderHandler.renderModelPartWithTexture(armedModel.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(this.renderType()), LightTexture.FULL_BRIGHT, 1F);
         stack.popPose();
     }

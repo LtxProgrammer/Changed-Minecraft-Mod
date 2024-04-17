@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexBeifeng;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implements LatexHumanoidModelInterface<LatexBeifeng, LatexBeifengModel> {
+public class LatexBeifengModel extends AdvancedHumanoidModel<LatexBeifeng> implements AdvancedHumanoidModelInterface<LatexBeifeng, LatexBeifengModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_beifeng"), "main");
     private final ModelPart RightLeg;
@@ -28,7 +28,7 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexBeifeng, LatexBeifengModel> animator;
+    private final HumanoidAnimator<LatexBeifeng, LatexBeifengModel> animator;
 
     public LatexBeifengModel(ModelPart root) {
         super(root);
@@ -49,7 +49,7 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.dragonLike(
                         Head, Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -158,10 +158,15 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
     @Override
     public void setupAnim(@NotNull LatexBeifeng entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -183,7 +188,7 @@ public class LatexBeifengModel extends LatexHumanoidModel<LatexBeifeng> implemen
     }
 
     @Override
-    public LatexAnimator<LatexBeifeng, LatexBeifengModel> getAnimator() {
+    public HumanoidAnimator<LatexBeifeng, LatexBeifengModel> getAnimator() {
         return animator;
     }
 }

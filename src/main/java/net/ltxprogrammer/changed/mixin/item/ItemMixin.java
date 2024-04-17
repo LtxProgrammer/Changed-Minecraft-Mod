@@ -22,7 +22,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void use(Level level, Player player, InteractionHand p_41434_, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback) {
         if (asItem() instanceof SaddleItem) {
-            ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 variant.ifHasAbility(ChangedAbilities.ACCESS_SADDLE.get(), ability -> {
                     if (!ability.saddle.isEmpty())
                         return;

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LightLatexKnight;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> implements LatexHumanoidModelInterface<LightLatexKnight, LightLatexKnightModel> {
+public class LightLatexKnightModel extends AdvancedHumanoidModel<LightLatexKnight> implements AdvancedHumanoidModelInterface<LightLatexKnight, LightLatexKnightModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_knight"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LightLatexKnight, LightLatexKnightModel> animator;
+    private final HumanoidAnimator<LightLatexKnight, LightLatexKnightModel> animator;
 
     public LightLatexKnightModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f).legLength(10.0f).torsoLength(14.0f).armLength(15.0f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.0f).torsoLength(14.0f).armLength(15.0f)
                 .addPreset(AnimatorPresets.deerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -143,10 +143,15 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
     @Override
     public void setupAnim(@NotNull LightLatexKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -168,7 +173,7 @@ public class LightLatexKnightModel extends LatexHumanoidModel<LightLatexKnight> 
     }
 
     @Override
-    public LatexAnimator<LightLatexKnight, LightLatexKnightModel> getAnimator() {
+    public HumanoidAnimator<LightLatexKnight, LightLatexKnightModel> getAnimator() {
         return animator;
     }
 }

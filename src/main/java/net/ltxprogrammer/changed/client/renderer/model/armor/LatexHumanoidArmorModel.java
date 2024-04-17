@@ -2,23 +2,19 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.LatexHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModelInterface;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -27,9 +23,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends EntityModel<T>> extends EntityModel<T> implements LatexHumanoidModelInterface<T, M> {
+public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends EntityModel<T>> extends EntityModel<T> implements AdvancedHumanoidModelInterface<T, M> {
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
-
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
             PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 
@@ -122,7 +117,7 @@ public abstract class LatexHumanoidArmorModel<T extends LatexEntity, M extends E
         return Mth.sqrt(f * f + f1 * f1 + f2 * f2);
     }
 
-    public void prepareMobModel(LatexAnimator<T, M> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
+    public void prepareMobModel(HumanoidAnimator<T, M> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
         animator.setupVariables(entity, partialTicks);
     }

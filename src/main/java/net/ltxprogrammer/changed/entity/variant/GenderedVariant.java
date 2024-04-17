@@ -16,28 +16,28 @@ import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> extends LatexVariant<LatexEntity> {
-    final LatexVariant<M> male;
-    final LatexVariant<F> female;
+public class GenderedVariant<M extends ChangedEntity & GenderedEntity, F extends ChangedEntity & GenderedEntity> extends TransfurVariant<ChangedEntity> {
+    final TransfurVariant<M> male;
+    final TransfurVariant<F> female;
 
     @Override
-    public LatexVariant<LatexEntity> clone() {
+    public TransfurVariant<ChangedEntity> clone() {
         throw new NotImplementedException();
     }
 
-    public LatexVariant<M> male() {
+    public TransfurVariant<M> male() {
         return male;
     }
 
-    public LatexVariant<F> female() {
+    public TransfurVariant<F> female() {
         return female;
     }
 
-    public LatexVariant<?> randomGender(Random random) {
+    public TransfurVariant<?> randomGender(Random random) {
         return random.nextBoolean() ? male : female;
     }
 
-    public GenderedVariant(ResourceLocation base, LatexVariant<M> male, LatexVariant<F> female) {
+    public GenderedVariant(ResourceLocation base, TransfurVariant<M> male, TransfurVariant<F> female) {
         super(null,
                 LatexType.NEUTRAL, 1.0f, 1.0f, 1.0f,
                 BreatheMode.NORMAL, 0.7f, false, 0, 0,
@@ -48,11 +48,11 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
         this.female = female;
     }
 
-    public static class Builder<M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> extends LatexVariant.Builder<LatexEntity> {
-        private final LatexVariant.Builder<M> maleBuilder;
-        private final LatexVariant.Builder<F> femaleBuilder;
+    public static class Builder<M extends ChangedEntity & GenderedEntity, F extends ChangedEntity & GenderedEntity> extends TransfurVariant.Builder<ChangedEntity> {
+        private final TransfurVariant.Builder<M> maleBuilder;
+        private final TransfurVariant.Builder<F> femaleBuilder;
 
-        public Builder(LatexVariant.Builder<M> maleBuilder, LatexVariant.Builder<F> femaleBuilder) {
+        public Builder(TransfurVariant.Builder<M> maleBuilder, TransfurVariant.Builder<F> femaleBuilder) {
             super(null);
             this.maleBuilder = maleBuilder;
             this.femaleBuilder = femaleBuilder;
@@ -177,41 +177,45 @@ public class GenderedVariant<M extends LatexEntity & GenderedEntity, F extends L
             this.maleBuilder.transfurMode = mode; this.femaleBuilder.transfurMode = mode; return this;
         }
 
-        public Builder<M, F> fusionOf(LatexVariant<?> variantA, LatexVariant<?> variantB) {
+        public Builder<M, F> fusionOf(TransfurVariant<?> variantA, TransfurVariant<?> variantB) {
             this.maleBuilder.fusionOf(variantA, variantB); this.femaleBuilder.fusionOf(variantA, variantB); return this;
         }
 
-        public Builder<M, F> fusionOf(LatexVariant<?> variant, Class<? extends LivingEntity> mobClass) {
+        public Builder<M, F> fusionOf(TransfurVariant<?> variant, Class<? extends LivingEntity> mobClass) {
             this.maleBuilder.fusionOf(variant, mobClass); this.femaleBuilder.fusionOf(variant, mobClass); return this;
         }
 
-        public LatexVariant.Builder<LatexEntity> disableItems() {
+        public Builder<M, F> disableItems() {
             this.maleBuilder.disableItems(); this.femaleBuilder.disableItems(); return this;
         }
 
-        public LatexVariant.Builder<LatexEntity> holdItemsInMouth() {
+        public Builder<M, F> holdItemsInMouth() {
             this.maleBuilder.holdItemsInMouth(); this.femaleBuilder.holdItemsInMouth(); return this;
         }
 
-        public LatexVariant.Builder<LatexEntity> itemUseMode(UseItemMode v) {
+        public Builder<M, F> itemUseMode(UseItemMode v) {
             this.maleBuilder.itemUseMode(v); this.femaleBuilder.itemUseMode(v); return this;
         }
 
-        public Builder<M, F> split(Consumer<LatexVariant.Builder<M>> maleConsumer, Consumer<LatexVariant.Builder<F>> femaleConsumer) {
+        public Builder<M, F> sound(ResourceLocation event) {
+            this.maleBuilder.sound(event); this.femaleBuilder.sound(event); return this;
+        }
+
+        public Builder<M, F> split(Consumer<TransfurVariant.Builder<M>> maleConsumer, Consumer<TransfurVariant.Builder<F>> femaleConsumer) {
             maleConsumer.accept(maleBuilder); femaleConsumer.accept(femaleBuilder);
             return this;
         }
 
-        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
-            return new Builder<>(LatexVariant.Builder.of(entityTypeMale), LatexVariant.Builder.of(entityTypeFemale));
+        public static <M extends ChangedEntity & GenderedEntity, F extends ChangedEntity & GenderedEntity> Builder<M, F> of(Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+            return new Builder<>(TransfurVariant.Builder.of(entityTypeMale), TransfurVariant.Builder.of(entityTypeFemale));
         }
 
-        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(LatexVariant<?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
-            return new Builder<>(LatexVariant.Builder.of(variant, entityTypeMale), LatexVariant.Builder.of(variant, entityTypeFemale));
+        public static <M extends ChangedEntity & GenderedEntity, F extends ChangedEntity & GenderedEntity> Builder<M, F> of(TransfurVariant<?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+            return new Builder<>(TransfurVariant.Builder.of(variant, entityTypeMale), TransfurVariant.Builder.of(variant, entityTypeFemale));
         }
 
-        public static <M extends LatexEntity & GenderedEntity, F extends LatexEntity & GenderedEntity> Builder<M, F> of(GenderedVariant<?, ?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
-            return new Builder<>(LatexVariant.Builder.of(variant.male(), entityTypeMale), LatexVariant.Builder.of(variant.female(), entityTypeFemale));
+        public static <M extends ChangedEntity & GenderedEntity, F extends ChangedEntity & GenderedEntity> Builder<M, F> of(GenderedVariant<?, ?> variant, Supplier<EntityType<M>> entityTypeMale, Supplier<EntityType<F>> entityTypeFemale) {
+            return new Builder<>(TransfurVariant.Builder.of(variant.male(), entityTypeMale), TransfurVariant.Builder.of(variant.female(), entityTypeFemale));
         }
 
         public GenderedVariant<M, F> buildGendered(ResourceLocation formId) {

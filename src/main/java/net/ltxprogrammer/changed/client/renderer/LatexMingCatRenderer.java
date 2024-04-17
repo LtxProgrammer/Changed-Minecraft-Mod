@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexMingCat;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMingCatRenderer extends LatexHumanoidRenderer<LatexMingCat, LatexMingCatModel, ArmorLatexMaleCatModel<LatexMingCat>> {
+public class LatexMingCatRenderer extends AdvancedHumanoidRenderer<LatexMingCat, LatexMingCatModel, ArmorLatexMaleCatModel<LatexMingCat>> {
     public LatexMingCatRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMingCatModel(context.bakeLayer(LatexMingCatModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

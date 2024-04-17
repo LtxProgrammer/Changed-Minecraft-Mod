@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexEntity;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -11,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexCrocodile extends LatexEntity {
+public class LatexCrocodile extends ChangedEntity {
     public LatexCrocodile(EntityType<? extends LatexCrocodile> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -43,5 +40,9 @@ public class LatexCrocodile extends LatexEntity {
     @Override
     public Color3 getDripColor() {
         return Color3.getColor(this.random.nextInt(4) < 3 ? "#2b86a3" : "#29b297");
+    }
+
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.getColor("#2b86a3");
     }
 }

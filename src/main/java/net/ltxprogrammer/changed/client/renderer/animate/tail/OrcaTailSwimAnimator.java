@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.animate.tail;
 
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -11,14 +11,14 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkUpperBodySwimAnimator.SWIM_RATE;
 
-public class OrcaTailSwimAnimator<T extends LatexEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
+public class OrcaTailSwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
     public OrcaTailSwimAnimator(ModelPart tail, List<ModelPart> tailJoints) {
         super(tail, tailJoints);
     }
 
     @Override
-    public LatexAnimator.AnimateStage preferredStage() {
-        return LatexAnimator.AnimateStage.SWIM;
+    public HumanoidAnimator.AnimateStage preferredStage() {
+        return HumanoidAnimator.AnimateStage.SWIM;
     }
 
     @Override

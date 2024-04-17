@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.stats.Stats;
@@ -40,9 +40,9 @@ public class GasMaskItem extends Item implements WearableItem {
         return ProcessTransfur.getEntityVariant(entity).map(variant -> {
             if (DarkLatexMask.MASKED_LATEXES.contains(variant.getFormId()))
                 return false;
-            if (variant == LatexVariant.LATEX_ALIEN)
+            if (variant == TransfurVariant.LATEX_ALIEN)
                 return false;
-            if (variant == LatexVariant.LATEX_BENIGN_WOLF)
+            if (variant == TransfurVariant.LATEX_BENIGN_WOLF)
                 return false;
             return true;
         }).orElse(true);

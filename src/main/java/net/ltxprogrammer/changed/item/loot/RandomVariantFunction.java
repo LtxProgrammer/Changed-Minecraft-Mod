@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.mojang.logging.LogUtils;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedLootItemFunctions;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +47,7 @@ public class RandomVariantFunction extends LootItemConditionalFunction {
             return this;
         }
 
-        public RandomVariantFunction.Builder withVariant(LatexVariant<?> variant) {
+        public RandomVariantFunction.Builder withVariant(TransfurVariant<?> variant) {
             this.variants.add(variant.getFormId());
             return this;
         }
@@ -58,7 +58,7 @@ public class RandomVariantFunction extends LootItemConditionalFunction {
         }
 
         public RandomVariantFunction.Builder withAllVariants() {
-            this.variants.addAll(LatexVariant.PUBLIC_LATEX_FORMS);
+            this.variants.addAll(TransfurVariant.PUBLIC_LATEX_FORMS);
             return this;
         }
 

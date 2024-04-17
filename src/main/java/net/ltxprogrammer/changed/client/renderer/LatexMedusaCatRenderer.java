@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMedusaCatRenderer extends LatexHumanoidRenderer<LatexMedusaCat, LatexMedusaCatModel, ArmorLatexFemaleCatModel<LatexMedusaCat>> {
+public class LatexMedusaCatRenderer extends AdvancedHumanoidRenderer<LatexMedusaCat, LatexMedusaCatModel, ArmorLatexFemaleCatModel<LatexMedusaCat>> {
     public LatexMedusaCatRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMedusaCatModel(context.bakeLayer(LatexMedusaCatModel.LAYER_LOCATION)),
                 ArmorLatexFemaleCatModel::new, ArmorLatexFemaleCatModel.INNER_ARMOR, ArmorLatexFemaleCatModel.OUTER_ARMOR, 0.5f);

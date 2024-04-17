@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexMoth;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMothRenderer extends LatexHumanoidRenderer<LatexMoth, LatexMothModel, ArmorNoTailModel<LatexMoth>> {
+public class LatexMothRenderer extends AdvancedHumanoidRenderer<LatexMoth, LatexMothModel, ArmorNoTailModel<LatexMoth>> {
     public LatexMothRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMothModel(context.bakeLayer(LatexMothModel.LAYER_LOCATION)),
                 ArmorNoTailModel::new, ArmorNoTailModel.INNER_ARMOR, ArmorNoTailModel.OUTER_ARMOR, 0.5f);

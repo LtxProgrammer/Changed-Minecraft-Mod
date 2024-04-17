@@ -12,7 +12,7 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class PhageLatexWolfMaleRenderer extends LatexHumanoidRenderer<PhageLatexWolfMale, PhageLatexWolfMaleModel, ArmorLatexMaleWolfModel<PhageLatexWolfMale>> {
+public class PhageLatexWolfMaleRenderer extends AdvancedHumanoidRenderer<PhageLatexWolfMale, PhageLatexWolfMaleModel, ArmorLatexMaleWolfModel<PhageLatexWolfMale>> {
 	public PhageLatexWolfMaleRenderer(EntityRendererProvider.Context context) {
 		super(context, new PhageLatexWolfMaleModel(context.bakeLayer(PhageLatexWolfMaleModel.LAYER_LOCATION)),
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);

@@ -2,8 +2,8 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
@@ -21,7 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
+public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     private static final float X_ROT_MIN = (-(float)Math.PI / 6F);
     private static final float X_ROT_MAX = ((float)Math.PI / 2F);
 
@@ -30,8 +30,8 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
     }
 
     protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_) {
-        if (p_174525_ instanceof LatexEntity latexEntity && latexEntity.getUnderlyingPlayer() != null)
-            p_174525_ = latexEntity.getUnderlyingPlayer();
+        if (p_174525_ instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
+            p_174525_ = ChangedEntity.getUnderlyingPlayer();
 
         if (p_174526_.is(Items.SPYGLASS) && p_174525_.getUseItem() == p_174526_ && p_174525_.swingTime == 0) {
             this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, p_174529_, p_174530_, p_174531_);
@@ -50,7 +50,7 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
         modelpart.xRot = f;
         CustomHeadLayer.translateToHead(pose, false);
         boolean flag = arm == HumanoidArm.LEFT;
-        /*var list = LatexHumanoidModel.findLargestCube(modelpart);
+        /*var list = AdvancedHumanoidModel.findLargestCube(modelpart);
         if (list.isEmpty()) {
             pose.popPose();
             return;
@@ -64,10 +64,9 @@ public class LatexItemInHandLayer<T extends LatexEntity, M extends LatexHumanoid
 
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        var self = entity.getSelfVariant();
-        if (self == null || self.itemUseMode == UseItemMode.NORMAL)
+        if (entity.getItemUseMode() == UseItemMode.NORMAL)
             super.render(pose, bufferSource, packedLight, entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        else if (self.itemUseMode == UseItemMode.MOUTH) {
+        else if (entity.getItemUseMode() == UseItemMode.MOUTH) {
             boolean flag = entity.isSleeping();
             pose.pushPose();
             var head = this.getParentModel().getHead();

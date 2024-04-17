@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardMale;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSnowLeopardMaleRenderer extends LatexHumanoidRenderer<LatexSnowLeopardMale, LatexSnowLeopardMaleModel, ArmorLatexMaleCatModel<LatexSnowLeopardMale>> {
+public class LatexSnowLeopardMaleRenderer extends AdvancedHumanoidRenderer<LatexSnowLeopardMale, LatexSnowLeopardMaleModel, ArmorLatexMaleCatModel<LatexSnowLeopardMale>> {
     public LatexSnowLeopardMaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSnowLeopardMaleModel(context.bakeLayer(LatexSnowLeopardMaleModel.LAYER_LOCATION)),
                 ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);

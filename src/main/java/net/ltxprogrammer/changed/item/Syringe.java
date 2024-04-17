@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.ltxprogrammer.changed.entity.variant.LatexVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -86,21 +86,21 @@ public class Syringe extends Item implements SpecializedAnimations {
     }
 
     public static String getVariantDescriptionId(ItemStack stack) {
-        LatexVariant<?> variant = ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(stack.getTag(), "form"));
+        TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(stack.getTag(), "form"));
         if (variant == null)
             return "entity." + TagUtil.getResourceLocation(stack.getTag(), "form").toString().replace("form_", "")
                     .replace(':', '.').replace('/', '_');
         return variant.getEntityType().getDescriptionId();
     }
 
-    public static LatexVariant<?> getVariant(ItemStack p_43364_) {
+    public static TransfurVariant<?> getVariant(ItemStack p_43364_) {
         if (p_43364_.getTag() != null) {
             if (p_43364_.getTag().contains("form")) {
-                return ChangedRegistry.LATEX_VARIANT.get().getValue(TagUtil.getResourceLocation(p_43364_.getTag(), "form"));
+                return ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(p_43364_.getTag(), "form"));
             }
         }
 
-        return LatexVariant.FALLBACK_VARIANT;
+        return TransfurVariant.FALLBACK_VARIANT;
     }
 
     @Override
@@ -123,10 +123,10 @@ public class Syringe extends Item implements SpecializedAnimations {
         CompoundTag tag = new CompoundTag();
         tag.putUUID("owner", player.getUUID());
 
-        ProcessTransfur.ifPlayerLatex(player, variant -> {
+        ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ResourceLocation form = variant.getFormId();
-            if (LatexVariant.SPECIAL_LATEX_FORMS.contains(form))
-                form = LatexVariant.SPECIAL_LATEX;
+            if (TransfurVariant.SPECIAL_LATEX_FORMS.contains(form))
+                form = TransfurVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
             tag.putBoolean("safe", Pale.isCured(player));
             tag.putString("form", form.toString());

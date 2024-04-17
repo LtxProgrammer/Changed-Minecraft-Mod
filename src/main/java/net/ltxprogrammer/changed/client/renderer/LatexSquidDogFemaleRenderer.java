@@ -10,11 +10,11 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSquidDogFemaleRenderer extends LatexHumanoidRenderer<LatexSquidDogFemale, LatexSquidDogFemaleModel, ArmorLatexFemaleSquidDogModel<LatexSquidDogFemale>> {
+public class LatexSquidDogFemaleRenderer extends AdvancedHumanoidRenderer<LatexSquidDogFemale, LatexSquidDogFemaleModel, ArmorLatexFemaleSquidDogModel<LatexSquidDogFemale>> {
     public LatexSquidDogFemaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSquidDogFemaleModel(context.bakeLayer(LatexSquidDogFemaleModel.LAYER_LOCATION)),
                 ArmorLatexFemaleSquidDogModel::new, ArmorLatexFemaleSquidDogModel.INNER_ARMOR, ArmorLatexFemaleSquidDogModel.OUTER_ARMOR, 0.65f);
-        this.addLayer(new LatexDoubleItemInHandLayer<>(this));
+        this.addLayer(new DoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),

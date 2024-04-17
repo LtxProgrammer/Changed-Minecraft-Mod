@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexFennecFox;
 import net.ltxprogrammer.changed.entity.beast.LatexPurpleFox;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,7 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexFennecFoxModel extends LatexHumanoidModel<LatexFennecFox> implements LatexHumanoidModelInterface<LatexFennecFox, LatexFennecFoxModel> {
+public class LatexFennecFoxModel extends AdvancedHumanoidModel<LatexFennecFox> implements AdvancedHumanoidModelInterface<LatexFennecFox, LatexFennecFoxModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_fennec_fox"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexFennecFoxModel extends LatexHumanoidModel<LatexFennecFox> impl
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexFennecFox, LatexFennecFoxModel> animator;
+    private final HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> animator;
 
     public LatexFennecFoxModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexFennecFoxModel extends LatexHumanoidModel<LatexFennecFox> impl
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -144,10 +144,15 @@ public class LatexFennecFoxModel extends LatexHumanoidModel<LatexFennecFox> impl
     @Override
     public void setupAnim(LatexFennecFox entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -169,7 +174,7 @@ public class LatexFennecFoxModel extends LatexHumanoidModel<LatexFennecFox> impl
     }
 
     @Override
-    public LatexAnimator<LatexFennecFox, LatexFennecFoxModel> getAnimator() {
+    public HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> getAnimator() {
         return animator;
     }
 }

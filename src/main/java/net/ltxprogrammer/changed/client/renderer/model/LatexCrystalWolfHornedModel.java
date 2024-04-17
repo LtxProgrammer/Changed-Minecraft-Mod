@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexCrystalWolfHorned;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexCrystalWolfHornedModel extends LatexHumanoidModel<LatexCrystalWolfHorned> implements LatexHumanoidModelInterface<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> {
+public class LatexCrystalWolfHornedModel extends AdvancedHumanoidModel<LatexCrystalWolfHorned> implements AdvancedHumanoidModelInterface<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_crystal_wolf_horned"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
@@ -23,7 +23,7 @@ public class LatexCrystalWolfHornedModel extends LatexHumanoidModel<LatexCrystal
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> animator;
+    private final HumanoidAnimator<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> animator;
 
     public LatexCrystalWolfHornedModel(ModelPart root) {
         super(root);
@@ -44,7 +44,7 @@ public class LatexCrystalWolfHornedModel extends LatexHumanoidModel<LatexCrystal
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -156,10 +156,15 @@ public class LatexCrystalWolfHornedModel extends LatexHumanoidModel<LatexCrystal
     @Override
     public void setupAnim(LatexCrystalWolfHorned entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -181,7 +186,7 @@ public class LatexCrystalWolfHornedModel extends LatexHumanoidModel<LatexCrystal
     }
 
     @Override
-    public LatexAnimator<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> getAnimator() {
+    public HumanoidAnimator<LatexCrystalWolfHorned, LatexCrystalWolfHornedModel> getAnimator() {
         return animator;
     }
 }

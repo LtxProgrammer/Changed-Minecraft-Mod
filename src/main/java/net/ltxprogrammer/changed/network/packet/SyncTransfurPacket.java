@@ -57,10 +57,9 @@ public class SyncTransfurPacket implements ChangedPacket {
             changedForms.forEach((uuid, listing) -> {
                 Player player = level.getPlayerByUUID(uuid);
                 if (player != null) {
-                    ProcessTransfur.setPlayerLatexVariant(player, ChangedRegistry.LATEX_VARIANT.get().getValue(listing.form));
-                    ProcessTransfur.ifPlayerLatex(player, variant -> {
-                        variant.loadAbilities(listing.data);
-                    });
+                    final var variant = ProcessTransfur.setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form), null);
+                    if (variant != null)
+                        variant.load(listing.data);
                 }
             });
             context.setPacketHandled(true);
@@ -78,9 +77,9 @@ public class SyncTransfurPacket implements ChangedPacket {
         private final Map<UUID, Listing> changedForms = new HashMap<>();
 
         public void addPlayer(Player player) {
-            ProcessTransfur.ifPlayerLatex(player, variant -> {
+            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 changedForms.put(player.getUUID(),
-                        new Listing(ChangedRegistry.LATEX_VARIANT.get().getID(variant.getParent()), variant.saveAbilities()));
+                        new Listing(ChangedRegistry.TRANSFUR_VARIANT.get().getID(variant.getParent()), variant.save()));
             }, () -> {
                 changedForms.put(player.getUUID(),
                         new Listing(NO_FORM, new CompoundTag()));

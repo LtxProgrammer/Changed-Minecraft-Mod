@@ -8,9 +8,9 @@ import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.SkinManagerExtender;
 import net.ltxprogrammer.changed.client.latexparticles.LatexDripParticle;
 import net.ltxprogrammer.changed.client.latexparticles.SurfacePoint;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.data.MixedTexture;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -30,12 +30,12 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
     private final RenderLayerParent<T, M> parent;
     private final Minecraft minecraft;
     private final Predicate<ModelPart> canPartDrip;
 
-    private final Map<LatexHumanoidModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
+    private final Map<AdvancedHumanoidModel<T>, Function<T, ResourceLocation>> models = new HashMap<>();
 
     private static final NativeImage MISSING_TEXTURE = new NativeImage(1, 1, false);
     private static final Map<ResourceLocation, NativeImage> cachedTextures = new HashMap<>();
@@ -96,12 +96,12 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         models.put(model, parent::getTextureLocation);
     }
 
-    public LatexParticlesLayer<T, M> addModel(LatexHumanoidModel<T> model) {
+    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model) {
         models.put(model, parent::getTextureLocation);
         return this;
     }
 
-    public LatexParticlesLayer<T, M> addModel(LatexHumanoidModel<T> model, Function<T, ResourceLocation> textureFetcher) {
+    public LatexParticlesLayer<T, M> addModel(AdvancedHumanoidModel<T> model, Function<T, ResourceLocation> textureFetcher) {
         models.put(model, textureFetcher);
         return this;
     }
@@ -138,7 +138,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         return ((SkinManagerExtender)Minecraft.getInstance().getSkinManager()).getSkinImage(name);
     }
 
-    public SurfacePoint findSurface(ModelPart part, LatexEntity entity) {
+    public SurfacePoint findSurface(ModelPart part, ChangedEntity entity) {
         var cube = part.getRandomCube(entity.level.random);
         var normal = new Vector3f(0, 0, 0);
         var tangent = new Vector3f(0, 0, 0);
@@ -176,7 +176,7 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         return new SurfacePoint(normal, tangent, vector, uv);
     }
 
-    private Optional<LatexHumanoidModel<T>> getRandomModel(Random random) {
+    private Optional<AdvancedHumanoidModel<T>> getRandomModel(Random random) {
         if (this.models.isEmpty())
             return Optional.empty();
         int indexToGet = random.nextInt(this.models.size());
@@ -187,12 +187,11 @@ public class LatexParticlesLayer<T extends LatexEntity, M extends LatexHumanoidM
         return Optional.empty();
     }
 
-    public void createNewDripParticle(LatexEntity entity) {
+    public void createNewDripParticle(ChangedEntity entity) {
         var optionalModel = getRandomModel(entity.getRandom());
         if (optionalModel.isEmpty())
             return;
         var model = optionalModel.get();
-
         var partsWithCubes = model.getAllParts().filter(part -> !part.getLeaf().cubes.isEmpty()).filter(part -> canPartDrip.test(part.getLeaf())).toList();
         if (partsWithCubes.isEmpty())
             return;

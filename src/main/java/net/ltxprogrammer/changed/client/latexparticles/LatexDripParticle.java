@@ -6,8 +6,8 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
-import net.ltxprogrammer.changed.client.renderer.model.LatexHumanoidModel;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -50,9 +50,9 @@ public class LatexDripParticle extends LatexParticle {
     protected int ticksAttached = 0;
     private final int maxTicksAttached;
 
-    private final LatexEntity attachedEntity;
+    private final ChangedEntity attachedEntity;
     private final ModelPartStem attachedPart;
-    private final LatexHumanoidModel<?> attachedModel;
+    private final AdvancedHumanoidModel<?> attachedModel;
   
     private final SurfacePoint surface;
     protected final Color3 color;
@@ -69,7 +69,7 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     public LatexDripParticle(SpriteSet spriteSet,
-                             LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+                             ChangedEntity attachedEntity, AdvancedHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         super(attachedEntity.level, lifespan);
         this.maxTicksAttached = attachedEntity.level.random.nextInt(80, 2400);
 
@@ -367,7 +367,7 @@ public class LatexDripParticle extends LatexParticle {
         return alpha >= 1.0f ? LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE : LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_TRANSLUCENT;
     }
 
-    public static LatexParticleProvider<LatexDripParticle> of(LatexEntity attachedEntity, LatexHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
+    public static LatexParticleProvider<LatexDripParticle> of(ChangedEntity attachedEntity, AdvancedHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
         return new LatexParticleProvider<>() {
             @Override
             public LatexParticleType<LatexDripParticle> getParticleType() {

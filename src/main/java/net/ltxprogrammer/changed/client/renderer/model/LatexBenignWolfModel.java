@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexBenignWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> implements LatexHumanoidModelInterface<LatexBenignWolf, LatexBenignWolfModel> {
+public class LatexBenignWolfModel extends AdvancedHumanoidModel<LatexBenignWolf> implements AdvancedHumanoidModelInterface<LatexBenignWolf, LatexBenignWolfModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_benign_wolf"), "main");
     private final ModelPart RightLeg;
@@ -25,7 +25,7 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexBenignWolf, LatexBenignWolfModel> animator;
+    private final HumanoidAnimator<LatexBenignWolf, LatexBenignWolfModel> animator;
 
     public LatexBenignWolfModel(ModelPart root) {
         super(root);
@@ -46,7 +46,7 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
         var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
-        animator = LatexAnimator.of(this).hipOffset(-1.5f)
+        animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
                 .addPreset(AnimatorPresets.wolfLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
@@ -147,10 +147,15 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
     @Override
     public void setupAnim(@NotNull LatexBenignWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -172,7 +177,7 @@ public class LatexBenignWolfModel extends LatexHumanoidModel<LatexBenignWolf> im
     }
 
     @Override
-    public LatexAnimator<LatexBenignWolf, LatexBenignWolfModel> getAnimator() {
+    public HumanoidAnimator<LatexBenignWolf, LatexBenignWolfModel> getAnimator() {
         return animator;
     }
 }

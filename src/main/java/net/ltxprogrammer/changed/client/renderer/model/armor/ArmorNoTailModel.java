@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
-import net.ltxprogrammer.changed.entity.LatexEntity;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel.EMPTY_PART;
 
-public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorModel<T, ArmorNoTailModel<T>> {
+public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorNoTailModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_no_tail")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_no_tail")).get();
 
@@ -31,7 +31,7 @@ public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorM
     private final ModelPart RightLeg;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final LatexAnimator<T, ArmorNoTailModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorNoTailModel<T>> animator;
 
     public ArmorNoTailModel(ModelPart modelPart) {
         this.Head = modelPart.getChild("Head");
@@ -41,7 +41,7 @@ public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorM
         this.LeftArm = modelPart.getChild("LeftArm");
         this.RightArm = modelPart.getChild("RightArm");
 
-        this.animator = LatexAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, EMPTY_PART, List.of(), LeftLeg, RightLeg));
+        this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, EMPTY_PART, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
@@ -113,7 +113,7 @@ public class ArmorNoTailModel<T extends LatexEntity> extends LatexHumanoidArmorM
     }
 
     @Override
-    public LatexAnimator<T, ArmorNoTailModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorNoTailModel<T>> getAnimator() {
         return animator;
     }
 }

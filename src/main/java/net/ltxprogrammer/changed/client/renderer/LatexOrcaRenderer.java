@@ -8,12 +8,11 @@ import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexOrcaModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexOrcaModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
 import net.ltxprogrammer.changed.entity.beast.LatexOrca;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexOrcaRenderer extends LatexHumanoidRenderer<LatexOrca, LatexOrcaModel, ArmorLatexOrcaModel<LatexOrca>> {
+public class LatexOrcaRenderer extends AdvancedHumanoidRenderer<LatexOrca, LatexOrcaModel, ArmorLatexOrcaModel<LatexOrca>> {
     public LatexOrcaRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexOrcaModel(context.bakeLayer(LatexOrcaModel.LAYER_LOCATION)),
                 ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);

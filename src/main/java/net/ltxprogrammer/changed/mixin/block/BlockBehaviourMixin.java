@@ -117,7 +117,7 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
             callbackInfoReturnable.setReturnValue(InteractionResult.PASS);
 
             if (coveredWith == LatexType.WHITE_LATEX) {
-                ProcessTransfur.ifPlayerLatex(player, variant -> {
+                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                     if (variant.getLatexType() == LatexType.WHITE_LATEX &&
                             /*player.isShiftKeyDown() && */player.getItemInHand(player.getUsedItemHand()).isEmpty() && !WhiteLatexTransportInterface.isEntityInWhiteLatex(player)) { // Empty-handed RMB
                         if (pos.distSqr(new BlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ())) > 4.0)

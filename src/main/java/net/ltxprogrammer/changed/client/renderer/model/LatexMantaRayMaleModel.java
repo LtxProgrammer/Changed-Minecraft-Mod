@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.LatexAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexMantaRayMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale> implements LatexHumanoidModelInterface<LatexMantaRayMale, LatexMantaRayMaleModel> {
+public class LatexMantaRayMaleModel extends AdvancedHumanoidModel<LatexMantaRayMale> implements AdvancedHumanoidModelInterface<LatexMantaRayMale, LatexMantaRayMaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_manta_ray_male"), "main");
     private final ModelPart RightLeg;
@@ -31,7 +31,7 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final LatexAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> animator;
+    private final HumanoidAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> animator;
 
     public LatexMantaRayMaleModel(ModelPart root) {
         super(root);
@@ -42,7 +42,7 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
         this.Tail = Torso.getChild("Tail");
         this.RightArm = root.getChild("RightArm");
         this.LeftArm = root.getChild("LeftArm");
-        animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+        animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -178,10 +178,15 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
     @Override
     public void setupAnim(@NotNull LatexMantaRayMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public ModelPart getArm(HumanoidArm p_102852_) {
         return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm p_102852_) {
+        return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
     }
 
     public ModelPart getHead() {
@@ -203,11 +208,11 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
     }
 
     @Override
-    public LatexAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> getAnimator() {
+    public HumanoidAnimator<LatexMantaRayMale, LatexMantaRayMaleModel> getAnimator() {
         return animator;
     }
 
-    public static class Remodel extends LatexHumanoidModel.LatexRemodel<LatexMantaRayMale, Remodel> {
+    public static class Remodel extends AdvancedHumanoidModel.LatexRemodel<LatexMantaRayMale, Remodel> {
         private final ModelPart RightLeg;
         private final ModelPart LeftLeg;
         private final ModelPart RightArm;
@@ -215,7 +220,7 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
         private final ModelPart Head;
         private final ModelPart Torso;
         private final ModelPart Tail;
-        private final LatexAnimator<LatexMantaRayMale, Remodel> animator;
+        private final HumanoidAnimator<LatexMantaRayMale, Remodel> animator;
 
         public Remodel(ModelPart root) {
             super(root);
@@ -226,7 +231,7 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
             this.Tail = Torso.getChild("Tail");
             this.RightArm = root.getChild("RightArm");
             this.LeftArm = root.getChild("LeftArm");
-            animator = LatexAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
+            animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.sharkLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg)).hipOffset(0.0f);
         }
 
         public static LayerDefinition createBodyLayer() {
@@ -321,6 +326,10 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
             return p_102852_ == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
         }
 
+        public ModelPart getLeg(HumanoidArm p_102852_) {
+            return p_102852_ == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+        }
+
         public ModelPart getHead() {
             return this.Head;
         }
@@ -340,7 +349,7 @@ public class LatexMantaRayMaleModel extends LatexHumanoidModel<LatexMantaRayMale
         }
 
         @Override
-        public LatexAnimator<LatexMantaRayMale, Remodel> getAnimator() {
+        public HumanoidAnimator<LatexMantaRayMale, Remodel> getAnimator() {
             return animator;
         }
     }
