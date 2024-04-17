@@ -216,9 +216,9 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static final TransfurVariant<LightLatexKnightFusion> LIGHT_LATEX_KNIGHT_FUSION = register(Builder.of(LIGHT_LATEX_KNIGHT, ChangedEntities.WHITE_GOO_KNIGHT_FUSION)
             .additionalHealth(8).fusionOf(LIGHT_LATEX_WOLF.male(), LIGHT_LATEX_KNIGHT)
             .build(Changed.modResource("form_light_latex_knight_fusion")));
-    public static final TransfurVariant<LightLatexWolfOrganic> LIGHT_LATEX_WOLF_ORGANIC = register(Builder.of(ChangedEntities.WHITE_WOLF)
+    public static final GenderedVariant<WhiteWolfMale, WhiteWolfFemale> WHITE_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.WHITE_WOLF_MALE, ChangedEntities.WHITE_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation())
-            .build(Changed.modResource("form_light_latex_wolf_organic")));
+            .buildGendered(Changed.modResource("form_white_wolf")));
     public static final TransfurVariant<WhiteLatexWolf> WHITE_LATEX_WOLF = register(Builder.of(ChangedEntities.PURE_WHITE_GOO_WOLF)
             .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX)
             .build(Changed.modResource("form_white_latex_wolf")));

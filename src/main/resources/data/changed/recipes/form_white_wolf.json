@@ -1,0 +1,19 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "minecraft:white_dye"
+    },
+    {
+      "item": "changed:syringe"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_white_wolf"
+}

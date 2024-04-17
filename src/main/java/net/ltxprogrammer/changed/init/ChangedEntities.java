@@ -11,7 +11,6 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
-import net.ltxprogrammer.changed.item.SimpleSpawnEggItem;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -155,8 +154,11 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LightLatexWolfMale>> WHITE_GOO_WOLF_MALE = register("light_latex_wolf_male", 0xFFFFFF, 0xFF927F,
             EntityType.Builder.of(LightLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<LightLatexWolfOrganic>> WHITE_WOLF = registerReducedSpawn("light_latex_wolf_organic", 0xFFFFFF, 0xFAE9E4,
-            EntityType.Builder.of(LightLatexWolfOrganic::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<WhiteWolfMale>> WHITE_WOLF_MALE = registerReducedSpawn("white_wolf_male", 0xFFFFFF, 0xFAE9E4,
+            EntityType.Builder.of(WhiteWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::plainsSpawning);
+    public static final RegistryObject<EntityType<WhiteWolfFemale>> WHITE_WOLF_FEMALE = registerReducedSpawn("white_wolf_female", 0xFFFFFF, 0xFAE9E4,
+            EntityType.Builder.of(WhiteWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<LightLatexKnight>> WHITE_GOO_KNIGHT = register("light_latex_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(LightLatexKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),

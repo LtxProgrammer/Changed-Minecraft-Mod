@@ -185,16 +185,20 @@ public class GenderedVariant<M extends ChangedEntity & GenderedEntity, F extends
             this.maleBuilder.fusionOf(variant, mobClass); this.femaleBuilder.fusionOf(variant, mobClass); return this;
         }
 
-        public TransfurVariant.Builder<ChangedEntity> disableItems() {
+        public Builder<M, F> disableItems() {
             this.maleBuilder.disableItems(); this.femaleBuilder.disableItems(); return this;
         }
 
-        public TransfurVariant.Builder<ChangedEntity> holdItemsInMouth() {
+        public Builder<M, F> holdItemsInMouth() {
             this.maleBuilder.holdItemsInMouth(); this.femaleBuilder.holdItemsInMouth(); return this;
         }
 
-        public TransfurVariant.Builder<ChangedEntity> itemUseMode(UseItemMode v) {
+        public Builder<M, F> itemUseMode(UseItemMode v) {
             this.maleBuilder.itemUseMode(v); this.femaleBuilder.itemUseMode(v); return this;
+        }
+
+        public Builder<M, F> sound(ResourceLocation event) {
+            this.maleBuilder.sound(event); this.femaleBuilder.sound(event); return this;
         }
 
         public Builder<M, F> split(Consumer<TransfurVariant.Builder<M>> maleConsumer, Consumer<TransfurVariant.Builder<F>> femaleConsumer) {
