@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = LatexItemInHandLayer.class, remap = false)
+@Mixin(value = LatexItemInHandLayer.class)
 public abstract class LatexItemInHandLayerMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & ArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
     public LatexItemInHandLayerMixin(RenderLayerParent<T, M> parent) {
         super(parent);
