@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.ability.AbstractAbility;

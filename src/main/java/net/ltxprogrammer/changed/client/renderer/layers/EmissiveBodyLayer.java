@@ -3,8 +3,6 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
-import net.minecraft.client.Camera;
-import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;

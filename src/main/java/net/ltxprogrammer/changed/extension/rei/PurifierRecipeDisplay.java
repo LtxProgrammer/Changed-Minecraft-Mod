@@ -3,9 +3,7 @@ package net.ltxprogrammer.changed.extension.rei;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
-import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.ltxprogrammer.changed.recipe.PurifierRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collections;
 import java.util.Optional;

@@ -2,25 +2,16 @@ package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.network.NetworkHooks;
 
 import static net.ltxprogrammer.changed.block.CardboardBoxTall.OPEN;
-import static net.ltxprogrammer.changed.init.ChangedEntities.SEAT_ENTITY;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
 public class CardboardBoxTallBlockEntity extends BlockEntity {

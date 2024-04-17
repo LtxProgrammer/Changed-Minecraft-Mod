@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer.animate.ears;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.client.model.EntityModel;

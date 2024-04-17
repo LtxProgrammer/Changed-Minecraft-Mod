@@ -2,8 +2,6 @@ package net.ltxprogrammer.changed.client.tfanimations;
 
 import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
-import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 

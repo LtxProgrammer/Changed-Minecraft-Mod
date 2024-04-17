@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.client.gui;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.inventory.ClipboardMenu;
-import net.ltxprogrammer.changed.world.inventory.TextMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;

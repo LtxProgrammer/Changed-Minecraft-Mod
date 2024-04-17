@@ -19,8 +19,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-import static net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel.EMPTY_PART;
-
 public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorNoTailModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_no_tail")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_no_tail")).get();

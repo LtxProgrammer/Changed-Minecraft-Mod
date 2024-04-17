@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Optional;
 
 @Mixin(SkinManager.class)

@@ -2,7 +2,9 @@ package net.ltxprogrammer.changed.recipe;
 
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedRecipeSerializers;
+import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,7 +14,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;

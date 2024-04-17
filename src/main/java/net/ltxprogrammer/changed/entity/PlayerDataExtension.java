@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import org.jetbrains.annotations.NotNull;
 

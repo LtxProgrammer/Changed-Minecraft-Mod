@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.network.packet.TugCameraPacket;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;

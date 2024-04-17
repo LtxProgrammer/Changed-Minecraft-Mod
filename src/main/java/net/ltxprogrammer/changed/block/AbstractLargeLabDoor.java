@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.block;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.block.entity.LabDoorOpenerEntity;
 import net.ltxprogrammer.changed.block.entity.OpenableDoor;
-import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

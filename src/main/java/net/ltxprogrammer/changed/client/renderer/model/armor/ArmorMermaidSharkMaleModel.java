@@ -20,9 +20,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
-import java.util.Map;
-
 public class ArmorMermaidSharkMaleModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkMaleModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();

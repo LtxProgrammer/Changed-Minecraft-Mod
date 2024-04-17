@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;

@@ -2,9 +2,7 @@ package net.ltxprogrammer.changed.block.entity;
 
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

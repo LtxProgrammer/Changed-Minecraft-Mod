@@ -2,13 +2,13 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
-import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.client.renderer.model.CorrectorType;
+import net.ltxprogrammer.changed.client.renderer.model.HairModel;
 import net.ltxprogrammer.changed.client.renderer.model.hair.HairRemodel;
-import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;

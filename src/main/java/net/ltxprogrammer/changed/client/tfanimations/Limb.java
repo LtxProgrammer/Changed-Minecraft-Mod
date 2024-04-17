@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
-import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.client.renderer.model.LeglessModel;
 import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.minecraft.client.model.HumanoidModel;

@@ -4,7 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnimationDefinition {
     public final float length;

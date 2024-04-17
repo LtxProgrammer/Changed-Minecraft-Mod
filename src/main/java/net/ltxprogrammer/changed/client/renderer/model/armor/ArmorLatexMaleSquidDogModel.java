@@ -16,7 +16,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> {

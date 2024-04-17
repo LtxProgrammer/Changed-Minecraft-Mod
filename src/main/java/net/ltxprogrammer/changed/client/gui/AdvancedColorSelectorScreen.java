@@ -4,21 +4,16 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.ProgressOption;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.SliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class AdvancedColorSelectorScreen extends Screen {
     private final Screen lastScreen;

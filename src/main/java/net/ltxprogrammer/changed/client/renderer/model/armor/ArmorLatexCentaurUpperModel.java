@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.WolfHeadInitAnimator;
 import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
-import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -20,8 +19,6 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<LightLatexCentaur, ArmorLatexCentaurUpperModel> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_upper")).get();
