@@ -915,20 +915,6 @@
         ]
       }
     },
-    "changed:light_latex_wolf_organic": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "changed:light_latex_wolf_organic"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
     "changed:milk_pudding": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -965,6 +951,34 @@
             "condition": "minecraft:entity_properties",
             "predicate": {
               "type": "changed:white_latex_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:white_wolf_female": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:white_wolf_female"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:white_wolf_male": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:white_wolf_male"
             },
             "entity": "this"
           }
@@ -1194,9 +1208,6 @@
       "changed:light_latex_wolf_male"
     ],
     [
-      "changed:light_latex_wolf_organic"
-    ],
-    [
       "changed:milk_pudding"
     ],
     [
@@ -1204,6 +1215,12 @@
     ],
     [
       "changed:white_latex_wolf"
+    ],
+    [
+      "changed:white_wolf_female"
+    ],
+    [
+      "changed:white_wolf_male"
     ],
     [
       "changed:phage_latex_wolf_female"

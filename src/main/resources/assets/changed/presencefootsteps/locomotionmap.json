@@ -1,7 +1,6 @@
 {
   "changed:light_latex_wolf_female": "BIPED",
   "changed:light_latex_wolf_male": "BIPED",
-  "changed:light_latex_wolf_organic": "BIPED",
   "changed:light_latex_knight": "BIPED",
   "changed:light_latex_centaur": "QUADRUPED",
   "changed:headless_knight": "QUADRUPED",
@@ -65,6 +64,8 @@
   "changed:milk_pudding": "BIPED",
   "changed:shark": "BIPED",
   "changed:white_latex_wolf": "BIPED",
+  "changed:white_wolf_female": "BIPED",
+  "changed:white_wolf_male": "BIPED",
   "changed:phage_latex_wolf_female": "BIPED",
   "changed:phage_latex_wolf_male": "BIPED"
 }
