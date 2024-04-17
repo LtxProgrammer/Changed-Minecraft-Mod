@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMermaidSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkAbdomenModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkMaleModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorUpperBodyModel;
 import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

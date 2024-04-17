@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.CubeListBuilderExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfMale;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;

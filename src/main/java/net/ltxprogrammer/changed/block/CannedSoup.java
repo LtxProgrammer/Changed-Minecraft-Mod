@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
 import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;

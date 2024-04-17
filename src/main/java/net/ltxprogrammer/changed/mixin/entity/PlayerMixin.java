@@ -2,11 +2,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
-import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
-import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.PlayerMoverInstance;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;

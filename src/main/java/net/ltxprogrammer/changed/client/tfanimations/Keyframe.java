@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
 import com.mojang.math.Vector3f;
-import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 
 import java.util.function.BiConsumer;
 

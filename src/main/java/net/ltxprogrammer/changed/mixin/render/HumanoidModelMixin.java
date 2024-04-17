@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.tfanimations.AnimationInstance;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
-import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;

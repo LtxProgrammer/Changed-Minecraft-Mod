@@ -3,11 +3,9 @@ package net.ltxprogrammer.changed.block;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.block.entity.LabDoorOpenerEntity;
 import net.ltxprogrammer.changed.block.entity.OpenableDoor;
-import net.ltxprogrammer.changed.block.entity.PurifierBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -43,7 +41,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static net.ltxprogrammer.changed.init.ChangedSounds.OPEN2;
 

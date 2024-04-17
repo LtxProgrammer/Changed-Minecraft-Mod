@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.world.features.structures.FacilityPieces;
 import net.ltxprogrammer.changed.world.features.structures.SurfaceNBTPiece;
 import net.ltxprogrammer.changed.world.features.structures.facility.FacilitySinglePiece;
 import net.minecraft.core.Registry;

@@ -7,7 +7,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.util.Mth;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

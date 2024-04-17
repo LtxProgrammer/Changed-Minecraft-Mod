@@ -5,9 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.entity.beast.LatexPinkWyvern;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,7 +14,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 public class LatexPinkWyvernModel extends AdvancedHumanoidModel<LatexPinkWyvern> implements AdvancedHumanoidModelInterface<LatexPinkWyvern, LatexPinkWyvernModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor

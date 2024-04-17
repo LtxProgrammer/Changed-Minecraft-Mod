@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface PoseStackExtender {
