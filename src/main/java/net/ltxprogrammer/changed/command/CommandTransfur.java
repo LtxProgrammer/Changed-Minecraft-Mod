@@ -68,7 +68,7 @@ public class CommandTransfur {
                                                 ResourceLocationArgument.getId(context, "form"),
                                                 StringArgumentType.getString(context, "cause"))))
                         )));
-        event.getDispatcher().register(Commands.literal("tf").redirect(transfurNode));
+        event.getDispatcher().register(Commands.literal("tf").requires(p -> p.hasPermission(2)).redirect(transfurNode));
         event.getDispatcher().register(Commands.literal("progresstransfur").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_LATEX_FORMS)
@@ -79,7 +79,7 @@ public class CommandTransfur {
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> untransfurPlayer(context.getSource(), EntityArgument.getPlayer(context, "player")))
                 ));
-        event.getDispatcher().register(Commands.literal("untf").redirect(untransfurNode));
+        event.getDispatcher().register(Commands.literal("untf").requires(p -> p.hasPermission(2)).redirect(untransfurNode));
         if (SharedConstants.IS_RUNNING_IN_IDE || !FMLLoader.isProduction()) {
             event.getDispatcher().register(Commands.literal("specialsyringe").requires(p -> p.hasPermission(3))
                     .then(Commands.argument("uuid", UuidArgument.uuid())
