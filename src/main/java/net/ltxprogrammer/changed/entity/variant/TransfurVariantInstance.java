@@ -334,7 +334,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public static void onPlayerSpawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, instance -> {
-                if (instance.isDead())
+                if (instance.isDead() && !player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
                     ProcessTransfur.removePlayerTransfurVariant(player);
             });
         }

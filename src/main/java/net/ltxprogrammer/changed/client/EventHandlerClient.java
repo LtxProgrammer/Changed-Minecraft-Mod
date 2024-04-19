@@ -161,9 +161,13 @@ public class EventHandlerClient {
         }
     }
 
+    /**
+     * This function needs to be static
+     * @param event
+     */
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ChangedClient.particleSystem);
     }
 
