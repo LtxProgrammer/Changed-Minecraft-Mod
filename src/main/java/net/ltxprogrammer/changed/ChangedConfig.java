@@ -42,6 +42,7 @@ public class ChangedConfig {
     }
 
     public static class Client implements AdditionalData {
+        public final ForgeConfigSpec.ConfigValue<Boolean> showContentWarning;
         public final ForgeConfigSpec.ConfigValue<Boolean> useNewModels;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyInventory;
         public final ForgeConfigSpec.ConfigValue<Boolean> useGoopyHearts;
@@ -53,6 +54,8 @@ public class ChangedConfig {
         public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
         public Client(ForgeConfigSpec.Builder builder) {
+            builder.comment("Show content warning on launch (Disables automatically)");
+            showContentWarning = builder.define("showContentWarning", true);
             builder.comment("While some like the new models, you may not. Here's your chance to opt-out (Requires restart)");
             useNewModels = builder.define("useNewModels", true);
             builder.comment("Enable/disable the gooey inventory");

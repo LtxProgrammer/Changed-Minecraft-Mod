@@ -174,6 +174,9 @@
   "text.changed.syringe.no_owner": "Cannot get player name",
   "text.changed.tamed.wander": "%s is now wandering",
   "text.changed.tamed.follow": "%s is now following",
+  "text.changed.warning": "Warning",
+  "text.changed.warning.content1": "This modded version of Minecraft contains content from Changed,",
+  "text.changed.warning.content2": "and is not suitable for all audiences. [TEXT NOT FINAL]",
 
   "effect.changed.hypercoagulation": "Hypercoagulation",
   "effect.changed.shock": "Shock",

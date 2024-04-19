@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -18,6 +19,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -161,8 +163,17 @@ public class EventHandlerClient {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
+    public void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ChangedClient.particleSystem);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void onSetScreen(ScreenOpenEvent event) {
+        if (event.getScreen() instanceof TitleScreen && Changed.config.client.showContentWarning.get()) {
+            // Comment this line out to disable the content warning screen
+            event.setScreen(new ContentWarningScreen());
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
