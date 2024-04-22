@@ -26,6 +26,18 @@ public class TransfurContext {
         );
     }
 
+    public static TransfurContext playerLatexHazard(Player player, TransfurCause cause) {
+        return new TransfurContext(cause, IAbstractChangedEntity.forPlayer(player));
+    }
+
+    public static TransfurContext npcLatexHazard(ChangedEntity latex, TransfurCause cause) {
+        return new TransfurContext(cause, IAbstractChangedEntity.forEntity(latex));
+    }
+
+    public static TransfurContext latexHazard(IAbstractChangedEntity entity, TransfurCause cause) {
+        return new TransfurContext(cause, entity);
+    }
+
     public static TransfurContext hazard(TransfurCause cause) {
         return new TransfurContext(cause, null);
     }

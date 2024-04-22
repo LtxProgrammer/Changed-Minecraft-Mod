@@ -1,9 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -26,6 +24,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public LivingEntity grabbedEntity = null;
     @Nullable
     public ChangedEntity syncEntity = null;
+    private int grabCooldown = 0;
     public boolean grabbedHasControl = false;
     public boolean suited = false;
     public float grabStrength = 0.0f;
@@ -115,6 +114,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.suited = false;
         this.attackDown = false;
         this.useDown = false;
+        this.grabCooldown = 40;
     }
 
     private void prepareSyncEntity(LivingEntity syncTo) {
@@ -192,6 +192,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.grabStrengthO = this.grabStrength;
         this.suitTransitionO = this.suitTransition;
 
+        if (this.grabCooldown > 0)
+            this.grabCooldown--;
+
         if (this.syncEntity != null) {
             this.syncEntity.visualTick(this.entity.getLevel());
         }
@@ -235,7 +238,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (attackDown && !suited) { // TODO progress absorption while suited
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant()))
+                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(),
+                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)))
                     this.releaseEntity();
             }
 
@@ -272,6 +276,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 this.releaseEntity();
             return;
         }
+
+        if (this.grabCooldown > 0)
+            return;
 
         var grabbedEntity = this.getHoveredEntity(entity);
         if (grabbedEntity != null && entity.getLevel().isClientSide && entity.getEntity() instanceof PlayerDataExtension ext) {
