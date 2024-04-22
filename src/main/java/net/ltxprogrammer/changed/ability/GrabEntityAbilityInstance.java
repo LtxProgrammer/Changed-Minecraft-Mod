@@ -237,6 +237,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 useDown = useKeyDown;
             }
 
+            if (suited) {
+                if (entity.getChangedEntity().getTransfurVariant().breatheMode.canBreatheWater()) {
+                    this.grabbedEntity.setAirSupply(this.grabbedEntity.getMaxAirSupply());
+                }
+            }
+
             if (attackDown && !suited) { // TODO progress absorption while suited
                 if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(),
                         TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)))
