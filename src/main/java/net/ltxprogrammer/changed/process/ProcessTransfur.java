@@ -316,9 +316,14 @@ public class ProcessTransfur {
         return setPlayerTransfurVariant(player, ogVariant, cause, player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
     }
 
-    @Contract("_, null, _, _ -> null; _, !null, _, _ -> !null")
+    public static TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
+        return setPlayerTransfurVariant(player, ogVariant, cause, progress, (variant) -> {});
+    }
+
+    @Contract("_, null, _, _, _ -> null; _, !null, _, _, _ -> !null")
     public static @Nullable
-    TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
+    TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress,
+                                                        Consumer<TransfurVariantInstance<?>> beforeBroadcast) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant);
         MinecraftForge.EVENT_BUS.post(event);
@@ -338,10 +343,6 @@ public class ProcessTransfur {
             oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
         playerDataExtension.setLatexVariant(instance);
-        if (variant != null)
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
-        else
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
 
         if (instance != null)
             instance.transfurProgression = progress;
@@ -358,6 +359,12 @@ public class ProcessTransfur {
         if (instance != null && cause != null)
             instance.cause = cause;
 
+        if (instance != null)
+            beforeBroadcast.accept(instance);
+        if (variant != null && !instance.isTemporaryFromSuit())
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
+        else
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
         if (player instanceof ServerPlayer serverPlayer)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(player));
         return instance;

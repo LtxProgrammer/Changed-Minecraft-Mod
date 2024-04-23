@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,6 +21,9 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
+    private boolean wasGrabbedSilent = false;
+    private boolean wasGrabbedInvisible = false;
+    private boolean wasGrabbedInvulnerable = false;
     @Nullable
     public LivingEntity grabbedEntity = null;
     @Nullable
@@ -108,8 +112,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
         if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
-        this.grabbedEntity.setInvisible(false);
+        if (!(entity instanceof Player)) {
+            this.grabbedEntity.setInvisible(wasGrabbedInvisible);
+            this.grabbedEntity.setInvulnerable(wasGrabbedInvulnerable);
+            this.grabbedEntity.setSilent(wasGrabbedSilent);
+        }
         this.grabbedEntity.noPhysics = false;
+        this.entity.getEntity().noPhysics = false;
         this.grabbedEntity = null;
         this.suited = false;
         this.attackDown = false;
@@ -118,21 +127,28 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     private void prepareSyncEntity(LivingEntity syncTo) {
+        if (syncTo instanceof Player)
+            return;
+
         this.syncEntity = (ChangedEntity) this.entity.getChangedEntity().getType().create(this.entity.getLevel());
         this.syncEntity.setId(TransfurVariant.getNextEntId());
         CompoundTag tag = new CompoundTag();
         this.entity.getChangedEntity().saveWithoutId(tag);
         this.syncEntity.load(tag);
-
-        if (syncTo instanceof Player player) {
-            this.syncEntity.setUnderlyingPlayer(player);
-        }
     }
 
     public void suitEntity(LivingEntity entity) {
         getController().resetHoldTicks();
-        entity.setInvisible(true);
-        prepareSyncEntity(entity);
+        if (!(entity instanceof Player)) {
+            wasGrabbedSilent = entity.isSilent();
+            wasGrabbedInvisible = entity.isInvisible();
+            wasGrabbedInvulnerable = entity.isInvulnerable();
+            entity.setSilent(true);
+            entity.setInvisible(true);
+            entity.setInvulnerable(true);
+            prepareSyncEntity(entity);
+        }
+
         if (this.grabbedEntity == entity) {
             this.suited = true;
             this.grabStrength = 1.0f;
@@ -206,21 +222,40 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
             if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
                 ext.setGrabbedBy(this.entity.getEntity());
-            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
 
-            if (!grabbedHasControl)
+            if (!grabbedHasControl) {
+                this.grabbedEntity.noPhysics = true;
+                this.entity.getEntity().noPhysics = false;
                 TransfurVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
-            else
+            } else {
+                this.grabbedEntity.noPhysics = false;
+                this.entity.getEntity().noPhysics = true;
                 TransfurVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
+            }
 
             if (this.entity.getEntity() instanceof Player player && (player.isDeadOrDying() || player.isRemoved() || player.isSpectator())) {
                 this.releaseEntity();
                 return;
             }
 
-            if (this.grabbedEntity instanceof Player player && (player.isSpectator() || ProcessTransfur.isPlayerLatex(player))) {
+            if (this.grabbedEntity instanceof Player player && player.isSpectator()) {
                 this.releaseEntity();
                 return;
+            }
+
+            if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerLatex(player)) {
+                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
+                    // This runs before the server broadcasts it to players
+                    variant.checkForTemporary(this.entity);
+                });
+            }
+
+            if (this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+                var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+                if (!variant.isTemporaryFromSuit()) {
+                    this.releaseEntity();
+                    return;
+                }
             }
 
             if (this.grabbedEntity.isDeadOrDying() || this.grabbedEntity.isRemoved() || this.grabStrength <= 0.0f) {
@@ -232,14 +267,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 boolean attackKeyDown = KeyReference.ATTACK.isDown(level);
                 boolean useKeyDown = KeyReference.USE.isDown(level);
                 if (attackKeyDown != attackDown || useKeyDown != useDown)
-                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.keyState(attackKeyDown, useKeyDown));
+                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.keyState(UniversalDist.getLocalPlayer(), attackKeyDown, useKeyDown));
                 attackDown = attackKeyDown;
                 useDown = useKeyDown;
             }
 
             if (attackDown && !suited) { // TODO progress absorption while suited
                 if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(),
-                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)))
+                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)) && !this.entity.getLevel().isClientSide)
                     this.releaseEntity();
             }
 
@@ -299,6 +334,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabbedEntity != null && suited && this.getController().getHoldTicks() < 40) {
             this.grabbedHasControl = !this.grabbedHasControl;
             this.grabbedEntity.noPhysics = !this.grabbedHasControl;
+            this.entity.getEntity().noPhysics = this.grabbedHasControl;
         }
     }
 

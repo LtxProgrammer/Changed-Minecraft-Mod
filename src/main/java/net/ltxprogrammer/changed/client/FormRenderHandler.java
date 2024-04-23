@@ -34,7 +34,7 @@ public class FormRenderHandler {
             variant.sync(player);
             variant.getChangedEntity().setCustomNameVisible(true);
 
-            if (variant.getTransfurProgression(partialTick) < 1f) {
+            if (variant.getTransfurProgression(partialTick) < 1f && !variant.isTemporaryFromSuit()) {
                 TransfurAnimator.startCapture();
 
                 renderLiving(player, stack, buffer, light, partialTick);

@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.EyeStyle;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -30,6 +31,7 @@ public interface IAbstractChangedEntity {
     @NotNull ChangedEntity getChangedEntity();
 
     @NotNull BlockPos getBlockPosition();
+    @Nullable TransfurVariant<?> getSelfVariant();
     @Nullable TransfurVariantInstance<?> getTransfurVariantInstance();
     @NotNull Level getLevel();
     @NotNull UUID getUUID();
@@ -76,6 +78,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull BlockPos getBlockPosition() {
                 return player.blockPosition();
+            }
+
+            @Override
+            public @NotNull TransfurVariant<?> getSelfVariant() {
+                return instance.get().getParent();
             }
 
             @Override
@@ -222,6 +229,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull BlockPos getBlockPosition() {
                 return entity.blockPosition();
+            }
+
+            @Override
+            public @Nullable TransfurVariant<?> getSelfVariant() {
+                return entity.getSelfVariant();
             }
 
             @org.jetbrains.annotations.Nullable

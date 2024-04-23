@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class GrabEntityPacket implements ChangedPacket {
@@ -132,21 +133,25 @@ public class GrabEntityPacket implements ChangedPacket {
     }
 
     public static class KeyState implements ChangedPacket {
+        private final UUID uuid;
         private final boolean attackKey;
         private final boolean useKey;
 
-        public KeyState(boolean attackKey, boolean useKey) {
+        public KeyState(Player player, boolean attackKey, boolean useKey) {
+            this.uuid = player.getUUID();
             this.attackKey = attackKey;
             this.useKey = useKey;
         }
 
         public KeyState(FriendlyByteBuf buffer) {
+            this.uuid = buffer.readUUID();
             this.attackKey = buffer.readBoolean();
             this.useKey = buffer.readBoolean();
         }
 
         @Override
         public void write(FriendlyByteBuf buffer) {
+            buffer.writeUUID(this.uuid);
             buffer.writeBoolean(this.attackKey);
             buffer.writeBoolean(this.useKey);
         }
@@ -163,11 +168,23 @@ public class GrabEntityPacket implements ChangedPacket {
                         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), this);
                     });
                 });
+            } else {
+                var level = UniversalDist.getLevel();
+                Player player = level.getPlayerByUUID(this.uuid);
+                if (player == null)
+                    return;
+                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
+                    variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), instance -> {
+                        instance.attackDown = this.attackKey;
+                        instance.useDown = this.useKey;
+                        contextSupplier.get().setPacketHandled(true);
+                    });
+                });
             }
         }
     }
 
-    public static GrabEntityPacket.KeyState keyState(boolean attack, boolean use) {
-        return new GrabEntityPacket.KeyState(attack, use);
+    public static GrabEntityPacket.KeyState keyState(Player player, boolean attack, boolean use) {
+        return new GrabEntityPacket.KeyState(player, attack, use);
     }
 }

@@ -182,7 +182,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 controller.activateAbility();
             else if (keyState)
                 controller.tickAbility();
-            else {
+            else if (oldState) {
                 controller.deactivateAbility();
                 controller.applyCoolDown();
             }

@@ -42,6 +42,9 @@ public class VariantAbilityActivate implements ChangedPacket {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ProcessTransfur.ifPlayerTransfurred(context.getSender(), (player, variant) -> {
+                if (variant.isTemporaryFromSuit())
+                    return;
+
                 if (ability != null)
                     variant.setSelectedAbility(ability);
 

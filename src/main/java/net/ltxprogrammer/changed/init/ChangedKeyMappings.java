@@ -42,6 +42,9 @@ public class ChangedKeyMappings {
                     USE_ABILITY.consumeClick();
 
                     ProcessTransfur.ifPlayerTransfurred(local, variant -> {
+                        if (variant.isTemporaryFromSuit())
+                            return;
+
                         var newState = event.getAction() != GLFW.GLFW_RELEASE;
                         if (newState != variant.abilityKeyState) {
                             ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
@@ -54,6 +57,9 @@ public class ChangedKeyMappings {
                 if (event.getKey() == SELECT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     SELECT_ABILITY.consumeClick();
                     ProcessTransfur.ifPlayerTransfurred(local, variant -> {
+                        if (variant.isTemporaryFromSuit())
+                            return;
+
                         Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
                         ChangedTutorial.triggerOnOpenRadial();
                     });

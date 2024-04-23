@@ -79,6 +79,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public float transfurProgression = 0.0f;
     public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
     public boolean willSurviveTransfur = true;
+    private boolean isTemporaryFromSuit = false;
+    private IAbstractChangedEntity suitGrabber = null;
 
     public CompoundTag save() {
         CompoundTag tag = new CompoundTag();
@@ -94,6 +96,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
 
         tag.putString("transfurCause", cause.name());
+        tag.putBoolean("isTemporaryFromSuit", isTemporaryFromSuit);
 
         tag.put("abilities", this.saveAbilities());
         return tag;
@@ -114,6 +117,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         }
 
         willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
+        isTemporaryFromSuit = tag.getBoolean("isTemporaryFromSuit");
 
         cause = TransfurCause.valueOf(tag.getString("transfurCause"));
 
@@ -158,6 +162,37 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public static TransfurVariantInstance<?> variantFor(@Nullable TransfurVariant<?> variant, @NotNull Player host) {
         return variant != null ? new TransfurVariantInstance<>(variant, host) : null;
+    }
+
+    public boolean isTemporaryFromSuit() {
+        return isTemporaryFromSuit;
+    }
+
+    public boolean checkForTemporary(@Nullable IAbstractChangedEntity grabber) {
+        if (!isTemporaryFromSuit && grabber != null) {
+            var ability = grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (ability == null || ability.grabbedEntity != this.host)
+                return false;
+
+            isTemporaryFromSuit = true;
+            suitGrabber = grabber;
+            return false;
+        }
+
+        else if (!this.host.level.isClientSide && isTemporaryFromSuit) {
+            if (suitGrabber == null || suitGrabber.getEntity().isDeadOrDying() || suitGrabber.getEntity().isRemoved()) { // Remove variant if grabber doesn't exist
+                ProcessTransfur.removePlayerTransfurVariant(this.host);
+                return true;
+            }
+
+            var ability = suitGrabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (ability == null || ability.grabbedEntity != this.host) {
+                ProcessTransfur.removePlayerTransfurVariant(this.host);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public TransfurVariant<T> getParent() {
@@ -539,6 +574,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public void tick(Player player) {
         if (player == null) return;
 
+        if (checkForTemporary(null))
+            return;
+
         ageAsVariant++;
 
         transfurProgressionO = transfurProgression;
@@ -559,7 +597,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
         }
 
-        if (transfurProgression >= 1f) {
+        if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
             if (player instanceof ServerPlayer serverPlayer)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
@@ -735,28 +773,30 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             instance.getController().tickCoolDown();
         }
 
-        if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
-            getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
-        }
-
-        if (selectedAbility != null) {
-            var instance = abilityInstances.get(selectedAbility);
-            if (instance != null) {
-                var controller = instance.getController();
-                boolean oldState = controller.exchangeKeyState(abilityKeyState);
-                if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
-                    instance.getUseType().check(abilityKeyState, oldState, controller);
+        if (!isTemporaryFromSuit()) {
+            if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
+                getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
             }
-        }
 
-        if (menuAbility != null) {
-            var instance = abilityInstances.get(menuAbility);
-            if (instance != null && player.containerMenu != player.inventoryMenu)
-                instance.tick();
-            else {
-                if (instance != null)
-                    instance.stopUsing();
-                menuAbility = null;
+            if (selectedAbility != null) {
+                var instance = abilityInstances.get(selectedAbility);
+                if (instance != null) {
+                    var controller = instance.getController();
+                    boolean oldState = controller.exchangeKeyState(abilityKeyState);
+                    if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
+                        instance.getUseType().check(abilityKeyState, oldState, controller);
+                }
+            }
+
+            if (menuAbility != null) {
+                var instance = abilityInstances.get(menuAbility);
+                if (instance != null && player.containerMenu != player.inventoryMenu)
+                    instance.tick();
+                else {
+                    if (instance != null)
+                        instance.stopUsing();
+                    menuAbility = null;
+                }
             }
         }
 
