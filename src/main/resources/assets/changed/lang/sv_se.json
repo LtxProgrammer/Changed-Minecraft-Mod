@@ -24,9 +24,10 @@
 
   "ability.changed.grab_entity": "Gripa enhet",
   "ability.changed.grab_entity.how_to_grab": "Håll [%s] för att ta tag i en enhet",
-  "ability.changed.grab_entity.how_to_release": "Tryck [%s] för att frige enheten",
+  "ability.changed.grab_entity.how_to_release": "Håll [%s] för att frige enheten",
   "ability.changed.grab_entity.how_to_transfur": "Håll [%s] för att göra framsteg förpälsvandla",
   "ability.changed.grab_entity.how_to_suit": "Håll [%s] för att byta till kostym",
+  "ability.changed.grab_entity.how_to_toggle_control": "Tryck [%s] för att växla kontroll",
 
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
@@ -171,6 +172,7 @@
   "text.changed.syringe.no_owner": "Kan inte få spelares namn",
   "text.changed.tamed.wander": "%s är nu vandrande",
   "text.changed.tamed.follow": "%s är nu följer",
+  "text.changed.warning": "Varning",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
