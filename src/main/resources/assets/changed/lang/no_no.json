@@ -24,9 +24,10 @@
 
   "ability.changed.grab_entity": "Gripe enhet",
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] for å grabbe en enhet",
-  "ability.changed.grab_entity.how_to_release": "Trykk på [%s] for å løslate enheten",
+  "ability.changed.grab_entity.how_to_release": "Hold [%s] for å løslate enheten",
   "ability.changed.grab_entity.how_to_transfur": "Hold [%s] for å fremskritt transpels",
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] for å bytte til drakt",
+  "ability.changed.grab_entity.how_to_toggle_control": "Trykk på [%s] for å veksle kontroll",
 
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -171,6 +172,7 @@
   "text.changed.syringe.no_owner": "Kan ikke få spillernavn",
   "text.changed.tamed.wander": "%s er nå vandre",
   "text.changed.tamed.follow": "%s er nå følger",
+  "text.changed.warning": "Advarsel",
 
   "effect.changed.hypercoagulation": "Hyperkoagulasjon",
   "effect.changed.shock": "Støt",
