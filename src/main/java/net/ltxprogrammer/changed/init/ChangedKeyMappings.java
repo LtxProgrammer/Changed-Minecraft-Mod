@@ -49,7 +49,7 @@ public class ChangedKeyMappings {
                         if (newState != variant.abilityKeyState) {
                             ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
                             variant.abilityKeyState = newState;
-                            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(newState, variant.selectedAbility));
+                            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(local, newState, variant.selectedAbility));
                         }
                     });
                 }
@@ -60,7 +60,7 @@ public class ChangedKeyMappings {
                         if (variant.isTemporaryFromSuit())
                             return;
 
-                        Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
+                        Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.openRadial(local));
                         ChangedTutorial.triggerOnOpenRadial();
                     });
                 }
