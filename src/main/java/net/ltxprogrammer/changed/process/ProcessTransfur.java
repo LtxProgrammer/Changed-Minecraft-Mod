@@ -361,10 +361,13 @@ public class ProcessTransfur {
 
         if (instance != null)
             beforeBroadcast.accept(instance);
-        if (variant != null && !instance.isTemporaryFromSuit())
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + variant.additionalHealth);
-        else
+        if (instance != null && !instance.isTemporaryFromSuit()) {
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + instance.getParent().additionalHealth);
+            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
+        } else {
             player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
+            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
+        }
         if (player instanceof ServerPlayer serverPlayer)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(player));
         return instance;

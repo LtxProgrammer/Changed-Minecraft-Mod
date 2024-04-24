@@ -195,7 +195,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
         if (instructionTicks == -120)
             this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
-        else if (instructionTicks == -60)
+        else if (instructionTicks == -60 && this.grabbedEntity instanceof Player) // Only show toggle when a player is grabbed
             this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_toggle_control", KeyReference.ABILITY.getName(level)), true);
         if (instructionTicks < 0)
             instructionTicks++;
@@ -332,9 +332,11 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void stopUsing() {
         if (this.grabbedEntity != null && suited && this.getController().getHoldTicks() < 40) {
-            this.grabbedHasControl = !this.grabbedHasControl;
-            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
-            this.entity.getEntity().noPhysics = this.grabbedHasControl;
+            if (this.grabbedEntity instanceof Player) {
+                this.grabbedHasControl = !this.grabbedHasControl;
+                this.grabbedEntity.noPhysics = !this.grabbedHasControl;
+                this.entity.getEntity().noPhysics = this.grabbedHasControl;
+            }
         }
     }
 
