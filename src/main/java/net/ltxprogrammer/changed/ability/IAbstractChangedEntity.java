@@ -1,11 +1,9 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.EyeStyle;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
@@ -30,8 +28,10 @@ public interface IAbstractChangedEntity {
     @NotNull LivingEntity getEntity();
     @NotNull ChangedEntity getChangedEntity();
 
+    @NotNull TransfurContext attack();
     @NotNull BlockPos getBlockPosition();
     @Nullable TransfurVariant<?> getSelfVariant();
+    @Nullable TransfurVariant<?> getTransfurVariant();
     @Nullable TransfurVariantInstance<?> getTransfurVariantInstance();
     @NotNull Level getLevel();
     @NotNull UUID getUUID();
@@ -42,6 +42,7 @@ public interface IAbstractChangedEntity {
     @Nullable List<HairStyle> getValidHairStyles();
     @NotNull HairStyle getHairStyle();
 
+    boolean isPlayer();
     boolean isStillLatex();
     boolean isDeadOrDying();
     boolean isCreative();
@@ -60,6 +61,32 @@ public interface IAbstractChangedEntity {
     void setEyeStyle(EyeStyle style);
     void causeFoodExhaustion(float exhaustion);
 
+    default boolean haveTransfurMode() {
+        if (getEntity() instanceof ChangedEntity changedEntity)
+            return changedEntity.getTransfurMode() != TransfurMode.NONE;
+        else if (getTransfurVariantInstance() != null)
+            return getTransfurVariantInstance().transfurMode != TransfurMode.NONE;
+        return false;
+    }
+
+    default boolean wantAbsorption() {
+        boolean doesAbsorption;
+        if (getEntity() instanceof ChangedEntity changedEntity)
+            doesAbsorption = changedEntity.getTransfurMode() == TransfurMode.ABSORPTION;
+        else if (getTransfurVariantInstance() != null)
+            doesAbsorption = getTransfurVariantInstance().transfurMode == TransfurMode.ABSORPTION;
+        else if (getSelfVariant() != null)
+            doesAbsorption = getSelfVariant().transfurMode() == TransfurMode.ABSORPTION;
+        else if (getTransfurVariant() != null && getTransfurVariant().transfurMode() == TransfurMode.ABSORPTION)
+            doesAbsorption = true;
+        else if (getTransfurVariant() != null && getTransfurVariant().getEntityType() == ChangedEntities.SPECIAL_LATEX.get())
+            doesAbsorption = true;
+        else
+            doesAbsorption = false;
+
+        return doesAbsorption;
+    }
+
     static IAbstractChangedEntity forPlayer(Player player) {
         Cacheable<TransfurVariantInstance<?>> instance = Cacheable.of(() -> ProcessTransfur.getPlayerTransfurVariant(player));
         Cacheable<ChangedEntity> latex = Cacheable.of(() -> instance.get().getChangedEntity());
@@ -76,6 +103,11 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
+            public @NotNull TransfurContext attack() {
+                return TransfurContext.playerLatexAttack(player);
+            }
+
+            @Override
             public @NotNull BlockPos getBlockPosition() {
                 return player.blockPosition();
             }
@@ -83,6 +115,12 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull TransfurVariant<?> getSelfVariant() {
                 return instance.get().getParent();
+            }
+
+            @org.jetbrains.annotations.Nullable
+            @Override
+            public TransfurVariant<?> getTransfurVariant() {
+                return instance.get().getChangedEntity().getTransfurVariant();
             }
 
             @Override
@@ -130,6 +168,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull HairStyle getHairStyle() {
                 return latex.get().getHairStyle();
+            }
+
+            @Override
+            public boolean isPlayer() {
+                return true;
             }
 
             @Override
@@ -227,6 +270,11 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
+            public @NotNull TransfurContext attack() {
+                return TransfurContext.npcLatexAttack(entity);
+            }
+
+            @Override
             public @NotNull BlockPos getBlockPosition() {
                 return entity.blockPosition();
             }
@@ -234,6 +282,12 @@ public interface IAbstractChangedEntity {
             @Override
             public @Nullable TransfurVariant<?> getSelfVariant() {
                 return entity.getSelfVariant();
+            }
+
+            @org.jetbrains.annotations.Nullable
+            @Override
+            public TransfurVariant<?> getTransfurVariant() {
+                return entity.getTransfurVariant();
             }
 
             @org.jetbrains.annotations.Nullable
@@ -283,6 +337,11 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull HairStyle getHairStyle() {
                 return entity.getHairStyle();
+            }
+
+            @Override
+            public boolean isPlayer() {
+                return false;
             }
 
             @Override
@@ -387,5 +446,13 @@ public interface IAbstractChangedEntity {
 
             }
         };
+    }
+
+    static @Nullable IAbstractChangedEntity forEither(LivingEntity entity) {
+        if (entity instanceof Player player)
+            return forPlayer(player);
+        else if (entity instanceof ChangedEntity changed)
+            return forEntity(changed);
+        return null;
     }
 }

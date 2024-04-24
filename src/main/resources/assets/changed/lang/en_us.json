@@ -26,6 +26,7 @@
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
   "ability.changed.grab_entity.how_to_release": "Hold [%s] to release the entity",
   "ability.changed.grab_entity.how_to_transfur": "Hold [%s] to progress transfur",
+  "ability.changed.grab_entity.how_to_absorb": "Hold [%s] and [%s] to progress absorption",
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
