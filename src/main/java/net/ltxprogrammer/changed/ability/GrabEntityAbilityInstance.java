@@ -139,6 +139,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     public void suitEntity(LivingEntity entity) {
         getController().resetHoldTicks();
+
+        ProcessTransfur.forceNearbyToRetarget(entity.level, entity);
         if (!(entity instanceof Player)) {
             wasGrabbedSilent = entity.isSilent();
             wasGrabbedInvisible = entity.isInvisible();

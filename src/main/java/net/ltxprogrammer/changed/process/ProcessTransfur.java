@@ -814,6 +814,20 @@ public class ProcessTransfur {
         transfur(entity, level, variant, keepConscious, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
     }
 
+    public static void forceNearbyToRetarget(Level level, LivingEntity entity) {
+        for (ChangedEntity changedEntity : level.getEntitiesOfClass(ChangedEntity.class, entity.getBoundingBox().inflate(64))) {
+            if (changedEntity.getLastHurtByMob() == entity) {
+                changedEntity.setLastHurtByMob(null);
+            }
+
+            if (changedEntity.getTarget() == entity) {
+                changedEntity.setTarget(null);
+                changedEntity.targetSelector.tick();
+                changedEntity.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
+            }
+        }
+    }
+
     // Transfurs an entity, keepConscious applies to players being transfurred
     public static void transfur(LivingEntity entity, Level level, TransfurVariant<?> variant, boolean keepConscious, TransfurContext context) {
         if (entity == null)
@@ -868,18 +882,7 @@ public class ProcessTransfur {
                 var instance = setPlayerTransfurVariant(player, variant, context.cause, doAnimation ? 0.0f : 1.0f);
                 instance.willSurviveTransfur = keepConscious;
 
-                // Force retargeting
-                for (ChangedEntity changedEntity : level.getEntitiesOfClass(ChangedEntity.class, player.getBoundingBox().inflate(64))) {
-                    if (changedEntity.getLastHurtByMob() == player) {
-                        changedEntity.setLastHurtByMob(null);
-                    }
-
-                    if (changedEntity.getTarget() == player) {
-                        changedEntity.setTarget(null);
-                        changedEntity.targetSelector.tick();
-                        changedEntity.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
-                    }
-                }
+                forceNearbyToRetarget(level, player);
 
                 player.heal(10.0F);
 
