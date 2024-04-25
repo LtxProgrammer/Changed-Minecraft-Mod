@@ -60,12 +60,12 @@ public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal im
         p_52872_.setBlock(blockpos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER), 3);
     }
 
-    public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
         if (blockState.getValue(HALF) != DoubleBlockHalf.UPPER) {
-            return super.canSurvive(blockState, p_52888_, p_52889_);
+            return super.canSurvive(blockState, level, blockPos);
         } else {
-            BlockState blockstate = p_52888_.getBlockState(p_52889_.below());
-            if (blockState.getBlock() != this) return super.canSurvive(blockState, p_52888_, p_52889_); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            BlockState blockstate = level.getBlockState(blockPos.below());
+            if (blockState.getBlock() != this) return super.canSurvive(blockState, level, blockPos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
     }

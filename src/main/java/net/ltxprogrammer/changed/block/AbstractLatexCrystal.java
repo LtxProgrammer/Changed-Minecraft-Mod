@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -66,8 +68,10 @@ public abstract class AbstractLatexCrystal extends BushBlock implements NonLatex
         return p_51042_.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || p_51042_.getBlock() instanceof DarkLatexBlock || getLatexed(p_51042_) == LatexType.DARK_LATEX;
     }
 
-    public boolean canSurvive(BlockState blockState, LevelReader p_52888_, BlockPos p_52889_) {
-        BlockState blockStateOn = p_52888_.getBlockState(p_52889_.below());
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
+        BlockState blockStateOn = level.getBlockState(blockPos.below());
+        if (!canSupportRigidBlock(level, blockPos.below()))
+            return false;
         return blockState.is(ChangedTags.Blocks.GROWS_LATEX_CRYSTALS) || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
     }
 
