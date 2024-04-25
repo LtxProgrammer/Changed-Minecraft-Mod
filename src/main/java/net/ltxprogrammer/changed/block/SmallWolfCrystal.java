@@ -22,6 +22,8 @@ public class SmallWolfCrystal extends AbstractLatexCrystal {
 
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
         BlockState blockStateOn = level.getBlockState(blockPos.below());
+        if (!canSupportRigidBlock(level, blockPos.below()))
+            return false;
         return blockStateOn.getBlock() instanceof LatexWolfCrystalBlock || blockStateOn.getBlock() instanceof DarkLatexBlock || getLatexed(blockStateOn) == LatexType.DARK_LATEX;
     }
 }
