@@ -13,6 +13,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -216,6 +218,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         }
 
         if (this.grabbedEntity != null) {
+            if (this.grabbedEntity instanceof Mob mob) {
+                mob.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
+                mob.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
+                mob.setTarget(null);
+            }
+
             Level level = entity.getLevel();
 
             handleInstructions(level);
