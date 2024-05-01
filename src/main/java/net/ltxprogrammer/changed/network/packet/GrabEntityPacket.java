@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.network.packet;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTags;
@@ -132,18 +135,18 @@ public class GrabEntityPacket implements ChangedPacket {
         return new GrabEntityPacket(latexPlayer, entity, GrabType.SUIT);
     }
 
-    public static class KeyState implements ChangedPacket {
+    public static class GrabKeyState implements ChangedPacket {
         private final UUID uuid;
         private final boolean attackKey;
         private final boolean useKey;
 
-        public KeyState(Player player, boolean attackKey, boolean useKey) {
+        public GrabKeyState(Player player, boolean attackKey, boolean useKey) {
             this.uuid = player.getUUID();
             this.attackKey = attackKey;
             this.useKey = useKey;
         }
 
-        public KeyState(FriendlyByteBuf buffer) {
+        public GrabKeyState(FriendlyByteBuf buffer) {
             this.uuid = buffer.readUUID();
             this.attackKey = buffer.readBoolean();
             this.useKey = buffer.readBoolean();
@@ -184,7 +187,123 @@ public class GrabEntityPacket implements ChangedPacket {
         }
     }
 
-    public static GrabEntityPacket.KeyState keyState(Player player, boolean attack, boolean use) {
-        return new GrabEntityPacket.KeyState(player, attack, use);
+    public static class AnnounceEscapeKey implements ChangedPacket {
+        /** Escapee's UUID */
+        private final UUID uuid;
+        private final AbstractAbilityInstance.KeyReference keyReference;
+
+        public AnnounceEscapeKey(Player player, AbstractAbilityInstance.KeyReference keyReference) {
+            this.uuid = player.getUUID();
+            this.keyReference = keyReference;
+        }
+
+        public AnnounceEscapeKey(FriendlyByteBuf buffer) {
+            this.uuid = buffer.readUUID();
+            this.keyReference = buffer.readEnum(AbstractAbilityInstance.KeyReference.class);
+        }
+
+        @Override
+        public void write(FriendlyByteBuf buffer) {
+            buffer.writeUUID(this.uuid);
+            buffer.writeEnum(this.keyReference);
+        }
+
+        @Override
+        public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
+            var sender = contextSupplier.get().getSender();
+            if (sender == null) { // Only clients should handle this
+                var level = UniversalDist.getLevel();
+                var player = level.getPlayerByUUID(this.uuid);
+                if (!(player instanceof LivingEntityDataExtension ext))
+                    return;
+                if (ext.getGrabbedBy() == null)
+                    return;
+
+                var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                if (ability != null) {
+                    ability.currentEscapeKey = this.keyReference;
+                    contextSupplier.get().setPacketHandled(true);
+
+                    var localPlayer = UniversalDist.getLocalPlayer();
+                    if (player == localPlayer) {
+                        localPlayer.displayClientMessage(this.keyReference.getName(level), true);
+                    }
+                }
+            }
+        }
+    }
+
+    public static class EscapeKeyState implements ChangedPacket {
+        /** Escapee's UUID */
+        private final UUID uuid;
+        private final boolean keyForward;
+        private final boolean keyBackward;
+        private final boolean keyLeft;
+        private final boolean keyRight;
+
+        public EscapeKeyState(Player player, boolean keyForward, boolean keyBackward, boolean keyLeft, boolean keyRight) {
+            this.uuid = player.getUUID();
+            this.keyForward = keyForward;
+            this.keyBackward = keyBackward;
+            this.keyLeft = keyLeft;
+            this.keyRight = keyRight;
+        }
+
+        public EscapeKeyState(FriendlyByteBuf buffer) {
+            this.uuid = buffer.readUUID();
+            this.keyForward = buffer.readBoolean();
+            this.keyBackward = buffer.readBoolean();
+            this.keyLeft = buffer.readBoolean();
+            this.keyRight = buffer.readBoolean();
+        }
+
+        @Override
+        public void write(FriendlyByteBuf buffer) {
+            buffer.writeUUID(this.uuid);
+            buffer.writeBoolean(this.keyForward);
+            buffer.writeBoolean(this.keyBackward);
+            buffer.writeBoolean(this.keyLeft);
+            buffer.writeBoolean(this.keyRight);
+        }
+
+        @Override
+        public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
+            var sender = contextSupplier.get().getSender();
+            if (sender != null) {
+                if (!(sender instanceof LivingEntityDataExtension ext))
+                    return;
+                if (ext.getGrabbedBy() == null)
+                    return;
+
+                var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                if (ability != null) {
+                    ability.escapeKeyForward = this.keyForward;
+                    ability.escapeKeyBackward = this.keyBackward;
+                    ability.escapeKeyLeft = this.keyLeft;
+                    ability.escapeKeyRight = this.keyRight;
+                    contextSupplier.get().setPacketHandled(true);
+                    Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), this);
+                }
+            } else {
+                var level = UniversalDist.getLevel();
+                if (!(level.getPlayerByUUID(this.uuid) instanceof LivingEntityDataExtension ext))
+                    return;
+                if (ext.getGrabbedBy() == null)
+                    return;
+
+                var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+                if (ability != null) {
+                    ability.escapeKeyForward = this.keyForward;
+                    ability.escapeKeyBackward = this.keyBackward;
+                    ability.escapeKeyLeft = this.keyLeft;
+                    ability.escapeKeyRight = this.keyRight;
+                    contextSupplier.get().setPacketHandled(true);
+                }
+            }
+        }
+    }
+
+    public static GrabKeyState keyState(Player player, boolean attack, boolean use) {
+        return new GrabKeyState(player, attack, use);
     }
 }

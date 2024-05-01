@@ -22,10 +22,15 @@ public abstract class AbstractAbilityInstance {
         this.controller = new AbstractAbility.Controller(this);
     }
 
-    enum KeyReference {
+    public enum KeyReference {
         ABILITY(() -> ChangedKeyMappings.USE_ABILITY.getTranslatedKeyMessage(), () -> ChangedKeyMappings.USE_ABILITY.isDown()),
         ATTACK(() -> Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyAttack.isDown()),
-        USE(() -> Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyUse.isDown());
+        USE(() -> Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyUse.isDown()),
+
+        MOVE_FORWARD(() -> Minecraft.getInstance().options.keyUp.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyUp.isDown()),
+        MOVE_BACKWARD(() -> Minecraft.getInstance().options.keyDown.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyDown.isDown()),
+        MOVE_LEFT(() -> Minecraft.getInstance().options.keyLeft.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyLeft.isDown()),
+        MOVE_RIGHT(() -> Minecraft.getInstance().options.keyRight.getTranslatedKeyMessage(), () -> Minecraft.getInstance().options.keyRight.isDown());
 
         private final Supplier<Component> getName;
         private final Supplier<Boolean> isDown;
