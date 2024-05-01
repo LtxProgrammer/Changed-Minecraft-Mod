@@ -586,6 +586,21 @@ public class ProcessTransfur {
         List<TransfurVariant<?>> possibleMobFusions = List.of();
         if (playerVariant != null) {
             var possibleFusion = TransfurVariant.getFusionCompatible(source.getSelfVariant(), playerVariant);
+            if (source.getLevel().isClientSide)
+                possibleFusion.clear();
+
+            { // Check if attacker can't fuse
+                var instance = source.getTransfurVariantInstance();
+                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleFusion.clear();
+            }
+
+            { // Check if attackee can't fuse
+                var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(event.getEntityLiving()));
+                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleFusion.clear();
+            }
+
             if (possibleFusion.size() > 0) {
                 event.setCanceled(true);
                 if (source.isPlayer()) {
@@ -608,7 +623,14 @@ public class ProcessTransfur {
         else {
             TransfurVariant<?> checkSource = source.getSelfVariant() != null ? source.getSelfVariant() : source.getTransfurVariant();
 
-            possibleMobFusions = TransfurVariant.getFusionCompatible(checkSource, event.getEntityLiving().getClass());
+            if (!source.getLevel().isClientSide)
+                possibleMobFusions = TransfurVariant.getFusionCompatible(checkSource, event.getEntityLiving().getClass());
+
+            { // Check if attacker can't fuse
+                var instance = source.getTransfurVariantInstance();
+                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleMobFusions.clear();
+            }
         }
 
         // Check if attacked entity is already latexed
@@ -812,7 +834,7 @@ public class ProcessTransfur {
             }
         }
 
-        if (entity.level.isClientSide && keepConscious && entity instanceof Player player && UniversalDist.isLocalPlayer(player)) {
+        if (entity.level.isClientSide) {
             return;
         }
 
