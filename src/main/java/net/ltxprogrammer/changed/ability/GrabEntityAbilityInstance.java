@@ -125,6 +125,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
+
+        ESCAPE_KEYS.forEach((key, value) -> {
+            value.getFirst().getSecond().accept(false);
+            value.getSecond().getSecond().accept(false);
+        });
+
         if (this.grabbedEntity == null) return;
 
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
