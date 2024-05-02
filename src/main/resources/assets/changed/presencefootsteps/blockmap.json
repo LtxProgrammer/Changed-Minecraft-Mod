@@ -1,5 +1,6 @@
 {
   "changed:bedside_iv_rack": "hardmetal",
+  "changed:black_railing": "hollowmetal",
   "changed:blue_lab_door": "hardmetal",
   "changed:book_stack": "rug",
   "changed:clipboard": "stoneutility,grass",
