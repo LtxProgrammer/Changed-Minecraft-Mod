@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.StackUtil;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -38,7 +39,21 @@ public abstract class ProjectileUtilMixin {
         var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
         if (ability == null)
             return true;
-        return !ability.suited;
+        if (!ability.suited)
+            return true;
+        return ability.grabbedHasControl;
+    }
+
+    @Unique
+    private static boolean targetIsNotSuit(Entity target) {
+        if (!(target instanceof LivingEntity livingEntity))
+            return true;
+        var ability = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (ability == null)
+            return true;
+        if (!ability.suited)
+            return true;
+        return !ability.grabbedHasControl;
     }
 
     @Inject(method = "getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;", at = @At("HEAD"), cancellable = true)
@@ -48,6 +63,7 @@ public abstract class ProjectileUtilMixin {
         EntityHitResult result = ProjectileUtil.getEntityHitResult(source, p_37289_, p_37290_, aabb, pred
                 .and(targetIsNotVehicleOf(source))
                 .and(targetIsNotGrabbedBy(source))
+                .and(ProjectileUtilMixin::targetIsNotSuit)
                 .and(ProjectileUtilMixin::targetIsNotInSuit), p_37293_);
         cir.setReturnValue(result);
     }

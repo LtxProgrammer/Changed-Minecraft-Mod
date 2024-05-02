@@ -19,7 +19,7 @@ public abstract class ItemBlockRenderTypesMixin {
         if (!state.getProperties().contains(COVERED) || state.getValue(COVERED) == LatexType.NEUTRAL)
             return;
 
-        if (type == RenderType.solid() || type == RenderType.cutoutMipped() || type == RenderType.cutout()) {
+        if (type == RenderType.solid() || type == RenderType.cutoutMipped() || type == RenderType.cutout() || type == RenderType.translucent()) {
             callback.setReturnValue(false);
             return;
         }
@@ -29,6 +29,8 @@ public abstract class ItemBlockRenderTypesMixin {
         else if (type == LatexCoveredBlocks.latexCutoutMipped())
             callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutoutMipped()));
         else if (type == LatexCoveredBlocks.latexCutout())
-            callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutout()));
+            callback.setReturnValue(
+                    ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutout()) ||
+                    ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.translucent()));
     }
 }

@@ -68,6 +68,8 @@ public class AbilityOverlay {
             var ability = variant.getSelectedAbility();
             if (ability == null || ability.getUseType() == AbstractAbility.UseType.MENU)
                 return;
+            if (variant.isTemporaryFromSuit())
+                return;
             var color = AbstractRadialScreen.getColors(variant).setForegroundToBright();
 
             renderBackground(10, screenHeight - 42, stack, color, player, variant, ability);

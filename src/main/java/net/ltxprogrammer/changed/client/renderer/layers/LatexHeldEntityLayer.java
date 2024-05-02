@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -39,7 +40,11 @@ public class LatexHeldEntityLayer<T extends ChangedEntity, M extends AdvancedHum
 
         if (!(entityRenderer instanceof LivingEntityRendererExtender ext)) return;
 
+        ChangedCompatibility.freezeIsFirstPersonRendering(false);
+
         ext.directRender(ability.grabbedEntity, 0.0f, partialTicks, pose, bufferSource, packedLight);
+
+        ChangedCompatibility.thawIsFirstPersonRendering();
 
         pose.popPose();
     }

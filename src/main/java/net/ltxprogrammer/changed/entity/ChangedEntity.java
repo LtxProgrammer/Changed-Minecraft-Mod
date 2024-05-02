@@ -452,6 +452,12 @@ public abstract class ChangedEntity extends Monster {
         if (livingEntity.getVehicle() instanceof SeatEntity seat && seat.shouldSeatedBeInvisible())
             return false;
 
+        if (livingEntity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
+            var ability = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (ability != null && ability.suited && ability.grabbedEntity == livingEntity)
+                return false;
+        }
+
         for (var checkVariant : TransfurVariant.MOB_FUSION_LATEX_FORMS) {
             if (ChangedRegistry.TRANSFUR_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
                 return true;

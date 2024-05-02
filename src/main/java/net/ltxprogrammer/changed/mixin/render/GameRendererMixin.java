@@ -81,8 +81,13 @@ public abstract class GameRendererMixin {
 
     @Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V"))
     public void setupForHolderEntity(Camera camera, BlockGetter level, Entity entity, boolean thirdPerson, boolean mirrored, float partialTicks) {
-        if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null)
-            camera.setup(level, ext.getGrabbedBy(), thirdPerson, mirrored, partialTicks);
+        if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
+            var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grabAbility != null && grabAbility.grabbedHasControl && grabAbility.grabbedEntity != null)
+                camera.setup(level, grabAbility.grabbedEntity, thirdPerson, mirrored, partialTicks);
+            else
+                camera.setup(level, ext.getGrabbedBy(), thirdPerson, mirrored, partialTicks);
+        }
         else if (entity instanceof LivingEntity livingEntity) {
             var grabAbility = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grabAbility != null && grabAbility.grabbedHasControl && grabAbility.grabbedEntity != null)

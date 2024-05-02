@@ -42,11 +42,14 @@ public class ChangedKeyMappings {
                     USE_ABILITY.consumeClick();
 
                     ProcessTransfur.ifPlayerTransfurred(local, variant -> {
+                        if (variant.isTemporaryFromSuit())
+                            return;
+
                         var newState = event.getAction() != GLFW.GLFW_RELEASE;
                         if (newState != variant.abilityKeyState) {
                             ChangedTutorial.triggerOnUseAbility(variant.getSelectedAbility());
                             variant.abilityKeyState = newState;
-                            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(newState, variant.selectedAbility));
+                            Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(local, newState, variant.selectedAbility));
                         }
                     });
                 }
@@ -54,7 +57,10 @@ public class ChangedKeyMappings {
                 if (event.getKey() == SELECT_ABILITY.getKey().getValue() && event.getAction() == GLFW.GLFW_PRESS) {
                     SELECT_ABILITY.consumeClick();
                     ProcessTransfur.ifPlayerTransfurred(local, variant -> {
-                        Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.CONTROL_OPEN_RADIAL);
+                        if (variant.isTemporaryFromSuit())
+                            return;
+
+                        Changed.PACKET_HANDLER.sendToServer(VariantAbilityActivate.openRadial(local));
                         ChangedTutorial.triggerOnOpenRadial();
                     });
                 }

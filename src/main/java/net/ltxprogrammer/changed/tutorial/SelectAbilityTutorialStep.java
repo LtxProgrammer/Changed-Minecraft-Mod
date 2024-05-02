@@ -28,6 +28,9 @@ public class SelectAbilityTutorialStep implements ChangedTutorialInstance {
         var player = Minecraft.getInstance().player;
         if (!ProcessTransfur.isPlayerLatex(player))
             return; // Wait until player is TF'd
+        var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+        if (variant == null || variant.isTemporaryFromSuit())
+            return;
 
         ++this.timeWaiting;
         if (player.containerMenu instanceof AbilityRadialMenu) {

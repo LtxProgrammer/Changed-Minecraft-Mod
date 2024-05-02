@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "facing=north,shape=post": {
+      "model": "changed:block/black_railing_post"
+    },
+    "facing=north,shape=side": {
+      "model": "changed:block/black_railing_side"
+    },
+    "facing=north,shape=outer_corner": {
+      "model": "changed:block/black_railing_outer_corner"
+    },
+    "facing=north,shape=outer_corner_alt": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 90
+    },
+    "facing=north,shape=inner_corner": {
+      "model": "changed:block/black_railing_inner_corner"
+    },
+    "facing=east,shape=post": {
+      "model": "changed:block/black_railing_post",
+      "y": 90
+    },
+    "facing=east,shape=side": {
+      "model": "changed:block/black_railing_side",
+      "y": 90
+    },
+    "facing=east,shape=outer_corner": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 90
+    },
+    "facing=east,shape=outer_corner_alt": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 180
+    },
+    "facing=east,shape=inner_corner": {
+      "model": "changed:block/black_railing_inner_corner",
+      "y": 90
+    },
+    "facing=south,shape=post": {
+      "model": "changed:block/black_railing_post",
+      "y": 180
+    },
+    "facing=south,shape=side": {
+      "model": "changed:block/black_railing_side",
+      "y": 180
+    },
+    "facing=south,shape=outer_corner": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 180
+    },
+    "facing=south,shape=outer_corner_alt": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 270
+    },
+    "facing=south,shape=inner_corner": {
+      "model": "changed:block/black_railing_inner_corner",
+      "y": 180
+    },
+    "facing=west,shape=post": {
+      "model": "changed:block/black_railing_post",
+      "y": 270
+    },
+    "facing=west,shape=side": {
+      "model": "changed:block/black_railing_side",
+      "y": 270
+    },
+    "facing=west,shape=outer_corner": {
+      "model": "changed:block/black_railing_outer_corner",
+      "y": 270
+    },
+    "facing=west,shape=outer_corner_alt": {
+      "model": "changed:block/black_railing_outer_corner"
+    },
+    "facing=west,shape=inner_corner": {
+      "model": "changed:block/black_railing_inner_corner",
+      "y": 270
+    }
+  }
+}

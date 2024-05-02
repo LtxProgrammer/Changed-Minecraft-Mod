@@ -150,10 +150,10 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     }
 
     @Override
-    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
         return blockState.getValue(HALF) == DoubleBlockHalf.LOWER ?
-                super.canSurvive(blockState, level, pos) :
-                level.getBlockState(pos.below()).is(this);
+                super.canSurvive(blockState, level, blockPos) :
+                level.getBlockState(blockPos.below()).is(this);
     }
 
     @Override

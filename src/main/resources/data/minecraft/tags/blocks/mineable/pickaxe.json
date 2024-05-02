@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:black_railing",
     "changed:bedside_iv_rack",
     "changed:blue_lab_door",
     "changed:computer",

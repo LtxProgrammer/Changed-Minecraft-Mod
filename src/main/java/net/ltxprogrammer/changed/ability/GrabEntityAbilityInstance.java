@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -8,18 +9,32 @@ import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
+    private boolean wasGrabbedSilent = false;
+    private boolean wasGrabbedInvisible = false;
     @Nullable
     public LivingEntity grabbedEntity = null;
     @Nullable
@@ -31,6 +46,15 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public float grabStrengthO = 0.0f;
     public float suitTransition = 0.0f;
     public float suitTransitionO = 0.0f;
+
+    public static final float GRAB_STRENGTH_DECAY = 0.1f / 20;
+    public static final float GRAB_STRENGTH_DECAY_SUITED = 0.01f / 20;
+
+    public static final float GRAB_STRENGTH_DECAY_PLAYER = 0.21f;
+    public static final float GRAB_STRENGTH_DECAY_PLAYER_SUITED = 0.12f;
+    public static final float GRAB_STRENGTH_DECAY_PENALTY = 0.2f;
+
+    private static final int GRAB_ESCAPE_TRUST = 5;
 
     public boolean shouldRenderLatex() {
         return !shouldRenderGrabbedEntity();
@@ -101,6 +125,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
+
+        ESCAPE_KEYS.forEach((key, value) -> {
+            value.getFirst().getSecond().accept(false);
+            value.getSecond().getSecond().accept(false);
+        });
+
         if (this.grabbedEntity == null) return;
 
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
@@ -108,8 +138,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
         if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
-        this.grabbedEntity.setInvisible(false);
+        if (!(entity instanceof Player)) {
+            this.grabbedEntity.setInvisible(wasGrabbedInvisible);
+            this.grabbedEntity.setSilent(wasGrabbedSilent);
+        }
         this.grabbedEntity.noPhysics = false;
+        this.entity.getEntity().noPhysics = false;
         this.grabbedEntity = null;
         this.suited = false;
         this.attackDown = false;
@@ -118,21 +152,28 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     private void prepareSyncEntity(LivingEntity syncTo) {
+        if (syncTo instanceof Player)
+            return;
+
         this.syncEntity = (ChangedEntity) this.entity.getChangedEntity().getType().create(this.entity.getLevel());
         this.syncEntity.setId(TransfurVariant.getNextEntId());
         CompoundTag tag = new CompoundTag();
         this.entity.getChangedEntity().saveWithoutId(tag);
         this.syncEntity.load(tag);
-
-        if (syncTo instanceof Player player) {
-            this.syncEntity.setUnderlyingPlayer(player);
-        }
     }
 
     public void suitEntity(LivingEntity entity) {
         getController().resetHoldTicks();
-        entity.setInvisible(true);
-        prepareSyncEntity(entity);
+
+        ProcessTransfur.forceNearbyToRetarget(entity.level, entity);
+        if (!(entity instanceof Player)) {
+            wasGrabbedSilent = entity.isSilent();
+            wasGrabbedInvisible = entity.isInvisible();
+            entity.setSilent(true);
+            entity.setInvisible(true);
+            prepareSyncEntity(entity);
+        }
+
         if (this.grabbedEntity == entity) {
             this.suited = true;
             this.grabStrength = 1.0f;
@@ -177,9 +218,11 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (instructionTicks > 0)
             instructionTicks--;
 
-        if (instructionTicks == -120)
+        if (instructionTicks == -180)
             this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_release", KeyReference.ABILITY.getName(level)), true);
-        else if (instructionTicks == -60)
+        else if (instructionTicks == -120)
+            this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_absorb", KeyReference.ATTACK.getName(level), KeyReference.USE.getName(level)), true);
+        else if (instructionTicks == -60 && this.grabbedEntity instanceof Player) // Only show toggle when a player is grabbed
             this.entity.displayClientMessage(new TranslatableComponent("ability.changed.grab_entity.how_to_toggle_control", KeyReference.ABILITY.getName(level)), true);
         if (instructionTicks < 0)
             instructionTicks++;
@@ -188,6 +231,100 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     int instructionTicks = 0;
     public boolean attackDown = false;
     public boolean useDown = false;
+
+    public boolean escapeKeyForwardO = false;
+    public boolean escapeKeyBackwardO = false;
+    public boolean escapeKeyLeftO = false;
+    public boolean escapeKeyRightO = false;
+    public boolean escapeKeyForward = false;
+    public boolean escapeKeyBackward = false;
+    public boolean escapeKeyLeft = false;
+    public boolean escapeKeyRight = false;
+    public int ticksUnpressed = 0;
+    public KeyReference currentEscapeKey = null;
+    private final Map<KeyReference, Pair<
+            Pair<Supplier<Boolean>, Consumer<Boolean>>,
+            Pair<Supplier<Boolean>, Consumer<Boolean>>
+            >> ESCAPE_KEYS = Util.make(new HashMap<>(), map -> {
+                map.put(KeyReference.MOVE_FORWARD, Pair.of(
+                        Pair.of(() -> escapeKeyForward, (v) -> escapeKeyForward = v),
+                        Pair.of(() -> escapeKeyForwardO, (v) -> escapeKeyForwardO = v)
+                ));
+                map.put(KeyReference.MOVE_BACKWARD, Pair.of(
+                        Pair.of(() -> escapeKeyBackward, (v) -> escapeKeyBackward = v),
+                        Pair.of(() -> escapeKeyBackwardO, (v) -> escapeKeyBackwardO = v)
+                ));
+                map.put(KeyReference.MOVE_LEFT, Pair.of(
+                        Pair.of(() -> escapeKeyLeft, (v) -> escapeKeyLeft = v),
+                        Pair.of(() -> escapeKeyLeftO, (v) -> escapeKeyLeftO = v)
+                ));
+                map.put(KeyReference.MOVE_RIGHT, Pair.of(
+                        Pair.of(() -> escapeKeyRight, (v) -> escapeKeyRight = v),
+                        Pair.of(() -> escapeKeyRightO, (v) -> escapeKeyRightO = v)
+                ));
+    });
+
+    public void handleEscape() {
+        if (!(this.grabbedEntity instanceof Player player)) {
+            this.grabStrength -= this.suited ? GRAB_STRENGTH_DECAY_SUITED : GRAB_STRENGTH_DECAY;
+        }
+
+        else {
+            if (player == UniversalDist.getLocalPlayer()) { // Client-side code of the grabbed player
+                AtomicBoolean stateChanged = new AtomicBoolean(false);
+
+                ESCAPE_KEYS.forEach((key, value) -> {
+                    boolean isDown = key.isDown(player.level);
+                    boolean oldState = value.getFirst().getFirst().get();
+                    if (isDown != oldState) { // Key does not match old state, send update packet
+                        value.getFirst().getSecond().accept(isDown);
+                        stateChanged.set(true);
+                    }
+                });
+
+                if (stateChanged.getAcquire()) {
+                    Changed.PACKET_HANDLER.sendToServer(new GrabEntityPacket.EscapeKeyState(player,
+                            escapeKeyForward, escapeKeyBackward, escapeKeyLeft, escapeKeyRight));
+                }
+            }
+
+            if (currentEscapeKey == null && !player.level.isClientSide) {
+                currentEscapeKey = Util.getRandom(ESCAPE_KEYS.keySet().toArray(new KeyReference[0]), this.entity.getEntity().getRandom());
+                Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new GrabEntityPacket.AnnounceEscapeKey(player, currentEscapeKey));
+            }
+
+            if (currentEscapeKey != null) {
+                final var keyRef = ESCAPE_KEYS.get(currentEscapeKey);
+                if (keyRef.getFirst().getFirst().get() && !keyRef.getSecond().getFirst().get()) { // Key was just pressed
+                    // This is to reduce the strength of cheating (pressing the key too fast)
+                    float trustStrength = Mth.clamp((float)ticksUnpressed / (float)GRAB_ESCAPE_TRUST, 0.0f, 1.0f);
+                    float keyStrength = (this.suited ? GRAB_STRENGTH_DECAY_PLAYER_SUITED : GRAB_STRENGTH_DECAY_PLAYER) * trustStrength;
+                    this.grabStrength -= keyStrength;
+                    this.suitTransition = Mth.clamp(this.suitTransition - (keyStrength * 0.5f), 0.0f, 3.0f);
+                    currentEscapeKey = null;
+                    ticksUnpressed = 0;
+                } else {
+                    ticksUnpressed++;
+
+                    boolean badKey = ESCAPE_KEYS.entrySet().stream().filter((entry) -> entry.getKey() != currentEscapeKey).anyMatch((entry) -> {
+                        return entry.getValue().getFirst().getFirst().get() && !entry.getValue().getSecond().getFirst().get();
+                    });
+
+                    if (badKey) {
+                        this.grabStrength = Mth.clamp(this.grabStrength + GRAB_STRENGTH_DECAY_PENALTY, 0.0f, 1.0f);
+                        currentEscapeKey = null;
+                        ticksUnpressed = 0;
+                    }
+                }
+            }
+
+            ESCAPE_KEYS.forEach((ref, pair) -> {
+                // Copy current state to old state
+                pair.getSecond().getSecond().accept(pair.getFirst().getFirst().get());
+            });
+        }
+    }
+
     public void tickIdle() { // Called every tick of LatexVariantInstance, for variants that have this ability
         this.grabStrengthO = this.grabStrength;
         this.suitTransitionO = this.suitTransition;
@@ -200,27 +337,58 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         }
 
         if (this.grabbedEntity != null) {
+            if (this.grabbedEntity instanceof Mob mob) {
+                mob.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
+                mob.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
+                mob.setTarget(null);
+            }
+
             Level level = entity.getLevel();
 
             handleInstructions(level);
 
             if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
                 ext.setGrabbedBy(this.entity.getEntity());
-            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
 
-            if (!grabbedHasControl)
+            if (!grabbedHasControl) {
+                handleEscape();
+                this.grabbedEntity.noPhysics = true;
+                this.entity.getEntity().noPhysics = false;
                 TransfurVariantInstance.syncEntityPosRotWithEntity(this.grabbedEntity, this.entity.getEntity());
-            else
+            } else {
+                this.grabbedEntity.noPhysics = false;
+                this.entity.getEntity().noPhysics = true;
                 TransfurVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
+            }
+
+            if (suited && !(this.grabbedEntity instanceof Player)) {
+                this.grabbedEntity.setAirSupply(this.entity.getEntity().getAirSupply());
+                this.grabbedEntity.resetFallDistance();
+            }
 
             if (this.entity.getEntity() instanceof Player player && (player.isDeadOrDying() || player.isRemoved() || player.isSpectator())) {
                 this.releaseEntity();
                 return;
             }
 
-            if (this.grabbedEntity instanceof Player player && (player.isSpectator() || ProcessTransfur.isPlayerLatex(player))) {
+            if (this.grabbedEntity instanceof Player player && player.isSpectator()) {
                 this.releaseEntity();
                 return;
+            }
+
+            if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerLatex(player)) {
+                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
+                    // This runs before the server broadcasts it to players
+                    variant.checkForTemporary(this.entity);
+                });
+            }
+
+            if (this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+                var variant = ProcessTransfur.getPlayerTransfurVariant(player);
+                if (!variant.isTemporaryFromSuit()) {
+                    this.releaseEntity();
+                    return;
+                }
             }
 
             if (this.grabbedEntity.isDeadOrDying() || this.grabbedEntity.isRemoved() || this.grabStrength <= 0.0f) {
@@ -232,14 +400,21 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 boolean attackKeyDown = KeyReference.ATTACK.isDown(level);
                 boolean useKeyDown = KeyReference.USE.isDown(level);
                 if (attackKeyDown != attackDown || useKeyDown != useDown)
-                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.keyState(attackKeyDown, useKeyDown));
+                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.keyState(UniversalDist.getLocalPlayer(), attackKeyDown, useKeyDown));
                 attackDown = attackKeyDown;
                 useDown = useKeyDown;
             }
 
-            if (attackDown && !suited) { // TODO progress absorption while suited
+            if (attackDown && useDown && suited) {
+                if (ProcessTransfur.tryAbsorption(this.grabbedEntity, this.entity, 4.0f, null)) {
+                    this.releaseEntity();
+                    return;
+                }
+            }
+
+            if (attackDown && !suited) {
                 if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(),
-                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)))
+                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)) && !this.entity.getLevel().isClientSide)
                     this.releaseEntity();
             }
 
@@ -250,13 +425,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             if (this.suitTransition > 0.0f) {
                 this.suitTransition = Math.max(0.0f, this.suitTransition - 0.025f);
 
-                if (this.suitTransition > 3.0f) { // 3 seconds
+                if (this.suitTransition > 3.0f && !suited) { // 3 seconds
                     this.suited = true;
                     this.suitTransition = 0.0f;
 
                     if (this.entity.getEntity() instanceof Player player && player.level.isClientSide) {
                         Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.suitGrab(player, this.grabbedEntity));
-                        this.instructionTicks = -120;
+                        this.instructionTicks = -180;
                         this.grabStrength = 1.0f;
                     }
                 }
@@ -297,8 +472,11 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void stopUsing() {
         if (this.grabbedEntity != null && suited && this.getController().getHoldTicks() < 40) {
-            this.grabbedHasControl = !this.grabbedHasControl;
-            this.grabbedEntity.noPhysics = !this.grabbedHasControl;
+            if (this.grabbedEntity instanceof Player) {
+                this.grabbedHasControl = !this.grabbedHasControl;
+                this.grabbedEntity.noPhysics = !this.grabbedHasControl;
+                this.entity.getEntity().noPhysics = this.grabbedHasControl;
+            }
         }
     }
 

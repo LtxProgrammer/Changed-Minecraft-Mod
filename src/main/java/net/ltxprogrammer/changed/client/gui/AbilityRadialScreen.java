@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -94,7 +95,7 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
         close.run();
         var ability = abilities.get(section);
         variant.setSelectedAbility(ability);
-        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(variant.abilityKeyState, ability));
+        Changed.PACKET_HANDLER.sendToServer(new VariantAbilityActivate(this.menu.player, variant.abilityKeyState, ability));
         return false;
     }
 

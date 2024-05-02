@@ -134,6 +134,10 @@ public class ChangedCompatibility {
         frozen_isFirstPersonRendering = isFirstPersonRendering();
     }
 
+    public static void freezeIsFirstPersonRendering(boolean value) {
+        frozen_isFirstPersonRendering = value;
+    }
+
     public static void thawIsFirstPersonRendering() {
         frozen_isFirstPersonRendering = null;
     }
@@ -142,6 +146,16 @@ public class ChangedCompatibility {
         if (frozen_isFirstPersonRendering != null && dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field != null) {
             try {
                 dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field.set(null, frozen_isFirstPersonRendering);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void forceIsFirstPersonRendering(boolean value) {
+        if (dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field != null) {
+            try {
+                dev_tr7zw_firstperson$FirstPersonModelCore$isRenderingPlayer.field.set(null, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

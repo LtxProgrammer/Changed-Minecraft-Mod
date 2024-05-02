@@ -97,6 +97,14 @@ public class EventHandlerClient {
             }
         }
 
+        if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
+            var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            if (grabAbility != null && grabAbility.suited && !grabAbility.grabbedHasControl) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
         if (!player.isRemoved() && !player.isSpectator() && !TransfurAnimator.shouldRenderHuman()) {
             if (RenderOverride.renderOverrides(player, null, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick()))
                 event.setCanceled(true);

@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -242,5 +244,19 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFriction(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)F", remap = false))
     public float getFrictionForEntity(BlockState instance, LevelReader levelReader, BlockPos pos, Entity entity) {
         return EntityUtil.getFrictionOnBlock(instance, levelReader, pos, entity);
+    }
+
+    @Inject(method = "push", at = @At("HEAD"), cancellable = true)
+    public void pushEntityIfNotGrabbed(Entity entity, CallbackInfo callback) {
+        var ability = AbstractAbility.getAbilityInstance((LivingEntity)(Object)this, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+        if (ability != null && ability.grabbedEntity == entity) { // Grabbed entity is called to push
+            callback.cancel();
+            return;
+        }
+
+        if (this.grabbedBy == entity) {
+            callback.cancel();
+            return;
+        }
     }
 }

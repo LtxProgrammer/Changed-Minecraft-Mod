@@ -40,6 +40,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
         list.add(NoteBlock.class);
         list.add(StainedGlassPaneBlock.class);
         list.add(MagmaBlock.class);
+        list.add(TorchBlock.class);
         list.add(EndPortalFrameBlock.class);
         list.add(NetherPortalBlock.class);
         list.add(EndPortalBlock.class);

@@ -33,7 +33,7 @@ public class DarkLatexBlock extends AbstractLatexBlock {
             return;
 
         BlockPos above = position.above();
-        if (level.getBlockState(above).is(Blocks.AIR)) {
+        if (level.getBlockState(above).is(Blocks.AIR) && canSupportRigidBlock(level, position)) {
             level.setBlockAndUpdate(above, ChangedBlocks.LATEX_CRYSTAL.get().defaultBlockState());
         }
     }
