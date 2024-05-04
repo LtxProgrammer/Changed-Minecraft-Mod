@@ -28,7 +28,8 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
             entity.setTransfurMode(TransfurMode.ABSORPTION);
 
         setDirty(entity);
-        entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select",new TranslatableComponent("ability.changed.switch_transfur_mode." + entity.getTransfurMode().toString().toLowerCase())), entity.getTransfurMode().toString()), true);
+        entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode." + entity.getTransfurMode().toString().toLowerCase())), true);
+
     }
     
     @Override
