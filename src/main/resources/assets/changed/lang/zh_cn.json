@@ -8,6 +8,8 @@
   "ability.changed.access_saddle": "胶兽能力访问界面",
   "ability.changed.switch_transfur_mode": "切换兽化模式",
   "ability.changed.switch_transfur_mode.select": "当前的模式为 %s 模式",
+  "ability.changed.switch_transfur_mode.absorption": "吸收",
+  "ability.changed.switch_transfur_mode.replication": "复制"
   "ability.changed.create_cobweb": "生成蜘蛛网",
   "ability.changed.create_inkball": "生成胶墨球",
   "ability.changed.access_chest": "使用箱子",
