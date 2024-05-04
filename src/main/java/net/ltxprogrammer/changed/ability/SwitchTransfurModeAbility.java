@@ -29,9 +29,11 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
 
         setDirty(entity);
         entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode." + entity.getTransfurMode().toString().toLowerCase())), true);
-
+        
+        // 添加新的消息显示
+        entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", entity.getTransfurMode().toString()), true);
     }
-    
+
     @Override
     public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {
         super.saveData(tag, entity);
@@ -64,3 +66,4 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
         return 10;
     }
 }
+
