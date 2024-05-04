@@ -30,7 +30,7 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
         setDirty(entity);
         entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode." + entity.getTransfurMode().toString().toLowerCase())), true);
         
-        // 添加新的消息显示
+        // new message
         entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", entity.getTransfurMode().toString()), true);
     }
 
