@@ -8,6 +8,8 @@
   "ability.changed.access_saddle": "Nyereg hozzáférése",
   "ability.changed.switch_transfur_mode": "Válassz egy transzfur módot",
   "ability.changed.switch_transfur_mode.select": "Transzfur mód most már: %s",
+  "ability.changed.switch_transfur_mode.absorption": "Elnyelés",
+  "ability.changed.switch_transfur_mode.replication": "Többszörösítés",
   "ability.changed.create_cobweb": "Pókháló létrehozása",
   "ability.changed.create_inkball": "Tintagolyó létrehozása",
   "ability.changed.create_honeycomb": "Méhsejt létrehozása",
