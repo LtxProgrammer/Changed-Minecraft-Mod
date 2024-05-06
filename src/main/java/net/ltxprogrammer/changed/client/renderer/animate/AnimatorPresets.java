@@ -715,7 +715,7 @@ public class AnimatorPresets {
             animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
                     .addPreset(doubleArmUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
                     .addPreset(dragonTail(tail, tailJoints))
-                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addPreset(catEars(leftEar, rightEar))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
                     .addAnimator(new DoubleArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
