@@ -8,6 +8,8 @@
   "ability.changed.access_saddle": "Tillgång sadel",
   "ability.changed.switch_transfur_mode": "Växla förpälsvandla läge",
   "ability.changed.switch_transfur_mode.select": "Förpälsvandla läge är nu: %s",
+  "ability.changed.switch_transfur_mode.absorption": "Absorption",
+  "ability.changed.switch_transfur_mode.replication": "Replikering",
   "ability.changed.create_cobweb": "Skapa spindelnät",
   "ability.changed.create_inkball": "Skapa bläckboll",
   "ability.changed.create_honeycomb": "Skapa vaxkaka",
