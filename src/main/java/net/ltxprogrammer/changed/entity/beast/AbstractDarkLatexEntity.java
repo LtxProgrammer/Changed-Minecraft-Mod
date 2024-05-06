@@ -150,7 +150,10 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             double d2 = this.random.nextGaussian() * 0.02D;
             this.level.addParticle(particleoptions, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
         }
+    }
 
+    protected void spawnHeartParticles() {
+        this.spawnTamingParticles(true);
     }
 
     public void handleEntityEvent(byte event) {
@@ -158,6 +161,8 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             this.spawnTamingParticles(true);
         } else if (event == 6) {
             this.spawnTamingParticles(false);
+        } else if (event == 18) {
+            this.spawnHeartParticles();
         } else {
             super.handleEntityEvent(event);
         }
@@ -202,6 +207,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
                     itemstack.shrink(1);
                     this.heal(2.0F);
                     this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                    this.level.broadcastEntityEvent(this, (byte)7); // Spawn hearts
                     return InteractionResult.SUCCESS;
                 } else {
                     InteractionResult interactionresult = super.mobInteract(player, hand);
