@@ -19,6 +19,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -114,6 +115,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
         ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null) {
             CompoundTag tag = stack.getTag();
+            TransfurCause cause = (player.getUsedItemHand() == InteractionHand.MAIN_HAND) == (player.getMainArm() == HumanoidArm.RIGHT) ? TransfurCause.SYRINGE : TransfurCause.SYRINGE_LEFT_HAND;
 
             if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerLatex(player)) {
                 if (tag.getBoolean("safe"))
@@ -125,12 +127,12 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
                 if (formLocation.equals(TransfurVariant.SPECIAL_LATEX))
                     formLocation = Changed.modResource("special/form_" + entity.getUUID());
                 ProcessTransfur.transfur(entity, level, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(formLocation), false,
-                        TransfurContext.hazard(TransfurCause.SYRINGE));
+                        TransfurContext.hazard(cause));
             }
 
             else {
                 ProcessTransfur.transfur(entity, level, TransfurVariant.FALLBACK_VARIANT, player.isCreative(),
-                        TransfurContext.hazard(TransfurCause.SYRINGE));
+                        TransfurContext.hazard(cause));
             }
 
             player.awardStat(Stats.ITEM_USED.get(this));
