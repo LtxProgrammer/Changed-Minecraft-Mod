@@ -245,7 +245,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSquirrel::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::forestSpawning);
     public static final RegistryObject<EntityType<LatexMantaRayFemale>> LATEX_MANTA_RAY_FEMALE = register("latex_manta_ray_female", 0x6f7696, 0xd2d9e1,
-            EntityType.Builder.of(LatexMantaRayFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexMantaRayFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<LatexMantaRayMale>> LATEX_MANTA_RAY_MALE = register("latex_manta_ray_male", 0x6f7696, 0xd2d9e1,
             EntityType.Builder.of(LatexMantaRayMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),

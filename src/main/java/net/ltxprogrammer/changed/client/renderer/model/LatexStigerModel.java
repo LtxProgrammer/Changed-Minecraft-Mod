@@ -52,7 +52,7 @@ public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> impleme
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.beeLike(
+                .addPreset(AnimatorPresets.stigerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm3, RightArm3, LeftArm2, RightArm2, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary),

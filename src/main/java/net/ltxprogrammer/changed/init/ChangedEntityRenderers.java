@@ -49,8 +49,6 @@ public class ChangedEntityRenderers {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        final boolean useNewModels = Changed.config.client.useNewModels.get();
-
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HEAD.get(), BehemothHeadRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_LEFT.get(), BehemothHandLeftRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_RIGHT.get(), BehemothHandRightRenderer::new);
@@ -79,8 +77,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_HYPNO_CAT.get(), LatexHypnoCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_KEON_WOLF.get(), LatexKeonWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_LEAF.get(), LatexLeafRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_FEMALE.get(),
-                useNewModels ? LatexMantaRayFemaleRenderer.Remodel::new : LatexMantaRayFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_FEMALE.get(), LatexMantaRayFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MANTA_RAY_MALE.get(), LatexMantaRayMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MEDUSA_CAT.get(), LatexMedusaCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MIMIC_PLANT.get(), LatexMimicPlantRenderer::new);
