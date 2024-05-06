@@ -143,6 +143,17 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2VerticalSwim(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSwimAnimatorV2Vertical<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSleepAnimator<>(abdomen, lowerAbdomen, tail, tailJoints));
+        };
+    }
+
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBodyOld(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsOld(1, leftArm, rightArm)
@@ -694,6 +705,24 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> stigerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+                                                                                                                  ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm,
+                                                                                                                  ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
+                                                                                                                  ModelPart tail, List<ModelPart> tailJoints,
+                                                                                                                  ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+                                                                                                                  ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
+        return animator -> {
+            animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
+                    .addPreset(doubleArmUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(dragonTail(tail, tailJoints))
+                    .addPreset(wolfEars(leftEar, rightEar))
+                    .addAnimator(new WolfHeadInitAnimator<>(head))
+                    .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
+                    .addAnimator(new DoubleArmBobAnimator<>(upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new ArmRideAnimator<>(upperLeftArm, upperRightArm));
+        };
+    }
+
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLikeOld(ModelPart head, ModelPart torso,
                                                                                                                 ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart tail, List<ModelPart> tailJoints,
@@ -839,6 +868,21 @@ public class AnimatorPresets {
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new SharkCameraSwimAnimator<>());
+        };
+    }
+
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRay(ModelPart head, ModelPart torso,
+                                                                                                               ModelPart leftArm, ModelPart rightArm,
+                                                                                                               ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                               ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addPreset(leglessV2VerticalSwim(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addPreset(orcaUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new OrcaHeadSwimAnimator<>(head))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
+                    .addCameraAnimator(new OrcaCameraSwimAnimator<>());
         };
     }
 
