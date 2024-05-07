@@ -10,7 +10,7 @@
   "ability.changed.switch_transfur_mode": "切换兽化模式",
   "ability.changed.switch_transfur_mode.select": "当前的模式为 %s 模式",
   "ability.changed.switch_transfur_mode.absorption": "吞噬",
-  "ability.changed.switch_transfur_mode.replication": "同化"
+  "ability.changed.switch_transfur_mode.replication": "同化",
   "ability.changed.create_cobweb": "生成蜘蛛网",
   "ability.changed.create_inkball": "生成胶墨球",
   "ability.changed.access_chest": "使用箱子",
@@ -447,7 +447,7 @@
   "changed.compact_disc.content.dark_latex_yufeng": "在使用和黑胶生物的配方中加入羽毛，我们创造了一种具有滑翔能力的生物，但是他们并不能飞。这种生物和龙很像，但依然有面具。",
 
     "changed.compact_disc.title.dark_latex_dragon": "二足飞龙",
-  "changed.compact_disc.content.dark_latex_dragon": "虽然这种生物起源于黑胶狼，但是这种生物居然没有面具。二足飞龙也具有滑翔的能力。通过将幻翼膜与黑胶狼的配方进行混合，可以得到龙的DNA。"
+  "changed.compact_disc.content.dark_latex_dragon": "虽然这种生物起源于黑胶狼，但是这种生物居然没有面具。二足飞龙也具有滑翔的能力。通过将幻翼膜与黑胶狼的配方进行混合，可以得到龙的DNA。",
 
     "changed.compact_disc.title.latex_beifeng": "实验概括：蜥蜴",
   "changed.compact_disc.content.latex_beifeng": "将蓝色颜料和胶液基进行混合后，我们得到了蜥蜴形状的生物。 他们可以跑的很快，不过在水中游泳的速度就没有那么快了。",
@@ -552,5 +552,5 @@
   "changed.config.bpi.override_all_eye_styles": "覆盖所有眼睛样式以匹配",
   
   "fluid.changed.dark_latex": "液态黑胶",
-  "fluid.changed.white_latex": "液态白胶",
+  "fluid.changed.white_latex": "液态白胶"
 }
