@@ -8,6 +8,8 @@
   "ability.changed.access_saddle": "Tilgang sal",
   "ability.changed.switch_transfur_mode": "Endre transpelsmodus",
   "ability.changed.switch_transfur_mode.select": "Transpelsmodus er nå: %s",
+  "ability.changed.switch_transfur_mode.absorption": "Absorpsjon",
+  "ability.changed.switch_transfur_mode.replication": "Replikering",
   "ability.changed.create_cobweb": "Lage spindelvev",
   "ability.changed.create_inkball": "Lage blekkball",
   "ability.changed.create_honeycomb": "Lage bikake",

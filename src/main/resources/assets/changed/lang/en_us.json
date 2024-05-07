@@ -8,6 +8,8 @@
   "ability.changed.access_saddle": "Access Saddle",
   "ability.changed.switch_transfur_mode": "Switch Transfur Mode",
   "ability.changed.switch_transfur_mode.select": "Transfur mode is now: %s",
+  "ability.changed.switch_transfur_mode.absorption": "Absorption",
+  "ability.changed.switch_transfur_mode.replication": "Replication",
   "ability.changed.create_cobweb": "Create Cobweb",
   "ability.changed.create_inkball": "Create Inkball",
   "ability.changed.create_honeycomb": "Create Honeycomb",
