@@ -223,11 +223,6 @@ public class GrabEntityPacket implements ChangedPacket {
                 if (ability != null) {
                     ability.currentEscapeKey = this.keyReference;
                     contextSupplier.get().setPacketHandled(true);
-
-                    var localPlayer = UniversalDist.getLocalPlayer();
-                    if (player == localPlayer) {
-                        localPlayer.displayClientMessage(this.keyReference.getName(level), true);
-                    }
                 }
             }
         }
