@@ -125,6 +125,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
+        this.ticksGrabbed = 0;
+        this.currentEscapeKey = null;
+        this.lastEscapeKey = null;
 
         ESCAPE_KEYS.forEach((key, value) -> {
             value.getFirst().getSecond().accept(false);
@@ -143,6 +146,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.grabbedEntity.setSilent(wasGrabbedSilent);
         }
         this.grabbedEntity.noPhysics = false;
+        this.grabbedEntity.resetFallDistance();
         this.entity.getEntity().noPhysics = false;
         this.grabbedEntity = null;
         this.suited = false;
@@ -241,7 +245,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public boolean escapeKeyLeft = false;
     public boolean escapeKeyRight = false;
     public int ticksUnpressed = 0;
+    public KeyReference lastEscapeKey = null;
     public KeyReference currentEscapeKey = null;
+    public int ticksGrabbed = 0;
     private final Map<KeyReference, Pair<
             Pair<Supplier<Boolean>, Consumer<Boolean>>,
             Pair<Supplier<Boolean>, Consumer<Boolean>>
@@ -265,11 +271,15 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     });
 
     public void handleEscape() {
+        ticksGrabbed++;
+
         if (!(this.grabbedEntity instanceof Player player)) {
             this.grabStrength -= this.suited ? GRAB_STRENGTH_DECAY_SUITED : GRAB_STRENGTH_DECAY;
         }
 
         else {
+            if (ticksGrabbed < 10) return;
+
             if (player == UniversalDist.getLocalPlayer()) { // Client-side code of the grabbed player
                 AtomicBoolean stateChanged = new AtomicBoolean(false);
 
@@ -301,6 +311,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                     float keyStrength = (this.suited ? GRAB_STRENGTH_DECAY_PLAYER_SUITED : GRAB_STRENGTH_DECAY_PLAYER) * trustStrength;
                     this.grabStrength -= keyStrength;
                     this.suitTransition = Mth.clamp(this.suitTransition - (keyStrength * 0.5f), 0.0f, 3.0f);
+                    lastEscapeKey = currentEscapeKey;
                     currentEscapeKey = null;
                     ticksUnpressed = 0;
                 } else {
@@ -312,6 +323,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
                     if (badKey) {
                         this.grabStrength = Mth.clamp(this.grabStrength + GRAB_STRENGTH_DECAY_PENALTY, 0.0f, 1.0f);
+                        lastEscapeKey = currentEscapeKey;
                         currentEscapeKey = null;
                         ticksUnpressed = 0;
                     }
@@ -489,6 +501,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         tag.putBoolean("Suited", suited);
         tag.putFloat("GrabStrength", grabStrength);
         tag.putFloat("SuitTransition", suitTransition);
+        tag.putInt("TicksGrabbed", ticksGrabbed);
     }
 
     @Override
@@ -507,6 +520,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.suited = tag.getBoolean("Suited");
             this.grabStrength = tag.getFloat("GrabStrength");
             this.suitTransition = tag.getFloat("SuitTransition");
+            this.ticksGrabbed = tag.getInt("TicksGrabbed");
         }
     }
 }
