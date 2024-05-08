@@ -19,6 +19,8 @@
     "Oculus.WorldRenderingPhaseMixin",
     "Pehkui.ChangedEntityMixin",
     "Pehkui.ScaleTypeMixin",
+    "PlayerAnimator.AdvancedHumanoidRendererMixin",
+    "PlayerAnimator.HumanoidAnimatorMixin",
     "PresenceFootsteps.SoundEngineMixin",
     "PresenceFootsteps.StateLookupMixin",
     "Rubidium.BlockRenderPassManagerMixin",
