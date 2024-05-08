@@ -176,6 +176,9 @@
   "text.changed.syringe.no_owner": "Nem lehet beszerezni a játékos nevét",
   "text.changed.tamed.wander": "%s most vándorol",
   "text.changed.tamed.follow": "%s most követ",
+  "text.changed.warning": "Figyelem",
+  "text.changed.warning.content1": "A Minecraft ezen módosított verziója Changed-ből származó tartalmat tartalmaz,",
+  "text.changed.warning.content2": "és nem minden korosztály számára ajánlott. [SZÖVEG NEM VÉGLEGES]",
 
   "effect.changed.hypercoagulation": "Hiperkoaguláció",
   "effect.changed.shock": "Sokk",
