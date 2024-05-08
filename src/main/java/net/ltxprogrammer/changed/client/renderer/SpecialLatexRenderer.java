@@ -101,10 +101,10 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
             return opt.get();
     }
 
-    public void render(SpecialLatex entity, float p_115456_, float p_115457_, PoseStack pose, MultiBufferSource buffer, int p_115460_) {
+    public void render(SpecialLatex entity, float yRot, float p_115457_, PoseStack pose, MultiBufferSource buffer, int p_115460_) {
         if (runIfValid(entity, renderer -> {
-                renderer.render(entity, p_115456_, p_115457_, pose, buffer, p_115460_); }))
-            super.render(entity, p_115456_, p_115457_, pose, buffer, p_115460_);
+                renderer.render(entity, yRot, p_115457_, pose, buffer, p_115460_); }))
+            super.render(entity, yRot, p_115457_, pose, buffer, p_115460_);
     }
 
     @Override
