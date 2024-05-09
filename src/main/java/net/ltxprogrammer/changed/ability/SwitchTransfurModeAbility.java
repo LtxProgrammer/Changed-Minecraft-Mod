@@ -28,15 +28,7 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
             entity.setTransfurMode(TransfurMode.ABSORPTION);
 
         setDirty(entity);
-        if (entity.getTransfurMode() == TransfurMode.ABSORPTION)
-            entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode.absorption")), true);
-
-        else
-            entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode.replication")), true);
-
-
-
-
+        entity.displayClientMessage(new TranslatableComponent("ability.changed.switch_transfur_mode.select", new TranslatableComponent("ability.changed.switch_transfur_mode." + entity.getTransfurMode().toString().toLowerCase())), true);
     }
 
     @Override
@@ -71,5 +63,3 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
         return 10;
     }
 }
-
-
