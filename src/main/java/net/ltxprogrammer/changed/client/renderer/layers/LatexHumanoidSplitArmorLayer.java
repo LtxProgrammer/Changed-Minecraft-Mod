@@ -42,7 +42,7 @@ public class LatexHumanoidSplitArmorLayer<T extends ChangedEntity, M extends Adv
     }
 
     @Override
-    LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
+    public LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
         return useOther.test(slot) ? (this.useInner.test(slot) ? this.innerModelOther : this.outerModelOther) : super.getArmorModel(slot);
     }
 }

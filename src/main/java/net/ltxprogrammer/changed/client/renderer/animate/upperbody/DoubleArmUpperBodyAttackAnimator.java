@@ -95,9 +95,9 @@ public class DoubleArmUpperBodyAttackAnimator<T extends ChangedEntity, M extends
             if (humanoidarm == HumanoidArm.LEFT)
                 torso.yRot *= -1.0F;
 
-            upperRightArm.z = Mth.sin(torso.yRot) * core.torsoWidth + core.forwardOffset;
+            upperRightArm.z = Mth.sin(torso.yRot) * core.torsoWidth;
             upperRightArm.x = -Mth.cos(torso.yRot) * core.torsoWidth;
-            upperLeftArm.z = -Mth.sin(torso.yRot) * core.torsoWidth + core.forwardOffset;
+            upperLeftArm.z = -Mth.sin(torso.yRot) * core.torsoWidth;
             upperLeftArm.x = Mth.cos(torso.yRot) * core.torsoWidth;
             upperRightArm.yRot += torso.yRot;
             upperLeftArm.yRot += torso.yRot;

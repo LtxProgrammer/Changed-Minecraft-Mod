@@ -21,7 +21,7 @@ public class LeglessCrouchAnimator<T extends ChangedEntity, M extends EntityMode
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         abdomen.y = 12.2F + core.hipOffset + (12.0f - core.legLength);
-        abdomen.z = 4.0F + core.forwardOffset;
+        abdomen.z = 4.0F;
         lowerAbdomen.xRot = (float) Math.toRadians(60);
     }
 }

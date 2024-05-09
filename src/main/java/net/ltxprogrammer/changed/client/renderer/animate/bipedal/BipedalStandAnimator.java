@@ -18,8 +18,8 @@ public class BipedalStandAnimator<T extends ChangedEntity, M extends EntityModel
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        rightLeg.z = 0.1F + core.forwardOffset;
-        leftLeg.z = 0.1F + core.forwardOffset;
+        rightLeg.z = 0.1F;
+        leftLeg.z = 0.1F;
         rightLeg.y = core.calculateLegPositionY();
         leftLeg.y = core.calculateLegPositionY();
     }

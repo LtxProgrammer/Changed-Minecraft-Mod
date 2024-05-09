@@ -228,9 +228,11 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.swapResetPoseStack(poseStack);
+        LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.swapResetPoseStack(poseStack);
     }
 
     @Override

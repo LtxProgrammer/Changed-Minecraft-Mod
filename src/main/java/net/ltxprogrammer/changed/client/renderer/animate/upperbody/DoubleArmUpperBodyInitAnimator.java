@@ -44,16 +44,16 @@ public class DoubleArmUpperBodyInitAnimator<T extends ChangedEntity, M extends E
 
         lowerLeftArm.x = torso.x + core.torsoWidth;
         lowerLeftArm.y = torso.y + 6.0f;
-        lowerLeftArm.z = torso.z + core.forwardOffset;
+        lowerLeftArm.z = torso.z;
         lowerRightArm.x = torso.x - core.torsoWidth;
         lowerRightArm.y = torso.y + 6.0f;
-        lowerRightArm.z = torso.z + core.forwardOffset;
+        lowerRightArm.z = torso.z;
         upperLeftArm.x = torso.x + core.torsoWidth;
         upperLeftArm.y = torso.y + 2.0f;
-        upperLeftArm.z = torso.z + core.forwardOffset;
+        upperLeftArm.z = torso.z;
         upperRightArm.x = torso.x - core.torsoWidth;
         upperRightArm.y = torso.y + 2.0f;
-        upperRightArm.z = torso.z + core.forwardOffset;
+        upperRightArm.z = torso.z;
 
         lowerRightArm.zRot = 0.0F;
         lowerLeftArm.zRot = 0.0F;

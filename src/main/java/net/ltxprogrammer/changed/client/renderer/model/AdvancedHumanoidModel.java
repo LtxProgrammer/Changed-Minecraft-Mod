@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.ModelPartStem;
+import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -42,6 +43,16 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         else {
             getHead().visible = true;
             getTorso().visible = true;
+        }
+    }
+
+    public PoseStack.Pose resetPoseStack = null;
+    public void swapResetPoseStack(PoseStack poseStack) {
+        // This function is to maybe reset any poseStack changes for exception case models (im looking at you centaur)
+        if (resetPoseStack != null && poseStack instanceof PoseStackExtender extender) {
+            var copied = extender.copyLast();
+            extender.setPose(resetPoseStack);
+            resetPoseStack = copied;
         }
     }
 
