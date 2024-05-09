@@ -33,12 +33,12 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, Lat
 	}
 
 	@Override
-	public void render(LatexHuman latex, float p_115456_, float p_115457_, PoseStack p_115458_, MultiBufferSource bufferSource, int p_115460_) {
+	public void render(LatexHuman latex, float yRot, float p_115457_, PoseStack p_115458_, MultiBufferSource bufferSource, int p_115460_) {
 		if (latex.getUnderlyingPlayer() instanceof AbstractClientPlayer clientPlayer)
 			this.model.setModelProperties(clientPlayer);
 		else
 			this.model.defaultModelProperties();
-		super.render(latex, p_115456_, p_115457_, p_115458_, bufferSource, p_115460_);
+		super.render(latex, yRot, p_115457_, p_115458_, bufferSource, p_115460_);
 	}
 
 	@Override
