@@ -26,6 +26,11 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> implements 
 
     @Shadow public abstract void applyPropertyModel(HumanoidModel<?> propertyModel);
 
+    @Shadow public float forwardOffset;
+    @Shadow public float hipOffset;
+
+    @Shadow public abstract float calculateTorsoPositionY();
+
     @Unique private final SetableSupplier<AnimationProcessor> emoteSupplier = new SetableSupplier();
     @Unique private boolean firstPersonNext;
 
@@ -38,6 +43,12 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> implements 
             AnimationApplier emote = ((IAnimatedPlayer)player).playerAnimator_getAnimation();
             this.emoteSupplier.set(emote);
             var propertyModel = this.getPropertyModel(null);
+            propertyModel.body.y -= this.calculateTorsoPositionY();
+            propertyModel.head.y -= this.calculateTorsoPositionY();
+            propertyModel.rightArm.y -= this.calculateTorsoPositionY();
+            propertyModel.leftArm.y -= this.calculateTorsoPositionY();
+            propertyModel.rightLeg.y -= hipOffset;
+            propertyModel.leftLeg.y -= hipOffset;
 
             emote.updatePart("head", propertyModel.head);
             propertyModel.hat.copyFrom(propertyModel.head);
@@ -46,6 +57,13 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> implements 
             emote.updatePart("leftLeg", propertyModel.leftLeg);
             emote.updatePart("rightLeg", propertyModel.rightLeg);
             emote.updatePart("torso", propertyModel.body);
+
+            propertyModel.body.y += this.calculateTorsoPositionY();
+            propertyModel.head.y += this.calculateTorsoPositionY();
+            propertyModel.rightArm.y += this.calculateTorsoPositionY();
+            propertyModel.leftArm.y += this.calculateTorsoPositionY();
+            propertyModel.rightLeg.y += hipOffset;
+            propertyModel.leftLeg.y += hipOffset;
 
             this.applyPropertyModel(propertyModel);
         } else {

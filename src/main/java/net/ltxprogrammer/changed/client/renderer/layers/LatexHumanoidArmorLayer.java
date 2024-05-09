@@ -110,7 +110,7 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
         model.renderToBuffer(pose, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
-    LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
+    public LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
         return this.usesInnerModel(slot) ? this.innerModel : this.outerModel;
     }
 

@@ -85,9 +85,9 @@ public class WolfUpperBodyAttackAnimator<T extends ChangedEntity, M extends Enti
             if (humanoidarm == HumanoidArm.LEFT)
                 torso.yRot *= -1.0F;
 
-            rightArm.z = Mth.sin(torso.yRot) * core.torsoWidth + core.forwardOffset;
+            rightArm.z = Mth.sin(torso.yRot) * core.torsoWidth;
             rightArm.x = -Mth.cos(torso.yRot) * core.torsoWidth;
-            leftArm.z = -Mth.sin(torso.yRot) * core.torsoWidth + core.forwardOffset;
+            leftArm.z = -Mth.sin(torso.yRot) * core.torsoWidth;
             leftArm.x = Mth.cos(torso.yRot) * core.torsoWidth;
             rightArm.yRot += torso.yRot;
             leftArm.yRot += torso.yRot;

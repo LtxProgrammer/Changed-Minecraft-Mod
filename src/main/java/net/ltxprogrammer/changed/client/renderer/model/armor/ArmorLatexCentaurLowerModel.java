@@ -117,7 +117,11 @@ public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>>
     @Override
     public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (slot) {
-            case LEGS, FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            case LEGS, FEET -> {
+                this.swapResetPoseStack(poseStack);
+                LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+                this.swapResetPoseStack(poseStack);
+            }
         }
     }
 }
