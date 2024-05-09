@@ -20,6 +20,7 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
             .put("net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations", "notenoughanimations")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Oculus", "oculus")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Pehkui", "pehkui")
+            .put("net.ltxprogrammer.changed.mixin.compatibility.PlayerAnimator", "playeranimator")
             .put("net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps", "presencefootsteps")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Rubidium", "rubidium")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Vivecraft", "vivecraft").build();
