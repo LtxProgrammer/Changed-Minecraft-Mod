@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.PlayerAnimator;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import dev.kosmx.playerAnim.api.TransformType;
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.kosmx.playerAnim.core.util.Vec3f;
 import dev.kosmx.playerAnim.impl.IAnimatedPlayer;
 import dev.kosmx.playerAnim.impl.animation.AnimationApplier;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AdvancedHumanoidRenderer.class, remap = false)
 public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
@@ -61,6 +63,10 @@ public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M e
             matrixStack.mulPose(Vector3f.XP.rotation(vec3f.getX()));
             matrixStack.translate(0.0D, -0.7D, 0.0D);
         }
+    }
 
+    @Inject(method = "shouldRenderArmor", at = @At("RETURN"), cancellable = true)
+    public void shouldRenderArmorOverride(T entity, CallbackInfoReturnable<Boolean> callback) {
+        callback.setReturnValue(callback.getReturnValue() && !FirstPersonMode.isFirstPersonPass());
     }
 }

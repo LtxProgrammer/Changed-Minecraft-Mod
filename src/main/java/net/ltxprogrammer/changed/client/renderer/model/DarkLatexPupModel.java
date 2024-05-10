@@ -40,6 +40,15 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
         animator = HumanoidAnimator.of(this);
     }
 
+    @Override
+    public void setAllLimbsVisible(DarkLatexPup entity, boolean visible) {
+        super.setAllLimbsVisible(entity, visible);
+
+        if (visible) {
+            this.Puddle.visible = entity.isPuddle();
+        }
+    }
+
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
