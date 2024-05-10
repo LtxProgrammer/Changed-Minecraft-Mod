@@ -17,9 +17,10 @@ public class DarkLatexPupRenderer extends AdvancedHumanoidRenderer<DarkLatexPup,
 		super(context, new DarkLatexPupModel(context.bakeLayer(DarkLatexPupModel.LAYER_LOCATION)),
 				ArmorNoneModel::new, ArmorNoneModel.INNER_ARMOR, ArmorNoneModel.OUTER_ARMOR, 0.4F);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
-		/*this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
+		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
 				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));*/
+				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
+				.setHeadShape(CustomEyesLayer.HeadShape.PUP));
 	}
 
 	@Override
