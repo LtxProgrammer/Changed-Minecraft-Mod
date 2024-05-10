@@ -1,9 +1,12 @@
 package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.layers.CustomEyesLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexPupModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorNoneModel;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Pose;
@@ -13,11 +16,15 @@ public class DarkLatexPupRenderer extends AdvancedHumanoidRenderer<DarkLatexPup,
 	public DarkLatexPupRenderer(EntityRendererProvider.Context context) {
 		super(context, new DarkLatexPupModel(context.bakeLayer(DarkLatexPupModel.LAYER_LOCATION)),
 				ArmorNoneModel::new, ArmorNoneModel.INNER_ARMOR, ArmorNoneModel.OUTER_ARMOR, 0.4F);
+		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
+		/*this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
+				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
+				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));*/
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexPup entity) {
-		return entity.isPuddle() ? Changed.modResource("textures/dark_latex_pup_puddle.png") : Changed.modResource("textures/dark_latex_pup.png");
+		return entity.isPuddle() ? Changed.modResource("textures/dark_latex_pup_puddle.png") : Changed.modResource("textures/dark_latex_wolf_pup.png");
 	}
 
 	@Override

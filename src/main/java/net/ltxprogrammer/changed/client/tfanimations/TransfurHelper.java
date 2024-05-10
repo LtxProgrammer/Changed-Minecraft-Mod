@@ -23,6 +23,7 @@ public class TransfurHelper {
     protected final HelperModel SnoutedHead;
     protected final HelperModel Legless;
     protected final HelperModel TaurTorso;
+    protected final HelperModel PupTorso;
 
     protected static void copyRotations(ModelPart from, ModelPart to) {
         to.xRot = from.xRot;
@@ -44,6 +45,7 @@ public class TransfurHelper {
             copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg2"));
             copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg2"));
         });
+        this.PupTorso = HelperModel.fixed(root.getChild("PupTorso"));
     }
 
     private static EntityModelSet getModelSet() {
@@ -211,6 +213,21 @@ public class TransfurHelper {
             PartDefinition Base_r1 = TailPrimary3.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(58, 2).addBox(-1.0F, 0.5F, -0.5F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
         }
 
+        // PUP
+        {
+            PartDefinition PupTorso = partdefinition.addOrReplaceChild("PupTorso", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Torso_r1 = PupTorso.addOrReplaceChild("Torso_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(0.0F))
+                    .texOffs(-2, -2).addBox(-4.0F, 5.0F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Tail = PupTorso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 10.25F, 0.0F));
+
+            PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
+
+            PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(58, 2).addBox(-1.0F, 0.5F, -0.5F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+        }
+
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
@@ -246,5 +263,9 @@ public class TransfurHelper {
 
     public static HelperModel getTaurTorso() {
         return INSTANCE.get().TaurTorso;
+    }
+
+    public static HelperModel getPupTorso() {
+        return INSTANCE.get().PupTorso;
     }
 }
