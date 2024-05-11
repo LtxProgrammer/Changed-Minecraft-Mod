@@ -185,4 +185,8 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             modelInterface.getAnimator().partialTicks = partialTicks;
         super.render(entity, yRot, partialTicks, poseStack, bufferSource, packedLight);
     }
+
+    public boolean shouldRenderArmor(T entity) {
+        return true;
+    }
 }

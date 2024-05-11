@@ -32,7 +32,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
 
     public void prepareMobModel(HumanoidAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
-        this.setAllLimbsVisible(true);
+        this.setAllLimbsVisible(entity, true);
         animator.setupVariables(entity, partialTicks);
 
         if (ChangedCompatibility.isFirstPersonRendering()) {
@@ -110,7 +110,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         return rootModelPart.children.values().stream();
     }
 
-    public void setAllLimbsVisible(boolean visible) {
+    public void setAllLimbsVisible(T entity, boolean visible) {
         this.getRootLevelLimbs().forEach(part -> {
             part.visible = visible;
         });

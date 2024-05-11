@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -27,16 +28,20 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends RenderLayer<T, M> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
+    final AdvancedHumanoidRenderer<T, M, A> parent;
     final A innerModel;
     final A outerModel;
 
-    public LatexHumanoidArmorLayer(RenderLayerParent<T, M> parentModel, A innerModel, A outerModel) {
+    public LatexHumanoidArmorLayer(AdvancedHumanoidRenderer<T, M, A> parentModel, A innerModel, A outerModel) {
         super(parentModel);
+        this.parent = parentModel;
         this.innerModel = innerModel;
         this.outerModel = outerModel;
     }
 
     public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (!parent.shouldRenderArmor(entity)) return;
+
         this.getParentModel().copyPropertiesTo(this.innerModel);
         this.getParentModel().copyPropertiesTo(this.outerModel);
         this.innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
