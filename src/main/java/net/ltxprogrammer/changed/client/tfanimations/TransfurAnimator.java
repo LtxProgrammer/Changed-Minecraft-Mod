@@ -45,6 +45,28 @@ public class TransfurAnimator {
                     pose.zRot
             ));
         }
+
+        public ModelPose copyRotation(ModelPart part) {
+            return new ModelPose(matrix, PartPose.offsetAndRotation(
+                    pose.x,
+                    pose.y,
+                    pose.z,
+                    part.xRot,
+                    part.yRot,
+                    part.zRot
+            ));
+        }
+
+        public ModelPose averageRotation(ModelPart part1, ModelPart part2) {
+            return new ModelPose(matrix, PartPose.offsetAndRotation(
+                    pose.x,
+                    pose.y,
+                    pose.z,
+                    (part1.xRot + part2.xRot) / 2f,
+                    (part1.yRot + part2.yRot) / 2f,
+                    (part1.zRot + part2.zRot) / 2f
+            ));
+        }
     }
     public static final ModelPose NULL_POSE = new ModelPose(new PoseStack().last(), PartPose.ZERO);
 
@@ -332,7 +354,7 @@ public class TransfurAnimator {
         ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
 
-        beforePose = limb.adjustModelPose(beforePose);
+        beforePose = limb.adjustModelPose(beforePose, beforeModel);
         before = maybeReplaceWithHelper(beforeModel, afterModel, limb, before);
 
         final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);

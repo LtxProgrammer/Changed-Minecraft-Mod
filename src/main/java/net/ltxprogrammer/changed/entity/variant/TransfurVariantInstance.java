@@ -610,7 +610,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (player.isOnGround())
             jumpCharges = parent.extraJumpCharges;
 
-        if (parent.rideable() || !parent.hasLegs)
+        if (parent.rideable())
             player.stopRiding();
 
         if (parent.canGlide) {

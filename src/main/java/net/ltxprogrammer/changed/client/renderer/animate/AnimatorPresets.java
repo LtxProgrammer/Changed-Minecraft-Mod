@@ -124,6 +124,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> legless(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -135,6 +136,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -146,6 +148,7 @@ public class AnimatorPresets {
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2VerticalSwim(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
