@@ -48,6 +48,7 @@ import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -590,7 +591,7 @@ public class ProcessTransfur {
 
         // First, check for fusion
         TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(event.getEntityLiving());
-        List<TransfurVariant<?>> possibleMobFusions = List.of();
+        List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
         if (playerVariant != null) {
             var possibleFusion = TransfurVariant.getFusionCompatible(source.getSelfVariant(), playerVariant);
             if (source.getLevel().isClientSide)
