@@ -196,14 +196,14 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = registerReducedSpawn("dark_latex_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::mountainSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfMale>> BLACK_GOO_WOLF_MALE = registerReducedSpawn("dark_latex_wolf_male", 0x393939, 0x303030,
+    public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = registerReducedSpawn("dark_latex_wolf_male", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> BLACK_GOO_WOLF_FEMALE = registerReducedSpawn("dark_latex_wolf_female", 0x393939, 0x303030,
+    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = registerReducedSpawn("dark_latex_wolf_female", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<DarkLatexPup>> BLACK_GOO_PUP = register("dark_latex_pup", 0x454545, 0x303030,
-            EntityType.Builder.of(DarkLatexPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.85F),
+    public static final RegistryObject<EntityType<DarkLatexWolfPup>> DARK_LATEX_WOLF_PUP = register("dark_latex_wolf_pup", 0x454545, 0x303030,
+            EntityType.Builder.of(DarkLatexWolfPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.85F),
             ChangedEntities::noSpawning);
     public static final RegistryObject<EntityType<DarkLatexYufeng>> BLACK_GOO_YUFENG = register("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -380,8 +380,8 @@ public class ChangedEntities {
     public static class Category {
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends DarkLatexEntity>>> DARK_LATEX = ImmutableList.of(
             DARK_LATEX_DRAGON,
-                BLACK_GOO_WOLF_MALE,
-                BLACK_GOO_WOLF_FEMALE,
+                DARK_LATEX_WOLF_MALE,
+                DARK_LATEX_WOLF_FEMALE,
                 BLACK_GOO_WOLF_PARTIAL,
                 BLACK_GOO_YUFENG
         );

@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 public enum LatexType implements StringRepresentable, IExtensibleEnum {
     NEUTRAL(),
-    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedEntities.BLACK_GOO_PUP, Color3.DARK, MaterialColor.COLOR_GRAY),
+    DARK_LATEX(ChangedItems.DARK_LATEX_GOO, ChangedItems.DARK_LATEX_BUCKET, ChangedBlocks.DARK_LATEX_BLOCK, ChangedEntities.DARK_LATEX_WOLF_PUP, Color3.DARK, MaterialColor.COLOR_GRAY),
     WHITE_LATEX(ChangedItems.WHITE_LATEX_GOO, ChangedItems.WHITE_LATEX_BUCKET, ChangedBlocks.WHITE_LATEX_BLOCK, () -> null /* null for now */, Color3.WHITE, MaterialColor.QUARTZ);
 
     public final Supplier<? extends AbstractLatexItem> goo;

@@ -29,7 +29,7 @@ public class DarkLatexMask extends Item implements WearableItem {
             TransfurVariant.DARK_LATEX_WOLF.male().getFormId(),
             TransfurVariant.DARK_LATEX_WOLF.female().getFormId(),
             TransfurVariant.DARK_LATEX_YUFENG.getFormId(),
-            TransfurVariant.DARK_LATEX_PUP.getFormId()
+            TransfurVariant.DARK_LATEX_WOLF_PUP.getFormId()
     ));
 
     public DarkLatexMask() {

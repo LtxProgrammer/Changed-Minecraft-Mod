@@ -16,7 +16,7 @@
   "changed:dark_latex_wolf_male": "BIPED",
   "changed:dark_latex_wolf_female": "BIPED",
   "changed:dark_latex_wolf_partial": "BIPED",
-  "changed:dark_latex_pup": "QUADRUPED",
+  "changed:dark_latex_wolf_pup": "QUADRUPED",
   "changed:dark_latex_yufeng": "BIPED",
   "changed:latex_beifeng": "BIPED",
   "changed:latex_benign_wolf": "BIPED",

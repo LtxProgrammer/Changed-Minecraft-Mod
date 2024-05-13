@@ -61,14 +61,14 @@
         ]
       }
     },
-    "changed:dark_latex_pup": {
+    "changed:dark_latex_wolf_pup": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:dark_latex_pup"
+              "type": "changed:dark_latex_wolf_pup"
             },
             "entity": "this"
           }
@@ -1025,7 +1025,7 @@
       "changed:dark_latex_dragon"
     ],
     [
-      "changed:dark_latex_pup"
+      "changed:dark_latex_wolf_pup"
     ],
     [
       "changed:dark_latex_wolf_female"

@@ -136,6 +136,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return Transition.easeInOutSine(Mth.clamp(Mth.map(getTransfurProgression(partial), 0.45f, 0.8f, 0.0f, 1.0f), 0.0f, 1.0f));
     }
 
+    public boolean isTransfurring() {
+        return transfurProgression < 1f;
+    }
+
     public Color3 getTransfurColor() {
         return getChangedEntity().getTransfurColor(this.cause);
     }
@@ -551,7 +555,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (itemStack.getItem() instanceof WearableItem wearableItem)
             return wearableItem.allowedToKeepWearing(player);
 
-        if (parent == TransfurVariant.DARK_LATEX_PUP)
+        if (parent == TransfurVariant.DARK_LATEX_WOLF_PUP)
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {

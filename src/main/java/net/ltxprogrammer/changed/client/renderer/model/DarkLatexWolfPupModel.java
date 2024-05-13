@@ -5,11 +5,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.tail.WolfTailInitAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPup;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -21,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> implements AdvancedHumanoidModelInterface<DarkLatexPup, DarkLatexPupModel> {
+public class DarkLatexWolfPupModel extends AdvancedHumanoidModel<DarkLatexWolfPup> implements AdvancedHumanoidModelInterface<DarkLatexWolfPup, DarkLatexWolfPupModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_pup"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_wolf_pup"), "main");
     private final ModelPart RightLegBack;
     private final ModelPart LeftLegBack;
     private final ModelPart RightFrontLeg;
@@ -33,9 +32,9 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
     private final ModelPart Body;
     private final ModelPart Tail;
     private final ModelPart Puddle;
-    private final HumanoidAnimator<DarkLatexPup, DarkLatexPupModel> animator;
+    private final HumanoidAnimator<DarkLatexWolfPup, DarkLatexWolfPupModel> animator;
 
-    public DarkLatexPupModel(ModelPart root) {
+    public DarkLatexWolfPupModel(ModelPart root) {
         super(root);
         this.Head = root.getChild("Head");
         this.Mask = Head.getChild("Mask");
@@ -60,7 +59,7 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
     }
 
     @Override
-    public void setAllLimbsVisible(DarkLatexPup entity, boolean visible) {
+    public void setAllLimbsVisible(DarkLatexWolfPup entity, boolean visible) {
         super.setAllLimbsVisible(entity, visible);
 
         if (visible) {
@@ -183,7 +182,7 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
     }
 
     @Override
-    public void prepareMobModel(DarkLatexPup entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(DarkLatexWolfPup entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         if (entity.isPuddle()) {
             RightLegBack.visible = false;
             LeftLegBack.visible = false;
@@ -277,7 +276,7 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
     }
 
     @Override
-    public void setupAnim(@NotNull DarkLatexPup entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull DarkLatexWolfPup entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!entity.isSleeping()) {
             this.Head.xRot = headPitch * ((float)Math.PI / 180F);
             this.Head.yRot = netHeadYaw * ((float)Math.PI / 180F);
@@ -339,7 +338,7 @@ public class DarkLatexPupModel extends AdvancedHumanoidModel<DarkLatexPup> imple
     }
 
     @Override
-    public HumanoidAnimator<DarkLatexPup, DarkLatexPupModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexWolfPup, DarkLatexWolfPupModel> getAnimator() {
         return animator;
     }
 }
