@@ -38,7 +38,9 @@ public class TransfurHelper {
         this.FeminineTorso = HelperModel.fixed(root.getChild("FeminineTorso"));
         this.FeminineTorsoAlt = HelperModel.fixed(root.getChild("FeminineTorsoAlt"));
         this.SnoutedHead = HelperModel.fixed(root.getChild("SnoutedHead"));
-        this.Legless = HelperModel.fixed(root.getChild("Legless"));
+        this.Legless = HelperModel.withPrepare(root.getChild("Legless"), (part, model) -> {
+
+        });
         this.TaurTorso = HelperModel.withPrepare(root.getChild("TaurTorso"), (part, model) -> {
             copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg"));
             copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg"));

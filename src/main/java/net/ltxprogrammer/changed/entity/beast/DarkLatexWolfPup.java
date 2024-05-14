@@ -28,16 +28,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DarkLatexPup extends AbstractDarkLatexEntity {
+public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     protected static final int MAX_AGE = 72000;
     protected int age = 0;
     protected int ticksLeftAsPuddle = 0;
-    private static final EntityDataAccessor<Boolean> DATA_PUDDLE_ID = SynchedEntityData.defineId(DarkLatexPup.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_PUDDLE_ID = SynchedEntityData.defineId(DarkLatexWolfPup.class, EntityDataSerializers.BOOLEAN);
 
     private final PathNavigation goodNavigator;
     private final DudNavigator dudNavigator;
 
-    public DarkLatexPup(EntityType<? extends DarkLatexPup> type, Level level) {
+    public DarkLatexWolfPup(EntityType<? extends DarkLatexWolfPup> type, Level level) {
         super(type, level);
         this.goodNavigator = this.navigation;
         this.dudNavigator = new DudNavigator(this, level);
