@@ -467,6 +467,20 @@
         ]
       }
     },
+    "changed:latex_mutant_bloodcell_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_mutant_bloodcell_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:latex_orca": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1110,6 +1124,9 @@
     ],
     [
       "changed:latex_moth"
+    ],
+    [
+      "changed:latex_mutant_bloodcell_wolf"
     ],
     [
       "changed:latex_orca"
