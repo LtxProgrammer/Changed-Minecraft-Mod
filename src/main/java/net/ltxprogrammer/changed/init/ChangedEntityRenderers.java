@@ -126,6 +126,8 @@ public class ChangedEntityRenderers {
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
 
+        event.registerEntityRenderer(ChangedEntities.ROOMBA.get(), RoombaRenderer::new);
+
         event.registerEntityRenderer(ChangedEntities.SEAT_ENTITY.get(), SeatEntityRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.GOO_INKBALL.get(), ThrownItemRenderer::new);

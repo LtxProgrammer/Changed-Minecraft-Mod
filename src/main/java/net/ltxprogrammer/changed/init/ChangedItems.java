@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.core.Registry;
@@ -111,6 +112,9 @@ public class ChangedItems {
             () -> new QuadrupedalArmor(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
     public static final RegistryObject<QuadrupedalArmor> NETHERITE_QUADRUPEDAL_BOOTS = register("netherite_quadrupedal_boots",
             () -> new QuadrupedalArmor(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_COMBAT).fireResistant()));
+
+    public static final RegistryObject<PlaceableEntity<Roomba>> ROOMBA = register("roomba",
+            () -> new PlaceableEntity<>(new Item.Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).stacksTo(4), ChangedEntities.ROOMBA));
 
     // Unsure whether to keep this record, it doesn't fit with the BGM from changed
     public static final RegistryObject<RecordItem> OWO_RECORD = register("owo_record", () -> new RecordItem(8, ChangedSounds.OWO, (new Item.Properties()).stacksTo(1).tab(ChangedTabs.TAB_CHANGED_MUSIC).rarity(Rarity.RARE)));

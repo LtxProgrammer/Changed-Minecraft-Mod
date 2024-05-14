@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -373,6 +374,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<BehemothHandRight>> BEHEMOTH_HAND_RIGHT = registerNoEgg("behemoth_hand_right",
             EntityType.Builder.of(BehemothHandRight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(2.0f, 2.0f));
 
+    public static final RegistryObject<EntityType<Roomba>> ROOMBA = REGISTRY.register("roomba",
+            () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).sized(0.6F, 0.125f).clientTrackingRange(4).updateInterval(10).build("roomba"));
+
     public static final RegistryObject<EntityType<LatexInkball>> GOO_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
     public static final RegistryObject<EntityType<GasParticle>> GAS_PARTICLE = REGISTRY.register("gas_particle",
@@ -506,5 +510,6 @@ public class ChangedEntities {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
+        event.put(ROOMBA.get(), Roomba.createAttributes().build());
     }
 }
