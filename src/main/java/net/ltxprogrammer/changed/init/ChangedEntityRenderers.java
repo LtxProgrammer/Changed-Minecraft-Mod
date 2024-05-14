@@ -83,6 +83,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_MING_CAT.get(), LatexMingCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MERMAID_SHARK.get(), LatexMermaidSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MOTH.get(), LatexMothRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF.get(), LatexMutantBloodcellWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_ORCA.get(), LatexOrcaRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_OTTER.get(), LatexOtterRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_PINK_DEER.get(), LatexPinkDeerRenderer::new);
