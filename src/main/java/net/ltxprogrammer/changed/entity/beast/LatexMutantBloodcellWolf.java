@@ -11,6 +11,6 @@ public class LatexMutantBloodcellWolf extends WhiteLatexEntity {
 
     @Override
     public TransfurMode getTransfurMode() {
-        return TransfurMode.REPLICATION;
+        return TransfurMode.ABSORPTION;
     }
 }
