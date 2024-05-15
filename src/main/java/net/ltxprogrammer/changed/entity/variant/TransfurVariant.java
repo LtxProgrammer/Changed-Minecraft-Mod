@@ -147,6 +147,9 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static final TransfurVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH)
             .groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_moth")));
+    public static final TransfurVariant<LatexMutantBloodcellWolf> LATEX_MUTANT_BLODDCELL_WOLF = register(Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF )
+            .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX).absorbing()
+            .build(Changed.modResource("form_latex_mutant_bloodcell_wolf")));
     public static final TransfurVariant<LatexOrca> LATEX_ORCA = register(Builder.of(ChangedEntities.GOO_ORCA)
             .groundSpeed(0.875f).swimSpeed(1.30f).stepSize(0.7f).gills()
             .build(Changed.modResource("form_latex_orca")));
