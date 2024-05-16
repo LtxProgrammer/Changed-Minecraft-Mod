@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,9 @@ public class LabDoorOpenerEntity extends BlockEntity {
         this.door = door;
     }
 
-    private boolean canOpenDoor(LivingEntity entity) {
+    public static boolean canOpenDoor(@Nullable LivingEntity entity) {
+        if (entity == null)
+            return false;
         if (entity instanceof Player player)
             return !player.isSpectator();
         if (entity.getType().is(ChangedTags.EntityTypes.CANNOT_OPEN_LAB_DOORS))
@@ -36,7 +39,7 @@ public class LabDoorOpenerEntity extends BlockEntity {
     }
 
     private void tick(Level level, BlockPos pos, BlockState state) {
-        boolean wantedState = !level.getEntitiesOfClass(LivingEntity.class, detectionSize.computeIfAbsent(state, s -> door.getDetectionSize(s, level, pos)), this::canOpenDoor).isEmpty();
+        boolean wantedState = !level.getEntitiesOfClass(LivingEntity.class, detectionSize.computeIfAbsent(state, s -> door.getDetectionSize(s, level, pos)), LabDoorOpenerEntity::canOpenDoor).isEmpty();
         if (wantedState != door.isOpen(state, level, pos)) {
             if (wantedState)
                 door.openDoor(state, level, pos);

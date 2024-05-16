@@ -375,7 +375,7 @@ public class ChangedEntities {
             EntityType.Builder.of(BehemothHandRight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(2.0f, 2.0f));
 
     public static final RegistryObject<EntityType<Roomba>> ROOMBA = REGISTRY.register("roomba",
-            () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).sized(0.6F, 0.125f).clientTrackingRange(4).updateInterval(10).build("roomba"));
+            () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).clientTrackingRange(10).sized(0.6F, 0.125f).build("roomba"));
 
     public static final RegistryObject<EntityType<LatexInkball>> GOO_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
