@@ -74,6 +74,7 @@
   "item.changed.latex_tipped_arrow": "Latexes nyílvessző",
   "item.changed.orange": "Narancs",
   "item.changed.pink_pants": "Rózsaszín rövidnadrág",
+  "item.changed.roomba": "Robotporszívó",
   "item.changed.syringe": "Fecskendő",
   "item.changed.white_latex_goo": "Fehér latex ragacs",
   "item.changed.white_latex_bucket": "Fehér latexes vödör",
@@ -142,6 +143,7 @@
   "death.attack.changed:fan.player": "%1$s játékost felkockázta egy ventilátor, miközben vele harcolt: %2$s",
 
   "command.changed.error.not_latex_form": "Érvénytelen latex forma",
+  "command.changed.error.not_cause": "A transzfur oka érvénytelen",
   "command.changed.error.used_by_other_mod": "A játékost már használja egy másik mod",
   "command.changed.error.no_special_form": "Nincs hozzárendelve speciális forma, látogasson el a https://www.patreon.com/ltxprogrammer oldalra",
 
@@ -321,7 +323,7 @@
   "entity.changed.dark_latex_dragon": "Sötét sárkány",
   "entity.changed.dark_latex_wolf_pup": "Sötét latex farkaskölyök",
   "entity.changed.dark_latex_yufeng": "Sötét latex jüfeng",
-  "entity.changed.gas_particle": "Latex gázrészecske",
+  "entity.changed.gas_particle": "Farkas transzfur gázrészecske",
   "entity.changed.headless_knight": "Fej nélküli lovag",
   "entity.changed.milk_pudding": "Tejpuding",
   "entity.changed.latex_alien": "Latex űrlény",
@@ -380,6 +382,7 @@
   "entity.changed.light_latex_knight": "Világos latex lovag",
   "entity.changed.light_latex_wolf_female": "Nőstény világos latex farkas",
   "entity.changed.light_latex_wolf_male": "Hím világos latex farkas",
+  "entity.changed.roomba": "Robotporszívó",
   "entity.changed.shark": "Cápa",
   "entity.changed.white_latex_wolf": "Tiszta fehér latex farkas",
   "entity.changed.white_wolf_female": "Nőstény fehér farkas",
