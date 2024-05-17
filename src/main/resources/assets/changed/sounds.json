@@ -299,6 +299,16 @@
     ],
     "subtitle": "subtitles.changed.monster2"
   },
+  "vacuum": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:vacuum",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.vacuum"
+  },
   "music_disc.owo": {
     "sounds": [
       {

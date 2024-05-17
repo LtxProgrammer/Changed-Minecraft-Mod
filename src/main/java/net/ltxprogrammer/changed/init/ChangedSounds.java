@@ -53,6 +53,7 @@ public class ChangedSounds {
     public static final SoundEvent SWITCH1 = register("switch1");
     public static final SoundEvent SWITCH2 = register("switch2");
     public static final SoundEvent SWORD1 = register("sword1");
+    public static final SoundEvent VACUUM = register("vacuum");
 
     public static final SoundEvent OWO = register("music_disc.owo");
 

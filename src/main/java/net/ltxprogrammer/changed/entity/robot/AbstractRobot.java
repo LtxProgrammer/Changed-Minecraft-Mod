@@ -1,10 +1,13 @@
 package net.ltxprogrammer.changed.entity.robot;
 
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +39,28 @@ public abstract class AbstractRobot extends PathfinderMob {
     public abstract float getMaxDamage();
     public abstract ChargerType getChargerType();
 
+    @Nullable
+    public SoundEvent getRunningSound() {
+        return null;
+    }
+
+    public int getRunningSoundDuration() {
+        return 20;
+    }
+
+    private int runningCooldown = 0;
+    public void playRunningSound() {
+        if (runningCooldown > 0) {
+            runningCooldown--;
+            return;
+        }
+
+        runningCooldown = getRunningSoundDuration();
+        SoundEvent sound = getRunningSound();
+        if (sound != null && level.isClientSide)
+            level.playSound(UniversalDist.getLocalPlayer(), this, sound, SoundSource.NEUTRAL, 0.5f, 1f);
+    }
+
     public void broadcastNearbyCharger(BlockPos where, ChargerType type) {
         if (type != this.getChargerType())
             return;
@@ -44,6 +69,7 @@ public abstract class AbstractRobot extends PathfinderMob {
                 return;
         }
 
+        closestCharger = where;
     }
 
     @Override
@@ -100,6 +126,8 @@ public abstract class AbstractRobot extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
+        this.playRunningSound();
+
         boolean damageByWater = this.isAffectedByWater() && this.isInWater();
 
         this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));

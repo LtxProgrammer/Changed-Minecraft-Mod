@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.entity.robot;
 
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -42,6 +44,16 @@ public class Roomba extends AbstractRobot {
     @Override
     public boolean isAffectedByWater() {
         return true;
+    }
+
+    @Override
+    public SoundEvent getRunningSound() {
+        return ChangedSounds.VACUUM;
+    }
+
+    @Override
+    public int getRunningSoundDuration() {
+        return 100;
     }
 
     @Override
