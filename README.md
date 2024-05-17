@@ -41,6 +41,34 @@ You'll now have access to **all the tools** within the Changed: Minecraft Mod, g
 
 ## General FAQ
 
+**I'm trying to make the accessory mod to your mod, but I can't start the game because of the mixin.**
+Can you please check if this line of code is missing?
+
+```
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7.+'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+```
+```
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.17'
+    implementation fg.deobf("net.ltxprogrammer.changed:Changed-m1.18.2-f40.2.0:v0.13.1")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+```
+
 **Will there be a Fabric/Quilt version?**
 
 There are no current plans to port to another modloader, this is subject to change.
