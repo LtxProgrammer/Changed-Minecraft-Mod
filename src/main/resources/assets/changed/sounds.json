@@ -1,4 +1,14 @@
 {
+  "attack1": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:attack1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.attack1"
+  },
   "blow1": {
     "category": "neutral",
     "sounds": [

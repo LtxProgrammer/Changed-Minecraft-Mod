@@ -32,6 +32,7 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] for å bytte til drakt",
   "ability.changed.grab_entity.how_to_toggle_control": "Trykk på [%s] for å veksle kontroll",
 
+  "subtitles.changed.attack1": "Feiende robot piper",
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
   "subtitles.changed.open2": "Dør vil ikke åpne",
@@ -378,6 +379,7 @@
   "entity.changed.light_latex_knight": "Lyselateks ridder",
   "entity.changed.light_latex_wolf_female": "Kvinnelig lyselateks ulv",
   "entity.changed.light_latex_wolf_male": "Mannlig lyselateks ulv",
+  "entity.changed.roomba": "Feiende robot",
   "entity.changed.shark": "Hai",
   "entity.changed.white_latex_wolf": "Helt hvit lateks ulv",
   "entity.changed.white_wolf_female": "Kvinnelig hvit ulv",

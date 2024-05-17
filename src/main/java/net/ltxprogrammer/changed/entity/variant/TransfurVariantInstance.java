@@ -622,6 +622,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 } else if (player.getFoodData().getFoodLevel() > 6.0F && !player.getAbilities().mayfly) {
                     player.getAbilities().mayfly = true;
                     player.onUpdateAbilities();
+                } else if (player.isEyeInFluid(FluidTags.WATER)) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.onUpdateAbilities();
                 }
 
                 if (player.getAbilities().flying) {

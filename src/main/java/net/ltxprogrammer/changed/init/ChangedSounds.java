@@ -23,6 +23,7 @@ public class ChangedSounds {
     public static Map<ResourceLocation, SoundEvent> REGISTRY = new HashMap<>();
     private static IForgeRegistry<SoundEvent> MINECRAFT_REGISTRY;
 
+    public static final SoundEvent ATTACK1 = register("attack1");
     public static final SoundEvent BLOW1 = register("blow1");
     public static final SoundEvent BOW2 = register("bow2");
     public static final SoundEvent CLOSE1 = register("close1");

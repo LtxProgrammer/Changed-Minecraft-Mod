@@ -32,6 +32,7 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
+  "subtitles.changed.attack1": "Roomba beeps",
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
   "subtitles.changed.open2": "Door won't open",
