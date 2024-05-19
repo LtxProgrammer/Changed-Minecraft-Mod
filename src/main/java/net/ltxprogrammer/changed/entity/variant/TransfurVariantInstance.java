@@ -633,6 +633,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                     player.getAbilities().mayfly = false;
                     player.getAbilities().flying = false;
                     player.onUpdateAbilities();
+                } else if (player.getVehicle() != null && player.getAbilities().mayfly) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.onUpdateAbilities();
                 }
 
                 if (player.getAbilities().flying) {
