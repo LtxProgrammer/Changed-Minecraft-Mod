@@ -503,6 +503,8 @@ public abstract class ChangedEntity extends Monster {
 
         if (this instanceof WhiteLatexEntity)
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers());
+        else if (this instanceof AbstractDarkLatexEntity)
+            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, AbstractDarkLatexEntity.class).setAlertOthers());
         else
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
