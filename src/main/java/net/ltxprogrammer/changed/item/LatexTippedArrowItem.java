@@ -23,6 +23,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,7 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
     }
 
     @SubscribeEvent
-    public static void onLivingAttacked(LivingAttackEvent event) {
+    public static void onLivingDamaged(LivingDamageEvent event) {
         if (event.getSource() instanceof IndirectEntityDamageSource indirect) {
             if (indirect.getDirectEntity() instanceof Arrow arrow) {
                 if (arrow.getPersistentData().contains(FORM_LOCATION)) {
