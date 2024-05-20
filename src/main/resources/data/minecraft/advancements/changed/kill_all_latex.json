@@ -61,14 +61,14 @@
         ]
       }
     },
-    "changed:dark_latex_pup": {
+    "changed:dark_latex_wolf_pup": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:dark_latex_pup"
+              "type": "changed:dark_latex_wolf_pup"
             },
             "entity": "this"
           }
@@ -461,6 +461,20 @@
             "condition": "minecraft:entity_properties",
             "predicate": {
               "type": "changed:latex_moth"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_mutant_bloodcell_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_mutant_bloodcell_wolf"
             },
             "entity": "this"
           }
@@ -1025,7 +1039,7 @@
       "changed:dark_latex_dragon"
     ],
     [
-      "changed:dark_latex_pup"
+      "changed:dark_latex_wolf_pup"
     ],
     [
       "changed:dark_latex_wolf_female"
@@ -1110,6 +1124,9 @@
     ],
     [
       "changed:latex_moth"
+    ],
+    [
+      "changed:latex_mutant_bloodcell_wolf"
     ],
     [
       "changed:latex_orca"

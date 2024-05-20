@@ -44,6 +44,11 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
         return super.isVisuallySwimming();
     }
 
+    @Override
+    public double getMyRidingOffset() {
+        return -0.0625;
+    }
+
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#969696");
     }

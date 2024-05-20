@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:latex_mutant_bloodcell_wolf",
     "changed:white_latex_wolf"
   ]
 }

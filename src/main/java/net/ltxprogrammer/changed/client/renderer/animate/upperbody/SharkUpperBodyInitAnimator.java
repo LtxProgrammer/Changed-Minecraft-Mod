@@ -23,9 +23,9 @@ public class SharkUpperBodyInitAnimator<T extends ChangedEntity, M extends Entit
         torso.yRot = 0.0F;
         torso.zRot = 0.0F;
         torso.x = 0.0F;
-        rightArm.z = core.forwardOffset;
+        rightArm.z = 0.0F;
         rightArm.x = -core.torsoWidth;
-        leftArm.z = core.forwardOffset;
+        leftArm.z = 0.0F;
         leftArm.x = core.torsoWidth;
         float f = 1.0F;
         if (fallFlying) {

@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -24,7 +25,7 @@ public class LatexHumanoidSplitArmorLayer<T extends ChangedEntity, M extends Adv
     final Predicate<EquipmentSlot> useOther;
     final Predicate<EquipmentSlot> useInner;
 
-    public LatexHumanoidSplitArmorLayer(RenderLayerParent<T, M> parentModel, A innerModel, A outerModel, B innerModelOther, B outerModelOther,
+    public LatexHumanoidSplitArmorLayer(AdvancedHumanoidRenderer<T, M, A> parentModel, A innerModel, A outerModel, B innerModelOther, B outerModelOther,
                                         Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner) {
         super(parentModel, innerModel, outerModel);
         this.innerModelOther = innerModelOther;
@@ -42,7 +43,7 @@ public class LatexHumanoidSplitArmorLayer<T extends ChangedEntity, M extends Adv
     }
 
     @Override
-    LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
+    public LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
         return useOther.test(slot) ? (this.useInner.test(slot) ? this.innerModelOther : this.outerModelOther) : super.getArmorModel(slot);
     }
 }

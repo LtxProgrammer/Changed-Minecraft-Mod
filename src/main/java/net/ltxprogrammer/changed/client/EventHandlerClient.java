@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
+import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.QueryTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
@@ -203,17 +204,24 @@ public class EventHandlerClient {
             if (event.livingEntity.level.isClientSide)
                 return;
 
+            if (event.oldVariant == event.newVariant || event.cause == null)
+                return;
+
+            final int duration = event.livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ?
+                    (int)(event.cause.getDuration() * 20) : 40;
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, 4, false, false));
+
+            if (event.oldVariant != null || event.livingEntity.tickCount < 20)
+                return; // Only do effect if player was human
+
             if (event.livingEntity instanceof Player player && player.isCreative())
                 return; // Don't do effect if player is creative mode
 
-            if (event.oldVariant != null || event.newVariant == null || event.livingEntity.tickCount < 20)
-                return; // Only do effect if player was human
-
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 6 * 20, 1, false, false));
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));
             if (event.newVariant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
                 return; // Only do blindness if variant is goo
 
-            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 2 * 20, 1, false, false));
+            event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration, 1, false, false));
         }
     }
 }

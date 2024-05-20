@@ -65,17 +65,23 @@ public class CardboardBoxTallBlockEntity extends BlockEntity {
 
         if (blockEntity.ticksSinceChange < OPEN_THRESHOLD) {
             if (!state.getValue(OPEN)) {
+                BlockState belowState = level.getBlockState(pos.below());
+
                 if (level.isClientSide)
                     level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ChangedSounds.BOW2, SoundSource.BLOCKS, 1.0f, 1.0f, true);
                 level.setBlock(pos, state.setValue(OPEN, true), 3);
-                level.setBlock(pos.below(), state.setValue(DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER).setValue(OPEN, true), 3);
+                if (belowState.is(state.getBlock()))
+                    level.setBlock(pos.below(), belowState.setValue(OPEN, true), 3);
             }
         }
 
         else {
             if (state.getValue(OPEN)) {
+                BlockState belowState = level.getBlockState(pos.below());
+
                 level.setBlock(pos, state.setValue(OPEN, false), 3);
-                level.setBlock(pos.below(), state.setValue(DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false), 3);
+                if (belowState.is(state.getBlock()))
+                    level.setBlock(pos.below(), belowState.setValue(OPEN, false), 3);
             }
         }
     }

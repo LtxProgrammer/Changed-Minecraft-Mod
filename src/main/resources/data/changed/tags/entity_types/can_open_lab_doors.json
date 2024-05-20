@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:roomba",
     "minecraft:evoker",
     "minecraft:illusioner",
     "minecraft:piglin",

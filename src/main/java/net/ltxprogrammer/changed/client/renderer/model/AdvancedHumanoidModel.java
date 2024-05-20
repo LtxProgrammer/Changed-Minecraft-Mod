@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.ModelPartStem;
+import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -31,7 +32,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
 
     public void prepareMobModel(HumanoidAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
         super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
-        this.setAllLimbsVisible(true);
+        this.setAllLimbsVisible(entity, true);
         animator.setupVariables(entity, partialTicks);
 
         if (ChangedCompatibility.isFirstPersonRendering()) {
@@ -42,6 +43,16 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         else {
             getHead().visible = true;
             getTorso().visible = true;
+        }
+    }
+
+    public PoseStack.Pose resetPoseStack = null;
+    public void swapResetPoseStack(PoseStack poseStack) {
+        // This function is to maybe reset any poseStack changes for exception case models (im looking at you centaur)
+        if (resetPoseStack != null && poseStack instanceof PoseStackExtender extender) {
+            var copied = extender.copyLast();
+            extender.setPose(resetPoseStack);
+            resetPoseStack = copied;
         }
     }
 
@@ -99,7 +110,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         return rootModelPart.children.values().stream();
     }
 
-    public void setAllLimbsVisible(boolean visible) {
+    public void setAllLimbsVisible(T entity, boolean visible) {
         this.getRootLevelLimbs().forEach(part -> {
             part.visible = visible;
         });

@@ -45,6 +45,28 @@ public class TransfurAnimator {
                     pose.zRot
             ));
         }
+
+        public ModelPose copyRotation(ModelPart part) {
+            return new ModelPose(matrix, PartPose.offsetAndRotation(
+                    pose.x,
+                    pose.y,
+                    pose.z,
+                    part.xRot,
+                    part.yRot,
+                    part.zRot
+            ));
+        }
+
+        public ModelPose averageRotation(ModelPart part1, ModelPart part2) {
+            return new ModelPose(matrix, PartPose.offsetAndRotation(
+                    pose.x,
+                    pose.y,
+                    pose.z,
+                    (part1.xRot + part2.xRot) / 2f,
+                    (part1.yRot + part2.yRot) / 2f,
+                    (part1.zRot + part2.zRot) / 2f
+            ));
+        }
     }
     public static final ModelPose NULL_POSE = new ModelPose(new PoseStack().last(), PartPose.ZERO);
 
@@ -79,16 +101,16 @@ public class TransfurAnimator {
     }
 
     private static ModelPart.Cube clampCube(ModelPart.Cube a, ModelPart.Cube clampBy) {
-        float clampSizeX = Math.min(clampBy.maxX - clampBy.minX, a.maxX - a.minX);
-        float clampSizeY = Math.min(clampBy.maxY - clampBy.minY, a.maxY - a.minY);
-        float clampSizeZ = Math.min(clampBy.maxZ - clampBy.minZ, a.maxZ - a.minZ);
-
         float minX = Mth.clamp(a.minX, clampBy.minX, clampBy.maxX);
         float minY = Mth.clamp(a.minY, clampBy.minY, clampBy.maxY);
         float minZ = Mth.clamp(a.minZ, clampBy.minZ, clampBy.maxZ);
 
+        float maxX = Mth.clamp(a.maxX, clampBy.minX, clampBy.maxX);
+        float maxY = Mth.clamp(a.maxY, clampBy.minY, clampBy.maxY);
+        float maxZ = Mth.clamp(a.maxZ, clampBy.minZ, clampBy.maxZ);
+
         return new ModelPart.Cube(0, 0, minX, minY, minZ,
-                clampSizeX, clampSizeY, clampSizeZ,
+                maxX - minX, maxY - minY, maxZ - minZ,
                 0.0f, 0.0f, 0.0f, false, 1.0f, 1.0f);
     }
 
@@ -96,7 +118,7 @@ public class TransfurAnimator {
         ModelPart ret = new ModelPart(
                 part.cubes.stream().map(otherCube -> clampCube(otherCube, cube)).toList(),
                 part.children.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> replaceCubesAndZeroParts(entry.getValue(), cube))));
-        //ret.loadPose(part.storePose());
+        ret.loadPose(PartPose.ZERO);
         return ret;
     }
 
@@ -332,7 +354,7 @@ public class TransfurAnimator {
         ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
 
-        beforePose = limb.adjustModelPose(beforePose);
+        beforePose = limb.adjustModelPose(beforePose, beforeModel);
         before = maybeReplaceWithHelper(beforeModel, afterModel, limb, before);
 
         final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);

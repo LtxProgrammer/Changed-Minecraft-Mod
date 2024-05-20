@@ -21,6 +21,6 @@ public class LeglessStandAnimator<T extends ChangedEntity, M extends EntityModel
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         abdomen.y = core.calculateLegPositionY();
-        abdomen.z = 0.1F + core.forwardOffset;
+        abdomen.z = 0.1F;
     }
 }

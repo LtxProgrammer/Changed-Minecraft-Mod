@@ -37,7 +37,8 @@ public abstract class LatexItemInHandLayerMixin<T extends ChangedEntity, M exten
     @Inject(
             method = {"renderArmWithItem"},
             at = {@At("HEAD")},
-            cancellable = true
+            cancellable = true,
+            remap = true
     )
     private void renderArmWithItemHead(LivingEntity entity, ItemStack stack, ItemTransforms.TransformType transformType, HumanoidArm arm, PoseStack poseStack, MultiBufferSource source, int light, CallbackInfo ci) {
         InteractionHand hand = Minecraft.getInstance().options.mainHand == arm ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
