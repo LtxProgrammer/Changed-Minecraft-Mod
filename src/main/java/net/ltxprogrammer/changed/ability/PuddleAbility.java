@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.entity.beast.DarkLatexPup;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPup;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class PuddleAbility extends SimpleAbility {
     @Override
     public void startUsing(IAbstractChangedEntity entity) {
-        if (entity.getChangedEntity() instanceof DarkLatexPup pup) {
+        if (entity.getChangedEntity() instanceof DarkLatexWolfPup pup) {
             entity.getEntity().playSound(ChangedSounds.POISON, 1, 1);
             pup.setPuddle(true);
         }
@@ -29,7 +29,7 @@ public class PuddleAbility extends SimpleAbility {
 
     @Override
     public void stopUsing(IAbstractChangedEntity entity) {
-        if (entity.getChangedEntity() instanceof DarkLatexPup pup) {
+        if (entity.getChangedEntity() instanceof DarkLatexWolfPup pup) {
             pup.setPuddle(false);
         }
     }

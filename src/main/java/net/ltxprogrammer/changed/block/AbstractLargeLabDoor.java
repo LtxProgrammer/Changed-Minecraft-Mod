@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.AABB;
@@ -79,6 +81,16 @@ public class AbstractLargeLabDoor extends HorizontalDirectionalBlock implements 
 
         this.shapeFrame = SHAPE_FRAME;
         this.shapeCollisionClosed = slim ? SHAPE_COLLISION_CLOSED_SLIM : SHAPE_COLLISION_CLOSED;
+    }
+
+    @Nullable
+    @Override
+    public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity) {
+        if (state.getValue(OPEN))
+            return BlockPathTypes.DOOR_OPEN;
+        else if (state.getValue(POWERED) && LabDoorOpenerEntity.canOpenDoor(entity))
+            return BlockPathTypes.WALKABLE_DOOR;
+        return BlockPathTypes.DOOR_IRON_CLOSED;
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {

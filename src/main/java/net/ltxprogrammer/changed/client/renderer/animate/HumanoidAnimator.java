@@ -395,8 +395,8 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         setupHandsRunnable.put(level, () -> {
             rightArm.x += 3F;
             leftArm.x += -3F;
-            rightArm.z += -1F - forwardOffset;
-            leftArm.z += -1F - forwardOffset;
+            rightArm.z += -1F;
+            leftArm.z += -1F;
         });
         return this;
     }

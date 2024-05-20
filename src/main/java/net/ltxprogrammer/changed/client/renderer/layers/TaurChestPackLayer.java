@@ -32,12 +32,16 @@ public class TaurChestPackLayer<T extends ChangedEntity & LatexTaur<T>, M extend
             if (ability == null || ability.chest == null || ability.chest.isEmpty())
                 return;
 
+            this.getParentModel().swapResetPoseStack(pose);
+
             pose.pushPose();
             ModelPart modelpart = this.getParentModel().getLowerTorso();
             modelpart.translateAndRotate(pose);
             pose.translate(0.0D, -1.51D - (2.0D / 16.0D), 7.0D / 16.0D);
             chestPackModel.renderToBuffer(pose, bufferSource.getBuffer(chestPackModel.renderType(chestPackModel.getTexture())), i, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
             pose.popPose();
+
+            this.getParentModel().swapResetPoseStack(pose);
         });
     }
 }

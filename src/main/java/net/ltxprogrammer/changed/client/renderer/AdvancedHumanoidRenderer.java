@@ -53,6 +53,18 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         this.addLayer(new LatexHeldEntityLayer<>(this));
     }
 
+    public void setModelResetPoseStack(T entity, @Nullable PoseStack.Pose pose) {
+        this.getModel(entity).resetPoseStack = pose;
+        this.layers.forEach(layer -> {
+            if (layer instanceof LatexHumanoidArmorLayer<?,?,?> armorLayer) {
+                armorLayer.getArmorModel(EquipmentSlot.HEAD).resetPoseStack = pose;
+                armorLayer.getArmorModel(EquipmentSlot.CHEST).resetPoseStack = pose;
+                armorLayer.getArmorModel(EquipmentSlot.LEGS).resetPoseStack = pose;
+                armorLayer.getArmorModel(EquipmentSlot.FEET).resetPoseStack = pose;
+            }
+        });
+    }
+
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
                                     Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
         super(context, main, shadowSize);
@@ -82,6 +94,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     }
 
     protected void setupRotations(@NotNull T entity, PoseStack poseStack, float bob, float bodyYRot, float partialTicks) {
+        this.setModelResetPoseStack(entity, null);
         this.scaleForBPI(entity.getBasicPlayerInfo(), poseStack);
 
         float swimAmount = entity.getSwimAmount(partialTicks);
@@ -113,16 +126,19 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             }
 
             if (getModel() instanceof AdvancedHumanoidModelInterface<?, ?> modelInterface) {
-                poseStack.translate(0.0D, 0.0D, (-modelInterface.getAnimator().forwardOffset * swimAmount) / 16.0);
+                //poseStack.translate(0.0D, 0.0D, (-modelInterface.getAnimator().forwardOffset * swimAmount) / 16.0);
             }
         } else if (upright && entity.isSleeping()) {
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
             if (getModel() instanceof AdvancedHumanoidModelInterface<?, ?> modelInterface) {
-                poseStack.translate(0.0D, -modelInterface.getAnimator().forwardOffset / 16.0, -modelInterface.getAnimator().forwardOffset / 16.0);
+                //poseStack.translate(0.0D, -modelInterface.getAnimator().forwardOffset / 16.0, -modelInterface.getAnimator().forwardOffset / 16.0);
             }
         } else {
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
         }
+
+        if (this.getModel(entity) instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+            poseStack.translate(0, 0, modelInterface.getAnimator().forwardOffset / 16.0D);
     }
 
     public static HumanoidModel.ArmPose getArmPose(ChangedEntity p_117795_, InteractionHand p_117796_) {
@@ -168,5 +184,9 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
             modelInterface.getAnimator().partialTicks = partialTicks;
         super.render(entity, yRot, partialTicks, poseStack, bufferSource, packedLight);
+    }
+
+    public boolean shouldRenderArmor(T entity) {
+        return true;
     }
 }

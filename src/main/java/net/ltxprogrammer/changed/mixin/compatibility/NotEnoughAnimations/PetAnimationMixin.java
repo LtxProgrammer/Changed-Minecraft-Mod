@@ -42,7 +42,7 @@ public abstract class PetAnimationMixin {
                 if (livingEntity instanceof ChangedEntity ChangedEntity && ChangedEntity.isPreventingPlayerRest(entity))
                     return;
 
-                if (variant == TransfurVariant.DARK_LATEX_PUP) {
+                if (variant == TransfurVariant.DARK_LATEX_WOLF_PUP) {
                     double dif = livingEntity.getY() - entity.getY();
                     if (Math.abs(dif) < 0.6D) {
                         this.targetPet = livingEntity;

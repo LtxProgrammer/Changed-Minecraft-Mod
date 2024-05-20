@@ -48,6 +48,7 @@ import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -254,13 +255,17 @@ public class ProcessTransfur {
         TransfurVariant<?> previousVariant;
         public final @Nullable
         TransfurVariant<?> originalVariant;
+        public final @Nullable
+        TransfurCause cause;
         public @Nullable
         TransfurVariant<?> variant;
 
-        public EntityVariantAssigned(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant) {
+        public EntityVariantAssigned(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant, @Nullable TransfurCause cause) {
             this.livingEntity = livingEntity;
             this.previousVariant = TransfurVariant.getEntityVariant(livingEntity);
             this.originalVariant = variant;
+            this.cause = cause;
+
             this.variant = variant;
         }
 
@@ -288,11 +293,14 @@ public class ProcessTransfur {
             TransfurVariant<?> oldVariant;
             public final @Nullable
             TransfurVariant<?> newVariant;
+            public final @Nullable
+            TransfurCause cause;
 
-            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant) {
+            public ChangedVariant(LivingEntity livingEntity, @Nullable TransfurVariant<?> variant, @Nullable TransfurCause cause) {
                 this.livingEntity = livingEntity;
                 this.oldVariant = TransfurVariant.getEntityVariant(livingEntity);
                 this.newVariant = variant;
+                this.cause = cause;
             }
 
             @Override
@@ -324,11 +332,11 @@ public class ProcessTransfur {
     TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress,
                                                         Consumer<TransfurVariantInstance<?>> beforeBroadcast) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
-        EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant);
+        EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
         MinecraftForge.EVENT_BUS.post(event);
         @Nullable TransfurVariant<?> variant = event.variant;
         if (variant != null && !event.isRedundant())
-            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant));
+            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
@@ -583,7 +591,7 @@ public class ProcessTransfur {
 
         // First, check for fusion
         TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(event.getEntityLiving());
-        List<TransfurVariant<?>> possibleMobFusions = List.of();
+        List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
         if (playerVariant != null) {
             var possibleFusion = TransfurVariant.getFusionCompatible(source.getSelfVariant(), playerVariant);
             if (source.getLevel().isClientSide)
@@ -861,7 +869,7 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                EntityVariantAssigned event = new EntityVariantAssigned(entity, variant);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context.cause);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
                     onReplicate.accept(IAbstractChangedEntity.forEntity(event.variant.replaceEntity(entity)), event.variant);
@@ -905,7 +913,7 @@ public class ProcessTransfur {
             }
 
             else if (!entity.level.isClientSide) {
-                EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion);
+                EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion, context.cause);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
                     event.variant.replaceEntity(entity);

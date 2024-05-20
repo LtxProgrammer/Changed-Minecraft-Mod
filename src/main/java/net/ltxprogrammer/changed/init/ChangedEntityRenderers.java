@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.init;
 
 import com.google.common.collect.ImmutableMap;
-import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
@@ -55,9 +54,9 @@ public class ChangedEntityRenderers {
 
         event.registerEntityRenderer(ChangedEntities.AEROSOL_LATEX_WOLF.get(), AerosolLatexWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.BLACK_GOO_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.BLACK_GOO_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.BLACK_GOO_PUP.get(), DarkLatexPupRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PUP.get(), DarkLatexWolfPupRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BLACK_GOO_YUFENG.get(), DarkLatexYufengRenderer::new);
         event.registerEntityRenderer(ChangedEntities.PHAGE_LATEX_WOLF_FEMALE.get(), PhageLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.PHAGE_LATEX_WOLF_MALE.get(), PhageLatexWolfMaleRenderer::new);
@@ -84,6 +83,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_MING_CAT.get(), LatexMingCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MERMAID_SHARK.get(), LatexMermaidSharkRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_MOTH.get(), LatexMothRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF.get(), LatexMutantBloodcellWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_ORCA.get(), LatexOrcaRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_OTTER.get(), LatexOtterRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_PINK_DEER.get(), LatexPinkDeerRenderer::new);
@@ -125,6 +125,8 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.PURE_WHITE_GOO_WOLF.get(), WhiteLatexWolfRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
+
+        event.registerEntityRenderer(ChangedEntities.ROOMBA.get(), RoombaRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.SEAT_ENTITY.get(), SeatEntityRenderer::new);
 

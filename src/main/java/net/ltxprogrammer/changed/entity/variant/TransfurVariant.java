@@ -147,6 +147,9 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static final TransfurVariant<LatexMoth> LATEX_MOTH = register(Builder.of(ChangedEntities.LATEX_MOTH)
             .groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(6).reducedFall().breatheMode(BreatheMode.WEAK)
             .build(Changed.modResource("form_latex_moth")));
+    public static final TransfurVariant<LatexMutantBloodcellWolf> LATEX_MUTANT_BLODDCELL_WOLF = register(Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF )
+            .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX).absorbing()
+            .build(Changed.modResource("form_latex_mutant_bloodcell_wolf")));
     public static final TransfurVariant<LatexOrca> LATEX_ORCA = register(Builder.of(ChangedEntities.GOO_ORCA)
             .groundSpeed(0.875f).swimSpeed(1.30f).stepSize(0.7f).gills()
             .build(Changed.modResource("form_latex_orca")));
@@ -223,15 +226,15 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             .groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX)
             .build(Changed.modResource("form_white_latex_wolf")));
 
-    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.BLACK_GOO_WOLF_MALE, ChangedEntities.BLACK_GOO_WOLF_FEMALE)
+    public static final GenderedVariant<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_MALE, ChangedEntities.DARK_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
             .buildGendered(Changed.modResource("form_dark_latex_wolf")));
     public static final GenderedVariant<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLF = register(GenderedVariant.Builder.of(ChangedEntities.PHAGE_LATEX_WOLF_MALE, ChangedEntities.PHAGE_LATEX_WOLF_FEMALE)
             .groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).split(Builder::ignored, Builder::absorbing).faction(LatexType.DARK_LATEX)
             .buildGendered(Changed.modResource("form_phage_latex_wolf")));
-    public static final TransfurVariant<DarkLatexPup> DARK_LATEX_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.BLACK_GOO_PUP)
+    public static final TransfurVariant<DarkLatexWolfPup> DARK_LATEX_WOLF_PUP = register(Builder.of(DARK_LATEX_WOLF.male(), ChangedEntities.DARK_LATEX_WOLF_PUP)
             .transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE)
-            .build(Changed.modResource("form_dark_latex_pup")));
+            .build(Changed.modResource("form_dark_latex_wolf_pup")));
     public static final GenderedVariant<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAY = register(GenderedVariant.Builder.of(TransfurVariant.LATEX_SHARK, ChangedEntities.LATEX_MANTA_RAY_MALE, ChangedEntities.LATEX_MANTA_RAY_FEMALE)
             .split(Builder::ignored, female -> female.groundSpeed(0.26F).swimSpeed(1.9F).absorbing().additionalHealth(8).noLegs())
             .buildGendered(Changed.modResource("form_latex_manta_ray")));

@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:changed/transfur_aerial",
+  "display": {
+    "icon": {
+      "item": "minecraft:elytra"
+    },
+    "title": {
+      "translate": "changed:advancements.main.flying.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.flying.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "flying": {
+      "trigger": "changed:flying",
+      "conditions": {
+        "ticks": 300
+      }
+    }
+  },
+  "requirements": [
+    [
+      "flying"
+    ]
+  ]
+}

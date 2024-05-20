@@ -3,10 +3,10 @@ package net.ltxprogrammer.changed.item;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedTabs;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.*;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -31,5 +31,10 @@ public class AbstractLatexBucket extends BucketItem {
         }
 
         return LatexType.NEUTRAL;
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new FluidBucketWrapper(stack);
     }
 }

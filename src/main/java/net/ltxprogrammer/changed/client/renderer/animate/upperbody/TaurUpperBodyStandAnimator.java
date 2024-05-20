@@ -19,8 +19,8 @@ public class TaurUpperBodyStandAnimator<T extends ChangedEntity, M extends Entit
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        torso.z = Mth.lerp(core.ageLerp, -0.2f, -0.8f) + core.forwardOffset;
-        torso.z = Mth.lerp(limbSwingAmount, torso.z, core.forwardOffset);
+        torso.z = Mth.lerp(core.ageLerp, -0.2f, -0.8f);
+        torso.z = Mth.lerp(limbSwingAmount, torso.z, 0.0F);
         head.z = torso.z;
         leftArm.z = torso.z;
         rightArm.z = torso.z;

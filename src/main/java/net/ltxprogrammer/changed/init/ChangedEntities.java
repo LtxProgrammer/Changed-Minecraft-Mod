@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -196,14 +197,14 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = registerReducedSpawn("dark_latex_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::mountainSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfMale>> BLACK_GOO_WOLF_MALE = registerReducedSpawn("dark_latex_wolf_male", 0x393939, 0x303030,
+    public static final RegistryObject<EntityType<DarkLatexWolfMale>> DARK_LATEX_WOLF_MALE = registerReducedSpawn("dark_latex_wolf_male", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> BLACK_GOO_WOLF_FEMALE = registerReducedSpawn("dark_latex_wolf_female", 0x393939, 0x303030,
+    public static final RegistryObject<EntityType<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = registerReducedSpawn("dark_latex_wolf_female", 0x393939, 0x303030,
             EntityType.Builder.of(DarkLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning);
-    public static final RegistryObject<EntityType<DarkLatexPup>> BLACK_GOO_PUP = register("dark_latex_pup", 0x454545, 0x303030,
-            EntityType.Builder.of(DarkLatexPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.85F),
+    public static final RegistryObject<EntityType<DarkLatexWolfPup>> DARK_LATEX_WOLF_PUP = register("dark_latex_wolf_pup", 0x454545, 0x303030,
+            EntityType.Builder.of(DarkLatexWolfPup::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.6F, 0.85F),
             ChangedEntities::noSpawning);
     public static final RegistryObject<EntityType<DarkLatexYufeng>> BLACK_GOO_YUFENG = register("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -262,6 +263,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexMoth>> LATEX_MOTH = registerReducedSpawn("latex_moth", 0xFBE5BC, 0xD8BC99,
             EntityType.Builder.of(LatexMoth::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::forestSpawning);
+    public static final RegistryObject<EntityType<LatexMutantBloodcellWolf>> LATEX_MUTANT_BLOODCELL_WOLF = register("latex_mutant_bloodcell_wolf", 0xD7D7D7, 0x8A8A8A,
+            EntityType.Builder.of(LatexMutantBloodcellWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::noSpawning);
     public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = registerReducedSpawn("latex_siren", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexSiren::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
@@ -370,6 +374,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<BehemothHandRight>> BEHEMOTH_HAND_RIGHT = registerNoEgg("behemoth_hand_right",
             EntityType.Builder.of(BehemothHandRight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(2.0f, 2.0f));
 
+    public static final RegistryObject<EntityType<Roomba>> ROOMBA = REGISTRY.register("roomba",
+            () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).clientTrackingRange(10).sized(0.6F, 0.125f).build("roomba"));
+
     public static final RegistryObject<EntityType<LatexInkball>> GOO_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
     public static final RegistryObject<EntityType<GasParticle>> GAS_PARTICLE = REGISTRY.register("gas_particle",
@@ -380,8 +387,8 @@ public class ChangedEntities {
     public static class Category {
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends DarkLatexEntity>>> DARK_LATEX = ImmutableList.of(
             DARK_LATEX_DRAGON,
-                BLACK_GOO_WOLF_MALE,
-                BLACK_GOO_WOLF_FEMALE,
+                DARK_LATEX_WOLF_MALE,
+                DARK_LATEX_WOLF_FEMALE,
                 BLACK_GOO_WOLF_PARTIAL,
                 BLACK_GOO_YUFENG
         );
@@ -503,5 +510,6 @@ public class ChangedEntities {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
+        event.put(ROOMBA.get(), Roomba.createAttributes().build());
     }
 }

@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AdvancedHumanoidModel.class, remap = false)
 public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
-    @Shadow public abstract void setAllLimbsVisible(boolean visible);
+    @Shadow public abstract void setAllLimbsVisible(T entity, boolean visible);
     @Shadow public abstract ModelPart getArm(HumanoidArm arm);
 
     @Inject(method = "prepareMobModel", at = @At("RETURN"))
@@ -36,7 +36,7 @@ public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extend
             AnimationApplier animationApplier = ((IAnimatedPlayer)player).playerAnimator_getAnimation();
             FirstPersonConfiguration config = animationApplier.getFirstPersonConfiguration();
             if (player == Minecraft.getInstance().getCameraEntity() || entity == Minecraft.getInstance().getCameraEntity()) {
-                this.setAllLimbsVisible(false);
+                this.setAllLimbsVisible(entity, false);
                 boolean showRightArm = config.isShowRightArm();
                 boolean showLeftArm = config.isShowLeftArm();
 
