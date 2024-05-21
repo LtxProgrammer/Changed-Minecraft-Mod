@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.item.TscWeapon;
@@ -60,9 +61,9 @@ public class RecipeCategories {
     public static final RecipeBookCategories INFUSER_AERIAL = registerBookCategory("CHANGED_INFUSER_AERIAL", new ItemStack(Items.ELYTRA));
     public static final RecipeBookCategories INFUSER_GENDERED = registerBookCategory("CHANGED_INFUSER_GENDERED",
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.LATEX_SHARK.getFormId()),
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), ChangedTransfurVariants.LATEX_SHARK.getId()),
             Syringe.setVariant(
-                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), TransfurVariant.DARK_LATEX_WOLF.female().getFormId()));
+                    new ItemStack(ChangedItems.LATEX_SYRINGE.get()), ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId()));
 
     public static void registerCategories() {
         registerTypeCategories(ChangedRecipeTypes.INFUSER_BOOK, ChangedRecipeTypes.INFUSER_RECIPE, INFUSER_SEARCH, ImmutableList.of(

@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -31,7 +32,7 @@ public abstract class DarkLatexFluid extends AbstractLatexFluid {
             .bucket(ChangedItems.DARK_LATEX_BUCKET).block(ChangedBlocks.DARK_LATEX_FLUID);
 
     protected DarkLatexFluid() {
-        super(PROPERTIES, LatexType.DARK_LATEX, List.of(TransfurVariant.DARK_LATEX_WOLF.male(), TransfurVariant.DARK_LATEX_WOLF.female(), TransfurVariant.DARK_LATEX_YUFENG));
+        super(PROPERTIES, LatexType.DARK_LATEX, List.of(ChangedTransfurVariants.DARK_LATEX_WOLF_MALE, ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE, ChangedTransfurVariants.DARK_LATEX_YUFENG));
     }
 
     @Override

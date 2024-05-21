@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class TransfurVariantInstance<T extends ChangedEntity> {
@@ -562,7 +563,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (itemStack.getItem() instanceof WearableItem wearableItem)
             return wearableItem.allowedToKeepWearing(player);
 
-        if (parent == TransfurVariant.DARK_LATEX_WOLF_PUP)
+        if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
@@ -883,6 +884,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public boolean is(TransfurVariant<?> variant) {
+        return parent.is(variant);
+    }
+
+    public boolean is(Supplier<? extends TransfurVariant<?>> variant) {
         return parent.is(variant);
     }
 

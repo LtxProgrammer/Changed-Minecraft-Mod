@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +56,7 @@ public class HeadlessKnight extends LightLatexKnight implements LatexTaur<Headle
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.LIGHT_LATEX_CENTAUR;
+        return ChangedTransfurVariants.LIGHT_LATEX_CENTAUR.get();
     }
 
     @Override

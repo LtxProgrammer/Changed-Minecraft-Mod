@@ -27,12 +27,13 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
 public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
-    private final List<TransfurVariant<?>> form;
+    private final List<Supplier<? extends TransfurVariant<?>>> form;
     private final LatexType gooType;
-    protected AbstractLatexFluid(Properties properties, LatexType gooType, List<TransfurVariant<?>> form) {
+    protected AbstractLatexFluid(Properties properties, LatexType gooType, List<Supplier<? extends TransfurVariant<?>>> form) {
         super(properties);
         this.gooType = gooType;
         this.form = form;
@@ -71,7 +72,7 @@ public abstract class AbstractLatexFluid extends ForgeFlowingFluid {
         if (event.getEntityLiving().isAlive() && !event.getEntityLiving().isDeadOrDying() && fluid != null) {
             TransfurVariant<?> variant = TransfurVariant.getEntityVariant(event.getEntityLiving());
             if (variant == null)
-                ProcessTransfur.progressTransfur(event.getEntityLiving(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())),
+                ProcessTransfur.progressTransfur(event.getEntityLiving(), 5.0f, fluid.form.get(level.random.nextInt(fluid.form.size())).get(),
                         TransfurContext.hazard(TransfurCause.LATEX_PUDDLE));
             else if (variant.getLatexType().isHostileTo(fluid.gooType))
                 event.getEntityLiving().hurt(ChangedDamageSources.LATEX_FLUID, 2.0f);

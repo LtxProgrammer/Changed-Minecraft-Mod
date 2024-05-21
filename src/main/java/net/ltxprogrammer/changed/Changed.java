@@ -82,6 +82,7 @@ public class Changed {
         ChangedFluids.REGISTRY.register(modEventBus);
         ChangedItems.REGISTRY.register(modEventBus);
         ChangedBlocks.REGISTRY.register(modEventBus);
+        ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         //    ^^^ First to process ^^^
     }

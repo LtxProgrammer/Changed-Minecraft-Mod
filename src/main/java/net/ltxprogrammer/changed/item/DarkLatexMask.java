@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -26,10 +27,10 @@ import java.util.List;
 
 public class DarkLatexMask extends Item implements WearableItem {
     public static final List<ResourceLocation> MASKED_LATEXES = new ArrayList<>(List.of(
-            TransfurVariant.DARK_LATEX_WOLF.male().getFormId(),
-            TransfurVariant.DARK_LATEX_WOLF.female().getFormId(),
-            TransfurVariant.DARK_LATEX_YUFENG.getFormId(),
-            TransfurVariant.DARK_LATEX_WOLF_PUP.getFormId()
+            ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.getId(),
+            ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId(),
+            ChangedTransfurVariants.DARK_LATEX_YUFENG.getId(),
+            ChangedTransfurVariants.DARK_LATEX_WOLF_PUP.getId()
     ));
 
     public DarkLatexMask() {
@@ -53,9 +54,9 @@ public class DarkLatexMask extends Item implements WearableItem {
     public void wearTick(LivingEntity entity, ItemStack itemStack) {
         TransfurVariant<?> variant = Syringe.getVariant(itemStack);
         if (variant == null)
-            variant = TransfurVariant.DARK_LATEX_WOLF.male();
-        if (TransfurVariant.getEntityVariant(entity) == TransfurVariant.DARK_LATEX_WOLF_PARTIAL) {
-            if (entity.getRandom().nextFloat() > 0.005f) return; // 0.5% chance every tick the entity will switch TF into the mask variant
+            variant = ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.get();
+        if (TransfurVariant.getEntityVariant(entity) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get()) {
+            if (entity.getRandom().nextFloat() > 0.005f || entity.level.isClientSide) return; // 0.5% chance every tick the entity will switch TF into the mask variant
 
             ChangedSounds.broadcastSound(ProcessTransfur.changeTransfur(entity, variant), ChangedSounds.POISON, 1.0f, 1.0f);
             itemStack.shrink(1);
@@ -78,7 +79,7 @@ public class DarkLatexMask extends Item implements WearableItem {
 
     @Override
     public boolean allowedToKeepWearing(LivingEntity entity) {
-        if (TransfurVariant.getEntityVariant(entity) == TransfurVariant.DARK_LATEX_WOLF_PARTIAL)
+        if (TransfurVariant.getEntityVariant(entity) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get())
             return true;
 
         if (entity instanceof ChangedEntity)

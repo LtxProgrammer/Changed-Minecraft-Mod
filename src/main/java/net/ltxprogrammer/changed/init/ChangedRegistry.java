@@ -54,7 +54,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     public static void onCreateRegistries(NewRegistryEvent event) {
         createRegistry(event, TRANSFUR_VARIANT.key, c(TransfurVariant.class), builder -> {
             builder.hasTags();
-            builder.missing((key, network) -> TransfurVariant.FALLBACK_VARIANT);
+            builder.missing((key, network) -> ChangedTransfurVariants.FALLBACK_VARIANT.get());
         }, null);
         createRegistry(event, ABILITY.key, c(AbstractAbility.class));
         createRegistry(event, HAIR_STYLE.key, HairStyle.class, builder -> {

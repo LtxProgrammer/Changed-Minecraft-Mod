@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -77,16 +78,16 @@ public class PinkLatex implements ArmorMaterial {
             if (livingEntity.level.isClientSide)
                 return currentVariant;
 
-            if (currentVariant.is(TransfurVariant.LATEX_DEER))
-                return TransfurVariant.LATEX_PINK_DEER;
-            else if (currentVariant.is(TransfurVariant.LATEX_YUIN))
-                return TransfurVariant.LATEX_PINK_YUIN_DRAGON;
+            if (currentVariant.is(ChangedTransfurVariants.LATEX_DEER))
+                return ChangedTransfurVariants.LATEX_PINK_DEER.get();
+            else if (currentVariant.is(ChangedTransfurVariants.LATEX_YUIN))
+                return ChangedTransfurVariants.LATEX_PINK_YUIN_DRAGON.get();
             else {
                 if (livingEntity.getRandom().nextBoolean()) {
                     var newEntity = currentVariant.getEntityType().create(livingEntity.level);
                     newEntity.moveTo(livingEntity.position());
                     livingEntity.level.addFreshEntity(newEntity);
-                    return TransfurVariant.LATEX_PINK_WYVERN;
+                    return ChangedTransfurVariants.LATEX_PINK_WYVERN.get();
                 } else {
                     var wyvern = ChangedEntities.LATEX_PINK_WYVERN.get().create(livingEntity.level);
                     wyvern.moveTo(livingEntity.position());
@@ -103,7 +104,7 @@ public class PinkLatex implements ArmorMaterial {
             tag.putInt("age", age);
             if (age < 12000) // Half a minecraft day
                 return;
-            if (ProcessTransfur.progressTransfur(entity, 3.0f, TransfurVariant.LATEX_PINK_WYVERN, TransfurContext.hazard(TransfurCause.PINK_PANTS)))
+            if (ProcessTransfur.progressTransfur(entity, 3.0f, ChangedTransfurVariants.LATEX_PINK_WYVERN.get(), TransfurContext.hazard(TransfurCause.PINK_PANTS)))
                 itemStack.shrink(1);
         }
 

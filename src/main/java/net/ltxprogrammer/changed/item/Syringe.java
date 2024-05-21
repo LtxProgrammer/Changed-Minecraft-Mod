@@ -100,7 +100,7 @@ public class Syringe extends Item implements SpecializedAnimations {
             }
         }
 
-        return TransfurVariant.FALLBACK_VARIANT;
+        return ChangedTransfurVariants.FALLBACK_VARIANT.get();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Syringe extends Item implements SpecializedAnimations {
 
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ResourceLocation form = variant.getFormId();
-            if (TransfurVariant.SPECIAL_LATEX_FORMS.contains(form))
+            if (ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(form))
                 form = TransfurVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
             tag.putBoolean("safe", Pale.isCured(player));

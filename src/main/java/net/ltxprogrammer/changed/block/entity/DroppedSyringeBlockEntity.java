@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DroppedSyringeBlockEntity extends BlockEntity {
     @NotNull
-    private TransfurVariant<?> variant = TransfurVariant.FALLBACK_VARIANT;
+    private TransfurVariant<?> variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
 
     public DroppedSyringeBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.DROPPED_SYRINGE.get(), pos, state);

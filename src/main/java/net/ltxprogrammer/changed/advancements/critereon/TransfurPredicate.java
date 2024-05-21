@@ -84,7 +84,7 @@ public class TransfurPredicate {
                     ImmutableSet.Builder<TransfurVariant<?>> builder = ImmutableSet.builder();
                     for (var element : jsonArray) {
                         ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.convertToString(element, "form"));
-                        if (!TransfurVariant.PUBLIC_LATEX_FORMS.contains(resourcelocation))
+                        if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(resourcelocation))
                             throw new JsonSyntaxException("Unknown form id '" + resourcelocation + "'");
                         builder.add(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(resourcelocation));
                     }

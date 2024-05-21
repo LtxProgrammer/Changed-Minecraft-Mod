@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
@@ -60,11 +61,11 @@ public class LatexTippedArrowItem extends TippedArrowItem implements VariantHold
         }
     }
 
-    public void fillItemCategory(CreativeModeTab p_43356_, NonNullList<ItemStack> p_43357_) {
-        if (this.allowdedIn(p_43356_)) {
-            for(ResourceLocation variant : TransfurVariant.PUBLIC_LATEX_FORMS) {
-                p_43357_.add(Syringe.setUnpureVariant(new ItemStack(this), variant));
-            }
+    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
+        if (this.allowdedIn(tab)) {
+            TransfurVariant.getPublicTransfurVariants().forEach(variant -> {
+                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant.getRegistryName()), UniversalDist.getLocalPlayer()));
+            });
         }
     }
 

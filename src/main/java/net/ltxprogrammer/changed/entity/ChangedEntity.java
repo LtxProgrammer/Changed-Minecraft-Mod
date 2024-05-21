@@ -458,10 +458,9 @@ public abstract class ChangedEntity extends Monster {
                 return false;
         }
 
-        for (var checkVariant : TransfurVariant.MOB_FUSION_LATEX_FORMS) {
-            if (ChangedRegistry.TRANSFUR_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
-                return true;
-        }
+        TransfurVariant<?> selfVariant = getSelfVariant();
+        if (TransfurVariant.getPublicTransfurVariants().anyMatch(possibleFusion -> possibleFusion.isFusionOf(selfVariant, livingEntity.getClass())))
+            return true;
         if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof ChangedEntity))
             return false;
         if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
@@ -474,10 +473,8 @@ public abstract class ChangedEntity extends Monster {
             if (instance != null && instance.ageAsVariant > livingEntity.level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
                 return false;
         }
-        for (var checkVariant : TransfurVariant.FUSION_LATEX_FORMS) {
-            if (ChangedRegistry.TRANSFUR_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
-                return true;
-        }
+        if (TransfurVariant.getPublicTransfurVariants().anyMatch(possibleFusion -> possibleFusion.isFusionOf(selfVariant, playerVariant)))
+            return true;
 
         return false;
     }

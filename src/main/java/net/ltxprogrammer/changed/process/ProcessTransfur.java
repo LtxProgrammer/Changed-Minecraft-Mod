@@ -107,11 +107,11 @@ public class ProcessTransfur {
             float max = Changed.config.server.transfurTolerance.get().floatValue();
             setPlayerTransfurProgress(player, next);
             if (next >= max && old < max) {
-                if (TransfurVariant.PUBLIC_LATEX_FORMS.contains(transfurVariant.getFormId()))
+                if (TransfurVariant.getPublicTransfurVariants().anyMatch(transfurVariant::equals))
                     transfur(player, player.level, transfurVariant, false, context);
                 else {
                     var variant = PatreonBenefits.getPlayerSpecialVariant(player.getUUID());
-                    transfur(player, player.level, variant == null ? TransfurVariant.FALLBACK_VARIANT : variant, false, context);
+                    transfur(player, player.level, variant == null ? ChangedTransfurVariants.FALLBACK_VARIANT.get() : variant, false, context);
                 }
 
                 return true;

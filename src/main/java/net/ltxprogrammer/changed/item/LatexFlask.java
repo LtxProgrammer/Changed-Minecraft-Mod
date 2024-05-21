@@ -4,10 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
-import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
@@ -53,9 +50,9 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         if (this.allowdedIn(tab)) {
-            for(ResourceLocation variant : TransfurVariant.PUBLIC_LATEX_FORMS) {
-                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
-            }
+            TransfurVariant.getPublicTransfurVariants().forEach(variant -> {
+                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant.getRegistryName()), UniversalDist.getLocalPlayer()));
+            });
         }
     }
 
@@ -82,7 +79,7 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
             }
 
             else {
-                ProcessTransfur.transfur(entity, level, TransfurVariant.FALLBACK_VARIANT, player.isCreative(),
+                ProcessTransfur.transfur(entity, level, ChangedTransfurVariants.FALLBACK_VARIANT.get(), player.isCreative(),
                         TransfurContext.hazard(TransfurCause.FACE_HAZARD));
             }
 

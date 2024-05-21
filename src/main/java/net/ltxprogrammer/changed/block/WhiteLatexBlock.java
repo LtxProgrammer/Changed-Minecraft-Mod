@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedGameRules;
-import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -115,13 +112,13 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
                 return;
             }
 
-            if (!TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, livingEntity.getClass()).isEmpty()) {
+            if (!TransfurVariant.getFusionCompatible(ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), livingEntity.getClass()).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
 
             var latexVariant = TransfurVariant.getEntityVariant(livingEntity);
-            if (latexVariant != null && !TransfurVariant.getFusionCompatible(TransfurVariant.WHITE_LATEX_WOLF, latexVariant).isEmpty()) {
+            if (latexVariant != null && !TransfurVariant.getFusionCompatible(ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), latexVariant).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
