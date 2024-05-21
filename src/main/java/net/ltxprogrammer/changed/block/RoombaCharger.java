@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.robot.AbstractRobot;
 import net.ltxprogrammer.changed.entity.robot.ChargerType;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
+import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 
 import java.util.Random;
 
@@ -74,6 +76,7 @@ public class RoombaCharger extends AbstractCustomShapeBlock implements IRobotCha
             ItemStack item = player.getItemInHand(hand);
             if (item.is(ChangedItems.ROOMBA.get())) {
                 level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, true));
+                level.scheduleTick(pos, this, 20 * 60, TickPriority.NORMAL);
                 item.shrink(1);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
@@ -88,6 +91,22 @@ public class RoombaCharger extends AbstractCustomShapeBlock implements IRobotCha
     }
 
     @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+        super.tick(state, level, pos, random);
+        if (state.getValue(OCCUPIED)) {
+            BlockPos spawnPos = pos.relative(state.getValue(FACING));
+            var robot = ChangedEntities.ROOMBA.get().create(level);
+            if (robot != null) {
+                level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, false));
+                robot.moveTo(spawnPos, 0, 0);
+                level.addFreshEntity(robot);
+
+                broadcastPosition(level, pos);
+            }
+        }
+    }
+
+    @Override
     public ChargerType getChargerType() {
         return ChargerType.ROOMBA;
     }
@@ -96,6 +115,7 @@ public class RoombaCharger extends AbstractCustomShapeBlock implements IRobotCha
     public void acceptRobot(BlockState state, Level level, BlockPos pos, AbstractRobot robot) {
         if (robot instanceof Roomba) {
             level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, true));
+            level.scheduleTick(pos, this, 20 * 60, TickPriority.NORMAL);
             robot.discard();
         }
     }
