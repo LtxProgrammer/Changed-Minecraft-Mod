@@ -32,13 +32,13 @@ public abstract class WhiteLatexEntity extends LightLatexWolfMale {
     }
 
     @Override
-    public void onDamagedBy(LivingEntity self, LivingEntity source) {
-        super.onDamagedBy(self, source);
+    public void onDamagedBy(LivingEntity source) {
+        super.onDamagedBy(source);
         if (source instanceof Player player && player.isCreative())
             return;
 
         double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
-        AABB aabb = AABB.unitCubeFromLowerCorner(self.position()).inflate(d0, 10.0D, d0);
+        AABB aabb = AABB.unitCubeFromLowerCorner(this.position()).inflate(d0, 10.0D, d0);
         this.level.getEntitiesOfClass(WhiteLatexEntity.class, aabb, EntitySelector.NO_SPECTATORS).forEach(nearby -> {
             if (nearby.getTarget() == null && !nearby.isAlliedTo(source))
                 nearby.setTarget(source);

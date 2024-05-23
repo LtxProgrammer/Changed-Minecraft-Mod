@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -17,11 +18,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -111,6 +112,31 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
             if (variant.ageAsVariant < 30)
                 cir.cancel();
+        });
+    }
+
+    @Inject(method = "createAttributes", at = @At("RETURN"))
+    private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
+        cir.getReturnValue().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D);
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    public void transfurAttack(Entity target, CallbackInfo ci) {
+        if (!(target instanceof LivingEntity livingEntity))
+            return;
+
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            ItemStack attackingItem = this.getItemInHand(this.getUsedItemHand());
+
+            // Check if item contributes to transfur damage
+            boolean weaponContributes = attackingItem.isEmpty() ||
+                    attackingItem.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(ChangedAttributes.TRANSFUR_DAMAGE.get());
+
+            if (weaponContributes && variant.getChangedEntity().tryTransfurTarget(target)) {
+                attackingItem.hurtEnemy(livingEntity, player);
+
+                ci.cancel();
+            }
         });
     }
 

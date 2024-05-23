@@ -70,6 +70,7 @@ public class Changed {
         PlayerMover.REGISTRY.register(modEventBus);
         LatexParticleType.REGISTRY.register(modEventBus);
 
+        ChangedAttributes.REGISTRY.register(modEventBus);
         ChangedEnchantments.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
         ChangedStructureSets.REGISTRY.register(modEventBus);

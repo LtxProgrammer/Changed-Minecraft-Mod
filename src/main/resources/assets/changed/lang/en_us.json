@@ -32,6 +32,9 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
+  "attribute.name.changed.transfur_damage": "Transfur Damage",
+  "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",
+
   "subtitles.changed.attack1": "Roomba beeps",
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
@@ -252,6 +255,7 @@
   "block.changed.pipe": "Pipes",
   "block.changed.purifier": "Purifier",
   "block.changed.retinal_scanner": "Retinal Scanner",
+  "block.changed.roomba_charger": "Roomba Charger",
   "block.changed.speaker": "Speaker",
   "block.changed.tape_recorder": "Tape Recorder",
   "block.changed.tiles_blue": "Blue Tiles",
