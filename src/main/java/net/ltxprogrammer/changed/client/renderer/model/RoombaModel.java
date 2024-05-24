@@ -12,67 +12,58 @@ import net.minecraft.client.model.geom.builders.*;
 
 public class RoombaModel extends EntityModel<Roomba> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("roomba"), "main");
-    private final ModelPart bone2;
-    private final ModelPart bone3;
-    private final ModelPart bb_main;
+    private final ModelPart RightSweeper;
+    private final ModelPart LeftSweeper;
+    private final ModelPart Root;
 
     public RoombaModel(ModelPart root) {
-        this.bone2 = root.getChild("bone2");
-        this.bone3 = root.getChild("bone3");
-        this.bb_main = root.getChild("bb_main");
+        this.Root = root.getChild("Root");
+        this.RightSweeper = Root.getChild("RightSweeper");
+        this.LeftSweeper = Root.getChild("LeftSweeper");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bone2 = partdefinition.addOrReplaceChild("bone2", CubeListBuilder.create().texOffs(0, 0).addBox(-5.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(7.5F, 24.0F, -3.0F));
+        PartDefinition Root = partdefinition.addOrReplaceChild("Root", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -2.2F, -5.0F, 8.0F, 2.0F, 10.0F, CubeDeformation.NONE)
+                .texOffs(0, 16).addBox(2.5F, -1.0F, -1.5F, 1.0F, 1.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(10, 12).addBox(-3.5F, -1.0F, -1.5F, 1.0F, 1.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(10, 14).addBox(4.0F, -2.2F, -4.0F, 1.0F, 2.0F, 8.0F, CubeDeformation.NONE)
+                .texOffs(0, 12).addBox(-5.0F, -2.2F, -4.0F, 1.0F, 2.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition cube_r1 = bone2.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
+        PartDefinition RightSweeper = Root.addOrReplaceChild("RightSweeper", CubeListBuilder.create().texOffs(2, 12).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-3.0F, -0.1F, -4.5F));
 
-        PartDefinition cube_r2 = bone2.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.0F));
+        PartDefinition cube_r1 = RightSweeper.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 12).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
 
-        PartDefinition cube_r3 = bone2.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, -3.1416F, 0.7854F, 3.1416F));
+        PartDefinition cube_r2 = RightSweeper.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(4, 4).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.025F, 0.0F, 0.0F, 0.7854F, 0.0F));
 
-        PartDefinition cube_r4 = bone2.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, -3.1416F, 0.0F, 3.1416F));
+        PartDefinition cube_r3 = RightSweeper.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(2, 4).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.025F, 0.0F, 0.0F, -0.7854F, 0.0F));
 
-        PartDefinition cube_r5 = bone2.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, -3.1416F, -0.7854F, 3.1416F));
+        PartDefinition LeftSweeper = Root.addOrReplaceChild("LeftSweeper", CubeListBuilder.create().texOffs(4, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(3.0F, -0.1F, -4.5F));
 
-        PartDefinition cube_r6 = bone2.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
+        PartDefinition cube_r4 = LeftSweeper.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
 
-        PartDefinition cube_r7 = bone2.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
+        PartDefinition cube_r5 = LeftSweeper.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(2, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.025F, 0.0F, 0.0F, 0.7854F, 0.0F));
 
-        PartDefinition bone3 = partdefinition.addOrReplaceChild("bone3", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.5F, 24.0F, -3.0F, 0.0F, 1.5708F, 0.0F));
+        PartDefinition cube_r6 = LeftSweeper.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(0, 4).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.025F, 0.0F, 0.0F, -0.7854F, 0.0F));
 
-        PartDefinition cube_r8 = bone3.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
-
-        PartDefinition cube_r9 = bone3.addOrReplaceChild("cube_r9", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.0F));
-
-        PartDefinition cube_r10 = bone3.addOrReplaceChild("cube_r10", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -3.1416F, 0.7854F, 3.1416F));
-
-        PartDefinition cube_r11 = bone3.addOrReplaceChild("cube_r11", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -3.1416F, 0.0F, 3.1416F));
-
-        PartDefinition cube_r12 = bone3.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -3.1416F, -0.7854F, 3.1416F));
-
-        PartDefinition cube_r13 = bone3.addOrReplaceChild("cube_r13", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
-
-        PartDefinition cube_r14 = bone3.addOrReplaceChild("cube_r14", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, 0.0F, -3.0F, 1.0F, 0.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
-
-        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 4.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        return LayerDefinition.create(meshdefinition, 32, 32);
+        return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     @Override
     public void setupAnim(Roomba entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        bone2.yRot = (float) Math.toRadians(ageInTicks);
-        bone3.yRot = (float) -Math.toRadians(ageInTicks);
+        if (entity.getCharge() > 0f) {
+            RightSweeper.yRot = -ageInTicks;
+            LeftSweeper.yRot = ageInTicks;
+        } else {
+            RightSweeper.yRot = 0f;
+            LeftSweeper.yRot = 0f;
+        }
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        bone2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        Root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

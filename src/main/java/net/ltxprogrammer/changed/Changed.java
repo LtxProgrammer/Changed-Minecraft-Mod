@@ -70,6 +70,7 @@ public class Changed {
         PlayerMover.REGISTRY.register(modEventBus);
         LatexParticleType.REGISTRY.register(modEventBus);
 
+        ChangedAttributes.REGISTRY.register(modEventBus);
         ChangedEnchantments.REGISTRY.register(modEventBus);
         ChangedRecipeSerializers.REGISTRY.register(modEventBus);
         ChangedStructureSets.REGISTRY.register(modEventBus);
@@ -82,6 +83,7 @@ public class Changed {
         ChangedFluids.REGISTRY.register(modEventBus);
         ChangedItems.REGISTRY.register(modEventBus);
         ChangedBlocks.REGISTRY.register(modEventBus);
+        ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         //    ^^^ First to process ^^^
     }

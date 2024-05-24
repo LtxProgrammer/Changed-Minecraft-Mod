@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.StateHolderHelper;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -47,12 +48,12 @@ public class AbstractLatexItem extends ItemNameBlockItem {
 
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
-        var variants = TransfurVariant.VARIANTS_BY_TYPE.get(type);
+        var variants = TransfurVariant.getPublicTransfurVariants().filter(variant -> variant.type == type);
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), (player, variant) -> {
             if (variant.getLatexType().isHostileTo(type))
                 player.getFoodData().eat(Foods.DRIED_KELP.getNutrition(), Foods.DRIED_KELP.getSaturationModifier());
         });
-        final var variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variants.get(level.getRandom().nextInt(variants.size())));
+        final var variant = Util.getRandom(variants.toList(), level.random);
         ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE));
         return super.finishUsingItem(itemStack, level, entity);
     }

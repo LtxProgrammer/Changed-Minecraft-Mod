@@ -13,4 +13,5 @@ public class ChangedCriteriaTriggers {
     public static final WhiteLatexFuseTrigger WHITE_LATEX_FUSE = register(new WhiteLatexFuseTrigger());
     public static final BeehiveSleepTrigger BEEHIVE_SLEEP = register(new BeehiveSleepTrigger());
     public static final TameLatexTrigger TAME_LATEX = register(new TameLatexTrigger());
+    public static final FlyingTrigger FLYING = register(new FlyingTrigger());
 }

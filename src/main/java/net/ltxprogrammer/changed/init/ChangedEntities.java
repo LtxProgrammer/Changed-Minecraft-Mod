@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -373,6 +374,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<BehemothHandRight>> BEHEMOTH_HAND_RIGHT = registerNoEgg("behemoth_hand_right",
             EntityType.Builder.of(BehemothHandRight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(2.0f, 2.0f));
 
+    public static final RegistryObject<EntityType<Roomba>> ROOMBA = REGISTRY.register("roomba",
+            () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).clientTrackingRange(10).sized(0.6F, 0.125f).build("roomba"));
+
     public static final RegistryObject<EntityType<LatexInkball>> GOO_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
     public static final RegistryObject<EntityType<GasParticle>> GAS_PARTICLE = REGISTRY.register("gas_particle",
@@ -401,7 +405,7 @@ public class ChangedEntities {
         String regName = Changed.modResource(name).toString();
         ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
         return entityType;
     }
 
@@ -410,7 +414,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder) {
         String regName = Changed.modResource(name).toString();
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
         return entityType;
     }
 
@@ -439,7 +443,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder,
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
-        return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+        return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createLatexAttributes);
     }
 
     public static <T extends ChangedEntity> RegistryObject<EntityType<T>> registerReducedSpawn(
@@ -449,7 +453,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder,
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
-        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, spawnType, T::createLatexAttributes);
     }
 
     public static <T extends ChangedEntity> RegistryObject<EntityType<T>> register(
@@ -506,5 +510,6 @@ public class ChangedEntities {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
+        event.put(ROOMBA.get(), Roomba.createAttributes().build());
     }
 }

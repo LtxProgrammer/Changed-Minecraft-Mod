@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
@@ -35,7 +36,7 @@ public abstract class Behemoth extends ChangedEntity {
     }
 
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.LIGHT_LATEX_WOLF.male();
+        return ChangedTransfurVariants.LIGHT_LATEX_WOLF_MALE.get();
     }
 
     public void checkDespawn() {

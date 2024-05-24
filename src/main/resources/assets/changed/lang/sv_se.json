@@ -32,6 +32,7 @@
   "ability.changed.grab_entity.how_to_suit": "Håll [%s] för att byta till kostym",
   "ability.changed.grab_entity.how_to_toggle_control": "Tryck [%s] för att växla kontroll",
 
+  "subtitles.changed.attack1": "Svepande robot piper",
   "subtitles.changed.sound3": "Organisk förpälsvandla",
   "subtitles.changed.poison": "Förpälsvandla",
   "subtitles.changed.open2": "Dörr öppnas inte",
@@ -378,6 +379,7 @@
   "entity.changed.light_latex_knight": "Ljuslatex riddare",
   "entity.changed.light_latex_wolf_female": "Kvinnlig ljuslatexvarg",
   "entity.changed.light_latex_wolf_male": "Manlig ljuslatexvarg",
+  "entity.changed.roomba": "Svepande robot",
   "entity.changed.shark": "Haj",
   "entity.changed.white_latex_wolf": "Helt vitt latexvarg",
   "entity.changed.white_wolf_female": "Kvinnlig vit varg",

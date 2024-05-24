@@ -34,6 +34,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class CommandTransfur {
@@ -43,7 +44,7 @@ public class CommandTransfur {
     private static final SimpleCommandExceptionType NO_SPECIAL_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.no_special_form"));
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_LATEX_FORMS = SuggestionProviders.register(Changed.modResource("latex_forms"), (p_121667_, p_121668_) -> {
-        var list = new ArrayList<>(TransfurVariant.PUBLIC_LATEX_FORMS);
+        var list = TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).collect(Collectors.toCollection(ArrayList::new));
         list.add(TransfurVariant.SPECIAL_LATEX);
         return SharedSuggestionProvider.suggestResource(list, p_121668_);
     });
@@ -105,13 +106,13 @@ public class CommandTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
-        if (TransfurVariant.PUBLIC_LATEX_FORMS.contains(form)) {
+        if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true,
                     TransfurContext.hazard(transfurCause));
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
-            if (!TransfurVariant.SPECIAL_LATEX_FORMS.contains(key))
+            if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), true,
@@ -126,12 +127,12 @@ public class CommandTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
-        if (TransfurVariant.PUBLIC_LATEX_FORMS.contains(form)) {
+        if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form));
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
-            if (!TransfurVariant.SPECIAL_LATEX_FORMS.contains(key))
+            if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
             ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key));

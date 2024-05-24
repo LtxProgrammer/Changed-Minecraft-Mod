@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -170,7 +171,7 @@ public class LatexHuman extends ChangedEntity {
         super.onReplicateOther(other, variant);
         //if (this.getUUID() != this.getRepresentUUID()) return;
 
-        if (variant == TransfurVariant.LATEX_HUMAN) {
+        if (variant.is(ChangedTransfurVariants.LATEX_HUMAN)) {
             if (other.getChangedEntity() instanceof LatexHuman human) {
                 human.setRepresentPlayer(this.getRepresentUUID());
             }

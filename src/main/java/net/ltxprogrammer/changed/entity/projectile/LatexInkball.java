@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -57,7 +58,7 @@ public class LatexInkball extends ThrowableItemProjectile {
             return;
 
         ProcessTransfur.progressTransfur(livingEntity, 6.0f,
-                TransfurVariant.LATEX_SQUID_DOG.randomGender(hitResult.getEntity().level.random), TransfurContext.hazard(TransfurCause.SQUID_DOG_INKBALL));
+                ChangedTransfurVariants.Gendered.LATEX_SQUID_DOGS.getRandomVariant(hitResult.getEntity().level.random), TransfurContext.hazard(TransfurCause.SQUID_DOG_INKBALL));
     }
 
     protected void onHit(HitResult hitResult) {

@@ -87,9 +87,9 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         if (this.allowdedIn(tab)) {
-            for(ResourceLocation variant : TransfurVariant.PUBLIC_LATEX_FORMS) {
-                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant), UniversalDist.getLocalPlayer()));
-            }
+            TransfurVariant.getPublicTransfurVariants().forEach(variant -> {
+                list.add(Syringe.setOwner(Syringe.setPureVariant(new ItemStack(this), variant.getRegistryName()), UniversalDist.getLocalPlayer()));
+            });
         }
     }
 
@@ -131,7 +131,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
             }
 
             else {
-                ProcessTransfur.transfur(entity, level, TransfurVariant.FALLBACK_VARIANT, player.isCreative(),
+                ProcessTransfur.transfur(entity, level, ChangedTransfurVariants.FALLBACK_VARIANT.get(), player.isCreative(),
                         TransfurContext.hazard(cause));
             }
 

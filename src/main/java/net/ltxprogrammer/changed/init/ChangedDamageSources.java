@@ -30,6 +30,7 @@ public class ChangedDamageSources {
 
     public static final DamageSource BLOODLOSS = (new DamageSource(Changed.modResourceStr("bloodloss"))).bypassArmor();
     public static final DamageSource WHITE_LATEX = (new DamageSource(Changed.modResourceStr("white_latex"))).bypassArmor().bypassMagic();
+    public static final DamageSource LATEX_FLUID = (new DamageSource(Changed.modResourceStr("latex_fluid"))).bypassArmor().bypassMagic();
     public static final DamageSource PALE = (new DamageSource(Changed.modResourceStr("pale"))).bypassArmor().bypassMagic();
     public static final DamageSource FAN = new DamageSource(Changed.modResourceStr("fan"));
 }

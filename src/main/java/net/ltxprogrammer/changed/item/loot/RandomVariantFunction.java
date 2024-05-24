@@ -58,7 +58,7 @@ public class RandomVariantFunction extends LootItemConditionalFunction {
         }
 
         public RandomVariantFunction.Builder withAllVariants() {
-            this.variants.addAll(TransfurVariant.PUBLIC_LATEX_FORMS);
+            this.variants.addAll(TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).toList());
             return this;
         }
 

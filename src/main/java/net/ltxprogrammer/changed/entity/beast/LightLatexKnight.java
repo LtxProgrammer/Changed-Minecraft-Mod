@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -47,6 +48,6 @@ public class LightLatexKnight extends AbstractLatexWolf {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.LIGHT_LATEX_CENTAUR;
+        return ChangedTransfurVariants.LIGHT_LATEX_CENTAUR.get();
     }
 }

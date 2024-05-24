@@ -29,7 +29,7 @@ public abstract class AbstractDoubleLatexCrystal extends AbstractLatexCrystal im
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     //public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public AbstractDoubleLatexCrystal(TransfurVariant<?> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
+    public AbstractDoubleLatexCrystal(Supplier<? extends TransfurVariant<?>> variant, Supplier<? extends Item> crystal, Properties p_53514_) {
         super(variant, crystal, p_53514_);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }

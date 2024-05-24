@@ -91,11 +91,7 @@ public class ChangedConfig {
     }
 
     public static class Server {
-        public final ForgeConfigSpec.ConfigValue<Double> transfurTolerance;
-
         public Server(ForgeConfigSpec.Builder builder) {
-            builder.comment("Replacing gamerule transfurTolerance, this config value acts like setting the max health of the player.");
-            transfurTolerance = builder.define("transfurTolerance", 20.0);
         }
     }
 

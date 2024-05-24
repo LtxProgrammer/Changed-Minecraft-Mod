@@ -11,22 +11,23 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AbstractLatexCrystalItem extends Item {
-    private final List<TransfurVariant<?>> variants;
+    private final List<Supplier<? extends TransfurVariant<?>>> variants;
 
-    public AbstractLatexCrystalItem(List<TransfurVariant<?>> variants) {
+    public AbstractLatexCrystalItem(List<Supplier<? extends TransfurVariant<?>>> variants) {
         super(new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
         this.variants = variants;
     }
 
-    public AbstractLatexCrystalItem(TransfurVariant<?> variant) {
+    public AbstractLatexCrystalItem(Supplier<? extends TransfurVariant<?>> variant) {
         this(List.of(variant));
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
-        ProcessTransfur.progressTransfur(entity, 5.0f, variants.get(source.getRandom().nextInt(variants.size())), TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL));
+        ProcessTransfur.progressTransfur(entity, 5.0f, variants.get(source.getRandom().nextInt(variants.size())).get(), TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL));
         return super.hurtEnemy(stack, entity, source);
     }
 }

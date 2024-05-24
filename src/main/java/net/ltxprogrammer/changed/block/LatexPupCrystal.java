@@ -41,11 +41,11 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     public static final VoxelShape SHAPE_SMALL = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 4.0D, 12.0D);
 
     public static final BooleanProperty EXTENDED = BlockStateProperties.EXTENDED;
-    private final TransfurVariant<?> variant;
+    private final Supplier<? extends TransfurVariant<?>> variant;
     private final int multiply;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-    public LatexPupCrystal(TransfurVariant<?> variant, int multiply, Supplier<? extends Item> crystal, Properties properties) {
+    public LatexPupCrystal(Supplier<? extends TransfurVariant<?>> variant, int multiply, Supplier<? extends Item> crystal, Properties properties) {
         super(variant, crystal, properties);
         this.variant = variant;
         this.multiply = multiply;
@@ -139,9 +139,9 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
                 return;
             this.extend(state, level, pos);
             if (!level.isClientSide) {
-                if (ProcessTransfur.progressTransfur(le, 8.3f, variant, TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL))) {
+                if (ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL))) {
                     for (int i = 1; i < multiply; ++i) {
-                        variant.spawnAtEntity(le);
+                        variant.get().spawnAtEntity(le);
                     }
                 }
             }

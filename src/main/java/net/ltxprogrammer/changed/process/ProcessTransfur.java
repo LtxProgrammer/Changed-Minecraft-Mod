@@ -104,14 +104,14 @@ public class ProcessTransfur {
 
             float old = getPlayerTransfurProgress(player);
             float next = old + amount;
-            float max = Changed.config.server.transfurTolerance.get().floatValue();
+            float max = (float)ProcessTransfur.getEntityTransfurTolerance(player);
             setPlayerTransfurProgress(player, next);
             if (next >= max && old < max) {
-                if (TransfurVariant.PUBLIC_LATEX_FORMS.contains(transfurVariant.getFormId()))
+                if (TransfurVariant.getPublicTransfurVariants().anyMatch(transfurVariant::equals))
                     transfur(player, player.level, transfurVariant, false, context);
                 else {
                     var variant = PatreonBenefits.getPlayerSpecialVariant(player.getUUID());
-                    transfur(player, player.level, variant == null ? TransfurVariant.FALLBACK_VARIANT : variant, false, context);
+                    transfur(player, player.level, variant == null ? ChangedTransfurVariants.FALLBACK_VARIANT.get() : variant, false, context);
                 }
 
                 return true;
@@ -130,7 +130,7 @@ public class ProcessTransfur {
             boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
             if (player.invulnerableTime > 10 && !justHit) {
-                return getPlayerTransfurProgress(player) >= Changed.config.server.transfurTolerance.get().floatValue();
+                return getPlayerTransfurProgress(player) >= ProcessTransfur.getEntityTransfurTolerance(player);
             }
 
             else {
@@ -139,12 +139,12 @@ public class ProcessTransfur {
                 player.hurtTime = player.hurtDuration;
 
                 float next = getPlayerTransfurProgress(player) + amount;
-                return next >= Changed.config.server.transfurTolerance.get().floatValue();
+                return next >= ProcessTransfur.getEntityTransfurTolerance(player);
             }
         }
         else {
             float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get().floatValue());
+            float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
                 if (health <= amount * scale && health > 0.0F) {
@@ -173,7 +173,7 @@ public class ProcessTransfur {
         else {
             amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
-            float scale = 20.0f / Math.max(0.1f, Changed.config.server.transfurTolerance.get().floatValue());
+            float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));
 
             if (entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
                 if (health <= amount * scale && health > 0.0F) {
@@ -182,7 +182,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(null), amount * scale);
+                    entity.hurt(ChangedDamageSources.entityTransfur(context.source != null ? context.source.getEntity() : null), amount * scale);
                     return false;
                 }
             }
@@ -199,7 +199,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(null), amount * scale);
+                    entity.hurt(ChangedDamageSources.entityTransfur(context.source != null ? context.source.getEntity() : null), amount * scale);
                     return false;
                 }
             }
@@ -247,6 +247,10 @@ public class ProcessTransfur {
         public boolean isCancelable() {
             return false;
         }
+    }
+
+    public static double getEntityTransfurTolerance(LivingEntity entity) {
+        return entity.getAttributeValue(ChangedAttributes.TRANSFUR_TOLERANCE.get());
     }
 
     public static class EntityVariantAssigned extends Event {
@@ -483,9 +487,9 @@ public class ProcessTransfur {
 
         if (event.getSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity livingEntity) {
             if (event.getEntityLiving() instanceof ChangedEntity changedEntity)
-                changedEntity.onDamagedBy(changedEntity, livingEntity);
+                changedEntity.onDamagedBy(livingEntity);
             ifPlayerTransfurred(EntityUtil.playerOrNull(event.getEntityLiving()), (player, variant) -> {
-                variant.getChangedEntity().onDamagedBy(player, livingEntity);
+                variant.getChangedEntity().onDamagedBy(livingEntity);
             });
         }
 
@@ -517,191 +521,6 @@ public class ProcessTransfur {
         }
 
         return amount;
-    }
-    
-    public static boolean tryAbsorption(LivingEntity target, IAbstractChangedEntity source, float amount, @Nullable List<TransfurVariant<?>> possibleMobFusions) {
-        if (!willTransfur(target, amount)) {
-            progressTransfur(target, amount, source.getTransfurVariant(), source.attack());
-            return false;
-        }
-
-        // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
-        if (!source.isPlayer() && target instanceof Player &&
-                progressTransfur(target, amount, source.getTransfurVariant(), source.attack())) {
-            source.getEntity().discard();
-            return true;
-        }
-
-        if (possibleMobFusions != null && !possibleMobFusions.isEmpty()) {
-            TransfurVariant<?> mobFusionVariant = possibleMobFusions.get(source.getEntity().getRandom().nextInt(possibleMobFusions.size()));
-            if (source.getEntity() instanceof Player sourcePlayer) {
-                float beforeHealth = sourcePlayer.getHealth();
-                setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack().cause);
-                sourcePlayer.setHealth(beforeHealth);
-            }
-
-            else {
-                source.getEntity().discard();
-                source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
-                source.getLevel().addFreshEntity(source.getEntity());
-            }
-        }
-
-        else if (source.getSelfVariant() == null || !source.getSelfVariant().getFormId().equals(source.getTransfurVariant().getFormId())) {
-            if (source.getEntity() instanceof Player sourcePlayer) {
-                float beforeHealth = sourcePlayer.getHealth();
-                setPlayerTransfurVariant(sourcePlayer, source.getTransfurVariant(), source.attack().cause);
-                sourcePlayer.setHealth(beforeHealth);
-            }
-
-            else {
-                source.getEntity().discard();
-                source = IAbstractChangedEntity.forEntity(source.getTransfurVariant().getEntityType().create(source.getLevel()));
-                source.getLevel().addFreshEntity(source.getEntity());
-            }
-        }
-
-        source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
-        var pos = target.position();
-        source.getEntity().teleportTo(pos.x, pos.y, pos.z);
-        source.getEntity().setYRot(target.getYRot());
-        source.getEntity().setXRot(target.getXRot());
-
-        // Should be one-hit absorption here
-        if (target instanceof Player loserPlayer) {
-            killPlayerBy(loserPlayer, source.getEntity());
-        }
-
-        else {
-            target.discard();
-        }
-
-        ChangedSounds.broadcastSound(source.getEntity(), source.getTransfurVariant().sound, 1.0F, 1.0F);
-        return true;
-    }
-
-    protected static void onLivingAttackedByLatex(LivingAttackEvent event, IAbstractChangedEntity source) {
-        if (source.getTransfurVariant() == null)
-            return;
-        if (!source.haveTransfurMode())
-            return;
-
-        LivingEntity entity = event.getEntityLiving();
-        float amount = difficultyAdjustTransfurAmount(entity.level.getDifficulty(), event.getAmount() * (source.isPlayer() ? 3.0f : 1.0f));
-
-        // First, check for fusion
-        TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(event.getEntityLiving());
-        List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
-        if (playerVariant != null) {
-            var possibleFusion = TransfurVariant.getFusionCompatible(source.getSelfVariant(), playerVariant);
-            if (source.getLevel().isClientSide)
-                possibleFusion.clear();
-
-            { // Check if attacker can't fuse
-                var instance = source.getTransfurVariantInstance();
-                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion.clear();
-            }
-
-            { // Check if attackee can't fuse
-                var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(event.getEntityLiving()));
-                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion.clear();
-            }
-
-            if (possibleFusion.size() > 0) {
-                event.setCanceled(true);
-                if (source.isPlayer()) {
-                    if (event.getEntityLiving() instanceof Player pvpLoser) {
-                        transfur(source.getEntity(), source.getLevel(), source.getSelfVariant(), true, source.attack());
-                        killPlayerBy(pvpLoser, source.getEntity());
-                    } else {
-                        transfur(event.getEntityLiving(), source.getLevel(), source.getSelfVariant(), true, source.attack());
-                        event.getEntityLiving().discard();
-                    }
-                } else {
-                    transfur(event.getEntityLiving(), source.getLevel(), source.getSelfVariant(), true, source.attack());
-                    source.getEntity().discard();
-                }
-
-                return;
-            }
-        }
-
-        else {
-            TransfurVariant<?> checkSource = source.getSelfVariant() != null ? source.getSelfVariant() : source.getTransfurVariant();
-
-            if (!source.getLevel().isClientSide)
-                possibleMobFusions = TransfurVariant.getFusionCompatible(checkSource, event.getEntityLiving().getClass());
-
-            { // Check if attacker can't fuse
-                var instance = source.getTransfurVariantInstance();
-                if (instance != null && instance.ageAsVariant > source.getLevel().getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleMobFusions.clear();
-            }
-        }
-
-        // Check if attacked entity is already latexed
-        if (hasVariant(event.getEntityLiving())) {
-            if (!possibleMobFusions.isEmpty()) {
-                var mobFusionVariant = Util.getRandom(possibleMobFusions, source.getEntity().getRandom());
-
-                if (source.getEntity() instanceof Player sourcePlayer) {
-                    float beforeHealth = sourcePlayer.getHealth();
-                    setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack().cause);
-                    sourcePlayer.setHealth(beforeHealth);
-                }
-
-                else {
-                    source.getEntity().discard();
-                    source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
-                    source.getLevel().addFreshEntity(source.getEntity());
-                }
-
-                source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
-                var pos = event.getEntityLiving().position();
-                source.getEntity().teleportTo(pos.x, pos.y, pos.z);
-                source.getEntity().setYRot(event.getEntityLiving().getYRot());
-                source.getEntity().setXRot(event.getEntityLiving().getXRot());
-
-                event.getEntityLiving().discard();
-            }
-            return;
-        }
-        // Check if attacked entity is not humanoid
-        if (possibleMobFusions.isEmpty() && !event.getEntityLiving().getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-            bonusHurt(entity, ChangedDamageSources.entityTransfur(source.getEntity()), 2.0f, false);
-            return;
-        }
-
-        event.getEntityLiving().setLastHurtByMob(source.getEntity());
-        event.setCanceled(true);
-        double d1 = source.getEntity().getX() - entity.getX();
-
-        double d0;
-        for(d0 = source.getEntity().getZ() - entity.getZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
-            d1 = (Math.random() - Math.random()) * 0.01D;
-        }
-
-        entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
-        entity.knockback((double)0.4F, d1, d0);
-
-        if(entity instanceof Player)
-            ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
-            
-        entity.hurt(ChangedDamageSources.entityTransfur(source.getEntity()), 0.0F);
-        boolean doesAbsorption = source.wantAbsorption();
-        if (!possibleMobFusions.isEmpty())
-            doesAbsorption = true;
-
-        if (!doesAbsorption) { // Replication
-            if (progressTransfur(event.getEntityLiving(), amount, source.getTransfurVariant(), source.attack()))
-                source.getEntity().heal(8f);
-        }
-
-        else { // Absorption
-            tryAbsorption(event.getEntityLiving(), source, amount, possibleMobFusions);
-        }
     }
 
     @SubscribeEvent
@@ -738,17 +557,7 @@ public class ProcessTransfur {
         LatexType factionS = LatexType.getEntityFactionLatexType(sourceEntity);
         if (factionD == factionS && factionS != null) {
             event.setCanceled(true);
-            return;
         }
-
-        if (!getEntityAttackItem(sourceEntity).isEmpty())
-            return;
-
-        if (event.getEntityLiving() instanceof Player player && (player.isCreative() || player.isSpectator() || ChangedCompatibility.isPlayerUsedByOtherMod(player)))
-            return;
-        var abstracted = IAbstractChangedEntity.forEither(sourceEntity);
-        if (abstracted != null)
-            onLivingAttackedByLatex(event, abstracted);
     }
 
     @SubscribeEvent
