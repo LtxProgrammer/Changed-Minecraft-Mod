@@ -32,6 +32,9 @@
   "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot jelmezzé váltásához",
   "ability.changed.grab_entity.how_to_toggle_control": "Nyomja meg a [%s] gombot az irányítás váltásához",
 
+  "attribute.name.changed.transfur_damage": "Transzfur okozta sebzés",
+  "attribute.name.changed.transfur_tolerance": "Transzfur-tűrés",
+
   "subtitles.changed.attack1": "Robotporszívó sípol",
   "subtitles.changed.sound3": "Organikus transzfur",
   "subtitles.changed.poison": "Transzfur",
@@ -138,6 +141,8 @@
   "death.attack.changed:transfur.player": "%2$s transzfurálta %1$s játékost",
   "death.attack.changed:white_latex": "%s játékost fehér latex oldotta fel",
   "death.attack.changed:white_latex.player": "%1$s játékost fehér latex oldotta fel, miközben %2$s elől menekült",
+  "death.attack.changed:latex_fluid": "%s játékost folyékony latex oldotta fel",
+  "death.attack.changed:latex_fluid.player": "%1$s játékost folyékony latex oldotta fel, miközben %2$s elől menekült",
   "death.attack.changed:pale": "A pale elvette %s játékos életét",
   "death.attack.changed:bloodloss": "%s idegen plazmát használt",
   "death.attack.changed:bloodloss.player": "%1$s %2$s segítségével idegen plazmát használt",
@@ -250,6 +255,7 @@
   "block.changed.pipe": "Csövek",
   "block.changed.purifier": "Tisztító",
   "block.changed.retinal_scanner": "Retina szkenner",
+  "block.changed.roomba_charger": "Robotporszívó töltő",
   "block.changed.speaker": "Hangszóró",
   "block.changed.tape_recorder": "Magnetofon",
   "block.changed.tiles_blue": "Kék burkolat",
