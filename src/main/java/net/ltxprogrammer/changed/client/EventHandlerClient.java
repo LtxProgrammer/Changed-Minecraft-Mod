@@ -91,11 +91,9 @@ public class EventHandlerClient {
             }
         }
 
-        if (player instanceof PlayerDataExtension ext && ext.getPlayerMover() != null) {
-            if (ext.getPlayerMover().is(PlayerMover.WHITE_LATEX_MOVER.get())) {
-                event.setCanceled(true);
-                return;
-            }
+        if (player instanceof PlayerDataExtension ext && ext.isPlayerMover(PlayerMover.WHITE_LATEX_MOVER.get())) {
+            event.setCanceled(true);
+            return;
         }
 
         if (event.getEntity() instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {

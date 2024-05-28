@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,14 +50,15 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
         ProcessTransfur.transfur(entity, entity.level, ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
 
-        if (entity instanceof PlayerDataExtension ext)
+        if (entity instanceof PlayerDataExtension ext && (!entity.level.isClientSide || UniversalDist.isLocalPlayer(entity)))
             ext.setPlayerMoverType(PlayerMover.WHITE_LATEX_MOVER.get());
 
         entity.refreshDimensions();
         entity.setInvulnerable(true);
 
         entity.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
-        entity.moveTo(pos, entity.getYRot(), entity.getXRot());
+        if (!UniversalDist.isClientRemotePlayer(entity))
+            entity.moveTo(pos, entity.getYRot(), entity.getXRot());
     }
 
     class LatexMover extends PlayerMover<LatexMover.MoverInstance> {
