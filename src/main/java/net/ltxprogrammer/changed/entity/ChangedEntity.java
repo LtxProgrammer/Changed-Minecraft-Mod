@@ -682,10 +682,8 @@ public abstract class ChangedEntity extends Monster {
             return false;
         }
 
-        // Check if attacked entity is not humanoid
         if (possibleMobFusions.isEmpty() && !entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-            bonusHurt(entity, ChangedDamageSources.entityTransfur(source.getEntity()), 2.0f, false);
-            return true;
+            return false;
         }
 
         entity.setLastHurtByMob(source.getEntity());
@@ -727,12 +725,14 @@ public abstract class ChangedEntity extends Monster {
             if (tryFuseWithTarget(livingEntity, source, damage))
                 return true;
 
-            if (livingEntity instanceof Player player && !ProcessTransfur.hasVariant(player)) {
-                ProcessTransfur.progressPlayerTransfur(player, damage, variant, getAttackContext());
-                return true;
-            } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                ProcessTransfur.progressTransfur(livingEntity, damage, variant, getAttackContext());
-                return true;
+            if (TransfurVariant.getEntityVariant(livingEntity) == null) {
+                if (livingEntity instanceof Player player) {
+                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, getAttackContext());
+                    return true;
+                } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, getAttackContext());
+                    return true;
+                }
             }
         }
 
