@@ -125,7 +125,7 @@ public class Syringe extends Item implements SpecializedAnimations {
 
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
             ResourceLocation form = variant.getFormId();
-            if (ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(form))
+            if (TransfurVariant.getPublicTransfurVariants().noneMatch(variant.getParent()::equals))
                 form = TransfurVariant.SPECIAL_LATEX;
             ItemStack nStack = new ItemStack(ChangedItems.LATEX_SYRINGE.get());
             tag.putBoolean("safe", Pale.isCured(player));
