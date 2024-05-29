@@ -57,7 +57,7 @@ public class BuiltinRepositorySource implements RepositorySource {
     @Override
     public void loadPacks(Consumer<Pack> out, Pack.PackConstructor constructor) {
         for(String id : packIds) {
-            Pack pack = Pack.create(modId + "/" + id, false,
+            Pack pack = Pack.create(modId + ":" + id, false,
                     this.createSupplier(this.modFile.toFile(), id), constructor, Pack.Position.TOP, PackSource.BUILT_IN);
             if (pack != null) {
                 out.accept(pack);

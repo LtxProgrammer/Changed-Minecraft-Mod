@@ -339,8 +339,10 @@ public class ProcessTransfur {
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
         MinecraftForge.EVENT_BUS.post(event);
         @Nullable TransfurVariant<?> variant = event.variant;
-        if (variant != null && !event.isRedundant())
+        if (variant != null && !event.isRedundant()) {
             MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
+            ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
+        }
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
