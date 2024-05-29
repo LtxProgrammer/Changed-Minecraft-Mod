@@ -122,7 +122,7 @@ public class Changed {
         try {
             event.addRepositorySource(new BuiltinRepositorySource(MODID));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error(ex);
         }
     }
 

@@ -14,15 +14,17 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class BuiltinPackResources extends AbstractPackResources {
-    public static final Splitter SPLITTER = Splitter.on('/').omitEmptyStrings().limit(3);
     private final File file;
     private final String prefix;
+    private final Splitter splitter;
+    private final int prefixDirCount;
 
     @Nullable
     private ZipFile zipFile;
@@ -31,6 +33,8 @@ public class BuiltinPackResources extends AbstractPackResources {
         super(new File(file, prefix));
         this.file = file;
         this.prefix = prefix;
+        this.prefixDirCount = Path.of(prefix).getNameCount();
+        this.splitter = Splitter.on('/').omitEmptyStrings().limit(3 + Path.of(prefix).getNameCount());
     }
 
     private ZipFile getOrCreateZipFile() throws IOException {
@@ -43,7 +47,7 @@ public class BuiltinPackResources extends AbstractPackResources {
 
     protected InputStream getResource(String name) throws IOException {
         ZipFile zipfile = this.getOrCreateZipFile();
-        ZipEntry zipentry = zipfile.getEntry(prefix + "/" + name);
+        ZipEntry zipentry = zipfile.getEntry(prefix + name);
         if (zipentry == null) {
             throw new ResourcePackFileNotFoundException(this.file, name);
         } else {
@@ -53,7 +57,7 @@ public class BuiltinPackResources extends AbstractPackResources {
 
     public boolean hasResource(String name) {
         try {
-            return this.getOrCreateZipFile().getEntry(prefix + "/" + name) != null;
+            return this.getOrCreateZipFile().getEntry(prefix + name) != null;
         } catch (IOException ioexception) {
             return false;
         }
@@ -73,10 +77,10 @@ public class BuiltinPackResources extends AbstractPackResources {
         while(enumeration.hasMoreElements()) {
             ZipEntry zipentry = enumeration.nextElement();
             String s = zipentry.getName();
-            if (s.startsWith(type.getDirectory() + "/")) {
-                List<String> list = Lists.newArrayList(SPLITTER.split(s));
-                if (list.size() > 1) {
-                    String s1 = list.get(1);
+            if (s.startsWith(prefix + type.getDirectory() + "/")) {
+                List<String> list = Lists.newArrayList(splitter.split(s));
+                if (list.size() > 1 + prefixDirCount) {
+                    String s1 = list.get(1 + prefixDirCount);
                     if (s1.equals(s1.toLowerCase(Locale.ROOT))) {
                         set.add(s1);
                     } else {
@@ -112,13 +116,16 @@ public class BuiltinPackResources extends AbstractPackResources {
 
         Enumeration<? extends ZipEntry> enumeration = zipfile.entries();
         List<ResourceLocation> list = Lists.newArrayList();
-        String s = type.getDirectory() + "/" + namespace + "/";
+        String s = prefix + type.getDirectory() + "/" + namespace + "/";
         String s1 = s + path + "/";
 
         while(enumeration.hasMoreElements()) {
             ZipEntry zipentry = enumeration.nextElement();
             if (!zipentry.isDirectory()) {
                 String s2 = zipentry.getName();
+                if (!s2.startsWith(prefix))
+                    continue;
+
                 if (!s2.endsWith(".mcmeta") && s2.startsWith(s1)) {
                     String s3 = s2.substring(s.length());
                     String[] astring = s3.split("/");
