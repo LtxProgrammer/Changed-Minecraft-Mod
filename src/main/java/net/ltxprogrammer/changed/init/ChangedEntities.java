@@ -405,7 +405,7 @@ public class ChangedEntities {
         String regName = Changed.modResource(name).toString();
         ENTITY_COLOR_MAP.put(Changed.modResource(name), new Pair<>(eggBack, eggHighlight));
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
         return entityType;
     }
 
@@ -414,7 +414,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder) {
         String regName = Changed.modResource(name).toString();
         RegistryObject<EntityType<T>> entityType = REGISTRY.register(name, () -> builder.build(regName));
-        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createMonsterAttributes));
+        ATTR_FUNC_REGISTRY.add(new Pair<>(entityType::get, T::createLatexAttributes));
         return entityType;
     }
 
@@ -443,7 +443,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder,
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
-        return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+        return register(name, eggBack, eggHighlight, builder, category, spawnType, T::createLatexAttributes);
     }
 
     public static <T extends ChangedEntity> RegistryObject<EntityType<T>> registerReducedSpawn(
@@ -453,7 +453,7 @@ public class ChangedEntities {
             EntityType.Builder<T> builder,
             Predicate<Biome.BiomeCategory> category,
             SpawnPlacements.Type spawnType) {
-        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, spawnType, T::createMonsterAttributes);
+        return registerReducedSpawn(name, eggBack, eggHighlight, builder, category, spawnType, T::createLatexAttributes);
     }
 
     public static <T extends ChangedEntity> RegistryObject<EntityType<T>> register(

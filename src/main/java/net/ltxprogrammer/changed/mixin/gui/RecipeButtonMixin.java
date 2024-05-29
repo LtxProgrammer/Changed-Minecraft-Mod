@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.Gender;
+import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
@@ -73,6 +74,8 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
             if (variant == null)
                 return;
             ChangedEntity entity = ChangedEntities.getCachedEntity(minecraft.level, variant.getEntityType());
+            if (minecraft.player instanceof PlayerDataExtension ext)
+                entity.getBasicPlayerInfo().copyFrom(ext.getBasicPlayerInfo());
             entity.tickCount = (int)time;
 
             InventoryScreen.renderEntityInInventory(this.x + 15, this.y + 25, isHoveredOrFocused() ? 40 : 10, (float) (Math.sin(time / 60.0f) * 60.0f), 0.0f, entity);

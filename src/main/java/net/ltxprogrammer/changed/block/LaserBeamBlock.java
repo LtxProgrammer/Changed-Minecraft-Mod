@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.init.ChangedBlocks;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -79,7 +76,7 @@ public class LaserBeamBlock extends Block implements NonLatexCoverableBlock {
 
         livingEntity.getArmorSlots().forEach(itemStack -> {
             if (itemStack.is(ChangedItems.BENIGN_PANTS.get())) {
-                if (ProcessTransfur.progressTransfur(livingEntity, 11.0f, TransfurVariant.LATEX_BENIGN_WOLF, TransfurContext.hazard(TransfurCause.WAIST_HAZARD)))
+                if (ProcessTransfur.progressTransfur(livingEntity, 11.0f, ChangedTransfurVariants.LATEX_BENIGN_WOLF.get(), TransfurContext.hazard(TransfurCause.WAIST_HAZARD)))
                     itemStack.shrink(1);
             }
         });

@@ -32,6 +32,9 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
 
+  "attribute.name.changed.transfur_damage": "Transfur Damage",
+  "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",
+
   "subtitles.changed.attack1": "Roomba beeps",
   "subtitles.changed.sound3": "Organic transfur",
   "subtitles.changed.poison": "Transfur",
@@ -138,6 +141,8 @@
   "death.attack.changed:transfur.player": "%1$s was transfurred by %2$s",
   "death.attack.changed:white_latex": "%s was dissolved by white latex",
   "death.attack.changed:white_latex.player": "%1$s was dissolved by white latex whilst trying to escape %2$s",
+  "death.attack.changed:latex_fluid": "%s was dissolved by latex fluid",
+  "death.attack.changed:latex_fluid.player": "%1$s was dissolved by latex fluid whilst trying to escape %2$s",
   "death.attack.changed:pale": "%s was taken by Pale",
   "death.attack.changed:bloodloss": "%s used foreign plasma",
   "death.attack.changed:bloodloss.player": "%1$s used foreign plasma, thanks to %2$s",
@@ -250,6 +255,7 @@
   "block.changed.pipe": "Pipes",
   "block.changed.purifier": "Purifier",
   "block.changed.retinal_scanner": "Retinal Scanner",
+  "block.changed.roomba_charger": "Roomba Charger",
   "block.changed.speaker": "Speaker",
   "block.changed.tape_recorder": "Tape Recorder",
   "block.changed.tiles_blue": "Blue Tiles",

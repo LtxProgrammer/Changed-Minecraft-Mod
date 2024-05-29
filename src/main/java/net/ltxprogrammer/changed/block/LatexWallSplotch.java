@@ -34,15 +34,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class LatexWallSplotch extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public final LatexType type;
-    public final List<TransfurVariant<?>> variants;
+    public final List<Supplier<? extends TransfurVariant<?>>> variants;
 
     private static final VoxelShape AABB = Block.box(0.0, 0.0, 15.0, 16.0, 16.0, 16.0);
 
-    public LatexWallSplotch(LatexType type, List<TransfurVariant<?>> variants) {
+    public LatexWallSplotch(LatexType type, List<Supplier<? extends TransfurVariant<?>>> variants) {
         super(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_GRAY).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion());
         this.type = type;
         this.variants = variants;
@@ -53,7 +54,7 @@ public class LatexWallSplotch extends HorizontalDirectionalBlock implements Simp
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (variants.isEmpty()) return;
         if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
-            if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, Util.getRandom(variants, level.random), TransfurContext.hazard(TransfurCause.LATEX_WALL_SPLOTCH)))
+            if (ProcessTransfur.progressTransfur(livingEntity, 6.0f, Util.getRandom(variants, level.random).get(), TransfurContext.hazard(TransfurCause.LATEX_WALL_SPLOTCH)))
                 level.removeBlock(pos, false);
         }
     }

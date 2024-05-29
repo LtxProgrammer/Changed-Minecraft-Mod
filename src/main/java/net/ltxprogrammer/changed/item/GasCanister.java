@@ -22,14 +22,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class GasCanister extends BlockItem implements SpecializedAnimations {
     public static final int CAPACITY = 400;
 
-    private final List<TransfurVariant<?>> variants;
+    private final List<Supplier<? extends TransfurVariant<?>>> variants;
     private final Color3 color;
 
-    public GasCanister(Block block, List<TransfurVariant<?>> variants, Color3 color) {
+    public GasCanister(Block block, List<Supplier<? extends TransfurVariant<?>>> variants, Color3 color) {
         super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(400));
         this.variants = variants;
         this.color = color;
@@ -64,7 +65,7 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
             return;
 
         GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level).setVariant(
-                variants.get(level.random.nextInt(variants.size()))
+                variants.get(level.random.nextInt(variants.size())).get()
         );
 
         float randX = (level.random.nextFloat(90.0f) - 45.0f) * 0.5f;

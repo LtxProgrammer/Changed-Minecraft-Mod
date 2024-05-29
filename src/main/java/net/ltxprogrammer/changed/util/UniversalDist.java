@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.client.gui.GluBlockEditScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -59,6 +60,18 @@ public class UniversalDist {
 
     public static @Nullable Entity getCameraEntity() {
         return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> ClientDist::getCameraEntity);
+    }
+
+    public static boolean isClientRemotePlayer(LivingEntity entity) {
+        if (entity instanceof Player player) {
+            return player.level.isClientSide && !isLocalPlayer(player);
+        }
+
+        return false;
+    }
+
+    public static boolean isLocalPlayer(LivingEntity entity) {
+        return entity == getLocalPlayer();
     }
 
     public static boolean isLocalPlayer(Player player) {

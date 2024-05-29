@@ -1,13 +1,16 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -17,15 +20,16 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -111,6 +115,31 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
             if (variant.ageAsVariant < 30)
                 cir.cancel();
+        });
+    }
+
+    @Inject(method = "createAttributes", at = @At("RETURN"))
+    private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
+        cir.getReturnValue().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D);
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
+    public void transfurAttack(Entity target, CallbackInfo ci) {
+        if (!(target instanceof LivingEntity livingEntity))
+            return;
+
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            ItemStack attackingItem = this.getItemInHand(this.getUsedItemHand());
+
+            // Check if item contributes to transfur damage
+            boolean weaponContributes = attackingItem.isEmpty() ||
+                    attackingItem.getAttributeModifiers(EquipmentSlot.MAINHAND).containsKey(ChangedAttributes.TRANSFUR_DAMAGE.get());
+
+            if (weaponContributes && variant.getChangedEntity().tryTransfurTarget(target)) {
+                attackingItem.hurtEnemy(livingEntity, player);
+
+                ci.cancel();
+            }
         });
     }
 
@@ -237,6 +266,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Override
     public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
         this.playerMover = playerMover;
+        if (!level.isClientSide)
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this), SyncMoversPacket.Builder.of((Player)(Object)this));
     }
 
     @Override

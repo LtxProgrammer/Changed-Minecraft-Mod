@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +38,7 @@ public class MilkPudding extends ChangedEntity {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return TransfurVariant.LIGHT_LATEX_WOLF.randomGender(random);
+        return ChangedTransfurVariants.Gendered.LIGHT_LATEX_WOLVES.getRandomVariant(random);
     }
 
     @Override

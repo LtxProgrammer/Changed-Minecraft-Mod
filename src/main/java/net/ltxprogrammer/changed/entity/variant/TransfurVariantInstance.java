@@ -11,7 +11,7 @@ import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.WearableItem;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
-import net.ltxprogrammer.changed.network.packet.SyncMoverPacket;
+import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class TransfurVariantInstance<T extends ChangedEntity> {
@@ -391,13 +392,17 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (event.getEntity() instanceof ServerPlayer player) {
             SyncTransfurPacket.Builder builderTf = new SyncTransfurPacket.Builder();
             BasicPlayerInfoPacket.Builder builderBPI = new BasicPlayerInfoPacket.Builder();
-            player.getServer().getPlayerList().getPlayers().forEach(builderTf::addPlayer);
-            player.getServer().getPlayerList().getPlayers().forEach(builderBPI::addPlayer);
+            SyncMoversPacket.Builder builderMover = new SyncMoversPacket.Builder();
+            player.getServer().getPlayerList().getPlayers().forEach(serverPlayer -> {
+                builderTf.addPlayer(serverPlayer);
+                builderBPI.addPlayer(serverPlayer);
+                builderMover.addPlayer(serverPlayer);
+            });
 
             final PacketDistributor.PacketTarget playerTarget = PacketDistributor.PLAYER.with(() -> player);
             Changed.PACKET_HANDLER.send(playerTarget, builderTf.build());
             Changed.PACKET_HANDLER.send(playerTarget, builderBPI.build());
-            Changed.PACKET_HANDLER.send(playerTarget, new SyncMoverPacket(player));
+            Changed.PACKET_HANDLER.send(playerTarget, builderMover.build());
 
             // Send client empty bpi packet, so it'll reply with its bpi
             Changed.PACKET_HANDLER.send(playerTarget, BasicPlayerInfoPacket.EMPTY);
@@ -562,7 +567,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (itemStack.getItem() instanceof WearableItem wearableItem)
             return wearableItem.allowedToKeepWearing(player);
 
-        if (parent == TransfurVariant.DARK_LATEX_WOLF_PUP)
+        if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
             return false;
 
         if (itemStack.getItem() instanceof ArmorItem armorItem) {
@@ -883,6 +888,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public boolean is(TransfurVariant<?> variant) {
+        return parent.is(variant);
+    }
+
+    public boolean is(Supplier<? extends TransfurVariant<?>> variant) {
         return parent.is(variant);
     }
 

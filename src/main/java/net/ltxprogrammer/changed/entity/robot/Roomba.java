@@ -33,7 +33,7 @@ public class Roomba extends AbstractRobot {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0f)
-                .add(Attributes.MOVEMENT_SPEED, 3.0D);
+                .add(Attributes.MOVEMENT_SPEED, 0.15D);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class Roomba extends AbstractRobot {
 
         @Override
         public boolean canUse() {
-            return this.robot.canVisitBlock(robot.getFrontPos()) && !robot.isRotating;
+            return this.robot.canVisitBlock(robot.getFrontPos()) && !robot.isRotating && !robot.isLowBattery();
         }
 
         @Override
@@ -141,7 +141,7 @@ public class Roomba extends AbstractRobot {
             super.tick();
             this.robot.setYRot(robot.roundYRotToAxis(this.robot.getYRot()));
             Vec3 travelForward = this.robot.getForward().multiply(1, 0, 1).normalize();
-            float speed = this.robot.getSpeed() / 20;
+            float speed = this.robot.getSpeed();
 
             this.robot.move(MoverType.SELF, travelForward.multiply(speed, speed, speed));
         }
@@ -167,12 +167,12 @@ public class Roomba extends AbstractRobot {
 
         @Override
         public boolean canUse() {
-            return !robot.canVisitBlock(robot.getFrontPos());
+            return !robot.canVisitBlock(robot.getFrontPos()) && !robot.isLowBattery();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return positiveDir == shouldRotateClockwise() && startYRot != goalYRot;
+            return positiveDir == shouldRotateClockwise() && startYRot != goalYRot && !robot.isLowBattery();
         }
 
         @Override

@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.entity.robot;
 
+import net.ltxprogrammer.changed.block.IRobotCharger;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
@@ -126,7 +130,6 @@ public abstract class AbstractRobot extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        this.playRunningSound();
 
         boolean damageByWater = this.isAffectedByWater() && this.isInWater();
 
@@ -148,6 +151,11 @@ public abstract class AbstractRobot extends PathfinderMob {
 
                 this.discard();
             }
+        }
+
+        if (this.getCharge() > 0) {
+            this.playRunningSound();
+            this.setCharge(this.getCharge() - (0.01f / 60f));
         }
     }
 
@@ -193,6 +201,18 @@ public abstract class AbstractRobot extends PathfinderMob {
         return yRot * 90F;
     }
 
+    @Override
+    public boolean save(CompoundTag tag) {
+        tag.putFloat("charge", getCharge());
+        return super.save(tag);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        setCharge(tag.getFloat("charge"));
+        super.load(tag);
+    }
+
     public static class SeekCharger extends Goal {
         public final AbstractRobot robot;
 
@@ -212,6 +232,18 @@ public abstract class AbstractRobot extends PathfinderMob {
                 return;
 
             robot.getNavigation().moveTo(robot.getNavigation().createPath(robot.closestCharger, 0), 0.75);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (robot.getNavigation().isDone()) {
+                BlockState state = robot.level.getBlockState(robot.closestCharger);
+                if (state.getBlock() instanceof IRobotCharger charger) {
+                    charger.acceptRobot(state, robot.level, robot.closestCharger, robot);
+                }
+                robot.closestCharger = null;
+            }
         }
 
         @Override

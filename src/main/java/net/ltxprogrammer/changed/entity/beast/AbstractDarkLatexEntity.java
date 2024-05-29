@@ -21,14 +21,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
@@ -318,5 +321,19 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
     protected boolean isTameItem(ItemStack stack) {
         return stack.is(ChangedItems.WHITE_LATEX_GOO.get()) || stack.is(ChangedItems.ORANGE.get());
+    }
+
+    @Override
+    public void onDamagedBy(LivingEntity source) {
+        super.onDamagedBy(source);
+        if (source instanceof Player player && player.isCreative())
+            return;
+
+        double d0 = this.getAttributeValue(Attributes.FOLLOW_RANGE);
+        AABB aabb = AABB.unitCubeFromLowerCorner(this.position()).inflate(d0, 10.0D, d0);
+        this.level.getEntitiesOfClass(AbstractDarkLatexEntity.class, aabb, EntitySelector.NO_SPECTATORS).forEach(nearby -> {
+            if (nearby.getTarget() == null && !nearby.isAlliedTo(source))
+                nearby.setTarget(source);
+        });
     }
 }

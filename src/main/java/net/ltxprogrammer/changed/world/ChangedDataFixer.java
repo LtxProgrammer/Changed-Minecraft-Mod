@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -42,10 +43,10 @@ public class ChangedDataFixer {
     });
 
     private static final HashMap<ResourceLocation, ResourceLocation> VARIANT_ID_REMAP = Util.make(new HashMap<>(), map -> {
-        map.put(Changed.modResource("form_light_latex_wolf_organic"), TransfurVariant.WHITE_WOLF.male().getFormId());
-        map.put(Changed.modResource("form_dark_latex_wolf/male"), TransfurVariant.DARK_LATEX_WOLF.male().getFormId());
-        map.put(Changed.modResource("form_dark_latex_wolf/female"), TransfurVariant.DARK_LATEX_WOLF.female().getFormId());
-        map.put(Changed.modResource("form_dark_latex_pup"), TransfurVariant.DARK_LATEX_WOLF_PUP.getFormId());
+        map.put(Changed.modResource("form_light_latex_wolf_organic"), ChangedTransfurVariants.WHITE_WOLF_MALE.getId());
+        map.put(Changed.modResource("form_dark_latex_wolf/male"), ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.getId());
+        map.put(Changed.modResource("form_dark_latex_wolf/female"), ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId());
+        map.put(Changed.modResource("form_dark_latex_pup"), ChangedTransfurVariants.DARK_LATEX_WOLF_PUP.getId());
     });
 
     private static final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {

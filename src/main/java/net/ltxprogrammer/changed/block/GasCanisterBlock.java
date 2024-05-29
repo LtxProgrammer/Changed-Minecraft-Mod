@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static net.ltxprogrammer.changed.item.GasCanister.CAPACITY;
@@ -45,10 +46,10 @@ import static net.ltxprogrammer.changed.item.GasCanister.CAPACITY;
 public class GasCanisterBlock extends AbstractCustomShapeTallEntityBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 28.0D, 12.0D);
-    private final List<TransfurVariant<?>> variants;
+    private final List<Supplier<? extends TransfurVariant<?>>> variants;
     private final Color3 color;
 
-    public GasCanisterBlock(List<TransfurVariant<?>> variants, Color3 color) {
+    public GasCanisterBlock(List<Supplier<? extends TransfurVariant<?>>> variants, Color3 color) {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).color(MaterialColor.WOOL).strength(0.7F));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
         this.variants = variants;
@@ -143,7 +144,7 @@ public class GasCanisterBlock extends AbstractCustomShapeTallEntityBlock {
             return;
 
         GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level).setVariant(
-                variants.get(random.nextInt(variants.size()))
+                variants.get(random.nextInt(variants.size())).get()
         );
 
         Vector3f frontVector = state.getValue(FACING).getOpposite().step();

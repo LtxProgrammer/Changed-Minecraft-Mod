@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
@@ -33,7 +34,7 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        AttributeSupplier.Builder builder = Mob.createMobAttributes();
+        AttributeSupplier.Builder builder = ChangedEntity.createLatexAttributes();
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.2);
         builder = builder.add(Attributes.MAX_HEALTH, 42);
         builder = builder.add(Attributes.ARMOR, 0.7999999999999999);

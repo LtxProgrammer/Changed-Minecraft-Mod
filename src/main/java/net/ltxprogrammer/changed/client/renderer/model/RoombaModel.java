@@ -53,8 +53,13 @@ public class RoombaModel extends EntityModel<Roomba> {
 
     @Override
     public void setupAnim(Roomba entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        RightSweeper.yRot = -ageInTicks;
-        LeftSweeper.yRot = ageInTicks;
+        if (entity.getCharge() > 0f) {
+            RightSweeper.yRot = -ageInTicks;
+            LeftSweeper.yRot = ageInTicks;
+        } else {
+            RightSweeper.yRot = 0f;
+            LeftSweeper.yRot = 0f;
+        }
     }
 
     @Override

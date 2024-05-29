@@ -4,6 +4,7 @@ import dev.tr7zw.notenoughanimations.access.PlayerData;
 import dev.tr7zw.notenoughanimations.animations.hands.PetAnimation;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +43,7 @@ public abstract class PetAnimationMixin {
                 if (livingEntity instanceof ChangedEntity ChangedEntity && ChangedEntity.isPreventingPlayerRest(entity))
                     return;
 
-                if (variant == TransfurVariant.DARK_LATEX_WOLF_PUP) {
+                if (variant.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP)) {
                     double dif = livingEntity.getY() - entity.getY();
                     if (Math.abs(dif) < 0.6D) {
                         this.targetPet = livingEntity;

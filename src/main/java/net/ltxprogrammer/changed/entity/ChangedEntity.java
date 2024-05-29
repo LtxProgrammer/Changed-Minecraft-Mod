@@ -15,6 +15,8 @@ import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
+import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.Util;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +30,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -417,6 +420,10 @@ public abstract class ChangedEntity extends Monster {
         }
     }
 
+    public static AttributeSupplier.Builder createLatexAttributes() {
+        return Monster.createMonsterAttributes().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D);
+    }
+
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getTransfurMaxHealth());
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(40.0);
@@ -458,15 +465,17 @@ public abstract class ChangedEntity extends Monster {
                 return false;
         }
 
-        for (var checkVariant : TransfurVariant.MOB_FUSION_LATEX_FORMS) {
-            if (ChangedRegistry.TRANSFUR_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), livingEntity.getClass()))
-                return true;
-        }
+        TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(livingEntity);
+        TransfurVariant<?> selfVariant = getSelfVariant();
+        if (TransfurVariant.getPublicTransfurVariants().anyMatch(possibleFusion ->
+                possibleFusion.isFusionOf(selfVariant, livingEntity.getClass()) ||
+                possibleFusion.isFusionOf(playerVariant, this.getClass())
+        ))
+            return true;
         if (!livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) && !(livingEntity instanceof ChangedEntity))
             return false;
         if (getLatexType().isHostileTo(LatexType.getEntityLatexType(livingEntity)))
             return true;
-        TransfurVariant<?> playerVariant = TransfurVariant.getEntityVariant(livingEntity);
         if (livingEntity instanceof Player player) {
             if (!livingEntity.level.getGameRules().getBoolean(ChangedGameRules.RULE_NPC_WANT_FUSE_PLAYER))
                 return false;
@@ -474,12 +483,268 @@ public abstract class ChangedEntity extends Monster {
             if (instance != null && instance.ageAsVariant > livingEntity.level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
                 return false;
         }
-        for (var checkVariant : TransfurVariant.FUSION_LATEX_FORMS) {
-            if (ChangedRegistry.TRANSFUR_VARIANT.get().getValue(checkVariant).isFusionOf(getSelfVariant(), playerVariant))
+        if (TransfurVariant.getPublicTransfurVariants().anyMatch(possibleFusion -> possibleFusion.isFusionOf(selfVariant, playerVariant)))
+            return true;
+
+        return false;
+    }
+
+    public TransfurContext getAttackContext() {
+        if (underlyingPlayer == null)
+            return TransfurContext.npcLatexAttack(this);
+        else
+            return TransfurContext.playerLatexAttack(underlyingPlayer);
+    }
+
+    private LivingEntity maybeGetUnderlying() {
+        return underlyingPlayer != null ? underlyingPlayer : this;
+    }
+
+    private static void bonusHurt(LivingEntity entity, DamageSource source, float damage, boolean overrideImmunity) {
+        if (!entity.isInvulnerableTo(source) || overrideImmunity) {
+            boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
+
+            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity) {
+                if (entity.getHealth() - damage > 0)
+                    entity.setHealth(entity.getHealth() - damage);
+                else
+                    entity.hurt(source, Float.MAX_VALUE);
+            }
+        }
+    }
+
+    /**
+     * @param target entity to try to absorb
+     * @param source abstraction of the attacker
+     * @param amount damage amount
+     * @param possibleMobFusions possible fusions to absorb into
+     * @return True if the entity was absorbed, False otherwise
+     */
+    public boolean tryAbsorbTarget(LivingEntity target, IAbstractChangedEntity source, float amount, @Nullable List<TransfurVariant<?>> possibleMobFusions) {
+        if (!ProcessTransfur.willTransfur(target, amount)) {
+            ProcessTransfur.progressTransfur(target, amount, source.getTransfurVariant(), source.attack());
+            return false;
+        }
+
+        // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
+        if (!source.isPlayer() && target instanceof Player &&
+                ProcessTransfur.progressTransfur(target, amount, source.getTransfurVariant(), source.attack())) {
+            source.getEntity().discard();
+            return true;
+        }
+
+        if (possibleMobFusions != null && !possibleMobFusions.isEmpty()) {
+            TransfurVariant<?> mobFusionVariant = possibleMobFusions.get(source.getEntity().getRandom().nextInt(possibleMobFusions.size()));
+            if (source.getEntity() instanceof Player sourcePlayer) {
+                float beforeHealth = sourcePlayer.getHealth();
+                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack().cause);
+                sourcePlayer.setHealth(beforeHealth);
+            }
+
+            else {
+                source.getEntity().discard();
+                source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
+                source.getLevel().addFreshEntity(source.getEntity());
+            }
+        }
+
+        else if (source.getSelfVariant() == null || !source.getSelfVariant().getFormId().equals(source.getTransfurVariant().getFormId())) {
+            if (source.getEntity() instanceof Player sourcePlayer) {
+                float beforeHealth = sourcePlayer.getHealth();
+                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, source.getTransfurVariant(), source.attack().cause);
+                sourcePlayer.setHealth(beforeHealth);
+            }
+
+            else {
+                source.getEntity().discard();
+                source = IAbstractChangedEntity.forEntity(source.getTransfurVariant().getEntityType().create(source.getLevel()));
+                source.getLevel().addFreshEntity(source.getEntity());
+            }
+        }
+
+        source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+        var pos = target.position();
+        source.getEntity().teleportTo(pos.x, pos.y, pos.z);
+        source.getEntity().setYRot(target.getYRot());
+        source.getEntity().setXRot(target.getXRot());
+
+        // Should be one-hit absorption here
+        if (target instanceof Player loserPlayer) {
+            ProcessTransfur.killPlayerBy(loserPlayer, source.getEntity());
+        }
+
+        else {
+            target.discard();
+        }
+
+        ChangedSounds.broadcastSound(source.getEntity(), source.getTransfurVariant().sound, 1.0F, 1.0F);
+        return true;
+    }
+
+    public boolean tryFuseWithTarget(LivingEntity entity, IAbstractChangedEntity source, float amount) {
+        TransfurVariant<?> selfVariant = this.getSelfVariant();
+
+        var targetVariant = TransfurVariant.getEntityVariant(entity);
+        List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
+        if (selfVariant != null && targetVariant != null) {
+            var possibleFusion = TransfurVariant.getFusionCompatible(selfVariant, targetVariant);
+            if (possibleFusion.isEmpty())
+                return false;
+
+            if (level.isClientSide)
                 return true;
+
+            { // Check if attacker can't fuse
+                var instance = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
+                if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleFusion.clear();
+            }
+
+            { // Check if attackee can't fuse
+                var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+                if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleFusion.clear();
+            }
+
+            if (possibleFusion.size() > 0) {
+                TransfurVariant<?> fusionVariant = Util.getRandom(possibleFusion, random);
+
+                if (underlyingPlayer != null) {
+                    if (entity instanceof Player pvpLoser) {
+                        ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
+                        ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
+                        ProcessTransfur.killPlayerBy(pvpLoser, underlyingPlayer);
+                    } else {
+                        ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
+                        ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
+                        entity.discard();
+                    }
+                } else {
+                    ChangedSounds.broadcastSound(ProcessTransfur.changeTransfur(entity, fusionVariant), ChangedSounds.POISON, 1f, 1f);
+                    this.discard();
+                }
+
+                return true;
+            }
+        }
+
+        else {
+            if (selfVariant == null)
+                selfVariant = this.getTransfurVariant();
+
+            if (!level.isClientSide) {
+                possibleMobFusions.addAll(TransfurVariant.getFusionCompatible(selfVariant, entity.getClass()));
+                possibleMobFusions.addAll(TransfurVariant.getFusionCompatible(targetVariant, this.getClass()));
+            }
+
+            { // Check if attacker can't fuse
+                var instance = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
+                if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
+                    possibleMobFusions.clear();
+            }
+        }
+
+        // Check if attacked entity is already latexed
+        if (ProcessTransfur.hasVariant(entity)) {
+            if (!possibleMobFusions.isEmpty()) {
+                var mobFusionVariant = Util.getRandom(possibleMobFusions, random);
+
+                if (underlyingPlayer != null) {
+                    float beforeHealth = underlyingPlayer.getHealth();
+                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAttackContext().cause);
+                    underlyingPlayer.setHealth(beforeHealth);
+                }
+
+                else if (entity instanceof Player victimPlayer) {
+                    float beforeHealth = entity.getHealth();
+                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAttackContext().cause);
+                    entity.setHealth(beforeHealth);
+                    this.discard();
+                    return true;
+                }
+
+                else {
+                    source.getEntity().discard();
+                    source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
+                    source.getLevel().addFreshEntity(source.getEntity());
+                }
+
+                source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+                var pos = entity.position();
+                source.getEntity().teleportTo(pos.x, pos.y, pos.z);
+                source.getEntity().setYRot(entity.getYRot());
+                source.getEntity().setXRot(entity.getXRot());
+
+                entity.discard();
+                return true;
+            }
+
+            return false;
+        }
+
+        if (possibleMobFusions.isEmpty() && !entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+            return false;
+        }
+
+        entity.setLastHurtByMob(source.getEntity());
+        double d1 = source.getEntity().getX() - entity.getX();
+
+        double d0;
+        for(d0 = source.getEntity().getZ() - entity.getZ(); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
+            d1 = (Math.random() - Math.random()) * 0.01D;
+        }
+
+        entity.hurtDir = (float)(Mth.atan2(d0, d1) * (double)(180F / (float)Math.PI) - (double)entity.getYRot());
+        entity.knockback((double)0.4F, d1, d0);
+
+        if(entity instanceof Player)
+            ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
+
+        entity.hurt(ChangedDamageSources.entityTransfur(source.getEntity()), 0.0F);
+        boolean doesAbsorption = source.wantAbsorption();
+        if (!possibleMobFusions.isEmpty())
+            doesAbsorption = true;
+
+        if (!doesAbsorption) { // Replication
+            return false;
+        }
+
+        else { // Absorption
+            tryAbsorbTarget(entity, source, amount, possibleMobFusions);
+            return true;
+        }
+    }
+
+    public boolean tryTransfurTarget(Entity entity) {
+        float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
+        damage = ProcessTransfur.difficultyAdjustTransfurAmount(entity.level.getDifficulty(), damage);
+        TransfurVariant<?> variant = this.getTransfurVariant();
+
+        if (entity instanceof LivingEntity livingEntity) {
+            IAbstractChangedEntity source = IAbstractChangedEntity.forEither(maybeGetUnderlying());
+            if (tryFuseWithTarget(livingEntity, source, damage))
+                return true;
+
+            if (TransfurVariant.getEntityVariant(livingEntity) == null) {
+                if (livingEntity instanceof Player player) {
+                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, getAttackContext());
+                    return true;
+                } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
+                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, getAttackContext());
+                    return true;
+                }
+            }
         }
 
         return false;
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (!tryTransfurTarget(entity))
+            return super.doHurtTarget(entity);
+        else
+            return true;
     }
 
     @Override
@@ -503,6 +768,8 @@ public abstract class ChangedEntity extends Monster {
 
         if (this instanceof WhiteLatexEntity)
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this, WhiteLatexEntity.class).setAlertOthers());
+        else if (this instanceof AbstractDarkLatexEntity)
+            this.targetSelector.addGoal(1, new HurtByTargetGoal(this, AbstractDarkLatexEntity.class).setAlertOthers());
         else
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
@@ -770,7 +1037,7 @@ public abstract class ChangedEntity extends Monster {
         return getChangedEntityFlag(FLAG_IS_FLYING);
     }
 
-    public void onDamagedBy(LivingEntity self, LivingEntity source) {
+    public void onDamagedBy(LivingEntity source) {
 
     }
 
