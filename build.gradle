@@ -224,6 +224,8 @@ dependencies {
 
     compileOnly fg.deobf("net.mrscauthd:Beyond-Earth-1.18.2:6.2")
 
+    implementation fg.deobf("tschipp:carryon-1.18.2:1.17.2.15")
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
