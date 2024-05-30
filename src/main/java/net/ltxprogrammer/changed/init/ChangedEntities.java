@@ -352,7 +352,7 @@ public class ChangedEntities {
             ChangedEntities::plainsSpawning);
     public static final RegistryObject<EntityType<Shark>> SHARK = register("shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(Shark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.9F, 0.6F),
-            ChangedEntities::oceanSpawning);
+            ChangedEntities::oceanSpawning, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<WhiteLatexWolf>> PURE_WHITE_GOO_WOLF = register("white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(WhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::noSpawning);
