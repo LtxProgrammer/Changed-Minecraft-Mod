@@ -33,7 +33,7 @@ public class ChangedPackets {
         addNetworkMessage(SyncVariantAbilityPacket.class, SyncVariantAbilityPacket::new);
         addNetworkMessage(MenuUpdatePacket.class, MenuUpdatePacket::new);
         addNetworkMessage(EmotePacket.class, EmotePacket::new);
-        addNetworkMessage(SyncMoverPacket.class, SyncMoverPacket::new);
+        addNetworkMessage(SyncMoversPacket.class, SyncMoversPacket::new);
         addNetworkMessage(ServerboundSetGluBlockPacket.class, ServerboundSetGluBlockPacket::new);
         addNetworkMessage(BasicPlayerInfoPacket.class, BasicPlayerInfoPacket::new);
         addNetworkMessage(SetTransfurVariantDataPacket.class, SetTransfurVariantDataPacket::new);

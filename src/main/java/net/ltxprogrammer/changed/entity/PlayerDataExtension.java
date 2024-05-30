@@ -36,6 +36,15 @@ public interface PlayerDataExtension {
             setPlayerMover(moverType.createInstance());
     }
 
+    default boolean isPlayerMover(@Nullable PlayerMover<?> moverType) {
+        var existingMover = getPlayerMover();
+
+        if (moverType == null && existingMover == null)
+            return true;
+        else
+            return existingMover != null && existingMover.is(moverType);
+    }
+
     BasicPlayerInfo getBasicPlayerInfo();
     void setBasicPlayerInfo(BasicPlayerInfo basicPlayerInfo);
 }

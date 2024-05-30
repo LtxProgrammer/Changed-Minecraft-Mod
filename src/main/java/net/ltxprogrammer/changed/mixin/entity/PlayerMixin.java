@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
@@ -9,6 +10,7 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
+import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -263,6 +266,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Override
     public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
         this.playerMover = playerMover;
+        if (!level.isClientSide)
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this), SyncMoversPacket.Builder.of((Player)(Object)this));
     }
 
     @Override

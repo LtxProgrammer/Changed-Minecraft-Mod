@@ -32,6 +32,9 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] for å bytte til drakt",
   "ability.changed.grab_entity.how_to_toggle_control": "Trykk på [%s] for å veksle kontroll",
 
+  "attribute.name.changed.transfur_damage": "Transpelsskade",
+  "attribute.name.changed.transfur_tolerance": "Transpels toleranse",
+
   "subtitles.changed.attack1": "Feiende robot piper",
   "subtitles.changed.sound3": "Organisk transpels",
   "subtitles.changed.poison": "Transpels",
@@ -245,6 +248,7 @@
   "block.changed.pipe": "Rør",
   "block.changed.purifier": "Renser",
   "block.changed.retinal_scanner": "Netthinneskanner",
+  "block.changed.roomba_charger": "Feiende robotlader",
   "block.changed.speaker": "Høyttaler",
   "block.changed.tape_recorder": "Båndopptaker",
   "block.changed.tiles_blue": "Blå fliser",
