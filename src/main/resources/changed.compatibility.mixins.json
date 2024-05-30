@@ -7,6 +7,8 @@
   "plugin": "net.ltxprogrammer.changed.mixin.compatibility.ChangedMixinPlugin",
   "mixins": [],
   "client": [
+    "BeyondEarth.SpaceSuitModelP1Mixin",
+    "BeyondEarth.SpaceSuitModelP2Mixin",
     "CGM.AdvancedHumanoidRendererMixin",
     "CGM.HumanoidAnimatorMixin",
     "CGM.LatexItemInHandLayerMixin",
