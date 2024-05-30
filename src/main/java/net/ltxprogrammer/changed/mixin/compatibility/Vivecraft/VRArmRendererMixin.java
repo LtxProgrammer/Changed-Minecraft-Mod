@@ -17,7 +17,7 @@ public abstract class VRArmRendererMixin {
     @Inject(method = "renderItem", at = @At("HEAD"), cancellable = true)
     private void latexHandOverride(ControllerType side, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn,
                                    AbstractClientPlayer playerIn, ModelPart rendererArmIn, ModelPart rendererArmwearIn, CallbackInfo callback) {
-        if (FormRenderHandler.renderHand((VRArmRenderer)(Object)this, matrixStackIn, bufferIn, combinedLightIn, playerIn, rendererArmIn, rendererArmwearIn))
+        if (FormRenderHandler.maybeRenderHand((VRArmRenderer)(Object)this, matrixStackIn, bufferIn, combinedLightIn, playerIn, rendererArmIn, rendererArmwearIn))
             callback.cancel();
     }
 }

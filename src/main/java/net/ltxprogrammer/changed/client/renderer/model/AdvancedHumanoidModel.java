@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
@@ -66,7 +67,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
                     return anim != null ? anim.createInstance(this) : null;
                 });
 
-                if (instance != null)
+                if (instance != null && !FormRenderHandler.isRenderingHand())
                     instance.animate(this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
             } else {
                 cachedAnimationInstance.remove(entity);

@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
@@ -33,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class TransfurAnimator {
+public abstract class TransfurAnimator {
     public record ModelPose(PoseStack.Pose matrix, PartPose pose) {
         public ModelPose translate(float x, float y, float z) {
             return new ModelPose(matrix, PartPose.offsetAndRotation(
@@ -512,6 +513,57 @@ public class TransfurAnimator {
         final var colors = variant.getTransfurColor();
         renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
                 morphProgress, colors, morphAlpha, stack, buffer, light, partialTick);
+    }
+
+    public static void renderTransfurringArm(Player player, HumanoidArm arm, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+        final Minecraft minecraft = Minecraft.getInstance();
+        final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
+        final var playerRenderer = dispatcher.getRenderer(player);
+        final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
+
+        if (!(playerRenderer instanceof LivingEntityRenderer<?,?> livingPlayerRenderer)) return;
+        if (!(livingPlayerRenderer.getModel() instanceof HumanoidModel<?> playerHumanoidModel)) return;
+
+        if (!(latexRenderer instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
+
+        final float transfurProgression = variant.getTransfurProgression(partialTick);
+        final float coverProgress = getCoverProgression(transfurProgression);
+        final float coverAlpha = Transition.easeInOutSine(getCoverAlpha(transfurProgression));
+        final float morphProgress = variant.getMorphProgression(partialTick);
+        final float morphAlpha = Transition.easeInOutSine(getMorphAlpha(transfurProgression));
+
+        if (morphAlpha < 1f) { // Render normal living entity, when they are still seen
+            if (coverProgress < 1f) { // Render player, being covered
+                forceRenderPlayer = true;
+                FormRenderHandler.renderHand(player, arm, stack, buffer, light, partialTick);
+                ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
+                forceRenderPlayer = false;
+            } else if (morphProgress > 0.5f) // Render latex at the end
+                FormRenderHandler.renderHand(variant.getChangedEntity(), arm, stack, buffer, light, partialTick);
+        }
+
+        Limb limb = arm == HumanoidArm.LEFT ? Limb.LEFT_ARM : Limb.RIGHT_ARM;
+
+        if (coverAlpha > 0f) {
+            switch (arm) {
+                case RIGHT -> renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.rightArm, Limb.RIGHT_ARM, stack, buffer, light, partialTick);
+                case LEFT -> renderCoveringLimb(player, variant, coverProgress, 1.0f, playerHumanoidModel.leftArm, Limb.LEFT_ARM, stack, buffer, light, partialTick);
+            }
+
+            if (playerHumanoidModel instanceof PlayerModel<?> playerModel) {
+                switch (arm) {
+                    case RIGHT -> renderCoveringLimb(player, variant, coverProgress, 1.0f, playerModel.rightSleeve, Limb.RIGHT_ARM, stack, buffer, light, partialTick);
+                    case LEFT -> renderCoveringLimb(player, variant, coverProgress, 1.0f, playerModel.leftSleeve, Limb.LEFT_ARM, stack, buffer, light, partialTick);
+                }
+            }
+        }
+
+        if (morphAlpha <= 0f)
+            return; // Don't bother rendering
+
+        final var color = variant.getTransfurColor();
+        renderMorphedLimb(player, limb, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
+                morphProgress, color, morphAlpha, stack, buffer, light, partialTick);
     }
 
     private static boolean capturingPose = false;

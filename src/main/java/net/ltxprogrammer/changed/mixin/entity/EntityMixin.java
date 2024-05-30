@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -93,7 +94,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
-            float z = variant.getParent().cameraZOffset;
+            float z = Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset);
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
             if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
@@ -105,7 +106,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Inject(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(float v, CallbackInfoReturnable<Vec3> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
-            float z = variant.getParent().cameraZOffset;
+            float z = Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset);
             if (Math.abs(z) < 0.0001f) return;
             var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
             if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)

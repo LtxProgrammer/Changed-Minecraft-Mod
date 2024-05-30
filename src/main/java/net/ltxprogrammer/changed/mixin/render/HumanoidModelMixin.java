@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.tfanimations.AnimationInstance;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
@@ -82,7 +83,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                     return anim != null ? anim.createInstance((HumanoidModel<?>)(Object)this) : null;
                 });
 
-                if (instance != null)
+                if (instance != null && !FormRenderHandler.isRenderingHand())
                     instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
             } else {
                 cachedAnimationInstance.remove(entity);

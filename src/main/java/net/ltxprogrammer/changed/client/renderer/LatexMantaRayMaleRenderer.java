@@ -6,16 +6,18 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayMaleModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleSharkModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexOrcaModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
 import net.ltxprogrammer.changed.entity.beast.LatexMantaRayMale;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel, ArmorLatexSharkModel<LatexMantaRayMale>> {
+public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel, ArmorLatexOrcaModel<LatexMantaRayMale>> {
     public LatexMantaRayMaleRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
-                ArmorLatexSharkModel::new, ArmorLatexSharkModel.INNER_ARMOR, ArmorLatexSharkModel.OUTER_ARMOR, 0.5f);
+                ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.fromInt(0xd2d9e1)), CustomEyesLayer.fixedColor(Color3.fromInt(0xffe64b))));
