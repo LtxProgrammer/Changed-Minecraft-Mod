@@ -6,17 +6,17 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexSirenModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkFemaleModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSirenUpperBodyModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSirenAbdomenModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSiren;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexSirenRenderer extends AdvancedHumanoidRenderer<LatexSiren, LatexSirenModel, ArmorMermaidSharkFemaleModel<LatexSiren>> {
+public class LatexSirenRenderer extends AdvancedHumanoidRenderer<LatexSiren, LatexSirenModel, ArmorSirenUpperBodyModel<LatexSiren>> {
     public LatexSirenRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexSirenModel(context.bakeLayer(LatexSirenModel.LAYER_LOCATION)),
-                ArmorMermaidSharkFemaleModel::new, ArmorMermaidSharkFemaleModel.INNER_ARMOR, ArmorMermaidSharkFemaleModel.OUTER_ARMOR,
+                ArmorSirenUpperBodyModel::new, ArmorSirenUpperBodyModel.INNER_ARMOR, ArmorSirenUpperBodyModel.OUTER_ARMOR,
                 ArmorSirenAbdomenModel::new, ArmorSirenAbdomenModel.INNER_ARMOR, ArmorSirenAbdomenModel.OUTER_ARMOR,
                 AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

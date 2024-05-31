@@ -1,1 +1,1 @@
-execute as @a run attribute @s changed:transfur_tolerance base set 1
+execute as @e run attribute @s changed:transfur_tolerance base set 1
