@@ -38,7 +38,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 if (!oldVariant.willSurviveTransfur)
                     return;
 
-                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.cause, oldVariant.transfurProgression);
+                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext.cause, oldVariant.transfurProgression);
                 newVariant.load(oldVariant.save());
                 newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
             });

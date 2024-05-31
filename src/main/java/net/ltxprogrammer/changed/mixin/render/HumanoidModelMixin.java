@@ -79,12 +79,12 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
             if (variant.transfurProgression < 1f) {
                 final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
-                    final var anim = TransfurAnimations.getAnimationFromCause(variant.cause);
+                    final var anim = TransfurAnimations.getAnimationFromCause(variant.transfurContext.cause);
                     return anim != null ? anim.createInstance((HumanoidModel<?>)(Object)this) : null;
                 });
 
                 if (instance != null && !FormRenderHandler.isRenderingHand())
-                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.cause.getDuration());
+                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.transfurContext.cause.getDuration());
             } else {
                 cachedAnimationInstance.remove(entity);
             }

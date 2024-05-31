@@ -415,22 +415,22 @@ public abstract class TransfurAnimator {
 
     private static void renderCoveringLimb(LivingEntity entity, TransfurVariantInstance<?> variant, float coverProgress, float coverAlpha, ModelPart part, Limb limb, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final float progress = switch (limb) {
-            case HEAD -> variant.cause.getHeadProgress(coverProgress);
-            case TORSO -> variant.cause.getTorsoProgress(coverProgress);
-            case LEFT_ARM -> variant.cause.getLeftArmProgress(coverProgress);
-            case RIGHT_ARM -> variant.cause.getRightArmProgress(coverProgress);
-            case LEFT_LEG -> variant.cause.getLeftLegProgress(coverProgress);
-            case RIGHT_LEG -> variant.cause.getRightLegProgress(coverProgress);
+            case HEAD -> variant.transfurContext.cause.getHeadProgress(coverProgress);
+            case TORSO -> variant.transfurContext.cause.getTorsoProgress(coverProgress);
+            case LEFT_ARM -> variant.transfurContext.cause.getLeftArmProgress(coverProgress);
+            case RIGHT_ARM -> variant.transfurContext.cause.getRightArmProgress(coverProgress);
+            case LEFT_LEG -> variant.transfurContext.cause.getLeftLegProgress(coverProgress);
+            case RIGHT_LEG -> variant.transfurContext.cause.getRightLegProgress(coverProgress);
             default -> 1.0f;
         };
 
         final LimbCoverTransition transition = switch (limb) {
-            case HEAD -> variant.cause.getHeadTransition();
-            case TORSO -> variant.cause.getTorsoTransition();
-            case LEFT_ARM -> variant.cause.getLeftArmTransition();
-            case RIGHT_ARM -> variant.cause.getRightArmTransition();
-            case LEFT_LEG -> variant.cause.getLeftLegTransition();
-            case RIGHT_LEG -> variant.cause.getRightLegTransition();
+            case HEAD -> variant.transfurContext.cause.getHeadTransition();
+            case TORSO -> variant.transfurContext.cause.getTorsoTransition();
+            case LEFT_ARM -> variant.transfurContext.cause.getLeftArmTransition();
+            case RIGHT_ARM -> variant.transfurContext.cause.getRightArmTransition();
+            case LEFT_LEG -> variant.transfurContext.cause.getLeftLegTransition();
+            case RIGHT_LEG -> variant.transfurContext.cause.getRightLegTransition();
             default -> LimbCoverTransition.INSTANT;
         };
 

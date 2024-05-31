@@ -182,7 +182,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(context.source != null ? context.source.getEntity() : null), amount * scale);
+                    entity.hurt(ChangedDamageSources.entityTransfur(context.source), amount * scale);
                     return false;
                 }
             }
@@ -199,7 +199,7 @@ public class ProcessTransfur {
                 }
 
                 else {
-                    entity.hurt(ChangedDamageSources.entityTransfur(context.source != null ? context.source.getEntity() : null), amount * scale);
+                    entity.hurt(ChangedDamageSources.entityTransfur(context.source), amount * scale);
                     return false;
                 }
             }
@@ -365,12 +365,12 @@ public class ProcessTransfur {
             if (instance != null) {
                 instance.willSurviveTransfur = oldVariant.willSurviveTransfur;
                 instance.transfurProgression = oldVariant.transfurProgression;
-                instance.cause = oldVariant.cause;
+                instance.transfurContext = oldVariant.transfurContext;
             }
         }
 
         if (instance != null && cause != null)
-            instance.cause = cause;
+            instance.transfurContext = instance.transfurContext.withCause(cause);
 
         if (instance != null)
             beforeBroadcast.accept(instance);
@@ -670,6 +670,7 @@ public class ProcessTransfur {
             if ((keepConscious || doAnimation) && entity instanceof ServerPlayer player) {
                 var instance = setPlayerTransfurVariant(player, variant, context.cause, doAnimation ? 0.0f : 1.0f);
                 instance.willSurviveTransfur = keepConscious;
+                instance.transfurContext = context;
 
                 forceNearbyToRetarget(level, player);
 
@@ -683,7 +684,7 @@ public class ProcessTransfur {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context.cause);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
-                    onReplicate.accept(IAbstractChangedEntity.forEntity(event.variant.replaceEntity(entity)), event.variant);
+                    onReplicate.accept(IAbstractChangedEntity.forEntity(event.variant.replaceEntity(entity, context.source)), event.variant);
             }
         }
 
@@ -727,7 +728,7 @@ public class ProcessTransfur {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion, context.cause);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
-                    event.variant.replaceEntity(entity);
+                    event.variant.replaceEntity(entity, context.source);
             }
         }
     }

@@ -109,7 +109,7 @@ public abstract class RenderEventsMixin {
         });
     }
 
-    @Inject(method = "renderArmPost", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V"))
+    @Inject(method = "renderArmPost", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V", remap = true))
     public void renderChangedArmOffset(ModelPart arm, float x, float z, boolean right, boolean sneaking, int light, PoseStack matrix, VertexConsumer builder, CallbackInfo ci) {
         if (applyYValue) {
             arm.y = currentYValue + (sneaking ? 14.0f : 22.0f);

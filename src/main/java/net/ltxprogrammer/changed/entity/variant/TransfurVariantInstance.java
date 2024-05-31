@@ -79,7 +79,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     private float transfurProgressionO = 0.0f;
     public float transfurProgression = 0.0f;
-    public TransfurCause cause = TransfurCause.ATTACK_REPLICATE_LEFT;
+    public TransfurContext transfurContext = TransfurContext.hazard(TransfurCause.ATTACK_REPLICATE_LEFT);
     public boolean willSurviveTransfur = true;
     private boolean isTemporaryFromSuit = false;
     private IAbstractChangedEntity suitGrabber = null;
@@ -98,7 +98,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         tag.putFloat("transfurProgression", transfurProgression);
         tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
 
-        tag.putString("transfurCause", cause.name());
+        tag.put("transfurContext", transfurContext.toTag());
         tag.putBoolean("isTemporaryFromSuit", isTemporaryFromSuit);
 
         tag.put("abilities", this.saveAbilities());
@@ -123,7 +123,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         willSurviveTransfur = tag.getBoolean("willSurviveTransfur");
         isTemporaryFromSuit = tag.getBoolean("isTemporaryFromSuit");
 
-        cause = TransfurCause.valueOf(tag.getString("transfurCause"));
+        transfurContext = TransfurContext.fromTag(tag.getCompound("transfurContext"), host.level);
 
         this.loadAbilities(tag.getCompound("abilities"));
     }
@@ -149,7 +149,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public Color3 getTransfurColor() {
-        return getChangedEntity().getTransfurColor(this.cause);
+        return getChangedEntity().getTransfurColor(this.transfurContext.cause);
     }
 
     public TransfurVariantInstance(TransfurVariant<T> parent, Player host) {
@@ -597,7 +597,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
-            transfurProgression += (1.0f / cause.getDuration()) * 0.05f;
+            transfurProgression += (1.0f / transfurContext.cause.getDuration()) * 0.05f;
             if (!player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
                 transfurProgressionO = 1f;
                 transfurProgression = 1f;
@@ -608,12 +608,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
 
             if (transfurProgression >= 1f && !willSurviveTransfur) {
-                this.getParent().replaceEntity(player);
+                if (!player.level.isClientSide)
+                    this.getParent().replaceEntity(player, transfurContext.source);
                 return;
             }
         }
 
         if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
+            transfurContext = transfurContext.withSource(null);
             if (player instanceof ServerPlayer serverPlayer)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }

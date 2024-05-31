@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.*;
@@ -274,6 +275,14 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     }
 
     public ChangedEntity replaceEntity(@NotNull LivingEntity entity) {
+        return replaceEntity(entity, (LivingEntity) null);
+    }
+
+    public ChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable IAbstractChangedEntity cause) {
+        return replaceEntity(entity, cause == null ? null : cause.getEntity());
+    }
+
+    public ChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable LivingEntity cause) {
         var newEntity = spawnAtEntity(entity);
         if (entity.hasCustomName()) {
             newEntity.setCustomName(entity.getCustomName());
@@ -290,7 +299,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
-            ProcessTransfur.killPlayerBy(player, newEntity);
+            ProcessTransfur.killPlayerBy(player, cause != null ? cause : newEntity);
         } else if (entity instanceof ChangedEntity changedEntity) {
             newEntity.getBasicPlayerInfo().copyFrom(changedEntity.getBasicPlayerInfo());
             // Take armor and held items

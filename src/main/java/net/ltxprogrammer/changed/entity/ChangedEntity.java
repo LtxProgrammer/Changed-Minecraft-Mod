@@ -700,7 +700,7 @@ public abstract class ChangedEntity extends Monster {
         if(entity instanceof Player)
             ChangedSounds.broadcastSound(entity, ChangedSounds.BLOW1, 1, entity.level.random.nextFloat() * 0.1F + 0.9F);
 
-        entity.hurt(ChangedDamageSources.entityTransfur(source.getEntity()), 0.0F);
+        entity.hurt(ChangedDamageSources.entityTransfur(source), 0.0F);
         boolean doesAbsorption = source.wantAbsorption();
         if (!possibleMobFusions.isEmpty())
             doesAbsorption = true;

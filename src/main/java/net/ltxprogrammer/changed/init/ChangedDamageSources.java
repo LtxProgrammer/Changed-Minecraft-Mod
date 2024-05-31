@@ -1,9 +1,12 @@
 package net.ltxprogrammer.changed.init;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+
+import javax.annotation.Nullable;
 
 public class ChangedDamageSources {
     public static class TransfurDamageSource extends DamageSource {
@@ -26,6 +29,10 @@ public class ChangedDamageSources {
 
     public static DamageSource entityTransfur(LivingEntity source) {
         return new TransfurDamageSource(Changed.modResourceStr("transfur"), source);
+    }
+
+    public static DamageSource entityTransfur(@Nullable IAbstractChangedEntity source) {
+        return new TransfurDamageSource(Changed.modResourceStr("transfur"), source == null ? null : source.getEntity());
     }
 
     public static final DamageSource BLOODLOSS = (new DamageSource(Changed.modResourceStr("bloodloss"))).bypassArmor();
