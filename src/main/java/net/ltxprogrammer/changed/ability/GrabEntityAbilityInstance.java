@@ -193,10 +193,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public void grabEntity(LivingEntity entity) {
         getController().resetHoldTicks();
         prepareSyncEntity(entity);
+
         if (this.grabbedEntity == entity) {
             this.suited = false;
             this.grabbedHasControl = false;
-            this.grabStrength = 1.0f;
+            entity.setSilent(wasGrabbedSilent);
+            entity.setInvisible(wasGrabbedInvisible);
+            //this.grabStrength = 1.0f;
             return;
         }
 
@@ -459,8 +462,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void tick() {
         if (this.grabbedEntity != null) {
-            if (this.getController().getHoldTicks() >= 40)
-                this.releaseEntity();
+            if (this.getController().getHoldTicks() >= 40) {
+                if (suited) {
+                    this.grabEntity(this.grabbedEntity);
+                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                } else
+                    this.releaseEntity();
+            }
             return;
         }
 

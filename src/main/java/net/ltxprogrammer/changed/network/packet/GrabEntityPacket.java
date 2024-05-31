@@ -90,12 +90,13 @@ public class GrabEntityPacket implements ChangedPacket {
                         ChangedSounds.broadcastSound(sender, wasSuited ? ChangedSounds.POISON : ChangedSounds.BLOW1, 1.0f, 1.0f);
                     }
                     case SUIT -> {
-                        ability.suitEntity(livingTarget);
                         ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
+                        ability.suitEntity(livingTarget);
                     }
                     case ARMS -> {
+                        boolean wasSuited = ability.suited;
                         ability.grabEntity(livingTarget);
-                        ChangedSounds.broadcastSound(sender, ChangedSounds.BLOW1, 1.0f, 1.0f);
+                        ChangedSounds.broadcastSound(sender, wasSuited ? ChangedSounds.POISON : ChangedSounds.BLOW1, 1.0f, 1.0f);
                     }
                 }
             });
