@@ -44,6 +44,7 @@
   "subtitles.changed.paralyze1": "Broń razi prądem",
   "subtitles.changed.paralyze3": "Interkom ogłasza",
   "subtitles.changed.blow1": "Latex się rozprzestrzenia",
+  "subtitles.changed.vacuum": "odkurzacz się kręci",
 
   "item.changed.benign_pants": "Szorty z latexu",
   "item.changed.blood_syringe": "Strzykawka z krwią",
@@ -63,6 +64,7 @@
   "item.changed.latex_tipped_arrow": "Strzała z latexem",
   "item.changed.orange": "Pomarańcza",
   "item.changed.pink_pants": "Różowe szorty",
+  "item.changed.roomba": "odkurzacz Roomba",
   "item.changed.syringe": "Strzykawka",
   "item.changed.white_latex_goo": "Biała latexowa maź",
   "item.changed.white_latex_bucket": "Wiadro z białym latexem",
@@ -131,6 +133,7 @@
   "death.attack.changed:fan.player": "%1$s został pokrojony w kostki podczas walki z %2$s",
 
   "command.changed.error.not_latex_form": "nieprawidłowa forma",
+  "command.changed.error.not_cause": "nieprawidłowy powód transfura",
   "command.changed.error.used_by_other_mod": "Gracz jest używany przez innego moda",
   "command.changed.error.no_special_form": "Brak specjalnej formy, odwiedź https://www.patreon.com/ltxprogrammer",
 
@@ -165,6 +168,10 @@
   "text.changed.syringe.no_owner": "Nie można znaleźć nazwy gracza",
   "text.changed.tamed.wander": "%s teraz wędruje",
   "text.changed.tamed.follow": "%s teraz podąża",
+  "text.changed.warning": "Uwaga",
+  "text.changed.warning.content1": "Ta zmodyfikowana wersja Minecrafta zawiera zawartość z gry Changed,",
+  "text.changed.warning.content2": "i to nie jest odpowiednie dla każdej grupy wiekowej",
+
 
   "effect.changed.hypercoagulation": "Hiperkoagulacja",
   "effect.changed.shock": "Szok",
@@ -332,6 +339,7 @@
   "entity.changed.latex_mimic_plant": "Latexowy roślinny imitator",
   "entity.changed.latex_ming_cat": "Latexowy kot Ming",
   "entity.changed.latex_moth": "Latexowa ćma",
+  "entity.changed.latex_mutant_bloodcell_wolf": "Latex Zmutowany Wilk",
   "entity.changed.latex_orca": "Latexowa orka",
   "entity.changed.latex_otter": "Latexowa wydra",
   "entity.changed.latex_pink_deer": "Latexowy różowy jeleń",
@@ -364,6 +372,7 @@
   "entity.changed.light_latex_knight": "Jasny latexowy rycerz",
   "entity.changed.light_latex_wolf_female": "Żeński jasny latexowy wilk",
   "entity.changed.light_latex_wolf_male": "Męski jasny latexowy wilk",
+  "entity.changed.roomba": "Odkurzacz Roomba",
   "entity.changed.light_latex_wolf_organic": "Organiczny jasny wilk",
   "entity.changed.shark": "Rekin",
   "entity.changed.white_latex_wolf": "Biały latexowy wilk",
@@ -400,6 +409,7 @@
   "item.changed.latex_mimic_plant_spawn_egg": "Jajo przyzywające latexowego roślinnego imitatora",
   "item.changed.latex_ming_cat_spawn_egg": "Jajo przyzywające latexowego kota Ming",
   "item.changed.latex_moth_spawn_egg": "Jajo przyzywające latexową ćmę",
+  "item.changed.latex_mutant_bloodcell_wolf_spawn_egg": "Jajo przyzywające latexowego zmutowanego wilka",
   "item.changed.latex_orca_spawn_egg": "Jajo przyzywające latexową orkę",
   "item.changed.latex_otter_spawn_egg": "Jajo przyzywające latexową wydrę",
   "item.changed.latex_pink_deer_spawn_egg": "Jajo przyzywające latexowego różowego jelenia",
@@ -514,6 +524,9 @@
   
   "changed:advancements.main.kill_all_latex.title": "Srebro na potwory,łom na latex",
   "changed:advancements.main.kill_all_latex.description": "pokonaj każdy rodzaj latexowej bestii",
+
+  "changed:advancements.main.flying.title": "Panie,jaki widok na Tatrach",
+  "changed:advancements.main.flying.description": "Użyj swojej umiejętności latania przez 15 sekund",
 
   "changed.tutorial.select_ability.title": "Wybierz umiejętność",
   "changed.tutorial.select_ability.description": "Naciśnij %s",
