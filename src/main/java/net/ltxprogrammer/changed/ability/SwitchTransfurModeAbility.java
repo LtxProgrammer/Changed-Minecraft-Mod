@@ -63,4 +63,3 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
         return 10;
     }
 }
-
