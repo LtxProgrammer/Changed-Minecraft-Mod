@@ -38,7 +38,7 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
         var tailQuaternary = tailTertiary.getChild("TailQuaternary");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
-                .addPreset(AnimatorPresets.sirenAbdomenArmor(
+                .addPreset(AnimatorPresets.leglessSharkAbdomenArmor(
                         Abdomen, LowerAbdomen,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary)));
     }
@@ -47,11 +47,11 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(40, 0).addBox(-4.0F, -8.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(0.0F, 8.0F, 0.0F));
+        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(40, 0).addBox(-4.0F, -8.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(0.0F, 8.0F, 0.5F));
 
-        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 8).addBox(-4.5F, -2.0F, -1.75F, 9.0F, 7.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.5F, 0.25F));
+        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 8).addBox(-4.5F, -2.0F, -1.75F, 9.0F, 7.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.5F, -0.75F));
 
-        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(0, 20).addBox(-4.0F, -0.75F, -2.0F, 8.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.65F)), PartPose.offset(0.0F, 6.0F, 0.0F));
+        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(0, 20).addBox(-4.0F, -0.75F, -2.0F, 8.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.65F)), PartPose.offset(0.0F, 6.0F, 0.5F));
 
         PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(31, 0).addBox(-3.5F, -0.25F, -2.0F, 7.0F, 5.0F, 4.0F, layer.altDeformation.extend(0.26F)), PartPose.offset(0.0F, 4.75F, 0.0F));
 
