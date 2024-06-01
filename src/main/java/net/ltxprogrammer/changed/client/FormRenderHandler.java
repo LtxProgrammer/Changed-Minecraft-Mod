@@ -159,7 +159,7 @@ public abstract class FormRenderHandler {
         float prevY = part.yRot;
         part.yRot = 0F;
         float prevZ = part.zRot;
-        part.zRot = 0F;
+        part.zRot = 0.05F;
 
         //taken from ModelRenderer.render
         if(part.visible) {
@@ -184,6 +184,10 @@ public abstract class FormRenderHandler {
 
         float prevX = part.xRot;
         part.xRot = 0F;
+        float prevY = part.yRot;
+        part.yRot = 0F;
+        float prevZ = part.zRot;
+        part.zRot = 0.05F;
 
         //taken from ModelRenderer.render
         if(part.visible) {
@@ -199,5 +203,7 @@ public abstract class FormRenderHandler {
         }
 
         part.xRot = prevX;
+        part.yRot = prevY;
+        part.zRot = prevZ;
     }
 }
