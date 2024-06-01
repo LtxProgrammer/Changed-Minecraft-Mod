@@ -33,7 +33,7 @@ public class ArmorSirenUpperBodyModel<T extends ChangedEntity> extends LatexHuma
         this.RightArm = modelPart.getChild("RightArm");
 
         animator = HumanoidAnimator.of(this).hipOffset(4.0f)
-                .addPreset(AnimatorPresets.sirenUpperBodyArmor(
+                .addPreset(AnimatorPresets.leglessSharkUpperBodyArmor(
                         Head, Torso, LeftArm, RightArm));
     }
 
