@@ -9,7 +9,7 @@
   "client": [
     "BeyondEarth.SpaceSuitModelP1Mixin",
     "BeyondEarth.SpaceSuitModelP2Mixin",
-    "CarryOn.AdvancedHumanoidModelMixin",
+    "CarryOn.HoldEntityAnimatorMixin",
     "CarryOn.RenderEventsMixin",
     "CGM.AdvancedHumanoidRendererMixin",
     "CGM.HumanoidAnimatorMixin",

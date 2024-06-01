@@ -36,10 +36,6 @@ import java.util.Optional;
 @Mixin(value = RenderEvents.class, remap = false)
 public abstract class RenderEventsMixin {
     @Unique private static Player currentPlayer = null;
-    @Unique private static MultiBufferSource currentSource = null;
-
-    @Shadow protected abstract void renderArmPre(ModelPart arm);
-    @Shadow protected abstract void renderArmPost(ModelPart arm, float x, float z, boolean right, boolean sneaking, int light, PoseStack matrix, VertexConsumer builder);
 
     @Shadow @NotNull private static PlayerRenderer getRenderPlayer(AbstractClientPlayer player) { return null; }
 
@@ -71,7 +67,6 @@ public abstract class RenderEventsMixin {
     @Inject(method = "drawArms", at = @At("HEAD"))
     public void copyPlayerForLater(Player player, float partialticks, PoseStack matrix, MultiBufferSource buffer, int light, CallbackInfo ci) {
         currentPlayer = player;
-        currentSource = buffer;
     }
 
     @Inject(method = "onEvent", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/event/RenderPlayerEvent$Pre;getPlayer()Lnet/minecraft/world/entity/player/Player;"))
@@ -82,38 +77,14 @@ public abstract class RenderEventsMixin {
     @Inject(method = "renderArmPre", at = @At("HEAD"), cancellable = true)
     public void renderChangedArmPre(ModelPart arm, CallbackInfo ci) {
         remapHumanoidPart(arm).ifPresent(pair -> {
-            if (pair.getSecond() == null) {
-                ci.cancel();
-                return;
-            }
-
-            this.renderArmPre(pair.getFirst());
             ci.cancel();
         });
     }
-    @Unique private static boolean applyYValue = false;
-    @Unique private static float currentYValue = 0.0f;
+
     @Inject(method = "renderArmPost", at = @At("HEAD"), cancellable = true)
     public void renderChangedArmPost(ModelPart arm, float x, float z, boolean right, boolean sneaking, int light, PoseStack matrix, VertexConsumer builder, CallbackInfo ci) {
         remapHumanoidPart(arm).ifPresent(pair -> {
-            if (pair.getSecond() == null) {
-                ci.cancel();
-                return;
-            }
-
-            VertexConsumer newTexture = currentSource.getBuffer(RenderType.entityCutout(pair.getSecond()));
-            currentYValue = pair.getFirst().y;
-            applyYValue = true;
-            this.renderArmPost(pair.getFirst(), x, z, right, sneaking, light, matrix, newTexture);
             ci.cancel();
         });
-    }
-
-    @Inject(method = "renderArmPost", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V", remap = true))
-    public void renderChangedArmOffset(ModelPart arm, float x, float z, boolean right, boolean sneaking, int light, PoseStack matrix, VertexConsumer builder, CallbackInfo ci) {
-        if (applyYValue) {
-            arm.y = currentYValue + (sneaking ? 14.0f : 22.0f);
-            applyYValue = false;
-        }
     }
 }
