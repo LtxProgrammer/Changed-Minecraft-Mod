@@ -5,10 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkHeadInitAnimator;
-import net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkHeadSwimAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,53 +16,44 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-public class ArmorMermaidSharkMaleModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkMaleModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_male")).get();
+public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkUpperBodyModel<T>> {
+    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_upper")).get();
+    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_upper")).get();
 
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart LeftArm;
     private final ModelPart RightArm;
-    private final HumanoidAnimator<T, ArmorMermaidSharkMaleModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> animator;
 
-    public ArmorMermaidSharkMaleModel(ModelPart root) {
+    public ArmorMermaidSharkUpperBodyModel(ModelPart root) {
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
         this.LeftArm = root.getChild("LeftArm");
         this.RightArm = root.getChild("RightArm");
 
-        this.animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
-                .addPreset(AnimatorPresets.sharkUpperBody(Head, Torso, LeftArm, RightArm))
-                .addAnimator(new SharkHeadInitAnimator<>(Head))
-                .addAnimator(new SharkHeadSwimAnimator<>(Head))
-                .addAnimator(new ArmBobAnimator<>(LeftArm, RightArm))
-                .addAnimator(new ArmRideAnimator<>(LeftArm, RightArm));
+        animator = HumanoidAnimator.of(this).hipOffset(4.0f)
+                .addPreset(AnimatorPresets.leglessSharkUpperBodyArmor(
+                        Head, Torso, LeftArm, RightArm));
     }
 
     public static LayerDefinition createArmorLayer(ArmorModel layer) {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
         PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 1.5F, 0.0F));
 
-        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(16, 24).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 4.0F, 4.0F, layer.deformation.extend(0.25F)), PartPose.offset(0.0F, 8.5F, 0.0F));
-
-        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create(), PartPose.offset(0.0F, 4.25F, 0.0F));
-
-        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 5.5F, 0.0F));
-
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorMermaidSharkMaleModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> getAnimator() {
         return animator;
     }
 
