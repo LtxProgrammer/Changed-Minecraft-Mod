@@ -716,6 +716,9 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public boolean tryTransfurTarget(Entity entity) {
+        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+            return false;
+
         float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
         damage = ProcessTransfur.difficultyAdjustTransfurAmount(entity.level.getDifficulty(), damage);
         TransfurVariant<?> variant = this.getTransfurVariant();
