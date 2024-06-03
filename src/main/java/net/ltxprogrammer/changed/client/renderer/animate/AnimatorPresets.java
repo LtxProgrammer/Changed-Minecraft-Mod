@@ -891,8 +891,6 @@ public class AnimatorPresets {
         };
     }
 
-
-
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessSharkUpperBodyArmor(ModelPart head, ModelPart torso,
                                                                                                                            ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
@@ -912,9 +910,9 @@ public class AnimatorPresets {
     }
 
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRay(ModelPart head, ModelPart torso,
-                                                                                                               ModelPart leftArm, ModelPart rightArm,
-                                                                                                               ModelPart abdomen, ModelPart lowerAbdomen,
-                                                                                                               ModelPart tail, List<ModelPart> tailJoints) {
+                                                                                                                       ModelPart leftArm, ModelPart rightArm,
+                                                                                                                       ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                                       ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addPreset(leglessV2VerticalSwim(abdomen, lowerAbdomen, tail, tailJoints))
                     .addPreset(orcaUpperBody(head, torso, leftArm, rightArm))
@@ -923,6 +921,24 @@ public class AnimatorPresets {
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
                     .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
                     .addCameraAnimator(new OrcaCameraSwimAnimator<>());
+        };
+    }
+
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayUpperBodyArmor(ModelPart head, ModelPart torso,
+                                                                                                                            ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.addPreset(orcaUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new OrcaHeadSwimAnimator<>(head))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                                            ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addPreset(leglessV2VerticalSwim(abdomen, lowerAbdomen, tail, tailJoints));
         };
     }
 

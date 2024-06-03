@@ -18,16 +18,16 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorSirenAbdomenModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
+public class ArmorFemaleMantaRayAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorFemaleMantaRayAbdomenModel<T>> {
+    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_manta_ray_female_abdomen")).get();
+    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_manta_ray_female_abdomen")).get();
 
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;
     private final ModelPart Tail;
-    private final HumanoidAnimator<T, ArmorSirenAbdomenModel<T>> animator;
+    private final HumanoidAnimator<T, ArmorFemaleMantaRayAbdomenModel<T>> animator;
 
-    public ArmorSirenAbdomenModel(ModelPart modelPart) {
+    public ArmorFemaleMantaRayAbdomenModel(ModelPart modelPart) {
         this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
@@ -38,7 +38,7 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
         var tailQuaternary = tailTertiary.getChild("TailQuaternary");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f)
-                .addPreset(AnimatorPresets.leglessSharkAbdomenArmor(
+                .addPreset(AnimatorPresets.leglessMantaRayAbdomenArmor(
                         Abdomen, LowerAbdomen,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary)));
     }
@@ -47,9 +47,9 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(40, 7).addBox(-4.0F, -1.0F, -2.0F, 8.0F, 5.0F, 4.0F, layer.deformation), PartPose.offset(0.0F, 8.0F, 0.5F));
+        PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(40, 7).addBox(-4.0F, -1.0F, -2.0F, 8.0F, 5.0F, 4.0F, layer.deformation), PartPose.offset(0.0F, 8.0F, 0.35F));
 
-        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 8).addBox(-4.5F, -1.5F, -1.75F, 9.0F, 7.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.5F, -0.75F));
+        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(0, 8).addBox(-4.5F, -1.0F, -1.75F, 9.0F, 7.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.5F, -0.6F));
 
         PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(0, 20).addBox(-4.0F, -0.75F, -2.0F, 8.0F, 6.0F, 4.0F, layer.altDeformation.extend(0.65F)), PartPose.offset(0.0F, 6.0F, 0.5F));
 
@@ -65,7 +65,7 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorSirenAbdomenModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorFemaleMantaRayAbdomenModel<T>> getAnimator() {
         return animator;
     }
 

@@ -160,6 +160,10 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(ArmorLatexFemaleWolfModel.INNER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.INNER));
         event.registerLayerDefinition(ArmorLatexFemaleWolfModel.OUTER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.OUTER));
 
+        event.registerLayerDefinition(ArmorFemaleMantaRayUpperBodyModel.INNER_ARMOR, () -> ArmorFemaleMantaRayUpperBodyModel.createArmorLayer(ArmorModel.INNER));
+        event.registerLayerDefinition(ArmorFemaleMantaRayUpperBodyModel.OUTER_ARMOR, () -> ArmorFemaleMantaRayUpperBodyModel.createArmorLayer(ArmorModel.OUTER));
+        event.registerLayerDefinition(ArmorFemaleMantaRayAbdomenModel.INNER_ARMOR, () -> ArmorFemaleMantaRayAbdomenModel.createArmorLayer(ArmorModel.INNER));
+        event.registerLayerDefinition(ArmorFemaleMantaRayAbdomenModel.OUTER_ARMOR, () -> ArmorFemaleMantaRayAbdomenModel.createArmorLayer(ArmorModel.OUTER));
         event.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.INNER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.createArmorLayer(ArmorModel.INNER));
         event.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.OUTER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.createArmorLayer(ArmorModel.OUTER));
         event.registerLayerDefinition(ArmorMermaidSharkUpperBodyModel.INNER_ARMOR, () -> ArmorMermaidSharkUpperBodyModel.createArmorLayer(ArmorModel.INNER));
