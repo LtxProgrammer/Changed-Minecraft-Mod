@@ -2,9 +2,11 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,15 +27,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class GasCanister extends BlockItem implements SpecializedAnimations {
-    public static final int CAPACITY = 400;
+    public static final int CAPACITY = 800;
 
-    private final List<Supplier<? extends TransfurVariant<?>>> variants;
-    private final Color3 color;
+    private final Supplier<? extends TransfurGas> gas;
 
-    public GasCanister(Block block, List<Supplier<? extends TransfurVariant<?>>> variants, Color3 color) {
-        super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(400));
-        this.variants = variants;
-        this.color = color;
+    public GasCanister(Block block, Supplier<? extends TransfurGas> gas) {
+        super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(CAPACITY));
+        this.gas = gas;
     }
 
     public int getUseDuration(ItemStack stack) {
@@ -61,11 +61,11 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
             return;
         }
 
-        if (level.isClientSide || variants.isEmpty())
+        if (level.isClientSide || gas.get().variants.isEmpty())
             return;
 
         GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level).setVariant(
-                variants.get(level.random.nextInt(variants.size())).get()
+                Util.getRandom(gas.get().variants, level.random).get()
         );
 
         float randX = (level.random.nextFloat(90.0f) - 45.0f) * 0.5f;
@@ -81,7 +81,7 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
                 .add(0, -0.5, 0)
         );
 
-        nParticle.setColor(color);
+        nParticle.setColor(gas.get().getColor());
         nParticle.shootFromRotation(entity, entity.getXRot() + randX, entity.getYRot() + randY, 0.0F, 0.5F, 1.0F);
         level.addFreshEntity(nParticle);
 

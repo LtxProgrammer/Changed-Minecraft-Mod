@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class GasCanisterBlockEntity extends BlockEntity {
     private int usage = 0;
+    private boolean infinite = false; // Primarily for mapmakers
 
     public GasCanisterBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ChangedBlockEntities.GAS_CANISTER.get(), blockPos, blockState);
@@ -18,12 +19,14 @@ public class GasCanisterBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putInt("Usage", usage);
+        tag.putBoolean("Infinite", infinite);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Usage")) usage = tag.getByte("Usage");
+        if (tag.contains("Usage")) usage = tag.getInt("Usage");
+        if (tag.contains("Infinite")) infinite = tag.getBoolean("Infinite");
     }
 
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -31,13 +34,14 @@ public class GasCanisterBlockEntity extends BlockEntity {
     }
 
     public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
+        CompoundTag tag = super.getUpdateTag();
         tag.putInt("Usage", usage);
+        tag.putBoolean("Infinite", infinite);
         return tag;
     }
 
     public int getUsage() {
-        return usage;
+        return infinite ? 0 : usage;
     }
 
     public void setUsage(int usage) {

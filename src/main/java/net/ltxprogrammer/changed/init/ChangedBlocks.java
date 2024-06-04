@@ -61,6 +61,7 @@ public class ChangedBlocks {
 
     public static final RegistryObject<FreshAirBlock> FRESH_AIR = registerNoItem("fresh_air", () -> new FreshAirBlock(BlockBehaviour.Properties.of(Material.AIR).noCollission().noDrops().air()));
 
+    public static final RegistryObject<AirConditionerBlock> AIR_CONDITIONER = register("air_conditioner", () -> new AirConditionerBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
     public static final RegistryObject<Beaker> BEAKER = register("beaker", Beaker::new, ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<BedsideIVRack> BEDSIDE_IV_RACK = register("bedside_iv_rack", BedsideIVRack::new, ChangedBlocks::translucentRenderer);
     public static final RegistryObject<BeehiveBed> BEEHIVE_BED = register("beehive_bed", BeehiveBed::new);
@@ -148,8 +149,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LabBlock> WALL_VENT = register("wall_vent", () -> new LabBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(2.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_WHITE = register("wall_white", () -> new LabBlock(BlockBehaviour.Properties.copy(WALL_GRAY.get()).color(MaterialColor.QUARTZ)));
     public static final RegistryObject<GasCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
-            () -> new GasCanisterBlock(List.of(ChangedTransfurVariants.GAS_WOLF), Color3.fromInt(0x7fbaff)), null,
-            canister -> new GasCanister(canister, List.of(ChangedTransfurVariants.GAS_WOLF), Color3.fromInt(0x7fbaff)));
+            () -> new GasCanisterBlock(ChangedFluids.WOLF_GAS), null,
+            canister -> new GasCanister(canister, ChangedFluids.WOLF_GAS));
     public static final RegistryObject<LabTable> WHITE_LAB_TABLE = register("white_lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<GasFluidBlock> WOLF_GAS = registerNoItem("wolf_gas", () -> new GasFluidBlock(ChangedFluids.WOLF_GAS));
 

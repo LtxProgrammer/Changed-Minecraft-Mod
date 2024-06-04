@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -22,11 +23,16 @@ public abstract class WolfGas extends TransfurGas {
             FluidAttributes.builder(Changed.modResource("blocks/wolf_gas"), Changed.modResource("blocks/wolf_gas"))
                     .viscosity(200).color(0x7FFFFFFF))
             .explosionResistance(100f)
-            .tickRate(4).levelDecreasePerBlock(2)
+            .tickRate(4).levelDecreasePerBlock(1)
             .block(ChangedBlocks.WOLF_GAS);
 
     protected WolfGas() {
         super(PROPERTIES, ChangedTransfurVariants.GAS_WOLF);
+    }
+
+    @Override
+    public Color3 getColor() {
+        return Color3.fromInt(0x7fbaff);
     }
 
     @Override

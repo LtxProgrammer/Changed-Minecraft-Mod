@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.fluid;
 
+import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -14,6 +16,8 @@ public abstract class Gas extends ForgeFlowingFluid {
     protected Gas(Properties properties) {
         super(properties);
     }
+
+    public abstract Color3 getColor();
 
     @Override
     protected FluidState getNewLiquid(LevelReader level, BlockPos pos, BlockState state) {
@@ -57,5 +61,10 @@ public abstract class Gas extends ForgeFlowingFluid {
     @Override
     protected boolean isWaterHole(BlockGetter level, Fluid fluid, BlockPos pos, BlockState state, BlockPos otherPos, BlockState otherState) {
         return false; // Allows gas to spread on top of itself
+    }
+
+    @Override
+    protected boolean canSpreadTo(BlockGetter level, BlockPos pos, BlockState state, Direction direction, BlockPos otherPos, BlockState otherState, FluidState otherFluidState, Fluid fluid) {
+        return super.canSpreadTo(level, pos, state, direction, otherPos, otherState, otherFluidState, fluid) && !otherState.is(ChangedBlocks.FRESH_AIR.get());
     }
 }
