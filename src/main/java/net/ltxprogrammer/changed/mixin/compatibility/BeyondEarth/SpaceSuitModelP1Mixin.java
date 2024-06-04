@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = SpaceSuitModel.SPACE_SUIT_P1.class, remap = false)
 public abstract class SpaceSuitModelP1Mixin {
-    @Redirect(method = "renderToBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;getModel()Lnet/minecraft/client/model/EntityModel;"))
+    @Redirect(method = "renderToBuffer", remap = true, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;getModel()Lnet/minecraft/client/model/EntityModel;", remap = true))
     public EntityModel<? extends LivingEntity> getHumanoidModel(LivingEntityRenderer<LivingEntity, ?> instance) {
         var model = instance.getModel();
         if (model instanceof AdvancedHumanoidModelInterface<?, ?> changedModel) {
