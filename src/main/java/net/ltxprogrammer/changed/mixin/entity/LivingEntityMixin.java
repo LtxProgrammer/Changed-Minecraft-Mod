@@ -266,4 +266,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         cir.getReturnValue().add(ChangedAttributes.TRANSFUR_TOLERANCE.get());
     }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void doGasDamage(CallbackInfo ci) {
+
+    }
 }

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class ChangedTransfurVariants {
     public static final DeferredRegister<TransfurVariant<?>> REGISTRY = ChangedRegistry.TRANSFUR_VARIANT.createDeferred(Changed.MODID);
 
-    public static final RegistryObject<TransfurVariant<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = register("form_aerosol_latex_wolf",
+    public static final RegistryObject<TransfurVariant<AerosolLatexWolf>> GAS_WOLF = register("form_aerosol_latex_wolf",
             TransfurVariant.Builder.of(ChangedEntities.AEROSOL_LATEX_WOLF).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexBeifeng>> LATEX_BEIFENG = register("form_latex_beifeng",
             TransfurVariant.Builder.of(ChangedEntities.BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
