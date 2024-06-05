@@ -222,7 +222,7 @@ dependencies {
     implementation fg.deobf("dev.kosmx:player-animation-lib-forge-1.0.2+1.18:1.0.2")
     runtimeOnly fg.deobf("net:bettercombat-forge-1.6.2+1.18.2:1.6.2")
 
-    compileOnly fg.deobf("net.mrscauthd:Beyond-Earth-1.18.2:6.2")
+    compileOnly fg.deobf("net.mrscauthd:Beyond-Earth-1.18.2:7.0-SNAPSHOT")
 
     implementation fg.deobf("tschipp:carryon-1.18.2:1.17.2.15")
 
