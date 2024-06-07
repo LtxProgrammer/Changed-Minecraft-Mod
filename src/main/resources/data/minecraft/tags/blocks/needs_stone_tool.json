@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:air_conditioner",
     "changed:black_railing",
     "changed:blue_lab_door",
     "changed:infuser",
