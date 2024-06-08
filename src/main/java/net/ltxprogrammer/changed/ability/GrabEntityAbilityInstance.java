@@ -421,15 +421,16 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (attackDown && useDown && suited) {
-                if (this.entity.getChangedEntity().tryAbsorbTarget(this.grabbedEntity, this.entity, 4.0f, null)) {
+                if (this.entity.getChangedEntity().tryAbsorbTarget(this.grabbedEntity, this.entity, 4.0f, null)
+                        && !this.entity.getLevel().isClientSide) {
                     this.releaseEntity();
                     return;
                 }
             }
 
             if (attackDown && !suited) {
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(),
-                        TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE)) && !this.entity.getLevel().isClientSide)
+                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(), TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE))
+                        && !this.entity.getLevel().isClientSide)
                     this.releaseEntity();
             }
 
