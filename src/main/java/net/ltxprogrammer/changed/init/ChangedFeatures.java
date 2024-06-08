@@ -15,9 +15,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -31,7 +34,9 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -130,6 +135,15 @@ public class ChangedFeatures {
 
         var spawner = event.getSpawns().getSpawner(MobCategory.MONSTER);
         ChangedEntities.SPAWNING_ENTITY.forEach(listConsumer -> listConsumer.accept(event, spawner));
+    }
+
+    @SubscribeEvent
+    public static void canEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
+        if (event.getSpawnReason() != MobSpawnType.NATURAL) return;
+
+        if (ChangedEntities.DIMENSION_RESTRICTIONS.entrySet().stream().filter(entry -> entry.getKey().get().equals(event.getEntityLiving().getType()))
+                .anyMatch(entry -> !entry.getValue().test(event.getEntityLiving().level)))
+            event.setResult(Event.Result.DENY);
     }
 
     private record FeatureRegistration(GenerationStep.Decoration stage, Set<ResourceLocation> biomes,
