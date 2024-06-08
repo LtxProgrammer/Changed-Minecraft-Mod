@@ -358,6 +358,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 try {
                     instance.tick(event.player);
                     if (!event.player.isSpectator()) {
+                        if (!instance.entity.level.isClientSide)
+                            instance.entity.tickLeash();
                         instance.getChangedEntity().visualTick(event.player.level);
                     }
                 } catch (Exception x) {

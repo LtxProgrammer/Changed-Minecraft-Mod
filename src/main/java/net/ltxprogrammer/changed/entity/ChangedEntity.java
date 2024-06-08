@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Matrix3f;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -956,6 +957,19 @@ public abstract class ChangedEntity extends Monster {
     public double getTransfurLandSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.groundSpeed, 1.0); }
 
     public double getTransfurSwimSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.swimSpeed, 1.0); }
+
+    public CompoundTag getLeashInfoTag() {
+        return this.leashInfoTag;
+    }
+
+    public void setLeashInfoTag(CompoundTag tag) {
+        this.leashInfoTag = tag;
+    }
+
+    @Override
+    public void tickLeash() {
+        super.tickLeash();
+    }
 
     public static class ChangedClimbOnTopOfPowderSnowGoal extends ClimbOnTopOfPowderSnowGoal {
         protected final ChangedEntity latex;

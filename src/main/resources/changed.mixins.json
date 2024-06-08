@@ -38,6 +38,7 @@
     "item.ItemMixin",
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
+    "network.ClientboundSetEntityLinkPacketMixin",
     "server.ServerEntityMixin",
     "server.ServerPlayerGameModeMixin"
   ],
@@ -62,6 +63,7 @@
     "gui.SplashManagerMixin",
     "gui.TitleScreenMixin",
     "item.ItemRendererMixin",
+    "network.ClientPacketListenerMixin",
     "render.AtlasSetMixin",
     "render.CameraMixin",
     "render.CubeDefinitionMixin",
