@@ -24,23 +24,16 @@ public enum SixSection implements StringRepresentable {
     }
 
     public enum YAxis {
-        BOTTOM, MIDDLE, TOP;
+        BOTTOM, TOP;
 
         public int relativeTo(YAxis other) {
             return switch (this) {
                 case BOTTOM -> switch (other) {
                     case BOTTOM -> 0;
-                    case MIDDLE -> 1;
-                    case TOP -> 2;
-                };
-                case MIDDLE -> switch (other) {
-                    case BOTTOM -> -1;
-                    case MIDDLE -> 0;
                     case TOP -> 1;
                 };
                 case TOP -> switch (other) {
-                    case BOTTOM -> -2;
-                    case MIDDLE -> -1;
+                    case BOTTOM -> -1;
                     case TOP -> 0;
                 };
             };
