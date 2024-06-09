@@ -10,13 +10,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,14 +33,33 @@ import java.util.*;
 public class AirConditionerBlock extends AbstractCustomShapeBlock {
     public static final EnumProperty<SixSection> SECTION = EnumProperty.create("section", SixSection.class);
 
-    public static final VoxelShape SHAPE_WHOLE = Block.box(-15.0D, 1.0D, 0.0D, 31.0D, 31.0D, 12.0D);
+    public static final VoxelShape SHAPE_WHOLE = Block.box(-15.0D, 1.0D, 4.0D, 31.0D, 31.0D, 16.0D);
 
     public AirConditionerBlock(Properties properties) {
         super(properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(6.5F, 9.0F));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(SECTION, SixSection.BOTTOM_MIDDLE));
     }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(SECTION);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        Level level = context.getLevel();
+        Direction direction = context.getHorizontalDirection();
+        if (blockpos.getY() < level.getMaxBuildHeight() - 2) {
+            for (var sect : SixSection.BOTTOM_MIDDLE.getOtherValues()) {
+                if (!level.getBlockState(SixSection.BOTTOM_MIDDLE.getRelative(blockpos, direction.getOpposite(), sect)).canBeReplaced(context))
+                    return null;
+            }
+
+            return this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(SECTION, SixSection.BOTTOM_MIDDLE);
+        } else {
+            return null;
+        }
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
@@ -52,8 +70,30 @@ public class AirConditionerBlock extends AbstractCustomShapeBlock {
         return getInteractionShape(state, level, pos);
     }
 
-    public VoxelShape getInteractionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
-        return calculateShapes(blockState.getValue(FACING), SHAPE_WHOLE);
+    public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos blockPos) {
+        double x = 0.0D;
+        double z = 0.0D;
+
+        VoxelShape shape = AbstractCustomShapeBlock.calculateShapes(state.getValue(FACING), SHAPE_WHOLE);
+        switch (state.getValue(FACING)) {
+            case NORTH -> x = 1.0D;
+            case EAST -> z = 1.0D;
+            case SOUTH -> x = -1.0D;
+            case WEST -> z = -1.0D;
+        }
+
+        switch (state.getValue(SECTION)) {
+            case BOTTOM_LEFT -> { return shape.move(-x, 0.0D, -z); }
+            case TOP_LEFT -> { return shape.move(-x, -1.0D, -z); }
+
+            case BOTTOM_MIDDLE -> { return shape.move(0, 0.0D, 0); }
+            case TOP_MIDDLE -> { return shape.move(0, -1.0D, 0); }
+
+            case BOTTOM_RIGHT -> { return shape.move(x, 0.0D, z); }
+            case TOP_RIGHT -> { return shape.move(x, -1.0D, z); }
+        }
+
+        return shape;
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
@@ -98,16 +138,11 @@ public class AirConditionerBlock extends AbstractCustomShapeBlock {
     }
 
     @Override
-    public boolean getWeakChanges(BlockState state, LevelReader level, BlockPos pos) {
-        return true;
-    }
-
-    @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack item) {
         super.setPlacedBy(level, pos, state, entity, item);
         var thisSect = state.getValue(SECTION);
         for (var sect : thisSect.getOtherValues())
-            level.setBlockAndUpdate(thisSect.getRelative(pos, state.getValue(FACING).getOpposite(), sect), state.setValue(SECTION, sect));
+            level.setBlockAndUpdate(thisSect.getRelative(pos, state.getValue(FACING), sect), state.setValue(SECTION, sect));
     }
 
     protected BlockState getBlockState(BlockState state, LevelReader level, BlockPos pos, SixSection otherSect) {
@@ -118,12 +153,13 @@ public class AirConditionerBlock extends AbstractCustomShapeBlock {
 
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos, Either<Boolean, Direction.Axis> allCheckOrAxis) {
         if (allCheckOrAxis.left().isPresent() && !allCheckOrAxis.left().get() && state.getValue(SECTION) == SixSection.BOTTOM_MIDDLE)
-            return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
+            return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()))
+                    .isFaceSturdy(level, pos.relative(state.getValue(FACING).getOpposite()), state.getValue(FACING));
 
         var thisSect = state.getValue(SECTION);
         for (var sect : allCheckOrAxis.left().isPresent() && allCheckOrAxis.left().get() ? Arrays.stream(SixSection.values()).toList() : thisSect.getOtherValues()) {
             if (allCheckOrAxis.right().isPresent()) {
-                if (!thisSect.isOnAxis(sect, state.getValue(FACING).getOpposite(), allCheckOrAxis.right().get()))
+                if (!thisSect.isOnAxis(sect, state.getValue(FACING), allCheckOrAxis.right().get()))
                     continue;
             }
 
@@ -172,6 +208,20 @@ public class AirConditionerBlock extends AbstractCustomShapeBlock {
         }
 
         super.playerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return super.rotate(state, rotation);
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        if (mirror == Mirror.NONE)
+            return super.mirror(state, mirror);
+        else {
+            return super.mirror(state, mirror).setValue(SECTION, state.getValue(SECTION).getHorizontalNeighbor());
+        }
     }
 
     @Override
