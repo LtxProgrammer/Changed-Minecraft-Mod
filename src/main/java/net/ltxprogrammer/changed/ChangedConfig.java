@@ -91,7 +91,11 @@ public class ChangedConfig {
     }
 
     public static class Server {
+        public final ForgeConfigSpec.ConfigValue<Boolean> showTFNametags;
+
         public Server(ForgeConfigSpec.Builder builder) {
+            builder.comment("Should transfurred players have a nametag");
+            showTFNametags = builder.define("showTFNametags", true);
         }
     }
 

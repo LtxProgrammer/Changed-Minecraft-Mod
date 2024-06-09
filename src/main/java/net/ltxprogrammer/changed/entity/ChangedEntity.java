@@ -17,8 +17,8 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.Util;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -281,7 +281,7 @@ public abstract class ChangedEntity extends Monster {
 
     public boolean shouldShowName() {
         return underlyingPlayer != null && underlyingPlayer.level.isClientSide ?
-                FMLEnvironment.dist == Dist.CLIENT && !(underlyingPlayer instanceof LocalPlayer) : super.isCustomNameVisible();
+                !UniversalDist.isLocalPlayer(this.getUnderlyingPlayer()) : super.shouldShowName();
     }
 
     public ItemStack getUseItem() {

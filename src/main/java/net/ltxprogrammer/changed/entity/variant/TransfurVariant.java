@@ -251,7 +251,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             specialLatex.setSpecialForm(UUID.fromString(
                     getFormId().toString().substring(Changed.modResourceStr("special/form_").length())));
 
-        latexForm.setCustomName(PatreonBenefits.getPlayerName(player));
+        latexForm.setCustomName(player.getDisplayName());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             if (player == Minecraft.getInstance().player)
                 latexForm.setCustomNameVisible(false);

@@ -5,10 +5,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.data.BiListener;
-import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
-import net.ltxprogrammer.changed.entity.PlayerDataExtension;
-import net.ltxprogrammer.changed.entity.PlayerMover;
-import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
@@ -29,6 +26,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -192,9 +190,23 @@ public class EventHandlerClient {
     public static class ForgeEventHandler {
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
-        public static void onNameFormat(PlayerEvent.NameFormat event) {
-            if (event.getEntity() instanceof Player player)
-                event.setDisplayname(PatreonBenefits.getPlayerName(player, event.getDisplayname()));
+        public static void onNameFormat(RenderNameplateEvent event) {
+            if (event.getEntity() instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null) {
+                if (!Changed.config.server.showTFNametags.get()) {
+                    event.setResult(Event.Result.DENY);
+                    return;
+                }
+
+                var variant = ProcessTransfur.getPlayerTransfurVariant(changedEntity.getUnderlyingPlayer());
+                if (variant != null && variant.isTransfurring()) {
+                    event.setResult(Event.Result.DENY);
+                    return;
+                }
+
+                event.setContent(PatreonBenefits.getPlayerName(changedEntity.getUnderlyingPlayer()));
+            } else if (event.getEntity() instanceof Player player) {
+                event.setContent(PatreonBenefits.getPlayerName(player, event.getContent()));
+            }
         }
 
         @SubscribeEvent

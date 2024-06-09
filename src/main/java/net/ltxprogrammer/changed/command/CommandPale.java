@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 public class CommandPale {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("set_pale_exposure").requires(p -> p.hasPermission(2))
+        event.getDispatcher().register(Commands.literal("setpaleexposure").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("form", IntegerArgumentType.integer(0, 72000))
                                 .executes(context -> {
@@ -21,7 +21,7 @@ public class CommandPale {
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )));
-        event.getDispatcher().register(Commands.literal("cure_pale").requires(p -> p.hasPermission(2))
+        event.getDispatcher().register(Commands.literal("curepale").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> {
                             Pale.tryCure(EntityArgument.getPlayer(context, "player"));

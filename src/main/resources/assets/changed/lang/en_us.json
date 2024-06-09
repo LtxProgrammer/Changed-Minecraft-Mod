@@ -158,7 +158,7 @@
   "gamerule.changed:keepConscious": "Always Keep Conscious on Transfur",
   "gamerule.changed:keepForm": "Permanent Transfur",
   "gamerule.changed:latexGrowthRate": "Latex Growth Percentage",
-  "gamerule.changed:transfurTolerance": "Latex Entity Transfur Damage (Ticks)",
+  "gamerule.changed:doTransfurAnimation": "Players have a small transfur animation",
   "gamerule.changed:npcWantFusePlayer": "Latex NPCs Want to Fuse With Player",
   "gamerule.changed:doPale": "Is Pale Enabled",
 
