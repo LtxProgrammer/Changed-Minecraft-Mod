@@ -18,6 +18,7 @@
     "CGM.LatexItemInHandLayerMixin",
     "FirstPerson.FirstPersonBaseMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
+    "Leashed.LeadUtilMixin",
     "Moonlight.AbstractUpperBodyAnimatorMixin",
     "Moonlight.LatexItemInHandLayerMixin",
     "NotEnoughAnimations.HumanoidAnimatorMixin",

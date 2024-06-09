@@ -18,6 +18,7 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
             .put("net.ltxprogrammer.changed.mixin.compatibility.CGM", "cgm")
             .put("net.ltxprogrammer.changed.mixin.compatibility.FirstPerson", "firstperson")
             .put("net.ltxprogrammer.changed.mixin.compatibility.HardcoreRevival", "hardcorerevival")
+            .put("net.ltxprogrammer.changed.mixin.compatibility.Leashed", "leashed")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Moonlight", "selene")
             .put("net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations", "notenoughanimations")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Oculus", "oculus")

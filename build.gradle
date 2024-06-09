@@ -226,6 +226,8 @@ dependencies {
 
     implementation fg.deobf("tschipp:carryon-1.18.2:1.17.2.15")
 
+    compileOnly fg.deobf("plutosion:leashed-1.18.1:1.2.3")
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
