@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "#V#",
+    "III"
+  ],
+  "key": {
+    "#": {
+      "item": "changed:duct"
+    },
+    "V": {
+      "item": "changed:vent_fan"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "changed:air_conditioner"
+  }
+}

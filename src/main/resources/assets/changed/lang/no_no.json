@@ -187,6 +187,7 @@
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
   "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli transpelsert.",
 
+  "block.changed.air_conditioner": "Klimaanlegg",
   "block.changed.beaker": "Begerglass",
   "block.changed.bedside_iv_rack": "IV stativ",
   "block.changed.beehive_bed": "Bikubeseng",
