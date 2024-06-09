@@ -41,11 +41,11 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("form_dark_latex_yufeng", TransfurVariant.Builder.of(ChangedEntities.BLACK_GOO_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX));
     public static final RegistryObject<TransfurVariant<LatexAlien>> LATEX_ALIEN = register("form_latex_alien",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_ALIEN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision());
+            TransfurVariant.Builder.of(ChangedEntities.GOO_ALIEN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.7f).nightVision().absorbing());
     public static final RegistryObject<TransfurVariant<LatexBee>> LATEX_BEE = register("form_latex_bee",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_BEE).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(TransfurVariant.BreatheMode.WEAK));
+            TransfurVariant.Builder.of(ChangedEntities.GOO_BEE).groundSpeed(1.05f).swimSpeed(0.75f).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(TransfurVariant.BreatheMode.WEAK).absorbing());
     public static final RegistryObject<TransfurVariant<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("form_latex_benign_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.BENIGN_GOO_WOLF).groundSpeed(0.15f).swimSpeed(0.15f).noVision().disableItems());
+            TransfurVariant.Builder.of(ChangedEntities.BENIGN_GOO_WOLF).groundSpeed(0.15f).swimSpeed(0.15f).noVision().disableItems().absorbing());
     public static final RegistryObject<TransfurVariant<LatexBlueDragon>> LATEX_BLUE_DRAGON = register("form_latex_blue_dragon", TransfurVariant.Builder.of(ChangedEntities.BLUE_GOO_DRAGON)
             .groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<LatexBlueWolf>> LATEX_BLUE_WOLF = register("form_latex_blue_wolf",
@@ -101,7 +101,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexShark>> LATEX_SHARK = register("form_latex_shark",
             TransfurVariant.Builder.of(ChangedEntities.GOO_SHARK).groundSpeed(0.875f).swimSpeed(1.30f).stepSize(0.7f).gills().absorbing());
     public static final RegistryObject<TransfurVariant<LatexSnake>> LATEX_SNAKE = register("form_latex_snake",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_SNAKE).groundSpeed(1.0F).swimSpeed(0.95f).additionalHealth(6).stepSize(1.1f).noLegs().addAbility(ChangedAbilities.SLITHER));
+            TransfurVariant.Builder.of(ChangedEntities.GOO_SNAKE).groundSpeed(1.0F).swimSpeed(0.95f).additionalHealth(6).stepSize(1.1f).absorbing().noLegs().addAbility(ChangedAbilities.SLITHER));
     public static final RegistryObject<TransfurVariant<LatexSniperDog>> LATEX_SNIPER_DOG = register("form_latex_sniper_dog",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SNIPER_DOG).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexSquirrel>> LATEX_SQUIRREL = register("form_latex_squirrel",
@@ -111,7 +111,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexTigerShark>> LATEX_TIGER_SHARK = register("form_latex_tiger_shark",
             TransfurVariant.Builder.of(ChangedEntities.GOO_TIGER_SHARK).groundSpeed(0.925f).swimSpeed(1.2f).additionalHealth(8).gills().addAbility(ChangedAbilities.SUMMON_SHARKS));
     public static final RegistryObject<TransfurVariant<LatexTrafficConeDragon>> LATEX_TRAFFIC_CONE_DRAGON = register("form_latex_traffic_cone_dragon",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON).groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).absorbing());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_TRAFFIC_CONE_DRAGON).groundSpeed(1.05f).swimSpeed(0.95f).stepSize(0.7f).replicating());
     public static final RegistryObject<TransfurVariant<LatexTranslucentLizard>> LATEX_TRANSLUCENT_LIZARD = register("form_latex_translucent_lizard",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_TRANSLUCENT_LIZARD).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).absorbing());
     public static final RegistryObject<TransfurVariant<LatexWatermelonCat>> LATEX_WATERMELON_CAT = register("form_latex_watermelon_cat",
@@ -125,28 +125,28 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LightLatexKnight>> LIGHT_LATEX_KNIGHT = register("form_light_latex_knight",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_GOO_KNIGHT).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing());
     public static final RegistryObject<TransfurVariant<LightLatexKnightFusion>> LIGHT_LATEX_KNIGHT_FUSION = register("form_light_latex_knight_fusion",
-            () -> TransfurVariant.Builder.of(LIGHT_LATEX_KNIGHT.get(), ChangedEntities.WHITE_GOO_KNIGHT_FUSION).additionalHealth(8).fusionOf(LIGHT_LATEX_WOLF_MALE.get(), LIGHT_LATEX_KNIGHT.get()));
+            () -> TransfurVariant.Builder.of(LIGHT_LATEX_KNIGHT.get(), ChangedEntities.WHITE_GOO_KNIGHT_FUSION).replicating().additionalHealth(8).fusionOf(LIGHT_LATEX_WOLF_MALE.get(), LIGHT_LATEX_KNIGHT.get()));
     public static final RegistryObject<TransfurVariant<LatexMantaRayFemale>> LATEX_MANTA_RAY_FEMALE = register("form_latex_manta_ray/female",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MANTA_RAY_FEMALE).groundSpeed(0.26F).swimSpeed(1.9F).absorbing().additionalHealth(8).noLegs());
     public static final RegistryObject<TransfurVariant<LatexMantaRayMale>> LATEX_MANTA_RAY_MALE = register("form_latex_manta_ray/male",
-            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MANTA_RAY_MALE));
+            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MANTA_RAY_MALE).replicating());
     public static final RegistryObject<TransfurVariant<LatexSiren>> LATEX_SIREN = register("form_latex_mermaid_shark/female",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SIREN).groundSpeed(0.26F).swimSpeed(1.9F).additionalHealth(8).noLegs().absorbing().addAbility(ChangedAbilities.SIREN_SING));
     public static final RegistryObject<TransfurVariant<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("form_latex_mermaid_shark/male",
-            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MERMAID_SHARK).groundSpeed(0.26F).swimSpeed(1.9F).additionalHealth(8).noLegs());
+            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MERMAID_SHARK).groundSpeed(0.26F).swimSpeed(1.9F).additionalHealth(8).replicating().noLegs());
     public static final RegistryObject<TransfurVariant<LatexSharkFemale>> LATEX_SHARK_FUSION_FEMALE = register("form_latex_shark/female",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SHARK_FEMALE).groundSpeed(0.9f).swimSpeed(1.35f).stepSize(0.7f).additionalHealth(8).absorbing().fusionOf(LATEX_SHARK.get(), Shark.class));
     public static final RegistryObject<TransfurVariant<LatexSharkMale>> LATEX_SHARK_FUSION_MALE = register("form_latex_shark/male",
-            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SHARK_MALE).groundSpeed(0.9f).swimSpeed(1.35f).stepSize(0.7f).additionalHealth(8).fusionOf(LATEX_SHARK.get(), Shark.class));
+            () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SHARK_MALE).groundSpeed(0.9f).swimSpeed(1.35f).stepSize(0.7f).additionalHealth(8).replicating().fusionOf(LATEX_SHARK.get(), Shark.class));
     public static final RegistryObject<TransfurVariant<LatexSnowLeopardFemale>> LATEX_SNOW_LEOPARD_FEMALE = register("form_latex_snow_leopard/female",
             TransfurVariant.Builder.of(ChangedEntities.GOO_SNOW_LEOPARD_FEMALE).groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().jumpStrength(1.25f).additionalHealth(2).absorbing());
     public static final RegistryObject<TransfurVariant<LatexSnowLeopardMale>> LATEX_SNOW_LEOPARD_MALE = register("form_latex_snow_leopard/male",
             TransfurVariant.Builder.of(ChangedEntities.GOO_SNOW_LEOPARD_MALE).groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().jumpStrength(1.25f).additionalHealth(2));
 
     public static final RegistryObject<TransfurVariant<LatexSquidDogFemale>> LATEX_SQUID_DOG_FEMALE = register("form_latex_squid_dog/female",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_SQUID_DOG_FEMALE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL));
+            TransfurVariant.Builder.of(ChangedEntities.GOO_SQUID_DOG_FEMALE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL).absorbing());
     public static final RegistryObject<TransfurVariant<LatexSquidDogMale>> LATEX_SQUID_DOG_MALE = register("form_latex_squid_dog/male",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_SQUID_DOG_MALE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL).absorbing());
+            TransfurVariant.Builder.of(ChangedEntities.GOO_SQUID_DOG_MALE).groundSpeed(0.925f).swimSpeed(1.1f).additionalHealth(10).gills().extraHands().addAbility(ChangedAbilities.CREATE_INKBALL));
 
     public static final RegistryObject<TransfurVariant<WhiteWolfFemale>> WHITE_WOLF_FEMALE = register("form_white_wolf/female",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_WOLF_FEMALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
