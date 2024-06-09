@@ -41,7 +41,7 @@ public class AirConditionerBlock extends AbstractCustomShapeBlock {
     }
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING, SECTION);
+        builder.add(SECTION);
     }
 
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
