@@ -1,10 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurCause;
-import net.ltxprogrammer.changed.entity.TransfurMode;
-import net.ltxprogrammer.changed.entity.ai.DudNavigator;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -20,6 +16,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,13 +32,19 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     protected int ticksLeftAsPuddle = 0;
     private static final EntityDataAccessor<Boolean> DATA_PUDDLE_ID = SynchedEntityData.defineId(DarkLatexWolfPup.class, EntityDataSerializers.BOOLEAN);
 
-    private final PathNavigation goodNavigator;
-    private final DudNavigator dudNavigator;
-
     public DarkLatexWolfPup(EntityType<? extends DarkLatexWolfPup> type, Level level) {
         super(type, level);
-        this.goodNavigator = this.navigation;
-        this.dudNavigator = new DudNavigator(this, level);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        final DarkLatexWolfPup self = this;
+        return new GroundPathNavigation(this, level) {
+            @Override
+            protected boolean canUpdatePath() {
+                return super.canUpdatePath() && !self.isPuddle();
+            }
+        };
     }
 
     @Override
@@ -67,6 +71,7 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     public void setPuddle(boolean isPuddle) {
+        this.goalSelector.setControlFlag(Goal.Flag.MOVE, !isPuddle);
         this.entityData.set(DATA_PUDDLE_ID, isPuddle);
     }
 
@@ -78,18 +83,11 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     public void tick() {
         super.tick();
         if (ticksLeftAsPuddle > 0) {
-            if (this.navigation != this.dudNavigator) {
-                this.navigation.stop();
-                this.navigation = this.dudNavigator;
-            }
+            this.navigation.stop();
             this.setDeltaMovement(0, Math.min(this.getDeltaMovement().y, 0), 0);
             ticksLeftAsPuddle--;
             if (ticksLeftAsPuddle <= 0)
                 setPuddle(false);
-        } else if (this.navigation == this.dudNavigator) {
-            this.navigation = this.goodNavigator;
-            if (this.getTarget() != null)
-                this.navigation.moveTo(this.getTarget(), 1);
         }
     }
 
