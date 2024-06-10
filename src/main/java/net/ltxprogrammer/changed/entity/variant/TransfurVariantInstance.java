@@ -302,7 +302,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         }
 
         ProcessTransfur.ifPlayerTransfurred(event.getPlayer(), variant -> {
-            if (!variant.getItemUseMode().breakBlocks)
+            if (!variant.getItemUseMode().breakBlocks && !event.getPlayer().getAbilities().instabuild)
                 event.setCanceled(true);
         });
     }

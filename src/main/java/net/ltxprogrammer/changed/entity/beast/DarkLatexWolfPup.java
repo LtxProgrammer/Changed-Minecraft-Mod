@@ -13,9 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -141,11 +139,20 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     @Override
     public float getEyeHeightMul() {
         if (this.isCrouching())
-            return 0.55F;
+            return 0.65F;
         if (this.isPuddle())
-            return 0.35F;
+            return 0.9F;
         else
             return 0.8F;
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        EntityDimensions core = super.getDimensions(pose);
+        if (this.isPuddle())
+            return EntityDimensions.scalable(core.width + 0.4f, core.height - 0.5f);
+        else
+            return core;
     }
 
     @Override
