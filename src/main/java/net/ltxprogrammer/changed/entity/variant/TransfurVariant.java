@@ -390,7 +390,8 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
             var event = new UniversalAbilitiesEvent(this.abilities);
             event.addAbility(event.isNotOfTag(ChangedTags.EntityTypes.ORGANIC_LATEX), ChangedAbilities.SWITCH_TRANSFUR_MODE);
-            event.addAbility(event.isNotOfTag(ChangedTags.EntityTypes.ORGANIC_LATEX), ChangedAbilities.GRAB_ENTITY_ABILITY);
+            event.addAbility(event.isNotOfTag(ChangedTags.EntityTypes.ORGANIC_LATEX)
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS)), ChangedAbilities.GRAB_ENTITY_ABILITY);
 
             MinecraftForge.EVENT_BUS.post(event);
         }

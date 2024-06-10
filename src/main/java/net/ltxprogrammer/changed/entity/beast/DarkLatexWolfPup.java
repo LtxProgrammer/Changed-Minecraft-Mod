@@ -44,6 +44,11 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
+    public boolean tryTransfurTarget(Entity entity) {
+        return false;
+    }
+
+    @Override
     public boolean doHurtTarget(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             if (!this.isPuddle())

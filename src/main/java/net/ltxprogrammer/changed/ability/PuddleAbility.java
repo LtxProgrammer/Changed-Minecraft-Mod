@@ -1,6 +1,9 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPup;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +26,9 @@ public class PuddleAbility extends SimpleAbility {
         entity.getLevel().getEntitiesOfClass(LivingEntity.class, entity.getChangedEntity().getBoundingBox().inflate(0.25, 0, 0.25)).forEach(caught -> {
             if (caught == entity.getEntity())
                 return;
+            TransfurVariant<?> variant = TransfurVariant.getEntityVariant(caught);
+            if (variant != null && variant.getLatexType() == LatexType.DARK_LATEX)
+                return;
             caught.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2, false, false, false));
         });
     }
@@ -37,5 +43,10 @@ public class PuddleAbility extends SimpleAbility {
     @Override
     public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.HOLD;
+    }
+
+    @Override
+    public boolean canUse(IAbstractChangedEntity entity) {
+        return true;
     }
 }
