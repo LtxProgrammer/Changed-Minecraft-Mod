@@ -158,7 +158,7 @@
   "gamerule.changed:keepConscious": "Transzfurban mindig legyen eszméletben",
   "gamerule.changed:keepForm": "Maradandó transzfur",
   "gamerule.changed:latexGrowthRate": "Hagyja, hogy a latex természetes módon terjedjen",
-  "gamerule.changed:transfurTolerance": "Latex entitás transzfur sebzése (tikkek)",
+  "gamerule.changed:doTransfurAnimation": "Játékosoknak egy kis transzfur animációjuk van",
   "gamerule.changed:npcWantFusePlayer": "A latex NPC-k összeolvadni szeretnének a játékossal",
   "gamerule.changed:doPale": "A pale engedélyezve van-e",
 
