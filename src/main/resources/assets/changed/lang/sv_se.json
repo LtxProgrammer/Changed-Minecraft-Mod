@@ -152,7 +152,7 @@
   "gamerule.changed:keepConscious": "Alltid vara medveten med förpälsvandling",
   "gamerule.changed:keepForm": "Permanent förpälsvandla",
   "gamerule.changed:latexGrowthRate": "Latex tillväxtprocent",
-  "gamerule.changed:transfurTolerance": "Latex enhet förpälsvandla skada (Tickar)",
+  "gamerule.changed:doTransfurAnimation": "Spelare har en liten förpälsvandla animation",
   "gamerule.changed:npcWantFusePlayer": "Latex ISKer vill slå sig samman med spelaren",
   "gamerule.changed:doPale": "Är Pale aktiverad",
 
