@@ -8,6 +8,7 @@
     "EnchantmentHelperMixin",
     "GameDataMixin",
     "NbtUtilsMixin",
+    "PackMixin",
     "PrimaryLevelDataMixin",
     "StateHolderMixin",
     "StructurePiecesBuilderMixin",
@@ -39,6 +40,7 @@
     "item.ItemStackMixin",
     "item.ShovelItemMixin",
     "network.ClientboundSetEntityLinkPacketMixin",
+    "server.MinecraftServerMixin",
     "server.ServerEntityMixin",
     "server.ServerPlayerGameModeMixin"
   ],

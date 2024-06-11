@@ -59,6 +59,8 @@ public class BuiltinRepositorySource implements RepositorySource {
         for(String id : packIds) {
             Pack pack = Pack.create(modId + ":" + id, false,
                     this.createSupplier(this.modFile.toFile(), id), constructor, Pack.Position.TOP, PackSource.BUILT_IN);
+            if (pack instanceof PackExtender ext)
+                ext.setIncludeByDefault(false);
             if (pack != null) {
                 out.accept(pack);
             }
