@@ -971,6 +971,11 @@ public abstract class ChangedEntity extends Monster {
         super.tickLeash();
     }
 
+    @Override
+    protected double followLeashSpeed() {
+        return 0.4; // Matches melee attack goal speed
+    }
+
     public static class ChangedClimbOnTopOfPowderSnowGoal extends ClimbOnTopOfPowderSnowGoal {
         protected final ChangedEntity latex;
         protected final Level level;

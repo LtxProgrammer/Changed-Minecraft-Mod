@@ -310,6 +310,7 @@
 
   "fluid.changed.dark_latex": "Flytande mörk latex",
   "fluid.changed.white_latex": "Flytande vit latex",
+  "fluid.changed.wolf_gas": "Varg förpälsvandlagas",
 
   "biome.changed.dark_latex_plains": "Mörk latexslätter",
   "biome.changed.white_latex_forest": "Vit latexskog",
@@ -325,7 +326,7 @@
   "entity.changed.dark_latex_dragon": "Mörk drake",
   "entity.changed.dark_latex_wolf_pup": "Mörk latex vargvalp",
   "entity.changed.dark_latex_yufeng": "Mörk latex yufeng",
-  "entity.changed.gas_particle": "Latex gaspartikel",
+  "entity.changed.gas_particle": "Varg förpälsvandlagaspartikel",
   "entity.changed.headless_knight": "Huvudlös riddare",
   "entity.changed.milk_pudding": "Mjölkpudding",
   "entity.changed.latex_alien": "Latex utomjording",

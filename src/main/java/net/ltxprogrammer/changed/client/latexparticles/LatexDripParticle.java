@@ -201,6 +201,8 @@ public class LatexDripParticle extends LatexParticle {
         super.setupForRender(poseStack, partialTicks);
         if (!attached)
             return;
+        if (!attachedPart.stem.stream().allMatch(part -> part.visible))
+            return;
 
         PoseStackExtender poseStackExtender = (PoseStackExtender)poseStack;
         Vec3 entityPosition = attachedEntity.getPosition(partialTicks);

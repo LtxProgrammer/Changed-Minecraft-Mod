@@ -3,17 +3,19 @@ package net.ltxprogrammer.changed.mixin.entity;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
+import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.LocalUtil;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
@@ -26,8 +28,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -267,8 +271,25 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         cir.getReturnValue().add(ChangedAttributes.TRANSFUR_TOLERANCE.get());
     }
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void doGasDamage(CallbackInfo ci) {
+    @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
+    private void maybeAddAir(int current, CallbackInfoReturnable<Integer> cir) {
+        LivingEntity self = (LivingEntity)(Object)this;
+        if (self.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
+            return;
+        if (!self.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
+            return;
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(self));
+        if (variant != null)
+            return;
 
+        // Code from this.updateFluidOnEyes()
+        double yCheck = this.getEyeY() - (double)0.11111111F;
+
+        BlockPos blockpos = new BlockPos(this.getX(), yCheck, this.getZ());
+        FluidState fluidstate = this.level.getFluidState(blockpos);
+        double yFluid = (double)((float)blockpos.getY() + fluidstate.getHeight(this.level, blockpos));
+        if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas) {
+            cir.setReturnValue(current);
+        }
     }
 }

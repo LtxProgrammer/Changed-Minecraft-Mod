@@ -32,6 +32,7 @@ public class DarkLatexWolfPupModel extends AdvancedHumanoidModel<DarkLatexWolfPu
     private final ModelPart Body;
     private final ModelPart Tail;
     private final ModelPart Puddle;
+    private final ModelPart HeadAnchor;
     private final HumanoidAnimator<DarkLatexWolfPup, DarkLatexWolfPupModel> animator;
 
     public DarkLatexWolfPupModel(ModelPart root) {
@@ -45,6 +46,7 @@ public class DarkLatexWolfPupModel extends AdvancedHumanoidModel<DarkLatexWolfPu
         this.RightFrontLeg = root.getChild("RightArm");
         this.LeftFrontLeg = root.getChild("LeftArm");
         this.Puddle = root.getChild("Puddle");
+        this.HeadAnchor = root.getChild("HeadAnchor");
 
         var tailPrimary = Tail.getChild("TailPrimary");
         var tailSecondary = tailPrimary.getChild("TailSecondary");
@@ -178,6 +180,8 @@ public class DarkLatexWolfPupModel extends AdvancedHumanoidModel<DarkLatexWolfPu
                 .texOffs(0, 12).addBox(-3.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(4, 13).addBox(2.0F, -5.75F, 3.0F, 1.0F, 1.0F, 2.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, -6.0F));
 
+        PartDefinition HeadAnchor = partdefinition.addOrReplaceChild("HeadAnchor", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 24.95F, 0.0F, -1.5708F, 0.0F, 0.0F));
+
         return LayerDefinition.create(meshdefinition, 76, 76);
     }
 
@@ -300,6 +304,8 @@ public class DarkLatexWolfPupModel extends AdvancedHumanoidModel<DarkLatexWolfPu
 
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        if (entity.isPuddle())
+            Head.copyFrom(this.HeadAnchor); // For custom eyes layer
     }
 
     public ModelPart getArm(HumanoidArm arm) {

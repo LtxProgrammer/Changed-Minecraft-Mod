@@ -235,7 +235,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public int getCoolDown(IAbstractChangedEntity entity) { return 0; }
 
     public boolean canUse(IAbstractChangedEntity entity) { return false; }
-    public boolean canKeepUsing(IAbstractChangedEntity entity) { return false; }
+    public boolean canKeepUsing(IAbstractChangedEntity entity) { return canUse(entity); }
 
     public void startUsing(IAbstractChangedEntity entity) {}
     public void tick(IAbstractChangedEntity entity) {}

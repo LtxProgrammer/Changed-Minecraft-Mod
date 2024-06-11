@@ -5,7 +5,9 @@ import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -39,15 +41,14 @@ public abstract class TransfurGas extends Gas {
         var entity = event.getEntityLiving();
         if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
             return;
+        if (!entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
+            return;
+        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        if (variant != null)
+            return;
 
         // Code from Entity.updateFluidOnEyes()
         double yCheck = entity.getEyeY() - (double)0.11111111F;
-        Entity vehicle = entity.getVehicle();
-        if (vehicle instanceof Boat boat) {
-            if (!boat.isUnderWater() && boat.getBoundingBox().maxY >= yCheck && boat.getBoundingBox().minY <= yCheck) {
-                return;
-            }
-        }
 
         BlockPos blockpos = new BlockPos(entity.getX(), yCheck, entity.getZ());
         FluidState fluidstate = entity.level.getFluidState(blockpos);
@@ -55,7 +56,7 @@ public abstract class TransfurGas extends Gas {
         if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas transfurGas) {
             int air = entity.getAirSupply();
             int i = EnchantmentHelper.getRespiration(entity);
-            air = i > 0 && entity.getRandom().nextInt(i + 1) > 0 ? air : air - 6;
+            air = i > 0 && entity.getRandom().nextInt(i + 1) > 0 ? air : air - 3;
 
             if(air <= 0) {
                 air = 0;
