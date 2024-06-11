@@ -296,7 +296,7 @@
   "block.changed.white_lab_table": "Fehér laborasztal",
   "block.changed.white_latex_block": "Fehér latexblokk",
   "block.changed.white_latex_pillar": "Fehér latexoszlop",
-  "block.changed.wolf_gas_canister": "Farkas transzfur-gázpalack",
+  "block.changed.wolf_gas_canister": "Farkas transzfur gázpalack",
   
   "block.changed.black_pillow": "Fekete párna",
   "block.changed.blue_pillow": "Kék párna",
@@ -317,6 +317,7 @@
   
   "fluid.changed.dark_latex": "Folyékony sötét latex",
   "fluid.changed.white_latex": "Folyékony fehér latex",
+  "fluid.changed.wolf_gas": "Farkas transzfur gáz",
 
   "biome.changed.dark_latex_plains": "Sötét latex mező",
   "biome.changed.white_latex_forest": "Fehér latex erdő",
