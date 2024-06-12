@@ -1,16 +1,22 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.tfanimations.AnimationInstance;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -21,8 +27,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidModelMixin<T extends LivingEntity> extends AgeableListModel<T> implements ArmedModel, HeadedModel {
@@ -85,6 +93,18 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
 
                 if (instance != null && !FormRenderHandler.isRenderingHand())
                     instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.transfurContext.cause.getDuration());
+
+                final Minecraft minecraft = Minecraft.getInstance();
+                final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
+                final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
+
+                if (!(latexRenderer instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoidRenderer)) return;
+
+                final var latexModel = latexHumanoidRenderer.getModel(variant.getChangedEntity());
+
+                Arrays.stream(Limb.values()).map(latexModel::getTransfurHelperModel).filter(Objects::nonNull).forEach(helper -> {
+                    helper.transitionOriginal((HumanoidModel<?>)(Object)this, TransfurAnimator.getPreMorphProgression(variant.getTransfurProgression(ageInTicks)));
+                });
             } else {
                 cachedAnimationInstance.remove(entity);
             }

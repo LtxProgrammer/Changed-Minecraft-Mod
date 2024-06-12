@@ -87,14 +87,4 @@ public enum Limb {
     public boolean isVanillaPart() {
         return isVanillaPart;
     }
-
-    public TransfurAnimator.ModelPose adjustModelPose(TransfurAnimator.ModelPose pose, HumanoidModel<?> beforeModel) {
-        if (this == ABDOMEN) {
-            return pose.translate(0.0f, 12.0f, 0.0f)
-                    .averageRotation(beforeModel.leftLeg, beforeModel.rightLeg);
-        } else if (this == LOWER_TORSO)
-            return pose.translate(0.0f, 12.0f, 0.0f);
-        else
-            return pose;
-    }
 }

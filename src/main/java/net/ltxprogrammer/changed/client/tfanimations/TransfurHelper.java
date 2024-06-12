@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 
 /**
  * Provides player limb shaped parts, that are pre-divided into their joints. So the animator has an easier time lerping them
@@ -17,6 +18,8 @@ public class TransfurHelper {
 
     protected final HelperModel DigitigradeLeftLeg;
     protected final HelperModel DigitigradeRightLeg;
+    protected final HelperModel BasicLeftArm;
+    protected final HelperModel BasicRightArm;
     protected final HelperModel TailedTorso;
     protected final HelperModel FeminineTorso;
     protected final HelperModel FeminineTorsoAlt;
@@ -34,18 +37,32 @@ public class TransfurHelper {
     protected TransfurHelper(ModelPart root) {
         this.DigitigradeLeftLeg = HelperModel.fixed(root.getChild("DigitigradeLeftLeg"));
         this.DigitigradeRightLeg = HelperModel.fixed(root.getChild("DigitigradeRightLeg"));
+        this.BasicLeftArm = HelperModel.fixed(root.getChild("BasicLeftArm"));
+        this.BasicRightArm = HelperModel.fixed(root.getChild("BasicRightArm"));
         this.TailedTorso = HelperModel.fixed(root.getChild("TailedTorso"));
         this.FeminineTorso = HelperModel.fixed(root.getChild("FeminineTorso"));
         this.FeminineTorsoAlt = HelperModel.fixed(root.getChild("FeminineTorsoAlt"));
         this.SnoutedHead = HelperModel.fixed(root.getChild("SnoutedHead"));
-        this.Legless = HelperModel.withPrepare(root.getChild("Legless"), (part, model) -> {
-
+        this.Legless = HelperModel.withPrepareAndTransition(root.getChild("Legless"), (beforePose, part, model) -> {
+            return beforePose.translate(0.0f, 12.0f, 0.0f)
+                    .averageRotation(model.leftLeg, model.rightLeg);
+        }, (model, preMorph) -> {
+            float avgX = (model.leftLeg.xRot + model.rightLeg.xRot) * 0.5f;
+            float avgY = (model.leftLeg.yRot + model.rightLeg.yRot) * 0.5f;
+            float avgZ = (model.leftLeg.zRot + model.rightLeg.zRot) * 0.5f;
+            model.leftLeg.xRot = Mth.lerp(preMorph, model.leftLeg.xRot, avgX);
+            model.leftLeg.yRot = Mth.lerp(preMorph, model.leftLeg.yRot, avgY);
+            model.leftLeg.zRot = Mth.lerp(preMorph, model.leftLeg.zRot, avgZ);
+            model.rightLeg.xRot = Mth.lerp(preMorph, model.rightLeg.xRot, avgX);
+            model.rightLeg.yRot = Mth.lerp(preMorph, model.rightLeg.yRot, avgY);
+            model.rightLeg.zRot = Mth.lerp(preMorph, model.rightLeg.zRot, avgZ);
         });
-        this.TaurTorso = HelperModel.withPrepare(root.getChild("TaurTorso"), (part, model) -> {
+        this.TaurTorso = HelperModel.withPrepare(root.getChild("TaurTorso"), (beforePose, part, model) -> {
             copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg"));
             copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg"));
             copyRotations(Limb.RIGHT_LEG.getModelPart(model), part.getChild("RightLeg2"));
             copyRotations(Limb.LEFT_LEG.getModelPart(model), part.getChild("LeftLeg2"));
+            return beforePose.translate(0.0f, 12.0f, 0.0f);
         });
         this.PupTorso = HelperModel.fixed(root.getChild("PupTorso"));
     }
@@ -90,6 +107,13 @@ public class TransfurHelper {
             PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
+        }
+
+        // BASIC ARMS
+        {
+            PartDefinition BasicLeftArm = partdefinition.addOrReplaceChild("BasicLeftArm", CubeListBuilder.create().texOffs(-2, -2).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+            PartDefinition BasicRightArm = partdefinition.addOrReplaceChild("BasicRightArm", CubeListBuilder.create().texOffs(-2, -2).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-5.0F, 2.0F, 0.0F));
         }
 
         // TAILED TORSO
@@ -241,6 +265,14 @@ public class TransfurHelper {
 
     public static HelperModel getDigitigradeRightLeg() {
         return INSTANCE.get().DigitigradeRightLeg;
+    }
+
+    public static HelperModel getBasicLeftArm() {
+        return INSTANCE.get().BasicLeftArm;
+    }
+
+    public static HelperModel getBasicRightArm() {
+        return INSTANCE.get().BasicRightArm;
     }
 
     public static HelperModel getTailedTorso() {

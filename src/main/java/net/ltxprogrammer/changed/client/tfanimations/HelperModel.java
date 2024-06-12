@@ -8,15 +8,11 @@ import java.util.function.Supplier;
 
 public interface HelperModel extends Supplier<ModelPart> {
     ModelPart getModelPart();
-    void prepareModelPart(HumanoidModel<?> model);
+    TransfurAnimator.ModelPose prepareModelPart(TransfurAnimator.ModelPose before, HumanoidModel<?> model);
+    void transitionOriginal(HumanoidModel<?> model, float preMorphProgression);
 
     @Override
     default ModelPart get() {
-        return getModelPart();
-    }
-
-    default ModelPart prepareAndGet(HumanoidModel<?> model) {
-        prepareModelPart(model);
         return getModelPart();
     }
 
@@ -28,13 +24,18 @@ public interface HelperModel extends Supplier<ModelPart> {
             }
 
             @Override
-            public void prepareModelPart(HumanoidModel<?> model) {
+            public TransfurAnimator.ModelPose prepareModelPart(TransfurAnimator.ModelPose before, HumanoidModel<?> model) {
+                return before;
+            }
+
+            @Override
+            public void transitionOriginal(HumanoidModel<?> model, float preMorphProgression) {
 
             }
         };
     }
 
-    static HelperModel withPrepare(ModelPart part, BiConsumer<ModelPart, HumanoidModel<?>> fn) {
+    static HelperModel withPrepare(ModelPart part, TriFunction<TransfurAnimator.ModelPose, ModelPart, HumanoidModel<?>, TransfurAnimator.ModelPose> fn) {
         return new HelperModel() {
             @Override
             public ModelPart getModelPart() {
@@ -42,9 +43,39 @@ public interface HelperModel extends Supplier<ModelPart> {
             }
 
             @Override
-            public void prepareModelPart(HumanoidModel<?> model) {
-                fn.accept(part, model);
+            public TransfurAnimator.ModelPose prepareModelPart(TransfurAnimator.ModelPose before, HumanoidModel<?> model) {
+                return fn.apply(before, part, model);
+            }
+
+            @Override
+            public void transitionOriginal(HumanoidModel<?> model, float preMorphProgression) {
+
             }
         };
+    }
+
+    static HelperModel withPrepareAndTransition(ModelPart part,
+                                                TriFunction<TransfurAnimator.ModelPose, ModelPart, HumanoidModel<?>, TransfurAnimator.ModelPose> fn,
+                                                BiConsumer<HumanoidModel<?>, Float> transition) {
+        return new HelperModel() {
+            @Override
+            public ModelPart getModelPart() {
+                return part;
+            }
+
+            @Override
+            public TransfurAnimator.ModelPose prepareModelPart(TransfurAnimator.ModelPose before, HumanoidModel<?> model) {
+                return fn.apply(before, part, model);
+            }
+
+            @Override
+            public void transitionOriginal(HumanoidModel<?> model, float preMorphProgression) {
+                transition.accept(model, preMorphProgression);
+            }
+        };
+    }
+
+    interface TriFunction<P0, P1, P2, R> {
+        R apply(P0 p0, P1 p1, P2 p2);
     }
 }

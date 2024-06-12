@@ -341,9 +341,8 @@ public abstract class TransfurAnimator {
         return new ModelPose(tmp.last(), lerpPartPose(before.pose, after.pose, lerp));
     }
 
-    private static ModelPart maybeReplaceWithHelper(HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, Limb limb, ModelPart orDefault) {
-        var helper = afterModel.getTransfurHelperModel(limb);
-        return helper == null ? orDefault : helper.prepareAndGet(beforeModel);
+    private static Optional<HelperModel> maybeReplaceWithHelper(AdvancedHumanoidModel<?> afterModel, Limb limb) {
+        return Optional.ofNullable(afterModel.getTransfurHelperModel(limb));
     }
 
     private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
@@ -355,8 +354,12 @@ public abstract class TransfurAnimator {
         ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
         final ModelPose afterPose = CAPTURED_MODELS.getOrDefault(after, NULL_POSE);
 
-        beforePose = limb.adjustModelPose(beforePose, beforeModel);
-        before = maybeReplaceWithHelper(beforeModel, afterModel, limb, before);
+        {
+            var helper = maybeReplaceWithHelper(afterModel, limb);
+            final var beforePoseCopy = beforePose;
+            beforePose = helper.map(h -> h.prepareModelPart(beforePoseCopy, beforeModel)).orElse(beforePose);
+            before = helper.map(HelperModel::getModelPart).orElse(before);
+        }
 
         final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);
         final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress);
@@ -391,15 +394,19 @@ public abstract class TransfurAnimator {
         });
     }
 
-    private static float getCoverProgression(float transfurProgression) {
+    public static float getPreMorphProgression(float transfurProgression) {
+        return Transition.easeInOutSine(Mth.clamp(Mth.map(transfurProgression, 0.2f, 0.45f, 0.0f, 1.0f), 0.0f, 1.0f));
+    }
+
+    public static float getCoverProgression(float transfurProgression) {
         return Mth.clamp(Mth.map(transfurProgression, 0.0f, 0.33f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
 
-    private static float getCoverAlpha(float transfurProgression) {
+    public static float getCoverAlpha(float transfurProgression) {
         return Mth.clamp(Mth.map(transfurProgression, 0.33f, 0.45f, 1.0f, 0.0f), 0.0f, 1.0f);
     }
 
-    private static float getMorphAlpha(float transfurProgression) {
+    public static float getMorphAlpha(float transfurProgression) {
         if (transfurProgression < 0.5f)
             return Mth.clamp(Mth.map(transfurProgression, 0.35f, 0.45f, 0.0f, 1.0f), 0.0f, 1.0f);
         else

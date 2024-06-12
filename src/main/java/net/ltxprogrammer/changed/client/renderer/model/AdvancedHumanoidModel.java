@@ -85,6 +85,8 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
             case TORSO -> TransfurHelper.getTailedTorso();
             case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg();
             case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg();
+            case LEFT_ARM -> TransfurHelper.getBasicLeftArm();
+            case RIGHT_ARM -> TransfurHelper.getBasicRightArm();
             default -> null;
         };
     }
