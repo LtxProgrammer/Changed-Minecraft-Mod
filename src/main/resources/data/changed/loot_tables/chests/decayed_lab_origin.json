@@ -227,9 +227,9 @@
               "variants": [
                 "changed:form_latex_sniper_dog",
                 "changed:form_latex_benign_wolf",
-                "changed:form_light_latex_wolf/male",
-                "changed:form_light_latex_wolf/female",
-                "changed:form_light_latex_knight",
+                "changed:form_white_latex_wolf/male",
+                "changed:form_white_latex_wolf/female",
+                "changed:form_white_latex_knight",
                 "changed:form_latex_ming_cat",
                 "changed:form_white_wolf/female",
                 "changed:form_white_wolf/male"

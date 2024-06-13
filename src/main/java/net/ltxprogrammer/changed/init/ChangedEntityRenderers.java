@@ -52,7 +52,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_LEFT.get(), BehemothHandLeftRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_RIGHT.get(), BehemothHandRightRenderer::new);
 
-        event.registerEntityRenderer(ChangedEntities.AEROSOL_LATEX_WOLF.get(), AerosolLatexWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.GAS_WOLF.get(), GasWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
@@ -113,16 +113,16 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.GOO_WATERMELON_CAT.get(), LatexWatermelonCatRenderer::new);
         event.registerEntityRenderer(ChangedEntities.LATEX_WHITE_TIGER.get(), LatexWhiteTigerRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_YUIN.get(), LatexYuinRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_GOO_CENTAUR.get(), LightLatexCentaurRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_GOO_KNIGHT.get(), LightLatexKnightRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_GOO_KNIGHT_FUSION.get(), LightLatexKnightFusionRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_GOO_WOLF_FEMALE.get(), LightLatexWolfFemaleRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.WHITE_GOO_WOLF_MALE.get(), LightLatexWolfMaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_CENTAUR.get(), WhiteLatexCentaurRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_KNIGHT.get(), WhiteLatexKnightRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_KNIGHT_FUSION.get(), WhiteLatexKnightFusionRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF_FEMALE.get(), WhiteLatexWolfFemaleRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF_MALE.get(), WhiteLatexWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_WOLF_MALE.get(), WhiteWolfMaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_WOLF_FEMALE.get(), WhiteWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.MILK_PUDDING.get(), MilkPuddingRenderer::new);
         event.registerEntityRenderer(ChangedEntities.SHARK.get(), SharkRenderer::new);
-        event.registerEntityRenderer(ChangedEntities.PURE_WHITE_GOO_WOLF.get(), WhiteLatexWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.PURE_WHITE_LATEX_WOLF.get(), PureWhiteLatexWolfRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.SPECIAL_LATEX.get(), SpecialLatexRenderer::new);
 

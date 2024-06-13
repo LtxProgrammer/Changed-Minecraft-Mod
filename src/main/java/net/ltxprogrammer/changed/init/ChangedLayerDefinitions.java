@@ -36,7 +36,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(BehemothHandLeftModel.LAYER_LOCATION, BehemothHandLeftModel::createBodyLayer);
         event.registerLayerDefinition(BehemothHandRightModel.LAYER_LOCATION, BehemothHandRightModel::createBodyLayer);
 
-        event.registerLayerDefinition(AerosolLatexWolfModel.LAYER_LOCATION, AerosolLatexWolfModel::createBodyLayer);
+        event.registerLayerDefinition(GasWolfModel.LAYER_LOCATION, GasWolfModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION, DarkLatexDragonModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION, DarkLatexWolfFemaleModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION, DarkLatexWolfMaleModel::createBodyLayer);
@@ -102,14 +102,14 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(LatexWatermelonCatModel.LAYER_LOCATION, LatexWatermelonCatModel::createBodyLayer);
         event.registerLayerDefinition(LatexWhiteTigerModel.LAYER_LOCATION, LatexWhiteTigerModel::createBodyLayer);
         event.registerLayerDefinition(LatexYuinModel.LAYER_LOCATION, LatexYuinModel::createBodyLayer);
-        event.registerLayerDefinition(LightLatexCentaurModel.LAYER_LOCATION, LightLatexCentaurModel::createBodyLayer);
-        event.registerLayerDefinition(LightLatexKnightModel.LAYER_LOCATION, LightLatexKnightModel::createBodyLayer);
-        event.registerLayerDefinition(LightLatexKnightFusionModel.LAYER_LOCATION, LightLatexKnightFusionModel::createBodyLayer);
-        event.registerLayerDefinition(LightLatexWolfFemaleModel.LAYER_LOCATION, LightLatexWolfFemaleModel::createBodyLayer);
-        event.registerLayerDefinition(LightLatexWolfMaleModel.LAYER_LOCATION, LightLatexWolfMaleModel::createBodyLayer);
+        event.registerLayerDefinition(WhiteLatexCentaurModel.LAYER_LOCATION, WhiteLatexCentaurModel::createBodyLayer);
+        event.registerLayerDefinition(WhiteLatexKnightModel.LAYER_LOCATION, WhiteLatexKnightModel::createBodyLayer);
+        event.registerLayerDefinition(WhiteLatexKnightFusionModel.LAYER_LOCATION, WhiteLatexKnightFusionModel::createBodyLayer);
+        event.registerLayerDefinition(WhiteLatexWolfFemaleModel.LAYER_LOCATION, WhiteLatexWolfFemaleModel::createBodyLayer);
+        event.registerLayerDefinition(WhiteLatexWolfMaleModel.LAYER_LOCATION, WhiteLatexWolfMaleModel::createBodyLayer);
         event.registerLayerDefinition(MilkPuddingModel.LAYER_LOCATION, MilkPuddingModel::createBodyLayer);
         event.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
-        event.registerLayerDefinition(WhiteLatexWolfModel.LAYER_LOCATION, WhiteLatexWolfModel::createBodyLayer);
+        event.registerLayerDefinition(PureWhiteLatexWolfModel.LAYER_LOCATION, PureWhiteLatexWolfModel::createBodyLayer);
 
         event.registerLayerDefinition(ArmorNoneModel.INNER_ARMOR, () -> ArmorNoneModel.createArmorLayer(ArmorModel.INNER));
         event.registerLayerDefinition(ArmorNoneModel.OUTER_ARMOR, () -> ArmorNoneModel.createArmorLayer(ArmorModel.OUTER));

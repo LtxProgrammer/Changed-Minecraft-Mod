@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
@@ -131,7 +130,7 @@ public class WhiteLatexPillar extends AbstractCustomShapeTallBlock implements Wh
                 }
             }
             else {
-                ProcessTransfur.progressTransfur(le, 4.8f, ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                ProcessTransfur.progressTransfur(le, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
             }
         } else if (entity instanceof ChangedEntity ChangedEntity) {
             if (ChangedEntity.getLatexType().isHostileTo(LatexType.WHITE_LATEX))

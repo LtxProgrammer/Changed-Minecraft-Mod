@@ -4,15 +4,15 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
-import net.ltxprogrammer.changed.client.renderer.model.WhiteLatexWolfModel;
+import net.ltxprogrammer.changed.client.renderer.model.PureWhiteLatexWolfModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
-import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolf;
+import net.ltxprogrammer.changed.entity.beast.PureWhiteLatexWolf;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class WhiteLatexWolfRenderer extends AdvancedHumanoidRenderer<WhiteLatexWolf, WhiteLatexWolfModel, ArmorLatexMaleWolfModel<WhiteLatexWolf>> {
-	public WhiteLatexWolfRenderer(EntityRendererProvider.Context context) {
-		super(context, new WhiteLatexWolfModel(context.bakeLayer(WhiteLatexWolfModel.LAYER_LOCATION)),
+public class PureWhiteLatexWolfRenderer extends AdvancedHumanoidRenderer<PureWhiteLatexWolf, PureWhiteLatexWolfModel, ArmorLatexMaleWolfModel<PureWhiteLatexWolf>> {
+	public PureWhiteLatexWolfRenderer(EntityRendererProvider.Context context) {
+		super(context, new PureWhiteLatexWolfModel(context.bakeLayer(PureWhiteLatexWolfModel.LAYER_LOCATION)),
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
@@ -20,7 +20,7 @@ public class WhiteLatexWolfRenderer extends AdvancedHumanoidRenderer<WhiteLatexW
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(WhiteLatexWolf p_114482_) {
-		return Changed.modResource("textures/white_latex_drone.png");
+	public ResourceLocation getTextureLocation(PureWhiteLatexWolf p_114482_) {
+		return Changed.modResource("textures/pure_white_latex_wolf.png");
 	}
 }

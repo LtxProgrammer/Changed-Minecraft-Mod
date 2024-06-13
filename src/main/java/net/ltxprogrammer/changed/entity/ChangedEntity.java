@@ -876,6 +876,7 @@ public abstract class ChangedEntity extends Monster {
             return super.isLeftHanded();
     }
 
+    @Deprecated
     public abstract Color3 getDripColor();
 
     public Color3 getTransfurColor(TransfurCause cause) { return Color3.WHITE; }

@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightLatexWolfFemale extends AbstractLightLatexWolf {
-    public LightLatexWolfFemale(EntityType<? extends LightLatexWolfFemale> p_19870_, Level p_19871_) {
+public class WhiteLatexWolfFemale extends AbstractLightLatexWolf {
+    public WhiteLatexWolfFemale(EntityType<? extends WhiteLatexWolfFemale> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 

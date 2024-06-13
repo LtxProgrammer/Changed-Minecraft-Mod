@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HeadlessKnight extends LightLatexKnight implements LatexTaur<HeadlessKnight> {
+public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<HeadlessKnight> {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -56,7 +56,7 @@ public class HeadlessKnight extends LightLatexKnight implements LatexTaur<Headle
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return ChangedTransfurVariants.LIGHT_LATEX_CENTAUR.get();
+        return ChangedTransfurVariants.WHITE_LATEX_CENTAUR.get();
     }
 
     @Override

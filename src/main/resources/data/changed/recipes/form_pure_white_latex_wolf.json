@@ -3,8 +3,10 @@
   "ingredients": [
     {
       "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_block"
     }
   ],
-  "gendered": true,
-  "form": "changed:form_white_latex_wolf"
+  "form": "changed:form_pure_white_latex_wolf"
 }

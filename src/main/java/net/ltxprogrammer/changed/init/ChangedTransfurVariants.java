@@ -16,14 +16,14 @@ import java.util.function.Supplier;
 public class ChangedTransfurVariants {
     public static final DeferredRegister<TransfurVariant<?>> REGISTRY = ChangedRegistry.TRANSFUR_VARIANT.createDeferred(Changed.MODID);
 
-    public static final RegistryObject<TransfurVariant<AerosolLatexWolf>> GAS_WOLF = register("form_aerosol_latex_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.AEROSOL_LATEX_WOLF).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
+    public static final RegistryObject<TransfurVariant<GasWolf>> GAS_WOLF = register("form_gas_wolf",
+            TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexBeifeng>> LATEX_BEIFENG = register("form_latex_beifeng",
             TransfurVariant.Builder.of(ChangedEntities.BEIFENG).groundSpeed(1.05f).swimSpeed(1.0f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
-    public static final RegistryObject<TransfurVariant<LightLatexWolfFemale>> LIGHT_LATEX_WOLF_FEMALE = register("form_light_latex_wolf/female",
-            TransfurVariant.Builder.of(ChangedEntities.WHITE_GOO_WOLF_FEMALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER).absorbing());
-    public static final RegistryObject<TransfurVariant<LightLatexWolfMale>> LIGHT_LATEX_WOLF_MALE = register("form_light_latex_wolf/male",
-            TransfurVariant.Builder.of(ChangedEntities.WHITE_GOO_WOLF_MALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER));
+    public static final RegistryObject<TransfurVariant<WhiteLatexWolfFemale>> WHITE_LATEX_WOLF_FEMALE = register("form_white_latex_wolf/female",
+            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_WOLF_FEMALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER).absorbing());
+    public static final RegistryObject<TransfurVariant<WhiteLatexWolfMale>> WHITE_LATEX_WOLF_MALE = register("form_white_latex_wolf/male",
+            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_WOLF_MALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).addAbility(ChangedAbilities.SWITCH_GENDER));
     public static final RegistryObject<TransfurVariant<DarkLatexDragon>> DARK_LATEX_DRAGON = register("form_dark_latex_dragon",
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_DRAGON).groundSpeed(1.0F).swimSpeed(0.85f).glide().sound(ChangedSounds.SOUND3.getLocation()).faction(LatexType.DARK_LATEX));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfFemale>> DARK_LATEX_WOLF_FEMALE = register("form_dark_latex_wolf/female",
@@ -120,12 +120,12 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_WHITE_TIGER).jumpStrength(1.25f).additionalHealth(2).groundSpeed(1.15f).swimSpeed(0.9f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision());
     public static final RegistryObject<TransfurVariant<LatexYuin>> LATEX_YUIN = register("form_latex_yuin",
             TransfurVariant.Builder.of(ChangedEntities.GOO_YUIN).groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).reducedFall().absorbing());
-    public static final RegistryObject<TransfurVariant<LightLatexCentaur>> LIGHT_LATEX_CENTAUR = register("form_light_latex_centaur",
-            TransfurVariant.Builder.of(ChangedEntities.WHITE_GOO_CENTAUR).quadrupedal().groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(10).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
-    public static final RegistryObject<TransfurVariant<LightLatexKnight>> LIGHT_LATEX_KNIGHT = register("form_light_latex_knight",
-            TransfurVariant.Builder.of(ChangedEntities.WHITE_GOO_KNIGHT).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing());
-    public static final RegistryObject<TransfurVariant<LightLatexKnightFusion>> LIGHT_LATEX_KNIGHT_FUSION = register("form_light_latex_knight_fusion",
-            () -> TransfurVariant.Builder.of(LIGHT_LATEX_KNIGHT.get(), ChangedEntities.WHITE_GOO_KNIGHT_FUSION).replicating().additionalHealth(8).fusionOf(LIGHT_LATEX_WOLF_MALE.get(), LIGHT_LATEX_KNIGHT.get()));
+    public static final RegistryObject<TransfurVariant<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("form_white_latex_centaur",
+            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_CENTAUR).quadrupedal().groundSpeed(1.20f).swimSpeed(0.9f).stepSize(1.1f).additionalHealth(10).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
+    public static final RegistryObject<TransfurVariant<WhiteLatexKnight>> WHITE_LATEX_KNIGHT = register("form_white_latex_knight",
+            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_KNIGHT).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).absorbing());
+    public static final RegistryObject<TransfurVariant<WhiteLatexKnightFusion>> WHITE_LATEX_KNIGHT_FUSION = register("form_white_latex_knight_fusion",
+            () -> TransfurVariant.Builder.of(WHITE_LATEX_KNIGHT.get(), ChangedEntities.WHITE_LATEX_KNIGHT_FUSION).replicating().additionalHealth(8).fusionOf(WHITE_LATEX_WOLF_MALE.get(), WHITE_LATEX_KNIGHT.get()));
     public static final RegistryObject<TransfurVariant<LatexMantaRayFemale>> LATEX_MANTA_RAY_FEMALE = register("form_latex_manta_ray/female",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MANTA_RAY_FEMALE).groundSpeed(0.26F).swimSpeed(1.9F).absorbing().additionalHealth(8).noLegs());
     public static final RegistryObject<TransfurVariant<LatexMantaRayMale>> LATEX_MANTA_RAY_MALE = register("form_latex_manta_ray/male",
@@ -153,10 +153,10 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<WhiteWolfMale>> WHITE_WOLF_MALE = register("form_white_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_WOLF_MALE).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
 
-    public static final RegistryObject<TransfurVariant<WhiteLatexWolf>> WHITE_LATEX_WOLF = register("form_white_latex_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_GOO_WOLF).groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX));
+    public static final RegistryObject<TransfurVariant<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = register("form_pure_white_latex_wolf",
+            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF).groundSpeed(1.05f).swimSpeed(0.9f).stepSize(0.7f).faction(LatexType.WHITE_LATEX));
 
-    public static final Supplier<? extends TransfurVariant<?>> FALLBACK_VARIANT = LIGHT_LATEX_WOLF_MALE;
+    public static final Supplier<? extends TransfurVariant<?>> FALLBACK_VARIANT = WHITE_LATEX_WOLF_MALE;
 
     private static <T extends ChangedEntity> RegistryObject<TransfurVariant<T>> register(String name, TransfurVariant.Builder<T> builder) {
         return REGISTRY.register(name, builder::build);
@@ -167,7 +167,7 @@ public class ChangedTransfurVariants {
     }
 
     public static class Gendered {
-        public static final GenderedPair<LightLatexWolfMale, LightLatexWolfFemale> LIGHT_LATEX_WOLVES = new GenderedPair<>(LIGHT_LATEX_WOLF_MALE, LIGHT_LATEX_WOLF_FEMALE);
+        public static final GenderedPair<WhiteLatexWolfMale, WhiteLatexWolfFemale> WHITE_LATEX_WOLVES = new GenderedPair<>(WHITE_LATEX_WOLF_MALE, WHITE_LATEX_WOLF_FEMALE);
         public static final GenderedPair<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLVES = new GenderedPair<>(DARK_LATEX_WOLF_MALE, DARK_LATEX_WOLF_FEMALE);
         public static final GenderedPair<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLVES = new GenderedPair<>(PHAGE_LATEX_WOLF_MALE, PHAGE_LATEX_WOLF_FEMALE);
         public static final GenderedPair<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAYS = new GenderedPair<>(LATEX_MANTA_RAY_MALE, LATEX_MANTA_RAY_FEMALE);

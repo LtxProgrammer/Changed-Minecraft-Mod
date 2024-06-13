@@ -13,7 +13,6 @@ import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +33,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -154,11 +152,11 @@ public class ChangedEntities {
     public static final Map<Supplier<? extends EntityType<?>>, Predicate<Level>> DIMENSION_RESTRICTIONS = new HashMap<>();
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, Changed.MODID);
     public static final Map<RegistryObject<? extends EntityType<?>>, RegistryObject<ForgeSpawnEggItem>> SPAWN_EGGS = new HashMap<>();
-    public static final RegistryObject<EntityType<LightLatexWolfFemale>> WHITE_GOO_WOLF_FEMALE = register("light_latex_wolf_female", 0xFFFFFF, 0xFF927F,
-            EntityType.Builder.of(LightLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<WhiteLatexWolfFemale>> WHITE_LATEX_WOLF_FEMALE = register("white_latex_wolf_female", 0xFFFFFF, 0xFF927F,
+            EntityType.Builder.of(WhiteLatexWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
-    public static final RegistryObject<EntityType<LightLatexWolfMale>> WHITE_GOO_WOLF_MALE = register("light_latex_wolf_male", 0xFFFFFF, 0xFF927F,
-            EntityType.Builder.of(LightLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<WhiteLatexWolfMale>> WHITE_LATEX_WOLF_MALE = register("white_latex_wolf_male", 0xFFFFFF, 0xFF927F,
+            EntityType.Builder.of(WhiteLatexWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<WhiteWolfMale>> WHITE_WOLF_MALE = registerReducedSpawn("white_wolf_male", 0xFFFFFF, 0xFAE9E4,
             EntityType.Builder.of(WhiteWolfMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -166,17 +164,17 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<WhiteWolfFemale>> WHITE_WOLF_FEMALE = registerReducedSpawn("white_wolf_female", 0xFFFFFF, 0xFAE9E4,
             EntityType.Builder.of(WhiteWolfFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
-    public static final RegistryObject<EntityType<LightLatexKnight>> WHITE_GOO_KNIGHT = register("light_latex_knight", 0xFFFFFF, 0x1E1E1E,
-            EntityType.Builder.of(LightLatexKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<WhiteLatexKnight>> WHITE_LATEX_KNIGHT = register("white_latex_knight", 0xFFFFFF, 0x1E1E1E,
+            EntityType.Builder.of(WhiteLatexKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
-    public static final RegistryObject<EntityType<LightLatexCentaur>> WHITE_GOO_CENTAUR = register("light_latex_centaur", 0xFFFFFF, 0x1E1E1E,
-            EntityType.Builder.of(LightLatexCentaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
+    public static final RegistryObject<EntityType<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("white_latex_centaur", 0xFFFFFF, 0x1E1E1E,
+            EntityType.Builder.of(WhiteLatexCentaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<HeadlessKnight>> HEADLESS_KNIGHT = register("headless_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(HeadlessKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 1.1F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
-    public static final RegistryObject<EntityType<LightLatexKnightFusion>> WHITE_GOO_KNIGHT_FUSION = register("light_latex_knight_fusion", 0xFFFFFF, 0x0072ff,
-            EntityType.Builder.of(LightLatexKnightFusion::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<WhiteLatexKnightFusion>> WHITE_LATEX_KNIGHT_FUSION = register("white_latex_knight_fusion", 0xFFFFFF, 0x0072ff,
+            EntityType.Builder.of(WhiteLatexKnightFusion::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<LatexCrystalWolf>> LATEX_CRYSTAL_WOLF = registerReducedSpawn("latex_crystal_wolf", 0x393939, 0xCF003E,
             EntityType.Builder.of(LatexCrystalWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -196,8 +194,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexKeonWolf>> LATEX_KEON_WOLF = register("latex_keon_wolf", 0x959CA5, 0x272727,
             EntityType.Builder.of(LatexKeonWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
-    public static final RegistryObject<EntityType<AerosolLatexWolf>> AEROSOL_LATEX_WOLF = registerReducedSpawn("aerosol_latex_wolf", 0x5D4743, 0xFFFFFF,
-            EntityType.Builder.of(AerosolLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<GasWolf>> GAS_WOLF = registerReducedSpawn("gas_wolf", 0x5D4743, 0xFFFFFF,
+            EntityType.Builder.of(GasWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = registerReducedSpawn("dark_latex_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -358,8 +356,8 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<Shark>> SHARK = register("shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(Shark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.9F, 0.6F),
             ChangedEntities::oceanSpawning, ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<WhiteLatexWolf>> PURE_WHITE_GOO_WOLF = register("white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
-            EntityType.Builder.of(WhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+    public static final RegistryObject<EntityType<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = register("pure_white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
+            EntityType.Builder.of(PureWhiteLatexWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::noSpawning, ChangedEntities::overworldOnly);
 
     public static final RegistryObject<EntityType<SeatEntity>> SEAT_ENTITY = REGISTRY.register("seat_entity",
@@ -398,7 +396,7 @@ public class ChangedEntities {
                 BLACK_GOO_YUFENG
         );
         public static final ImmutableList<RegistryObject<? extends EntityType<? extends WhiteLatexEntity>>> WHITE_LATEX = ImmutableList.of(
-                PURE_WHITE_GOO_WOLF
+                PURE_WHITE_LATEX_WOLF
         );
     }
 

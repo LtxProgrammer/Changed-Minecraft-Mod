@@ -3,8 +3,10 @@
   "ingredients": [
     {
       "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:wolf_gas_canister"
     }
   ],
-  "gendered": true,
-  "form": "changed:form_white_latex_wolf"
+  "form": "changed:form_gas_wolf"
 }

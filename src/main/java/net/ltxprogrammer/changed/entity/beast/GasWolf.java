@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class AerosolLatexWolf extends AbstractLatexWolf {
-    public AerosolLatexWolf(EntityType<? extends AerosolLatexWolf> p_19870_, Level p_19871_) {
+public class GasWolf extends AbstractLatexWolf {
+    public GasWolf(EntityType<? extends GasWolf> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 

@@ -112,13 +112,13 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
                 return;
             }
 
-            if (!TransfurVariant.getFusionCompatible(ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), livingEntity.getClass()).isEmpty()) {
+            if (!TransfurVariant.getFusionCompatible(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), livingEntity.getClass()).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
 
             var latexVariant = TransfurVariant.getEntityVariant(livingEntity);
-            if (latexVariant != null && !TransfurVariant.getFusionCompatible(ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), latexVariant).isEmpty()) {
+            if (latexVariant != null && !TransfurVariant.getFusionCompatible(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), latexVariant).isEmpty()) {
                 isTargetNearby.set(true);
                 return;
             }
@@ -141,7 +141,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
 
         BlockPos above = position.above();
         if (level.getBlockState(above).is(Blocks.AIR) && level.getBlockState(above.above()).is(Blocks.AIR)) {
-            ChangedEntities.PURE_WHITE_GOO_WOLF.get().spawn(level, null, null, null, above, MobSpawnType.NATURAL, true, true);
+            ChangedEntities.PURE_WHITE_LATEX_WOLF.get().spawn(level, null, null, null, above, MobSpawnType.NATURAL, true, true);
         }
     }
 

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.LightLatexWolfMale;
+import net.ltxprogrammer.changed.entity.beast.WhiteLatexKnightFusion;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWolfMale> implements AdvancedHumanoidModelInterface<LightLatexWolfMale, LightLatexWolfMaleModel> {
+public class WhiteLatexKnightFusionModel extends AdvancedHumanoidModel<WhiteLatexKnightFusion> implements AdvancedHumanoidModelInterface<WhiteLatexKnightFusion, WhiteLatexKnightFusionModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_wolf_male"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_latex_knight_fusion"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -25,9 +25,9 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<LightLatexWolfMale, LightLatexWolfMaleModel> animator;
+    private final HumanoidAnimator<WhiteLatexKnightFusion, WhiteLatexKnightFusionModel> animator;
 
-    public LightLatexWolfMaleModel(ModelPart root) {
+    public WhiteLatexKnightFusionModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -47,7 +47,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLike(
+                .addPreset(AnimatorPresets.deerLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
                         Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -68,9 +68,9 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
 
         PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.8F, 7.175F));
 
-        PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(56, 11).addBox(-2.0F, -8.45F, -0.725F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.005F)), PartPose.offsetAndRotation(0.0F, 7.075F, -4.975F, -0.3491F, 0.0F, 0.0F));
+        PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(13, 57).addBox(-2.0F, -8.45F, -0.725F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.005F)), PartPose.offsetAndRotation(0.0F, 7.075F, -4.975F, -0.3491F, 0.0F, 0.0F));
 
-        PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(52, 32).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.325F, -4.425F));
+        PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(43, 50).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.325F, -4.425F));
 
         PartDefinition LeftLeg = partdefinition.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.5F, 10.5F, 0.0F));
 
@@ -82,29 +82,33 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
 
         PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 0.8F, 7.175F));
 
-        PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(13, 57).addBox(-2.0F, -8.45F, -0.725F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.005F)), PartPose.offsetAndRotation(0.0F, 7.075F, -4.975F, -0.3491F, 0.0F, 0.0F));
+        PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(56, 11).addBox(-2.0F, -8.45F, -0.725F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.005F)), PartPose.offsetAndRotation(0.0F, 7.075F, -4.975F, -0.3491F, 0.0F, 0.0F));
 
         PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(24, 0).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.325F, -4.425F));
 
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 16).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
-                .texOffs(15, 32).addBox(-2.0F, -3.0F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(37, 0).addBox(-2.0F, -3.0F, -6.0F, 4.0F, 2.0F, 2.0F, CubeDeformation.NONE)
                 .texOffs(24, 22).addBox(-1.5F, -1.0F, -5.0F, 3.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
-
-        PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 2).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 26.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(-3.0F, -7.5F, 0.0F));
 
-        PartDefinition RightEarPivot = RightEar.addOrReplaceChild("RightEarPivot", CubeListBuilder.create().texOffs(0, 4).addBox(-1.9F, -1.2F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
+        PartDefinition RightEarPivot = RightEar.addOrReplaceChild("RightEarPivot", CubeListBuilder.create().texOffs(15, 32).addBox(-4.6F, 1.15F, -1.8F, 4.0F, 3.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(48, 11).addBox(-4.6F, 1.15F, 0.2F, 4.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(0, 4).addBox(-1.9F, -1.2F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
                 .texOffs(0, 16).addBox(-0.9F, -1.6F, -0.4F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.04F))
-                .texOffs(32, 22).addBox(-0.9F, -2.3F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(24, 0).addBox(0.1F, -3.1F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(0.5F, -1.25F, 0.0F, -0.1309F, 0.5236F, -0.3491F));
+                .texOffs(20, 37).addBox(-0.9F, -2.3F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(4, 20).addBox(0.1F, -3.1F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(0, 20).addBox(-5.6F, 1.15F, -1.8F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, -1.25F, 0.0F, -0.1309F, 0.5236F, -0.3927F));
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offset(3.0F, -7.5F, 0.0F));
 
-        PartDefinition LeftEarPivot = LeftEar.addOrReplaceChild("LeftEarPivot", CubeListBuilder.create().texOffs(0, 0).addBox(-1.1F, -1.2F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(0, 20).addBox(-1.1F, -1.6F, -0.4F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.04F))
-                .texOffs(32, 24).addBox(-1.1F, -2.3F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
-                .texOffs(0, 32).addBox(-1.1F, -3.1F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(-0.5F, -1.25F, 0.0F, -0.1309F, -0.5236F, 0.3491F));
+        PartDefinition LeftEarPivot = LeftEar.addOrReplaceChild("LeftEarPivot", CubeListBuilder.create().texOffs(56, 50).addBox(0.6F, 1.15F, 0.2F, 4.0F, 2.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(32, 22).addBox(0.6F, 1.15F, -1.8F, 4.0F, 3.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(42, 4).addBox(4.6F, 1.15F, -1.8F, 1.0F, 2.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-1.1F, -1.2F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(44, 22).addBox(-1.1F, -1.6F, -0.4F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.04F))
+                .texOffs(48, 14).addBox(-1.1F, -2.3F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.05F))
+                .texOffs(24, 0).addBox(-1.1F, -3.1F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(-0.5F, -1.25F, 0.0F, -0.1309F, -0.5236F, 0.3927F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.2F))
                 .texOffs(24, 8).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 6.0F, 8.0F, new CubeDeformation(0.3F)), PartPose.offset(0.0F, 0.0F, 0.0F));
@@ -115,7 +119,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
 
         PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
 
-        PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(48, 50).addBox(-2.0F, 0.75F, -1.5F, 4.0F, 5.0F, 4.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(28, 55).addBox(-2.0F, 0.75F, -1.5F, 4.0F, 5.0F, 4.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
 
         PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create(), PartPose.offset(0.0F, 1.25F, 4.5F));
 
@@ -123,7 +127,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
 
         PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.offset(0.0F, 1.25F, 5.0F));
 
-        PartDefinition Base_r3 = TailTertiary.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(28, 55).addBox(-2.0F, -1.2F, -1.95F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, -0.5F, 1.5F, 1.8326F, 0.0F, 0.0F));
+        PartDefinition Base_r3 = TailTertiary.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(52, 32).addBox(-2.0F, -1.2F, -1.95F, 4.0F, 4.0F, 4.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, -0.5F, 1.5F, 1.8326F, 0.0F, 0.0F));
 
         PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(16, 40).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
@@ -133,7 +137,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
     }
 
     @Override
-    public void prepareMobModel(LightLatexWolfMale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(WhiteLatexKnightFusion p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -142,7 +146,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
     }
 
     @Override
-    public void setupAnim(@NotNull LightLatexWolfMale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull WhiteLatexKnightFusion entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -174,7 +178,7 @@ public class LightLatexWolfMaleModel extends AdvancedHumanoidModel<LightLatexWol
     }
 
     @Override
-    public HumanoidAnimator<LightLatexWolfMale, LightLatexWolfMaleModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexKnightFusion, WhiteLatexKnightFusionModel> getAnimator() {
         return animator;
     }
 }

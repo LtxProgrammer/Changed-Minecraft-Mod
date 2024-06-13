@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.block.entity.LatexContainerBlockEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
@@ -205,7 +204,7 @@ public class LatexContainerBlock extends AbstractCustomShapeTallEntityBlock impl
                 return;
             final var variant = switch (container.getFillType()) {
                 case DARK_LATEX -> ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get();
-                case WHITE_LATEX -> ChangedTransfurVariants.WHITE_LATEX_WOLF.get();
+                case WHITE_LATEX -> ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get();
                 default -> null;
             };
 

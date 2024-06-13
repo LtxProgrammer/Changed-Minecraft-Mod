@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
-import net.ltxprogrammer.changed.entity.beast.LightLatexWolfFemale;
+import net.ltxprogrammer.changed.entity.beast.WhiteLatexWolfFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexWolfFemaleModel extends AdvancedHumanoidModel<LightLatexWolfFemale> implements AdvancedHumanoidModelInterface<LightLatexWolfFemale, LightLatexWolfFemaleModel> {
+public class WhiteLatexWolfFemaleModel extends AdvancedHumanoidModel<WhiteLatexWolfFemale> implements AdvancedHumanoidModelInterface<WhiteLatexWolfFemale, WhiteLatexWolfFemaleModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_wolf_female"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_latex_wolf_female"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -28,9 +28,9 @@ public class LightLatexWolfFemaleModel extends AdvancedHumanoidModel<LightLatexW
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<LightLatexWolfFemale, LightLatexWolfFemaleModel> animator;
+    private final HumanoidAnimator<WhiteLatexWolfFemale, WhiteLatexWolfFemaleModel> animator;
 
-    public LightLatexWolfFemaleModel(ModelPart root) {
+    public WhiteLatexWolfFemaleModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
@@ -154,7 +154,7 @@ public class LightLatexWolfFemaleModel extends AdvancedHumanoidModel<LightLatexW
     }
 
     @Override
-    public void prepareMobModel(LightLatexWolfFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(WhiteLatexWolfFemale p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -163,7 +163,7 @@ public class LightLatexWolfFemaleModel extends AdvancedHumanoidModel<LightLatexW
     }
 
     @Override
-    public void setupAnim(@NotNull LightLatexWolfFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull WhiteLatexWolfFemale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -195,7 +195,7 @@ public class LightLatexWolfFemaleModel extends AdvancedHumanoidModel<LightLatexW
     }
 
     @Override
-    public HumanoidAnimator<LightLatexWolfFemale, LightLatexWolfFemaleModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexWolfFemale, WhiteLatexWolfFemaleModel> getAnimator() {
         return animator;
     }
 }

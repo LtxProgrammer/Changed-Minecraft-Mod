@@ -8,7 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
-import net.ltxprogrammer.changed.entity.beast.LightLatexCentaur;
+import net.ltxprogrammer.changed.entity.beast.WhiteLatexCentaur;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCentaur> implements AdvancedHumanoidModelInterface<LightLatexCentaur, LightLatexCentaurModel>, LowerTorsoedModel {
+public class WhiteLatexCentaurModel extends AdvancedHumanoidModel<WhiteLatexCentaur> implements AdvancedHumanoidModelInterface<WhiteLatexCentaur, WhiteLatexCentaurModel>, LowerTorsoedModel {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("light_latex_centaur"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("white_latex_centaur"), "main");
     private final ModelPart FrontRightLeg;
     private final ModelPart FrontLeftLeg;
     private final ModelPart BackRightLeg;
@@ -32,9 +32,9 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     private final ModelPart LowerTorso;
     private final ModelPart Saddle;
     private final ModelPart Tail;
-    private final HumanoidAnimator<LightLatexCentaur, LightLatexCentaurModel> animator;
+    private final HumanoidAnimator<WhiteLatexCentaur, WhiteLatexCentaurModel> animator;
 
-    public LightLatexCentaurModel(ModelPart root) {
+    public WhiteLatexCentaurModel(ModelPart root) {
         super(root);
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
@@ -171,7 +171,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     }
 
     @Override
-    public void prepareMobModel(LightLatexCentaur p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(WhiteLatexCentaur p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -180,7 +180,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     }
 
     @Override
-    public void setupAnim(@NotNull LightLatexCentaur entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull WhiteLatexCentaur entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -236,7 +236,7 @@ public class LightLatexCentaurModel extends AdvancedHumanoidModel<LightLatexCent
     }
 
     @Override
-    public HumanoidAnimator<LightLatexCentaur, LightLatexCentaurModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexCentaur, WhiteLatexCentaurModel> getAnimator() {
         return animator;
     }
 

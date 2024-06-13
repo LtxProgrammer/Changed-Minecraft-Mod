@@ -48,7 +48,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         if (entity instanceof Player player && player.isSpectator())
             return;
 
-        ProcessTransfur.transfur(entity, entity.level, ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+        ProcessTransfur.transfur(entity, entity.level, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
 
         if (entity instanceof PlayerDataExtension ext && (!entity.level.isClientSide || UniversalDist.isLocalPlayer(entity)))
             ext.setPlayerMoverType(PlayerMover.WHITE_LATEX_MOVER.get());
@@ -96,7 +96,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                     if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                         player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
                 }, () -> {
-                    ProcessTransfur.progressPlayerTransfur(player, 4.8f, ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
+                    ProcessTransfur.progressPlayerTransfur(player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX));
                 });
 
                 player.setDeltaMovement(0, 0, 0);
@@ -180,7 +180,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                         else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
                             event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
                     }, () -> {
-                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, ChangedTransfurVariants.WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
+                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
                             entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
                     });
                 }

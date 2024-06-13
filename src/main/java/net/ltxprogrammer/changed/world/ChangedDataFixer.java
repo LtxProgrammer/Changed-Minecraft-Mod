@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.world;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.minecraft.Util;
@@ -30,23 +29,36 @@ public class ChangedDataFixer {
     }
 
     private static final HashMap<ResourceLocation, ResourceLocation> ENTITY_ID_REMAP = Util.make(new HashMap<>(), map -> {
-        map.put(Changed.modResource("light_latex_wolf_male"), ChangedEntities.WHITE_WOLF_MALE.getId());
-        map.put(Changed.modResource("dark_latex_wolf_male"), ChangedEntities.DARK_LATEX_WOLF_MALE.getId());
-        map.put(Changed.modResource("dark_latex_wolf_female"), ChangedEntities.DARK_LATEX_WOLF_FEMALE.getId());
-        map.put(Changed.modResource("dark_latex_pup"), ChangedEntities.DARK_LATEX_WOLF_PUP.getId());
+        map.put(Changed.modResource("aerosol_latex_wolf"), ChangedEntities.GAS_WOLF.getId());
+        map.put(Changed.modResource("light_latex_centaur"), ChangedEntities.WHITE_LATEX_CENTAUR.getId());
+        map.put(Changed.modResource("light_latex_knight"), ChangedEntities.WHITE_LATEX_KNIGHT.getId());
+        map.put(Changed.modResource("light_latex_knight_fusion"), ChangedEntities.WHITE_LATEX_KNIGHT_FUSION.getId());
+        map.put(Changed.modResource("light_latex_wolf_organic"), ChangedEntities.WHITE_WOLF_MALE.getId());
+        map.put(Changed.modResource("light_latex_wolf_male"), ChangedEntities.WHITE_LATEX_WOLF_MALE.getId());
+        map.put(Changed.modResource("light_latex_wolf_female"), ChangedEntities.WHITE_LATEX_WOLF_FEMALE.getId());
+        map.put(Changed.modResource("white_latex_wolf"), ChangedEntities.PURE_WHITE_LATEX_WOLF.getId());
     });
 
     private static final HashMap<ResourceLocation, ResourceLocation> ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
-        map.put(Changed.modResource("dark_latex_wolf_male_spawn_egg"), spawnEggHelper(ChangedEntities.DARK_LATEX_WOLF_MALE));
-        map.put(Changed.modResource("dark_latex_wolf_female_spawn_egg"), spawnEggHelper(ChangedEntities.DARK_LATEX_WOLF_FEMALE));
-        map.put(Changed.modResource("dark_latex_pup_spawn_egg"), spawnEggHelper(ChangedEntities.DARK_LATEX_WOLF_PUP));
+        map.put(Changed.modResource("aerosol_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.GAS_WOLF));
+        map.put(Changed.modResource("light_latex_centaur_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_CENTAUR));
+        map.put(Changed.modResource("light_latex_knight_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_KNIGHT));
+        map.put(Changed.modResource("light_latex_knight_fusion_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_KNIGHT_FUSION));
+        map.put(Changed.modResource("light_latex_wolf_organic_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_WOLF_MALE));
+        map.put(Changed.modResource("light_latex_wolf_male_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_WOLF_MALE));
+        map.put(Changed.modResource("light_latex_wolf_female_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_WOLF_FEMALE));
+        map.put(Changed.modResource("white_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.PURE_WHITE_LATEX_WOLF));
     });
 
     private static final HashMap<ResourceLocation, ResourceLocation> VARIANT_ID_REMAP = Util.make(new HashMap<>(), map -> {
+        map.put(Changed.modResource("form_aerosol_latex_wolf"), ChangedTransfurVariants.GAS_WOLF.getId());
+        map.put(Changed.modResource("form_light_latex_centaur"), ChangedTransfurVariants.WHITE_LATEX_CENTAUR.getId());
+        map.put(Changed.modResource("form_light_latex_knight"), ChangedTransfurVariants.WHITE_LATEX_KNIGHT.getId());
+        map.put(Changed.modResource("form_light_latex_knight_fusion"), ChangedTransfurVariants.WHITE_LATEX_KNIGHT_FUSION.getId());
         map.put(Changed.modResource("form_light_latex_wolf_organic"), ChangedTransfurVariants.WHITE_WOLF_MALE.getId());
-        map.put(Changed.modResource("form_dark_latex_wolf/male"), ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.getId());
-        map.put(Changed.modResource("form_dark_latex_wolf/female"), ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId());
-        map.put(Changed.modResource("form_dark_latex_pup"), ChangedTransfurVariants.DARK_LATEX_WOLF_PUP.getId());
+        map.put(Changed.modResource("form_light_latex_wolf/male"), ChangedTransfurVariants.WHITE_LATEX_WOLF_MALE.getId());
+        map.put(Changed.modResource("form_light_latex_wolf/female"), ChangedTransfurVariants.WHITE_LATEX_WOLF_FEMALE.getId());
+        map.put(Changed.modResource("form_white_latex_wolf"), ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.getId());
     });
 
     private static final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {
@@ -59,7 +71,6 @@ public class ChangedDataFixer {
         map.put("LatexVariantAge", "TransfurVariantAge");
         map.put("LatexAbilities", "TransfurAbilities");
         map.put("LatexData", "TransfurData");
-        map.put("LatexType", "GooType");
     });
 
     private static ResourceLocation updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
@@ -104,7 +115,7 @@ public class ChangedDataFixer {
         updateTagNames(entityTag);
         updateID(ENTITY_ID_REMAP, entityTag, "id");
 
-        updateName(ENUM_REMAP, entityTag, "GooType");
+        updateName(ENUM_REMAP, entityTag, "LatexType");
     }
 
     private static void updateItemTag(@NotNull CompoundTag itemTag) {

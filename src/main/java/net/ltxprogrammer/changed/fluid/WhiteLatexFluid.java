@@ -31,7 +31,7 @@ public abstract class WhiteLatexFluid extends AbstractLatexFluid {
             .explosionResistance(100f)
             .bucket(ChangedItems.WHITE_LATEX_BUCKET).block(ChangedBlocks.WHITE_LATEX_FLUID);
 
-    public WhiteLatexFluid() { super(PROPERTIES, LatexType.WHITE_LATEX, List.of(ChangedTransfurVariants.WHITE_LATEX_WOLF)); }
+    public WhiteLatexFluid() { super(PROPERTIES, LatexType.WHITE_LATEX, List.of(ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF)); }
 
     @Override
     public Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState fluidstate) {

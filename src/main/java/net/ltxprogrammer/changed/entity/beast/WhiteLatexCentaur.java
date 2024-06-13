@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightLatexCentaur extends LightLatexKnight implements LatexTaur<LightLatexCentaur> {
-    public LightLatexCentaur(EntityType<? extends LightLatexCentaur> p_19870_, Level p_19871_) {
+public class WhiteLatexCentaur extends WhiteLatexKnight implements LatexTaur<WhiteLatexCentaur> {
+    public WhiteLatexCentaur(EntityType<? extends WhiteLatexCentaur> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 

@@ -38,7 +38,7 @@ public class MilkPudding extends ChangedEntity {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return ChangedTransfurVariants.Gendered.LIGHT_LATEX_WOLVES.getRandomVariant(random);
+        return ChangedTransfurVariants.Gendered.WHITE_LATEX_WOLVES.getRandomVariant(random);
     }
 
     @Override

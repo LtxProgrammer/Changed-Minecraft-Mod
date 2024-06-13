@@ -18,7 +18,7 @@ public class HeadlessKnightRenderer extends AdvancedHumanoidRenderer<HeadlessKni
                 ArmorLatexCentaurLowerModel::new, ArmorLatexCentaurLowerModel.INNER_ARMOR, ArmorLatexCentaurLowerModel.OUTER_ARMOR, 0.7f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new SaddleLayer<>(this, getModel(), Changed.modResource("textures/light_latex_centaur_saddle.png")));
+        this.addLayer(new SaddleLayer<>(this, getModel(), Changed.modResource("textures/white_latex_centaur_saddle.png")));
         this.addLayer(new TaurChestPackLayer<>(this, context.getModelSet()));
     }
 

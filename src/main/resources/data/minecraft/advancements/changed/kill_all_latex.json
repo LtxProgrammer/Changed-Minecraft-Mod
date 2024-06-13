@@ -19,14 +19,14 @@
     "experience": 150
   },
   "criteria": {
-    "changed:aerosol_latex_wolf": {
+    "changed:gas_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:aerosol_latex_wolf"
+              "type": "changed:gas_wolf"
             },
             "entity": "this"
           }
@@ -859,70 +859,70 @@
         ]
       }
     },
-    "changed:light_latex_centaur": {
+    "changed:white_latex_centaur": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:light_latex_centaur"
+              "type": "changed:white_latex_centaur"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:light_latex_knight": {
+    "changed:white_latex_knight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:light_latex_knight"
+              "type": "changed:white_latex_knight"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:light_latex_knight_fusion": {
+    "changed:white_latex_knight_fusion": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:light_latex_knight_fusion"
+              "type": "changed:white_latex_knight_fusion"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:light_latex_wolf_female": {
+    "changed:white_latex_wolf_female": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:light_latex_wolf_female"
+              "type": "changed:white_latex_wolf_female"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:light_latex_wolf_male": {
+    "changed:white_latex_wolf_male": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:light_latex_wolf_male"
+              "type": "changed:white_latex_wolf_male"
             },
             "entity": "this"
           }
@@ -957,14 +957,14 @@
         ]
       }
     },
-    "changed:white_latex_wolf": {
+    "changed:pure_white_latex_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:white_latex_wolf"
+              "type": "changed:pure_white_latex_wolf"
             },
             "entity": "this"
           }
@@ -1030,7 +1030,7 @@
   },
   "requirements": [
     [
-      "changed:aerosol_latex_wolf"
+      "changed:gas_wolf"
     ],
     [
       "changed:behemoth_head"
@@ -1210,19 +1210,19 @@
       "changed:latex_yuin"
     ],
     [
-      "changed:light_latex_centaur"
+      "changed:white_latex_centaur"
     ],
     [
-      "changed:light_latex_knight"
+      "changed:white_latex_knight"
     ],
     [
-      "changed:light_latex_knight_fusion"
+      "changed:white_latex_knight_fusion"
     ],
     [
-      "changed:light_latex_wolf_female"
+      "changed:white_latex_wolf_female"
     ],
     [
-      "changed:light_latex_wolf_male"
+      "changed:white_latex_wolf_male"
     ],
     [
       "changed:milk_pudding"
@@ -1231,7 +1231,7 @@
       "changed:shark"
     ],
     [
-      "changed:white_latex_wolf"
+      "changed:pure_white_latex_wolf"
     ],
     [
       "changed:white_wolf_female"

@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
-public abstract class WhiteLatexEntity extends LightLatexWolfMale {
+public abstract class WhiteLatexEntity extends WhiteLatexWolfMale {
     public WhiteLatexEntity(EntityType<? extends WhiteLatexEntity> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

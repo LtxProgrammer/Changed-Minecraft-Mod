@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightLatexKnightFusion extends LightLatexKnight {
-    public LightLatexKnightFusion(EntityType<? extends LightLatexKnightFusion> p_19870_, Level p_19871_) {
+public class WhiteLatexKnightFusion extends WhiteLatexKnight {
+    public WhiteLatexKnightFusion(EntityType<? extends WhiteLatexKnightFusion> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
@@ -48,6 +48,6 @@ public class LightLatexKnightFusion extends LightLatexKnight {
 
     @Override
     public TransfurVariant<?> getTransfurVariant() {
-        return ChangedTransfurVariants.LIGHT_LATEX_KNIGHT_FUSION.get();
+        return ChangedTransfurVariants.WHITE_LATEX_KNIGHT_FUSION.get();
     }
 }

@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.item.BlockEntityRenderedBlockItem;
 import net.ltxprogrammer.changed.item.GasCanister;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -103,8 +102,8 @@ public class ChangedBlocks {
     public static final RegistryObject<LatexWolfCrystal> LATEX_WOLF_CRYSTAL = register("latex_wolf_crystal", () -> new LatexWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<SmallWolfCrystal> LATEX_WOLF_CRYSTAL_SMALL = register("latex_wolf_crystal_small", () -> new SmallWolfCrystal(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<DarkLatexCrystalLarge> DARK_LATEX_CRYSTAL_LARGE = register("dark_latex_crystal_large", () -> new DarkLatexCrystalLarge(BlockBehaviour.Properties.copy(LATEX_CRYSTAL.get()).strength(1.7F, 0.2F)), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_FEMALE = register("light_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(0.1F), ChangedTransfurVariants.LIGHT_LATEX_WOLF_FEMALE));
-    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_MALE = register("light_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(LIGHT_LATEX_PUDDLE_FEMALE.get()), ChangedTransfurVariants.LIGHT_LATEX_WOLF_MALE));
+    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_FEMALE = register("light_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(0.1F), ChangedTransfurVariants.WHITE_LATEX_WOLF_FEMALE));
+    public static final RegistryObject<AbstractPuddle> LIGHT_LATEX_PUDDLE_MALE = register("light_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(LIGHT_LATEX_PUDDLE_FEMALE.get()), ChangedTransfurVariants.WHITE_LATEX_WOLF_MALE));
     public static final RegistryObject<PipeBlock> PIPE = register("pipe", PipeBlock::new);
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<RoombaCharger> ROOMBA_CHARGER = register("roomba_charger", () -> new RoombaCharger(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0f, 3.0f)));
