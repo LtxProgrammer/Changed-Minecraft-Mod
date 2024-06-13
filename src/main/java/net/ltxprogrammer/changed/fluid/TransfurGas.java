@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.fluid;
 
 import com.google.common.collect.ImmutableList;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -47,14 +48,8 @@ public abstract class TransfurGas extends Gas {
         if (variant != null)
             return Optional.empty();
 
-        // Code from Entity.updateFluidOnEyes()
-        double yCheck = entity.getEyeY() - (double)0.11111111F;
-
-        BlockPos blockpos = new BlockPos(entity.getX(), yCheck, entity.getZ());
-        FluidState fluidstate = entity.level.getFluidState(blockpos);
-        double yFluid = (double)((float)blockpos.getY() + fluidstate.getHeight(entity.level, blockpos));
-        if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas transfurGas)
-            return Optional.of(transfurGas);
+        if (entity instanceof LivingEntityDataExtension ext)
+            return ext.isEyeInGas(TransfurGas.class);
         return Optional.empty();
     }
 

@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
+import net.ltxprogrammer.changed.fluid.Gas;
 import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
@@ -50,6 +51,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityDataExtension {
@@ -164,6 +168,30 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
     }
 
+    @Unique @Nullable private Gas eyeInGas = null;
+
+    private void checkForGas() {
+        eyeInGas = null;
+        // Code from Entity.updateFluidOnEyes()
+        double yCheck = this.getEyeY() - 0.11111111;
+
+        BlockPos blockpos = new BlockPos(this.getX(), yCheck, this.getZ());
+        FluidState fluidstate = this.level.getFluidState(blockpos);
+        double yFluid = ((float)blockpos.getY() + fluidstate.getHeight(this.level, blockpos));
+        if (yFluid > yCheck && fluidstate.getType() instanceof Gas transfurGas)
+            eyeInGas = transfurGas;
+    }
+
+    @Override
+    public <T extends Gas> Optional<T> isEyeInGas(Class<T> clazz) {
+        return Optional.ofNullable(eyeInGas).flatMap(gas -> {
+            if (clazz.isAssignableFrom(gas.getClass()))
+                return Optional.of((T)gas);
+            else
+                return Optional.empty();
+        });
+    }
+
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo callback) {
         if (controlDisabledFor > 0) {
@@ -184,6 +212,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
             if (grabbedBy instanceof Player player && player.isSpectator())
                 grabbedBy = null;
         }
+
+        this.checkForGas();
     }
 
     @Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
@@ -203,6 +233,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow protected abstract boolean isAffectedByFluids();
     @Shadow public abstract Vec3 getFluidFallingAdjustedMovement(double d0, boolean flag, Vec3 movement);
     @Shadow(remap = false) @Final private static AttributeModifier SLOW_FALLING;
+
+    @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot p_21127_);
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

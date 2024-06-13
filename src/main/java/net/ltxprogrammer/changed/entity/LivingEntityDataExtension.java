@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.fluid.Gas;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public interface LivingEntityDataExtension {
     int getNoControlTicks();
@@ -11,4 +13,6 @@ public interface LivingEntityDataExtension {
     @Nullable
     LivingEntity getGrabbedBy();
     void setGrabbedBy(@Nullable LivingEntity holder);
+
+    <T extends Gas> Optional<T> isEyeInGas(Class<T> gas);
 }
