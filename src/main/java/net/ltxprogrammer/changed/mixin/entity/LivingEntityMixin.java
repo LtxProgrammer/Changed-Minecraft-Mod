@@ -273,23 +273,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
 
     @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
     private void maybeAddAir(int current, CallbackInfoReturnable<Integer> cir) {
-        LivingEntity self = (LivingEntity)(Object)this;
-        if (self.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
-            return;
-        if (!self.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
-            return;
-        var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(self));
-        if (variant != null)
-            return;
-
-        // Code from this.updateFluidOnEyes()
-        double yCheck = this.getEyeY() - (double)0.11111111F;
-
-        BlockPos blockpos = new BlockPos(this.getX(), yCheck, this.getZ());
-        FluidState fluidstate = this.level.getFluidState(blockpos);
-        double yFluid = (double)((float)blockpos.getY() + fluidstate.getHeight(this.level, blockpos));
-        if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas) {
-            cir.setReturnValue(current);
-        }
+        TransfurGas.validEntityInGas((LivingEntity)(Object)this).ifPresent(gas -> cir.setReturnValue(current));
     }
 }

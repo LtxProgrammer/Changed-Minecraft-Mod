@@ -12,6 +12,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.material.FluidState;
@@ -20,6 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
@@ -36,16 +38,14 @@ public abstract class TransfurGas extends Gas {
         this.variants = ImmutableList.copyOf(variants);
     }
 
-    @SubscribeEvent
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        var entity = event.getEntityLiving();
+    public static Optional<TransfurGas> validEntityInGas(LivingEntity entity) {
         if (entity.getItemBySlot(EquipmentSlot.HEAD).is(ChangedItems.GAS_MASK.get()))
-            return;
+            return Optional.empty();
         if (!entity.getType().is(ChangedTags.EntityTypes.HUMANOIDS))
-            return;
+            return Optional.empty();
         var variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
         if (variant != null)
-            return;
+            return Optional.empty();
 
         // Code from Entity.updateFluidOnEyes()
         double yCheck = entity.getEyeY() - (double)0.11111111F;
@@ -53,7 +53,15 @@ public abstract class TransfurGas extends Gas {
         BlockPos blockpos = new BlockPos(entity.getX(), yCheck, entity.getZ());
         FluidState fluidstate = entity.level.getFluidState(blockpos);
         double yFluid = (double)((float)blockpos.getY() + fluidstate.getHeight(entity.level, blockpos));
-        if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas transfurGas) {
+        if (yFluid > yCheck && fluidstate.getType() instanceof TransfurGas transfurGas)
+            return Optional.of(transfurGas);
+        return Optional.empty();
+    }
+
+    @SubscribeEvent
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        var entity = event.getEntityLiving();
+        validEntityInGas(entity).ifPresent(transfurGas -> {
             int air = entity.getAirSupply();
             int i = EnchantmentHelper.getRespiration(entity);
             air = i > 0 && entity.getRandom().nextInt(i + 1) > 0 ? air : air - 3;
@@ -65,6 +73,6 @@ public abstract class TransfurGas extends Gas {
             }
 
             entity.setAirSupply(air);
-        }
+        });
     }
 }
