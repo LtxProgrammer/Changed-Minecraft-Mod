@@ -87,6 +87,7 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
             if (ticksLeftAsPuddle <= 0)
                 setPuddle(false);
         }
+        this.refreshDimensions();
     }
 
     @Override
