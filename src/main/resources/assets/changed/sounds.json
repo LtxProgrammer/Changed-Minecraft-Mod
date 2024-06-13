@@ -119,6 +119,16 @@
     ],
     "subtitle": "subtitles.changed.evasion"
   },
+  "fire": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:fire",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.goo"
+  },
   "goo": {
     "category": "neutral",
     "sounds": [

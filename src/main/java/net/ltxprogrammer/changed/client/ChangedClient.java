@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
+import net.ltxprogrammer.changed.client.sound.GasSFX;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -79,5 +80,7 @@ public class ChangedClient {
         }
 
         clientTicks++;
+
+        GasSFX.ensureGasSfx();
     }
 }

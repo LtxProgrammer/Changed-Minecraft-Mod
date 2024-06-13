@@ -35,6 +35,7 @@ public class ChangedSounds {
     public static final SoundEvent EQUIP2 = register("equip2");
     public static final SoundEvent EQUIP3 = register("equip3");
     public static final SoundEvent EVASION = register("evasion");
+    public static final SoundEvent FIRE = register("fire");
     public static final SoundEvent GOO = register("goo");
     public static final SoundEvent ICE2 = register("ice2");
     public static final SoundEvent KEY = register("key");
