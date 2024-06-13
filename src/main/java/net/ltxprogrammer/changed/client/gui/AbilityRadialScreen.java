@@ -110,4 +110,10 @@ public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialM
 
         return false;
     }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        variant.resetTicksSinceLastAbilityActivity();
+    }
 }

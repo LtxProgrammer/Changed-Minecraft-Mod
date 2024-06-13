@@ -34,7 +34,7 @@ public class ChangedOverlays {
     });
     public static final IIngameOverlay ABILITY_ELEMENT = OverlayRegistry.registerOverlayTop(Changed.modResourceStr("ability"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         gui.setupOverlayRenderState(true, false);
-        AbilityOverlay.renderSelectedAbility(gui, poseStack, screenWidth, screenHeight);
+        AbilityOverlay.renderSelectedAbility(gui, poseStack, partialTick, screenWidth, screenHeight);
     });
     public static final IIngameOverlay GRABBED_ELEMENT = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, Changed.modResourceStr("grabbed"), GrabOverlay::renderProgressBars);
     public static final IIngameOverlay GAS_VFX_ELEMENT = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.VIGNETTE_ELEMENT, Changed.modResourceStr("gas_vfx"), ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {

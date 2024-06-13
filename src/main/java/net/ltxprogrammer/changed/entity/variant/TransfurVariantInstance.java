@@ -76,6 +76,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int ticksBreathingUnderwater;
     public int ticksWhiteLatex;
     public int ticksFlying;
+    protected int ticksSinceLastAbilityActivity = 0;
 
     private float transfurProgressionO = 0.0f;
     public float transfurProgression = 0.0f;
@@ -126,6 +127,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         transfurContext = TransfurContext.fromTag(tag.getCompound("transfurContext"), host.level);
 
         this.loadAbilities(tag.getCompound("abilities"));
+    }
+
+    public int getTicksSinceLastAbilityActivity() {
+        return ticksSinceLastAbilityActivity;
+    }
+
+    public void resetTicksSinceLastAbilityActivity() {
+        this.ticksSinceLastAbilityActivity = 0;
     }
 
     public float getTransfurProgression(float partial) {
@@ -669,6 +678,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         } else
             ticksFlying = 0;
 
+        if (shouldApplyAbilities())
+            this.ticksSinceLastAbilityActivity++;
+
         player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
             if (!canWear(player, itemStack)) {
                 ItemStack copy = itemStack.copy();
@@ -819,6 +831,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 if (instance != null) {
                     var controller = instance.getController();
                     boolean oldState = controller.exchangeKeyState(abilityKeyState);
+                    if (abilityKeyState || instance.getController().isCoolingDown())
+                        this.resetTicksSinceLastAbilityActivity();
                     if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
                         instance.getUseType().check(abilityKeyState, oldState, controller);
                 }
@@ -906,6 +920,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public void setSelectedAbility(AbstractAbility<?> ability) {
         if (abilityInstances.containsKey(ability)) {
+            this.resetTicksSinceLastAbilityActivity();
             var instance = abilityInstances.get(ability);
 
             if (instance.getUseType() != AbstractAbility.UseType.MENU) {

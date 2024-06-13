@@ -11,9 +11,11 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -63,17 +65,22 @@ public class AbilityOverlay {
         blit(stack, x, y, 0, 0, 32, 32, 32, 32);
     }
 
-    public static void renderSelectedAbility(Gui gui, PoseStack stack, int screenWidth, int screenHeight) {
+    public static void renderSelectedAbility(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(Minecraft.getInstance().cameraEntity), (player, variant) -> {
             var ability = variant.getSelectedAbility();
             if (ability == null || ability.getUseType() == AbstractAbility.UseType.MENU)
                 return;
             if (variant.isTemporaryFromSuit())
                 return;
+            int offset = (int)(Transition.easeInOutSine(Mth.clamp(
+                    Mth.map(variant.getTicksSinceLastAbilityActivity() + partialTick, 100.0f, 130.0f, 0.0f, 1.0f),
+                    0.0f, 1.0f)) * 40.0f);
+            if (offset >= 39)
+                return;
             var color = AbstractRadialScreen.getColors(variant).setForegroundToBright();
 
-            renderBackground(10, screenHeight - 42, stack, color, player, variant, ability);
-            renderForeground(15, screenHeight - 47, stack, color, player, variant, ability);
+            renderBackground(10 - offset, screenHeight - 42 + offset, stack, color, player, variant, ability);
+            renderForeground(15 - offset, screenHeight - 47 + offset, stack, color, player, variant, ability);
         });
     }
 }
