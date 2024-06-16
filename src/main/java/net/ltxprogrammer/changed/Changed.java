@@ -13,8 +13,6 @@ import net.ltxprogrammer.changed.network.packet.ChangedPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.FolderRepositorySource;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,7 +56,7 @@ public class Changed {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customDatapacks);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customPacks);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();
@@ -118,9 +116,9 @@ public class Changed {
         ChangedClient.registerEventListeners();
     }
 
-    private void customDatapacks(final AddPackFindersEvent event) {
+    private void customPacks(final AddPackFindersEvent event) {
         try {
-            event.addRepositorySource(new BuiltinRepositorySource(MODID));
+            event.addRepositorySource(new BuiltinRepositorySource(event.getPackType(), MODID));
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

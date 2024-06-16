@@ -1,13 +1,12 @@
 package net.ltxprogrammer.changed.data;
 
-import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,16 +25,22 @@ public class BuiltinRepositorySource implements RepositorySource {
     private final Path modFile;
     private final boolean isJar;
     private final Set<String> packIds = new HashSet<>();
+    private final String packsFolder;
+    private static final String RESOURCEPACKS_FOLDER = "resourcepacks";
     private static final String DATAPACKS_FOLDER = "datapacks";
     private static final String MCMETA = "pack.mcmeta";
 
-    public BuiltinRepositorySource(String modId) throws IOException, NullPointerException {
+    public BuiltinRepositorySource(PackType type, String modId) throws IOException, NullPointerException {
         this.modId = modId;
         this.modFile = FMLLoader.getLoadingModList().getModFileById(modId).getFile().getFilePath();
+        this.packsFolder = switch (type) {
+            case CLIENT_RESOURCES -> RESOURCEPACKS_FOLDER;
+            case SERVER_DATA -> DATAPACKS_FOLDER;
+        };
         var file = this.modFile.toFile();
         if (file.isDirectory()) {
             this.isJar = false;
-            Files.walk(this.modFile.resolve(DATAPACKS_FOLDER), 1).filter(path -> {
+            Files.walk(this.modFile.resolve(packsFolder), 1).filter(path -> {
                 return path.resolve(MCMETA).toFile().isFile();
             }).forEach(path -> packIds.add(path.getFileName().toString()));
         }
@@ -44,7 +49,7 @@ public class BuiltinRepositorySource implements RepositorySource {
             this.isJar = true;
             ZipFile jar = new ZipFile(this.modFile.toFile());
             jar.stream().filter(ZipEntry::isDirectory).filter(entry -> {
-                return entry.getName().startsWith(DATAPACKS_FOLDER + "/") &&
+                return entry.getName().startsWith(packsFolder + "/") &&
                         jar.getEntry(entry.getName() + MCMETA) != null;
             }).forEach(entry -> packIds.add(new File(entry.getName()).getName()));
             jar.close();
@@ -69,9 +74,9 @@ public class BuiltinRepositorySource implements RepositorySource {
 
     private Supplier<PackResources> createSupplier(File file, String packName) {
         return isJar ? () -> {
-            return new BuiltinPackResources(file, DATAPACKS_FOLDER + "/" + packName + "/");
+            return new BuiltinPackResources(file, packsFolder + "/" + packName + "/");
         } : () -> {
-            return new FolderPackResources(new File(file, DATAPACKS_FOLDER + "/" + packName));
+            return new FolderPackResources(new File(file, packsFolder + "/" + packName));
         };
     }
 }
