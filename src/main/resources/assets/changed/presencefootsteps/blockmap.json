@@ -49,6 +49,7 @@
   "changed:light_latex_puddle_male.foliage": "mudfine,slime",
   "changed:office_chair": "woodutility",
   "changed:retinal_scanner": "hardmetal",
+  "changed:roomba_charger": "hardmetal, composite",
   "changed:speaker": "hardmetal",
   "changed:microphone": "hardmetal",
   "changed:microscope": "hardmetal",
