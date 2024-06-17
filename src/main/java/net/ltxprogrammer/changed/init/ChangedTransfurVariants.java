@@ -37,7 +37,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPup>> DARK_LATEX_WOLF_PUP = register("form_dark_latex_wolf_pup",
             () -> TransfurVariant.Builder.of(DARK_LATEX_WOLF_MALE.get(), ChangedEntities.DARK_LATEX_WOLF_PUP).transfurMode(TransfurMode.NONE).holdItemsInMouth().additionalHealth(-8).groundSpeed(1.25F).reducedFall().addAbility(ChangedAbilities.PUDDLE));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPartial>> DARK_LATEX_WOLF_PARTIAL = register("form_dark_latex_wolf_partial",
-            TransfurVariant.Builder.of(ChangedEntities.BLACK_GOO_WOLF_PARTIAL).groundSpeed(1.025f).swimSpeed(0.975f).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE));
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL).groundSpeed(1.025f).swimSpeed(0.975f).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE));
     public static final RegistryObject<TransfurVariant<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("form_dark_latex_yufeng", TransfurVariant.Builder.of(ChangedEntities.BLACK_GOO_YUFENG)
             .groundSpeed(1.0F).swimSpeed(0.85f).glide().faction(LatexType.DARK_LATEX));
     public static final RegistryObject<TransfurVariant<LatexAlien>> LATEX_ALIEN = register("form_latex_alien",
@@ -61,7 +61,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<GreenLizard>> GREEN_LIZARD = register("form_green_lizard",
             TransfurVariant.Builder.of(ChangedEntities.GREEN_LIZARD).groundSpeed(1.05f).swimSpeed(0.98f).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexHuman>> LATEX_HUMAN = register("form_latex_human",
-            TransfurVariant.Builder.of(ChangedEntities.GOO_HUMAN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.6f));
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_HUMAN).groundSpeed(1.0f).swimSpeed(1.0f).stepSize(0.6f));
     public static final RegistryObject<TransfurVariant<LatexFennecFox>> LATEX_FENNEC_FOX = register("form_latex_fennec_fox",
             TransfurVariant.Builder.of(ChangedEntities.GOO_FENNEC_FOX).groundSpeed(1.075f).swimSpeed(0.95f).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<LatexHypnoCat>> LATEX_HYPNO_CAT = register("form_latex_hypno_cat",

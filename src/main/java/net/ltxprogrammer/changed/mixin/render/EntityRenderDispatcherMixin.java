@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.EntityRenderHelper;
+import net.ltxprogrammer.changed.entity.ComplexRenderer;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedEntityRenderers;
@@ -72,9 +73,7 @@ public abstract class EntityRenderDispatcherMixin {
 
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     public <E extends Entity> void getRendererOrOverridden(E entity, CallbackInfoReturnable<EntityRenderer<? super E>> callback) {
-        EntityRenderer<? super E> override = ChangedEntityRenderers.getRenderer(entity);
-        if (override == null) return;
-        callback.setReturnValue(override);
+        ChangedEntityRenderers.getRenderer(entity).ifPresent(callback::setReturnValue);
     }
 
     @Redirect(method = "onResourceManagerReload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderers;createEntityRenderers(Lnet/minecraft/client/renderer/entity/EntityRendererProvider$Context;)Ljava/util/Map;"))

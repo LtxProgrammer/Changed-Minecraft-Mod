@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorHumanModel;
+import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -25,6 +26,10 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, Lat
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
+	}
+
+	public static EntityRendererProvider<LatexHuman> forModelSize(boolean slim) {
+		return (context) -> new LatexHumanRenderer(context, slim);
 	}
 
 	@Override

@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
-import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
@@ -28,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class LatexHuman extends ChangedEntity {
+public class LatexHuman extends ChangedEntity implements ComplexRenderer {
     protected static final EntityDataAccessor<Optional<UUID>> DATA_PLAYER = SynchedEntityData.defineId(LatexHuman.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public LatexHuman(EntityType<? extends LatexHuman> p_19870_, Level p_19871_) {

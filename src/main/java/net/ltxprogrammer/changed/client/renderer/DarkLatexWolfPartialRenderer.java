@@ -26,6 +26,10 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 		this.addLayer(new GasMaskLayer<>(this, context.getModelSet()));
 	}
 
+	public static EntityRendererProvider<DarkLatexWolfPartial> forModelSize(boolean slim) {
+		return (context) -> new DarkLatexWolfPartialRenderer(context, slim);
+	}
+
 	@Override
 	public ResourceLocation getTextureLocation(DarkLatexWolfPartial partial) {
 		return partial.getSkinTextureLocation();

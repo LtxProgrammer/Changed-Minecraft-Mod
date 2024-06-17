@@ -1,49 +1,76 @@
 package net.ltxprogrammer.changed.init;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.client.renderer.*;
 import net.ltxprogrammer.changed.client.renderer.particle.GasParticleRenderer;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
-import net.ltxprogrammer.changed.entity.beast.LatexHuman;
+import net.ltxprogrammer.changed.entity.ComplexRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ChangedEntityRenderers {
-    private static Map<String, EntityRenderer<? extends DarkLatexWolfPartial>> partialRenderers = ImmutableMap.of();
-    private static Map<String, EntityRenderer<? extends LatexHuman>> humanRenderers = ImmutableMap.of();
+    private static Map<EntityType<? extends ComplexRenderer>, Map<String, EntityRenderer<? extends ComplexRenderer>>> complexRenderers = ImmutableMap.of();
 
-    @Nullable
-    public static <T extends Entity> EntityRenderer<? super T> getRenderer(T entity) {
-        if (entity instanceof DarkLatexWolfPartial partial) {
-            String s = partial.getModelName();
-            EntityRenderer<? extends DarkLatexWolfPartial> entityrenderer = partialRenderers.get(s);
-            return (EntityRenderer) (entityrenderer != null ? entityrenderer : partialRenderers.get("default"));
-        } else if (entity instanceof LatexHuman human) {
-            String s = human.getModelName();
-            EntityRenderer<? extends LatexHuman> entityrenderer = humanRenderers.get(s);
-            return (EntityRenderer) (entityrenderer != null ? entityrenderer : humanRenderers.get("default"));
+    public static <T extends Entity> Optional<EntityRenderer<? super T>> getRenderer(T entity) {
+        if (!(entity instanceof ComplexRenderer complexRenderer))
+            return Optional.empty();
+
+        final var renderers = Optional.ofNullable(complexRenderers.get(entity.getType()));
+        return renderers.map(map -> (EntityRenderer<? super T>)map.getOrDefault(complexRenderer.getModelName(), map.get("default")));
+    }
+
+    public static class RegisterComplexRenderersEvent extends Event {
+        private final Map<EntityType<? extends ComplexRenderer>,
+                ImmutableMap.Builder<String, EntityRenderer<? extends ComplexRenderer>>> builder = new HashMap<>();
+        private final EntityRendererProvider.Context context;
+
+        public RegisterComplexRenderersEvent(EntityRendererProvider.Context context) {
+            this.context = context;
         }
 
-        return null; // Default to registered renderer
+        <T extends Entity & ComplexRenderer> void registerEntityRenderer(EntityType<T> entityType, String modelName, EntityRendererProvider<T> provider) {
+            builder.computeIfAbsent(entityType, type -> new ImmutableMap.Builder<>()).put(modelName, provider.create(context));
+        }
+
+        <T extends Entity & ComplexRenderer> void registerEntityRenderer(EntityType<T> entityType, Map<String, EntityRendererProvider<T>> providers) {
+            final var mapBuilder = builder.computeIfAbsent(entityType, type -> new ImmutableMap.Builder<>());
+            providers.entrySet().stream().map(entry -> Pair.of(entry.getKey(), entry.getValue().create(context))).forEach(pair -> {
+                mapBuilder.put(pair.getFirst(), pair.getSecond());
+            });
+        }
+
+        <T extends Entity & ComplexRenderer> void registerEntityRenderer(EntityType<T> entityType, Function<EntityRendererProvider.Context, Map<String, EntityRenderer<T>>> providers) {
+            final var mapBuilder = builder.computeIfAbsent(entityType, type -> new ImmutableMap.Builder<>());
+            providers.apply(context).forEach(mapBuilder::put);
+        }
     }
 
     public static void registerComplexRenderers(EntityRendererProvider.Context context) {
-        partialRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends DarkLatexWolfPartial>>()
-                .put("default", new DarkLatexWolfPartialRenderer(context, false))
-                .put("slim", new DarkLatexWolfPartialRenderer(context, true)).build();
-        humanRenderers = new ImmutableMap.Builder<String, EntityRenderer<? extends LatexHuman>>()
-                .put("default", new LatexHumanRenderer(context, false))
-                .put("slim", new LatexHumanRenderer(context, true)).build();
+        final var event = new RegisterComplexRenderersEvent(context);
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), "default", DarkLatexWolfPartialRenderer.forModelSize(false));
+        event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_PARTIAL.get(), "slim", DarkLatexWolfPartialRenderer.forModelSize(true));
+        event.registerEntityRenderer(ChangedEntities.LATEX_HUMAN.get(), "default", LatexHumanRenderer.forModelSize(false));
+        event.registerEntityRenderer(ChangedEntities.LATEX_HUMAN.get(), "slim", LatexHumanRenderer.forModelSize(true));
+        MinecraftForge.EVENT_BUS.post(event);
+
+        final var finalized = new ImmutableMap.Builder<EntityType<? extends ComplexRenderer>, Map<String, EntityRenderer<? extends ComplexRenderer>>>();
+        event.builder.forEach((type, builder) -> finalized.put(type, builder.buildOrThrow()));
+        complexRenderers = finalized.buildOrThrow();
     }
 
     @SubscribeEvent

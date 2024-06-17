@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.ComplexRenderer;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DarkLatexWolfPartial extends AbstractDarkLatexEntity {
+public class DarkLatexWolfPartial extends AbstractDarkLatexEntity implements ComplexRenderer {
     public DarkLatexWolfPartial(EntityType<? extends DarkLatexWolfPartial> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
