@@ -1,0 +1,47 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"elements": [
+		{
+			"from": [12, 12, 0],
+			"to": [15, 16, 12],
+			"faces": {
+				"east": {"uv": [6, 1, 9, 2], "texture": "#0"},
+				"west": {"uv": [6, 0, 9, 1], "texture": "#0"},
+				"up": {"uv": [6, 2, 9, 2.75], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [6, 2.75, 9, 3.5], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [12, 0, 12],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [3, 4, 4, 8], "texture": "#0"},
+				"east": {"uv": [4, 4, 5, 8], "texture": "#0"},
+				"south": {"uv": [5, 0, 6, 4], "texture": "#0"},
+				"west": {"uv": [5, 4, 6, 8], "texture": "#0"},
+				"up": {"uv": [8.5, 6.5, 7.5, 5.5], "texture": "#0"},
+				"down": {"uv": [1, 8, 0, 9], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 12, 12],
+			"to": [12, 16, 15],
+			"faces": {
+				"north": {"uv": [6, 0, 9, 1], "texture": "#0"},
+				"south": {"uv": [6, 1, 9, 2], "texture": "#0"},
+				"up": {"uv": [9, 2.75, 6, 2], "texture": "#0"},
+				"down": {"uv": [9, 2.75, 6, 3.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {},
+	"groups": [
+		{
+			"name": "InnerCorner",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

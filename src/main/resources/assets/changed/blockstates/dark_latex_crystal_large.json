@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "changed:block/dark_latex_crystal_large_bottom"
+    },
+    "half=upper": {
+      "model": "changed:block/dark_latex_crystal_large_top"
+    }
+  }
+}

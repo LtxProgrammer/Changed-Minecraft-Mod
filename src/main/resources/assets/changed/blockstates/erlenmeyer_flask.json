@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "filled=neutral": {
+      "model": "changed:block/erlenmeyer_flask_empty"
+    },
+    "filled=dark_latex": {
+      "model": "changed:block/erlenmeyer_flask_dark_latex"
+    },
+    "filled=white_latex": {
+      "model": "changed:block/erlenmeyer_flask_white_latex"
+    }
+  }
+}

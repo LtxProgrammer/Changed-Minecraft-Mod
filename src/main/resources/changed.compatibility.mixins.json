@@ -1,0 +1,42 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ltxprogrammer.changed.mixin.compatibility",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "changed.refmap.json",
+  "plugin": "net.ltxprogrammer.changed.mixin.compatibility.ChangedMixinPlugin",
+  "mixins": [],
+  "client": [
+    "BeyondEarth.SpaceSuitModelP1Mixin",
+    "BeyondEarth.SpaceSuitModelP2Mixin",
+    "BeyondEarth.OxygenSystemMixin",
+    "BeyondEarth.JetSuitModelP1Mixin",
+    "BeyondEarth.JetSuitModelP2Mixin",
+    "CarryOn.HoldEntityAnimatorMixin",
+    "CarryOn.RenderEventsMixin",
+    "CGM.AdvancedHumanoidRendererMixin",
+    "CGM.HumanoidAnimatorMixin",
+    "CGM.LatexItemInHandLayerMixin",
+    "FirstPerson.FirstPersonBaseMixin",
+    "HardcoreRevival.KnockoutHandlerMixin",
+    "Leashed.LeadUtilMixin",
+    "Moonlight.AbstractUpperBodyAnimatorMixin",
+    "Moonlight.LatexItemInHandLayerMixin",
+    "NotEnoughAnimations.HumanoidAnimatorMixin",
+    "NotEnoughAnimations.PetAnimationMixin",
+    "Oculus.WorldRenderingPhaseMixin",
+    "Pehkui.ChangedEntityMixin",
+    "Pehkui.ScaleTypeMixin",
+    "PlayerAnimator.AdvancedHumanoidModelMixin",
+    "PlayerAnimator.AdvancedHumanoidRendererMixin",
+    "PlayerAnimator.HumanoidAnimatorMixin",
+    "PresenceFootsteps.SoundEngineMixin",
+    "PresenceFootsteps.StateLookupMixin",
+    "Rubidium.BlockRenderPassManagerMixin",
+    "Rubidium.BlockRenderPassMixin",
+    "Vivecraft.VRArmRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

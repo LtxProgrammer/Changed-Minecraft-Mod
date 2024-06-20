@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "changed:block/lab_light_small"
+    },
+    "powered=true": {
+      "model": "changed:block/lab_light_small_on"
+    }
+  }
+}

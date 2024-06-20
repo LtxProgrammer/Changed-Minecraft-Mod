@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/computer",
+  "textures": {
+    "all": "changed:blocks/computer",
+    "particle": "changed:blocks/computer",
+    "0": "changed:blocks/computer"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_boots"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:diamond_boots"
+    }
+  ],
+  "result": {
+    "item": "changed:diamond_quadrupedal_boots",
+    "count": 1
+  }
+}

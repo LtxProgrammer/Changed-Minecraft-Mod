@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:items/the_squid_dog_record"
+  }
+}

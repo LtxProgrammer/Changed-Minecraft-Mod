@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/keypad",
+  "textures": {
+    "all": "changed:blocks/keypad_locked",
+    "particle": "changed:blocks/keypad_locked",
+    "0": "changed:blocks/keypad_locked"
+  }
+}

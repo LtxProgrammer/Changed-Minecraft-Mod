@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "changed:tiles_white",
+    "changed:tiles_white_connected"
+  ]
+}

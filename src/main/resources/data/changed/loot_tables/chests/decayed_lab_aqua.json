@@ -1,0 +1,209 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 3.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "changed:the_shark_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "changed:the_squid_dog_record"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "changed:benign_pants"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:water_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "changed:leather_lower_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "changed:leather_upper_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "changed:chainmail_lower_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "changed:chainmail_upper_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:iron_lower_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "changed:iron_upper_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "changed:diamond_lower_abdomen_armor"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "changed:diamond_upper_abdomen_armor"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 4.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_inkball"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:syringe"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 6.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_base"
+        }
+      ]
+    },
+    {
+      "rolls": 3,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 16,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:dried_kelp"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:cod"
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 2.0
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "changed:random_variant",
+              "variants": [
+                "changed:form_latex_squid_dog/male",
+                "changed:form_latex_squid_dog/female",
+                "changed:form_latex_tiger_shark",
+                "changed:form_latex_manta_ray/male",
+                "changed:form_latex_manta_ray/female",
+                "changed:form_latex_mermaid_shark/male",
+                "changed:form_latex_mermaid_shark/female",
+                "changed:form_latex_shark"
+              ]
+            },
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0.0,
+                "max": 1.0
+              },
+              "add": false
+            }
+          ],
+          "name": "changed:latex_syringe"
+        }
+      ]
+    }
+  ]
+}

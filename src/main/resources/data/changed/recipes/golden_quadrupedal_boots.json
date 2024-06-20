@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:golden_boots"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:golden_boots"
+    }
+  ],
+  "result": {
+    "item": "changed:golden_quadrupedal_boots",
+    "count": 1
+  }
+}

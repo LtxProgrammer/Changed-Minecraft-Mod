@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:chainmail_boots"
+  },
+  "addition": {
+    "item": "minecraft:chain"
+  },
+  "result": {
+    "item": "changed:chainmail_lower_abdomen_armor"
+  }
+}

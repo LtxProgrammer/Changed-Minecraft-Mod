@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:latex_wolf_crystal_block_inverse"
+    ]
+  },
+  "criteria": {
+    "has_latex_wolf_crystal_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:latex_wolf_crystal_block"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:latex_wolf_crystal_block_inverse"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_latex_wolf_crystal_block",
+      "has_the_recipe"
+    ]
+  ]
+}

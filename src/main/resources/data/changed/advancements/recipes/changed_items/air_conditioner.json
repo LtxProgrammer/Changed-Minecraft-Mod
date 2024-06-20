@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:air_conditioner"
+    ]
+  },
+  "criteria": {
+    "has_vent_fan": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:vent_fan"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:air_conditioner"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vent_fan",
+      "has_the_recipe"
+    ]
+  ]
+}

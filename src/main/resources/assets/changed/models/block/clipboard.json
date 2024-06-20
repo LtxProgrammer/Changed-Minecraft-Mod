@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/clipboard",
+  "textures": {
+    "all": "changed:blocks/clipboard",
+    "particle": "changed:blocks/clipboard",
+    "0": "changed:blocks/clipboard"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "changed:black_pillow",
+    "changed:blue_pillow",
+    "changed:brown_pillow",
+    "changed:cyan_pillow",
+    "changed:gray_pillow",
+    "changed:green_pillow",
+    "changed:light_blue_pillow",
+    "changed:light_gray_pillow",
+    "changed:lime_pillow",
+    "changed:magenta_pillow",
+    "changed:orange_pillow",
+    "changed:pink_pillow",
+    "changed:purple_pillow",
+    "changed:red_pillow",
+    "changed:white_pillow",
+    "changed:yellow_pillow"
+  ]
+}

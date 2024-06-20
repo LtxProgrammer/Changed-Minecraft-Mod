@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:evoker",
+    "minecraft:skeleton",
+    "minecraft:stray",
+    "minecraft:wither_skeleton",
+    "minecraft:illusioner",
+    "minecraft:piglin",
+    "minecraft:piglin_brute",
+    "minecraft:pillager",
+    "minecraft:vindicator",
+    "minecraft:wandering_trader",
+    "minecraft:witch"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:lab_light"
+    ]
+  },
+  "criteria": {
+    "has_redstone_lamp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:redstone_lamp"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:lab_light"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_redstone_lamp",
+      "has_the_recipe"
+    ]
+  ]
+}

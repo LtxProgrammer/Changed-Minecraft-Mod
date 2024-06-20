@@ -1,0 +1,22 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:cod"
+    },
+    {
+      "item": "minecraft:snowball"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_latex_snow_leopard"
+}

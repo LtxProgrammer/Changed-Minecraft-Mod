@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "changed:block/white_latex_pillar_lower"
+    },
+    "half=upper": {
+      "model": "changed:block/white_latex_pillar_upper"
+    }
+  }
+}

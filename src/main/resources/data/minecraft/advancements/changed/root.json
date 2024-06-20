@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "changed:wall_lightred_striped"
+    },
+    "title": {
+      "translate": "changed:advancements.main.root.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "changed:textures/blocks/dark_latex_block_side.png"
+  },
+  "criteria": {
+    "has_latex_syringe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:latex_syringe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_latex_syringe"
+    ]
+  ]
+}

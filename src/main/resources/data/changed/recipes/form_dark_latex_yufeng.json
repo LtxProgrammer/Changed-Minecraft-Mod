@@ -1,0 +1,18 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:dark_latex_goo"
+    },
+    {
+      "item": "changed:dark_latex_crystal_fragment"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
+  ],
+  "form": "changed:form_dark_latex_yufeng"
+}

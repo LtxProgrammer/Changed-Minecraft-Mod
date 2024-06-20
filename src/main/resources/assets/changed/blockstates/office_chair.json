@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "rotation=0,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom"
+    },
+    "rotation=1,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom225"
+    },
+    "rotation=2,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom45"
+    },
+    "rotation=3,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom675"
+    },
+    "rotation=4,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom",
+      "y": 90
+    },
+    "rotation=5,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom225",
+      "y": 90
+    },
+    "rotation=6,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom45",
+      "y": 90
+    },
+    "rotation=7,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom675",
+      "y": 90
+    },
+    "rotation=8,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom",
+      "y": 180
+    },
+    "rotation=9,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom225",
+      "y": 180
+    },
+    "rotation=10,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom45",
+      "y": 180
+    },
+    "rotation=11,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom675",
+      "y": 180
+    },
+    "rotation=12,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom",
+      "y": 270
+    },
+    "rotation=13,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom225",
+      "y": 270
+    },
+    "rotation=14,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom45",
+      "y": 270
+    },
+    "rotation=15,half=lower": {
+      "model": "changed:custom/office_chair/office_chair_bottom675",
+      "y": 270
+    },
+    "rotation=0,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top"
+    },
+    "rotation=1,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top225"
+    },
+    "rotation=2,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top45"
+    },
+    "rotation=3,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top675"
+    },
+    "rotation=4,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top",
+      "y": 90
+    },
+    "rotation=5,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top225",
+      "y": 90
+    },
+    "rotation=6,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top45",
+      "y": 90
+    },
+    "rotation=7,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top675",
+      "y": 90
+    },
+    "rotation=8,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top",
+      "y": 180
+    },
+    "rotation=9,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top225",
+      "y": 180
+    },
+    "rotation=10,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top45",
+      "y": 180
+    },
+    "rotation=11,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top675",
+      "y": 180
+    },
+    "rotation=12,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top",
+      "y": 270
+    },
+    "rotation=13,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top225",
+      "y": 270
+    },
+    "rotation=14,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top45",
+      "y": 270
+    },
+    "rotation=15,half=upper": {
+      "model": "changed:custom/office_chair/office_chair_top675",
+      "y": 270
+    }
+  }
+}

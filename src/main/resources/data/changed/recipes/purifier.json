@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SDS",
+    "IFI",
+    "IPI"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "S": {
+      "item": "changed:syringe"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "item": "changed:purifier"
+  }
+}

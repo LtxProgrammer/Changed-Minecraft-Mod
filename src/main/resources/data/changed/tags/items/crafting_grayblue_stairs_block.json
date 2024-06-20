@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "changed:tiles_grayblue",
+    "changed:tiles_grayblue_connected"
+  ]
+}

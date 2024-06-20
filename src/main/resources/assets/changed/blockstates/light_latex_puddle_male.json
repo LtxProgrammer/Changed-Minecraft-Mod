@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/light_latex_puddle_male"
+    },
+    "facing=east": {
+      "model": "changed:block/light_latex_puddle_male",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/light_latex_puddle_male",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/light_latex_puddle_male",
+      "y": 270
+    }
+  }
+}

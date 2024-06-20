@@ -1,0 +1,8 @@
+{
+  "textures": [
+    "changed:latex/drip_hang",
+    "changed:latex/drip_loose",
+    "changed:latex/drip_fall",
+    "changed:latex/drip_land"
+  ]
+}

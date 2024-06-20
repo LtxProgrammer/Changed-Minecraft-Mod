@@ -1,0 +1,6 @@
+{
+	"parent": "changed:item/template_pillow",
+	"textures": {
+		"particle": "minecraft:block/green_wool"
+	}
+}

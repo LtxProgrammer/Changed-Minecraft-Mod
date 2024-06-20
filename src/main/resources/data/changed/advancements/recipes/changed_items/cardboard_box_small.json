@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:cardboard_box_small"
+    ]
+  },
+  "criteria": {
+    "has_cardboard_container": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:cardboard_container"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:cardboard_box_small"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cardboard_container",
+      "has_the_recipe"
+    ]
+  ]
+}

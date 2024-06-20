@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "P",
+    "L",
+    "B"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:pink_dye"
+    },
+    "L": {
+      "item": "minecraft:leather_leggings"
+    },
+    "B": {
+      "item": "changed:latex_base"
+    }
+  },
+  "result": {
+    "item": "changed:pink_pants"
+  }
+}

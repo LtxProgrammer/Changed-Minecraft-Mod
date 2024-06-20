@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"count": 1,
+	"ingredient": {
+		"tag": "changed:crafting_gray_stairs_block"
+	},
+	"result": "changed:tiles_gray_stairs"
+}

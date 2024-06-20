@@ -1,0 +1,40 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "changed:blocks/dropped_orange",
+		"particle": "changed:blocks/dropped_orange"
+	},
+	"elements": [
+		{
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 2, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 1, 8]},
+			"faces": {
+				"north": {"uv": [3, 0, 6, 2], "texture": "#0"},
+				"east": {"uv": [3, 2, 6, 4], "texture": "#0"},
+				"south": {"uv": [3, 4, 6, 6], "texture": "#0"},
+				"west": {"uv": [0, 6, 3, 8], "texture": "#0"},
+				"up": {"uv": [3, 3, 0, 0], "texture": "#0"},
+				"down": {"uv": [3, 3, 0, 6], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "leaf",
+			"from": [6.5, 2.4, 7.5],
+			"to": [8.5, 2.4, 8.5],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [7, 2.4, 8]},
+			"faces": {
+				"up": {"uv": [6, 1, 8, 2], "texture": "#0"},
+				"down": {"uv": [6, 0, 8, 1], "texture": "#0", "cullface": "down"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "root",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

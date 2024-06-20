@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "half=lower,extended=true": {
+      "model": "changed:block/latex_pup_crystal_bottom"
+    },
+    "half=upper,extended=true": {
+      "model": "changed:block/latex_pup_crystal_top"
+    },
+    "extended=false": {
+      "model": "changed:block/latex_pup_crystal_trap"
+    }
+  }
+}

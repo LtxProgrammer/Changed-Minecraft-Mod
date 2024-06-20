@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": [
+    {
+      "item": "changed:golden_upper_abdomen_armor"
+    },
+    {
+      "item": "changed:golden_lower_abdomen_armor"
+    }
+  ],
+  "result": "minecraft:gold_nugget",
+  "experience": 0.1,
+  "cookingtime": 200
+}

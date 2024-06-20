@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:tape_recorder"
+    ]
+  },
+  "criteria": {
+    "has_compact_disc": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:compact_disc"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:tape_recorder"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_compact_disc",
+      "has_the_recipe"
+    ]
+  ]
+}

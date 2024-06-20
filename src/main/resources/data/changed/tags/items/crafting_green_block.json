@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:lime_terracotta",
+    "minecraft:green_concrete",
+    "minecraft:green_terracotta",
+    "changed:wall_green",
+    "changed:wall_green_striped"
+  ]
+}

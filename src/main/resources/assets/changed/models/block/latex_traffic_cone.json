@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/latex_traffic_cone",
+  "textures": {
+    "all": "changed:blocks/latex_traffic_cone",
+    "particle": "changed:blocks/latex_traffic_cone",
+    "0": "changed:blocks/latex_traffic_cone"
+  }
+}

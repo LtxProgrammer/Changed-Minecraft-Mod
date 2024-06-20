@@ -1,0 +1,56 @@
+package net.ltxprogrammer.changed.block.entity;
+
+import net.ltxprogrammer.changed.block.AbstractLabDoor;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedBlockEntities;
+import net.ltxprogrammer.changed.init.ChangedTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class LabDoorOpenerEntity extends BlockEntity {
+    private final OpenableDoor door;
+    private final Map<BlockState, AABB> detectionSize = new HashMap<>();
+
+    public LabDoorOpenerEntity(BlockPos pos, BlockState state, OpenableDoor door) {
+        super(ChangedBlockEntities.LAB_DOOR_OPENER.get(), pos, state);
+        this.door = door;
+    }
+
+    public static boolean canOpenDoor(@Nullable LivingEntity entity) {
+        if (entity == null)
+            return false;
+        if (entity instanceof Player player)
+            return !player.isSpectator();
+        if (entity.getType().is(ChangedTags.EntityTypes.CANNOT_OPEN_LAB_DOORS))
+            return false;
+        if (entity instanceof ChangedEntity)
+            return true;
+        return entity.getType().is(ChangedTags.EntityTypes.CAN_OPEN_LAB_DOORS);
+    }
+
+    private void tick(Level level, BlockPos pos, BlockState state) {
+        boolean wantedState = !level.getEntitiesOfClass(LivingEntity.class, detectionSize.computeIfAbsent(state, s -> door.getDetectionSize(s, level, pos)), LabDoorOpenerEntity::canOpenDoor).isEmpty();
+        if (wantedState != door.isOpen(state, level, pos)) {
+            if (wantedState)
+                door.openDoor(state, level, pos);
+            else
+                door.closeDoor(state, level, pos);
+        }
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, LabDoorOpenerEntity blockEntity) {
+        if (state.getProperties().contains(BlockStateProperties.POWERED) && !state.getValue(AbstractLabDoor.POWERED))
+            return;
+        blockEntity.tick(level, pos, state);
+    }
+}

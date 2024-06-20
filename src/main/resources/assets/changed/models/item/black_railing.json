@@ -1,0 +1,7 @@
+{
+	"parent": "changed:custom/railing_inventory",
+	"textures": {
+		"0": "changed:blocks/black_railing",
+		"particle": "changed:blocks/black_railing"
+	}
+}

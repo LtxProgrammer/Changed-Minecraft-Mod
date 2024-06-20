@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/cardboard_box_open",
+  "textures": {
+    "all": "changed:blocks/cardboard_box_open",
+    "particle": "changed:blocks/cardboard_box_open",
+    "0": "changed:blocks/cardboard_box_open"
+  }
+}

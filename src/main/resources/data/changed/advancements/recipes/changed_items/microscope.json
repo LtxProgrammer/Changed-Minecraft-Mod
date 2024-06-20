@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:microscope"
+    ]
+  },
+  "criteria": {
+    "has_spyglass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:spyglass"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:microscope"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_spyglass",
+      "has_the_recipe"
+    ]
+  ]
+}

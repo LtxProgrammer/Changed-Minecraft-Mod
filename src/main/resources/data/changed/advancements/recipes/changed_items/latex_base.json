@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:latex_base"
+    ]
+  },
+  "criteria": {
+    "has_slime": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:slime_ball"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:latex_base"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_slime",
+      "has_the_recipe"
+    ]
+  ]
+}

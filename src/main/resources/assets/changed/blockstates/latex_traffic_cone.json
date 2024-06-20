@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/latex_traffic_cone"
+    },
+    "facing=east": {
+      "model": "changed:block/latex_traffic_cone",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/latex_traffic_cone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/latex_traffic_cone",
+      "y": 270
+    }
+  }
+}

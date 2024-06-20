@@ -1,0 +1,7 @@
+{
+  "type": "changed:purifier",
+  "ingredient": {
+    "item": "changed:dark_latex_goo"
+  },
+  "result": "changed:latex_base"
+}

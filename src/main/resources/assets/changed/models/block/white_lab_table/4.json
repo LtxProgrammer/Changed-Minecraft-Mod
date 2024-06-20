@@ -1,0 +1,10 @@
+{
+  "parent": "changed:block/white_lab_table/template",
+  "textures": {
+    "north_east_leg": "changed:blocks/white_lab_table",
+    "north_west_leg": "changed:blocks/white_lab_table",
+    "south_east_leg": "changed:blocks/blank",
+    "south_west_leg": "changed:blocks/blank",
+    "top": "changed:blocks/white_lab_table"
+  }
+}

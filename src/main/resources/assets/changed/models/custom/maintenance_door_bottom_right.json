@@ -1,0 +1,84 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "changed:blocks/maintenance_door",
+		"particle": "changed:blocks/maintenance_door"
+	},
+	"elements": [
+		{
+			"name": "DoorBottomRight",
+			"from": [2, 0, 4],
+			"to": [16, 15, 12],
+			"faces": {
+				"north": {"uv": [0, 1.875, 1.75, 3.75], "texture": "#0"},
+				"south": {"uv": [1.75, 1.875, 3.5, 3.75], "texture": "#0"},
+				"down": {"uv": [4.75, 7.25, 3, 8.25], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "DoorTopRightLower",
+			"from": [2, 15, 4],
+			"to": [16, 16, 12],
+			"faces": {
+				"north": {"uv": [8.5, 0, 10.25, 0.125], "texture": "#0"},
+				"east": {"uv": [6.75, 5.75, 7.75, 5.875], "texture": "#0"},
+				"south": {"uv": [8.5, 0.125, 10.25, 0.25], "texture": "#0"},
+				"west": {"uv": [6.75, 5.875, 7.75, 6], "texture": "#0"},
+				"up": {"uv": [9.75, 6.5, 8, 5.5], "texture": "#0"},
+				"down": {"uv": [9.75, 6.5, 8, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "FrameBottom",
+			"from": [0, 0, 2],
+			"to": [2, 16, 14],
+			"faces": {
+				"north": {"uv": [5, 8, 5.25, 10], "texture": "#0"},
+				"east": {"uv": [1.5, 5.75, 3, 7.75], "texture": "#0"},
+				"south": {"uv": [5.25, 8, 5.5, 10], "texture": "#0"},
+				"west": {"uv": [4.75, 6, 6.25, 8], "texture": "#0", "cullface": "west"},
+				"down": {"uv": [6, 8, 5.75, 9.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"firstperson_righthand": {
+			"translation": [1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"firstperson_lefthand": {
+			"translation": [-1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"ground": {
+			"translation": [1.5, 0, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [-1.5, -3, 0],
+			"scale": [0.3125, 0.3125, 0.3125]
+		},
+		"fixed": {
+			"translation": [4, -4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "BottomRight",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2]
+		}
+	]
+}

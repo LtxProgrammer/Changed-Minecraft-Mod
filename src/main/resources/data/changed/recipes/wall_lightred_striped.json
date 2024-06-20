@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"count": 1,
+	"ingredient": {
+		"tag": "changed:crafting_lightred_block"
+	},
+	"result": "changed:wall_lightred_striped"
+}

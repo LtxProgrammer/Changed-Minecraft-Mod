@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:cardboard_box_small"
+    },
+    {
+      "item": "changed:cardboard_box_small"
+    },
+    {
+      "item": "changed:cardboard_box_small"
+    }
+  ],
+  "result": {
+    "item": "changed:box_pile",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:canned_peaches"
+    },
+    {
+      "item": "minecraft:light_blue_dye"
+    }
+  ],
+  "form": "changed:form_latex_blue_wolf"
+}

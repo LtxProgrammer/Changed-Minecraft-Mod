@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "B",
+    "N"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "item": "changed:syringe",
+    "count": 1
+  }
+}

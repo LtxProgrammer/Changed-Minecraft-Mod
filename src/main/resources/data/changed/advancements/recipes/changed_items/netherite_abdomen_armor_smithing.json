@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:netherite_upper_abdomen_armor_smithing",
+      "changed:netherite_lower_abdomen_armor_smithing"
+    ]
+  },
+  "criteria": {
+    "has_netherite_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:netherite_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:netherite_upper_abdomen_armor_smithing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_netherite_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

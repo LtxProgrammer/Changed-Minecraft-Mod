@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/tape_recorder"
+    },
+    "facing=east": {
+      "model": "changed:block/tape_recorder",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/tape_recorder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/tape_recorder",
+      "y": 270
+    }
+  }
+}

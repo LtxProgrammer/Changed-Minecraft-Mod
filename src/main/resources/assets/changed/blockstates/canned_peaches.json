@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/canned_peaches"
+    },
+    "facing=east": {
+      "model": "changed:block/canned_peaches",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/canned_peaches",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/canned_peaches",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:pink_pants"
+    ]
+  },
+  "criteria": {
+    "has_leather_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:leather_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:pink_pants"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_leather_leggings",
+      "has_the_recipe"
+    ]
+  ]
+}

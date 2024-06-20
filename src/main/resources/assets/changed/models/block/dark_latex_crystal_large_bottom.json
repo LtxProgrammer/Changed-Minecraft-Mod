@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "changed:blocks/dark_latex_crystal_large_bottom"
+  }
+}

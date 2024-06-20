@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "changed:form_latex_snow_leopard/male",
+    "changed:form_latex_snow_leopard/female",
+    "changed:form_latex_raccoon",
+    "changed:form_latex_red_panda"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "variants": {
+    "facing=south,section=bottom_left": { "model": "changed:custom/air_conditioner_bottom_left" },
+    "facing=west,section=bottom_left": { "model": "changed:custom/air_conditioner_bottom_left", "y": 90 },
+    "facing=north,section=bottom_left": { "model": "changed:custom/air_conditioner_bottom_left", "y": 180 },
+    "facing=east,section=bottom_left": { "model": "changed:custom/air_conditioner_bottom_left", "y": 270 },
+    
+    "facing=south,section=bottom_middle": { "model": "changed:custom/air_conditioner_bottom_middle" },
+    "facing=west,section=bottom_middle": { "model": "changed:custom/air_conditioner_bottom_middle", "y": 90 },
+    "facing=north,section=bottom_middle": { "model": "changed:custom/air_conditioner_bottom_middle", "y": 180 },
+    "facing=east,section=bottom_middle": { "model": "changed:custom/air_conditioner_bottom_middle", "y": 270 },
+    
+    "facing=south,section=bottom_right": { "model": "changed:custom/air_conditioner_bottom_right" },
+    "facing=west,section=bottom_right": { "model": "changed:custom/air_conditioner_bottom_right", "y": 90 },
+    "facing=north,section=bottom_right": { "model": "changed:custom/air_conditioner_bottom_right", "y": 180 },
+    "facing=east,section=bottom_right": { "model": "changed:custom/air_conditioner_bottom_right", "y": 270 },
+
+    "facing=south,section=top_left": { "model": "changed:custom/air_conditioner_top_left" },
+    "facing=west,section=top_left": { "model": "changed:custom/air_conditioner_top_left", "y": 90 },
+    "facing=north,section=top_left": { "model": "changed:custom/air_conditioner_top_left", "y": 180 },
+    "facing=east,section=top_left": { "model": "changed:custom/air_conditioner_top_left", "y": 270 },
+    
+    "facing=south,section=top_middle": { "model": "changed:custom/air_conditioner_top_middle" },
+    "facing=west,section=top_middle": { "model": "changed:custom/air_conditioner_top_middle", "y": 90 },
+    "facing=north,section=top_middle": { "model": "changed:custom/air_conditioner_top_middle", "y": 180 },
+    "facing=east,section=top_middle": { "model": "changed:custom/air_conditioner_top_middle", "y": 270 },
+    
+    "facing=south,section=top_right": { "model": "changed:custom/air_conditioner_top_right" },
+    "facing=west,section=top_right": { "model": "changed:custom/air_conditioner_top_right", "y": 90 },
+    "facing=north,section=top_right": { "model": "changed:custom/air_conditioner_top_right", "y": 180 },
+    "facing=east,section=top_right": { "model": "changed:custom/air_conditioner_top_right", "y": 270 }
+  }
+}

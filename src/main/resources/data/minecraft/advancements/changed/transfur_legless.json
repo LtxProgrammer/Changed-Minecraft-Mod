@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:changed/transfur",
+  "display": {
+    "icon": {
+      "item": "minecraft:barrier"
+    },
+    "title": {
+      "translate": "changed:advancements.main.transfur_legless.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.transfur_legless.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "transfurred_legless": {
+      "trigger": "changed:transfur",
+      "conditions": {
+        "legless": true
+      }
+    }
+  },
+  "requirements": [
+    [
+      "transfurred_legless"
+    ]
+  ]
+}

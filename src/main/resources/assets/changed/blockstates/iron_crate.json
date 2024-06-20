@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "changed:block/iron_crate"
+    }
+  }
+}

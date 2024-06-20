@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:changed/transfur",
+  "display": {
+    "icon": {
+      "item": "changed:dark_latex_goo"
+    },
+    "title": {
+      "translate": "changed:advancements.main.transfur_dark.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.transfur_dark.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "transfurred": {
+      "trigger": "changed:transfur",
+      "conditions": {
+        "type": "DARK_LATEX"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "transfurred"
+    ]
+  ]
+}

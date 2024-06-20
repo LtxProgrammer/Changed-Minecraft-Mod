@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": [
+    {
+      "item": "changed:chainmail_quadrupedal_leggings"
+    },
+    {
+      "item": "changed:chainmail_quadrupedal_boots"
+    },
+    {
+      "item": "changed:iron_quadrupedal_leggings"
+    },
+    {
+      "item": "changed:iron_quadrupedal_boots"
+    }
+  ],
+  "result": "minecraft:iron_ingot",
+  "experience": 0.1,
+  "cookingtime": 100
+}

@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:changed/transfur_white",
+  "display": {
+    "icon": {
+      "item": "changed:white_latex_block"
+    },
+    "title": {
+      "translate": "changed:advancements.main.white_latex_fuse.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.white_latex_fuse.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "white_latex_fuse": {
+      "trigger": "changed:white_latex_fuse",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "white_latex_fuse"
+    ]
+  ]
+}

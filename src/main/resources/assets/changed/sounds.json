@@ -1,0 +1,459 @@
+{
+  "attack1": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:attack1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.attack1"
+  },
+  "blow1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:blow1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.blow1"
+  },
+  "bow2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:bow2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.bow2"
+  },
+  "buzzer1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:buzzer1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.buzzer1"
+  },
+  "chime2": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:chime2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.chime2"
+  },
+  "close1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:close1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.close1"
+  },
+  "close3": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:close3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.close3"
+  },
+  "crash": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:crash",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.crash"
+  },
+  "equip1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip1"
+  },
+  "equip2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip2"
+  },
+  "equip3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:equip3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.equip3"
+  },
+  "evasion": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:evasion",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.evasion"
+  },
+  "fire": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:fire",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.fire"
+  },
+  "goo": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:goo",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.goo"
+  },
+  "key": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:key",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.key"
+  },
+  "open1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:open1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.open1"
+  },
+  "ice2": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:ice2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.ice2"
+  },
+  "open2": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:open2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.open2"
+  },
+  "open3": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:open3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.open3"
+  },
+  "poison": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:poison",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.poison"
+  },
+  "paralyze1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:paralyze1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.paralyze1"
+  },
+  "paralyze3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:paralyze3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.paralyze3"
+  },
+  "save": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:save",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.save"
+  },
+  "sound3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:sound3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.sound3"
+  },
+  "shot1": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "changed:shot1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.shot1"
+  },
+  "switch1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:switch1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.switch1"
+  },
+  "switch2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "changed:switch2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.switch2"
+  },
+  "siren": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:siren",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.siren"
+  },
+  "sword1": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:sword1",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.sword1"
+  },
+  "latex_drip": {
+    "category": "entity",
+    "subtitle": "subtitles.changed.latex_drip",
+    "sounds": [
+      "minecraft:mob/slime/small1",
+      "minecraft:mob/slime/small2",
+      "minecraft:mob/slime/small3",
+      "minecraft:mob/slime/small4"
+    ]
+  },
+  "monster2": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:monster2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.monster2"
+  },
+  "vacuum": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:vacuum",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.changed.vacuum"
+  },
+  "music_disc.owo": {
+    "sounds": [
+      {
+        "name": "changed:owo",
+        "stream": true
+      }
+    ]
+  },
+
+  "music.black_goo_zone": {
+    "sounds": [
+      {
+        "name": "changed:bgm/black_goo_zone",
+        "stream": true
+      }
+    ]
+  },
+  "music.crystal_zone": {
+    "sounds": [
+      {
+        "name": "changed:bgm/crystal_zone",
+        "stream": true
+      }
+    ]
+  },
+  "music.gas_room": {
+    "sounds": [
+      {
+        "name": "changed:bgm/gas_room",
+        "stream": true
+      }
+    ]
+  },
+  "music.laboratory": {
+    "sounds": [
+      {
+        "name": "changed:bgm/laboratory",
+        "stream": true
+      }
+    ]
+  },
+  "music.outside_the_tower": {
+    "sounds": [
+      {
+        "name": "changed:bgm/outside_the_tower",
+        "stream": true
+      }
+    ]
+  },
+  "music.puro_the_black_goo": {
+    "sounds": [
+      {
+        "name": "changed:bgm/puro_the_black_goo",
+        "stream": true
+      }
+    ]
+  },
+  "music.puros_home": {
+    "sounds": [
+      {
+        "name": "changed:bgm/puros_home",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_library": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_library",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_lion_chase": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_lion_chase",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_scarlet_crystal_mine": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_scarlet_crystal_mine",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_shark": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_shark",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_squid_dog": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_squid_dog",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_goo_jungle": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_goo_jungle",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_tail_chase_part_1": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_tail_chase_part_1",
+        "stream": true
+      }
+    ]
+  },
+  "music.the_white_tail_chase_part_2": {
+    "sounds": [
+      {
+        "name": "changed:bgm/the_white_tail_chase_part_2",
+        "stream": true
+      }
+    ]
+  },
+  "music.vent_pipe": {
+    "sounds": [
+      {
+        "name": "changed:bgm/vent_pipe",
+        "stream": true
+      }
+    ]
+  }
+}

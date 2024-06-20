@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "changed:roomba",
+    "minecraft:evoker",
+    "minecraft:illusioner",
+    "minecraft:piglin",
+    "minecraft:piglin_brute",
+    "minecraft:villager",
+    "minecraft:vindicator",
+    "minecraft:witch"
+  ]
+}

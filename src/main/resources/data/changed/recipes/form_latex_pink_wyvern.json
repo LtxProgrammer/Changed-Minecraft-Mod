@@ -1,0 +1,18 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:pink_dye"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
+  ],
+  "form": "changed:form_latex_pink_wyvern"
+}

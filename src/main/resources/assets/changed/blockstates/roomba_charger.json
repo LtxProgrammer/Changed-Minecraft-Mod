@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,occupied=false": {
+      "model": "changed:block/roomba_charger_empty"
+    },
+    "facing=east,occupied=false": {
+      "model": "changed:block/roomba_charger_empty",
+      "y": 90
+    },
+    "facing=south,occupied=false": {
+      "model": "changed:block/roomba_charger_empty",
+      "y": 180
+    },
+    "facing=west,occupied=false": {
+      "model": "changed:block/roomba_charger_empty",
+      "y": 270
+    },
+    "facing=north,occupied=true": {
+      "model": "changed:block/roomba_charger_full"
+    },
+    "facing=east,occupied=true": {
+      "model": "changed:block/roomba_charger_full",
+      "y": 90
+    },
+    "facing=south,occupied=true": {
+      "model": "changed:block/roomba_charger_full",
+      "y": 180
+    },
+    "facing=west,occupied=true": {
+      "model": "changed:block/roomba_charger_full",
+      "y": 270
+    }
+  }
+}

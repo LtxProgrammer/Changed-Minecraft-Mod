@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "changed:custom/latex_container_lower"
+    },
+    "half=upper": {
+      "model": "changed:custom/latex_container_upper"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:orange_tree_leaves"
+    },
+    {
+      "item": "changed:orange"
+    },
+    {
+      "tag": "minecraft:leaves"
+    }
+  ],
+  "form": "changed:form_latex_leaf"
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "filled=neutral": {
+      "model": "changed:block/beaker_empty"
+    },
+    "filled=dark_latex": {
+      "model": "changed:block/beaker_dark_latex"
+    },
+    "filled=white_latex": {
+      "model": "changed:block/beaker_white_latex"
+    }
+  }
+}

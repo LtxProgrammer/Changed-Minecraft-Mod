@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "changed:block/large_box"
+    },
+    "facing=east": {
+      "model": "changed:block/large_box",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "changed:block/large_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "changed:block/large_box",
+      "y": 270
+    }
+  }
+}

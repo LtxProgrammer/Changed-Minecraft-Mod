@@ -1,0 +1,15 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "changed:latex_traffic_cone"
+    }
+  ],
+  "form": "changed:form_latex_traffic_cone_dragon"
+}

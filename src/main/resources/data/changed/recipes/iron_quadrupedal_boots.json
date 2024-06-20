@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_boots"
+    },
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:iron_boots"
+    }
+  ],
+  "result": {
+    "item": "changed:iron_quadrupedal_boots",
+    "count": 1
+  }
+}

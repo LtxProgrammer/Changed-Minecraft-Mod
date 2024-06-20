@@ -1,0 +1,8 @@
+{
+  "parent": "changed:custom/latex_wall_splotch",
+  "textures": {
+    "all": "changed:blocks/dark_latex_wall_splotch",
+    "particle": "changed:blocks/dark_latex_wall_splotch",
+    "0": "changed:blocks/dark_latex_wall_splotch"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "changed:latex_wolf_crystal_block"
+    }
+  ],
+  "result": {
+    "item": "changed:latex_wolf_crystal_fragment",
+    "count": 9
+  }
+}

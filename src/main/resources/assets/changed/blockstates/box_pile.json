@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,section=bottom_left": {
+      "model": "changed:custom/box_pile_bottom_left"
+    },
+    "facing=east,section=bottom_left": {
+      "model": "changed:custom/box_pile_bottom_left",
+      "y": 90
+    },
+    "facing=south,section=bottom_left": {
+      "model": "changed:custom/box_pile_bottom_left",
+      "y": 180
+    },
+    "facing=west,section=bottom_left": {
+      "model": "changed:custom/box_pile_bottom_left",
+      "y": 270
+    },
+    "facing=north,section=bottom_right": {
+      "model": "changed:custom/box_pile_bottom_right"
+    },
+    "facing=east,section=bottom_right": {
+      "model": "changed:custom/box_pile_bottom_right",
+      "y": 90
+    },
+    "facing=south,section=bottom_right": {
+      "model": "changed:custom/box_pile_bottom_right",
+      "y": 180
+    },
+    "facing=west,section=bottom_right": {
+      "model": "changed:custom/box_pile_bottom_right",
+      "y": 270
+    },
+    "facing=north,section=top_left": {
+      "model": "changed:custom/box_pile_top_left"
+    },
+    "facing=east,section=top_left": {
+      "model": "changed:custom/box_pile_top_left",
+      "y": 90
+    },
+    "facing=south,section=top_left": {
+      "model": "changed:custom/box_pile_top_left",
+      "y": 180
+    },
+    "facing=west,section=top_left": {
+      "model": "changed:custom/box_pile_top_left",
+      "y": 270
+    },
+    "facing=north,section=top_right": {
+      "model": "changed:custom/box_pile_top_right"
+    },
+    "facing=east,section=top_right": {
+      "model": "changed:custom/box_pile_top_right",
+      "y": 90
+    },
+    "facing=south,section=top_right": {
+      "model": "changed:custom/box_pile_top_right",
+      "y": 180
+    },
+    "facing=west,section=top_right": {
+      "model": "changed:custom/box_pile_top_right",
+      "y": 270
+    }
+  }
+}

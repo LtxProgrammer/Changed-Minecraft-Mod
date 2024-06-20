@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:changed/transfur",
+  "display": {
+    "icon": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "title": {
+      "translate": "changed:advancements.main.transfur_aerial.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.transfur_aerial.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "transfurred_aerial": {
+      "trigger": "changed:transfur",
+      "conditions": {
+        "flying": true
+      }
+    }
+  },
+  "requirements": [
+    [
+      "transfurred_aerial"
+    ]
+  ]
+}

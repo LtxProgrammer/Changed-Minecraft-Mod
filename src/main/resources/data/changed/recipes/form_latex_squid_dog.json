@@ -1,0 +1,19 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:white_latex_goo"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "minecraft:nautilus_shell"
+    }
+  ],
+  "gendered": true,
+  "form": "changed:form_latex_squid_dog"
+}

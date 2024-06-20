@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "oranges=1": {
+      "model": "changed:custom/dropped_orange1"
+    },
+    "oranges=2": {
+      "model": "changed:custom/dropped_orange2"
+    },
+    "oranges=3": {
+      "model": "changed:custom/dropped_orange3"
+    },
+    "oranges=4": {
+      "model": "changed:custom/dropped_orange4"
+    },
+    "oranges=5": {
+      "model": "changed:custom/dropped_orange5"
+    },
+    "oranges=6": {
+      "model": "changed:custom/dropped_orange6"
+    },
+    "oranges=7": {
+      "model": "changed:custom/dropped_orange7"
+    },
+    "oranges=8": {
+      "model": "changed:custom/dropped_orange8"
+    }
+  }
+}

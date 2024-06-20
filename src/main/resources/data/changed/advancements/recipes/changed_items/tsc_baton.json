@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:tsc_baton"
+    ]
+  },
+  "criteria": {
+    "has_lightning_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:lightning_rod"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:tsc_baton"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lightning_rod",
+      "has_the_recipe"
+    ]
+  ]
+}

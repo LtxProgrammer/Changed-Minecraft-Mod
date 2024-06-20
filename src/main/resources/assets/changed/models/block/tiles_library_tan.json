@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "changed:blocks/library_tan",
+    "up": "changed:blocks/library_tan",
+    "north": "changed:blocks/library_tan",
+    "east": "changed:blocks/library_tan",
+    "south": "changed:blocks/library_tan",
+    "west": "changed:blocks/library_tan",
+    "particle": "changed:blocks/library_tan"
+  }
+}

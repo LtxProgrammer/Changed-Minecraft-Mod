@@ -1,0 +1,73 @@
+{
+  "variants": {
+    "north=true,south=true,east=false,west=false,up=false,down=false,vented=false": { "model": "changed:custom/duct/duct", "x": 90 },
+    "north=true,south=true,east=false,west=false,up=false,down=false,vented=true": { "model": "changed:custom/duct/duct_vented", "x": 90 },
+    "north=false,south=false,east=false,west=false,up=true,down=true,vented=false": { "model": "changed:custom/duct/duct" },
+    "north=false,south=false,east=false,west=false,up=true,down=true,vented=true": { "model": "changed:custom/duct/duct_vented" },
+    "north=false,south=false,east=true,west=true,up=false,down=false,vented=false": { "model": "changed:custom/duct/duct", "y": 90, "x": 90 },
+    "north=false,south=false,east=true,west=true,up=false,down=false,vented=true": { "model": "changed:custom/duct/duct_vented", "y": 90, "x": 90 }
+  },
+  "multipart": [
+    {
+      "apply": {
+        "model": "changed:custom/duct/frame"
+      }
+    },
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel",
+        "y": 90,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel",
+        "y": 180,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "west": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel",
+        "y": 270,
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "up": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel"
+      }
+    },
+    {
+      "when": {
+        "down": "false"
+      },
+      "apply": {
+        "model": "changed:custom/duct/panel",
+        "x": 180
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "changed:duct",
+    "changed:vent_hatch",
+    "changed:vent_fan"
+  ]
+}

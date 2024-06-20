@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:changed/transfur_aquatic",
+  "display": {
+    "icon": {
+      "item": "minecraft:bucket"
+    },
+    "title": {
+      "translate": "changed:advancements.main.aquatic_swimming.title"
+    },
+    "description": {
+      "translate": "changed:advancements.main.aquatic_swimming.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "aquatic_swimming": {
+      "trigger": "changed:aquatic_breathe",
+      "conditions": {
+        "ticks": 24000
+      }
+    }
+  },
+  "requirements": [
+    [
+      "aquatic_swimming"
+    ]
+  ],
+  "rewards": {
+    "experience": 350
+  }
+}

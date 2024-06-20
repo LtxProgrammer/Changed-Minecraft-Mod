@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"count": 1,
+	"ingredient": {
+		"tag": "changed:crafting_brown_block"
+	},
+	"result": "changed:tiles_library_brown"
+}
