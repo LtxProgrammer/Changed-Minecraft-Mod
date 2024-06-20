@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -43,7 +44,7 @@ public abstract class GameRendererMixin {
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void getNightVisionScale(LivingEntity livingEntity, float p_109110_, CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(livingEntity), variant -> {
-            if (variant.getParent().nightVision) {
+            if (variant.getParent().visionType.shouldHaveEffect.test(MobEffects.NIGHT_VISION)) {
                 callback.setReturnValue(1.0f);
             }
 
