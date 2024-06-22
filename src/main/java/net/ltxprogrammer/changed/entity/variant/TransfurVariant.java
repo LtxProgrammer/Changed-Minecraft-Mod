@@ -118,12 +118,14 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return false;
     }
 
+    @Deprecated(forRemoval = true)
     public float swimMultiplier() {
-        return swimSpeed;
+        return 1.0F;
     }
 
+    @Deprecated(forRemoval = true)
     public float landMultiplier() {
-        return groundSpeed;
+        return 1.0F;
     }
 
     public boolean is(@Nullable TransfurVariant<?> variant) {
@@ -173,14 +175,11 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     // Variant properties
     public final Supplier<EntityType<T>> ctor;
     public final LatexType type;
-    public final float groundSpeed;
-    public final float swimSpeed;
     public final float jumpStrength;
     public final BreatheMode breatheMode;
     public final float stepSize;
     public final boolean canGlide;
     public final int extraJumpCharges;
-    public final int additionalHealth;
     public final boolean reducedFall;
     public final boolean canClimb;
     public final VisionType visionType;
@@ -195,23 +194,20 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
-    public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type, float groundSpeed, float swimSpeed,
-                           float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges, int additionalHealth,
+    public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type,
+                           float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
                            VisionType visionType, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                            Optional<Pair<TransfurVariant<?>, TransfurVariant<?>>> fusionOf,
                            Optional<Pair<TransfurVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
-        this.groundSpeed = groundSpeed;
-        this.swimSpeed = swimSpeed;
         this.jumpStrength = jumpStrength;
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
         this.visionType = visionType;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
-        this.additionalHealth = additionalHealth;
         this.legCount = legCount;
         this.hasLegs = legCount > 0;
         this.itemUseMode = itemUseMode;
@@ -361,14 +357,11 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public static class Builder<T extends ChangedEntity> {
         final Supplier<EntityType<T>> entityType;
         LatexType type = LatexType.NEUTRAL;
-        float groundSpeed = 1.0F;
-        float swimSpeed = 1.0F;
         float jumpStrength = 1.0F;
         BreatheMode breatheMode = BreatheMode.NORMAL;
         float stepSize = 0.6F;
         boolean canGlide = false;
         int extraJumpCharges = 0;
-        int additionalHealth = 4;
         boolean reducedFall = false;
         boolean canClimb = false;
         VisionType visionType = VisionType.NORMAL;
@@ -400,7 +393,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         }
 
         public static <T extends ChangedEntity> Builder<T> of(TransfurVariant<?> variant, Supplier<EntityType<T>> entityType) {
-            return (new Builder<T>(entityType)).faction(variant.type).groundSpeed(variant.groundSpeed).swimSpeed(variant.swimSpeed)
+            return (new Builder<T>(entityType)).faction(variant.type)
                     .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
                     .abilities(variant.abilities).reducedFall(variant.reducedFall).canClimb(variant.canClimb).visionType(variant.visionType).hasLegs(variant.hasLegs).scares(variant.scares)
                     .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).itemUseMode(variant.itemUseMode);
@@ -408,14 +401,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public Builder<T> faction(LatexType type) {
             this.type = type; return this;
-        }
-
-        public Builder<T> groundSpeed(float factor) {
-            this.groundSpeed = factor; return this;
-        }
-
-        public Builder<T> swimSpeed(float factor) {
-            this.swimSpeed = factor; return this;
         }
 
         public Builder<T> jumpStrength(float factor) {
@@ -484,10 +469,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public Builder<T> extraJumps(int count) {
             this.extraJumpCharges = count; return this;
-        }
-
-        public Builder<T> additionalHealth(int value) {
-            this.additionalHealth = value; return this;
         }
         
         public Builder<T> addAbility(Function<EntityType<?>, ? extends AbstractAbility<?>> ability) {
@@ -585,7 +566,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         }
 
         public TransfurVariant<T> build() {
-            return new TransfurVariant<>(entityType, type, groundSpeed, swimSpeed, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges, additionalHealth,
+            return new TransfurVariant<>(entityType, type, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
                     reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
         }
     }
@@ -661,18 +642,18 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         List<Function<EntityType<?>, ? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Function<EntityType<?>, AbstractAbility<?>>) type -> a).collect(Collectors.toList());
 
         boolean nightVision = GsonHelper.getAsBoolean(root, "nightVision", false);
+        float speed = GsonHelper.getAsFloat(root, "groundSpeed", 1.0F) * 0.1f;
+        float swimSpeed = GsonHelper.getAsFloat(root, "swimSpeed", 1.0F);
+        int additionalHealth = GsonHelper.getAsInt(root, "additionalHealth", 4);
 
         return new TransfurVariant<>(
                 () -> (EntityType<ChangedEntity>) Registry.ENTITY_TYPE.get(entityType),
                 LatexType.valueOf(GsonHelper.getAsString(root, "latexType", LatexType.NEUTRAL.toString())),
-                GsonHelper.getAsFloat(root, "groundSpeed", 1.0f),
-                GsonHelper.getAsFloat(root, "swimSpeed", 1.0f),
                 GsonHelper.getAsFloat(root, "jumpStrength", 1.0f),
                 BreatheMode.valueOf(GsonHelper.getAsString(root, "breatheMode", BreatheMode.NORMAL.toString())),
                 GsonHelper.getAsFloat(root, "stepSize", 0.6f),
                 GsonHelper.getAsBoolean(root, "canGlide", false),
                 GsonHelper.getAsInt(root, "extraJumpCharges", 0),
-                GsonHelper.getAsInt(root, "additionalHealth", 4),
                 GsonHelper.getAsBoolean(root, "reducedFall", false),
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 VisionType.fromSerial(GsonHelper.getAsString(root, "visionType", (nightVision ? VisionType.NIGHT_VISION : VisionType.NORMAL).getSerializedName()))

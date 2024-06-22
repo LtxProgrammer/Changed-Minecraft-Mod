@@ -21,7 +21,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,11 +35,10 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
@@ -203,25 +201,28 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
                 ci.cancel();
     }
 
-    private float getFoodMul(TransfurVariant<?> variant) {
-        if (isSwimming() || this.isEyeInFluid(FluidTags.WATER) || this.isInWater()) {
-            return 1.0f - (variant.swimMultiplier() - 1.0f) * 0.85f;
-        }
-
-        else if (onGround && isSprinting()) {
-            return 1.0f - (variant.landMultiplier() - 1.0f) * 0.85f;
-        }
-
-        return 1.0f;
+    @ModifyArg(method = "checkMovementStatistics", at =
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 0))
+    public float foodEfficiencySwimming(float distance) {
+        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
     }
 
-    @Inject(method = "causeFoodExhaustion", at = @At("HEAD"), cancellable = true)
-    public void causeFoodExhaustion(float amount, CallbackInfo ci) {
-        Player player = (Player)(Object)this;
-        if (latexVariant != null && !player.getAbilities().invulnerable && !this.level.isClientSide) {
-            ci.cancel();
-            player.getFoodData().addExhaustion(amount * getFoodMul(latexVariant.getParent()));
-        }
+    @ModifyArg(method = "checkMovementStatistics", at =
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 1))
+    public float foodEfficiencyWalkUnderWater(float distance) {
+        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
+    }
+
+    @ModifyArg(method = "checkMovementStatistics", at =
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 2))
+    public float foodEfficiencyWalkOnWater(float distance) {
+        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
+    }
+
+    @ModifyArg(method = "checkMovementStatistics", at =
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 3))
+    public float foodEfficiencySprinting(float distance) {
+        return latexVariant != null ? latexVariant.getSprintEfficiency() * distance : distance;
     }
 
     @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)

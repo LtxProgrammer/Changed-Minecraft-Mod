@@ -7,6 +7,8 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,5 +51,11 @@ public class WhiteLatexKnightFusion extends WhiteLatexKnight {
     @Override
     public TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.WHITE_LATEX_KNIGHT_FUSION.get();
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28.0);
     }
 }

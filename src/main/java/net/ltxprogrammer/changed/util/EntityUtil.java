@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ public class EntityUtil {
 
         if (instance.is(BlockTags.ICE) && entity instanceof LivingEntity livingEntity) {
             return ProcessTransfur.getEntityVariant(livingEntity).map(variant -> {
-                if (variant.groundSpeed > 1f) // TODO replace with variant builder property for affected by friction
+                if (livingEntity.getAttributeValue(Attributes.MOVEMENT_SPEED) > 0.1f) // TODO replace with variant builder property for affected by friction
                     return 0.6f;
                 else
                     return originalFriction;

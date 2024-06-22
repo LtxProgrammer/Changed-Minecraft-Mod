@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
@@ -15,10 +16,8 @@ import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.Color3;
-import net.ltxprogrammer.changed.util.EntityUtil;
-import net.ltxprogrammer.changed.util.TagUtil;
-import net.ltxprogrammer.changed.util.Transition;
+import net.ltxprogrammer.changed.util.*;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +26,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -53,12 +55,15 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class TransfurVariantInstance<T extends ChangedEntity> {
+    private static final Cacheable<AttributeMap> BASELINE_ATTRIBUTES = Cacheable.of(() -> new AttributeMap(Player.createAttributes().build()));
+
     private final TransfurVariant<T> parent;
     private final T entity;
     private final Player host;
@@ -67,7 +72,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public AbstractAbility<?> selectedAbility = null;
     public AbstractAbility<?> menuAbility = null;
     public boolean abilityKeyState = false;
-    private final AttributeModifier attributeModifierSwimSpeed;
     public TransfurMode transfurMode;
     public int ageAsVariant = 0;
     protected int air = -100;
@@ -177,8 +181,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         abilityInstances = builder.build();
         if (abilityInstances.size() > 0)
             selectedAbility = abilityInstances.keySet().asList().get(0);
-
-        attributeModifierSwimSpeed = new AttributeModifier(UUID.fromString("5c40eef3-ef3e-4d8d-9437-0da1925473d7"), "changed:trait_swim_speed", parent.swimSpeed, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     public static TransfurVariantInstance<?> variantFor(@Nullable TransfurVariant<?> variant, @NotNull Player host) {
@@ -598,6 +600,30 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return true;
     }
 
+    protected void mapAttributes(Player player, AttributeMap variantAttributes) {
+        mapAttributes(player, variantAttributes, variantAttributes, 1.0f);
+    }
+
+    protected void mapAttributes(Player player, AttributeMap variantAttributes0, AttributeMap variantAttributes1, float alpha) {
+        final var hostAttributes = player.getAttributes();
+
+        float healthPercentage = player.getHealth() / player.getMaxHealth();
+
+        Registry.ATTRIBUTE.entrySet().stream().map(entry -> Pair.of(
+                Optional.ofNullable(variantAttributes0.getInstance(entry.getValue())), Optional.ofNullable(variantAttributes1.getInstance(entry.getValue()))))
+                .filter(pair -> pair.getFirst().isPresent() && pair.getSecond().isPresent()).map(pair -> Pair.of(pair.getFirst().get(), pair.getSecond().get()))
+                .filter(pair -> hostAttributes.hasAttribute(pair.getFirst().getAttribute()))
+                .forEach(pair -> {
+                    final var hostAttributeInstance = hostAttributes.getInstance(pair.getFirst().getAttribute());
+                    if (hostAttributeInstance == null) return;
+
+                    hostAttributeInstance.setBaseValue(Mth.lerp(alpha, pair.getFirst().getBaseValue(), pair.getSecond().getBaseValue()));
+                });
+
+        player.getAbilities().setWalkingSpeed((float) hostAttributes.getInstance(Attributes.MOVEMENT_SPEED).getBaseValue());
+        player.setHealth(healthPercentage * player.getMaxHealth());
+    }
+
     public void tick(Player player) {
         if (player == null) return;
 
@@ -630,6 +656,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             if (player instanceof ServerPlayer serverPlayer)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
+
+        mapAttributes(player, BASELINE_ATTRIBUTES.get(), entity.getAttributes(), getMorphProgression());
 
         player.refreshDimensions();
         if (player.isOnGround())
@@ -779,36 +807,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.setPose(Pose.SWIMMING);
 
         // Speed
-        if(parent.swimSpeed != 0F && player.getPose() == Pose.SWIMMING && shouldApplyAbilities()) {
-            if (parent.swimSpeed > 1f) {
-                var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-                if (attrib != null && !attrib.hasModifier(attributeModifierSwimSpeed))
-                    attrib.addPermanentModifier(attributeModifierSwimSpeed);
-            }
-            else {
-                multiplyMotion(player, parent.swimSpeed);
-            }
-        } else {
-            var attrib = player.getAttribute(ForgeMod.SWIM_SPEED.get());
-            if (attrib != null && attrib.hasModifier(attributeModifierSwimSpeed))
-                attrib.removePermanentModifier(attributeModifierSwimSpeed.getId());
-        }
-
-        if (player.isEyeInFluid(FluidTags.WATER) && parent.swimSpeed > 1F) {
-            player.setNoGravity(true);
-        } else if (parent.swimSpeed > 1F) {
-            player.setNoGravity(false);
-        }
-
-        if(parent.groundSpeed != 0F && shouldApplyAbilities()) {
-            if (player.isOnGround()) {
-                if (parent.groundSpeed > 1f) {
-                    if (!player.isCrouching() && !player.isInWaterOrBubble())
-                        multiplyMotion(player, parent.groundSpeed);
-                } else {
-                    multiplyMotion(player, parent.groundSpeed);
-                }
-            }
+        if (player.getAttributeValue(ForgeMod.SWIM_SPEED.get()) > 1.0) {
+            player.setNoGravity(player.isEyeInFluid(FluidTags.WATER));
         }
 
         // Step size
@@ -886,8 +886,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         abilityInstances.forEach((name, ability) -> {
             ability.onRemove();
         });
-        if (player.getAttribute(ForgeMod.SWIM_SPEED.get()).hasModifier(attributeModifierSwimSpeed))
-            player.getAttribute(ForgeMod.SWIM_SPEED.get()).removePermanentModifier(attributeModifierSwimSpeed.getId());
+        mapAttributes(player, BASELINE_ATTRIBUTES.get());
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         if (parent.canGlide) {
             player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
@@ -940,5 +939,17 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             return UseItemMode.NONE;
         else
             return parent.itemUseMode;
+    }
+
+    public float getSwimEfficiency() {
+        double baselineSwim = BASELINE_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
+        double intendedSwim = entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get());
+        return (float)(baselineSwim / intendedSwim);
+    }
+
+    public float getSprintEfficiency() {
+        double baselineSprint = BASELINE_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
+        double intendedSprint = entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+        return (float)(baselineSprint / intendedSprint);
     }
 }

@@ -8,8 +8,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -83,5 +86,13 @@ public class WhiteLatexCentaur extends WhiteLatexKnight implements LatexTaur<Whi
     @Override
     public boolean isAllowedToSwim() {
         return true;
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.12);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30);
     }
 }

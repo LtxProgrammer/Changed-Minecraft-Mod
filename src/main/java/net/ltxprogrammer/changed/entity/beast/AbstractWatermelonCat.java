@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.entity.beast;
 
+import net.ltxprogrammer.changed.entity.AttributePresets;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 
 public abstract class AbstractWatermelonCat extends ChangedEntity implements GenderedEntity {
@@ -26,5 +28,11 @@ public abstract class AbstractWatermelonCat extends ChangedEntity implements Gen
     @Override
     public Color3 getDripColor() {
         return Color3.DARK;
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
     }
 }
