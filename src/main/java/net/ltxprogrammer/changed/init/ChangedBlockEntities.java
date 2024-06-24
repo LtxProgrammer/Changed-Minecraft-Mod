@@ -36,6 +36,7 @@ public class ChangedBlockEntities {
     public static final RegistryObject<BlockEntityType<GasCanisterBlockEntity>> GAS_CANISTER = REGISTRY.register("gas_canister", deferredProvider(GasCanisterBlockEntity::new, ChangedBlocks.WOLF_GAS_CANISTER));
     public static final RegistryObject<BlockEntityType<GluBlockEntity>> GLU = REGISTRY.register("glu", deferredProvider(GluBlockEntity::new, ChangedBlocks.GLU_BLOCK));
     public static final RegistryObject<BlockEntityType<CardboardBoxBlockEntity>> CARDBOARD_BOX = REGISTRY.register("cardboard_container", deferredProvider(CardboardBoxBlockEntity::new, ChangedBlocks.CARDBOARD_BOX));
+    public static final RegistryObject<BlockEntityType<CardboardBoxSmallEntity>> CARDBOARD_BOX_SMALL = REGISTRY.register("small_cardboard_box", deferredProvider(CardboardBoxSmallEntity::new, ChangedBlocks.CARDBOARD_BOX_SMALL));
     public static final RegistryObject<BlockEntityType<DroppedSyringeBlockEntity>> DROPPED_SYRINGE = REGISTRY.register("dropped_syringe", deferredProvider(DroppedSyringeBlockEntity::new, ChangedBlocks.DROPPED_SYRINGE));
     public static final RegistryObject<BlockEntityType<OfficeChairBlockEntity>> OFFICE_CHAIR = REGISTRY.register("office_chair", deferredProvider(OfficeChairBlockEntity::new, ChangedBlocks.OFFICE_CHAIR));
     public static final RegistryObject<BlockEntityType<PillowBlockEntity>> PILLOW = REGISTRY.register("pillow", deferredProvider(PillowBlockEntity::new, ChangedBlocks.PILLOWS.values().stream()));

@@ -170,6 +170,7 @@
   "container.changed.note": "Märka",
   "container.changed.access_chest": "Kistaförråd",
   "container.changed.cardboard_container": "Kartongbehållare",
+  "container.changed.cardboard_box_small": "Litet kartong låda",
 
   "text.changed.game_saved": "Spelet har sparats.",
   "text.changed.game_saved_fail": "Kan inte spara spelet.",

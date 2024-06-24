@@ -176,6 +176,7 @@
   "container.changed.note": "Notice",
   "container.changed.access_chest": "Chest Inventory",
   "container.changed.cardboard_container": "Cardboard Container",
+  "container.changed.cardboard_box_small": "Small Cardboard Box",
 
   "text.changed.game_saved": "Game has been saved.",
   "text.changed.game_saved_fail": "Cannot save game.",
