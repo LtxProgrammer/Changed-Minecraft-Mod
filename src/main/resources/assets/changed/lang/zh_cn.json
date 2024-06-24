@@ -49,6 +49,9 @@
    "subtitles.changed.crash": "容器破裂",
   "subtitles.changed.latex_drip": "胶液滴落",
   "subtitles.changed.monster2": "虎鲨的咆哮",
+  "subtitles.changed.attack1": "扫地机器人声",
+  "subtitles.changed.fire": "气体泄露声",
+  "subtitles.changed.vacuum": "吸尘器声",
   
   "item.changed.benign_pants": "黑胶短裤",
   "item.changed.blood_syringe": "血液注射器",
@@ -131,6 +134,9 @@
   "death.attack.changed:bloodloss.player": "1$s 注射 %2$s 的血浆后死于血液排异",
   "death.attack.changed:fan": "%s 被排风扇搅碎",
   "death.attack.changed:fan.player": "%1$s 在与 %2$s 战斗时被排风扇搅碎",
+  "death.attack.changed:latex_fluid": "%s 被胶液溶解",
+  "death.attack.changed:latex_fluid.player": "%1$s 在试图逃离 %2$s 时被乳胶液溶解了",
+
   "text.changed.warning": "注意",
   "text.changed.warning.content1": "本修改版 Minecraft 包含 Changed 的内容，",
   "text.changed.warning.content2": "不适合所有受众。[文本非最终版本]",
@@ -295,6 +301,8 @@
   "block.changed.white_pillow": "白色枕头",
   "block.changed.yellow_pillow": "黄色枕头",
   "block.changed.black_railing": "黑胶栏杆",
+  "block.changed.air_conditioner": "排风扇",
+  "block.changed.roomba_charger": "充电站",
   
   "biome.changed.dark_latex_plains": "黑胶平原",
   "biome.changed.white_latex_forest": "白胶森林",
@@ -370,18 +378,20 @@
   "entity.changed.latex_fennec_fox": "胶液狐狸",
   "entity.changed.green_lizard": "胶液蜥蜴",
   "entity.changed.latex_human": "胶液人",
-  "entity.changed.latex_ming_cat": "明猫（新手劝退猫）",
+  "entity.changed.latex_ming_cat": "冥猫（新手劝退猫）",
   "entity.changed.latex_moth": "胶液飞蛾",
   "entity.changed.phage_latex_wolf_female": "噬菌体胶狼（雌性）",
   "entity.changed.phage_latex_wolf_male": "噬菌体胶狼（雄性）",
   "entity.changed.white_wolf_female": "white wolf（雌性）",
   "entity.changed.white_wolf_male": "white wolf(雄性)",
+  "entity.changed.latex_mutant_bloodcell_wolf": "变异细胞胶狼",
+  "entity.changed.roomba": "扫地机器人",
 
   "item.changed.dark_latex_pup_spawn_egg": "黑胶狼幼崽刷怪蛋",
   "item.changed.latex_alien_spawn_egg": "胶液外星人刷怪蛋",
   "item.changed.latex_fennec_fox_spawn_egg":"胶液狐狸刷怪蛋",
   "item.changed.green_lizard_spawn_egg": "胶液蜥蜴刷怪蛋",
-  "item.changed.latex_ming_cat_spawn_egg":"明猫（新手劝退猫）刷怪蛋",
+  "item.changed.latex_ming_cat_spawn_egg":"冥猫（新手劝退猫）刷怪蛋",
   "item.changed.latex_moth_spawn_egg": "胶液飞蛾刷怪蛋",
   "item.changed.phage_latex_wolf_female_spawn_egg":"噬菌体胶狼（雌性）刷怪蛋",
   "item.changed.phage_latex_wolf_male_spawn_egg":"噬菌体胶狼（雄性）刷怪蛋",
@@ -447,6 +457,10 @@
   "item.changed.white_wolf_male_spawn_egg": "white wolf(雄性)刷怪蛋",
   "item.changed.white_wolf_female_spawn_egg":"white wolf(雌性)刷怪蛋",
   "item.changed.latex_bee_spawn_egg": "胶液蜜蜂刷怪蛋",
+  "item.changed.roomba": "扫地机器人",
+  "item.changed.dark_latex_wolf_pup_spawn_egg": "黑胶狼幼崽刷怪蛋",
+  "item.changed.latex_mutant_bloodcell_wolf_spawn_egg": "变异细胞胶狼刷怪蛋",
+  "item.changed.pure_white_latex_wolf_spawn_egg": "白胶狼（蜂巢意识）刷怪蛋",
   
   "changed.patreon.level0": "Discord服务器成员",
   "changed.patreon.level1": "Tier 1",
@@ -530,6 +544,8 @@
 
   "changed:advancements.main.kill_all_latex.title": "发疯了",
   "changed:advancements.main.kill_all_latex.description": "杀死每种胶兽中的一只",
+  "changed:advancements.main.flying.title": "这风景也太漂亮了！",
+  "changed:advancements.main.flying.description": "使用胶兽的飞行能力飞行15秒",
  
   "changed.tutorial.select_ability.title": "选择你的能力",
   "changed.tutorial.select_ability.description": "按 %s",
@@ -560,7 +576,7 @@
   "changed.config.color_picker_green": "绿色：%s",
   "changed.config.color_picker_blue": "蓝色：%s",
 
-  "changed.config.bpi.screen": "玩家基本信息",
+  "changed.config.bpi.screen": "胶兽玩家基本信息",
   "changed.config.bpi.hair_color": "发色",
   "changed.config.bpi.iris_color.left": "左眼的颜色",
   "changed.config.bpi.iris_color.right": "右眼的颜色",
@@ -575,12 +591,16 @@
   
   "fluid.changed.dark_latex": "液态黑胶",
   "fluid.changed.white_latex": "液态白胶",
+  "fluid.changed.wolf_gas": "气体狼",
 
   "ability.changed.grab_entity": "抓取实体",
-  "ability.changed.grab_entity.how_to_grab": "按住 [%s] 抓取实体",
-  "ability.changed.grab_entity.how_to_release": "按住 [%s] 以释放实体",
-  "ability.changed.grab_entity.how_to_transfur": "按住 [%s] 以进行兽化",
-  "ability.changed.grab_entity.how_to_absorb": "按住 [%s] 和 [%s] 可进行吞噬",
-  "ability.changed.grab_entity.how_to_suit": "按住 [%s] 可合并",
-  "ability.changed.grab_entity.how_to_toggle_control": "按 [%s] 键切换身体控制权"
+  "ability.changed.grab_entity.how_to_grab": "长按 [%s] 抓取实体",
+  "ability.changed.grab_entity.how_to_release": "长按 [%s] 以释放实体",
+  "ability.changed.grab_entity.how_to_transfur": "长按 [%s] 以进行兽化",
+  "ability.changed.grab_entity.how_to_absorb": "长按 [%s] 和 [%s] 可进行吞噬",
+  "ability.changed.grab_entity.how_to_suit": "长按 [%s] 可合并",
+  "ability.changed.grab_entity.how_to_toggle_control": "按 [%s] 键切换身体控制权",
+
+  "attribute.name.changed.transfur_damage": "兽化伤害",
+  "attribute.name.changed.transfur_tolerance": "兽化抗性"
 }
