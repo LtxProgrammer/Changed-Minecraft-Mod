@@ -375,10 +375,8 @@ public class ProcessTransfur {
         if (instance != null)
             beforeBroadcast.accept(instance);
         if (instance != null && !instance.isTemporaryFromSuit()) {
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0 + instance.getParent().additionalHealth);
             player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         } else {
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0);
             player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         }
         if (player instanceof ServerPlayer serverPlayer)

@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
+import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +31,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -426,16 +428,10 @@ public abstract class ChangedEntity extends Monster {
     }
 
     protected void setAttributes(AttributeMap attributes) {
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(getTransfurMaxHealth());
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(40.0);
-        if (this instanceof LatexBenignWolf) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
-        if (this instanceof DarkLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(25.0);
-        if (this instanceof WhiteLatexEntity) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
-        if (this instanceof MilkPudding) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
-        if (this instanceof LatexRaccoon) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
-        if (this instanceof HeadlessKnight) attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(getTransfurLandSpeed());
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(getTransfurSwimSpeed());
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
         attributes.getInstance(Attributes.ARMOR).setBaseValue(4.0);
     }
@@ -756,8 +752,8 @@ public abstract class ChangedEntity extends Monster {
         super.registerGoals();
 
         final ChangedEntity self = this;
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.4, false));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3, 120, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 4.0, false));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 3.0, 120, false));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
             public boolean canUse() {
                 if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
@@ -949,16 +945,6 @@ public abstract class ChangedEntity extends Monster {
         return -0.475;
     }
 
-    protected <T> T callIfNotNull(TransfurVariant<?> variant, Function<TransfurVariant<?>, T> func, T def) {
-        return variant == null ? def : func.apply(variant);
-    }
-
-    public double getTransfurMaxHealth() { return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 20.0); }
-
-    public double getTransfurLandSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.groundSpeed, 1.0); }
-
-    public double getTransfurSwimSpeed() { return callIfNotNull(getSelfVariant(), variant -> (double)variant.swimSpeed, 1.0); }
-
     public CompoundTag getLeashInfoTag() {
         return this.leashInfoTag;
     }
@@ -974,7 +960,7 @@ public abstract class ChangedEntity extends Monster {
 
     @Override
     protected double followLeashSpeed() {
-        return 0.4; // Matches melee attack goal speed
+        return 4.0; // Matches melee attack goal speed
     }
 
     public static class ChangedClimbOnTopOfPowderSnowGoal extends ClimbOnTopOfPowderSnowGoal {
@@ -1028,6 +1014,11 @@ public abstract class ChangedEntity extends Monster {
         }
         if (tag.contains("ChangedEntityFlags"))
             this.entityData.set(DATA_CHANGED_ENTITY_FLAGS, tag.getByte("ChangedEntityFlags"));
+
+        if (!tag.contains("ChangedDataFix") || tag.getInt("ChangedDataFix") < 1)
+            Optional.ofNullable(this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED)).ifPresent(movementSpeed -> {
+                movementSpeed.setBaseValue(movementSpeed.getBaseValue() * 0.1); //
+            });
     }
 
     @Override
@@ -1040,6 +1031,7 @@ public abstract class ChangedEntity extends Monster {
             tag.put("LocalVariantInfo", bpi);
         }
         tag.putByte("ChangedEntityFlags", this.entityData.get(DATA_CHANGED_ENTITY_FLAGS));
+        tag.putInt("ChangedDataFix", ChangedDataFixer.DATAFIX_ID);
     }
 
     public boolean getChangedEntityFlag(int id) {

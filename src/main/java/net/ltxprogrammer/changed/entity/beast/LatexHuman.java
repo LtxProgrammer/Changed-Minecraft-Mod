@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -190,5 +191,11 @@ public class LatexHuman extends ChangedEntity implements ComplexRenderer {
         if (tag.contains("RepresentPlayer")) {
             this.entityData.set(DATA_PLAYER, Optional.of(tag.getUUID("RepresentPlayer")));
         }
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.playerLike(attributes);
     }
 }

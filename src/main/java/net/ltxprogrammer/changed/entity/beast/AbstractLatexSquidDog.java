@@ -6,9 +6,11 @@ import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 
 public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implements GenderedEntity {
     public AbstractLatexSquidDog(EntityType<? extends AbstractLatexSquidDog> p_19870_, Level p_19871_) {
@@ -33,14 +35,11 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
         return Color3.WHITE;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        AttributeSupplier.Builder builder = ChangedEntity.createLatexAttributes();
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.2);
-        builder = builder.add(Attributes.MAX_HEALTH, 42);
-        builder = builder.add(Attributes.ARMOR, 0.7999999999999999);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 4);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 16);
-        builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 0.4);
-        return builder;
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0925);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.1);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30.0);
     }
 }

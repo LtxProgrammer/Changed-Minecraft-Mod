@@ -10,9 +10,12 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -72,5 +75,12 @@ public class DarkLatexWolfPartial extends AbstractDarkLatexEntity implements Com
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.DARK;
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1025);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
     }
 }

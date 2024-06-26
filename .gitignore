@@ -4,6 +4,8 @@
 # Ignore Gradle build output directory
 build
 run
+src/generated
+src/test
 
 # Ignore Intellij IDEA files
 /.idea/

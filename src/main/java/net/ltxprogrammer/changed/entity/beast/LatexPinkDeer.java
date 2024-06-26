@@ -1,11 +1,13 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 
+import net.ltxprogrammer.changed.entity.AttributePresets;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 
 
@@ -38,5 +40,11 @@ public class LatexPinkDeer extends LatexPinkWyvern {
             return Color3.fromInt(0xd8bc99);
         else
             return Color3.fromInt(0xf7aebe);
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.wolfLike(attributes);
     }
 }

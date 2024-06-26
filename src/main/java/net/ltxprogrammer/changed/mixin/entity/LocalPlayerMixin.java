@@ -19,6 +19,7 @@ import net.minecraft.stats.StatsCounter;
 import net.minecraft.tags.FluidTags;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.LogicalSide;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -123,7 +124,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
                 }
             }
 
-            if (variant.getParent().swimSpeed >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
+            if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
                 player.setSprinting(true);
         });
     }

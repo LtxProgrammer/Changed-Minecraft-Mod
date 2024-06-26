@@ -4,6 +4,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,5 +44,11 @@ public class LatexWhiteTiger extends ChangedEntity implements PowderSnowWalkable
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
     }
 }

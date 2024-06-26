@@ -11,6 +11,8 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -57,7 +59,9 @@ public class MilkPudding extends ChangedEntity {
     }
 
     @Override
-    public double getTransfurMaxHealth() {
-        return callIfNotNull(getSelfVariant(), variant -> variant.additionalHealth + 20.0, 8.0);
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(8.0);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
     }
 }

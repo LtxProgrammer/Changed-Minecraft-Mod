@@ -6,7 +6,10 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -48,5 +51,13 @@ public class LatexSnake extends ChangedEntity {
     @Override
     public boolean isMovingSlowly() {
         return this.isCrouching();
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(26);
     }
 }

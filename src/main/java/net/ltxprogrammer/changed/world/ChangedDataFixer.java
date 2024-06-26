@@ -24,6 +24,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ChangedDataFixer {
+    public static final int DATAFIX_ID = 1;
+
     private static <T extends Entity> ResourceLocation spawnEggHelper(RegistryObject<EntityType<T>> entity) {
         return Objects.requireNonNull(ChangedEntities.SPAWN_EGGS.get(entity)).getId();
     }
