@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -65,6 +66,9 @@ public abstract class Gas extends ForgeFlowingFluid {
 
     @Override
     protected boolean canSpreadTo(BlockGetter level, BlockPos pos, BlockState state, Direction direction, BlockPos otherPos, BlockState otherState, FluidState otherFluidState, Fluid fluid) {
-        return super.canSpreadTo(level, pos, state, direction, otherPos, otherState, otherFluidState, fluid) && !otherState.is(ChangedBlocks.FRESH_AIR.get());
+        return super.canSpreadTo(level, pos, state, direction, otherPos, otherState, otherFluidState, fluid)
+                && !otherState.is(ChangedBlocks.FRESH_AIR.get())
+                && (otherState.is(Blocks.AIR) || otherState.is(Blocks.CAVE_AIR))
+                && (otherFluidState.isEmpty() || otherFluidState.is(this));
     }
 }
