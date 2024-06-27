@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.SeatableBlock;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.network.packet.SeatEntityInfoPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -29,22 +31,7 @@ public class SeatEntity extends Entity {
         super(type, level);
     }
 
-    public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
-        if (level.isClientSide) {
-            var listOfSeats = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos)); // Check for existing SeatEntities to prevent duplicates
-            if (listOfSeats.isEmpty())
-                return null;
-
-            listOfSeats = listOfSeats.stream().filter(entity -> {
-                return entity.getAttachedBlockPos().equals(pos) && entity.getAttachedBlockState().isPresent() && entity.getAttachedBlockState().get().getBlock() == state.getBlock();
-            }).toList();
-
-            if (listOfSeats.isEmpty())
-                return null;
-
-            return listOfSeats.get(0);
-        }
-
+    private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
         SeatEntity seat = ChangedEntities.SEAT_ENTITY.get().create(level);
         if (seat == null)
             return null;
@@ -60,7 +47,24 @@ public class SeatEntity extends Entity {
         else
             seat.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 
-        level.addFreshEntity(seat);
+        return seat;
+    }
+
+    public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
+        if (level.isClientSide) {
+            var seatEntity = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos)).stream().filter(entity -> {
+                return entity.getAttachedBlockPos().equals(pos) && entity.getAttachedBlockState().isPresent() && entity.getAttachedBlockState().get().getBlock() == state.getBlock();
+            }).findFirst(); // Check for existing SeatEntities to prevent duplicates
+
+            return seatEntity.orElseGet(() -> {
+                Changed.PACKET_HANDLER.sendToServer(new SeatEntityInfoPacket(pos)); // Request the server send information for the seat entity
+                return actuallyCreateFor(level, state, pos, seatedInvisible);
+            });
+        }
+
+        SeatEntity seat = actuallyCreateFor(level, state, pos, seatedInvisible);
+        if (seat != null)
+            level.addFreshEntity(seat);
         return seat;
     }
 

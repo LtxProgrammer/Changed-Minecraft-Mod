@@ -9,12 +9,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import static net.ltxprogrammer.changed.block.CardboardBoxTall.OPEN;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-public class CardboardBoxTallBlockEntity extends BlockEntity {
+public class CardboardBoxTallBlockEntity extends BlockEntity implements SeatableBlockEntity {
     public LivingEntity entity;
     public SeatEntity entityHolder;
     public int ticksSinceChange = 20;
@@ -22,6 +20,16 @@ public class CardboardBoxTallBlockEntity extends BlockEntity {
 
     public CardboardBoxTallBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(ChangedBlockEntities.CARDBOARD_BOX_TALL.get(), p_155229_, p_155230_);
+    }
+
+    @Override
+    public SeatEntity getEntityHolder() {
+        return entityHolder;
+    }
+
+    @Override
+    public void setEntityHolder(SeatEntity entityHolder) {
+        this.entityHolder = entityHolder;
     }
 
     public boolean hideEntity(LivingEntity entity) {

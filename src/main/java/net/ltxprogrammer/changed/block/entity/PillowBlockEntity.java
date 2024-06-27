@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class PillowBlockEntity extends BlockEntity {
+public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntity {
     public LivingEntity entity;
     public SeatEntity entityHolder;
     private DyeColor color;
@@ -18,6 +18,16 @@ public class PillowBlockEntity extends BlockEntity {
     public PillowBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.PILLOW.get(), pos, state);
         this.color = ((Pillow)this.getBlockState().getBlock()).getColor();
+    }
+
+    @Override
+    public SeatEntity getEntityHolder() {
+        return entityHolder;
+    }
+
+    @Override
+    public void setEntityHolder(SeatEntity entityHolder) {
+        this.entityHolder = entityHolder;
     }
 
     public boolean sitEntity(LivingEntity entity) {
