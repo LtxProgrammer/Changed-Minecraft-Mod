@@ -132,12 +132,14 @@ public class Syringe extends Item implements SpecializedAnimations {
             tag.putString("form", form.toString());
             nStack.setTag(tag);
 
-            player.getInventory().add(nStack);
+            if (!player.addItem(nStack))
+                player.drop(nStack, false);
         }, () -> {
             ItemStack nStack = new ItemStack(ChangedItems.BLOOD_SYRINGE.get());
             nStack.setTag(tag);
 
-            player.getInventory().add(nStack);
+            if (!player.addItem(nStack))
+                player.drop(nStack, false);
         });
         return stack;
     }
