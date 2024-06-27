@@ -23,7 +23,7 @@
   "ability.changed.puddle": "变成一个水坑",
   "ability.changed.summon_sharks": "召唤鲨鱼",
   "ability.changed.select_hairstyle": "选择发型",
-  "ability.changed.select_special_state": "选择特殊状态",
+  "ability.changed.select_special_state": "选择特殊形态",
 
 
   
@@ -60,7 +60,7 @@
   "item.changed.dark_latex_dragon_crystal_fragment": "黑胶龙结晶碎片",
   "item.changed.dark_latex_goo": "黑色胶液",
   "item.changed.dark_latex_mask": "黑胶面具",
-  "item.changed.dark_latex_bucket": "桶装黑色胶液",
+  "item.changed.dark_latex_bucket": "黑胶桶",
   "item.changed.gas_mask": "防毒面具",
   "item.changed.lab_book": "实验室书",
   "item.changed.latex_base": "胶液样本",
@@ -73,7 +73,7 @@
   "item.changed.pink_pants": "粉胶短裤",
   "item.changed.syringe": "注射器",
   "item.changed.white_latex_goo": "白色胶液",
-  "item.changed.white_latex_bucket": "桶装白色胶液",
+  "item.changed.white_latex_bucket": "白胶桶",
   
   "item.changed.tsc_staff": "惊雷科技电杖",
   "item.changed.tsc_baton": "惊雷科技电棍",
@@ -319,7 +319,7 @@
   "entity.changed.dark_latex_yufeng": "黑胶御风",
   "entity.changed.headless_knight": "无头骑士",
   "entity.changed.milk_pudding": "牛奶布丁",
-  "entity.changed.latex_beifeng": "胶液悲风",
+  "entity.changed.latex_beifeng": "悲风",
   "entity.changed.latex_benign_wolf": "束缚胶狼",
   "entity.changed.latex_blue_dragon": "胶液蓝龙",
   "entity.changed.latex_blue_wolf": "胶液蓝狼",
@@ -387,7 +387,6 @@
   "entity.changed.latex_mutant_bloodcell_wolf": "变异细胞胶狼",
   "entity.changed.roomba": "扫地机器人",
 
-  "item.changed.dark_latex_pup_spawn_egg": "黑胶狼幼崽刷怪蛋",
   "item.changed.latex_alien_spawn_egg": "胶液外星人刷怪蛋",
   "item.changed.latex_fennec_fox_spawn_egg":"胶液狐狸刷怪蛋",
   "item.changed.green_lizard_spawn_egg": "胶液蜥蜴刷怪蛋",
@@ -403,7 +402,7 @@
   "item.changed.dark_latex_yufeng_spawn_egg": "黑胶御风刷怪蛋",
   "item.changed.headless_knight_spawn_egg": "无头骑士刷怪蛋",
   "item.changed.milk_pudding_spawn_egg": "牛奶团子刷怪蛋",
-  "item.changed.latex_beifeng_spawn_egg": "胶液悲风刷怪蛋",
+  "item.changed.latex_beifeng_spawn_egg": "悲风刷怪蛋",
   "item.changed.latex_benign_wolf_spawn_egg": "束缚胶狼刷怪蛋",
   "item.changed.latex_blue_dragon_spawn_egg": "胶液蓝龙刷怪蛋",
   "item.changed.latex_blue_wolf_spawn_egg": "胶液蓝狼刷怪蛋",
@@ -453,7 +452,6 @@
   "item.changed.white_latex_wolf_male_spawn_egg": "白胶狼（雄性）刷怪蛋",
   "item.changed.light_latex_wolf_organic_spawn_egg": "白毛毛狼刷怪蛋",
   "item.changed.shark_spawn_egg": "鲨鱼刷怪蛋",
-  "item.changed.white_latex_wolf_spawn_egg": "白胶狼（蜂巢意识）刷怪蛋",
   "item.changed.white_wolf_male_spawn_egg": "white wolf(雄性)刷怪蛋",
   "item.changed.white_wolf_female_spawn_egg":"white wolf(雌性)刷怪蛋",
   "item.changed.latex_bee_spawn_egg": "胶液蜜蜂刷怪蛋",
@@ -544,6 +542,7 @@
 
   "changed:advancements.main.kill_all_latex.title": "发疯了",
   "changed:advancements.main.kill_all_latex.description": "杀死每种胶兽中的一只",
+
   "changed:advancements.main.flying.title": "这风景也太漂亮了！",
   "changed:advancements.main.flying.description": "使用胶兽的飞行能力飞行15秒",
  
