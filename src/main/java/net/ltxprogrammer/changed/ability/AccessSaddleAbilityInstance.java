@@ -4,10 +4,11 @@ import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.world.inventory.TaurSaddleMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
-    public ItemStack saddle = ItemStack.EMPTY;
-    public ItemStack chest = ItemStack.EMPTY;
+    @NotNull public ItemStack saddle = ItemStack.EMPTY;
+    @NotNull public ItemStack chest = ItemStack.EMPTY;
 
     public AccessSaddleAbilityInstance(AbstractAbility<AccessSaddleAbilityInstance> ability, IAbstractChangedEntity entity) {
         super(ability, entity);
@@ -43,10 +44,8 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void saveData(CompoundTag tag) {
         super.saveData(tag);
-        if (saddle != null)
-            tag.put("saddle", saddle.serializeNBT());
-        if (chest != null)
-            tag.put("chest", chest.serializeNBT());
+        tag.put("saddle", saddle.serializeNBT());
+        tag.put("chest", chest.serializeNBT());
     }
 
     @Override
@@ -64,11 +63,11 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
         if (entity.isDeadOrDying() && entity.getLevel().getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_FORM))
             return;
 
-        if (saddle != null)
+        if (!entity.addItem(saddle))
             entity.drop(saddle, true);
-        if (chest != null)
+        if (!entity.addItem(chest))
             entity.drop(chest, true);
-        saddle = null;
-        chest = null;
+        saddle = ItemStack.EMPTY;
+        chest = ItemStack.EMPTY;
     }
 }
