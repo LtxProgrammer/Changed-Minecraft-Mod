@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -127,7 +128,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
             return;
 
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            ItemStack attackingItem = this.getItemInHand(this.getUsedItemHand());
+            ItemStack attackingItem = this.getItemInHand(InteractionHand.MAIN_HAND);
 
             // Check if item contributes to transfur damage
             boolean weaponContributes = attackingItem.isEmpty() ||
