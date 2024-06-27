@@ -170,6 +170,7 @@
   "container.changed.note": "Varsel",
   "container.changed.access_chest": "Kiste inventar",
   "container.changed.cardboard_container": "Pappbeholder",
+  "container.changed.cardboard_box_small": "Liten pappeske",
 
   "text.changed.game_saved": "Spill er ikke lagret.",
   "text.changed.game_saved_fail": "Kan ikke lagre spill.",
