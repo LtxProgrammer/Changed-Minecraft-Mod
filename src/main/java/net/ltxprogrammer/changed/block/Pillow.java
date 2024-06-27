@@ -201,6 +201,8 @@ public class Pillow extends BaseEntityBlock implements SeatableBlock, SimpleWate
 
     @Override
     public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity player) {
+        if (player == null) return true;
+
         if (player instanceof LivingEntity livingEntity) {
             var variant = TransfurVariant.getEntityVariant(livingEntity);
             if (variant == null)
