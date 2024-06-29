@@ -142,6 +142,8 @@
   "death.attack.changed:transfur.player": "%1$s был трансфуррирован %2$s",
   "death.attack.changed:white_latex": "%s решил испытать белый латекс на плотность",
   "death.attack.changed:white_latex.player": "%1$s был затянут белым латексом, пытаясь сбежать от %2$s",
+  "death.attack.changed:latex_fluid": "%s был растворен в латексной жидкости",
+  "death.attack.changed:latex_fluid.player": "%1$s был растворен в латексной жидкости, пытаясь сбежать от %2$s",
   "death.attack.changed:pale": "%s отправился в мир грез из-за Бледного вируса",
   "death.attack.changed:bloodloss": "%s не подошла группа крови",
   "death.attack.changed:bloodloss.player": "%1$s получил чужую кровь, благодаря %2$s",
