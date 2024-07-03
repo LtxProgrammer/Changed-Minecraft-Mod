@@ -335,7 +335,9 @@ public class PatreonBenefits {
         while (true) {
             try {
                 Thread.sleep(60000 * 3);
-                while (!UPDATE_PLAYER_JOIN_FLAG.get()); // Loop until player joins
+                synchronized (UPDATE_PLAYER_JOIN_FLAG) {
+                    UPDATE_PLAYER_JOIN_FLAG.wait();
+                }
                 UPDATE_PLAYER_JOIN_FLAG.set(false); // Consume
                 LOGGER.info("Checking for updates");
                 int version = Integer.parseInt(client.send(request, HttpResponse.BodyHandlers.ofString()).body().replace("\n", ""));
@@ -360,7 +362,9 @@ public class PatreonBenefits {
         public static void onPlayerJoin(EntityJoinWorldEvent playerJoin) {
             if (playerJoin.getEntity() instanceof Player player) {
                 LOGGER.info("Player joined, setting enabling update checker flag");
-                UPDATE_PLAYER_JOIN_FLAG.set(true);
+                synchronized (UPDATE_PLAYER_JOIN_FLAG) {
+                    UPDATE_PLAYER_JOIN_FLAG.notify();
+                }
             }
         }
     }
