@@ -14,7 +14,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> implements AdvancedHumanoidModelInterface<LatexStiger, LatexStigerModel> {
+public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> implements AdvancedHumanoidModelInterface<LatexStiger, LatexStigerModel>, TripleArmedModel {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_stiger"), "main");
     public final ModelPart Head;
     public final ModelPart Torso;
@@ -191,9 +191,43 @@ public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> impleme
     @Override
     public ModelPart getArm(HumanoidArm humanoidArm) {
         return switch (humanoidArm) {
+            case LEFT -> LeftArm3;
+            case RIGHT -> RightArm3;
+        };
+    }
+
+    @Override
+    public ModelPart getMiddleArm(HumanoidArm humanoidArm) {
+        return switch (humanoidArm) {
+            case LEFT -> LeftArm2;
+            case RIGHT -> RightArm2;
+        };
+    }
+
+    @Override
+    public ModelPart getOtherArm(HumanoidArm humanoidArm) {
+        return switch (humanoidArm) {
             case LEFT -> LeftArm;
             case RIGHT -> RightArm;
         };
+    }
+
+    @Override
+    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getArm(arm).translateAndRotate(poseStack);
+        poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
+    }
+
+    @Override
+    public void translateToMiddleHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getMiddleArm(arm).translateAndRotate(poseStack);
+        poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
+    }
+
+    @Override
+    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+        this.getOtherArm(arm).translateAndRotate(poseStack);
+        poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     public ModelPart getLeg(HumanoidArm p_102852_) {

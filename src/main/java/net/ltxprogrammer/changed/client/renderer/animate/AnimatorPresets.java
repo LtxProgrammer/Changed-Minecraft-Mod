@@ -268,6 +268,19 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> tripleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+        return animator -> {
+            animator.setupHands(1, upperLeftArm, upperRightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, upperLeftArm, upperRightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, middleLeftArm, middleRightArm))
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new TripleArmUpperBodyInitAnimator<>(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new TripleArmUpperBodyCrouchAnimator<>(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new TripleArmUpperBodyAttackAnimator<>(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm))
+                    .addAnimator(new TripleArmUpperBodyStandAnimator<>(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm));
+        };
+    }
+
     public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
@@ -716,7 +729,7 @@ public class AnimatorPresets {
                                                                                                                   ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
-                    .addPreset(doubleArmUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(tripleArmUpperBody(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm))
                     .addPreset(dragonTail(tail, tailJoints))
                     .addPreset(catEars(leftEar, rightEar))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
@@ -734,7 +747,7 @@ public class AnimatorPresets {
                                                                                                                   ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator.addPreset(dragonBipedal(leftLeg, leftLegLower, leftFoot, leftPad, rightLeg, rightLegLower, rightFoot, rightPad))
-                    .addPreset(doubleArmUpperBody(head, torso, upperLeftArm, upperRightArm, lowerLeftArm, lowerRightArm))
+                    .addPreset(tripleArmUpperBody(head, torso, upperLeftArm, upperRightArm, middleLeftArm, middleRightArm, lowerLeftArm, lowerRightArm))
                     .addPreset(dragonTail(tail, tailJoints))
                     .addAnimator(new WolfHeadInitAnimator<>(head))
                     .addAnimator(new ArmSwimAnimator<>(upperLeftArm, upperRightArm))
