@@ -113,10 +113,15 @@ public class RoombaCharger extends AbstractCustomShapeBlock implements IRobotCha
 
     @Override
     public void acceptRobot(BlockState state, Level level, BlockPos pos, AbstractRobot robot) {
+        if (state.getValue(OCCUPIED))
+            return;
+
         if (robot instanceof Roomba) {
             level.setBlockAndUpdate(pos, state.setValue(OCCUPIED, true));
             level.scheduleTick(pos, this, 20 * 60, TickPriority.NORMAL);
             robot.discard();
+
+            broadcastPosition(level, pos);
         }
     }
 }

@@ -66,6 +66,15 @@ public abstract class AbstractRobot extends PathfinderMob {
     }
 
     public void broadcastNearbyCharger(BlockPos where, ChargerType type) {
+        broadcastNearbyCharger(where, type, true);
+    }
+
+    public void broadcastNearbyCharger(BlockPos where, ChargerType type, boolean useable) {
+        if (!useable && closestCharger != null && closestCharger.equals(where)) {
+            closestCharger = null;
+            return;
+        }
+
         if (type != this.getChargerType())
             return;
         if (closestCharger != null) {
