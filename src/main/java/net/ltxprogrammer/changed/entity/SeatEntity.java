@@ -2,10 +2,13 @@ package net.ltxprogrammer.changed.entity;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.SeatableBlock;
+import net.ltxprogrammer.changed.block.entity.SeatableBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.network.packet.SeatEntityInfoPacket;
+import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,6 +32,16 @@ public class SeatEntity extends Entity {
 
     public SeatEntity(EntityType<?> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if (level.getBlockEntity(this.getAttachedBlockPos()) instanceof SeatableBlockEntity seatableBlockEntity) {
+            var existing = seatableBlockEntity.getEntityHolder();
+            if (existing == null || existing.isRemoved())
+                seatableBlockEntity.setEntityHolder(this);
+        }
     }
 
     private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
@@ -161,12 +174,21 @@ public class SeatEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
-
+        if (tag.contains("attachedBlockState"))
+            this.entityData.set(BLOCK_STATE, Optional.of(NbtUtils.readBlockState(tag.getCompound("attachedBlockState"))));
+        if (tag.contains("attachedBlockPos"))
+            this.entityData.set(BLOCK_POS, TagUtil.getBlockPos(tag, "attachedBlockPos"));
+        if (tag.contains("seatedInvisible"))
+            this.entityData.set(SEATED_INVISIBLE, tag.getBoolean("seatedInvisible"));
     }
 
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
-
+        this.getAttachedBlockState().ifPresent(state -> {
+            tag.put("attachedBlockState", NbtUtils.writeBlockState(state));
+        });
+        TagUtil.putBlockPos(tag, "attachedBlockPos", this.getAttachedBlockPos());
+        tag.putBoolean("seatedInvisible", this.shouldSeatedBeInvisible());
     }
 
     @Override
