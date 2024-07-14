@@ -16,6 +16,15 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
     public LatexMermaidShark(EntityType<? extends LatexMermaidShark> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.034);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.9);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
+    }
+
     @Override
     public Gender getGender() {
         return Gender.MALE;
@@ -54,13 +63,5 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#969696");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.026);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.9);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
     }
 }

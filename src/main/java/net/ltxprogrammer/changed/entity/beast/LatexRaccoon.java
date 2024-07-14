@@ -18,6 +18,13 @@ public class LatexRaccoon extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.095);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.97);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -50,13 +57,5 @@ public class LatexRaccoon extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#949494");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.095);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.97);
     }
 }

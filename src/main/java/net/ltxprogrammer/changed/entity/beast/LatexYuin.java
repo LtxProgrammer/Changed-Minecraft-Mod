@@ -18,6 +18,12 @@ public class LatexYuin extends ChangedEntity implements PowderSnowWalkable, Patr
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -42,12 +48,5 @@ public class LatexYuin extends ChangedEntity implements PowderSnowWalkable, Patr
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.98);
     }
 }

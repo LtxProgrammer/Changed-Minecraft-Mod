@@ -17,6 +17,13 @@ public class LatexSquirrel extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.11);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
+    }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
     }
@@ -47,12 +54,5 @@ public class LatexSquirrel extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#ac8e63");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.11);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
     }
 }

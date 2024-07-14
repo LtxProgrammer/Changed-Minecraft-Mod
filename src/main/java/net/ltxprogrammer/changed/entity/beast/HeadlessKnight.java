@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -22,6 +23,14 @@ import java.util.List;
 public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<HeadlessKnight> {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.115);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
     }
 
     @Override
@@ -90,11 +99,5 @@ public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<Headle
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
     }
 }

@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,12 @@ import java.util.List;
 
 public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
     protected final SimpleAbilityInstance hypnosis;
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
+    }
 
     public LatexHypnoCat(EntityType<? extends LatexHypnoCat> type, Level level) {
         super(type, level);

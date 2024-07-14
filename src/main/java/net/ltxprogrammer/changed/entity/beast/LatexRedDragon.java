@@ -16,6 +16,11 @@ public class LatexRedDragon extends ChangedEntity implements PatronOC {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.dragonLike(attributes);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -46,11 +51,5 @@ public class LatexRedDragon extends ChangedEntity implements PatronOC {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#d496a2");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.dragonLike(attributes);
     }
 }

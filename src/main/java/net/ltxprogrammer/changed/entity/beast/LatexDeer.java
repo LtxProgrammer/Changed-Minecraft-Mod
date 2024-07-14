@@ -19,6 +19,13 @@ public class LatexDeer extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.11);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
+    }
+
+    @Override
     public Color3 getDripColor() {
         return Color3.getColor(this.random.nextInt(4) < 3 ? "#d8bc99" : "#fbe5bc");
     }
@@ -49,12 +56,5 @@ public class LatexDeer extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#d8bc99");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.11);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
     }
 }

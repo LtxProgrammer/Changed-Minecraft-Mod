@@ -21,6 +21,13 @@ public class LatexBee extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.75);
+    }
+
+    @Override
     public int getTicksRequiredToFreeze() { return 240; }
 
     @Override
@@ -53,12 +60,5 @@ public class LatexBee extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#fdbf77");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.75);
     }
 }
