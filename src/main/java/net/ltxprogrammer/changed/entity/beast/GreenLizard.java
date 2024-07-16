@@ -20,6 +20,13 @@ public class GreenLizard extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -41,12 +48,5 @@ public class GreenLizard extends ChangedEntity {
 
     public @Nullable List<HairStyle> getValidHairStyles() {
         return HairStyle.Collection.EMPTY;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1075);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.98);
     }
 }

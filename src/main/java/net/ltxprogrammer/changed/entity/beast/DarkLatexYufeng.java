@@ -17,6 +17,12 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.dragonLike(attributes);
+    }
+
+    @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD.get();
     }
@@ -38,11 +44,5 @@ public class DarkLatexYufeng extends AbstractDarkLatexEntity {
     @Override
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.fromInt(0x3d3d3d);
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.dragonLike(attributes);
     }
 }

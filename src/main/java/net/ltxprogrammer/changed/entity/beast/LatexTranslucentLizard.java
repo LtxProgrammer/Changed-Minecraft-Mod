@@ -17,6 +17,13 @@ public class LatexTranslucentLizard extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -47,12 +54,5 @@ public class LatexTranslucentLizard extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#ffb84b");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
     }
 }

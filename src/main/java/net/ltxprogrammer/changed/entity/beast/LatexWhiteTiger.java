@@ -16,6 +16,11 @@ public class LatexWhiteTiger extends ChangedEntity implements PowderSnowWalkable
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -44,11 +49,5 @@ public class LatexWhiteTiger extends ChangedEntity implements PowderSnowWalkable
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.catLike(attributes);
     }
 }

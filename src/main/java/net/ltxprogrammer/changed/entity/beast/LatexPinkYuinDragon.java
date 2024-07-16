@@ -14,6 +14,12 @@ public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWa
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.dragonLike(attributes);
+    }
+
+    @Override
     public Color3 getDripColor() {
         return Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#d1626d");
     }
@@ -34,11 +40,5 @@ public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWa
             return Color3.WHITE;
         else
             return Color3.fromInt(0xf7aebe);
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.dragonLike(attributes);
     }
 }

@@ -16,6 +16,11 @@ public class LatexMingCat extends ChangedEntity implements PatronOC {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -48,11 +53,5 @@ public class LatexMingCat extends ChangedEntity implements PatronOC {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#d2a87f");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.catLike(attributes);
     }
 }

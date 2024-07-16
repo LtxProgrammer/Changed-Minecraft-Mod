@@ -19,6 +19,14 @@ public class LatexSharkMale extends AbstractLatexShark implements GenderedEntity
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.35);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
+    }
+
+    @Override
     public HairStyle getDefaultHairStyle() {
         return HairStyle.BALD.get();
     }
@@ -35,13 +43,5 @@ public class LatexSharkMale extends AbstractLatexShark implements GenderedEntity
     @Override
     public Gender getGender() {
         return Gender.MALE;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.35);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
     }
 }

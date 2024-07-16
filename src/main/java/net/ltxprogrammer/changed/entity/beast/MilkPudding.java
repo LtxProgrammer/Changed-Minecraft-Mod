@@ -29,6 +29,15 @@ public class MilkPudding extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(8.0);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
+        attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -56,12 +65,5 @@ public class MilkPudding extends ChangedEntity {
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(8.0);
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
     }
 }

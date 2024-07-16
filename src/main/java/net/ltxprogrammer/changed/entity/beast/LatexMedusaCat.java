@@ -16,6 +16,11 @@ public class LatexMedusaCat extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -44,11 +49,5 @@ public class LatexMedusaCat extends ChangedEntity {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        AttributePresets.catLike(attributes);
     }
 }

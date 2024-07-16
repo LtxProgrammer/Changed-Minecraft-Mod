@@ -17,6 +17,14 @@ public class LatexCrocodile extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0925);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.1);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(32);
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -47,13 +55,5 @@ public class LatexCrocodile extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#2b86a3");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0925);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.1);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(32);
     }
 }
