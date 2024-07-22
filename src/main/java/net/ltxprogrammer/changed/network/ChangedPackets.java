@@ -41,6 +41,7 @@ public class ChangedPackets {
         addNetworkMessage(ExtraJumpKeybind.class, ExtraJumpKeybind::buffer, ExtraJumpKeybind::new, ExtraJumpKeybind::handler);
         addNetworkMessage(CustomFallable.UpdateFallingBlockEntityData.class, CustomFallable.UpdateFallingBlockEntityData::new);
         addNetworkMessage(SeatEntityInfoPacket.class, SeatEntityInfoPacket::new);
+        addNetworkMessage(TransfurEntityEventPacket.class, TransfurEntityEventPacket::new);
     }
 
     private <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
