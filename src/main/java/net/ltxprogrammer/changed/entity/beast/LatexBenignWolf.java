@@ -19,6 +19,14 @@ public class LatexBenignWolf extends AbstractLatexWolf {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.015);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.2);
+    }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }
@@ -43,13 +51,5 @@ public class LatexBenignWolf extends AbstractLatexWolf {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#282828");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(4.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.015);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.15);
     }
 }

@@ -28,6 +28,15 @@ public class Shark extends AbstractAquaticEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(10.0D);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.2D);
+        attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(2.4D);
+    }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }
@@ -40,15 +49,6 @@ public class Shark extends AbstractAquaticEntity {
     @Override
     public TransfurVariant<?> getTransfurVariant() {
         return this.level.getSeaLevel() - 6 > this.getBlockY() ? ChangedTransfurVariants.Gendered.LATEX_MERMAID_SHARKS.getRandomVariant(this.random) : ChangedTransfurVariants.LATEX_SHARK.get();
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(10.0D);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.2D);
-        attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(2.9D);
     }
 
     protected PathNavigation createNavigation(Level p_28362_) {

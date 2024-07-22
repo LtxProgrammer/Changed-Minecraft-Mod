@@ -18,6 +18,13 @@ public class LatexAlien extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
+    }
+
     public Color3 getDripColor() {
         return Color3.getColor("#1983a9");
     }
@@ -48,12 +55,5 @@ public class LatexAlien extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#1983a9");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
     }
 }

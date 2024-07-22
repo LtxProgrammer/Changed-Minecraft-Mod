@@ -18,6 +18,13 @@ public class LatexOrca extends AbstractAquaticEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0875);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.3);
+    }
+
+    @Override
     public Color3 getDripColor() {
         return level.random.nextInt(10) > 3 ? Color3.DARK : Color3.WHITE;
     }
@@ -38,12 +45,5 @@ public class LatexOrca extends AbstractAquaticEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#393939");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0875);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.3);
     }
 }

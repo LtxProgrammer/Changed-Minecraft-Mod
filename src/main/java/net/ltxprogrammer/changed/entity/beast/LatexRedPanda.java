@@ -18,6 +18,12 @@ public class LatexRedPanda extends ChangedEntity {
         super(p_19870_, p_19871_);
     }
 
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
+    }
 
     @Override
     public Color3 getDripColor() {
@@ -51,12 +57,5 @@ public class LatexRedPanda extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#bd4040");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
     }
 }

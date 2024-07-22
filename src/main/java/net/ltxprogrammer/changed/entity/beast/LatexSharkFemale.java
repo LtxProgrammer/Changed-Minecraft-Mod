@@ -19,6 +19,14 @@ public class LatexSharkFemale extends AbstractLatexShark implements GenderedEnti
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.35);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
+    }
+
+    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
     }
@@ -35,13 +43,5 @@ public class LatexSharkFemale extends AbstractLatexShark implements GenderedEnti
     @Override
     public Gender getGender() {
         return Gender.FEMALE;
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.35);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
     }
 }

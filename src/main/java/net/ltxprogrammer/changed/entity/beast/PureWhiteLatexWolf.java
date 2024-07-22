@@ -16,7 +16,7 @@ public class PureWhiteLatexWolf extends WhiteLatexEntity {
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.095);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
     }
 

@@ -17,6 +17,13 @@ public class LatexTrafficConeDragon extends ChangedEntity {
     }
 
     @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
+    }
+
+    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -47,12 +54,5 @@ public class LatexTrafficConeDragon extends ChangedEntity {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#ffd201");
-    }
-
-    @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
     }
 }
