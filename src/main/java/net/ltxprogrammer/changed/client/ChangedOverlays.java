@@ -15,7 +15,6 @@ import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -28,9 +27,9 @@ import net.minecraftforge.fml.common.Mod;
 public class ChangedOverlays {
     protected static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
 
-    public static final IIngameOverlay GOO_ELEMENT = OverlayRegistry.registerOverlayTop(Changed.modResourceStr("goo"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+    public static final IIngameOverlay DANGER_ELEMENT = OverlayRegistry.registerOverlayTop(Changed.modResourceStr("danger"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         gui.setupOverlayRenderState(true, false);
-        TransfurProgressOverlay.renderGooOverlay(gui, screenWidth, screenHeight);
+        TransfurProgressOverlay.renderDangerOverlay(gui, poseStack, partialTick, screenWidth, screenHeight);
     });
     public static final IIngameOverlay ABILITY_ELEMENT = OverlayRegistry.registerOverlayTop(Changed.modResourceStr("ability"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         gui.setupOverlayRenderState(true, false);

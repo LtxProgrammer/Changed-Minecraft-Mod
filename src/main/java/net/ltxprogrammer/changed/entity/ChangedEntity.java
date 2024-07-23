@@ -1014,11 +1014,6 @@ public abstract class ChangedEntity extends Monster {
         }
         if (tag.contains("ChangedEntityFlags"))
             this.entityData.set(DATA_CHANGED_ENTITY_FLAGS, tag.getByte("ChangedEntityFlags"));
-
-        if (!tag.contains("ChangedDataFix") || tag.getInt("ChangedDataFix") < 1)
-            Optional.ofNullable(this.getAttributes().getInstance(Attributes.MOVEMENT_SPEED)).ifPresent(movementSpeed -> {
-                movementSpeed.setBaseValue(movementSpeed.getBaseValue() * 0.1); //
-            });
     }
 
     @Override
@@ -1031,7 +1026,6 @@ public abstract class ChangedEntity extends Monster {
             tag.put("LocalVariantInfo", bpi);
         }
         tag.putByte("ChangedEntityFlags", this.entityData.get(DATA_CHANGED_ENTITY_FLAGS));
-        tag.putInt("ChangedDataFix", ChangedDataFixer.DATAFIX_ID);
     }
 
     public boolean getChangedEntityFlag(int id) {
