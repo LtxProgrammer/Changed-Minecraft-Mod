@@ -34,7 +34,7 @@ public class MilkPudding extends ChangedEntity {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(8.0);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(12.0);
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.09);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.9);
     }
 
     @Override

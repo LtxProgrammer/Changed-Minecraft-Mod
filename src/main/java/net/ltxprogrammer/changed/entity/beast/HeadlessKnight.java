@@ -29,7 +29,7 @@ public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<Headle
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.115);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.15);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
     }
 

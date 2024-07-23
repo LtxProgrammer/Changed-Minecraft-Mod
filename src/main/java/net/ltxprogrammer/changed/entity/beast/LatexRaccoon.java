@@ -22,7 +22,7 @@ public class LatexRaccoon extends ChangedEntity {
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(8.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.095);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.95);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.97);
     }
 

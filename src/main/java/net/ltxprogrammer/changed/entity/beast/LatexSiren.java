@@ -29,7 +29,7 @@ public class LatexSiren extends AbstractAquaticGenderedEntity {
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.034);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.34);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.9);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
     }

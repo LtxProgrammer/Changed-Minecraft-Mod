@@ -20,7 +20,7 @@ public class LatexOrca extends AbstractAquaticEntity {
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.0875);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.875);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.3);
     }
 

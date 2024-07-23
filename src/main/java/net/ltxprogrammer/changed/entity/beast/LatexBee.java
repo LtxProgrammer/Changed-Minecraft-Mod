@@ -23,7 +23,7 @@ public class LatexBee extends ChangedEntity {
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.105);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.05);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.75);
     }
 

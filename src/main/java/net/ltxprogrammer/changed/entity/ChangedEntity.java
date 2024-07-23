@@ -430,7 +430,7 @@ public abstract class ChangedEntity extends Monster {
     protected void setAttributes(AttributeMap attributes) {
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
         attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(40.0);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
         attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(3.0);
         attributes.getInstance(Attributes.ARMOR).setBaseValue(4.0);
@@ -752,8 +752,8 @@ public abstract class ChangedEntity extends Monster {
         super.registerGoals();
 
         final ChangedEntity self = this;
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 4.0, false));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 3.0, 120, false));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 0.4, false));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.3, 120, false));
         this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f) {
             public boolean canUse() {
                 if (self.getTarget() != null && self.getTarget().position().y() > self.position().y)
@@ -960,7 +960,7 @@ public abstract class ChangedEntity extends Monster {
 
     @Override
     protected double followLeashSpeed() {
-        return 4.0; // Matches melee attack goal speed
+        return 0.4; // Matches melee attack goal speed
     }
 
     public static class ChangedClimbOnTopOfPowderSnowGoal extends ClimbOnTopOfPowderSnowGoal {

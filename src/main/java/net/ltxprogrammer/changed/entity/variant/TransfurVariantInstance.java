@@ -26,10 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -57,6 +54,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -600,11 +598,21 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return true;
     }
 
-    protected void mapAttributes(Player player, AttributeMap variantAttributes) {
-        mapAttributes(player, variantAttributes, variantAttributes, 1.0f);
+    protected static double correctScaling(Attribute attribute, double original) {
+        if (attribute == Attributes.MOVEMENT_SPEED)
+            return original * 0.1;
+        return original;
     }
 
-    protected void mapAttributes(Player player, AttributeMap variantAttributes0, AttributeMap variantAttributes1, float alpha) {
+    protected static double noOp(Attribute attribute, double original) {
+        return original;
+    }
+
+    protected void mapAttributes(Player player, AttributeMap variantAttributes, BiFunction<Attribute, Double, Double> fixer) {
+        mapAttributes(player, variantAttributes, fixer, variantAttributes, fixer, 1.0f);
+    }
+
+    protected void mapAttributes(Player player, AttributeMap variantAttributes0, BiFunction<Attribute, Double, Double> fixer0, AttributeMap variantAttributes1, BiFunction<Attribute, Double, Double> fixer1, float alpha) {
         final var hostAttributes = player.getAttributes();
 
         float healthPercentage = player.getHealth() / player.getMaxHealth();
@@ -617,7 +625,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                     final var hostAttributeInstance = hostAttributes.getInstance(pair.getFirst().getAttribute());
                     if (hostAttributeInstance == null) return;
 
-                    hostAttributeInstance.setBaseValue(Mth.lerp(alpha, pair.getFirst().getBaseValue(), pair.getSecond().getBaseValue()));
+                    hostAttributeInstance.setBaseValue(Mth.lerp(alpha,
+                            fixer0.apply(pair.getFirst().getAttribute(), pair.getFirst().getBaseValue()),
+                            fixer1.apply(pair.getSecond().getAttribute(), pair.getSecond().getBaseValue())));
                 });
 
         player.getAbilities().setWalkingSpeed((float) hostAttributes.getInstance(Attributes.MOVEMENT_SPEED).getBaseValue());
@@ -657,7 +667,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
 
-        mapAttributes(player, BASELINE_ATTRIBUTES.get(), entity.getAttributes(), getMorphProgression());
+        mapAttributes(player, BASELINE_ATTRIBUTES.get(), TransfurVariantInstance::noOp,
+                entity.getAttributes(), TransfurVariantInstance::correctScaling, getMorphProgression());
 
         player.refreshDimensions();
         if (player.isOnGround())
@@ -886,7 +897,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         abilityInstances.forEach((name, ability) -> {
             ability.onRemove();
         });
-        mapAttributes(player, BASELINE_ATTRIBUTES.get());
+        mapAttributes(player, BASELINE_ATTRIBUTES.get(), TransfurVariantInstance::noOp);
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         if (parent.canGlide) {
             player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
