@@ -85,6 +85,10 @@ We will not be porting the mod until it is deemed complete.
 
 If you're asking this, you're probably too young to be getting into Changed...
 
+**Can the mod be used with Optifine?**
+
+The mod is incompatible with Optifine. We will not be fixing this due to Optifine being closed source. Please use Rubidium / Embeddium instead.
+
 **What mods are compatible?**
 
 There (hopefully) shouldn't be too many mods that are incompatible. If you do find a mod which behaves weird with Changed:MC, feel free to report it.
