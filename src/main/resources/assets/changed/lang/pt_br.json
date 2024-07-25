@@ -145,6 +145,7 @@
   "death.attack.changed:latex_fluid": "%s foi dissolvido em fluid de látex",
   "death.attack.changed:latex_fluid.player": "%s foi dissolvido em fluid de látex ao tentar escapar de %2$s",
   "death.attack.changed:pale": "%s foi levado pelo Pale",
+  "death.attack.changed:pale": "%s foi levado pelo Pale enquanto lutava com %2$s",
   "death.attack.changed:bloodloss": "%s usou plasma estrangeiro",
   "death.attack.changed:bloodloss.player": "%1$s usou plasma estrangeiro, graças a %2$s",
   "death.attack.changed:fan": "%s foi picotado por um ventilador",
