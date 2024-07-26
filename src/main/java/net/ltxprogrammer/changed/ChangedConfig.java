@@ -1,14 +1,21 @@
 package net.ltxprogrammer.changed;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.GameData;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +25,7 @@ import org.apache.logging.log4j.MarkerManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ChangedConfig {
     private interface AdditionalData {
@@ -92,10 +100,32 @@ public class ChangedConfig {
 
     public static class Server {
         public final ForgeConfigSpec.ConfigValue<Boolean> showTFNametags;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistCoverBlocks;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistCoverBlocks;
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
             showTFNametags = builder.define("showTFNametags", true);
+            builder.comment("Blacklist any blocks from being covered. Acceptable formats: @modid, #tag, modid:block_id");
+            blacklistCoverBlocks = builder.defineList("blacklistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
+            builder.comment("Overrides any matches found in blacklistCoverBlocks. If the blacklist is empty, any blocks not in this list will not cover");
+            whitelistCoverBlocks = builder.defineList("whitelistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
+        }
+
+        public Stream<RegistryElementPredicate<Block>> getBlacklistedCoverBlocks() {
+            return blacklistCoverBlocks.get().stream().map(s -> RegistryElementPredicate.parseString(ForgeRegistries.BLOCKS, s));
+        }
+
+        public Stream<RegistryElementPredicate<Block>> getWhitelistedCoverBlocks() {
+            return whitelistCoverBlocks.get().stream().map(s -> RegistryElementPredicate.parseString(ForgeRegistries.BLOCKS, s));
+        }
+
+        public boolean canBlockBeCovered(Block block) {
+            if (!whitelistCoverBlocks.get().isEmpty() && getWhitelistedCoverBlocks().anyMatch(pred -> pred.test(block)))
+                return true;
+            if (!blacklistCoverBlocks.get().isEmpty() && getBlacklistedCoverBlocks().anyMatch(pred -> pred.test(block)))
+                return false;
+            return !blacklistCoverBlocks.get().isEmpty();
         }
     }
 

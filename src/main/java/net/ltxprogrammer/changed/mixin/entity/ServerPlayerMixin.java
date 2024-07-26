@@ -3,8 +3,10 @@ package net.ltxprogrammer.changed.mixin.entity;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.network.packet.MountTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -26,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Mixin(ServerPlayer.class)
@@ -62,7 +65,9 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             }
         }
         if (tag.contains("TransfurVariant")) {
-            final var variant = ProcessTransfur.setPlayerTransfurVariant(this, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "TransfurVariant")));
+            final var variant = ProcessTransfur.setPlayerTransfurVariant(this,
+                    Optional.ofNullable(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "TransfurVariant")))
+                            .orElseGet(() -> (TransfurVariant)ChangedTransfurVariants.FALLBACK_VARIANT.get()));
             if (tag.contains("TransfurVariantData"))
                 variant.load(tag.getCompound("TransfurVariantData"));
             else {
