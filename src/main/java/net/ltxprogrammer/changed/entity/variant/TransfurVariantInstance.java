@@ -53,7 +53,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -369,7 +368,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                     if (!event.player.isSpectator()) {
                         if (!instance.entity.level.isClientSide)
                             instance.entity.tickLeash();
-                        instance.getChangedEntity().visualTick(event.player.level);
+                        instance.getChangedEntity().variantTick(event.player.level);
                     }
                 } catch (Exception x) {
                     x.printStackTrace();
@@ -812,6 +811,15 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                     player.setAirSupply(air-1);
                 this.ticksBreathingUnderwater = 0;
             }
+        }
+
+        // Air is fixed, doesn't increase or decrease
+        else if (player.isAlive() && parent.breatheMode == TransfurVariant.BreatheMode.NONE && shouldApplyAbilities()) {
+            if (air == -100) {
+                air = player.getAirSupply();
+            }
+
+            player.setAirSupply(Mth.clamp(air, 0, player.getMaxAirSupply()));
         }
 
         if (!parent.hasLegs && player.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())

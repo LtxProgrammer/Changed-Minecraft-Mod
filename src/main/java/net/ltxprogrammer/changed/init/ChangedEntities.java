@@ -170,6 +170,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("white_latex_centaur", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(WhiteLatexCentaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
+    public static final RegistryObject<EntityType<LatexHyenaTaur>> LATEX_HYENA_TAUR = register("latex_hyena_taur", 0xffbf75, 0xc0604d,
+            EntityType.Builder.of(LatexHyenaTaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
+            ChangedEntities::savannaSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<HeadlessKnight>> HEADLESS_KNIGHT = register("headless_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(HeadlessKnight::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 1.1F),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
@@ -196,6 +199,9 @@ public class ChangedEntities {
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<GasWolf>> GAS_WOLF = registerReducedSpawn("gas_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(GasWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
+    public static final RegistryObject<EntityType<PooltoyWolf>> POOLTOY_WOLF = registerReducedSpawn("pooltoy_wolf", 0x50c3ff, 0x57a9ec,
+            EntityType.Builder.of(PooltoyWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F * PooltoyWolf.SCALE, 1.93F * PooltoyWolf.SCALE),
             ChangedEntities::plainsSpawning, ChangedEntities::overworldOnly);
     public static final RegistryObject<EntityType<DarkLatexDragon>> DARK_LATEX_DRAGON = registerReducedSpawn("dark_latex_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkLatexDragon::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),

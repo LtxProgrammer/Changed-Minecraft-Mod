@@ -149,7 +149,8 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         WEAK,
         STRONG,
         WATER,
-        ANY;
+        ANY,
+        NONE;
 
         public boolean canBreatheWater() {
             return this == WATER || this == ANY;

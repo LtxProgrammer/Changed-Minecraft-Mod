@@ -18,6 +18,8 @@ public class ChangedTransfurVariants {
 
     public static final RegistryObject<TransfurVariant<GasWolf>> GAS_WOLF = register("form_gas_wolf",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
+    public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",
+            TransfurVariant.Builder.of(ChangedEntities.POOLTOY_WOLF).breatheMode(TransfurVariant.BreatheMode.NONE).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<LatexBeifeng>> LATEX_BEIFENG = register("form_latex_beifeng",
             TransfurVariant.Builder.of(ChangedEntities.BEIFENG).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<WhiteLatexWolfFemale>> WHITE_LATEX_WOLF_FEMALE = register("form_white_latex_wolf/female",
@@ -122,6 +124,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.GOO_YUIN).stepSize(0.7f).reducedFall().absorbing());
     public static final RegistryObject<TransfurVariant<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("form_white_latex_centaur",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_CENTAUR).quadrupedal().stepSize(1.1f).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
+    public static final RegistryObject<TransfurVariant<LatexHyenaTaur>> LATEX_HYENA_TAUR = register("form_latex_hyena_taur",
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_HYENA_TAUR).quadrupedal().stepSize(1.1f).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
     public static final RegistryObject<TransfurVariant<WhiteLatexKnight>> WHITE_LATEX_KNIGHT = register("form_white_latex_knight",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_KNIGHT).stepSize(0.7f).absorbing());
     public static final RegistryObject<TransfurVariant<WhiteLatexKnightFusion>> WHITE_LATEX_KNIGHT_FUSION = register("form_white_latex_knight_fusion",

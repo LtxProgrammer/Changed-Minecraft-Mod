@@ -160,8 +160,8 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
-    public void visualTick(Level level) {
-        super.visualTick(level);
+    public void variantTick(Level level) {
+        super.variantTick(level);
 
         age++;
 

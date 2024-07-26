@@ -11,10 +11,8 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -25,7 +23,6 @@ import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -348,7 +345,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.grabCooldown--;
 
         if (this.syncEntity != null) {
-            this.syncEntity.visualTick(this.entity.getLevel());
+            this.syncEntity.variantTick(this.entity.getLevel());
         }
 
         if (this.grabbedEntity != null) {

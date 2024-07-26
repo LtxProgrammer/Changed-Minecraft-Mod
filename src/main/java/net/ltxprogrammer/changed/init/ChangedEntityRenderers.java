@@ -52,6 +52,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_RIGHT.get(), BehemothHandRightRenderer::new);
 
         event.registerEntityRenderer(ChangedEntities.GAS_WOLF.get(), GasWolfRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.POOLTOY_WOLF.get(), PooltoyWolfRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_DRAGON.get(), DarkLatexDragonRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_FEMALE.get(), DarkLatexWolfFemaleRenderer::new);
         event.registerEntityRenderer(ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
@@ -113,6 +114,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.LATEX_WHITE_TIGER.get(), LatexWhiteTigerRenderer::new);
         event.registerEntityRenderer(ChangedEntities.GOO_YUIN.get(), LatexYuinRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_CENTAUR.get(), WhiteLatexCentaurRenderer::new);
+        event.registerEntityRenderer(ChangedEntities.LATEX_HYENA_TAUR.get(), LatexHyenaTaurRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_KNIGHT.get(), WhiteLatexKnightRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_KNIGHT_FUSION.get(), WhiteLatexKnightFusionRenderer::new);
         event.registerEntityRenderer(ChangedEntities.WHITE_LATEX_WOLF_FEMALE.get(), WhiteLatexWolfFemaleRenderer::new);

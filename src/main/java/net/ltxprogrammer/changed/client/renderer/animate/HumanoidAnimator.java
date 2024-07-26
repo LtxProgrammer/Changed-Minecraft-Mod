@@ -301,6 +301,11 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         return this;
     }
 
+    public HumanoidAnimator<T, M> torsoWidth(float v) {
+        this.torsoWidth = v;
+        return this;
+    }
+
     public static enum AnimateStage implements BiPredicate<HumanoidAnimator<?,?>, ChangedEntity> {
         INIT,
         RIDE((animator, latex) -> animator.entityModel.riding),

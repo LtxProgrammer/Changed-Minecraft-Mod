@@ -9,6 +9,8 @@ import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmBobAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmRideAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.arm.ArmSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.WolfHeadInitAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.beast.LatexTaur;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexCentaur;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +22,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> {
+public class ArmorLatexCentaurUpperModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurUpperModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_upper")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_upper")).get();
 
@@ -28,7 +30,7 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLa
     private final ModelPart LeftArm;
     private final ModelPart Head;
     private final ModelPart Torso;
-    private final HumanoidAnimator<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> animator;
+    private final HumanoidAnimator<T, ArmorLatexCentaurUpperModel<T>> animator;
 
     public ArmorLatexCentaurUpperModel(ModelPart root) {
         this.Head = root.getChild("Head");
@@ -61,12 +63,12 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLa
     }
 
     @Override
-    public HumanoidAnimator<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexCentaurUpperModel<T>> getAnimator() {
         return animator;
     }
 
     @Override
-    public void renderForSlot(WhiteLatexCentaur entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         switch (slot) {
             case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             case CHEST -> {
