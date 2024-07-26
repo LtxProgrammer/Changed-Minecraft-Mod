@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.AttributePresets;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.LatexType;
-import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +56,11 @@ public class LatexHyenaTaur extends WhiteLatexKnight implements LatexTaur<LatexH
     @Override
     public Color3 getHairColor(int layer) {
         return Color3.WHITE;
+    }
+
+    @Override
+    public Color3 getTransfurColor(TransfurCause cause) {
+        return Color3.fromInt(0xffbf75);
     }
 
     @Override
