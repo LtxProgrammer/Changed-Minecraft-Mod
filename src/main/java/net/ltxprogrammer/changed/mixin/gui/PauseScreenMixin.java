@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,9 +18,13 @@ public abstract class PauseScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    public void initChangedBPI(CallbackInfo callback) {
-        this.addRenderableWidget(new ImageButton((this.width / 2 - 102) - 24, this.height / 4 + 96 + -16, 20, 20, 0, 0, 20,
+    @Inject(method = "createPauseMenu", at = @At("RETURN"))
+    public void addBPIButton(CallbackInfo callback) {
+        int yOffset = 96;
+        if (FMLLoader.getLoadingModList().getModFileById("quark") != null)
+            yOffset -= 24;
+
+        this.addRenderableWidget(new ImageButton((this.width / 2 - 102) - 24, this.height / 4 + yOffset + -16, 20, 20, 0, 0, 20,
                 Changed.modResource("textures/gui/basic_player_info.png"), 20, 40, (button) -> {
             this.minecraft.setScreen(new BasicPlayerInfoScreen(this, this.minecraft.player));
         }));
