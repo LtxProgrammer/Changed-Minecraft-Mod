@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -160,7 +161,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
 
         BlockState checkState = level.getBlockState(checkPos);
 
-        if (!checkState.is(ChangedTags.Blocks.LATEX_NON_REPLACEABLE) && checkState.getProperties().contains(COVERED) &&
+        if (Changed.config.server.canBlockBeCovered(checkState.getBlock()) && checkState.getProperties().contains(COVERED) &&
                 checkState.getValue(COVERED) != latexType) {
             if (checkPos.subtract(position).getY() > 0 && random.nextInt(3) > 0) // Reduced chance of spreading up
                 return;

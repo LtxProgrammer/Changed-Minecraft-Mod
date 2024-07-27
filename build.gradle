@@ -228,6 +228,8 @@ dependencies {
 
     compileOnly fg.deobf("plutosion:leashed-1.18.1:1.2.3")
 
+    compileOnly fg.deobf("team.chisel:CTM-1.18.2:1.1.5+5")
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

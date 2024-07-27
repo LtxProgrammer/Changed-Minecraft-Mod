@@ -17,6 +17,7 @@
     "CGM.AdvancedHumanoidRendererMixin",
     "CGM.HumanoidAnimatorMixin",
     "CGM.LatexItemInHandLayerMixin",
+    "CTM.BlockRenderLayerMixin",
     "FirstPerson.FirstPersonBaseMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
     "Leashed.LeadUtilMixin",
