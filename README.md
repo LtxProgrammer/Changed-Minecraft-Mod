@@ -87,7 +87,7 @@ If you're asking this, you're probably too young to be getting into Changed...
 
 **Can the mod be used with Optifine?**
 
-The mod is incompatible with Optifine. We will not be fixing this due to Optifine being closed source. Please use Rubidium / Embeddium instead.
+The mod is incompatible with Optifine. We will not be fixing this due to Optifine being closed source. Please use Rubidium or Embeddium instead.
 
 **What mods are compatible?**
 
