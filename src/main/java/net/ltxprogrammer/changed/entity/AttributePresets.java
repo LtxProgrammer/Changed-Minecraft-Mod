@@ -30,7 +30,7 @@ public abstract class AttributePresets {
     }
 
     public static void dragonLike(AttributeMap map) {
-        map.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.1);
+        map.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         map.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.85);
         map.getInstance(Attributes.MAX_HEALTH).setBaseValue(24.0);
     }
