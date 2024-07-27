@@ -8,11 +8,14 @@ import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class AbstractPooltoy extends ChangedEntity {
@@ -67,6 +70,12 @@ public abstract class AbstractPooltoy extends ChangedEntity {
         return true;
     }
 
+    public void applyTerminalVelocity(LivingEntity entity) {
+        var delta = entity.getDeltaMovement();
+        entity.setDeltaMovement(delta.x, Mth.clamp(delta.y, -0.5f, 0.5f), delta.z);
+        entity.resetFallDistance();
+    }
+
     @Override
     public void variantTick(Level level) {
         super.variantTick(level);
@@ -75,5 +84,6 @@ public abstract class AbstractPooltoy extends ChangedEntity {
             double floatAmount = (double)entity.getAirSupply() / (double)entity.getMaxAirSupply();
             entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, floatAmount * 0.06, 0.0D));
         }
+        applyTerminalVelocity(entity);
     }
 }
