@@ -255,7 +255,7 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);
         });
         eyeLashesColorFn.getColorSafe(entity, info).ifPresent(data -> {
-            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeLashes())), packedLight, overlay, data.color, data.alpha);
         });
     }
 }

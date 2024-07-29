@@ -24,6 +24,8 @@ public class LatexMantaRayFemaleRenderer extends AdvancedHumanoidRenderer<LatexM
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.fromInt(0xd2d9e1)),
                 CustomEyesLayer.fixedColor(Color3.fromInt(0xffe64b)),
+                CustomEyesLayer.fixedColor(Color3.fromInt(0xffe64b)),
+                CustomEyesLayer::noRender(),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#1a1a1b"))));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
