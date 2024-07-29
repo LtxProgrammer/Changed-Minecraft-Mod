@@ -113,6 +113,7 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
     private final ColorFunction<T> irisColorLeftFn;
     private final ColorFunction<T> irisColorRightFn;
     private final ColorFunction<T> eyeBrowsColorFn;
+    private final ColorFunction<T> eyeLashesColorFn;
 
     private HeadShape headShape = HeadShape.NORMAL;
 
@@ -189,8 +190,12 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         this(parent, modelSet, scleraColorFn, irisColorLeftFn, irisColorRightFn, CustomEyesLayer::noRender);
     }
 
+    public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet, ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorLeftFn, ColorFunction<T> irisColorRightFn, ColorFunction<T> eyeBrowsColorFn) {
+        this(parent, modelSet, scleraColorFn, irisColorLeftFn, irisColorRightFn, eyeBrowsColorFn, CustomEyesLayer::noRender);
+    }
+
     public CustomEyesLayer(RenderLayerParent<T, M> parent, EntityModelSet modelSet,
-                           ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorLeftFn, ColorFunction<T> irisColorRightFn, ColorFunction<T> eyeBrowsColorFn) {
+                           ColorFunction<T> scleraColorFn, ColorFunction<T> irisColorLeftFn, ColorFunction<T> irisColorRightFn, ColorFunction<T> eyeBrowsColorFn, ColorFunction<T> eyeLashesColorFn) {
         super(parent);
         var root = modelSet.bakeLayer(HEAD);
         this.shapedHeads = new EnumMap<>(HeadShape.class);
@@ -201,6 +206,7 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         this.irisColorLeftFn = irisColorLeftFn;
         this.irisColorRightFn = irisColorRightFn;
         this.eyeBrowsColorFn = eyeBrowsColorFn;
+        this.eyeLashesColorFn = eyeLashesColorFn;
     }
 
     public static LayerDefinition createHead() {
@@ -247,6 +253,9 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         });
         eyeBrowsColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeBrows())), packedLight, overlay, data.color, data.alpha);
+        });
+        eyeLashesColorFn.getColorSafe(entity, info).ifPresent(data -> {
+            renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeLashes())), packedLight, overlay, data.color, data.alpha);
         });
     }
 }

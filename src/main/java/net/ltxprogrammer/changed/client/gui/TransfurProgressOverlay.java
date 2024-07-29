@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,7 +54,10 @@ public class TransfurProgressOverlay {
 
         RenderSystem.setShaderTexture(0, DANGER_INDICATOR);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
         int x = (screenWidth / 2) - 110;
+        if (!player.getOffhandItem().isEmpty() && player.getMainArm().getOpposite() == HumanoidArm.LEFT)
+            x -= 29;
         int y = screenHeight - 40;
         Gui.blit(poseStack, x, y, 0, 0, 8, 32, 48, 32);
         Gui.blit(poseStack, x, y + Mth.ceil((1.0f - dangerLevel) * 32.0f), 8,  Mth.ceil((1.0f - dangerLevel) * 32.0f), 8, Mth.floor(dangerLevel * 32.0f), 48, 32);

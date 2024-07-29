@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.block.AbstractLatexBlock;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurCause;
@@ -180,6 +181,9 @@ public class AbstractLatexItem extends ItemNameBlockItem {
             return InteractionResult.FAIL;
         if (event.originalState == event.plannedState)
             return InteractionResult.FAIL;
+        if (!Changed.config.server.canBlockBeCovered(event.plannedState.getBlock()))
+            return InteractionResult.FAIL;
+
         event.level.setBlockAndUpdate(event.blockPos, event.plannedState);
         context.getItemInHand().shrink(1);
         return InteractionResult.sidedSuccess(context.getLevel().isClientSide);

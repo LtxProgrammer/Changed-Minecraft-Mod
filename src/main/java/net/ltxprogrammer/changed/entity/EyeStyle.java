@@ -17,6 +17,7 @@ public enum EyeStyle implements IExtensibleEnum {
     private final ResourceLocation irisRight;
     private final ResourceLocation sclera;
     private final ResourceLocation eyeBrows;
+    private final ResourceLocation eyeLashes;
     private final Component textName;
 
     EyeStyle(ResourceLocation id) {
@@ -25,6 +26,7 @@ public enum EyeStyle implements IExtensibleEnum {
         this.irisRight = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_iris_right.png");
         this.sclera = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_sclera.png");
         this.eyeBrows = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_eyebrows.png");
+        this.eyeLashes = new ResourceLocation(id.getNamespace(), "textures/eyes/" + id.getPath() + "_eyelashes.png");
         this.textName = new TranslatableComponent("eyestyle." + id.getNamespace() + "." + id.getPath());
     }
 
@@ -50,6 +52,10 @@ public enum EyeStyle implements IExtensibleEnum {
 
     public ResourceLocation getEyeBrows() {
         return eyeBrows;
+    }
+
+    public ResourceLocation getEyeLashes() {
+        return eyeLashes;
     }
 
     public static EyeStyle create(String name, ResourceLocation id) {

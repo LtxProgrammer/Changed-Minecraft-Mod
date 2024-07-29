@@ -28,7 +28,6 @@ public class ChangedTags {
     }
 
     public static class Blocks {
-        public static final TagKey<Block> LATEX_NON_REPLACEABLE = create("latex_non_replaceable");
         public static final TagKey<Block> GROWS_LATEX_CRYSTALS = create("grows_latex_crystal");
         public static final TagKey<Block> LASER_TRANSLUCENT = create("laser_translucent");
         public static final TagKey<Block> DUCT_CONNECTOR = create("duct_connector");
