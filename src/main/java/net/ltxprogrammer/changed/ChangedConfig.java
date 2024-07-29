@@ -106,7 +106,7 @@ public class ChangedConfig {
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
             showTFNametags = builder.define("showTFNametags", true);
-            builder.comment("Blacklist any blocks from being covered. Acceptable formats: @modid, #tag, modid:block_id");
+            builder.comment("Blacklist any blocks from being covered. Acceptable formats: \"@modid\", \"#tag\", \"modid:block_id\"");
             blacklistCoverBlocks = builder.defineList("blacklistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
             builder.comment("Overrides any matches found in blacklistCoverBlocks. If the blacklist is empty, any blocks not in this list will not cover");
             whitelistCoverBlocks = builder.defineList("whitelistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
@@ -125,7 +125,7 @@ public class ChangedConfig {
                 return true;
             if (!blacklistCoverBlocks.get().isEmpty() && getBlacklistedCoverBlocks().anyMatch(pred -> pred.test(block)))
                 return false;
-            return !blacklistCoverBlocks.get().isEmpty();
+            return !blacklistCoverBlocks.get().isEmpty() || whitelistCoverBlocks.get().isEmpty();
         }
     }
 
