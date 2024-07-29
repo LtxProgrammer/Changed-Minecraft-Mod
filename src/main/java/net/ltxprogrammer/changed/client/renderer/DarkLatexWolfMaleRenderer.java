@@ -17,9 +17,11 @@ public class DarkLatexWolfMaleRenderer extends AdvancedHumanoidRenderer<DarkLate
 				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));
+		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+				.withSclera(Color3.fromInt(0x242424))
+				.withIris(CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
+						CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
+				.build());
 	}
 
 	@Override

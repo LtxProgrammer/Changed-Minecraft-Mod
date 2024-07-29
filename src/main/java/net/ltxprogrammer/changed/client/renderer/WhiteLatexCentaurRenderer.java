@@ -19,9 +19,8 @@ public class WhiteLatexCentaurRenderer extends AdvancedHumanoidRenderer<WhiteLat
                 ArmorLatexCentaurLowerModel::new, ArmorLatexCentaurLowerModel.INNER_ARMOR, ArmorLatexCentaurLowerModel.OUTER_ARMOR,
                 QuadrupedalArmor::useQuadrupedalModel, QuadrupedalArmor::useInnerQuadrupedalModel, 0.7f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#dfdfdf"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x1b1b1b)).withIris(Color3.fromInt(0xdfdfdf)).build());
         this.addLayer(new SaddleLayer<>(this, getModel(), Changed.modResource("textures/white_latex_centaur_saddle.png")));
         this.addLayer(new TaurChestPackLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.shortCape(this, context.getModelSet()));

@@ -18,11 +18,8 @@ public class LatexWatermelonCatRenderer extends AdvancedHumanoidRenderer<LatexWa
                 ArmorLatexFemaleCatModel::new, ArmorLatexFemaleCatModel.INNER_ARMOR, ArmorLatexFemaleCatModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.BLACK),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#67fd2a")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#91ad3f"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.BLACK).withIris(Color3.fromInt(0x67fd2a)).withEyebrows(Color3.fromInt(0x91ad3f)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

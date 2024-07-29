@@ -18,9 +18,8 @@ public class LatexTrafficConeDragonRenderer extends AdvancedHumanoidRenderer<Lat
 				ArmorLatexBigTailDragonModel::new, ArmorLatexBigTailDragonModel.INNER_ARMOR, ArmorLatexBigTailDragonModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, this.model));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-				CustomEyesLayer.fixedColor(Color3.parseHex("#ffea86")),
-				CustomEyesLayer.fixedColor(Color3.BLACK)));
+		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+				.withSclera(Color3.fromInt(0xffea86)).withIris(Color3.BLACK).build());
 		this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
 	}
 

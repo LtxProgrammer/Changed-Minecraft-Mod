@@ -16,7 +16,8 @@ public class LatexHypnoCatRenderer extends AdvancedHumanoidRenderer<LatexHypnoCa
         this.addLayer(new EmissiveBodyLayer<>(this, Changed.modResource("textures/latex_hypno_cat_emissive.png")));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#52596d")),CustomEyesLayer.fixedColorGlowing(Color3.parseHex("#d7ff46"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x52596d)).withIris(CustomEyesLayer.fixedColorGlowing(Color3.fromInt(0xd7ff46))).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

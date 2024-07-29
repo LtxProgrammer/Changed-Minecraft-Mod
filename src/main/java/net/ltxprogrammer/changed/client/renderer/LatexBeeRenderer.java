@@ -18,9 +18,8 @@ public class LatexBeeRenderer extends AdvancedHumanoidRenderer<LatexBee, LatexBe
         this.addLayer(new DoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
-                CustomEyesLayer::irisColorLeft, CustomEyesLayer::irisColorRight));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x1b1b1b)).build());
         this.addLayer(GasMaskLayer.forNormal(this, context.getModelSet()));
     }
 
