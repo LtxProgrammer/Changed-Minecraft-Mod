@@ -33,6 +33,10 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
     }
 
     public boolean hideEntity(LivingEntity entity) {
+        if (entityHolder == null || entityHolder.isRemoved()) {
+            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false);
+        }
+
         if (this.entity != null)
             return false;
         else if (entityHolder != null) {
@@ -57,11 +61,7 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
     public static void tick(Level level, BlockPos pos, BlockState state, CardboardBoxTallBlockEntity blockEntity) {
         blockEntity.ticksSinceChange++;
 
-        if (blockEntity.entityHolder == null) {
-            blockEntity.entityHolder = SeatEntity.createFor(level, state, pos, true);
-        }
-
-        if (blockEntity.entity != null) {
+        if (blockEntity.entity != null && blockEntity.entityHolder != null) {
             if (blockEntity.entity.vehicle != blockEntity.entityHolder) {
                 if (blockEntity.entity.vehicle == null || !blockEntity.entity.vehicle.blockPosition().equals(blockEntity.entityHolder.blockPosition())) {
                     blockEntity.entity.setInvisible(false);
