@@ -43,8 +43,6 @@ public class LatexHumanModel extends AdvancedHumanoidModel<LatexHuman> implement
 
     private final HumanoidAnimator<LatexHuman, LatexHumanModel> animator;
 
-    private static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
-
     public LatexHumanModel(ModelPart root) {
         super(root);
         this.RightLeg = root.getChild("RightLeg");

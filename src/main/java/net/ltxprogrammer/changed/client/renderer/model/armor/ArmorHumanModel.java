@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +23,7 @@ public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmor
 
     // Taken from HumanoidModel
     public ArmorHumanModel(ModelPart modelPart) {
+        super(modelPart);
         this.Head = modelPart.getChild("head");
         this.Hat = modelPart.getChild("hat");
         this.Torso = modelPart.getChild("body");
@@ -67,5 +69,21 @@ public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmor
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         Hat.copyFrom(Head);
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

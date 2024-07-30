@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -89,8 +91,15 @@ public class QuadrupedalArmor extends ArmorItem implements WearableItem {
 
     @Override
     public boolean allowedToKeepWearing(LivingEntity entity) {
-        var variant = TransfurVariant.getEntityVariant(entity);
-        return variant != null && variant.legCount == 4;
+        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        if (instance != null) {
+            return instance.getParent().legCount == 4 && instance.shouldApplyAbilities();
+        }
+
+        else {
+            var variant = TransfurVariant.getEntityVariant(entity);
+            return variant != null && variant.legCount == 4;
+        }
     }
 
     @Nullable

@@ -33,13 +33,21 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     @Nullable
     private LatexHumanoidHairLayer<T, M> hairLayer;
 
+    private LatexHumanoidArmorLayer<T, M, A> armorLayer;
+
     public @Nullable LatexHumanoidHairLayer<T, M> getHairLayer() {
         return hairLayer;
+    }
+
+    public LatexHumanoidArmorLayer<T, M, A> getArmorLayer() {
+        return armorLayer;
     }
 
     private void addLayers(EntityRendererProvider.Context context, M main) {
         /*if (Changed.config.client.useNewModels.get())
             hairLayer = new LatexHumanoidHairLayer<>(this, context.getModelSet());*/
+        if (armorLayer != null)
+            this.addLayer(armorLayer);
         this.addLayer(new LatexItemInHandLayer<>(this));
         if (hairLayer != null)
             this.addLayer(hairLayer);
@@ -69,7 +77,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
                                     Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.addLayer(new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter))));
+        this.armorLayer = new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)));
         this.addLayers(context, main);
     }
 
@@ -79,8 +87,8 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
                                                                               Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.addLayer(new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)),
-                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner));
+        this.armorLayer = new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)),
+                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner);
         this.addLayers(context, main);
     }
 

@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> {
@@ -31,6 +32,7 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLa
     private final HumanoidAnimator<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> animator;
 
     public ArmorLatexCentaurUpperModel(ModelPart root) {
+        super(root);
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
         this.RightArm = root.getChild("RightArm");
@@ -75,5 +77,21 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLa
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

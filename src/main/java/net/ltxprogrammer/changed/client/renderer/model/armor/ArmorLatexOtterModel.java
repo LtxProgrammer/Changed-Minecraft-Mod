@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class ArmorLatexOtterModel<T extends ChangedEntity> extends LatexHumanoid
     private final HumanoidAnimator<T, ArmorLatexOtterModel<T>> animator;
 
     public ArmorLatexOtterModel(ModelPart modelPart) {
+        super(modelPart);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");
@@ -109,5 +111,21 @@ public class ArmorLatexOtterModel<T extends ChangedEntity> extends LatexHumanoid
     @Override
     public HumanoidAnimator<T, ArmorLatexOtterModel<T>> getAnimator() {
         return animator;
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

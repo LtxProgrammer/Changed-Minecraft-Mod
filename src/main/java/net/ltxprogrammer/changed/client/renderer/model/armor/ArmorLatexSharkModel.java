@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
     private final HumanoidAnimator<T, ArmorLatexSharkModel<T>> animator;
 
     public ArmorLatexSharkModel(ModelPart modelPart) {
+        super(modelPart);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
@@ -132,6 +134,24 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         return animator;
     }
 
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
+    }
+
+    @Deprecated
     public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_male")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_male")).get();
@@ -146,6 +166,7 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
         public RemodelMale(ModelPart modelPart) {
+            super(modelPart);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");
@@ -221,8 +242,25 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         public HumanoidAnimator<T, RemodelMale<T>> getAnimator() {
             return animator;
         }
+
+        public ModelPart getArm(HumanoidArm arm) {
+            return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+        }
+
+        public ModelPart getLeg(HumanoidArm leg) {
+            return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+        }
+
+        public ModelPart getHead() {
+            return this.Head;
+        }
+
+        public ModelPart getTorso() {
+            return Torso;
+        }
     }
 
+    @Deprecated
     public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_female")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_female")).get();
@@ -237,6 +275,7 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
         public RemodelFemale(ModelPart modelPart) {
+            super(modelPart);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");
@@ -314,6 +353,22 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         @Override
         public HumanoidAnimator<T, RemodelFemale<T>> getAnimator() {
             return animator;
+        }
+
+        public ModelPart getArm(HumanoidArm arm) {
+            return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+        }
+
+        public ModelPart getLeg(HumanoidArm leg) {
+            return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+        }
+
+        public ModelPart getHead() {
+            return this.Head;
+        }
+
+        public ModelPart getTorso() {
+            return Torso;
         }
     }
 }

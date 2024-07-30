@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.LeglessModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,12 +15,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
 
-public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorAbdomenModel<T>> {
+public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorAbdomenModel<T>> implements LeglessModel {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -31,6 +33,7 @@ public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArm
     private final HumanoidAnimator<T, ArmorAbdomenModel<T>> animator;
 
     public ArmorAbdomenModel(ModelPart root) {
+        super(root);
         this.Torso = root.getChild("Torso");
         this.Abdomen = root.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
@@ -98,7 +101,29 @@ public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArm
         }
     }
 
-    public static class Remodel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, Remodel<T>> {
+    public ModelPart getArm(HumanoidArm arm) {
+        return null;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return null;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
+    }
+
+    @Deprecated
+    public static class Remodel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, Remodel<T>> implements LeglessModel {
         public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_abdomen_remodel")).get();
         public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_abdomen_remodel")).get();
         public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -111,6 +136,7 @@ public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArm
         private final HumanoidAnimator<T, Remodel<T>> animator;
 
         public Remodel(ModelPart root) {
+            super(root);
             this.Torso = root.getChild("Torso");
             this.Abdomen = root.getChild("Abdomen");
             this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
@@ -165,6 +191,27 @@ public class ArmorAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArm
                 }
                 case FEET -> Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
+        }
+
+        public ModelPart getArm(HumanoidArm arm) {
+            return null;
+        }
+
+        public ModelPart getLeg(HumanoidArm leg) {
+            return null;
+        }
+
+        public ModelPart getHead() {
+            return NULL_PART;
+        }
+
+        public ModelPart getTorso() {
+            return Torso;
+        }
+
+        @Override
+        public ModelPart getAbdomen() {
+            return Abdomen;
         }
     }
 }

@@ -137,7 +137,7 @@ public abstract class FormRenderHandler {
 
                     ChangedCompatibility.forceIsFirstPersonRenderingToFrozen();
 
-                    TransfurAnimator.renderTransfurringArm(player, handSide, variant, stack, buffer, light, partialTick);
+                    TransfurAnimator.renderTransfurringArm(player, handSide, variant, stack, buffer, light, partialTick, null);
                 } else {
                     renderHand(variant.getChangedEntity(), handSide, stack, buffer, light, partialTick);
                 }

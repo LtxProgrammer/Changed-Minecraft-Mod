@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkUpperBodyModel<T>> {
@@ -27,6 +28,7 @@ public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends La
     private final HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> animator;
 
     public ArmorMermaidSharkUpperBodyModel(ModelPart root) {
+        super(root);
         this.Head = root.getChild("Head");
         this.Torso = root.getChild("Torso");
         this.LeftArm = root.getChild("LeftArm");
@@ -67,5 +69,21 @@ public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends La
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,11 +16,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKnight, ArmorHeadlessKnightModel> {
+public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKnight, ArmorHeadlessKnightModel> implements LowerTorsoedModel {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_headless_knight")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_headless_knight")).get();
 
@@ -32,6 +34,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     private final HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> animator;
 
     public ArmorHeadlessKnightModel(ModelPart root) {
+        super(root);
         this.LowerTorso = root.getChild("LowerTorso");
 
         this.RightLeg = LowerTorso.getChild("RightLeg");
@@ -113,5 +116,26 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
             }
             case FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return null;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return NULL_PART;
+    }
+
+    public ModelPart getTorso() {
+        return null;
+    }
+
+    @Override
+    public ModelPart getLowerTorso() {
+        return LowerTorso;
     }
 }
