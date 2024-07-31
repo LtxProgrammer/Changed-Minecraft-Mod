@@ -17,9 +17,8 @@ public class LatexSquidDogMaleRenderer extends AdvancedHumanoidRenderer<LatexSqu
         this.addLayer(new DoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#1b1b1b")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#dfdfdf"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x1b1b1b)).withIris(Color3.fromInt(0xdfdfdf)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

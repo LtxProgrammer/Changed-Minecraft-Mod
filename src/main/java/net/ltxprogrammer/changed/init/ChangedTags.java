@@ -42,6 +42,7 @@ public class ChangedTags {
 
     public static class Items {
         public static final TagKey<Item> TSC_WEAPON = create("tsc_weapon");
+        public static final TagKey<Item> WILL_BREAK_ON_TF = create("will_break_on_tf");
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, Changed.modResource(name));
@@ -75,6 +76,7 @@ public class ChangedTags {
         public static final TagKey<TransfurVariant<?>> LEOPARD_LIKE = create("leopard_like");
 
         public static final TagKey<TransfurVariant<?>> CAN_SLEEP_ON_PILLOWS = create("can_sleep_on_pillows");
+        public static final TagKey<TransfurVariant<?>> BREAK_ITEMS_ON_TF = create("break_items_on_tf");
 
         private static TagKey<TransfurVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.TRANSFUR_VARIANT.key, Changed.modResource(name));

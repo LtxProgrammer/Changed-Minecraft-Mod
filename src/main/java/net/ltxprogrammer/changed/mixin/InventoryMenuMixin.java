@@ -30,7 +30,7 @@ public abstract class InventoryMenuMixin extends RecipeBookMenu<CraftingContaine
             return slot;
 
         return ProcessTransfur.ifPlayerTransfurred(this.owner, variant -> {
-            return variant.canWear(this.owner, itemStack) ? slot : EquipmentSlot.MAINHAND;
+            return variant.canWear(this.owner, itemStack, slot) ? slot : EquipmentSlot.MAINHAND;
         }, () -> slot);
     }
 }

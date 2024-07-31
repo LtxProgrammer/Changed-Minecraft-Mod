@@ -17,7 +17,8 @@ public class LatexTranslucentLizardRenderer extends AdvancedHumanoidRenderer<Lat
         this.addLayer(translucent);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#ffb84c"), 0.5f),CustomEyesLayer.fixedColor(Color3.parseHex("#a24b42"), 0.75f)));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(CustomEyesLayer.fixedColor(Color3.fromInt(0xffb84c), 0.5f)).withIris(CustomEyesLayer.fixedColor(Color3.fromInt(0xa24b42), 0.75f)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

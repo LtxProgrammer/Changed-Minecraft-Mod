@@ -17,10 +17,11 @@ public class DarkLatexWolfPupRenderer extends AdvancedHumanoidRenderer<DarkLatex
 		super(context, new DarkLatexWolfPupModel(context.bakeLayer(DarkLatexWolfPupModel.LAYER_LOCATION)),
 				ArmorNoneModel::new, ArmorNoneModel.INNER_ARMOR, ArmorNoneModel.OUTER_ARMOR, 0.4F);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
-		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
-				.setHeadShape(CustomEyesLayer.HeadShape.PUP));
+		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+				.withSclera(Color3.fromInt(0x242424))
+				.withIris(CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
+						CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
+				.build().setHeadShape(CustomEyesLayer.HeadShape.PUP));
 	}
 
 	@Override

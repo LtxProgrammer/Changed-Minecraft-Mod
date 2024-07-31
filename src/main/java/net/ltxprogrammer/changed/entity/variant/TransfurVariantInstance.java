@@ -10,7 +10,7 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.item.WearableItem;
+import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
@@ -21,6 +21,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -50,9 +51,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -573,9 +572,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         //latexForm.getDataManager().setClean(); //we don't want to flood the client with packets for an entity it can't find.
     }
 
-    public boolean canWear(Player player, ItemStack itemStack) {
-        if (itemStack.getItem() instanceof WearableItem wearableItem)
-            return wearableItem.allowedToKeepWearing(player);
+    public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
+            return wearableItem.allowedToWear(itemStack, player, slot);
 
         if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
             return false;
@@ -633,11 +632,43 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         player.setHealth(healthPercentage * player.getMaxHealth());
     }
 
+    protected void checkBreakItems(Player player) {
+        if (!this.getParent().is(ChangedTags.TransfurVariants.BREAK_ITEMS_ON_TF))
+            return;
+        if (player.getAbilities().instabuild)
+            return;
+
+        float morph = getMorphProgression();
+
+        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
+                        .map(slot -> Pair.of(slot, player.getItemBySlot(slot))).forEach(pair -> {
+                            var itemStack = pair.getSecond();
+
+                            if (!itemStack.is(ChangedTags.Items.WILL_BREAK_ON_TF))
+                                return;
+
+                            int currentDamage = itemStack.getDamageValue();
+                            int newDamage = (int) Math.ceil(Mth.lerp(morph, 0, itemStack.getMaxDamage()));
+
+                            if (newDamage > currentDamage)
+                                itemStack.setDamageValue(newDamage);
+                            if (newDamage >= itemStack.getMaxDamage()) {
+                                itemStack.shrink(1);
+
+                                player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
+                                player.broadcastBreakEvent(pair.getFirst());
+                            }
+                        });
+    }
+
     public void tick(Player player) {
         if (player == null) return;
 
         if (checkForTemporary(null))
             return;
+
+        if (ageAsVariant == 0 && transfurProgression >= 1f)
+            checkBreakItems(player);
 
         ageAsVariant++;
 
@@ -652,6 +683,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
                 willSurviveTransfur = true;
             }
+
+            checkBreakItems(player);
 
             if (transfurProgression >= 1f && !willSurviveTransfur) {
                 if (!player.level.isClientSide)
@@ -719,14 +752,16 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (shouldApplyAbilities())
             this.ticksSinceLastAbilityActivity++;
 
-        player.getArmorSlots().forEach(itemStack -> { // Force unequip invalid items
-            if (!canWear(player, itemStack)) {
-                ItemStack copy = itemStack.copy();
-                itemStack.setCount(0);
-                if (!player.addItem(copy))
-                    player.drop(copy, false);
-            }
-        });
+        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
+                .forEach(slot -> { // Force unequip invalid items
+                    var itemStack = player.getItemBySlot(slot);
+                    if (!canWear(player, itemStack, slot)) {
+                        ItemStack copy = itemStack.copy();
+                        itemStack.setCount(0);
+                        if (!player.addItem(copy))
+                            player.drop(copy, false);
+                    }
+                });
 
         if(!player.level.isClientSide) {
             final double distance = 8D;

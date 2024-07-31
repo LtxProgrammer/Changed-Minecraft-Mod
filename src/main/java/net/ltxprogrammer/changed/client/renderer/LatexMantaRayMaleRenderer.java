@@ -19,8 +19,8 @@ public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMan
         super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
                 ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.fromInt(0xd2d9e1)), CustomEyesLayer.fixedColor(Color3.fromInt(0xffe64b))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0xd2d9e1)).withIris(Color3.fromInt(0xffe64b)).build());
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
     }

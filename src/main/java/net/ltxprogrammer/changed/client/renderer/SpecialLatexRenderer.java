@@ -30,7 +30,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     private final boolean isDelegate;
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context) {
-        super(context, null, modelPart -> null, null, null, 0.0f);
+        super(context, null, (modelPart, model) -> null, null, null, 0.0f);
         this.isDelegate = true;
         this.context = context;
     }
@@ -46,7 +46,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.ModelData modelData) {
         super(context, new SpecialLatexModel(context.bakeLayer(ensureModelIsLoaded(modelData).modelLayerLocation().get()), modelData),
-                (part) -> new ArmorSpecialLatexModel<>(part, modelData), modelData.armorModelLayerLocation().inner().get(),
+                (part, model) -> new ArmorSpecialLatexModel<>(part, model, modelData), modelData.armorModelLayerLocation().inner().get(),
                 modelData.armorModelLayerLocation().outer().get(), modelData.shadowSize());
         if (modelData.emissive().isPresent())
             this.addLayer(new EmissiveBodyLayer<>(this, modelData.emissive().get()));

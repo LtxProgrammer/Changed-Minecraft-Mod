@@ -87,7 +87,7 @@ public abstract class RegistryElementPredicate<T extends IForgeRegistryEntry<T>>
         if (string.startsWith("#"))
             return ResourceLocation.isValidResourceLocation(string.substring(1));
         else if (string.startsWith("@"))
-            return isValidNamespace(string);
+            return isValidNamespace(string.substring(1));
         else
             return ResourceLocation.isValidResourceLocation(string);
     }

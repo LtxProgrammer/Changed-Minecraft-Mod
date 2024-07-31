@@ -10,7 +10,6 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedDamageSources;
 import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.item.WearableItem;
 import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
@@ -146,7 +145,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Inject(method = "setItemSlot", at = @At("HEAD"), cancellable = true)
     public void denyInvalidArmor(EquipmentSlot slot, ItemStack item, CallbackInfo ci) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (!variant.canWear(player, item)) {
+            if (!variant.canWear(player, item, slot)) {
                 ci.cancel();
                 this.setItemSlot(EquipmentSlot.MAINHAND, item);
             }

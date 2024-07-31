@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorFemaleMantaRayUpperBodyModel<T>> {
@@ -26,7 +27,8 @@ public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends 
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorFemaleMantaRayUpperBodyModel<T>> animator;
 
-    public ArmorFemaleMantaRayUpperBodyModel(ModelPart modelPart) {
+    public ArmorFemaleMantaRayUpperBodyModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftArm = modelPart.getChild("LeftArm");
@@ -72,5 +74,21 @@ public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends 
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

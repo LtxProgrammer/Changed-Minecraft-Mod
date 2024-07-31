@@ -16,8 +16,8 @@ public class LatexSniperDogRenderer extends AdvancedHumanoidRenderer<LatexSniper
         super(context, new LatexSniperDogModel(context.bakeLayer(LatexSniperDogModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer::scleraColor, CustomEyesLayer::irisColorLeft, CustomEyesLayer::irisColorRight,
-                CustomEyesLayer.fixedColor(Color3.parseHex("#713e35"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withEyebrows(Color3.fromInt(0x713e35)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

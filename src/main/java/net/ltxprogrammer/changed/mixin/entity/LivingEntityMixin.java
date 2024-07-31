@@ -12,12 +12,15 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -46,6 +49,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -224,6 +228,20 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
             callback.setReturnValue(true);
     }
 
+    @Inject(method = "breakItem", at = @At("HEAD"), cancellable = true)
+    public void useDifferentBreakSound(ItemStack itemStack, CallbackInfo ci) {
+        if (!(itemStack.getItem() instanceof ExtendedItemProperties extended) || itemStack.isEmpty())
+            return;
+
+        if (!this.isSilent()) {
+            this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), extended.getBreakSound(itemStack), this.getSoundSource(), 0.8F, 0.8F + this.level.random.nextFloat() * 0.4F, false);
+        }
+
+        this.spawnItemParticles(itemStack, 5);
+
+        ci.cancel();
+    }
+
     @Shadow public abstract boolean canStandOnFluid(FluidState state);
     @Shadow public abstract boolean isEffectiveAi();
     @Shadow public abstract boolean hasEffect(MobEffect effect);
@@ -233,6 +251,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow(remap = false) @Final private static AttributeModifier SLOW_FALLING;
 
     @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot p_21127_);
+
+    @Shadow protected abstract void spawnItemParticles(ItemStack p_21061_, int p_21062_);
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

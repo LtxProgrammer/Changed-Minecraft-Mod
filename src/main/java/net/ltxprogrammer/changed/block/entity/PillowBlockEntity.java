@@ -31,6 +31,10 @@ public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntit
     }
 
     public boolean sitEntity(LivingEntity entity) {
+        if (entityHolder == null || entityHolder.isRemoved()) {
+            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false);
+        }
+
         if (this.entity != null)
             return false;
         else if (entityHolder != null) {
@@ -59,11 +63,7 @@ public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntit
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PillowBlockEntity blockEntity) {
-        if (blockEntity.entityHolder == null) {
-            blockEntity.entityHolder = SeatEntity.createFor(level, state, pos, false);
-        }
-
-        if (blockEntity.entity != null) {
+        if (blockEntity.entity != null && blockEntity.entityHolder != null) {
             if (blockEntity.entity.vehicle != blockEntity.entityHolder) {
                 if (blockEntity.entity.vehicle == null || !blockEntity.entity.vehicle.blockPosition().equals(blockEntity.entityHolder.blockPosition())) {
                     blockEntity.entity = null;

@@ -16,10 +16,8 @@ public class WhiteLatexKnightFusionRenderer extends AdvancedHumanoidRenderer<Whi
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(new AdditionalEyesLayer<>(this, context.getModelSet(), Changed.modResource("white_latex_knight_fusion")));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#000000")),
-                CustomEyesLayer::irisColorLeft,
-                CustomEyesLayer::irisColorRight));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x000000)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

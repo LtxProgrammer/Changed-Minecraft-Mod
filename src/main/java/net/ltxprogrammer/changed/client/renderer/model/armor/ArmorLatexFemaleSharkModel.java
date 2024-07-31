@@ -14,6 +14,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -31,7 +32,8 @@ public class ArmorLatexFemaleSharkModel<T extends ChangedEntity> extends LatexHu
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexFemaleSharkModel<T>> animator;
 
-    public ArmorLatexFemaleSharkModel(ModelPart modelPart) {
+    public ArmorLatexFemaleSharkModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");
@@ -117,5 +119,21 @@ public class ArmorLatexFemaleSharkModel<T extends ChangedEntity> extends LatexHu
     @Override
     public HumanoidAnimator<T, ArmorLatexFemaleSharkModel<T>> getAnimator() {
         return animator;
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

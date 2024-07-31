@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.item.Shorts;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class ArmorSpecialLatexModel<T extends ChangedEntity> extends LatexHumano
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorSpecialLatexModel<T>> animator;
 
-    public ArmorSpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
+    public ArmorSpecialLatexModel(ModelPart root, ArmorModel model, PatreonBenefits.ModelData form) {
+        super(root, model);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");
@@ -91,5 +93,21 @@ public class ArmorSpecialLatexModel<T extends ChangedEntity> extends LatexHumano
     @Override
     public HumanoidAnimator<T, ArmorSpecialLatexModel<T>> getAnimator() {
         return animator;
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

@@ -4,7 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.EntityModel;
@@ -24,8 +28,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends EntityModel<T>> extends EntityModel<T> implements AdvancedHumanoidModelInterface<T, M> {
+public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends EntityModel<T>> extends AdvancedHumanoidModel<T> implements AdvancedHumanoidModelInterface<T, M> {
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
+    public final ArmorModel armorModel;
+
+    public LatexHumanoidArmorModel(ModelPart root, ArmorModel model) {
+        super(root);
+        this.armorModel = model;
+    }
+
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
             PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 
@@ -118,11 +129,6 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
         return Mth.sqrt(f * f + f1 * f1 + f2 * f2);
     }
 
-    public void prepareMobModel(HumanoidAnimator<T, M> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
-        super.prepareMobModel(entity, p_102862_, p_102863_, partialTicks);
-        animator.setupVariables(entity, partialTicks);
-    }
-
     @Override
     public void prepareMobModel(@NotNull T entity, float p_102862_, float p_102863_, float partialTicks) {
         this.prepareMobModel(getAnimator(), entity, p_102862_, p_102863_, partialTicks);
@@ -131,6 +137,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         getAnimator().setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     public static void setAllPartsVisibility(ModelPart part, boolean visible) {
@@ -145,18 +152,12 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
 
     }
 
-    @Override
-    public final ModelPart getArm(HumanoidArm arm) {
-        return null;
-    }
-
-    public PoseStack.Pose resetPoseStack = null;
-    protected void swapResetPoseStack(PoseStack poseStack) {
-        // This function is to maybe reset any poseStack changes for exception case models (im looking at you centaur)
-        if (resetPoseStack != null && poseStack instanceof PoseStackExtender extender) {
-            var copied = extender.copyLast();
-            extender.setPose(resetPoseStack);
-            resetPoseStack = copied;
-        }
+    @Nullable
+    public HelperModel getTransfurHelperModel(Limb limb) {
+        return switch (limb) {
+            case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg(this.armorModel);
+            case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg(this.armorModel);
+            default -> null;
+        };
     }
 }

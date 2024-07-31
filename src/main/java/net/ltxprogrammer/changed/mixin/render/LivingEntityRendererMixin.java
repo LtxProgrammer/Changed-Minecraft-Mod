@@ -60,7 +60,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     @Redirect(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/RenderLayer;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/Entity;FFFFFF)V"))
     public void orCapture(RenderLayer<T, M> instance, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!TransfurAnimator.isCapturing())
+        if (!TransfurAnimator.isCapturing() || TransfurAnimator.isLayerAllowed(instance))
             instance.render(poseStack, bufferSource, packedLight, (T)entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
     }
 }

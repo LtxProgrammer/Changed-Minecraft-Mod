@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.LeglessModel;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,12 +15,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;
 
-public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidArmorModel<T, ArmorSnakeAbdomenModel<T>> {
+public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidArmorModel<T, ArmorSnakeAbdomenModel<T>> implements LeglessModel {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_snake_abdomen")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_snake_abdomen")).get();
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
@@ -30,9 +32,10 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorSnakeAbdomenModel<T>> animator;
 
-    public ArmorSnakeAbdomenModel(ModelPart root) {
-        this.Torso = root.getChild("Torso");
-        this.Abdomen = root.getChild("Abdomen");
+    public ArmorSnakeAbdomenModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Torso = modelPart.getChild("Torso");
+        this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 
@@ -91,5 +94,26 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
             }
             case FEET -> Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return null;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return NULL_PART;
+    }
+
+    public ModelPart getTorso() {
+        return NULL_PART;
+    }
+
+    @Override
+    public ModelPart getAbdomen() {
+        return Abdomen;
     }
 }

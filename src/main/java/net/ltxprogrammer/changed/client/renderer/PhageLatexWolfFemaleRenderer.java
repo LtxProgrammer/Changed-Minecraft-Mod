@@ -18,9 +18,11 @@ public class PhageLatexWolfFemaleRenderer extends AdvancedHumanoidRenderer<Phage
 				ArmorLatexFemaleWolfModel::new, ArmorLatexFemaleWolfModel.INNER_ARMOR, ArmorLatexFemaleWolfModel.OUTER_ARMOR, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-		this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.parseHex("#242424")),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
-				CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE)));
+		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+				.withSclera(Color3.fromInt(0x242424))
+				.withIris(CustomEyesLayer.fixedIfNotDarkLatexOverrideLeft(Color3.WHITE),
+						CustomEyesLayer.fixedIfNotDarkLatexOverrideRight(Color3.WHITE))
+				.build());
 		this.addLayer(new LatexTranslucentLayer<>(this, model, Changed.modResource("textures/phage_latex_wolf_female_translucent.png")));
 	}
 

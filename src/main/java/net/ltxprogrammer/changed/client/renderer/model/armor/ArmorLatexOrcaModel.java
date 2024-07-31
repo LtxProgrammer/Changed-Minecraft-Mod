@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -22,7 +23,8 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexOrcaModel<T>> animator;
 
-    public ArmorLatexOrcaModel(ModelPart modelPart) {
+    public ArmorLatexOrcaModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");
@@ -82,5 +84,21 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     @Override
     public HumanoidAnimator<T, ArmorLatexOrcaModel<T>> getAnimator() {
         return animator;
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

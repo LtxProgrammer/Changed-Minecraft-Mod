@@ -21,7 +21,7 @@ public abstract class ItemStackMixin implements IForgeItemStack {
         Player player = EntityUtil.playerOrNull(entity);
         boolean canEquipToSlot = this.getItem().canEquip(self, armorType, entity);
         return ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-            return variant.canWear(player, self) && canEquipToSlot;
+            return variant.canWear(player, self, armorType) && canEquipToSlot;
         }, () -> canEquipToSlot);
     }
 }

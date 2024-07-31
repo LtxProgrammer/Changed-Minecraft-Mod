@@ -20,6 +20,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexCentaurUpperModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurUpperModel<T>> {
@@ -32,11 +33,12 @@ public class ArmorLatexCentaurUpperModel<T extends ChangedEntity & LatexTaur<T>>
     private final ModelPart Torso;
     private final HumanoidAnimator<T, ArmorLatexCentaurUpperModel<T>> animator;
 
-    public ArmorLatexCentaurUpperModel(ModelPart root) {
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
+    public ArmorLatexCentaurUpperModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.RightArm = modelPart.getChild("RightArm");
+        this.LeftArm = modelPart.getChild("LeftArm");
 
         animator = HumanoidAnimator.of(this)
                 .addPreset(AnimatorPresets.taurUpperBody(Head, Torso, LeftArm, RightArm))
@@ -77,5 +79,21 @@ public class ArmorLatexCentaurUpperModel<T extends ChangedEntity & LatexTaur<T>>
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return null;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
     }
 }

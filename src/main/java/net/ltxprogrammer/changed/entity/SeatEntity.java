@@ -156,6 +156,11 @@ public class SeatEntity extends Entity {
         if (shouldSeatedBeInvisible() && this.getFirstPassenger() instanceof Player player && !player.isInvisible()) {
             player.setInvisible(true);
         }
+
+        if (this.getFirstPassenger() != null)
+            this.tickCount = 0;
+        else if (this.tickCount > 100)
+            this.discard();
     }
 
     @Override

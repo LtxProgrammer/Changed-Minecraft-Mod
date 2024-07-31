@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.ltxprogrammer.changed.item.WearableItem;
+import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +24,8 @@ public abstract class CustomHeadLayerMixin<T extends LivingEntity, M extends Ent
     @Inject(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V", at = @At("HEAD"), cancellable = true)
     public void render(PoseStack stack, MultiBufferSource bufferSource, int p_116733_, T entity, float p_116735_, float p_116736_, float p_116737_, float p_116738_, float p_116739_, float p_116740_,
                        CallbackInfo callbackInfo) {
-        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof WearableItem wearableItem && wearableItem.customWearRenderer())
+        var item = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if (item.getItem() instanceof ExtendedItemProperties wearableItem && wearableItem.customWearRenderer(item))
             callbackInfo.cancel();
     }
 }

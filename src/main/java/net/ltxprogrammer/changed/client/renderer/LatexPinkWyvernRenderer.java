@@ -16,7 +16,8 @@ public class LatexPinkWyvernRenderer extends AdvancedHumanoidRenderer<LatexPinkW
         this.addLayer(new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_pink_wyvern_translucent.png")));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(), CustomEyesLayer.fixedColor(Color3.WHITE),CustomEyesLayer.fixedColor(Color3.parseHex("#7889f3"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.WHITE).withIris(Color3.fromInt(0x7889f3)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

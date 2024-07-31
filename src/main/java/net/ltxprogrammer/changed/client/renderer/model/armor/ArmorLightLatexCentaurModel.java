@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexCentaur;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,11 +16,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLatexCentaur, ArmorLightLatexCentaurModel> {
+public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLatexCentaur, ArmorLightLatexCentaurModel> implements LowerTorsoedModel {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
 
@@ -35,12 +37,13 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLa
     private final ModelPart Tail;
     private final HumanoidAnimator<WhiteLatexCentaur, ArmorLightLatexCentaurModel> animator;
 
-    public ArmorLightLatexCentaurModel(ModelPart root) {
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.LowerTorso = root.getChild("LowerTorso");
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
+    public ArmorLightLatexCentaurModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.LowerTorso = modelPart.getChild("LowerTorso");
+        this.RightArm = modelPart.getChild("RightArm");
+        this.LeftArm = modelPart.getChild("LeftArm");
 
         this.RightLeg = LowerTorso.getChild("RightLeg");
         this.LeftLeg = LowerTorso.getChild("LeftLeg");
@@ -135,5 +138,26 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLa
             }
             case FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
+    }
+
+    public ModelPart getArm(HumanoidArm arm) {
+        return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
+    }
+
+    public ModelPart getLeg(HumanoidArm leg) {
+        return leg == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg;
+    }
+
+    public ModelPart getHead() {
+        return this.Head;
+    }
+
+    public ModelPart getTorso() {
+        return Torso;
+    }
+
+    @Override
+    public ModelPart getLowerTorso() {
+        return LowerTorso;
     }
 }

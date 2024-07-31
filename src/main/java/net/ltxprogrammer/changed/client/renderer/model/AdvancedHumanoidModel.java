@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
     public static final CubeDeformation TEXTURE_DEFORMATION = new CubeDeformation(-0.01F);
+    protected static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
 
     protected final ModelPart rootModelPart;
 

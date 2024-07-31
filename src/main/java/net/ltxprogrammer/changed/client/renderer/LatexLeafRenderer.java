@@ -18,9 +18,8 @@ public class LatexLeafRenderer extends AdvancedHumanoidRenderer<LatexLeaf, Latex
                 ArmorLatexBigTailDragonModel::new, ArmorLatexBigTailDragonModel.INNER_ARMOR, ArmorLatexBigTailDragonModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
-        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#969696")),
-                CustomEyesLayer.fixedColor(Color3.parseHex("#4e4e4e"))));
+        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x969696)).withIris(Color3.fromInt(0x4e4e4e)).build());
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

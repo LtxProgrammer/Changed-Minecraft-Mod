@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -14,6 +15,7 @@ import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,11 +24,16 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -110,9 +117,17 @@ public abstract class TransfurAnimator {
         float maxY = Mth.clamp(a.maxY, clampBy.minY, clampBy.maxY);
         float maxZ = Mth.clamp(a.maxZ, clampBy.minZ, clampBy.maxZ);
 
-        return new ModelPart.Cube(0, 0, minX, minY, minZ,
+        ModelPart.Cube newCube = new ModelPart.Cube(0, 0, minX, minY, minZ,
                 maxX - minX, maxY - minY, maxZ - minZ,
                 0.0f, 0.0f, 0.0f, false, 1.0f, 1.0f);
+        var polyCube = ((CubeExtender)newCube).getPolygons();
+        var polyClamp = ((CubeExtender)clampBy).getPolygons();
+        for (int i = 0; i < polyCube.length && i < polyClamp.length; ++i) {
+            for (int v = 0; v < polyCube[i].vertices.length && v < polyClamp[i].vertices.length; ++v) {
+                polyCube[i].vertices[v] = polyCube[i].vertices[v].remap(polyClamp[i].vertices[v].u, polyClamp[i].vertices[v].v);
+            }
+        }
+        return newCube;
     }
 
     private static ModelPart replaceCubesAndZeroParts(ModelPart part, ModelPart.Cube cube) {
@@ -198,40 +213,44 @@ public abstract class TransfurAnimator {
     private static final float GOOP_CUBE_WIDTH = 16.0f;
     private static final float GOOP_CUBE_HEIGHT = 16.0f;
 
-    private static ModelPart.Polygon lerpPolygon(ModelPart.Polygon a, ModelPart.Polygon b, float lerp) {
-        ModelPart.Polygon ret = new ModelPart.Polygon(a.vertices, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false,
+    private static ModelPart.Polygon lerpPolygon(ModelPart.Polygon a, ModelPart.Polygon b, float lerp, boolean remapUV) {
+        ModelPart.Vertex[] copied = new ModelPart.Vertex[a.vertices.length];
+        System.arraycopy(a.vertices, 0, copied, 0, a.vertices.length);
+        ModelPart.Polygon ret = new ModelPart.Polygon(copied, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, false,
                 Direction.getNearest(a.normal.x(), a.normal.y(), a.normal.z()));
 
         for (int i = 0; i < ret.vertices.length; ++i) {
             ret.vertices[i] = lerpVertex(a.vertices[i], b.vertices[i], lerp);
         }
 
-        float polygonWidth;
-        float polygonHeight;
+        if (remapUV) {
+            float polygonWidth;
+            float polygonHeight;
 
-        if (Mth.abs(a.normal.x()) > 0f) {
-            polygonWidth = Mth.abs(ret.vertices[1].pos.z() - ret.vertices[0].pos.z());
-            polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
-        } else if (Mth.abs(a.normal.y()) > 0f) {
-            polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
-            polygonHeight = Mth.abs(ret.vertices[2].pos.z() - ret.vertices[1].pos.z());
-        } else {
-            polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
-            polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
+            if (Mth.abs(a.normal.x()) > 0f) {
+                polygonWidth = Mth.abs(ret.vertices[1].pos.z() - ret.vertices[0].pos.z());
+                polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
+            } else if (Mth.abs(a.normal.y()) > 0f) {
+                polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
+                polygonHeight = Mth.abs(ret.vertices[2].pos.z() - ret.vertices[1].pos.z());
+            } else {
+                polygonWidth = Mth.abs(ret.vertices[1].pos.x() - ret.vertices[0].pos.x());
+                polygonHeight = Mth.abs(ret.vertices[2].pos.y() - ret.vertices[1].pos.y());
+            }
+
+            polygonWidth /= GOOP_CUBE_WIDTH;
+            polygonHeight /= GOOP_CUBE_HEIGHT;
+
+            ret.vertices[0] = ret.vertices[0].remap(polygonWidth, 0.0f);
+            ret.vertices[1] = ret.vertices[1].remap(0.0f, 0.0f);
+            ret.vertices[2] = ret.vertices[2].remap(0.0f, polygonHeight);
+            ret.vertices[3] = ret.vertices[3].remap(polygonWidth, polygonHeight);
         }
-
-        polygonWidth /= GOOP_CUBE_WIDTH;
-        polygonHeight /= GOOP_CUBE_HEIGHT;
-
-        ret.vertices[0] = ret.vertices[0].remap(polygonWidth, 0.0f);
-        ret.vertices[1] = ret.vertices[1].remap(0.0f, 0.0f);
-        ret.vertices[2] = ret.vertices[2].remap(0.0f, polygonHeight);
-        ret.vertices[3] = ret.vertices[3].remap(polygonWidth, polygonHeight);
 
         return ret;
     }
 
-    private static ModelPart.Cube lerpCube(ModelPart.Cube a, ModelPart.Cube b, float lerp) {
+    private static ModelPart.Cube lerpCube(ModelPart.Cube a, ModelPart.Cube b, float lerp, boolean remapUV) {
         float lerpMinX = Mth.lerp(lerp, a.minX, b.minX);
         float lerpMinY = Mth.lerp(lerp, a.minY, b.minY);
         float lerpMinZ = Mth.lerp(lerp, a.minZ, b.minZ);
@@ -247,19 +266,19 @@ public abstract class TransfurAnimator {
         final var polyR = ((CubeExtender)ret).getPolygons();
 
         for (int i = 0; i < polyR.length; ++i) {
-            polyR[i] = lerpPolygon(polyA[i], polyB[i], lerp);
+            polyR[i] = lerpPolygon(polyA[i], polyB[i], lerp, remapUV);
         }
 
         return ret;
     }
 
-    private static ModelPart lerpModelPart(ModelPart a, ModelPart b, float lerp) {
+    private static ModelPart lerpModelPart(ModelPart a, ModelPart b, float lerp, boolean remapUV) {
         List<ModelPart.Cube> copiedCubes = new ArrayList<>();
         for (int i = 0; i < a.cubes.size(); ++i)
-            copiedCubes.add(lerpCube(a.cubes.get(i), b.cubes.get(i), lerp));
+            copiedCubes.add(lerpCube(a.cubes.get(i), b.cubes.get(i), lerp, remapUV));
         Map<String, ModelPart> copiedChildren = new HashMap<>();
         for (var k : a.children.keySet())
-            copiedChildren.put(k, lerpModelPart(a.children.get(k), b.children.get(k), lerp));
+            copiedChildren.put(k, lerpModelPart(a.children.get(k), b.children.get(k), lerp, remapUV));
 
         var lerped = new ModelPart(copiedCubes, copiedChildren);
         lerped.x = Mth.lerp(lerp, a.x, b.x);
@@ -281,11 +300,11 @@ public abstract class TransfurAnimator {
         return cubeReturn.getAcquire();
     }
 
-    private static ModelPart transitionModelPart(ModelPart before, ModelPart after, float lerp) {
+    private static ModelPart transitionModelPart(ModelPart before, ModelPart after, float lerp, boolean remapUV) {
         ModelPart beforeCopy = matchCubeCount(deepCopyPart(before), after);
         ModelPart afterCopy = matchCubeCount(deepCopyPart(after), before);
 
-        return lerpModelPart(beforeCopy, afterCopy, lerp);
+        return lerpModelPart(beforeCopy, afterCopy, lerp, remapUV);
     }
 
     private static Matrix4f lerpMatrix(Matrix4f a, Matrix4f b, float lerp) {
@@ -345,10 +364,12 @@ public abstract class TransfurAnimator {
         return Optional.ofNullable(afterModel.getTransfurHelperModel(limb));
     }
 
-    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, @Nullable ResourceLocation texture) {
         ModelPart before = limb.getModelPart(beforeModel);
         final ModelPart after = limb.getModelPart(afterModel);
         if (before == null || after == null)
+            return;
+        if (!before.visible)
             return;
 
         ModelPose beforePose = CAPTURED_MODELS.getOrDefault(before, NULL_POSE);
@@ -362,12 +383,15 @@ public abstract class TransfurAnimator {
         }
 
         final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);
-        final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress);
+        final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress, texture == null);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);
 
+        if (texture == null)
+            texture = LimbCoverTransition.LATEX_CUBE;
+
         final var vertexConsumer = buffer.getBuffer(
-                alpha >= 1f ? RenderType.entityCutoutNoCull(LimbCoverTransition.LATEX_CUBE)
-                        : RenderType.entityTranslucent(LimbCoverTransition.LATEX_CUBE)
+                alpha >= 1f ? RenderType.entityCutoutNoCull(texture)
+                        : RenderType.entityTranslucent(texture)
         );
 
         final int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
@@ -383,14 +407,14 @@ public abstract class TransfurAnimator {
         stack.popPose();
     }
 
-    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, @Nullable ResourceLocation texture) {
         Arrays.stream(Limb.values()).forEach(limb -> {
             if (ChangedCompatibility.isFirstPersonRendering() && limb == Limb.HEAD)
                 return;
             if (ChangedCompatibility.isFirstPersonRendering() && entity.isSwimming() && limb == Limb.TORSO)
                 return;
 
-            renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, partialTick);
+            renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, texture);
         });
     }
 
@@ -466,6 +490,13 @@ public abstract class TransfurAnimator {
         stack.popPose();
     }
 
+    private static Optional<HumanoidArmorLayer<?,?,?>> findArmorLayer(LivingEntityRenderer<?,?> renderer) {
+        for (var layer : renderer.layers)
+            if (layer instanceof HumanoidArmorLayer<?,?,?> armorLayer)
+                return Optional.of(armorLayer);
+        return Optional.empty();
+    }
+
     public static void renderTransfurringPlayer(Player player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
@@ -514,15 +545,36 @@ public abstract class TransfurAnimator {
             }
         }
 
-        if (morphAlpha <= 0f)
-            return; // Don't bother rendering
+        if (morphAlpha > 0f) {
+            final var colors = variant.getTransfurColor();
+            renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
+                    morphProgress, colors, morphAlpha, stack, buffer, light, null);
+        }
 
-        final var colors = variant.getTransfurColor();
-        renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                morphProgress, colors, morphAlpha, stack, buffer, light, partialTick);
+        if (coverProgress >= 1f) {
+            findArmorLayer(livingPlayerRenderer).ifPresent(armorLayer -> {
+                Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(armorSlot -> {
+                    var item = player.getItemBySlot(armorSlot);
+                    ResourceLocation texture = null;
+                    if (item.getItem() instanceof ArmorItem)
+                        texture = armorLayer.getArmorResource(player, item, armorSlot, null);
+
+                    if (texture == null)
+                        return;
+
+                    var model = armorLayer.getArmorModel(armorSlot);
+                    ((HumanoidArmorLayer) armorLayer).setPartVisibility((HumanoidModel) model, armorSlot);
+                    renderMorphedEntity(player,
+                            model,
+                            latexHumanoidRenderer.getArmorLayer().getArmorModel(armorSlot),
+                            morphProgress, Color3.WHITE, 1f, stack, buffer, light,
+                            texture);
+                });
+            });
+        }
     }
 
-    public static void renderTransfurringArm(Player player, HumanoidArm arm, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
+    public static void renderTransfurringArm(Player player, HumanoidArm arm, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, @Nullable ResourceLocation texture) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
         final var playerRenderer = dispatcher.getRenderer(player);
@@ -570,7 +622,7 @@ public abstract class TransfurAnimator {
 
         final var color = variant.getTransfurColor();
         renderMorphedLimb(player, limb, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                morphProgress, color, morphAlpha, stack, buffer, light, partialTick);
+                morphProgress, color, morphAlpha, stack, buffer, light, texture);
     }
 
     private static boolean capturingPose = false;
@@ -602,5 +654,13 @@ public abstract class TransfurAnimator {
         }
 
         return true;
+    }
+
+    public static <T extends LivingEntity, M extends EntityModel<T>> boolean isLayerAllowed(RenderLayer<T, M> layer) {
+        if (layer instanceof HumanoidArmorLayer<?,?,?>)
+            return true;
+        if (layer instanceof LatexHumanoidArmorLayer<?,?,?>)
+            return true;
+        return false;
     }
 }
