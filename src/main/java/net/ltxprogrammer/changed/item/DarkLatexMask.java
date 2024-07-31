@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DarkLatexMask extends Item implements WearableItem {
+public class DarkLatexMask extends Item implements ExtendedItemProperties {
     public static final List<ResourceLocation> MASKED_LATEXES = new ArrayList<>(List.of(
             ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.getId(),
             ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId(),
@@ -51,19 +51,19 @@ public class DarkLatexMask extends Item implements WearableItem {
     }
 
     @Override
-    public void wearTick(LivingEntity entity, ItemStack itemStack) {
+    public void wearTick(ItemStack itemStack, LivingEntity wearer) {
         TransfurVariant<?> variant = Syringe.getVariant(itemStack);
         if (variant == null)
             variant = ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.get();
-        if (TransfurVariant.getEntityVariant(entity) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get()) {
-            if (entity.getRandom().nextFloat() > 0.005f || entity.level.isClientSide) return; // 0.5% chance every tick the entity will switch TF into the mask variant
+        if (TransfurVariant.getEntityVariant(wearer) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get()) {
+            if (wearer.getRandom().nextFloat() > 0.005f || wearer.level.isClientSide) return; // 0.5% chance every tick the entity will switch TF into the mask variant
 
-            ChangedSounds.broadcastSound(ProcessTransfur.changeTransfur(entity, variant), ChangedSounds.POISON, 1.0f, 1.0f);
+            ChangedSounds.broadcastSound(ProcessTransfur.changeTransfur(wearer, variant), ChangedSounds.POISON, 1.0f, 1.0f);
             itemStack.shrink(1);
             return;
         }
 
-        if (ProcessTransfur.progressTransfur(entity, 11.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)))
+        if (ProcessTransfur.progressTransfur(wearer, 11.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)))
             itemStack.shrink(1);
     }
 
@@ -73,20 +73,20 @@ public class DarkLatexMask extends Item implements WearableItem {
     }
 
     @Override
-    public boolean customWearRenderer() {
+    public boolean customWearRenderer(ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public boolean allowedToKeepWearing(LivingEntity entity) {
-        if (TransfurVariant.getEntityVariant(entity) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get())
+    public boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
+        if (TransfurVariant.getEntityVariant(wearer) == ChangedTransfurVariants.DARK_LATEX_WOLF_PARTIAL.get())
             return true;
 
-        if (entity instanceof ChangedEntity)
+        if (wearer instanceof ChangedEntity)
             return false;
-        else if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+        else if (wearer instanceof Player player && ProcessTransfur.isPlayerLatex(player))
             return false;
-        else if (entity instanceof AgeableMob ageableMob && ageableMob.isBaby())
+        else if (wearer instanceof AgeableMob ageableMob && ageableMob.isBaby())
             return false;
         else
             return true;

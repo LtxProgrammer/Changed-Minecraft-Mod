@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.init;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.item.*;
 import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
@@ -22,8 +21,8 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedItems {
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Changed.MODID);
-    public static final RegistryObject<Benign.Pants> BENIGN_PANTS = register("benign_pants", Benign.Pants::new);
-    public static final RegistryObject<PinkLatex.Pants> PINK_PANTS = register("pink_pants", PinkLatex.Pants::new);
+    public static final RegistryObject<BenignPants> BENIGN_PANTS = register("benign_pants", BenignPants::new);
+    public static final RegistryObject<PinkPants> PINK_PANTS = register("pink_pants", PinkPants::new);
     public static final RegistryObject<GasMaskItem> GAS_MASK = register("gas_mask", GasMaskItem::new);
     public static final RegistryObject<AbstractChangedItem> DARK_LATEX_CRYSTAL_FRAGMENT = register("dark_latex_crystal_fragment", AbstractChangedItem::new);
     public static final RegistryObject<AbstractLatexItem> DARK_LATEX_GOO = register("dark_latex_goo", () -> new AbstractLatexItem(LatexType.DARK_LATEX));

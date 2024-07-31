@@ -545,32 +545,33 @@ public abstract class TransfurAnimator {
             }
         }
 
-        if (morphAlpha <= 0f)
-            return; // Don't bother rendering
+        if (morphAlpha > 0f) {
+            final var colors = variant.getTransfurColor();
+            renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
+                    morphProgress, colors, morphAlpha, stack, buffer, light, null);
+        }
 
-        final var colors = variant.getTransfurColor();
-        renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                morphProgress, colors, morphAlpha, stack, buffer, light, null);
+        if (coverProgress >= 1f) {
+            findArmorLayer(livingPlayerRenderer).ifPresent(armorLayer -> {
+                Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(armorSlot -> {
+                    var item = player.getItemBySlot(armorSlot);
+                    ResourceLocation texture = null;
+                    if (item.getItem() instanceof ArmorItem)
+                        texture = armorLayer.getArmorResource(player, item, armorSlot, null);
 
-        findArmorLayer(livingPlayerRenderer).ifPresent(armorLayer -> {
-            Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR).forEach(armorSlot -> {
-                var item = player.getItemBySlot(armorSlot);
-                ResourceLocation texture = null;
-                if (item.getItem() instanceof ArmorItem)
-                    texture = armorLayer.getArmorResource(player, item, armorSlot, null);
+                    if (texture == null)
+                        return;
 
-                if (texture == null)
-                    return;
-
-                var model = armorLayer.getArmorModel(armorSlot);
-                ((HumanoidArmorLayer)armorLayer).setPartVisibility((HumanoidModel)model, armorSlot);
-                renderMorphedEntity(player,
-                        model,
-                        latexHumanoidRenderer.getArmorLayer().getArmorModel(armorSlot),
-                        morphProgress, Color3.WHITE, morphAlpha, stack, buffer, light,
-                        texture);
+                    var model = armorLayer.getArmorModel(armorSlot);
+                    ((HumanoidArmorLayer) armorLayer).setPartVisibility((HumanoidModel) model, armorSlot);
+                    renderMorphedEntity(player,
+                            model,
+                            latexHumanoidRenderer.getArmorLayer().getArmorModel(armorSlot),
+                            morphProgress, Color3.WHITE, 1f, stack, buffer, light,
+                            texture);
+                });
             });
-        });
+        }
     }
 
     public static void renderTransfurringArm(Player player, HumanoidArm arm, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick, @Nullable ResourceLocation texture) {

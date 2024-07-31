@@ -29,8 +29,8 @@ public class ArmorFemaleMantaRayAbdomenModel<T extends ChangedEntity> extends La
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorFemaleMantaRayAbdomenModel<T>> animator;
 
-    public ArmorFemaleMantaRayAbdomenModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorFemaleMantaRayAbdomenModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");

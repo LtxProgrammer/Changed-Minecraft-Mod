@@ -13,7 +13,7 @@ import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class AbdomenArmor extends ArmorItem implements WearableItem {
+public class AbdomenArmor extends ArmorItem implements ExtendedItemProperties {
     public static boolean useAbdomenModel(EquipmentSlot slot) {
         return slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET;
     }
@@ -36,22 +36,20 @@ public class AbdomenArmor extends ArmorItem implements WearableItem {
     }
 
     @Override
-    public void wearTick(LivingEntity entity, ItemStack itemStack) {}
+    public void wearTick(ItemStack itemStack, LivingEntity wearer) {}
 
     @Override
-    public boolean customWearRenderer() {
-        return false;
-    }
+    public boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
+        if (!ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot))
+            return false;
 
-    @Override
-    public boolean allowedToKeepWearing(LivingEntity entity) {
-        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
         if (instance != null) {
             return !instance.getParent().hasLegs && instance.shouldApplyAbilities();
         }
 
         else {
-            var variant = TransfurVariant.getEntityVariant(entity);
+            var variant = TransfurVariant.getEntityVariant(wearer);
             return variant != null && !variant.hasLegs;
         }
     }

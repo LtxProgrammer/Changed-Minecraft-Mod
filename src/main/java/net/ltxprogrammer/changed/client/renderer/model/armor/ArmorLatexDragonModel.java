@@ -33,8 +33,8 @@ public class ArmorLatexDragonModel<T extends ChangedEntity> extends LatexHumanoi
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexDragonModel<T>> animator;
 
-    public ArmorLatexDragonModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexDragonModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.Tail = Torso.getChild("Tail");

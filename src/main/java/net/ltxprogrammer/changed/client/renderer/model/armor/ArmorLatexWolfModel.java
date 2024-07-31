@@ -33,8 +33,8 @@ public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidA
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexWolfModel<T>> animator;
 
-    public ArmorLatexWolfModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexWolfModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
@@ -156,8 +156,8 @@ public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidA
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
-        public RemodelMale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelMale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");
@@ -265,8 +265,8 @@ public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidA
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
-        public RemodelFemale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelFemale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");

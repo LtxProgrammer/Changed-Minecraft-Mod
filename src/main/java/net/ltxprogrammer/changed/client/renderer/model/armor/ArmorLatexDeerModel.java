@@ -32,8 +32,8 @@ public class ArmorLatexDeerModel<T extends ChangedEntity> extends LatexHumanoidA
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexDeerModel<T>> animator;
 
-    public ArmorLatexDeerModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexDeerModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

@@ -279,6 +279,16 @@
     ],
     "subtitle": "subtitles.changed.siren"
   },
+  "slash10": {
+    "category": "entity",
+    "sounds": [
+      {
+        "name": "changed:slash10",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.changed.slash10"
+  },
   "sword1": {
     "category": "entity",
     "sounds": [

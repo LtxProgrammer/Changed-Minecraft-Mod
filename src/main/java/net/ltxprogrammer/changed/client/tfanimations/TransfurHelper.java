@@ -1,7 +1,9 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -9,6 +11,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+
+import java.util.EnumMap;
 
 /**
  * Provides player limb shaped parts, that are pre-divided into their joints. So the animator has an easier time lerping them
@@ -27,6 +31,21 @@ public class TransfurHelper {
     protected final HelperModel Legless;
     protected final HelperModel TaurTorso;
     protected final HelperModel PupTorso;
+
+    protected final ArmorHelper InnerArmor;
+    protected final ArmorHelper OuterArmor;
+
+    protected final EnumMap<ArmorModel, ArmorHelper> ArmorMap;
+
+    public static class ArmorHelper {
+        protected final HelperModel DigitigradeLeftLeg;
+        protected final HelperModel DigitigradeRightLeg;
+
+        protected ArmorHelper(ModelPart root) {
+            this.DigitigradeLeftLeg = HelperModel.fixed(root.getChild("DigitigradeLeftLeg"));
+            this.DigitigradeRightLeg = HelperModel.fixed(root.getChild("DigitigradeRightLeg"));
+        }
+    }
 
     protected static void copyRotations(ModelPart from, ModelPart to) {
         to.xRot = from.xRot;
@@ -65,10 +84,55 @@ public class TransfurHelper {
             return beforePose.translate(0.0f, 12.0f, 0.0f);
         });
         this.PupTorso = HelperModel.fixed(root.getChild("PupTorso"));
+
+        this.InnerArmor = new ArmorHelper(root.getChild("InnerArmor"));
+        this.OuterArmor = new ArmorHelper(root.getChild("OuterArmor"));
+
+        ArmorMap = Util.make(new EnumMap<>(ArmorModel.class), map -> {
+            map.put(ArmorModel.INNER, InnerArmor);
+            map.put(ArmorModel.OUTER, OuterArmor);
+        });
     }
 
     private static EntityModelSet getModelSet() {
         return Minecraft.getInstance().getEntityRenderDispatcher().entityModels;
+    }
+
+    private static void createArmorLayer(PartDefinition root, ArmorModel armor) {
+        // DIGI LEFT
+        {
+            PartDefinition DigitigradeLeftLeg = root.addOrReplaceChild("DigitigradeLeftLeg", CubeListBuilder.create(), PartPose.offset(2.0F, 12.0F, 0.0F));
+
+            PartDefinition LeftThigh_r1 = DigitigradeLeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition LeftLowerLeg = DigitigradeLeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
+
+            PartDefinition LeftCalf_r1 = LeftLowerLeg.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(0, 21).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, -5.0F, 2.0F));
+
+            PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
+
+            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(0, 26).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, -8.0F, -2.0F));
+
+        }
+
+        // DIGI RIGHT
+        {
+            PartDefinition DigitigradeRightLeg = root.addOrReplaceChild("DigitigradeRightLeg", CubeListBuilder.create(), PartPose.offset(-2.0F, 12.0F, 0.0F));
+
+            PartDefinition RightThigh_r1 = DigitigradeRightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition RightLowerLeg = DigitigradeRightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
+
+            PartDefinition RightCalf_r1 = RightLowerLeg.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(0, 21).mirror().addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, -5.0F, 2.0F));
+
+            PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
+
+            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(0, 24).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(0, 26).mirror().addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, -8.0F, -2.0F));
+        }
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -79,34 +143,70 @@ public class TransfurHelper {
         {
             PartDefinition DigitigradeLeftLeg = partdefinition.addOrReplaceChild("DigitigradeLeftLeg", CubeListBuilder.create(), PartPose.offset(2.0F, 12.0F, 0.0F));
 
-            PartDefinition LeftThigh_r1 = DigitigradeLeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftThigh_r1 = DigitigradeLeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition LeftLowerLeg = DigitigradeLeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
-            PartDefinition LeftCalf_r1 = LeftLowerLeg.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
+            PartDefinition LeftCalf_r1 = LeftLowerLeg.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(0, 21).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
 
             PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(0, 24).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
+            PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(0, 26).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
+
         }
 
         // DIGI RIGHT
         {
             PartDefinition DigitigradeRightLeg = partdefinition.addOrReplaceChild("DigitigradeRightLeg", CubeListBuilder.create(), PartPose.offset(-2.0F, 12.0F, 0.0F));
 
-            PartDefinition RightThigh_r1 = DigitigradeRightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightThigh_r1 = DigitigradeRightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightLowerLeg = DigitigradeRightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
-            PartDefinition RightCalf_r1 = RightLowerLeg.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
+            PartDefinition RightCalf_r1 = RightLowerLeg.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(0, 21).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
 
             PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(0, 24).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
+            PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(0, 26).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
+        }
+
+        // DIGI LEFT INNER ARMOR
+        {
+            PartDefinition DigitigradeLeftLeg = partdefinition.addOrReplaceChild("DigitigradeLeftLeg", CubeListBuilder.create(), PartPose.offset(2.0F, 12.0F, 0.0F));
+
+            PartDefinition LeftThigh_r1 = DigitigradeLeftLeg.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition LeftLowerLeg = DigitigradeLeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
+
+            PartDefinition LeftCalf_r1 = LeftLowerLeg.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(0, 21).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
+
+            PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
+
+            PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(0, 24).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(0, 26).mirror().addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE).mirror(false), PartPose.offset(0.0F, -8.0F, -2.0F));
+
+        }
+
+        // DIGI RIGHT
+        {
+            PartDefinition DigitigradeRightLeg = partdefinition.addOrReplaceChild("DigitigradeRightLeg", CubeListBuilder.create(), PartPose.offset(-2.0F, 12.0F, 0.0F));
+
+            PartDefinition RightThigh_r1 = DigitigradeRightLeg.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition RightLowerLeg = DigitigradeRightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
+
+            PartDefinition RightCalf_r1 = RightLowerLeg.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(0, 21).mirror().addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE).mirror(false), PartPose.offset(0.0F, -5.0F, 2.0F));
+
+            PartDefinition RightFoot = RightLowerLeg.addOrReplaceChild("RightFoot", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
+
+            PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(0, 26).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
         }
 
         // BASIC ARMS
@@ -182,55 +282,55 @@ public class TransfurHelper {
 
         // TAUR
         {
-            PartDefinition TaurTorso = partdefinition.addOrReplaceChild("TaurTorso", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, -2.0F, -2.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 12.0F, 0.0F));
+            PartDefinition TaurTorso = partdefinition.addOrReplaceChild("TaurTorso", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, -2.0F, -2.0F, 8.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 12.0F, 0.0F));
 
             PartDefinition LeftLeg = TaurTorso.addOrReplaceChild("LeftLeg", CubeListBuilder.create(), PartPose.offset(2.0F, 0.0F, 0.0F));
 
-            PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(0, 59).addBox(-4.0F, -12.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 12.0F, 0.0F));
+            PartDefinition LeftUpperLeg_r1 = LeftLeg.addOrReplaceChild("LeftUpperLeg_r1", CubeListBuilder.create().texOffs(0, 59).addBox(-4.0F, -12.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(2.0F, 12.0F, 0.0F));
 
             PartDefinition LeftLowerLeg = LeftLeg.addOrReplaceChild("LeftLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 6.0F, 0.0F));
 
-            PartDefinition LeftLowerLeg_r1 = LeftLowerLeg.addOrReplaceChild("LeftLowerLeg_r1", CubeListBuilder.create().texOffs(67, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftLowerLeg_r1 = LeftLowerLeg.addOrReplaceChild("LeftLowerLeg_r1", CubeListBuilder.create().texOffs(67, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create().texOffs(29, 72).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+            PartDefinition LeftFoot = LeftLowerLeg.addOrReplaceChild("LeftFoot", CubeListBuilder.create().texOffs(29, 72).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.0F, 0.0F));
 
             PartDefinition RightLeg = TaurTorso.addOrReplaceChild("RightLeg", CubeListBuilder.create(), PartPose.offset(-2.0F, 0.0F, 0.0F));
 
-            PartDefinition RightUpperLeg_r1 = RightLeg.addOrReplaceChild("RightUpperLeg_r1", CubeListBuilder.create().texOffs(0, 59).addBox(-4.0F, -12.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 12.0F, 0.0F));
+            PartDefinition RightUpperLeg_r1 = RightLeg.addOrReplaceChild("RightUpperLeg_r1", CubeListBuilder.create().texOffs(0, 59).addBox(-4.0F, -12.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(2.0F, 12.0F, 0.0F));
 
             PartDefinition RightLowerLeg3 = RightLeg.addOrReplaceChild("RightLowerLeg", CubeListBuilder.create(), PartPose.offset(0.0F, 6.0F, 0.0F));
 
-            PartDefinition RightLowerLeg_r1 = RightLowerLeg3.addOrReplaceChild("RightLowerLeg_r1", CubeListBuilder.create().texOffs(67, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightLowerLeg_r1 = RightLowerLeg3.addOrReplaceChild("RightLowerLeg_r1", CubeListBuilder.create().texOffs(67, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition RightFoot3 = RightLowerLeg3.addOrReplaceChild("RightFoot", CubeListBuilder.create().texOffs(29, 72).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+            PartDefinition RightFoot3 = RightLowerLeg3.addOrReplaceChild("RightFoot", CubeListBuilder.create().texOffs(29, 72).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.0F, 0.0F));
 
             PartDefinition LeftLeg2 = TaurTorso.addOrReplaceChild("LeftLeg2", CubeListBuilder.create(), PartPose.offset(2.0F, 0.0F, 0.0F));
 
-            PartDefinition LeftThigh_r2 = LeftLeg2.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftThigh_r2 = LeftLeg2.addOrReplaceChild("LeftThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition LeftLowerLeg2 = LeftLeg2.addOrReplaceChild("LeftLowerLeg2", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
-            PartDefinition LeftCalf_r2 = LeftLowerLeg2.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.0F, 2.0F));
+            PartDefinition LeftCalf_r2 = LeftLowerLeg2.addOrReplaceChild("LeftCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
 
             PartDefinition LeftFoot2 = LeftLowerLeg2.addOrReplaceChild("LeftFoot2", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition LeftArch_r2 = LeftFoot2.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition LeftArch_r2 = LeftFoot2.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition LeftPad2 = LeftFoot2.addOrReplaceChild("LeftPad2", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, -2.0F));
+            PartDefinition LeftPad2 = LeftFoot2.addOrReplaceChild("LeftPad2", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
 
             PartDefinition RightLeg2 = TaurTorso.addOrReplaceChild("RightLeg2", CubeListBuilder.create(), PartPose.offset(-2.0F, 0.0F, 0.0F));
 
-            PartDefinition RightThigh_r2 = RightLeg2.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightThigh_r2 = RightLeg2.addOrReplaceChild("RightThigh_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightLowerLeg2 = RightLeg2.addOrReplaceChild("RightLowerLeg2", CubeListBuilder.create(), PartPose.offset(0.0F, 5.0F, -2.0F));
 
-            PartDefinition RightCalf_r2 = RightLowerLeg2.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -5.0F, 2.0F));
+            PartDefinition RightCalf_r2 = RightLowerLeg2.addOrReplaceChild("RightCalf_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -5.0F, 2.0F));
 
             PartDefinition RightFoot2 = RightLowerLeg2.addOrReplaceChild("RightFoot2", CubeListBuilder.create(), PartPose.offset(0.0F, 3.0F, 4.0F));
 
-            PartDefinition RightArch_r2 = RightFoot2.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition RightArch_r2 = RightFoot2.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition RightPad2 = RightFoot2.addOrReplaceChild("RightPad2", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, -2.0F));
+            PartDefinition RightPad2 = RightFoot2.addOrReplaceChild("RightPad2", CubeListBuilder.create().texOffs(-2, -2).addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -8.0F, -2.0F));
 
             PartDefinition Tail4 = TaurTorso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, -1.75F, 0.0F));
 
@@ -243,8 +343,8 @@ public class TransfurHelper {
         {
             PartDefinition PupTorso = partdefinition.addOrReplaceChild("PupTorso", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-            PartDefinition Torso_r1 = PupTorso.addOrReplaceChild("Torso_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(0.0F))
-                    .texOffs(-2, -2).addBox(-4.0F, 5.0F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+            PartDefinition Torso_r1 = PupTorso.addOrReplaceChild("Torso_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, CubeDeformation.NONE)
+                    .texOffs(-2, -2).addBox(-4.0F, 5.0F, -2.0F, 8.0F, 7.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition Tail = PupTorso.addOrReplaceChild("Tail", CubeListBuilder.create(), PartPose.offset(0.0F, 10.25F, 0.0F));
 
@@ -254,7 +354,16 @@ public class TransfurHelper {
 
         }
 
-        return LayerDefinition.create(meshdefinition, 16, 16);
+        // ARMOR
+        {
+            PartDefinition innerLayer = partdefinition.addOrReplaceChild("InnerArmor", CubeListBuilder.create(), PartPose.ZERO);
+            createArmorLayer(innerLayer, ArmorModel.INNER);
+
+            PartDefinition outerLayer = partdefinition.addOrReplaceChild("OuterArmor", CubeListBuilder.create(), PartPose.ZERO);
+            createArmorLayer(outerLayer, ArmorModel.OUTER);
+        }
+
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
     private static final Cacheable<TransfurHelper> INSTANCE = Cacheable.of(() -> new TransfurHelper(getModelSet().bakeLayer(TRANSFUR_HELPER)));
@@ -265,6 +374,14 @@ public class TransfurHelper {
 
     public static HelperModel getDigitigradeRightLeg() {
         return INSTANCE.get().DigitigradeRightLeg;
+    }
+
+    public static HelperModel getDigitigradeLeftLeg(ArmorModel model) {
+        return INSTANCE.get().ArmorMap.get(model).DigitigradeLeftLeg;
+    }
+
+    public static HelperModel getDigitigradeRightLeg(ArmorModel model) {
+        return INSTANCE.get().ArmorMap.get(model).DigitigradeRightLeg;
     }
 
     public static HelperModel getBasicLeftArm() {

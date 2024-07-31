@@ -31,12 +31,12 @@ public class ArmorLatexCentaurUpperModel extends LatexHumanoidArmorModel<WhiteLa
     private final ModelPart Torso;
     private final HumanoidAnimator<WhiteLatexCentaur, ArmorLatexCentaurUpperModel> animator;
 
-    public ArmorLatexCentaurUpperModel(ModelPart root) {
-        super(root);
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
+    public ArmorLatexCentaurUpperModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.RightArm = modelPart.getChild("RightArm");
+        this.LeftArm = modelPart.getChild("LeftArm");
 
         animator = HumanoidAnimator.of(this)
                 .addPreset(AnimatorPresets.taurUpperBody(Head, Torso, LeftArm, RightArm))

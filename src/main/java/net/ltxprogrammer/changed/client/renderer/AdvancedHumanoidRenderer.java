@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -74,21 +76,21 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     }
 
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
-                                    Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
+                                    BiFunction<ModelPart, ArmorModel, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.armorLayer = new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)));
+        this.armorLayer = new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner), ArmorModel.INNER), ctorA.apply(context.bakeLayer(armorOuter), ArmorModel.OUTER));
         this.addLayers(context, main);
     }
 
     public <B extends LatexHumanoidArmorModel<T, ?>> AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
-                                                                              Function<ModelPart, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter,
-                                                                              Function<ModelPart, B> ctorB, ModelLayerLocation armorInnerOther, ModelLayerLocation armorOuterOther,
+                                                                              BiFunction<ModelPart, ArmorModel, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter,
+                                                                              BiFunction<ModelPart, ArmorModel, B> ctorB, ModelLayerLocation armorInnerOther, ModelLayerLocation armorOuterOther,
                                                                               Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.armorLayer = new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner)), ctorA.apply(context.bakeLayer(armorOuter)),
-                ctorB.apply(context.bakeLayer(armorInnerOther)), ctorB.apply(context.bakeLayer(armorOuterOther)), useOther, useInner);
+        this.armorLayer = new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner), ArmorModel.INNER), ctorA.apply(context.bakeLayer(armorOuter), ArmorModel.OUTER),
+                ctorB.apply(context.bakeLayer(armorInnerOther), ArmorModel.INNER), ctorB.apply(context.bakeLayer(armorOuterOther), ArmorModel.OUTER), useOther, useInner);
         this.addLayers(context, main);
     }
 

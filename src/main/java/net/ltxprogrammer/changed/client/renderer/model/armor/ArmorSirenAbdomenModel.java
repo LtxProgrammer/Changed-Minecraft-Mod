@@ -29,8 +29,8 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorSirenAbdomenModel<T>> animator;
 
-    public ArmorSirenAbdomenModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorSirenAbdomenModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");

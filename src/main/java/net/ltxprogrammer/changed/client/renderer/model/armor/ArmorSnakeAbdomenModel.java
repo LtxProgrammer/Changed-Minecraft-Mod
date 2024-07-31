@@ -32,10 +32,10 @@ public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidA
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorSnakeAbdomenModel<T>> animator;
 
-    public ArmorSnakeAbdomenModel(ModelPart root) {
-        super(root);
-        this.Torso = root.getChild("Torso");
-        this.Abdomen = root.getChild("Abdomen");
+    public ArmorSnakeAbdomenModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Torso = modelPart.getChild("Torso");
+        this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");
 

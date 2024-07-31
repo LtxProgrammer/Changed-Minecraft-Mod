@@ -29,8 +29,8 @@ public class ArmorLatexMaleWolfModel<T extends ChangedEntity> extends LatexHuman
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexMaleWolfModel<T>> animator;
 
-    public ArmorLatexMaleWolfModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexMaleWolfModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

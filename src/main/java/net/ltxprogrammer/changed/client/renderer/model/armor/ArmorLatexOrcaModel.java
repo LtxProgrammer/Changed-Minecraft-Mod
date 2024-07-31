@@ -23,8 +23,8 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexOrcaModel<T>> animator;
 
-    public ArmorLatexOrcaModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexOrcaModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

@@ -38,18 +38,18 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexStigerModel<T>> animator;
 
-    public ArmorLatexStigerModel(ModelPart root) {
-        super(root);
-        this.RightLeg = root.getChild("RightLeg");
-        this.LeftLeg = root.getChild("LeftLeg");
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.RightArm = root.getChild("RightArm");
-        this.RightArm2 = root.getChild("RightArm2");
-        this.RightArm3 = root.getChild("RightArm3");
-        this.LeftArm = root.getChild("LeftArm");
-        this.LeftArm2 = root.getChild("LeftArm2");
-        this.LeftArm3 = root.getChild("LeftArm3");
+    public ArmorLatexStigerModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.RightLeg = modelPart.getChild("RightLeg");
+        this.LeftLeg = modelPart.getChild("LeftLeg");
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.RightArm = modelPart.getChild("RightArm");
+        this.RightArm2 = modelPart.getChild("RightArm2");
+        this.RightArm3 = modelPart.getChild("RightArm3");
+        this.LeftArm = modelPart.getChild("LeftArm");
+        this.LeftArm2 = modelPart.getChild("LeftArm2");
+        this.LeftArm3 = modelPart.getChild("LeftArm3");
         this.Tail = Torso.getChild("Tail");
 
         var tailPrimary = Tail.getChild("TailPrimary");

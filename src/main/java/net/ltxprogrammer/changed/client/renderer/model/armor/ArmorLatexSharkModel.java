@@ -33,8 +33,8 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexSharkModel<T>> animator;
 
-    public ArmorLatexSharkModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexSharkModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
@@ -165,8 +165,8 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
-        public RemodelMale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelMale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");
@@ -274,8 +274,8 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
-        public RemodelFemale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelFemale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");

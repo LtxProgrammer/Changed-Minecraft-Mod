@@ -34,8 +34,8 @@ public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends Late
     private final ModelPart RightArm2;
     private final HumanoidAnimator<T, ArmorLatexFemaleSquidDogModel<T>> animator;
 
-    public ArmorLatexFemaleSquidDogModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexFemaleSquidDogModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

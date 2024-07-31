@@ -35,8 +35,8 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexBeeModel<T>> animator;
 
-    public ArmorLatexBeeModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexBeeModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

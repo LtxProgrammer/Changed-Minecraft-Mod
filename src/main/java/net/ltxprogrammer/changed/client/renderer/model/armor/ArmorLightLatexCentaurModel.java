@@ -37,13 +37,13 @@ public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLa
     private final ModelPart Tail;
     private final HumanoidAnimator<WhiteLatexCentaur, ArmorLightLatexCentaurModel> animator;
 
-    public ArmorLightLatexCentaurModel(ModelPart root) {
-        super(root);
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.LowerTorso = root.getChild("LowerTorso");
-        this.RightArm = root.getChild("RightArm");
-        this.LeftArm = root.getChild("LeftArm");
+    public ArmorLightLatexCentaurModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.LowerTorso = modelPart.getChild("LowerTorso");
+        this.RightArm = modelPart.getChild("RightArm");
+        this.LeftArm = modelPart.getChild("LeftArm");
 
         this.RightLeg = LowerTorso.getChild("RightLeg");
         this.LeftLeg = LowerTorso.getChild("LeftLeg");

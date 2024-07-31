@@ -33,9 +33,9 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     private final ModelPart Tail;
     private final HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> animator;
 
-    public ArmorHeadlessKnightModel(ModelPart root) {
-        super(root);
-        this.LowerTorso = root.getChild("LowerTorso");
+    public ArmorHeadlessKnightModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.LowerTorso = modelPart.getChild("LowerTorso");
 
         this.RightLeg = LowerTorso.getChild("RightLeg");
         this.LeftLeg = LowerTorso.getChild("LeftLeg");

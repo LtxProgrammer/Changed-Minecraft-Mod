@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-public class QuadrupedalArmor extends ArmorItem implements WearableItem {
+public class QuadrupedalArmor extends ArmorItem implements ExtendedItemProperties {
     public static boolean useQuadrupedalModel(EquipmentSlot slot) {
         return slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET;
     }
@@ -82,22 +82,20 @@ public class QuadrupedalArmor extends ArmorItem implements WearableItem {
     }
 
     @Override
-    public void wearTick(LivingEntity entity, ItemStack itemStack) {}
+    public void wearTick(ItemStack itemStack, LivingEntity wearer) {}
 
     @Override
-    public boolean customWearRenderer() {
-        return false;
-    }
+    public boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
+        if (!ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot))
+            return false;
 
-    @Override
-    public boolean allowedToKeepWearing(LivingEntity entity) {
-        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
         if (instance != null) {
             return instance.getParent().legCount == 4 && instance.shouldApplyAbilities();
         }
 
         else {
-            var variant = TransfurVariant.getEntityVariant(entity);
+            var variant = TransfurVariant.getEntityVariant(wearer);
             return variant != null && variant.legCount == 4;
         }
     }

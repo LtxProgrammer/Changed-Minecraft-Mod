@@ -31,12 +31,12 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorUpperBodyModel<T>> animator;
 
-    public ArmorUpperBodyModel(ModelPart root) {
-        super(root);
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.LeftArm = root.getChild("LeftArm");
-        this.RightArm = root.getChild("RightArm");
+    public ArmorUpperBodyModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.LeftArm = modelPart.getChild("LeftArm");
+        this.RightArm = modelPart.getChild("RightArm");
 
         this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
                 .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm));
@@ -105,8 +105,8 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
-        public RemodelMale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelMale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.LeftArm = modelPart.getChild("LeftArm");
@@ -176,8 +176,8 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
-        public RemodelFemale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelFemale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.LeftArm = modelPart.getChild("LeftArm");

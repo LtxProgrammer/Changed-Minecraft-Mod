@@ -32,9 +32,9 @@ public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>>
     private final ModelPart LowerTorso;
     private final HumanoidAnimator<T, ArmorLatexCentaurLowerModel<T>> animator;
 
-    public ArmorLatexCentaurLowerModel(ModelPart root) {
-        super(root);
-        this.LowerTorso = root.getChild("LowerTorso");
+    public ArmorLatexCentaurLowerModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.LowerTorso = modelPart.getChild("LowerTorso");
         this.FrontRightLeg = LowerTorso.getChild("RightLeg");
         this.FrontLeftLeg = LowerTorso.getChild("LeftLeg");
         this.BackRightLeg = LowerTorso.getChild("RightLeg2");

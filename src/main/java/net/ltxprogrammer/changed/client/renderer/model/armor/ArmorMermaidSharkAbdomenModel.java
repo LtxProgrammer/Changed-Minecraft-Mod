@@ -30,8 +30,8 @@ public class ArmorMermaidSharkAbdomenModel<T extends ChangedEntity> extends Late
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorMermaidSharkAbdomenModel<T>> animator;
 
-    public ArmorMermaidSharkAbdomenModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorMermaidSharkAbdomenModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Abdomen = modelPart.getChild("Abdomen");
         this.LowerAbdomen = Abdomen.getChild("LowerAbdomen");
         this.Tail = LowerAbdomen.getChild("Tail");

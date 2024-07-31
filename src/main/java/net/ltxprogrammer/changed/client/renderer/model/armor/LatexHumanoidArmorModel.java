@@ -30,9 +30,11 @@ import java.util.Map;
 
 public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends EntityModel<T>> extends AdvancedHumanoidModel<T> implements AdvancedHumanoidModelInterface<T, M> {
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
+    public final ArmorModel armorModel;
 
-    public LatexHumanoidArmorModel(ModelPart root) {
+    public LatexHumanoidArmorModel(ModelPart root, ArmorModel model) {
         super(root);
+        this.armorModel = model;
     }
 
     public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
@@ -152,6 +154,10 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
 
     @Nullable
     public HelperModel getTransfurHelperModel(Limb limb) {
-        return null;
+        return switch (limb) {
+            case LEFT_LEG -> TransfurHelper.getDigitigradeLeftLeg(this.armorModel);
+            case RIGHT_LEG -> TransfurHelper.getDigitigradeRightLeg(this.armorModel);
+            default -> null;
+        };
     }
 }

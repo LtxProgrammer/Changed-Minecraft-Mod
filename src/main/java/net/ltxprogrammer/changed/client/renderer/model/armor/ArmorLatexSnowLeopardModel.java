@@ -33,8 +33,8 @@ public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHu
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexSnowLeopardModel<T>> animator;
 
-    public ArmorLatexSnowLeopardModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexSnowLeopardModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.Tail = Torso.getChild("Tail");
@@ -151,8 +151,8 @@ public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHu
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelMale<T>> animator;
 
-        public RemodelMale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelMale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");
@@ -260,8 +260,8 @@ public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHu
         private final ModelPart RightArm;
         private final HumanoidAnimator<T, RemodelFemale<T>> animator;
 
-        public RemodelFemale(ModelPart modelPart) {
-            super(modelPart);
+        public RemodelFemale(ModelPart modelPart, ArmorModel model) {
+            super(modelPart, model);
             this.Head = modelPart.getChild("Head");
             this.Torso = modelPart.getChild("Torso");
             this.Tail = Torso.getChild("Tail");

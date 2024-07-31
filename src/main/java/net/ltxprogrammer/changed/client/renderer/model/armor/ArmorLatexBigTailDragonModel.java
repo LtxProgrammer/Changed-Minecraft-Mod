@@ -32,8 +32,8 @@ public class ArmorLatexBigTailDragonModel<T extends ChangedEntity> extends Latex
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexBigTailDragonModel<T>> animator;
 
-    public ArmorLatexBigTailDragonModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexBigTailDragonModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

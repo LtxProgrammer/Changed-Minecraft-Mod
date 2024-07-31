@@ -34,8 +34,8 @@ public class ArmorLatexFemaleWingedDragonModel<T extends ChangedEntity> extends 
     private final ModelPart LeftWing;
     private final HumanoidAnimator<T, ArmorLatexFemaleWingedDragonModel<T>> animator;
 
-    public ArmorLatexFemaleWingedDragonModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexFemaleWingedDragonModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

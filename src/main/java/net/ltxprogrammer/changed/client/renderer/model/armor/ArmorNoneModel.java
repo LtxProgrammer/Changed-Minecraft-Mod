@@ -19,8 +19,8 @@ public class ArmorNoneModel<T extends ChangedEntity> extends LatexHumanoidArmorM
 
     private final HumanoidAnimator<T, ArmorNoneModel<T>> animator;
 
-    public ArmorNoneModel(ModelPart root) {
-        super(root);
+    public ArmorNoneModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.animator = HumanoidAnimator.of(this);
     }
 

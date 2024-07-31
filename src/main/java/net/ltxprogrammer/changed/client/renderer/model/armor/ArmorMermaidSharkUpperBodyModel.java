@@ -27,12 +27,12 @@ public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends La
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> animator;
 
-    public ArmorMermaidSharkUpperBodyModel(ModelPart root) {
-        super(root);
-        this.Head = root.getChild("Head");
-        this.Torso = root.getChild("Torso");
-        this.LeftArm = root.getChild("LeftArm");
-        this.RightArm = root.getChild("RightArm");
+    public ArmorMermaidSharkUpperBodyModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
+        this.Head = modelPart.getChild("Head");
+        this.Torso = modelPart.getChild("Torso");
+        this.LeftArm = modelPart.getChild("LeftArm");
+        this.RightArm = modelPart.getChild("RightArm");
 
         animator = HumanoidAnimator.of(this).hipOffset(4.0f)
                 .addPreset(AnimatorPresets.leglessSharkUpperBodyArmor(

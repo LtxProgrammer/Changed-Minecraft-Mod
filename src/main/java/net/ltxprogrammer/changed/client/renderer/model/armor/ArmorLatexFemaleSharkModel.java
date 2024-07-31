@@ -32,8 +32,8 @@ public class ArmorLatexFemaleSharkModel<T extends ChangedEntity> extends LatexHu
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorLatexFemaleSharkModel<T>> animator;
 
-    public ArmorLatexFemaleSharkModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexFemaleSharkModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");

@@ -28,8 +28,8 @@ public class ArmorSpecialLatexModel<T extends ChangedEntity> extends LatexHumano
     private final ModelPart Tail;
     private final HumanoidAnimator<T, ArmorSpecialLatexModel<T>> animator;
 
-    public ArmorSpecialLatexModel(ModelPart root, PatreonBenefits.ModelData form) {
-        super(root);
+    public ArmorSpecialLatexModel(ModelPart root, ArmorModel model, PatreonBenefits.ModelData form) {
+        super(root, model);
         this.RightLeg = root.getChild("RightLeg");
         this.LeftLeg = root.getChild("LeftLeg");
         this.Head = root.getChild("Head");

@@ -29,8 +29,8 @@ public class ArmorLatexWhiteKnightModel<T extends ChangedEntity> extends LatexHu
     private final ModelPart RightArm;
     private final HumanoidAnimator<T, ArmorLatexWhiteKnightModel<T>> animator;
 
-    public ArmorLatexWhiteKnightModel(ModelPart modelPart) {
-        super(modelPart);
+    public ArmorLatexWhiteKnightModel(ModelPart modelPart, ArmorModel model) {
+        super(modelPart, model);
         this.Head = modelPart.getChild("Head");
         this.Torso = modelPart.getChild("Torso");
         this.LeftLeg = modelPart.getChild("LeftLeg");
