@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexDragon;
+import net.ltxprogrammer.changed.entity.beast.DarkDragon;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkLatexDragon> implements AdvancedHumanoidModelInterface<DarkLatexDragon, DarkLatexDragonModel> {
+public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkDragon> implements AdvancedHumanoidModelInterface<DarkDragon, DarkLatexDragonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_latex_dragon"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_dragon"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -30,7 +30,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkLatexDragon>
     private final ModelPart Tail;
     private final ModelPart RightWing;
     private final ModelPart LeftWing;
-    private final HumanoidAnimator<DarkLatexDragon, DarkLatexDragonModel> animator;
+    private final HumanoidAnimator<DarkDragon, DarkLatexDragonModel> animator;
 
     public DarkLatexDragonModel(ModelPart root) {
         super(root);
@@ -193,7 +193,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkLatexDragon>
     }
 
     @Override
-    public void prepareMobModel(DarkLatexDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(DarkDragon p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -202,7 +202,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkLatexDragon>
     }
 
     @Override
-    public void setupAnim(@NotNull DarkLatexDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull DarkDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -234,7 +234,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkLatexDragon>
     }
 
     @Override
-    public HumanoidAnimator<DarkLatexDragon, DarkLatexDragonModel> getAnimator() {
+    public HumanoidAnimator<DarkDragon, DarkLatexDragonModel> getAnimator() {
         return animator;
     }
 }

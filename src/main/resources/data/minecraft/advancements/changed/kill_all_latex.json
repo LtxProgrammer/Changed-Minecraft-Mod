@@ -47,14 +47,14 @@
         ]
       }
     },
-    "changed:dark_latex_dragon": {
+    "changed:dark_dragon": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:dark_latex_dragon"
+              "type": "changed:dark_dragon"
             },
             "entity": "this"
           }
@@ -173,14 +173,14 @@
         ]
       }
     },
-    "changed:latex_beifeng": {
+    "changed:beifeng": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:latex_beifeng"
+              "type": "changed:beifeng"
             },
             "entity": "this"
           }
@@ -243,28 +243,28 @@
         ]
       }
     },
-    "changed:latex_crystal_wolf": {
+    "changed:crystal_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:latex_crystal_wolf"
+              "type": "changed:crystal_wolf"
             },
             "entity": "this"
           }
         ]
       }
     },
-    "changed:latex_crystal_wolf_horned": {
+    "changed:crystal_wolf_horned": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:latex_crystal_wolf_horned"
+              "type": "changed:crystal_wolf_horned"
             },
             "entity": "this"
           }
@@ -1036,7 +1036,7 @@
       "changed:behemoth_head"
     ],
     [
-      "changed:dark_latex_dragon"
+      "changed:dark_dragon"
     ],
     [
       "changed:dark_latex_wolf_pup"
@@ -1063,7 +1063,7 @@
       "changed:latex_bee"
     ],
     [
-      "changed:latex_beifeng"
+      "changed:beifeng"
     ],
     [
       "changed:latex_benign_wolf"
@@ -1078,10 +1078,10 @@
       "changed:latex_crocodile"
     ],
     [
-      "changed:latex_crystal_wolf"
+      "changed:crystal_wolf"
     ],
     [
-      "changed:latex_crystal_wolf_horned"
+      "changed:crystal_wolf_horned"
     ],
     [
       "changed:latex_deer"

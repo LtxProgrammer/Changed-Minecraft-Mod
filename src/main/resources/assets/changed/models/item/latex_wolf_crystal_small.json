@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "changed:blocks/latex_wolf_crystal_small"
-  }
-}

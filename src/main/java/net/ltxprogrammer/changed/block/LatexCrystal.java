@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class LatexCrystal extends AbstractLatexCrystal {
+public class LatexCrystal extends TransfurCrystalBlock {
     public final ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable;
 
     public LatexCrystal(ImmutableList<Supplier<EntityType<? extends DarkLatexEntity>>> spawnable, Supplier<? extends Item> crystal, Properties properties) {

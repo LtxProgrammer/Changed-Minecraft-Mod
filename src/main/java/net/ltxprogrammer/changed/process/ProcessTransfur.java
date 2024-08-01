@@ -83,6 +83,8 @@ public class ProcessTransfur {
     public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
         if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
             return false;
+        if (player.isDeadOrDying() || player.isRemoved())
+            return false;
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
         if (player.invulnerableTime > 10 && !justHit) {
@@ -171,6 +173,9 @@ public class ProcessTransfur {
         if (entity instanceof Player player)
             return progressPlayerTransfur(player, amount, transfurVariant, context);
         else {
+            if (entity.isDeadOrDying() || entity.isRemoved())
+                return false;
+
             amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
             float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));

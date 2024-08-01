@@ -33,25 +33,25 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
                 grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_CRYSTAL), 16));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_BEIFENG_CRYSTAL =
             FeatureUtils.register(Changed.modResourceStr("patch_beifeng_crystal"), Feature.RANDOM_PATCH,
-                grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_BEIFENG_CRYSTAL), 4));
+                grassPatch(DeferredStateProvider.of(ChangedBlocks.BEIFENG_CRYSTAL), 4));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_BEIFENG_CRYSTAL_SMALL =
             FeatureUtils.register(Changed.modResourceStr("patch_beifeng_crystal_small"), Feature.RANDOM_PATCH,
-                    grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_BEIFENG_CRYSTAL_SMALL), 4));
+                    grassPatch(DeferredStateProvider.of(ChangedBlocks.BEIFENG_CRYSTAL_SMALL), 4));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_DARK_LATEX_CRYSTAL_LARGE =
             FeatureUtils.register(Changed.modResourceStr("patch_dark_latex_crystal_large"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.DARK_LATEX_CRYSTAL_LARGE), 6));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_DARK_LATEX_DRAGON_CRYSTAL =
-            FeatureUtils.register(Changed.modResourceStr("patch_dark_latex_dragon_crystal"), Feature.RANDOM_PATCH,
-                    grassPatch(DeferredStateProvider.of(ChangedBlocks.DARK_LATEX_DRAGON_CRYSTAL), 2));
+            FeatureUtils.register(Changed.modResourceStr("patch_dark_dragon_crystal"), Feature.RANDOM_PATCH,
+                    grassPatch(DeferredStateProvider.of(ChangedBlocks.DARK_DRAGON_CRYSTAL), 2));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_LATEX_PUP_CRYSTAL =
             FeatureUtils.register(Changed.modResourceStr("patch_latex_pup_crystal"), Feature.RANDOM_PATCH,
                     grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_PUP_CRYSTAL), 1));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_WOLF_CRYSTAL =
             FeatureUtils.register(Changed.modResourceStr("patch_wolf_crystal"), Feature.RANDOM_PATCH,
-                grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_WOLF_CRYSTAL), 4));
+                grassPatch(DeferredStateProvider.of(ChangedBlocks.WOLF_CRYSTAL), 4));
     public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> PATCH_WOLF_CRYSTAL_SMALL =
             FeatureUtils.register(Changed.modResourceStr("patch_wolf_crystal_small"), Feature.RANDOM_PATCH,
-                    grassPatch(DeferredStateProvider.of(ChangedBlocks.LATEX_WOLF_CRYSTAL_SMALL), 4));
+                    grassPatch(DeferredStateProvider.of(ChangedBlocks.WOLF_CRYSTAL_SMALL), 4));
 
     public Biome build() {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
@@ -83,7 +83,7 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
                         List.of(NoiseThresholdCountPlacement.of(-0.8D, 3, 2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                                 BiomeFilter.biome())));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
-                PlacementUtils.register(Changed.modResourceStr("dark_latex_plains_dark_latex_dragon_crystal"), PATCH_DARK_LATEX_DRAGON_CRYSTAL,
+                PlacementUtils.register(Changed.modResourceStr("dark_latex_plains_dark_dragon_crystal"), PATCH_DARK_LATEX_DRAGON_CRYSTAL,
                         List.of(NoiseThresholdCountPlacement.of(-0.8D, 5, 4), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                                 BiomeFilter.biome())));
         genBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,

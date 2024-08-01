@@ -41,11 +41,11 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
         var tailSecondary = tailPrimary.getChild("TailSecondary");
         var tailTertiary = tailSecondary.getChild("TailTertiary");
         var tailQuaternary = tailTertiary.getChild("TailQuaternary");
-        var tailQuinary = tailQuaternary.getChild("TailQuinary");
+        /*var tailQuinary = tailQuaternary.getChild("TailQuinary");
         var tailSenary = tailQuinary.getChild("TailSenary");
         var tailSeptenary = tailSenary.getChild("TailSeptenary");
         var tailOctonary = tailSeptenary.getChild("TailOctonary");
-        var tailNonary = tailOctonary.getChild("TailNonary");
+        var tailNonary = tailOctonary.getChild("TailNonary");*/
 
         var leftLowerLeg = LeftLeg.getChild("LeftLowerLeg");
         var leftFoot = leftLowerLeg.getChild("LeftFoot");
@@ -53,10 +53,10 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-                .addPreset(AnimatorPresets.wolfLike(
+                .addPreset(AnimatorPresets.catLike(
                         Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
                         Torso, LeftArm, RightArm,
-                        Tail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary, tailQuinary, tailSenary, tailSeptenary, tailOctonary, tailNonary),
+                        Tail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary/*, tailQuinary, tailSenary, tailSeptenary, tailOctonary, tailNonary*/),
                         LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
     }
 

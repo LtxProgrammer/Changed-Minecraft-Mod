@@ -6,12 +6,12 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexBeifengModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleDragonModel;
-import net.ltxprogrammer.changed.entity.beast.LatexBeifeng;
+import net.ltxprogrammer.changed.entity.beast.Beifeng;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexBeifengRenderer extends AdvancedHumanoidRenderer<LatexBeifeng, LatexBeifengModel, ArmorLatexMaleDragonModel<LatexBeifeng>> {
+public class LatexBeifengRenderer extends AdvancedHumanoidRenderer<Beifeng, LatexBeifengModel, ArmorLatexMaleDragonModel<Beifeng>> {
     public LatexBeifengRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexBeifengModel(context.bakeLayer(LatexBeifengModel.LAYER_LOCATION)),
                 ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
@@ -22,7 +22,7 @@ public class LatexBeifengRenderer extends AdvancedHumanoidRenderer<LatexBeifeng,
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LatexBeifeng p_114482_) {
-        return Changed.modResource("textures/latex_beifeng.png");
+    public ResourceLocation getTextureLocation(Beifeng p_114482_) {
+        return Changed.modResource("textures/beifeng.png");
     }
 }

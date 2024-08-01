@@ -6,11 +6,11 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexDragonModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWingedDragonModel;
-import net.ltxprogrammer.changed.entity.beast.DarkLatexDragon;
+import net.ltxprogrammer.changed.entity.beast.DarkDragon;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class DarkLatexDragonRenderer extends AdvancedHumanoidRenderer<DarkLatexDragon, DarkLatexDragonModel, ArmorLatexMaleWingedDragonModel<DarkLatexDragon>> {
+public class DarkLatexDragonRenderer extends AdvancedHumanoidRenderer<DarkDragon, DarkLatexDragonModel, ArmorLatexMaleWingedDragonModel<DarkDragon>> {
     public DarkLatexDragonRenderer(EntityRendererProvider.Context context) {
         super(context, new DarkLatexDragonModel(context.bakeLayer(DarkLatexDragonModel.LAYER_LOCATION)),
                 ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);
@@ -20,7 +20,7 @@ public class DarkLatexDragonRenderer extends AdvancedHumanoidRenderer<DarkLatexD
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DarkLatexDragon p_114482_) {
-        return Changed.modResource("textures/dark_latex_dragon.png");
+    public ResourceLocation getTextureLocation(DarkDragon p_114482_) {
+        return Changed.modResource("textures/dark_dragon.png");
     }
 }

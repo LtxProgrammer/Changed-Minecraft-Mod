@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "changed:latex_wolf_crystal_fragment"
+      "item": "changed:wolf_crystal_fragment"
     }
   },
   "result": {
-    "item": "changed:latex_wolf_crystal_block"
+    "item": "changed:wolf_crystal_block"
   }
 }

@@ -43,16 +43,16 @@ public class ChangedItems {
     });
     public static final RegistryObject<Syringe> SYRINGE = register("syringe", () -> new Syringe(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<BloodSyringe> BLOOD_SYRINGE = register("blood_syringe", () -> new BloodSyringe(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_BEIFENG_CRYSTAL_FRAGMENT = register("latex_beifeng_crystal_fragment",
-            () -> new AbstractLatexCrystalItem(ChangedTransfurVariants.LATEX_BEIFENG));
+    public static final RegistryObject<TransfurCrystalItem> BEIFENG_CRYSTAL_FRAGMENT = register("beifeng_crystal_fragment",
+            () -> new TransfurCrystalItem(ChangedTransfurVariants.BEIFENG));
     public static final RegistryObject<LatexFlask> LATEX_FLASK = register("latex_flask", () -> new LatexFlask(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexInkballItem> LATEX_INKBALL = register("latex_inkball", LatexInkballItem::new);
     public static final RegistryObject<LatexSyringe> LATEX_SYRINGE = register("latex_syringe", () -> new LatexSyringe(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<LatexTippedArrowItem> LATEX_TIPPED_ARROW = register("latex_tipped_arrow", LatexTippedArrowItem::new);
-    public static final RegistryObject<AbstractLatexCrystalItem> LATEX_WOLF_CRYSTAL_FRAGMENT = register("latex_wolf_crystal_fragment",
-            () -> new AbstractLatexCrystalItem(ChangedTransfurVariants.LATEX_CRYSTAL_WOLF));
-    public static final RegistryObject<AbstractLatexCrystalItem> DARK_LATEX_DRAGON_CRYSTAL_FRAGMENT = register("dark_latex_dragon_crystal_fragment",
-            () -> new AbstractLatexCrystalItem(ChangedTransfurVariants.DARK_LATEX_DRAGON));
+    public static final RegistryObject<TransfurCrystalItem> WOLF_CRYSTAL_FRAGMENT = register("wolf_crystal_fragment",
+            () -> new TransfurCrystalItem(ChangedTransfurVariants.CRYSTAL_WOLF));
+    public static final RegistryObject<TransfurCrystalItem> DARK_DRAGON_CRYSTAL_FRAGMENT = register("dark_dragon_crystal_fragment",
+            () -> new TransfurCrystalItem(ChangedTransfurVariants.DARK_DRAGON));
     public static final RegistryObject<AbstractLatexItem> WHITE_LATEX_GOO = register("white_latex_goo", () -> new AbstractLatexItem(LatexType.WHITE_LATEX));
     public static final RegistryObject<AbstractLatexBucket> WHITE_LATEX_BUCKET = register("white_latex_bucket", AbstractLatexBucket.from(ChangedFluids.WHITE_LATEX));
 

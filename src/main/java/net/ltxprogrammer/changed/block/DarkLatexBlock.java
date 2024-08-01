@@ -38,17 +38,17 @@ public class DarkLatexBlock extends AbstractLatexBlock {
         }
     }
 
-    private static final List<Supplier<? extends AbstractLatexCrystal>> SMALL_CRYSTALS = List.of(
+    private static final List<Supplier<? extends TransfurCrystalBlock>> SMALL_CRYSTALS = List.of(
             ChangedBlocks.LATEX_CRYSTAL,
-            ChangedBlocks.DARK_LATEX_DRAGON_CRYSTAL,
-            ChangedBlocks.LATEX_BEIFENG_CRYSTAL_SMALL,
-            ChangedBlocks.LATEX_WOLF_CRYSTAL_SMALL
+            ChangedBlocks.DARK_DRAGON_CRYSTAL,
+            ChangedBlocks.BEIFENG_CRYSTAL_SMALL,
+            ChangedBlocks.WOLF_CRYSTAL_SMALL
     );
 
-    private static final List<Supplier<? extends AbstractLatexCrystal>> CRYSTALS = List.of(
+    private static final List<Supplier<? extends TransfurCrystalBlock>> CRYSTALS = List.of(
             ChangedBlocks.DARK_LATEX_CRYSTAL_LARGE,
-            ChangedBlocks.LATEX_BEIFENG_CRYSTAL,
-            ChangedBlocks.LATEX_WOLF_CRYSTAL
+            ChangedBlocks.BEIFENG_CRYSTAL,
+            ChangedBlocks.WOLF_CRYSTAL
     );
 
     @SubscribeEvent

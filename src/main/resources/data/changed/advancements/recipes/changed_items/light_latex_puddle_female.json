@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:light_latex_puddle_female"
+      "changed:white_latex_puddle_female"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:light_latex_puddle_female"
+        "recipe": "changed:white_latex_puddle_female"
       }
     }
   },

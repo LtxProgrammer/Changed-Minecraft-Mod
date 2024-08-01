@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.entity.beast.LatexCrystalWolf;
+import net.ltxprogrammer.changed.entity.beast.CrystalWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,8 +14,8 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexCrystalWolfModel extends AdvancedHumanoidModel<LatexCrystalWolf> implements AdvancedHumanoidModelInterface<LatexCrystalWolf, LatexCrystalWolfModel> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_crystal_wolf"), "main");
+public class LatexCrystalWolfModel extends AdvancedHumanoidModel<CrystalWolf> implements AdvancedHumanoidModelInterface<CrystalWolf, LatexCrystalWolfModel> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("crystal_wolf"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
@@ -23,7 +23,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<LatexCrystalWol
     private final ModelPart Head;
     private final ModelPart Torso;
     private final ModelPart Tail;
-    private final HumanoidAnimator<LatexCrystalWolf, LatexCrystalWolfModel> animator;
+    private final HumanoidAnimator<CrystalWolf, LatexCrystalWolfModel> animator;
 
     public LatexCrystalWolfModel(ModelPart root) {
         super(root);
@@ -131,7 +131,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<LatexCrystalWol
     }
 
     @Override
-    public void prepareMobModel(LatexCrystalWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
+    public void prepareMobModel(CrystalWolf p_102861_, float p_102862_, float p_102863_, float p_102864_) {
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
@@ -140,7 +140,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<LatexCrystalWol
     }
 
     @Override
-    public void setupAnim(LatexCrystalWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(CrystalWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
@@ -172,7 +172,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<LatexCrystalWol
     }
 
     @Override
-    public HumanoidAnimator<LatexCrystalWolf, LatexCrystalWolfModel> getAnimator() {
+    public HumanoidAnimator<CrystalWolf, LatexCrystalWolfModel> getAnimator() {
         return animator;
     }
 }

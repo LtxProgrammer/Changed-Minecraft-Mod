@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
@@ -82,7 +81,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
         if (latexType != LatexType.DARK_LATEX) return false;
 
         BlockState plant = plantable.getPlant(world, pos.relative(facing));
-        if (plant.getBlock() instanceof AbstractLatexCrystal)
+        if (plant.getBlock() instanceof TransfurCrystalBlock)
             return true;
         else
             return false;

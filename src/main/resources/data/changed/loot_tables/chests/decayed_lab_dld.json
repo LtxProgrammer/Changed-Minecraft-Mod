@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "changed:dark_latex_dragon_crystal_fragment"
+          "name": "changed:dark_dragon_crystal_fragment"
         }
       ]
     },
@@ -84,7 +84,7 @@
               "add": false
             }
           ],
-          "name": "changed:latex_beifeng_crystal_fragment"
+          "name": "changed:beifeng_crystal_fragment"
         },
         {
           "type": "minecraft:item",
@@ -100,7 +100,7 @@
               "add": false
             }
           ],
-          "name": "changed:latex_wolf_crystal_fragment"
+          "name": "changed:wolf_crystal_fragment"
         }
       ]
     },
@@ -138,8 +138,8 @@
             {
               "function": "changed:random_variant",
               "variants": [
-                "changed:form_dark_latex_dragon",
-                "changed:form_latex_beifeng",
+                "changed:form_dark_dragon",
+                "changed:form_beifeng",
                 "changed:form_latex_yufeng"
               ]
             },
