@@ -59,9 +59,15 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("white_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.PURE_WHITE_LATEX_WOLF));
 
         map.put(Changed.modResource("latex_beifeng_crystal_fragment"), ChangedItems.BEIFENG_CRYSTAL_FRAGMENT.getId());
+        map.put(Changed.modResource("dark_latex_dragon_crystal_fragment"), ChangedItems.DARK_DRAGON_CRYSTAL_FRAGMENT.getId());
     });
 
     private static final HashMap<ResourceLocation, ResourceLocation> BLOCK_ID_REMAP = Util.make(new HashMap<>(), map -> {
+
+    });
+
+    // IDs that both blocks and items share
+    private static final HashMap<ResourceLocation, ResourceLocation> BLOCK_ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("dark_latex_dragon_crystal"), ChangedBlocks.DARK_DRAGON_CRYSTAL.getId());
         map.put(Changed.modResource("latex_beifeng_crystal"), ChangedBlocks.BEIFENG_CRYSTAL.getId());
         map.put(Changed.modResource("latex_beifeng_crystal_small"), ChangedBlocks.BEIFENG_CRYSTAL_SMALL.getId());
@@ -146,6 +152,7 @@ public class ChangedDataFixer {
 
     private static void updateBlock(@NotNull CompoundTag blockTag) {
         updateID(BLOCK_ID_REMAP, blockTag, "Name");
+        updateID(BLOCK_ITEM_ID_REMAP, blockTag, "Name");
     }
 
     private static void updateItemTag(@NotNull CompoundTag itemTag) {
@@ -154,6 +161,7 @@ public class ChangedDataFixer {
 
     private static void updateItem(@NotNull CompoundTag itemStack) {
         updateID(ITEM_ID_REMAP, itemStack, "id");
+        updateID(BLOCK_ITEM_ID_REMAP, itemStack, "id");
         if (itemStack.contains("tag")) {
             updateItemTag(itemStack.getCompound("tag"));
         }
