@@ -39,7 +39,7 @@ public class RecipeDisks {
 
     public static final Supplier<ItemStack> DISK_DARK_LATEX_WOLF = register(() -> createDisk("dark_latex_wolf", "Dr. Kazuma"));
     public static final Supplier<ItemStack> DISK_DARK_LATEX_YUFENG = register(() -> createDisk("dark_latex_yufeng", "Dr. Kazuma"));
-    public static final Supplier<ItemStack> DISK_DARK_LATEX_DRAGON = register(() -> createDisk("dark_dragon", "Dr. Kazuma"));
+    public static final Supplier<ItemStack> DISK_DARK_DRAGON = register(() -> createDisk("dark_dragon", "Dr. Kazuma"));
 
     public static final Supplier<ItemStack> DISK_BEIFENG = register(() -> createDisk("beifeng", "Dr. Gent"));
 

@@ -102,8 +102,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SHARK).stepSize(0.7f).gills().absorbing());
     public static final RegistryObject<TransfurVariant<LatexSnake>> LATEX_SNAKE = register("form_latex_snake",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SNAKE).stepSize(1.1f).absorbing().noLegs().addAbility(ChangedAbilities.SLITHER));
-    public static final RegistryObject<TransfurVariant<LatexSniperDog>> LATEX_SNIPER_DOG = register("form_latex_sniper_dog",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_SNIPER_DOG).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
+    public static final RegistryObject<TransfurVariant<SniperDog>> SNIPER_DOG = register("form_sniper_dog",
+            TransfurVariant.Builder.of(ChangedEntities.SNIPER_DOG).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexSquirrel>> LATEX_SQUIRREL = register("form_latex_squirrel",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SQUIRREL).stepSize(0.7f).reducedFall());
     public static final RegistryObject<TransfurVariant<LatexStiger>> LATEX_STIGER = register("form_latex_stiger",

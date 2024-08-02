@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSniperDog extends AbstractLatexWolf {
-    public LatexSniperDog(EntityType<? extends LatexSniperDog> p_19870_, Level p_19871_) {
+public class SniperDog extends AbstractLatexWolf {
+    public SniperDog(EntityType<? extends SniperDog> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
