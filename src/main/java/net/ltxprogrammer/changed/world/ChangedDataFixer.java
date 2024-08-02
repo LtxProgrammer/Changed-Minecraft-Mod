@@ -36,6 +36,9 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("aerosol_latex_wolf"), ChangedEntities.GAS_WOLF.getId());
         map.put(Changed.modResource("dark_latex_dragon"), ChangedEntities.DARK_DRAGON.getId());
         map.put(Changed.modResource("latex_beifeng"), ChangedEntities.BEIFENG.getId());
+        map.put(Changed.modResource("latex_crystal_wolf"), ChangedEntities.CRYSTAL_WOLF.getId());
+        map.put(Changed.modResource("latex_crystal_wolf_horned"), ChangedEntities.CRYSTAL_WOLF_HORNED.getId());
+        map.put(Changed.modResource("latex_sniper_dog"), ChangedEntities.SNIPER_DOG.getId());
         map.put(Changed.modResource("light_latex_centaur"), ChangedEntities.WHITE_LATEX_CENTAUR.getId());
         map.put(Changed.modResource("light_latex_knight"), ChangedEntities.WHITE_LATEX_KNIGHT.getId());
         map.put(Changed.modResource("light_latex_knight_fusion"), ChangedEntities.WHITE_LATEX_KNIGHT_FUSION.getId());
@@ -47,9 +50,11 @@ public class ChangedDataFixer {
 
     private static final HashMap<ResourceLocation, ResourceLocation> ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("aerosol_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.GAS_WOLF));
+        map.put(Changed.modResource("dark_latex_dragon_spawn_egg"), spawnEggHelper(ChangedEntities.DARK_DRAGON));
         map.put(Changed.modResource("latex_beifeng_spawn_egg"), spawnEggHelper(ChangedEntities.BEIFENG));
         map.put(Changed.modResource("latex_crystal_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.CRYSTAL_WOLF));
         map.put(Changed.modResource("latex_crystal_wolf_horned_spawn_egg"), spawnEggHelper(ChangedEntities.CRYSTAL_WOLF_HORNED));
+        map.put(Changed.modResource("latex_sniper_dog_spawn_egg"), spawnEggHelper(ChangedEntities.SNIPER_DOG));
         map.put(Changed.modResource("light_latex_centaur_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_CENTAUR));
         map.put(Changed.modResource("light_latex_knight_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_KNIGHT));
         map.put(Changed.modResource("light_latex_knight_fusion_spawn_egg"), spawnEggHelper(ChangedEntities.WHITE_LATEX_KNIGHT_FUSION));
@@ -84,6 +89,7 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("form_latex_beifeng"), ChangedTransfurVariants.BEIFENG.getId());
         map.put(Changed.modResource("form_latex_crystal_wolf"), ChangedTransfurVariants.CRYSTAL_WOLF.getId());
         map.put(Changed.modResource("form_latex_crystal_wolf_horned"), ChangedTransfurVariants.CRYSTAL_WOLF_HORNED.getId());
+        map.put(Changed.modResource("form_latex_sniper_dog"), ChangedTransfurVariants.SNIPER_DOG.getId());
         map.put(Changed.modResource("form_light_latex_centaur"), ChangedTransfurVariants.WHITE_LATEX_CENTAUR.getId());
         map.put(Changed.modResource("form_light_latex_knight"), ChangedTransfurVariants.WHITE_LATEX_KNIGHT.getId());
         map.put(Changed.modResource("form_light_latex_knight_fusion"), ChangedTransfurVariants.WHITE_LATEX_KNIGHT_FUSION.getId());
@@ -92,6 +98,8 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("form_light_latex_wolf/female"), ChangedTransfurVariants.WHITE_LATEX_WOLF_FEMALE.getId());
         map.put(Changed.modResource("form_white_latex_wolf"), ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.getId());
     });
+
+    //TODO: add remap for latex syringes and arrows
 
     private static final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {
         map.put("DARK_LATEX", LatexType.DARK_LATEX.name());

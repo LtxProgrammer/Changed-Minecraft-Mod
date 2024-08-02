@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:dark_latex_block"
+    ]
+  },
+  "criteria": {
+    "has_dark_latex_goo": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:dark_latex_goo"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:dark_latex_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dark_latex_goo",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -677,14 +677,14 @@
         ]
       }
     },
-    "changed:latex_sniper_dog": {
+    "changed:sniper_dog": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": [
           {
             "condition": "minecraft:entity_properties",
             "predicate": {
-              "type": "changed:latex_sniper_dog"
+              "type": "changed:sniper_dog"
             },
             "entity": "this"
           }
@@ -1171,7 +1171,7 @@
       "changed:latex_snake"
     ],
     [
-      "changed:latex_sniper_dog"
+      "changed:sniper_dog"
     ],
     [
       "changed:latex_snow_leopard_female"
