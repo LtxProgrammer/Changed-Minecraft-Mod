@@ -55,9 +55,7 @@ public class TransfurProgressOverlay {
         RenderSystem.setShaderTexture(0, DANGER_INDICATOR);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        int x = (screenWidth / 2) - 110;
-        if (!player.getOffhandItem().isEmpty() && player.getMainArm().getOpposite() == HumanoidArm.LEFT)
-            x -= 29;
+        int x = 10;
         int y = screenHeight - 40;
         Gui.blit(poseStack, x, y, 0, 0, 8, 32, 48, 32);
         Gui.blit(poseStack, x, y + Mth.ceil((1.0f - dangerLevel) * 32.0f), 8,  Mth.ceil((1.0f - dangerLevel) * 32.0f), 8, Mth.floor(dangerLevel * 32.0f), 48, 32);

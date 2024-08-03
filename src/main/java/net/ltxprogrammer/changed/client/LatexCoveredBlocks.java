@@ -12,6 +12,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.data.MixedTexture;
+import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.Util;
@@ -48,6 +49,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -572,13 +574,13 @@ public abstract class LatexCoveredBlocks {
             final Registrar registrar = new Registrar(event, MODEL_CACHE, EARLY_CACHE, MODEL_REF_CACHE, uploader, Changed.config.client.generateUniqueTexturesForAllBlocks.get());
             LOGGER.info("Gathering blocks to cover");
 
-            HashSet<ResourceLocation> notCoverable = new HashSet<>();
+            HashSet<RegistryElementPredicate<Block>> notCoverable = new HashSet<>();
             MinecraftForge.EVENT_BUS.post(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
 
-            List<Block> toCover = Registry.BLOCK.stream().filter(block -> {
+            List<Block> toCover = ForgeRegistries.BLOCKS.getValues().stream().filter(block -> {
                 if (!block.getStateDefinition().getProperties().contains(COVERED))
                     return false;
-                return !notCoverable.contains(block.getRegistryName());
+                return notCoverable.stream().noneMatch(pred -> pred.test(block));
             }).toList();
             LOGGER.info("Starting latex cover generation for {} blocks", toCover.size());
             Stopwatch timerFull = Stopwatch.createStarted();
