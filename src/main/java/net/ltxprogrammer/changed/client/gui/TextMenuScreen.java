@@ -49,7 +49,7 @@ public abstract class TextMenuScreen<T extends TextMenu> extends Screen implemen
 
     private final TextFieldHelper textEdit;
 
-    private final Player player;
+    protected final Player player;
     public TextMenuScreen(T menu, Player player, Component title) {
         super(title);
         this.menu = menu;

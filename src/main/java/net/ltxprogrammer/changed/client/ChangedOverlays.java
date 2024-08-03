@@ -31,7 +31,7 @@ public class ChangedOverlays {
         gui.setupOverlayRenderState(true, false);
         TransfurProgressOverlay.renderDangerOverlay(gui, poseStack, partialTick, screenWidth, screenHeight);
     });
-    public static final IIngameOverlay ABILITY_ELEMENT = OverlayRegistry.registerOverlayTop(Changed.modResourceStr("ability"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+    public static final IIngameOverlay ABILITY_ELEMENT = OverlayRegistry.registerOverlayAbove(DANGER_ELEMENT, Changed.modResourceStr("ability"), (gui, poseStack, partialTick, screenWidth, screenHeight) -> {
         gui.setupOverlayRenderState(true, false);
         AbilityOverlay.renderSelectedAbility(gui, poseStack, partialTick, screenWidth, screenHeight);
     });
