@@ -118,7 +118,11 @@ public class Changed {
 
     private void customPacks(final AddPackFindersEvent event) {
         try {
-            event.addRepositorySource(new BuiltinRepositorySource(event.getPackType(), MODID));
+            switch (event.getPackType()) {
+                case CLIENT_RESOURCES, SERVER_DATA ->
+                        event.addRepositorySource(new BuiltinRepositorySource(event.getPackType(), MODID));
+                default -> {}
+            }
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

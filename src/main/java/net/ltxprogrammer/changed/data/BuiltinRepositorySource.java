@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.data;
 
+import kroppeb.stareval.Util;
 import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -26,17 +28,16 @@ public class BuiltinRepositorySource implements RepositorySource {
     private final boolean isJar;
     private final Set<String> packIds = new HashSet<>();
     private final String packsFolder;
-    private static final String RESOURCEPACKS_FOLDER = "resourcepacks";
-    private static final String DATAPACKS_FOLDER = "datapacks";
+    private static final EnumMap<PackType, String> NAMED_FOLDERS = Util.make(new EnumMap<>(PackType.class), map -> {
+        map.put(PackType.CLIENT_RESOURCES, "resourcepacks");
+        map.put(PackType.SERVER_DATA, "datapacks");
+    });
     private static final String MCMETA = "pack.mcmeta";
 
     public BuiltinRepositorySource(PackType type, String modId) throws IOException, NullPointerException {
         this.modId = modId;
         this.modFile = FMLLoader.getLoadingModList().getModFileById(modId).getFile().getFilePath();
-        this.packsFolder = switch (type) {
-            case CLIENT_RESOURCES -> RESOURCEPACKS_FOLDER;
-            case SERVER_DATA -> DATAPACKS_FOLDER;
-        };
+        this.packsFolder = NAMED_FOLDERS.getOrDefault(type, type.getDirectory());
         var file = this.modFile.toFile();
         if (file.isDirectory()) {
             this.isJar = false;
