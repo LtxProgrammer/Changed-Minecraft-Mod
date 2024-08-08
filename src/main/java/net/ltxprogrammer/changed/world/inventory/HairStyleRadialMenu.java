@@ -54,6 +54,6 @@ public class HairStyleRadialMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return ProcessTransfur.isPlayerLatex(player);
+        return ProcessTransfur.isPlayerTransfurred(player);
     }
 }

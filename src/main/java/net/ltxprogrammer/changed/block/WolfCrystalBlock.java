@@ -53,7 +53,7 @@ public class WolfCrystalBlock extends AbstractLatexIceBlock {
     private void triggerCrystal(BlockState blockState, Level level, BlockPos position, Entity entity) {
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity) && !le.isDeadOrDying()) {
-            if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
+            if (entity instanceof Player player && (ProcessTransfur.isPlayerTransfurred(player) || player.isCreative()))
                 return;
         level.scheduleTick(position, this, 20);
         }

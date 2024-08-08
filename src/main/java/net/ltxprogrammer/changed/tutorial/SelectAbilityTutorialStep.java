@@ -26,7 +26,7 @@ public class SelectAbilityTutorialStep implements ChangedTutorialInstance {
 
     public void tick() {
         var player = Minecraft.getInstance().player;
-        if (!ProcessTransfur.isPlayerLatex(player))
+        if (!ProcessTransfur.isPlayerTransfurred(player))
             return; // Wait until player is TF'd
         var variant = ProcessTransfur.getPlayerTransfurVariant(player);
         if (variant == null || variant.isTemporaryFromSuit())

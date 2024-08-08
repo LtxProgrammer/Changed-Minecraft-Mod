@@ -84,7 +84,7 @@ public abstract class TransfurCrystalBlock extends BushBlock implements NonLatex
         if (variant == null) return;
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity)) {
-            if (entity instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+            if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
                 return;
             if (!level.isClientSide) {
                 ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL));

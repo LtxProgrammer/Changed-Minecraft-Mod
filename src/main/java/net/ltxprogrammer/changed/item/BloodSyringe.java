@@ -58,7 +58,7 @@ public class BloodSyringe extends Item implements SpecializedAnimations {
         }
         ChangedSounds.broadcastSound(entity, ChangedSounds.SWORD1, 1, 1);
         if (player != null) {
-            if (ProcessTransfur.isPlayerLatex(player) || (stack.getOrCreateTag().contains("owner") && stack.getTag().getUUID("owner").equals(player.getUUID()))) {
+            if (ProcessTransfur.isPlayerTransfurred(player) || (stack.getOrCreateTag().contains("owner") && stack.getTag().getUUID("owner").equals(player.getUUID()))) {
                 player.heal(1.0f);
             }
 

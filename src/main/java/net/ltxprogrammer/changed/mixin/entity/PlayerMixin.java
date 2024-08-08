@@ -165,12 +165,12 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     public BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
     @Override
-    public TransfurVariantInstance<?> getLatexVariant() {
+    public TransfurVariantInstance<?> getTransfurVariant() {
         return latexVariant;
     }
 
     @Override
-    public void setLatexVariant(TransfurVariantInstance<?> latexVariant) {
+    public void setTransfurVariant(TransfurVariantInstance<?> latexVariant) {
         this.latexVariant = latexVariant;
     }
 

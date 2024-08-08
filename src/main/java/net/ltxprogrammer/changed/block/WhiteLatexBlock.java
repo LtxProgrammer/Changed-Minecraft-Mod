@@ -123,7 +123,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
                 return;
             }
 
-            if (livingEntity instanceof Player player && !player.isSpectator() && !ProcessTransfur.isPlayerLatex(player)) {
+            if (livingEntity instanceof Player player && !player.isSpectator() && !ProcessTransfur.isPlayerTransfurred(player)) {
                 isTargetNearby.set(true);
                 return;
             }

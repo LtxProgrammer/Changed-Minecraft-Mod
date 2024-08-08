@@ -135,7 +135,7 @@ public class LatexPupCrystal extends TransfurCrystalBlock {
         if (variant == null) return;
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity) && !le.isDeadOrDying()) {
-            if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
+            if (entity instanceof Player player && (ProcessTransfur.isPlayerTransfurred(player) || player.isCreative()))
                 return;
             this.extend(state, level, pos);
             if (!level.isClientSide) {

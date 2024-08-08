@@ -27,7 +27,7 @@ public abstract class IronGolemMixin extends AbstractGolem implements NeutralMob
             if (self.isPlayerCreated())
                 return false;
             if (livingEntity instanceof Player player)
-                return !ProcessTransfur.isPlayerOrganic(player);
+                return !ProcessTransfur.isPlayerNotLatex(player);
             else return false;
         }));
     }
