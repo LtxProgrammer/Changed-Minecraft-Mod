@@ -22,10 +22,7 @@ public class LatexMantaRayFemaleRenderer extends AdvancedHumanoidRenderer<LatexM
                 AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
-                .withSclera(Color3.fromInt(0xd2d9e1))
-                .withIris(Color3.fromInt(0xffe64b))
-                .withEyelashes(Color3.fromInt(0x1a1a1b))
-                .build());
+                .withEyelashes(Color3.fromInt(0x1a1a1b)).build());
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
     }
