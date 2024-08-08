@@ -8,11 +8,11 @@ import javax.annotation.Nullable;
 
 public interface PlayerDataExtension {
     @Nullable
-    TransfurVariantInstance<?> getLatexVariant();
-    void setLatexVariant(@Nullable TransfurVariantInstance<?> variant);
+    TransfurVariantInstance<?> getTransfurVariant();
+    void setTransfurVariant(@Nullable TransfurVariantInstance<?> variant);
 
-    default boolean isLatex() {
-        return getLatexVariant() != null;
+    default boolean isTransfurred() {
+        return getTransfurVariant() != null;
     }
 
     @NotNull

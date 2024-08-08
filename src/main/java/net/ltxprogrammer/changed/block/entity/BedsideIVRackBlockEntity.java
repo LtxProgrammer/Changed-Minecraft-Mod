@@ -45,7 +45,7 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
     public static class EventHandler {
         @SubscribeEvent
         public static void onSleepingTimeCheck(SleepingTimeCheckEvent event) {
-            if (ProcessTransfur.isPlayerLatex(event.getPlayer()))
+            if (ProcessTransfur.isPlayerTransfurred(event.getPlayer()))
                 return;
             if (event.getSleepingLocation().isEmpty())
                 return;
@@ -85,7 +85,7 @@ public class BedsideIVRackBlockEntity extends BlockEntity implements Container, 
                     if (owner.isPresent() && !player.getUUID().equals(owner.get()))
                         continue;
 
-                    if (ProcessTransfur.isPlayerLatex(player))
+                    if (ProcessTransfur.isPlayerTransfurred(player))
                         continue;
 
                     if (player.getSleepTimer() > 95 && ivRack.tickCount < ivRack.TRANSFUR_REQUIRED_TIME && !ivRack.items.get(0).isEmpty()) {

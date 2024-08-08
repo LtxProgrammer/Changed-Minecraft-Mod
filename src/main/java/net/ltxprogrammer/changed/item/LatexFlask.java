@@ -65,7 +65,7 @@ public class LatexFlask extends PotionItem implements VariantHoldingBase {
         if (player != null) {
             CompoundTag tag = stack.getTag();
 
-            if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerLatex(player)) {
+            if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerTransfurred(player)) {
                 if (tag.getBoolean("safe"))
                     Pale.tryCure(player);
             }

@@ -28,7 +28,7 @@ public class UseAbilityTutorialStep implements ChangedTutorialInstance {
     public void tick() {
         ++this.timeWaiting;
         var player = Minecraft.getInstance().player;
-        if (!ProcessTransfur.isPlayerLatex(player)) {
+        if (!ProcessTransfur.isPlayerTransfurred(player)) {
             this.tutorial.setStep(TutorialSteps.NONE);
             return;
         }

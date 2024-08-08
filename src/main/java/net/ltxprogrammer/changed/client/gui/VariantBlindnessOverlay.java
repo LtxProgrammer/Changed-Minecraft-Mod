@@ -31,7 +31,7 @@ public class VariantBlindnessOverlay {
     public static void eventHandler(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             Player player = Minecraft.getInstance().player;
-            if (player == null || !ProcessTransfur.isPlayerLatex(player))
+            if (player == null || !ProcessTransfur.isPlayerTransfurred(player))
                 return;
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
             if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
