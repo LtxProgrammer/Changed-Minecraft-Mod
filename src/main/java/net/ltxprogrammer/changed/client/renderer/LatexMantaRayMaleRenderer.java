@@ -8,9 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMantaRayMaleModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleSharkModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexOrcaModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexSharkModel;
 import net.ltxprogrammer.changed.entity.beast.LatexMantaRayMale;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
@@ -19,8 +17,7 @@ public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMan
         super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
                 ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
-        this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
-                .withSclera(Color3.fromInt(0xd2d9e1)).withIris(Color3.fromInt(0xffe64b)).build());
+        this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forLargeSnouted(this, context.getModelSet()));
     }
