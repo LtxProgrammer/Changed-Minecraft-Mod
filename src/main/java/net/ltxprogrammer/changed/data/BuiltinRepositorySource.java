@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.data;
 
-import kroppeb.stareval.Util;
+import net.minecraft.Util;
 import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
