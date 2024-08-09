@@ -20,9 +20,13 @@ public abstract class PauseScreenMixin extends Screen {
 
     @Inject(method = "createPauseMenu", at = @At("RETURN"))
     public void addBPIButton(CallbackInfo callback) {
-        int yOffset = 96;
-        if (FMLLoader.getLoadingModList().getModFileById("quark") != null)
-            yOffset -= 24;
+        int yOffset = 96; // Default by options
+        if (FMLLoader.getLoadingModList().getModFileById("quark") != null) {
+            yOffset -= 24; // Move next to feedback
+            if (FMLLoader.getLoadingModList().getModFileById("create") != null) {
+                yOffset -= 24; // Move next to advancements
+            }
+        }
 
         this.addRenderableWidget(new ImageButton((this.width / 2 - 102) - 24, this.height / 4 + yOffset + -16, 20, 20, 0, 0, 20,
                 Changed.modResource("textures/gui/basic_player_info.png"), 20, 40, (button) -> {
