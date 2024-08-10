@@ -16,7 +16,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Final;
@@ -80,21 +79,25 @@ public abstract class GameRendererMixin {
         });
     }
 
-    @Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V"))
-    public void setupForHolderEntity(Camera camera, BlockGetter level, Entity entity, boolean thirdPerson, boolean mirrored, float partialTicks) {
+    @Redirect(
+            method = "renderLevel",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"),
+            require = 0
+    )
+    public Entity overrideGrabbedEntity(Minecraft instance) {
+        final var entity = instance.getCameraEntity();
+
         if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
-            var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (grabAbility != null && grabAbility.grabbedHasControl && grabAbility.grabbedEntity != null)
-                camera.setup(level, grabAbility.grabbedEntity, thirdPerson, mirrored, partialTicks);
-            else
-                camera.setup(level, ext.getGrabbedBy(), thirdPerson, mirrored, partialTicks);
+            return AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                    .map(ability -> ability.grabbedHasControl ? ability.grabbedEntity : null)
+                    .orElseGet(ext::getGrabbedBy);
         }
         else if (entity instanceof LivingEntity livingEntity) {
-            var grabAbility = AbstractAbility.getAbilityInstance(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (grabAbility != null && grabAbility.grabbedHasControl && grabAbility.grabbedEntity != null)
-                camera.setup(level, grabAbility.grabbedEntity, thirdPerson, mirrored, partialTicks);
-            else
-                camera.setup(level, entity, thirdPerson, mirrored, partialTicks);
+            return AbstractAbility.getAbilityInstanceSafe(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                    .<Entity>map(ability -> ability.grabbedHasControl ? ability.grabbedEntity : null)
+                    .orElse(entity);
         }
+
+        return entity;
     }
 }
