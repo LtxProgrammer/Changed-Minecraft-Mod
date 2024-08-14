@@ -47,7 +47,7 @@
  "subtitles.changed.equip3": "Шоргат штаноў",
  "subtitles.changed.bow2": "Скрыня адчынілася",
  "subtitles.changed.ice2": "Крышталь вырас",
- "subtitles.changed.key": "Пстрычка фіксатара кейпада',
+ "subtitles.changed.key": "Пстрычка фіксатара кейпада",
  "subtitles.changed.latex_drip": "Латекс капае",
  "subtitles.changed.monster2": "Тыгровая акула раве",
  "subtitles.changed.switch1": "Націск на кнопку кейпада",
@@ -62,7 +62,7 @@
  "item.changed.benign_pants": "Шорты з латекса",
  "item.changed.blood_syringe": "Шпрыц з узорам крыві",
  "item.changed.dark_latex_crystal_fragment": "Фрагмент цёмнага крышталя",
- "item.changed.dark_dragon_crystal_fragment": "Фрагмент крышталя дракона',
+ "item.changed.dark_dragon_crystal_fragment": "Фрагмент крышталя дракона",
  "item.changed.dark_latex_goo": "Цёмны латекс",
  "item.changed.dark_latex_mask": "Маска цёмнага латэкса",
  "item.changed.dark_latex_bucket": "Вядро цёмнага латекса",
@@ -180,7 +180,7 @@
  "effect.changed.shock": "Шок",
 
  "enchantment.changed.latex_protection": "Абарона з латекса",
- "enchantment.changed.latex_protection.desc": "Абараняе ўладальніка ад трансфурмацыі.
+ "enchantment.changed.latex_protection.desc": "Абараняе ўладальніка ад трансфурмацыі.",
 
  "block.changed.beaker": "Лабараторны шклянку",
  "block.changed.bedside_iv_rack": "Кропельніца",
@@ -456,7 +456,7 @@
  "changed.error.corrupted_disc": "ERR: няправільны дыск",
 
  "changed.compact_disc.title.light_latex_wolf": "Спроба выратаваць свет",
- "changed.compact_disc.content.light_latex_wolf": "У нашых марных спробах знайсці вакцыну супраць віруса падчас эпідэміі мы выявілі, што толькі жывёлы неўспрымальныя да яго. Мы ўсе пачалі шукаць спосаб аб'яднаць чалавека і жывёлу, і ў выніку мы нарэшце дасягнулі прагрэсу і стварылі першасны латекс, рэчыва, здольнае змяняць ДНК за секунды. Нарэшце мы МОЖАМ перамагчы эпідэмію!
+ "changed.compact_disc.content.light_latex_wolf": "У нашых марных спробах знайсці вакцыну супраць віруса падчас эпідэміі мы выявілі, што толькі жывёлы неўспрымальныя да яго. Мы ўсе пачалі шукаць спосаб аб'яднаць чалавека і жывёлу, і ў выніку мы нарэшце дасягнулі прагрэсу і стварылі першасны латекс, рэчыва, здольнае змяняць ДНК за секунды. Нарэшце мы МОЖАМ перамагчы эпідэмію!"
  "changed.compact_disc.title.aerosol_latex_wolf": "Бурыя ваўкі",
  "changed.compact_disc.content.aerosol_latex_wolf": "Пасля доўгіх бяссонных начэй я нарэшце ўнёс свой уклад у цэнтр апрацоўкі дадзеных. Усе гэтыя шаблонныя латексныя ваўкі такія сумныя, таму я падмяшаў трохі карычневай фарбы і атрымаў, ну, нешта не такое свежае.",
 
