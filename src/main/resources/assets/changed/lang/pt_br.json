@@ -25,15 +25,15 @@
   "ability.changed.summon_sharks": "Invocar Tubarões",
 
   "ability.changed.grab_entity": "Grab Entity",
-  "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
-  "ability.changed.grab_entity.how_to_release": "Hold [%s] to release the entity",
-  "ability.changed.grab_entity.how_to_transfur": "Hold [%s] to progress transfur",
-  "ability.changed.grab_entity.how_to_absorb": "Hold [%s] and [%s] to progress absorption",
-  "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
-  "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
+  "ability.changed.grab_entity.how_to_grab": "Segure [%s] para grab an entity",
+  "ability.changed.grab_entity.how_to_release": "Segure [%s] para release the entity",
+  "ability.changed.grab_entity.how_to_transfur": "Segure [%s] para progressar transfur",
+  "ability.changed.grab_entity.how_to_absorb": "Segure [%s] and [%s] para progressar absorção",
+  "ability.changed.grab_entity.how_to_suit": "Segure [%s] para alterar para terno",
+  "ability.changed.grab_entity.how_to_toggle_control": "pressione [%s] para toggle control",
 
-  "attribute.name.changed.transfur_damage": "Transfur Damage",
-  "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",
+  "attribute.name.changed.transfur_damage": "Dano Transfur",
+  "attribute.name.changed.transfur_tolerance": "Tolerancia Transfur",
 
   "subtitles.changed.attack1": "Beeps de Roomba",
   "subtitles.changed.sound3": "Transfur Orgânico",
