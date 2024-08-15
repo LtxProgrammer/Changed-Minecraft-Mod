@@ -22,6 +22,17 @@
  "ability.changed.select_special_state": "Вибір особливого стану",
  "ability.changed.summon_sharks": "Викликати акул",
 
+ "ability.changed.grab_entity": "Схопити істоту",
+ "ability.changed.grab_entity.how_to_grab": "Утримуйте [%s], щоб схопити істоту",
+ "ability.changed.grab_entity.how_to_transfur": "Утримуйте [%s], щоб прогресувати трансфурмацію",
+ "ability.changed.grab_entity.how_to_absorb": "Утримуйте [%s] і [%s], щоб прогресувати поглинання",
+ "ability.changed.grab_entity.how_to_suit": "Утримуйте [%s], щоб перейти в режим костюма",
+ "ability.changed.grab_entity.how_to_toggle_control": "Натисніть [%s], щоб перемкнути керування",
+
+ "attribute.name.changed.transfur_damage": "Сила трансфуру",
+ "attribute.name.changed.transfur_tolerance": "Толерантність трансфуру",
+
+ "subtitles.changed.attack1": "Румба подає звуковий сигнал",
  "subtitles.changed.sound3": "Хтось трансфурмований органічно",
  "subtitles.changed.poison": "Хтось трансфурмований",
  "subtitles.changed.open2": "Двері не відчиняються",
