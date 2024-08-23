@@ -55,6 +55,7 @@
   "subtitles.changed.shot1": "레이저가 작동함",
   "subtitles.changed.siren": "사이렌이 노래함",
   "subtitles.changed.save": "홍채 스캐너가 삐빅거림",
+  "subtitles.changed.slash10": "숏팬츠가 찢어짐",
   "subtitles.changed.sword1": "주삿바늘이 찌름",
   "subtitles.changed.paralyze1": "무기로 전기 충격함",
   "subtitles.changed.paralyze3": "인터콤이 방송함",
@@ -486,7 +487,7 @@
   "changed.compact_disc.content.aerosol_latex_wolf": "밤을 새운 끝에, 나는 마침내 데이터베이스에 기여를 하였다. 나한테 밝은 라텍스 늑대들은 너무 지루했다. 그래서 거기에 갈색 염료를 조금 섞었고, 뭔가... 전처럼 밋밋하진 않은 것을 만들어냈다.",
 
   "changed.compact_disc.title.dark_latex_wolf": "마스크를 쓴 미스테리한 존재들",
-  "changed.compact_disc.content.dark_latex_wolf": "전에 언급했다시피, 동물만이 전염병 치료를 받을 수 있다. 인간을 수화시키기 위한 시도를 하던 중, 우리는 라텍스 베이스와 검은색 염료를 주사기에 섞어 넣어 마스크를 쓴 늑대 형태의 생물을 만들어냈다. 추가적인 실험이 필요해 보인다.",
+  "changed.compact_disc.content.dark_latex_wolf": "전에 언급했다시피, 동물만이 전염병 치료를 받을 수 있다. 인간을 TF시키기 위한 시도를 하던 중, 우리는 라텍스 베이스와 검은색 염료를 주사기에 섞어 넣어 마스크를 쓴 늑대 형태의 생물을 만들어냈다. 추가적인 실험이 필요해 보인다.",
   "changed.compact_disc.title.dark_latex_yufeng": "마스크를 쓴 용?",
   "changed.compact_disc.content.dark_latex_yufeng": "검은 라텍스 늑대를 만들 때 사용했던 라텍스 베이스에 깃털을 첨가하자, 비행은 불가능하지만 활공하기에 적합한 생물을 만들어냈다. 이 생물도 마스크를 쓰고 있고 용과 약간 비슷한 형태이다.",
   "changed.compact_disc.title.dark_dragon": "이족보행하는 용들",
@@ -514,31 +515,31 @@
   "changed:advancements.main.root.description": "미래에 오신 걸 환영합니다",
 
   "changed:advancements.main.transfur.title": "평생 이렇게 살아야 돼!?",
-  "changed:advancements.main.transfur.description": "스스로를 수화시키세요",
+  "changed:advancements.main.transfur.description": "스스로를 TF시키세요",
 
   "changed:advancements.main.transfur_aquatic.title": "수영하러 간다!",
-  "changed:advancements.main.transfur_aquatic.description": "스스로를 수중 생물의 형태로 수화시키세요",
+  "changed:advancements.main.transfur_aquatic.description": "스스로를 수중 생물의 형태로 TF시키세요",
 
   "changed:advancements.main.aquatic_swimming.title": "수영하고 왔어",
   "changed:advancements.main.aquatic_swimming.description": "수중 생물인 상태로 물속에서 하루를 보내세요",
 
   "changed:advancements.main.transfur_white.title": "한몸이 되다",
-  "changed:advancements.main.transfur_white.description": "스스로를 하얀 라텍스의 형태로 수화시키세요",
+  "changed:advancements.main.transfur_white.description": "스스로를 하얀 라텍스의 형태로 TF시키세요",
 
   "changed:advancements.main.transfur_dark.title": "형제관계",
-  "changed:advancements.main.transfur_dark.description": "스스로를 검은 라텍스의 형태로 수화시키세요",
+  "changed:advancements.main.transfur_dark.description": "스스로를 검은 라텍스의 형태로 TF시키세요",
 
   "changed:advancements.main.white_latex_fuse.title": "동족",
   "changed:advancements.main.white_latex_fuse.description": "하얀 라텍스인 상태로 하얀 라텍스에 융합하세요",
 
   "changed:advancements.main.transfur_aerial.title": "비행 수업",
-  "changed:advancements.main.transfur_aerial.description": "스스로를 비행 생물의 형태로 수화시키세요",
+  "changed:advancements.main.transfur_aerial.description": "스스로를 비행 생물의 형태로 TF시키세요",
 
   "changed:advancements.main.transfur_mask.title": "인간성 거부",
   "changed:advancements.main.transfur_mask.description": "검은 라텍스 마스크를 획득하고 착용하세요",
   
   "changed:advancements.main.transfur_legless.title": "내 다리!",
-  "changed:advancements.main.transfur_legless.description": "스스로를 다리가 없는 형태로 수화시키세요",
+  "changed:advancements.main.transfur_legless.description": "스스로를 다리가 없는 형태로 TF시키세요",
   
   "changed:advancements.main.beehive_sleep.title": "더 달콤한 꿈",
   "changed:advancements.main.beehive_sleep.description": "벌집 침대에서 자세요",
