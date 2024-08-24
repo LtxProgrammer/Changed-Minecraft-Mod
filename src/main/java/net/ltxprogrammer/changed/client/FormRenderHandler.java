@@ -107,7 +107,7 @@ public abstract class FormRenderHandler {
             if (layers) {
                 for (var layer : advRenderer.layers)  {
                     if (layer instanceof FirstPersonLayer firstPersonLayer)
-                        firstPersonLayer.renderFirstPersonOnArms(stack, buffer, light, changedEntity, arm, stackCorrector);
+                        firstPersonLayer.renderFirstPersonOnArms(stack, buffer, light, changedEntity, arm, stackCorrector, partialTick);
                 }
             }
 

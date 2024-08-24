@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.SkinManagerExtender;
 import net.ltxprogrammer.changed.client.latexparticles.LatexDripParticle;
+import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.latexparticles.SurfacePoint;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.data.MixedTexture;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.entity.HumanoidArm;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +31,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> {
+public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends RenderLayer<T, M> implements FirstPersonLayer<T> {
     private final RenderLayerParent<T, M> parent;
     private final Minecraft minecraft;
     private final Predicate<ModelPart> canPartDrip;
@@ -218,8 +220,21 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float f1, float f2, float partialTicks, float bobAmount, float f3, float f4) {
         ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
-            particle.setupForRender(pose, partialTicks);
+            particle.setupForRender(pose, partialTicks, SetupContext.THIRD_PERSON);
             particle.renderFromLayer(bufferSource, partialTicks);
         });
+    }
+
+    @Override
+    public void renderFirstPersonOnArms(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {
+        final var model = parent.getModel();
+        model.setAllLimbsVisible(entity, false);
+        model.getArm(arm).visible = true;
+
+        ChangedClient.particleSystem.getAllParticlesForEntity(entity).forEach(particle -> {
+            particle.setupForRender(pose, partialTick, SetupContext.FIRST_PERSON);
+        });
+
+        model.setAllLimbsVisible(entity, true);
     }
 }

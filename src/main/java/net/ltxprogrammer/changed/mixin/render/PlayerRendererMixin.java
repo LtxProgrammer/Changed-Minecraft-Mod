@@ -38,19 +38,4 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             ci.cancel(); //cancel the call
         }
     }
-
-    /*@Inject(method = "renderHand", at = @At("RETURN"))
-    private void renderHandEnd(PoseStack stack, MultiBufferSource buffer, int light, AbstractClientPlayer player, ModelPart arm, ModelPart armwear, CallbackInfo ci) {
-        if (!ProcessTransfur.isPlayerLatex(player)) { // TODO replace with TransfurAnimator's code
-            *//*var progress = ProcessTransfur.getPlayerTransfurProgress(player);
-            if (progress == null || progress.progress() <= 0)
-                return;
-            var color = TransfurProgressLayer.getProgressColor(progress.variant());
-
-            arm.xRot = 0.0F;
-            arm.render(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);
-            armwear.xRot = 0.0F;
-            armwear.render(stack, buffer.getBuffer(RenderType.entityTranslucent(TransfurProgressLayer.getProgressTexture(progress.progress()))), light, OverlayTexture.NO_OVERLAY, color.red(), color.green(), color.blue(), 1.0F);*//*
-        }
-    }*/
 }
