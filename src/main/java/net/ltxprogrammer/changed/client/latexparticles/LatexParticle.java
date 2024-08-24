@@ -32,8 +32,12 @@ public abstract class LatexParticle {
 
     public abstract ParticleRenderType getRenderType();
 
-    public void setupForRender(PoseStack poseStack, float partialTicks) {}
-    public abstract void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks);
+    public void setupForRender(PoseStack poseStack, float partialTicks) {
+        this.setupForRender(poseStack, partialTicks, SetupContext.THIRD_PERSON);
+    }
+
+    public void setupForRender(PoseStack poseStack, float partialTicks, SetupContext setupContext) {}
+    public abstract void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks, SetupContext context);
     public abstract void renderFromLayer(MultiBufferSource buffer, float partialTicks);
 
     public int getAge() {

@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-public enum VisionType implements StringRepresentable {
+public enum VisionType implements StringRepresentable, Predicate<MobEffect> {
     NORMAL("normal", effect -> false),
     NIGHT_VISION("night_vision", MobEffects.NIGHT_VISION::equals),
     BLIND("blind", MobEffects.BLINDNESS::equals);
@@ -32,5 +32,10 @@ public enum VisionType implements StringRepresentable {
     public static DataResult<VisionType> fromSerial(String name) {
         return Arrays.stream(values()).filter(type -> type.serialName.equals(name))
                 .findFirst().map(DataResult::success).orElseGet(() -> DataResult.error(name + " is not a valid VisionType"));
+    }
+
+    @Override
+    public boolean test(MobEffect effect) {
+        return shouldHaveEffect.test(effect);
     }
 }

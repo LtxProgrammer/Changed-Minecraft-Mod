@@ -120,7 +120,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
         return result;
     }
 
-    public void render(PoseStack poseStack, LightTexture lightTexture, Camera camera, float partialTicks, @Nullable Frustum clippingHelper) {
+    public void render(PoseStack poseStack, LightTexture lightTexture, Camera camera, float partialTicks, @Nullable Frustum clippingHelper, SetupContext context) {
         lightTexture.turnOnLightLayer();
         RenderSystem.enableDepthTest();
         RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
@@ -144,7 +144,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
                 for(var particle : particleSet) {
                     if (clippingHelper != null && particle.shouldCull() && !clippingHelper.isVisible(particle.getBoundingBox())) continue;
                     try {
-                        particle.renderFromEvent(bufferbuilder, camera, partialTicks);
+                        particle.renderFromEvent(bufferbuilder, camera, partialTicks, context);
                     } catch (Throwable throwable) {
                         CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering Latex Particle");
                         CrashReportCategory crashreportcategory = crashreport.addCategory("Latex Particle being rendered");

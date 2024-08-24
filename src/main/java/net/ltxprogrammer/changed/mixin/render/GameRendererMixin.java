@@ -3,19 +3,26 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.ChangedShaders;
+import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Final;
@@ -40,14 +47,20 @@ public abstract class GameRendererMixin {
 
     @Shadow @Final private Camera mainCamera;
 
+    @Shadow public abstract LightTexture lightTexture();
+
+    @Shadow public abstract boolean isPanoramicMode();
+
+    @Shadow @Final private Minecraft minecraft;
+
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void getNightVisionScale(LivingEntity livingEntity, float p_109110_, CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(livingEntity), variant -> {
-            if (variant.getParent().visionType.shouldHaveEffect.test(MobEffects.NIGHT_VISION)) {
+            if (variant.getParent().visionType.test(MobEffects.NIGHT_VISION)) {
                 callback.setReturnValue(1.0f);
             }
 
-            if (variant.getParent().getBreatheMode().canBreatheWater()) {
+            if (variant.getParent().getBreatheMode().canBreatheWater() && livingEntity.isEyeInFluid(FluidTags.WATER)) {
                 callback.setReturnValue(0.85f);
             }
         });
@@ -99,5 +112,13 @@ public abstract class GameRendererMixin {
         }
 
         return entity;
+    }
+
+    @Inject(method = "renderItemInHand", at = @At("HEAD"))
+    public void hookFirstPersonParticles(PoseStack pose, Camera camera, float partialTicks, CallbackInfo ci) {
+        boolean sleeping = this.minecraft.getCameraEntity() instanceof LivingEntity && ((LivingEntity)this.minecraft.getCameraEntity()).isSleeping();
+        if (!this.isPanoramicMode() && this.minecraft.options.getCameraType().isFirstPerson() && !sleeping && !this.minecraft.options.hideGui && this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR) {
+            ChangedClient.particleSystem.render(pose, this.lightTexture(), camera, partialTicks, null, SetupContext.FIRST_PERSON);
+        }
     }
 }

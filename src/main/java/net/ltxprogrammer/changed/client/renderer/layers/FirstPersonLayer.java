@@ -14,7 +14,7 @@ public interface FirstPersonLayer<T extends LivingEntity> {
     float ZFIGHT_OFFSET = 1.0002f;
 
     default void renderFirstPersonOnFace(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, Camera camera) {}
-    default void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {}
+    default void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {}
 
     static void renderFirstPersonLayersOnFace(PoseStack poseStack, Camera camera, float partialTicks) {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity livingEntity))
