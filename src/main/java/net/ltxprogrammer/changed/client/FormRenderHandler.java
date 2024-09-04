@@ -95,7 +95,7 @@ public abstract class FormRenderHandler {
             var controller = modelInterface.getAnimator();
 
             controller.resetVariables();
-            ModelPart handPart = modelInterface.getArm(arm);
+            ModelPart handPart = entModel.getArm(arm);
             entModel.setupAnim(changedEntity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
             modelInterface.setupHand();
 

@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.EntityRenderHelper;
+import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.layers.PlayerLayerWrapper;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedEntityRenderers;
@@ -11,9 +13,15 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.CapeLayer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,11 +32,17 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Map;
+
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
     @Shadow private static void renderShadow(PoseStack p_114458_, MultiBufferSource p_114459_, Entity p_114460_, float p_114461_, float p_114462_, LevelReader p_114463_, float p_114464_) {}
 
     @Shadow public abstract <T extends Entity> EntityRenderer<? super T> getRenderer(T p_114383_);
+
+    @Shadow public abstract Map<String, EntityRenderer<? extends Player>> getSkinMap();
+
+    @Shadow public Map<EntityType<?>, EntityRenderer<?>> renderers;
 
     @Inject(method = "render", at = @At("HEAD"))
     public <E extends Entity> void beforeRender(E entity, double camX, double camY, double camZ, float p_114389_, float p_114390_, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
@@ -67,5 +81,28 @@ public abstract class EntityRenderDispatcherMixin {
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     public <E extends Entity> void getRendererOrOverridden(E entity, CallbackInfoReturnable<EntityRenderer<? super E>> callback) {
         ChangedEntityRenderers.getComplexRenderer(entity).ifPresent(callback::setReturnValue);
+    }
+
+    @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
+    public void copyPlayerLayers(ResourceManager resources, CallbackInfo ci) {
+        this.getSkinMap().forEach((name, renderer) -> {
+            if (name.equals("default") && renderer instanceof LivingEntityRenderer<?,?> playerRenderer) {
+                playerRenderer.layers.stream().filter(PlayerLayerWrapper::isWrappable).forEach(layer -> {
+                    ChangedEntityRenderers.getCopyPlayerLayers().forEach(type -> {
+                        if (this.renderers.get(type) instanceof AdvancedHumanoidRenderer<?,?,?> advanced)
+                            advanced.wrapLayer(layer);
+                    });
+                });
+            }
+
+            if (renderer instanceof LivingEntityRenderer<?,?> playerRenderer) {
+                playerRenderer.layers.stream().filter(PlayerLayerWrapper::isWrappable).forEach(layer -> {
+                    ChangedEntityRenderers.getComplexRenderers(name).forEach(type -> {
+                        if (type instanceof AdvancedHumanoidRenderer<?,?,?> advanced)
+                            advanced.wrapLayer(layer);
+                    });
+                });
+            }
+        });
     }
 }

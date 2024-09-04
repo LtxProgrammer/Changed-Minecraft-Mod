@@ -7,8 +7,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 
-public interface AdvancedHumanoidModelInterface<T extends ChangedEntity, M extends EntityModel<T>> {
-    ModelPart getArm(HumanoidArm arm);
+public interface AdvancedHumanoidModelInterface<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> {
     @Deprecated
     default PoseStack getPlacementCorrectors(CorrectorType type) {
         return new PoseStack();

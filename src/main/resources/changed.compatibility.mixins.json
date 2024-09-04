@@ -7,11 +7,7 @@
   "plugin": "net.ltxprogrammer.changed.mixin.compatibility.ChangedMixinPlugin",
   "mixins": [],
   "client": [
-    "BeyondEarth.SpaceSuitModelP1Mixin",
-    "BeyondEarth.SpaceSuitModelP2Mixin",
     "BeyondEarth.OxygenSystemMixin",
-    "BeyondEarth.JetSuitModelP1Mixin",
-    "BeyondEarth.JetSuitModelP2Mixin",
     "CarryOn.HoldEntityAnimatorMixin",
     "CarryOn.RenderEventsMixin",
     "CGM.AdvancedHumanoidRendererMixin",

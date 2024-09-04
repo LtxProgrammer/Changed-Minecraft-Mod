@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.world.entity.HumanoidArm;
@@ -19,17 +20,33 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
+public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends PlayerModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
     public static final CubeDeformation TEXTURE_DEFORMATION = new CubeDeformation(-0.01F);
     protected static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
 
     protected final ModelPart rootModelPart;
 
+    public static ModelPart createNullPart(String... children) {
+        return new ModelPart(List.of(), Arrays.stream(children).collect(Collectors.toMap(
+                Function.identity(),
+                name -> new ModelPart(List.of(), Map.of())
+        )));
+    }
+
     public AdvancedHumanoidModel(ModelPart root) {
+        super(createNullPart("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg",
+                "ear", "cloak", "left_sleeve", "right_sleeve", "left_pants", "right_pants", "jacket"), false);
         this.rootModelPart = root;
+    }
+
+    private void syncPropertyModel() {
+        if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.getAnimator().writePropertyModel(this);
     }
 
     public void prepareMobModel(HumanoidAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {
@@ -46,6 +63,8 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
             getHead().visible = true;
             getTorso().visible = true;
         }
+
+        this.syncPropertyModel();
     }
 
     public PoseStack.Pose resetPoseStack = null;
@@ -74,6 +93,8 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
                 cachedAnimationInstance.remove(entity);
             }
         });
+
+        this.syncPropertyModel();
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);
@@ -151,7 +172,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Ent
         HOLD
     }
 
-    public static abstract class LatexRemodel<T extends ChangedEntity, M extends EntityModel<T>> extends AdvancedHumanoidModel<T> implements AdvancedHumanoidModelInterface<T, M> {
+    public static abstract class LatexRemodel<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AdvancedHumanoidModel<T> implements AdvancedHumanoidModelInterface<T, M> {
         public LatexRemodel(ModelPart root) {
             super(root);
         }

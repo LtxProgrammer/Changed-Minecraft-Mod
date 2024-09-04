@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.Moonlight;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpperBodyAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.mehvahdjukaar.selene.api.IThirdPersonAnimationProvider;
 import net.mehvahdjukaar.selene.util.TwoHandedAnimation;
@@ -19,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AbstractUpperBodyAnimator.class, remap = false)
-public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
+public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends HumanoidAnimator.Animator<T, M> {
     @Unique
     public TwoHandedAnimation animationType = new TwoHandedAnimation();
 
@@ -31,9 +32,8 @@ public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M 
         ItemStack stack = entity.getItemInHand(handSide == HumanoidArm.RIGHT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
         Item item = stack.getItem();
         if (item instanceof IThirdPersonAnimationProvider thirdPersonAnimationProvider) {
-            HumanoidModel propertyModel = this.core.getPropertyModel(null);
-            if (thirdPersonAnimationProvider.poseRightArm(stack, propertyModel, entity, handSide, this.animationType)) {
-                this.core.applyPropertyModel(propertyModel);
+            if (thirdPersonAnimationProvider.poseRightArm(stack, (HumanoidModel)this.core.entityModel, entity, handSide, this.animationType)) {
+                this.core.applyPropertyModel((HumanoidModel<?>) this.core.entityModel);
                 ci.cancel();
             }
         }
@@ -47,9 +47,8 @@ public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M 
         ItemStack stack = entity.getItemInHand(handSide == HumanoidArm.RIGHT ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
         Item item = stack.getItem();
         if (item instanceof IThirdPersonAnimationProvider thirdPersonAnimationProvider) {
-            HumanoidModel propertyModel = this.core.getPropertyModel(null);
-            if (thirdPersonAnimationProvider.poseLeftArmGeneric(stack, propertyModel, entity, handSide, this.animationType)) {
-                this.core.applyPropertyModel(propertyModel);
+            if (thirdPersonAnimationProvider.poseLeftArmGeneric(stack, (HumanoidModel)this.core.entityModel, entity, handSide, this.animationType)) {
+                this.core.applyPropertyModel((HumanoidModel<?>) this.core.entityModel);
                 ci.cancel();
             }
         }
