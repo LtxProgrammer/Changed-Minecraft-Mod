@@ -84,7 +84,7 @@ public class DarkLatexMask extends Item implements ExtendedItemProperties {
 
         if (wearer instanceof ChangedEntity)
             return false;
-        else if (wearer instanceof Player player && ProcessTransfur.isPlayerLatex(player))
+        else if (wearer instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
             return false;
         else if (wearer instanceof AgeableMob ageableMob && ageableMob.isBaby())
             return false;

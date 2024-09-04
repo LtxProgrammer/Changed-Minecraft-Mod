@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.legless;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkUpperBodySwimAnimator.*;
 
-public class LeglessSwimAnimatorV2<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractLeglessAnimator<T, M> {
+public class LeglessSwimAnimatorV2<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractLeglessAnimator<T, M> {
     public static final float SWIM_AMOUNT = 0.2f;
 
     public LeglessSwimAnimatorV2(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {

@@ -251,7 +251,7 @@ public class DuctBlock extends ChangedBlock
         if (!level.getBlockState(blockPos.relative(direction)).is(ChangedTags.Blocks.DUCT_EXIT))
             return super.use(state, level, blockPos, player, hand, hitResult);
 
-        if (player instanceof PlayerDataExtension playerDataExtension && !ProcessTransfur.isPlayerOrganic(player)
+        if (player instanceof PlayerDataExtension playerDataExtension && ProcessTransfur.isPlayerLatex(player)
                 && playerDataExtension.getPlayerMover() == null) {
             var instance = PlayerMover.DUCT_MOVER.get().createInstance();
             instance.ductBlock = this;

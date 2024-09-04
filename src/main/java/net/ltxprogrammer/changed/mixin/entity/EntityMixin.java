@@ -121,7 +121,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
     @Inject(method = "isInWall", at = @At("HEAD"), cancellable = true)
     public void isInWall(CallbackInfoReturnable<Boolean> callback) {
-        if (asEntity() instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+        if (asEntity() instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {
             if (player.noPhysics) {
                 callback.setReturnValue(false);
             } else {

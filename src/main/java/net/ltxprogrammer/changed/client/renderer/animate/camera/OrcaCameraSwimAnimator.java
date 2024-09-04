@@ -2,15 +2,16 @@ package net.ltxprogrammer.changed.client.renderer.animate.camera;
 
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import static net.ltxprogrammer.changed.client.renderer.animate.upperbody.OrcaUpperBodySwimAnimator.*;
 
-public class OrcaCameraSwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.CameraAnimator<T, M> {
+public class OrcaCameraSwimAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends HumanoidAnimator.CameraAnimator<T, M> {
     @Override
     public HumanoidAnimator.AnimateStage preferredStage() {
         return HumanoidAnimator.AnimateStage.SWIM;

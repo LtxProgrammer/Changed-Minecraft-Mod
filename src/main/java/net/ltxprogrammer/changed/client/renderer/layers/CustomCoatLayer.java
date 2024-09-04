@@ -43,7 +43,7 @@ public class CustomCoatLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
     }
 
     @Override
-    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
+    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {
         var info = entity.getBasicPlayerInfo();
         var coatColor = info.getHairColor();
         stack.pushPose();

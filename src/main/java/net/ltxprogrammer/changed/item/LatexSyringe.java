@@ -117,7 +117,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
             CompoundTag tag = stack.getTag();
             TransfurCause cause = (player.getUsedItemHand() == InteractionHand.MAIN_HAND) == (player.getMainArm() == HumanoidArm.RIGHT) ? TransfurCause.SYRINGE : TransfurCause.SYRINGE_LEFT_HAND;
 
-            if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerLatex(player)) {
+            if (tag != null && tag.contains("safe") && ProcessTransfur.isPlayerTransfurred(player)) {
                 if (tag.getBoolean("safe"))
                     Pale.tryCure(player);
             }

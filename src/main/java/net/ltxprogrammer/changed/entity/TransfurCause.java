@@ -79,7 +79,7 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::thirdLimb), // RIGHT LEG
 
     // Specific causes that inherit from generic causes
-    DARK_LATEX_CRYSTAL(FOOT_HAZARD_RIGHT),
+    CRYSTAL(FOOT_HAZARD_RIGHT),
     LATEX_PUDDLE(FOOT_HAZARD_RIGHT),
     LATEX_SYRINGE_FLOOR(FOOT_HAZARD_RIGHT),
     LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),

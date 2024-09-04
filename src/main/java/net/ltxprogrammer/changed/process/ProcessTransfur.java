@@ -15,20 +15,16 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
-import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
-import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -45,10 +41,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -81,7 +77,9 @@ public class ProcessTransfur {
     }
 
     public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
-        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
+        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
+            return false;
+        if (player.isDeadOrDying() || player.isRemoved())
             return false;
         boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
@@ -125,7 +123,7 @@ public class ProcessTransfur {
         amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
 
         if (entity instanceof Player player) {
-            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerLatex(player))
+            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
                 return false;
             boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
@@ -171,6 +169,9 @@ public class ProcessTransfur {
         if (entity instanceof Player player)
             return progressPlayerTransfur(player, amount, transfurVariant, context);
         else {
+            if (entity.isDeadOrDying() || entity.isRemoved())
+                return false;
+
             amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
             float health = entity.getHealth();
             float scale = 20.0f / Math.max(0.1f, (float)ProcessTransfur.getEntityTransfurTolerance(entity));
@@ -216,7 +217,7 @@ public class ProcessTransfur {
     }
 
     public static void tickPlayerTransfurProgress(Player player) {
-        if (isPlayerLatex(player))
+        if (isPlayerTransfurred(player))
             return;
         var progress = getPlayerTransfurProgress(player);
         if (!player.level.isClientSide && progress > 0) {
@@ -228,8 +229,14 @@ public class ProcessTransfur {
 
     public static TransfurVariantInstance<?> getPlayerTransfurVariant(Player player) {
         if (player instanceof PlayerDataExtension ext)
-            return ext.getLatexVariant();
+            return ext.getTransfurVariant();
         return null;
+    }
+
+    public static @NotNull Optional<TransfurVariantInstance<?>> getPlayerTransfurVariantSafe(Player player) {
+        if (player instanceof PlayerDataExtension ext)
+            return Optional.ofNullable(ext.getTransfurVariant());
+        return Optional.empty();
     }
 
     public static class KeepConsciousEvent extends Event {
@@ -347,7 +354,7 @@ public class ProcessTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
 
-        var oldVariant = playerDataExtension.getLatexVariant();
+        var oldVariant = playerDataExtension.getTransfurVariant();
         if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
             return oldVariant;
         if (variant == null && oldVariant == null)
@@ -355,7 +362,7 @@ public class ProcessTransfur {
         if (oldVariant != null && oldVariant.getChangedEntity() != null)
             oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
-        playerDataExtension.setLatexVariant(instance);
+        playerDataExtension.setTransfurVariant(instance);
 
         if (instance != null)
             instance.transfurProgression = progress;
@@ -388,9 +395,9 @@ public class ProcessTransfur {
         return setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variant));
     }
 
-    public static boolean isPlayerLatex(Player player) {
+    public static boolean isPlayerTransfurred(Player player) {
         if (player instanceof PlayerDataExtension ext)
-            return ext.isLatex();
+            return ext.isTransfurred();
         return false;
     }
 
@@ -428,16 +435,21 @@ public class ProcessTransfur {
     }
 
     // Checks if player is either not latex or is organic latex
-    public static boolean isPlayerOrganic(Player player) {
+    public static boolean isPlayerNotLatex(Player player) {
         var variant = getPlayerTransfurVariant(player);
         return variant == null || variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+    }
+
+    public static boolean isPlayerLatex(Player player) {
+        var variant = getPlayerTransfurVariant(player);
+        return variant != null && !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
     }
 
     public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
         if (livingEntity instanceof ChangedEntity entity)
             return Optional.ofNullable(entity.getSelfVariant());
         else if (livingEntity instanceof Player player)
-            return Optional.ofNullable(((PlayerDataExtension)player).getLatexVariant()).map(TransfurVariantInstance::getParent);
+            return Optional.ofNullable(((PlayerDataExtension)player).getTransfurVariant()).map(TransfurVariantInstance::getParent);
         return Optional.empty();
     }
 

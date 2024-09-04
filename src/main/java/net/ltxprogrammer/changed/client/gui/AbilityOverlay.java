@@ -72,6 +72,8 @@ public class AbilityOverlay {
                 return;
             if (variant.isTemporaryFromSuit())
                 return;
+            if (!variant.shouldApplyAbilities())
+                return;
             int offset = (int)(Transition.easeInOutSine(Mth.clamp(
                     Mth.map(variant.getTicksSinceLastAbilityActivity() + partialTick, 100.0f, 130.0f, 0.0f, 1.0f),
                     0.0f, 1.0f)) * 40.0f);

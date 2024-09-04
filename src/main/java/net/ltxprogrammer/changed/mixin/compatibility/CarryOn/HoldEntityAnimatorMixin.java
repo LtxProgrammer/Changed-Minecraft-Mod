@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.CarryOn;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpperBodyAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.HoldEntityAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
@@ -27,7 +28,7 @@ import tschipp.carryon.common.scripting.CarryOnOverride;
 import tschipp.carryon.common.scripting.ScriptChecker;
 
 @Mixin(value = HoldEntityAnimator.class, remap = false)
-public abstract class HoldEntityAnimatorMixin<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractUpperBodyAnimator<T, M> {
+public abstract class HoldEntityAnimatorMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public HoldEntityAnimatorMixin(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);
     }

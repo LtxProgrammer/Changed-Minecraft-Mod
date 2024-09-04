@@ -16,6 +16,7 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
             .put("net.ltxprogrammer.changed.mixin.compatibility.BeyondEarth", "beyond_earth")
             .put("net.ltxprogrammer.changed.mixin.compatibility.CarryOn", "carryon")
             .put("net.ltxprogrammer.changed.mixin.compatibility.CGM", "cgm")
+            .put("net.ltxprogrammer.changed.mixin.compatibility.ChiselsAndBits", "chiselsandbits")
             .put("net.ltxprogrammer.changed.mixin.compatibility.CTM", "ctm")
             .put("net.ltxprogrammer.changed.mixin.compatibility.FirstPerson", "firstperson")
             .put("net.ltxprogrammer.changed.mixin.compatibility.HardcoreRevival", "hardcorerevival")

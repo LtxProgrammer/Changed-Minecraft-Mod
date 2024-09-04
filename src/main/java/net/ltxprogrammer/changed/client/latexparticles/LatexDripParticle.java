@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Camera;
@@ -61,6 +62,7 @@ public class LatexDripParticle extends LatexParticle {
     private boolean wasPreppedWhenDetached = false;
     private boolean preppedForRender = false;
     private boolean preppedForTick = false;
+    private SetupContext setupContext = SetupContext.THIRD_PERSON;
 
     public boolean shouldRender() {
         return attached ?
@@ -104,6 +106,12 @@ public class LatexDripParticle extends LatexParticle {
 
         if (attached) {
             ticksAttached++;
+            this.xd = this.x - this.xo;
+            this.yd = this.y - this.yo;
+            this.zd = this.z - this.zo;
+            this.xo = this.x;
+            this.yo = this.y;
+            this.zo = this.z;
             if (maxTicksAttached - ticksAttached < 60)
                 this.sprite = spriteSet.get(1, 3);
             else
@@ -123,7 +131,7 @@ public class LatexDripParticle extends LatexParticle {
             this.xo = this.x;
             this.yo = this.y;
             this.zo = this.z;
-            
+
             this.yd -= 0.04D * (double)this.gravity;
             this.move(xd, yd, zd);
 
@@ -193,27 +201,27 @@ public class LatexDripParticle extends LatexParticle {
         if (!shouldRender())
             return; // No sound
         Player localPlayer = UniversalDist.getLocalPlayer();
-        level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP, ProcessTransfur.isPlayerLatex(localPlayer) ? SoundSource.NEUTRAL : SoundSource.HOSTILE, 0.025f, 1.0f, true);
+        level.playLocalSound(x, y, z, ChangedSounds.LATEX_DRIP, ProcessTransfur.isPlayerTransfurred(localPlayer) ? SoundSource.NEUTRAL : SoundSource.HOSTILE, 0.025f, 1.0f, true);
     }
 
     @Override
-    public void setupForRender(PoseStack poseStack, float partialTicks) {
-        super.setupForRender(poseStack, partialTicks);
+    public void setupForRender(PoseStack poseStack, float partialTick, SetupContext setupContext) {
+        super.setupForRender(poseStack, partialTick, setupContext);
         if (!attached)
             return;
         if (!attachedPart.stem.stream().allMatch(part -> part.visible))
             return;
 
         PoseStackExtender poseStackExtender = (PoseStackExtender)poseStack;
-        Vec3 entityPosition = attachedEntity.getPosition(partialTicks);
+        Vec3 entityPosition = attachedEntity.getPosition(partialTick);
         // TODO maybe deprecate? or hold onto in the case of inventory rendering
         /*Vec3 cameraOffset = EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.getLast()
                 .subtract(entityPosition)
                 .multiply(-1, -1, -1);*/
 
         poseStack.pushPose();
-        if (attachedEntity.getUnderlyingPlayer() != null && attachedEntity.isCrouching())
-            poseStack.translate(0.0, 0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is latex?
+        if (attachedEntity.getUnderlyingPlayer() != null && attachedEntity.isCrouching() && setupContext != SetupContext.FIRST_PERSON)
+            poseStack.translate(0.0, 0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is tf'd?
 
         attachedPart.translateAndRotate(poseStack);
         // in C = A * B, this is C
@@ -221,37 +229,20 @@ public class LatexDripParticle extends LatexParticle {
         var modelSpaceToScreenSpaceN = poseStack.last().normal();
         poseStack.popPose();
 
-        var modelSpaceToWorldSpace = poseStackExtender.popAndRepush(pose -> {
-            // in C = A * B, this is A
-            var worldSpaceToModelSpace = pose.pose();
-            worldSpaceToModelSpace.invert();
-            worldSpaceToModelSpace.multiply(modelSpaceToScreenSpace);
-            worldSpaceToModelSpace.translate(new Vector3f((float)entityPosition.x, (float)entityPosition.y, (float)entityPosition.z));
-            return worldSpaceToModelSpace;
-        });
-
         Vector4f translationVector = new Vector4f(surface.position().x(), surface.position().y(), surface.position().z(), 1.0f);
-        translationVector.transform(modelSpaceToWorldSpace);
-        xd = translationVector.x() - x;
-        yd = translationVector.y() - y;
-        zd = translationVector.z() - z;
-        
-        x = translationVector.x();
-        y = translationVector.y();
-        z = translationVector.z();
+        translationVector.transform(modelSpaceToScreenSpace); // Coordinates now in screenspace
 
-        Vector3f normalVector = new Vector3f(surface.normal().x(), surface.normal().y(), surface.normal().z());
-        normalVector.transform(modelSpaceToScreenSpaceN);
+        Vector4f worldSpace = CameraUtil.toWorldSpace(Minecraft.getInstance().gameRenderer.getMainCamera(), partialTick, translationVector);
+        x = worldSpace.x();
+        y = worldSpace.y();
+        z = worldSpace.z();
 
         surfaceNormalRelativeCamera.load(surface.normal());
         surfaceNormalRelativeCamera.transform(modelSpaceToScreenSpaceN);
 
-        xo = x;
-        yo = y;
-        zo = z;
-
-        preppedForRender = true;
-        preppedForTick = true;
+        this.setupContext = setupContext;
+        this.preppedForRender = true;
+        this.preppedForTick = true;
     }
 
     @Override
@@ -276,7 +267,7 @@ public class LatexDripParticle extends LatexParticle {
     }
 
     @Override
-    public void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks) {
+    public void renderFromEvent(VertexConsumer buffer, Camera camera, float partialTicks, SetupContext context) {
         boolean isCamEntity = camera.getEntity() == this.attachedEntity;
         if (!isCamEntity && this.attachedEntity.getUnderlyingPlayer() != null) {
             isCamEntity = camera.getEntity() == this.attachedEntity.getUnderlyingPlayer();
@@ -292,7 +283,8 @@ public class LatexDripParticle extends LatexParticle {
             }
 
             else if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                return;
+                if (this.setupContext != SetupContext.FIRST_PERSON || context != SetupContext.FIRST_PERSON)
+                    return;
             }
         }
 
@@ -305,9 +297,16 @@ public class LatexDripParticle extends LatexParticle {
         preppedForRender = false;
 
         Vec3 vec3 = camera.getPosition();
-        float lerpX = (float)(Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
-        float lerpY = (float)(Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
-        float lerpZ = (float)(Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
+        float lerpX, lerpY, lerpZ;
+        if (attached) { // Position is updated every frame, so no lerping required
+            lerpX = (float)(this.x - vec3.x());
+            lerpY = (float)(this.y - vec3.y());
+            lerpZ = (float)(this.z - vec3.z());
+        } else {
+            lerpX = (float) (Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
+            lerpY = (float) (Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
+            lerpZ = (float) (Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
+        }
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         vector3f1.transform(camera.rotation());
         float quadSize = this.getSpriteSize(partialTicks);
@@ -316,47 +315,29 @@ public class LatexDripParticle extends LatexParticle {
         float u1 = this.sprite.getU1();
         float v0 = this.sprite.getV0();
         float v1 = this.sprite.getV1();
+
+        Vector3f[] genVec = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        for(int i = 0; i < 4; ++i) {
+            Vector3f vector3f = genVec[i];
+            vector3f.transform(camera.rotation());
+            vector3f.mul(quadSize);
+            vector3f.add(lerpX, lerpY, lerpZ);
+        }
+
         int lightColor = this.getLightColor(partialTicks);
         int overlay = attached ? LivingEntityRenderer.getOverlayCoords(attachedEntity, 0.0F) : OverlayTexture.NO_OVERLAY;
+        float normX = attached ? surfaceNormalRelativeCamera.x() : 0;
+        float normY = attached ? surfaceNormalRelativeCamera.y() : 0;
+        float normZ = attached ? surfaceNormalRelativeCamera.z() : 1;
 
-        if (attached) {
-            // TODO align quad to normal and tangent
-            Vector3f[] genVec = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-
-            for(int i = 0; i < 4; ++i) {
-                Vector3f vector3f = genVec[i];
-                vector3f.transform(camera.rotation());
-                vector3f.mul(quadSize);
-                vector3f.add(lerpX, lerpY, lerpZ);
-            }
-
-            buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v1)
-                    .overlayCoords(overlay).uv2(lightColor).normal(surfaceNormalRelativeCamera.x(), surfaceNormalRelativeCamera.y(), surfaceNormalRelativeCamera.z()).endVertex();
-            buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v0)
-                    .overlayCoords(overlay).uv2(lightColor).normal(surfaceNormalRelativeCamera.x(), surfaceNormalRelativeCamera.y(), surfaceNormalRelativeCamera.z()).endVertex();
-            buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v0)
-                    .overlayCoords(overlay).uv2(lightColor).normal(surfaceNormalRelativeCamera.x(), surfaceNormalRelativeCamera.y(), surfaceNormalRelativeCamera.z()).endVertex();
-            buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v1)
-                    .overlayCoords(overlay).uv2(lightColor).normal(surfaceNormalRelativeCamera.x(), surfaceNormalRelativeCamera.y(), surfaceNormalRelativeCamera.z()).endVertex();
-        } else {
-            Vector3f[] genVec = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-
-            for(int i = 0; i < 4; ++i) {
-                Vector3f vector3f = genVec[i];
-                vector3f.transform(camera.rotation());
-                vector3f.mul(quadSize);
-                vector3f.add(lerpX, lerpY, lerpZ);
-            }
-
-            buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v1)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lightColor).normal(0, 0, 1).endVertex();
-            buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v0)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lightColor).normal(0, 0, 1).endVertex();
-            buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v0)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lightColor).normal(0, 0, 1).endVertex();
-            buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v1)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lightColor).normal(0, 0, 1).endVertex();
-        }
+        buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v1)
+                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+        buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v0)
+                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+        buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v0)
+                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+        buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v1)
+                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
     }
 
     @Override

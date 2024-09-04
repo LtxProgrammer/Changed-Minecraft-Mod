@@ -2,12 +2,12 @@ package net.ltxprogrammer.changed.client.renderer.animate.ears;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class CatEarsInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractEarsAnimator<T, M> {
+public class CatEarsInitAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractEarsAnimator<T, M> {
     public CatEarsInitAnimator(ModelPart leftEar, ModelPart rightEar) {
         super(leftEar, rightEar);
     }

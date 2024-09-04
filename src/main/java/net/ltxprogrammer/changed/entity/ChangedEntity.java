@@ -19,6 +19,7 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -50,6 +51,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -864,6 +867,24 @@ public abstract class ChangedEntity extends Monster {
             return this.underlyingPlayer.getMainArm() == HumanoidArm.LEFT;
         else
             return super.isLeftHanded();
+    }
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getCapability(cap);
+        else
+            return super.getCapability(cap);
+    }
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
+        if (this.underlyingPlayer != null)
+            return this.underlyingPlayer.getCapability(capability, facing);
+        else
+            return super.getCapability(capability, facing);
     }
 
     @Deprecated

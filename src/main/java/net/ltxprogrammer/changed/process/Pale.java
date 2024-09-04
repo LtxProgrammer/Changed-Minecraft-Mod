@@ -23,11 +23,11 @@ public class Pale {
     }
 
     public static boolean isCured(Player player) {
-        return ProcessTransfur.isPlayerLatex(player) && getPaleExposure(player) < 0;
+        return ProcessTransfur.isPlayerTransfurred(player) && getPaleExposure(player) < 0;
     }
 
     public static boolean tryCure(Player player) {
-        if (ProcessTransfur.isPlayerLatex(player)) {
+        if (ProcessTransfur.isPlayerTransfurred(player)) {
             setPaleExposure(player, -2000);
             return true;
         }
@@ -77,7 +77,7 @@ public class Pale {
 
         setPaleExposure(player, exposure);
 
-        if (ProcessTransfur.isPlayerLatex(player))
+        if (ProcessTransfur.isPlayerTransfurred(player))
             return;
 
         // VVV effects VVV

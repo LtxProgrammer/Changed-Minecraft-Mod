@@ -13,8 +13,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> extends ForgeRegistryEntry<AbstractAbility<?>> {
@@ -291,5 +293,18 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         }
 
         return null;
+    }
+
+    @NotNull
+    public static <T extends AbstractAbilityInstance> Optional<T> getAbilityInstanceSafe(LivingEntity livingEntity, AbstractAbility<T> ability) {
+        if (livingEntity == null) return Optional.empty();
+
+        if (livingEntity instanceof ChangedEntity latex)
+            return Optional.ofNullable(latex.getAbilityInstance(ability));
+        else if (livingEntity instanceof Player player) {
+            return ProcessTransfur.getPlayerTransfurVariantSafe(player).map(instance -> instance.getAbilityInstance(ability));
+        }
+
+        return Optional.empty();
     }
 }

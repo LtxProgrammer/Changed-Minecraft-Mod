@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.wing;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * Animator that handles wing idling for legacy models
  * @param <T>
  */
-public class LegacyWingInitAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractLegacyWingAnimator<T, M> {
+public class LegacyWingInitAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractLegacyWingAnimator<T, M> {
     public LegacyWingInitAnimator(
             ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
             ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {

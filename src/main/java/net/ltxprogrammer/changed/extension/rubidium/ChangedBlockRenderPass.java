@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderType;
 
 import java.lang.reflect.Method;
 
-public class ChangedBlockRenderPass {
+public abstract class ChangedBlockRenderPass {
     private static final Method ctor;
     private static BlockRenderPass create(String name, RenderType type, boolean translucent, float alphaCutoff) {
         try {

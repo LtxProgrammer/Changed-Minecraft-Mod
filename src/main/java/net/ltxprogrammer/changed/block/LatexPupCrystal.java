@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class LatexPupCrystal extends AbstractLatexCrystal {
+public class LatexPupCrystal extends TransfurCrystalBlock {
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 25.0D, 12.0D);
     public static final VoxelShape SHAPE_SMALL = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 4.0D, 12.0D);
 
@@ -135,11 +135,11 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
         if (variant == null) return;
 
         if (entity instanceof LivingEntity le && !(entity instanceof ChangedEntity) && !le.isDeadOrDying()) {
-            if (entity instanceof Player player && (ProcessTransfur.isPlayerLatex(player) || player.isCreative()))
+            if (entity instanceof Player player && (ProcessTransfur.isPlayerTransfurred(player) || player.isCreative()))
                 return;
             this.extend(state, level, pos);
             if (!level.isClientSide) {
-                if (ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.DARK_LATEX_CRYSTAL))) {
+                if (ProcessTransfur.progressTransfur(le, 8.3f, variant.get(), TransfurContext.hazard(TransfurCause.CRYSTAL))) {
                     for (int i = 1; i < multiply; ++i) {
                         variant.get().spawnAtEntity(le);
                     }
@@ -160,7 +160,7 @@ public class LatexPupCrystal extends AbstractLatexCrystal {
     public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if (!level.isClientSide && blockState.getValue(EXTENDED)) {
             if (player.isCreative()) {
-                AbstractDoubleLatexCrystal.preventCreativeDropFromBottomPart(level, blockPos, blockState, player);
+                AbstractDoubleTransfurCrystal.preventCreativeDropFromBottomPart(level, blockPos, blockState, player);
             } else {
                 dropResources(blockState, level, blockPos, null, player, player.getMainHandItem());
 

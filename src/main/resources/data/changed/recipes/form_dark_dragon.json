@@ -1,0 +1,15 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:dark_dragon_crystal_fragment"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
+  ],
+  "form": "changed:form_dark_dragon"
+}

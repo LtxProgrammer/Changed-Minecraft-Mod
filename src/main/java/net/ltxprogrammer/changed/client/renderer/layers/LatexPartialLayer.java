@@ -74,7 +74,7 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
     }
 
     @Override
-    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {
+    public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {
         this.getModel().setupAnim(entity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         model.setupHand();
         stack.pushPose();

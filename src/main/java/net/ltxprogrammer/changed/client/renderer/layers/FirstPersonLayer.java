@@ -14,13 +14,13 @@ public interface FirstPersonLayer<T extends LivingEntity> {
     float ZFIGHT_OFFSET = 1.0002f;
 
     default void renderFirstPersonOnFace(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, Camera camera) {}
-    default void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector) {}
+    default void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {}
 
     static void renderFirstPersonLayersOnFace(PoseStack poseStack, Camera camera, float partialTicks) {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity livingEntity))
             return;
-        if (livingEntity instanceof PlayerDataExtension playerData && playerData.getLatexVariant() != null)
-            livingEntity = playerData.getLatexVariant().getChangedEntity();
+        if (livingEntity instanceof PlayerDataExtension playerData && playerData.getTransfurVariant() != null)
+            livingEntity = playerData.getTransfurVariant().getChangedEntity();
 
         final LivingEntity renderEntity = livingEntity;
         if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(renderEntity) instanceof LivingEntityRenderer livingEntityRenderer) {

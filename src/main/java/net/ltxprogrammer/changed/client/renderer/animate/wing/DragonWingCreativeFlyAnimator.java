@@ -2,12 +2,12 @@ package net.ltxprogrammer.changed.client.renderer.animate.wing;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class DragonWingCreativeFlyAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractWingAnimatorV2<T, M> {
+public class DragonWingCreativeFlyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractWingAnimatorV2<T, M> {
     public static final float WING_FLAP_RATE = 0.2f;
     public static final float BODY_FLY_SCALE = 0.5f;
 

@@ -69,6 +69,18 @@ public abstract class RegistryElementPredicate<T extends IForgeRegistryEntry<T>>
             return new FullNameSpec<>(registry, new ResourceLocation(string));
     }
 
+    public static <T extends IForgeRegistryEntry<T>> RegistryElementPredicate<T> forTag(IForgeRegistry<T> registry, ResourceLocation name) {
+        return new TagSpec<>(registry, name);
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> RegistryElementPredicate<T> forNamespace(IForgeRegistry<T> registry, String string) {
+        return new NamespaceSpec<>(registry, string);
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> RegistryElementPredicate<T> forID(IForgeRegistry<T> registry, ResourceLocation name) {
+        return new FullNameSpec<>(registry, name);
+    }
+
     private static boolean validNamespaceChar(char p_135836_) {
         return p_135836_ == '_' || p_135836_ == '-' || p_135836_ >= 'a' && p_135836_ <= 'z' || p_135836_ >= '0' && p_135836_ <= '9' || p_135836_ == '.';
     }

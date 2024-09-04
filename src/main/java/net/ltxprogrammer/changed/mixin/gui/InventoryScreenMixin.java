@@ -42,7 +42,7 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
             return;
 
         ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
-            if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
+            if (ProcessTransfur.isPlayerNotLatex(this.minecraft.player))
                 return;
 
             var colorPair = AbstractRadialScreen.getColors(variant);
@@ -65,7 +65,7 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
             return;
 
         ProcessTransfur.ifPlayerTransfurred(this.minecraft.player, variant -> {
-            if (ProcessTransfur.isPlayerOrganic(this.minecraft.player))
+            if (ProcessTransfur.isPlayerNotLatex(this.minecraft.player))
                 return;
 
             int i = this.leftPos;

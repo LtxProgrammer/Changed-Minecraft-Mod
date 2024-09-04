@@ -6,14 +6,18 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
+import net.ltxprogrammer.changed.recipe.PurifierRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.NotImplementedException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,13 +59,20 @@ public class InfuserRecipeCategory implements IRecipeCategory<InfuserRecipe> {
     }
 
     @Override
-    public ResourceLocation getUid() {
-        return Changed.modResource("infuser_recipe");
+    public @NotNull RecipeType<InfuserRecipe> getRecipeType() {
+        return new RecipeType<>(Changed.modResource("infuser_recipe"), InfuserRecipe.class);
     }
 
     @Override
-    public Class<? extends InfuserRecipe> getRecipeClass() {
-        return InfuserRecipe.class;
+    @SuppressWarnings("removal")
+    public @NotNull ResourceLocation getUid() {
+        throw new NotImplementedException("Deprecated function");
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public @NotNull Class<? extends InfuserRecipe> getRecipeClass() {
+        throw new NotImplementedException("Deprecated");
     }
 
     @Override

@@ -36,7 +36,7 @@ public abstract class MobMixin extends LivingEntity {
                 if (ironGolem.isPlayerCreated())
                     return false;
                 if (livingEntity instanceof Player player)
-                    return !ProcessTransfur.isPlayerOrganic(player);
+                    return !ProcessTransfur.isPlayerNotLatex(player);
                 else return false;
             }));
     }

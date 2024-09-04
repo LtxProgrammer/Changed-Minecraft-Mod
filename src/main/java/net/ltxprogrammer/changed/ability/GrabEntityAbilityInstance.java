@@ -82,7 +82,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
         var hitResult = UniversalDist.getLocalHitResult();
         if (hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof LivingEntity livingEntity) {
-            if (livingEntity instanceof Player targetPlayer && ProcessTransfur.isPlayerLatex(targetPlayer))
+            if (livingEntity instanceof Player targetPlayer && ProcessTransfur.isPlayerTransfurred(targetPlayer))
                 return null;
             if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS) || livingEntity instanceof Player)
                 return livingEntity;
@@ -388,14 +388,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 return;
             }
 
-            if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerLatex(player)) {
+            if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerTransfurred(player)) {
                 ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
                     // This runs before the server broadcasts it to players
                     variant.checkForTemporary(this.entity);
                 });
             }
 
-            if (this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerLatex(player)) {
+            if (this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {
                 var variant = ProcessTransfur.getPlayerTransfurVariant(player);
                 if (!variant.isTemporaryFromSuit()) {
                     this.releaseEntity();

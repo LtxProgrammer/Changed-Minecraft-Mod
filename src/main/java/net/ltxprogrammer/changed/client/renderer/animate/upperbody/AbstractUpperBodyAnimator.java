@@ -1,17 +1,18 @@
 package net.ltxprogrammer.changed.client.renderer.animate.upperbody;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.model.AnimationUtils;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends HumanoidAnimator.Animator<T, M> {
+public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends HumanoidAnimator.Animator<T, M> {
     public final ModelPart head;
     public final ModelPart torso;
     public final ModelPart leftArm;
@@ -117,6 +118,10 @@ public abstract class AbstractUpperBodyAnimator<T extends ChangedEntity, M exten
         humanoidModel.body.copyFrom(this.torso);
         humanoidModel.leftArm.copyFrom(this.leftArm);
         humanoidModel.rightArm.copyFrom(this.rightArm);
+
+        humanoidModel.body.visible = this.torso.visible;
+        humanoidModel.leftArm.visible = this.leftArm.visible;
+        humanoidModel.rightArm.visible = this.rightArm.visible;
     }
 
     @Override
