@@ -576,19 +576,21 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
             return wearableItem.allowedToWear(itemStack, player, slot);
 
-        if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
-            return false;
+        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+            if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
+                return false;
 
-        if (itemStack.getItem() instanceof ArmorItem armorItem) {
-            if (parent.legCount == 2)
-                return true;
-            else {
-                switch (armorItem.getSlot()) {
-                    case FEET:
-                    case LEGS:
-                        return false;
-                    default:
-                        break;
+            if (itemStack.getItem() instanceof ArmorItem armorItem) {
+                if (parent.legCount == 2)
+                    return true;
+                else {
+                    switch (armorItem.getSlot()) {
+                        case FEET:
+                        case LEGS:
+                            return false;
+                        default:
+                            break;
+                    }
                 }
             }
         }
