@@ -338,7 +338,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     @Override
-    protected boolean canEnterPose(Pose pose) {
+    public boolean canEnterPose(Pose pose) {
         if (overridePose != null && overridePose != pose)
             return false;
         return super.canEnterPose(pose);

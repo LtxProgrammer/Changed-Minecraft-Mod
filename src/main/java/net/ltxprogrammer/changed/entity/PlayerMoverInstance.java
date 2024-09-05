@@ -38,4 +38,6 @@ public abstract class PlayerMoverInstance<T extends PlayerMover<?>> {
     public float getEyeHeight(Pose pose, float eyeHeight) {
         return eyeHeight;
     }
+
+    public void onRemove(Player player) {}
 }
