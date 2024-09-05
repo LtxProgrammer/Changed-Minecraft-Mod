@@ -12,7 +12,11 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -23,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.List;
 import java.util.Map;
 
-public class PipeBlock extends Block {
+public class PipeBlock extends Block implements SimpleWaterloggedBlock {
     public static enum ConnectState implements StringRepresentable {
         AIR("air"), PIPE("pipe"), WALL("wall");
 
@@ -97,9 +101,11 @@ public class PipeBlock extends Block {
 
     private final Map<BlockState, VoxelShape> shapesCache;
 
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
     public PipeBlock() {
         super(Properties.of(Material.METAL, MaterialColor.WOOL).sound(SoundType.COPPER).strength(3.0f, 3.0f));
-        this.registerDefaultState(this.getStateDefinition().any()
+        this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false)
                 .setValue(NORTH, ConnectState.AIR).setValue(EAST, ConnectState.AIR)
                 .setValue(SOUTH, ConnectState.AIR).setValue(WEST, ConnectState.AIR));
 
@@ -167,7 +173,7 @@ public class PipeBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(NORTH, EAST, SOUTH, WEST);
+        builder.add(NORTH, EAST, SOUTH, WEST, WATERLOGGED);
     }
 
     public final ConnectState connectsTo(BlockGetter level, BlockState state, BlockPos blockPos) {
@@ -222,6 +228,10 @@ public class PipeBlock extends Block {
             return Blocks.AIR.defaultBlockState();
         }
 
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
         return nState;
     }
 
@@ -242,6 +252,11 @@ public class PipeBlock extends Block {
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         return List.of(new ItemStack(this));
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
