@@ -24,11 +24,14 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -42,7 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DuctBlock extends ChangedBlock
+public class DuctBlock extends ChangedBlock implements SimpleWaterloggedBlock
 {
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
@@ -94,9 +97,11 @@ public class DuctBlock extends ChangedBlock
             Direction.WEST, Block.box(0.0, 2.0, 2.0, 2.0, 14.0, 14.0));
     private final Map<BlockState, VoxelShape> COMPUTED_SHAPES = new HashMap<>();
 
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
     public DuctBlock(final BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.getStateDefinition().any()
+        this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false)
                 .setValue(NORTH, false)
                 .setValue(SOUTH, false)
                 .setValue(EAST, false)
@@ -203,6 +208,9 @@ public class DuctBlock extends ChangedBlock
             if (!positive.getValue(VENTED) && !negative.getValue(VENTED)) {
                 wanted = wanted.setValue(VENTED, true);
             }
+            if (blockState.getValue(WATERLOGGED)) {
+                level.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            }
         }
         return wanted;
     }
@@ -240,7 +248,12 @@ public class DuctBlock extends ChangedBlock
 
     protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, VENTED);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, VENTED, WATERLOGGED);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
