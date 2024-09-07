@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "changed:leather_quadrupedal_boots",
+    "changed:chainmail_quadrupedal_boots",
+    "changed:iron_quadrupedal_boots",
+    "changed:golden_quadrupedal_boots",
+    "changed:diamond_quadrupedal_boots",
+    "changed:netherite_quadrupedal_boots"
+  ]
+}

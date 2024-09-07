@@ -7,7 +7,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -24,10 +24,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>> {
+public class HumanoidAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> {
     public final M entityModel;
     public float hipOffset = -2.0f;
     public float torsoWidth = 5.0f;
@@ -44,15 +42,6 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         return hipOffset + (12.0f - legLength) + 12.0f;
     }
 
-    public static ModelPart createNullPart(String... children) {
-        return new ModelPart(List.of(), Arrays.stream(children).collect(Collectors.toMap(
-                Function.identity(),
-                name -> new ModelPart(List.of(), Map.of())
-        )));
-    }
-
-    private final HumanoidModel<?> propertyModel;
-    private final PlayerModel<?> propertyModelPlayer;
     private final Map<Integer, Runnable> setupHandsRunnable = new HashMap<>();
     private final EnumMap<AnimateStage, List<Animator<T, M>>> animators;
     private final EnumMap<AnimateStage, List<CameraAnimator<T, M>>> cameraAnimators;
@@ -146,10 +135,6 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         this.cameraAnimators = new EnumMap<>(AnimateStage.class);
         Arrays.stream(AnimateStage.values()).forEach(stage -> animators.put(stage, new ArrayList<>())); // Populate array
         Arrays.stream(AnimateStage.values()).forEach(stage -> cameraAnimators.put(stage, new ArrayList<>())); // Populate array
-
-        this.propertyModel = new HumanoidModel(createNullPart("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg"));
-        this.propertyModelPlayer = new PlayerModel(createNullPart("head", "hat", "body", "right_arm", "left_arm", "right_leg", "left_leg",
-                "ear", "cloak", "left_sleeve", "right_sleeve", "left_pants", "right_pants", "jacket"), false);
     }
 
     public void applyPropertyModel(HumanoidModel<?> propertyModel) {
@@ -166,11 +151,42 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         }
     }
 
+    public void writePropertyModelHumanoid(HumanoidModel<?> propertyModel) {
+        propertyModel.leftArmPose = leftArmPose;
+        propertyModel.rightArmPose = rightArmPose;
+        propertyModel.crouching = crouching;
+        propertyModel.swimAmount = swimAmount;
+        propertyModel.attackTime = entityModel.attackTime;
+        propertyModel.riding = entityModel.riding;
+        propertyModel.young = entityModel.young;
+
+        for (var anim : animators.get(AnimateStage.INIT)) {
+            anim.copyTo(propertyModel);
+        }
+    }
+
+    public void writePropertyModel(PlayerModel<?> propertyModel) {
+        this.writePropertyModelHumanoid(propertyModel);
+        propertyModel.leftSleeve.copyFrom(propertyModel.leftArm);
+        propertyModel.rightPants.copyFrom(propertyModel.rightLeg);
+        propertyModel.leftPants.copyFrom(propertyModel.leftLeg);
+        propertyModel.jacket.copyFrom(propertyModel.body);
+
+        propertyModel.jacket.visible = propertyModel.body.visible;
+        propertyModel.rightSleeve.visible = propertyModel.rightArm.visible;
+        propertyModel.leftSleeve.visible = propertyModel.leftArm.visible;
+        propertyModel.rightPants.visible = propertyModel.rightLeg.visible;
+        propertyModel.leftPants.visible = propertyModel.leftLeg.visible;
+    }
+
     /**
      * This function is only for property purposes, and not to be directly rendered
      * @return A HumanoidModel approximating the current latex model
      */
+    @Deprecated
     public HumanoidModel<?> getPropertyModel(@Nullable EquipmentSlot slot) {
+        var propertyModel = this.entityModel;
+
         propertyModel.leftArmPose = leftArmPose;
         propertyModel.rightArmPose = rightArmPose;
         propertyModel.crouching = crouching;
@@ -208,36 +224,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         return propertyModel;
     }
 
-    /**
-     * This function is only for property purposes, and not to be directly rendered
-     * @return A PlayerModel approximating the current latex model
-     */
-    public PlayerModel<?> getPropertyModelPlayer(@Nullable EquipmentSlot slot) {
-        final HumanoidModel<?> humanoidModel = getPropertyModel(slot);
-        humanoidModel.copyPropertiesTo((PlayerModel)this.propertyModelPlayer);
-        this.propertyModelPlayer.swimAmount = humanoidModel.swimAmount;
-        this.propertyModelPlayer.leftSleeve.copyFrom(humanoidModel.leftArm);
-        this.propertyModelPlayer.rightPants.copyFrom(humanoidModel.rightLeg);
-        this.propertyModelPlayer.leftPants.copyFrom(humanoidModel.leftLeg);
-        this.propertyModelPlayer.jacket.copyFrom(humanoidModel.body);
-
-        this.propertyModelPlayer.head.visible = humanoidModel.head.visible;
-        this.propertyModelPlayer.hat.visible = humanoidModel.hat.visible;
-        this.propertyModelPlayer.body.visible = humanoidModel.body.visible;
-        this.propertyModelPlayer.jacket.visible = humanoidModel.body.visible;
-        this.propertyModelPlayer.rightArm.visible = humanoidModel.rightArm.visible;
-        this.propertyModelPlayer.rightSleeve.visible = humanoidModel.rightArm.visible;
-        this.propertyModelPlayer.leftArm.visible = humanoidModel.leftArm.visible;
-        this.propertyModelPlayer.leftSleeve.visible = humanoidModel.leftArm.visible;
-        this.propertyModelPlayer.rightLeg.visible = humanoidModel.rightLeg.visible;
-        this.propertyModelPlayer.rightPants.visible = humanoidModel.rightLeg.visible;
-        this.propertyModelPlayer.leftLeg.visible = humanoidModel.leftLeg.visible;
-        this.propertyModelPlayer.leftPants.visible = humanoidModel.leftLeg.visible;
-
-        return this.propertyModelPlayer;
-    }
-
-    public static <T extends ChangedEntity, M extends EntityModel<T>> HumanoidAnimator<T, M> of(M entityModel) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> HumanoidAnimator<T, M> of(M entityModel) {
         return new HumanoidAnimator<>(entityModel);
     }
 
@@ -336,7 +323,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         }
     }
 
-    public static abstract class Animator<T extends ChangedEntity, M extends EntityModel<T>> {
+    public static abstract class Animator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> {
         protected HumanoidAnimator<T, M> core;
 
         public abstract AnimateStage preferredStage();
@@ -349,7 +336,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends EntityModel<T>>
         }
     }
 
-    public static abstract class CameraAnimator<T extends ChangedEntity, M extends EntityModel<T>> {
+    public static abstract class CameraAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> {
         protected HumanoidAnimator<T, M> core;
 
         // Understandably, users may not want the camera to move heavily while playing.

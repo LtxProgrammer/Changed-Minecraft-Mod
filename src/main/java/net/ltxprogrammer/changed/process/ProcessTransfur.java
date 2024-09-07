@@ -77,7 +77,7 @@ public class ProcessTransfur {
     }
 
     public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
-        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
+        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
             return false;
         if (player.isDeadOrDying() || player.isRemoved())
             return false;
@@ -123,7 +123,7 @@ public class ProcessTransfur {
         amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
 
         if (entity instanceof Player player) {
-            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
+            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
                 return false;
             boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
@@ -132,9 +132,9 @@ public class ProcessTransfur {
             }
 
             else {
-                player.invulnerableTime = 20;
+                /*player.invulnerableTime = 20;
                 player.hurtDuration = 10;
-                player.hurtTime = player.hurtDuration;
+                player.hurtTime = player.hurtDuration;*/
 
                 float next = getPlayerTransfurProgress(player) + amount;
                 return next >= ProcessTransfur.getEntityTransfurTolerance(player);
@@ -346,10 +346,6 @@ public class ProcessTransfur {
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
         MinecraftForge.EVENT_BUS.post(event);
         @Nullable TransfurVariant<?> variant = event.variant;
-        if (variant != null && !event.isRedundant()) {
-            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
-            ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
-        }
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
@@ -386,6 +382,12 @@ public class ProcessTransfur {
         } else {
             player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         }
+
+        if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
+            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
+            ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
+        }
+
         if (player instanceof ServerPlayer serverPlayer)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(player));
         return instance;
@@ -393,6 +395,10 @@ public class ProcessTransfur {
 
     public static TransfurVariantInstance<?> setPlayerTransfurVariantNamed(Player player, ResourceLocation variant) {
         return setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variant));
+    }
+
+    public static boolean isPlayerPermTransfurred(Player player) {
+        return getPlayerTransfurVariantSafe(player).map(variant -> !variant.isTemporaryFromSuit()).orElse(false);
     }
 
     public static boolean isPlayerTransfurred(Player player) {
@@ -519,7 +525,11 @@ public class ProcessTransfur {
         }
     }
 
-    public static void killPlayerBy(Player player, LivingEntity source) {
+    public static void killPlayerByAbsorption(Player player, LivingEntity source) {
+        player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
+    }
+
+    public static void killPlayerByTransfur(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
     }
 

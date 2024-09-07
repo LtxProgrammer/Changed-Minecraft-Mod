@@ -65,9 +65,8 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
             if (armoritem.getSlot() == slot) {
                 this.getParentModel().copyPropertiesTo(model);
                 boolean foil = itemstack.hasFoil();
-                var propModel = model.getAnimator().getPropertyModel(slot);
-                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, propModel);
-                if (altModel != propModel) {
+                var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, model);
+                if (altModel != model) {
                     if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) {
                         int i = ((net.minecraft.world.item.DyeableLeatherItem)armoritem).getColor(itemstack);
                         float red = (float)(i >> 16 & 255) / 255.0F;

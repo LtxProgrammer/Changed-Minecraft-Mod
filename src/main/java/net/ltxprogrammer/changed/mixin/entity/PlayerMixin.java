@@ -277,6 +277,9 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
 
     @Override
     public void setPlayerMover(@Nullable PlayerMoverInstance<?> playerMover) {
+        if (this.playerMover != null)
+            this.playerMover.onRemove((Player)(Object)this);
+
         this.playerMover = playerMover;
         if (!level.isClientSide)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this), SyncMoversPacket.Builder.of((Player)(Object)this));

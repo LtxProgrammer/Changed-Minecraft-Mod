@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.tail;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static net.ltxprogrammer.changed.client.renderer.animate.upperbody.SharkUpperBodySwimAnimator.SWIM_RATE;
 
-public class OrcaTailSwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractTailAnimator<T, M> {
+public class OrcaTailSwimAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractTailAnimator<T, M> {
     public OrcaTailSwimAnimator(ModelPart tail, List<ModelPart> tailJoints) {
         super(tail, tailJoints);
     }

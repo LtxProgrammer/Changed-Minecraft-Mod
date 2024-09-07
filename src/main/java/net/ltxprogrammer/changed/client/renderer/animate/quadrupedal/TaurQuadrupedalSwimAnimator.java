@@ -2,12 +2,12 @@ package net.ltxprogrammer.changed.client.renderer.animate.quadrupedal;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class TaurQuadrupedalSwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
+public class TaurQuadrupedalSwimAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractQuadrupedalAnimator<T, M> {
     public final ModelPart frontLeftLegLower, frontLeftFoot;
     public final ModelPart frontRightLegLower, frontRightFoot;
     public final ModelPart backLeftLegLower, backLeftFoot, backLeftPad;

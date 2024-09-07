@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.compatibility.PlayerAnimator;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonMode;
 import dev.kosmx.playerAnim.impl.IAnimatedPlayer;
@@ -13,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +23,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AdvancedHumanoidModel.class, remap = false)
-public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extends EntityModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
+public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extends PlayerModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
+    public AdvancedHumanoidModelMixin(ModelPart p_170821_, boolean p_170822_) {
+        super(p_170821_, p_170822_);
+    }
+
     @Shadow public abstract void setAllLimbsVisible(T entity, boolean visible);
     @Shadow public abstract ModelPart getArm(HumanoidArm arm);
 

@@ -61,7 +61,7 @@ public class GrabOverlay {
     public static void renderProgressBarPlayer(PoseStack stack, float partialTicks, int screenWidth, int screenHeight) {
         RenderSystem.setShaderTexture(0, GRAB_PROGRESS_BAR_PLAYER);
         int x = (screenWidth / 2) - (BAR_WIDTH_PLAYER / 2);
-        int y = (screenHeight / 2) + 20;
+        int y = (screenHeight / 2) + 35;
 
         if (Minecraft.getInstance().cameraEntity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
@@ -70,7 +70,7 @@ public class GrabOverlay {
 
             renderBackground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack);
             renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength(partialTicks));
-            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress(partialTicks));
+            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getSuitTransitionProgress(partialTicks));
         }
     }
 
@@ -88,7 +88,7 @@ public class GrabOverlay {
 
         renderBackground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack);
         renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength(partialTicks));
-        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.suited ? 1.0f : grabAbility.getSuitTransitionProgress(partialTicks));
+        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getSuitTransitionProgress(partialTicks));
     }
 
     public static void renderEscapeKeyAt(Gui gui, PoseStack stack, int x, int y, AbstractAbilityInstance.KeyReference key, float alpha) {

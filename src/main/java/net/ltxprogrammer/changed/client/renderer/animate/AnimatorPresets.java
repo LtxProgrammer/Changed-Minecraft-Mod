@@ -17,15 +17,16 @@ import net.ltxprogrammer.changed.client.renderer.animate.quadrupedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.tail.*;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.*;
 import net.ltxprogrammer.changed.client.renderer.animate.wing.*;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 public class AnimatorPresets {
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> bipedal(ModelPart leftLeg, ModelPart rightLeg) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> bipedal(ModelPart leftLeg, ModelPart rightLeg) {
         return animator -> {
             animator
                     .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
@@ -36,7 +37,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanBipedal(ModelPart leftLeg, ModelPart rightLeg) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> humanBipedal(ModelPart leftLeg, ModelPart rightLeg) {
         return animator -> {
             animator
                     .addAnimator(new BipedalCrouchAnimator<>(leftLeg, rightLeg))
@@ -47,7 +48,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
@@ -59,7 +60,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
@@ -71,7 +72,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
@@ -84,7 +85,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> sharkBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
@@ -96,7 +97,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> orcaBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> orcaBipedal(ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                               ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
         return animator -> {
             animator
@@ -108,7 +109,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> quadrupedal(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontRightLeg, ModelPart backLeftLeg, ModelPart backRightLeg) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> quadrupedal(ModelPart torso, ModelPart frontLeftLeg, ModelPart frontRightLeg, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
             animator
                     .addAnimator(new QuadrupedalCrouchAnimator<>(torso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
@@ -121,7 +122,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> legless(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> legless(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -133,7 +134,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -145,7 +146,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2VerticalSwim(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2VerticalSwim(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
                     .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -157,7 +158,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBodyOld(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBodyOld(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsOld(1, leftArm, rightArm)
                     .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
@@ -166,7 +167,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> upperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> upperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHandsOld(1, leftArm, rightArm)
                     .addAnimator(new UpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
@@ -176,7 +177,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> humanUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -187,7 +188,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -198,7 +199,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -209,7 +210,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -220,7 +221,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonWingedUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonWingedUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -232,7 +233,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> sharkUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -244,7 +245,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> orcaUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -256,7 +257,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> doubleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> doubleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         return animator -> {
             animator.setupHands(1, upperLeftArm, upperRightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, upperLeftArm, upperRightArm))
@@ -268,7 +269,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> tripleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> tripleArmUpperBody(ModelPart head, ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm) {
         return animator -> {
             animator.setupHands(1, upperLeftArm, upperRightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, upperLeftArm, upperRightArm))
@@ -281,7 +282,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> aquaticUpperBody(ModelPart head, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator
                     .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
@@ -289,7 +290,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.setupHands(1, leftArm, rightArm)
                     .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
@@ -300,7 +301,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> aquaticTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> aquaticTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new AquaticTailInitAnimator<>(tail, tailJoints))
@@ -312,7 +313,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> noSwimOrSleepTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> noSwimOrSleepTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new TailInitAnimator<>(tail, tailJoints))
@@ -321,7 +322,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> standardTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> standardTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new TailInitAnimator<>(tail, tailJoints))
@@ -333,7 +334,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new WolfTailInitAnimator<>(tail, tailJoints))
@@ -345,7 +346,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new CatTailInitAnimator<>(tail, tailJoints))
@@ -357,7 +358,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new DragonTailInitAnimator<>(tail, tailJoints))
@@ -369,7 +370,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> sharkTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new SharkTailInitAnimator<>(tail, tailJoints))
@@ -381,7 +382,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> orcaTail(ModelPart tail, List<ModelPart> tailJoints) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> orcaTail(ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator
                     .addAnimator(new SharkTailInitAnimator<>(tail, tailJoints))
@@ -393,7 +394,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogTentacles(List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle) {
         return animator -> {
             animator.addAnimator(new SquidDogTentaclesInitAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
                     .addAnimator(new SquidDogTentaclesSwimAnimator<>(upperLeftTentacle, upperRightTentacle, lowerLeftTentacle, lowerRightTentacle))
@@ -401,28 +402,28 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfEars(ModelPart leftEar, ModelPart rightEar) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfEars(ModelPart leftEar, ModelPart rightEar) {
         return animator -> {
             animator
                     .addAnimator(new WolfEarsInitAnimator<>(leftEar, rightEar));
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catEars(ModelPart leftEar, ModelPart rightEar) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catEars(ModelPart leftEar, ModelPart rightEar) {
         return animator -> {
             animator
                     .addAnimator(new CatEarsInitAnimator<>(leftEar, rightEar));
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> beeAntennae(ModelPart leftAntennae, ModelPart rightAntennae) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> beeAntennae(ModelPart leftAntennae, ModelPart rightAntennae) {
         return animator -> {
             animator
                     .addAnimator(new BeeAntennaeInitAnimator<>(leftAntennae, rightAntennae));
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wingedOld(ModelPart leftWing, ModelPart rightWing) {
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wingedOld(ModelPart leftWing, ModelPart rightWing) {
         return animator -> {
             animator
                     .addAnimator(new WingInitAnimator<>(leftWing, rightWing))
@@ -430,7 +431,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wingedV2(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wingedV2(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
                                                                                                            ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
             animator
@@ -439,7 +440,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> legacyWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> legacyWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
                                                                                                            ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
             animator
@@ -448,7 +449,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonWinged(ModelPart leftWingRoot, ModelPart leftWingBone1, ModelPart leftWingBone2,
                                                                                                                ModelPart rightWingRoot, ModelPart rightWingBone1, ModelPart rightWingBone2) {
         return animator -> {
             animator
@@ -458,7 +459,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> armSetTwo(ModelPart leftArm, ModelPart rightArm,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> armSetTwo(ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart leftArm2, ModelPart rightArm2) {
         return animator -> {
             animator.setupHandsOld(2, leftArm2, rightArm2)
@@ -469,7 +470,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> armSetThree(ModelPart leftArm, ModelPart rightArm,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> armSetThree(ModelPart leftArm, ModelPart rightArm,
                                                                                                               ModelPart leftArm3, ModelPart rightArm3) {
         return animator -> {
             animator.setupHandsOld(3, leftArm3, rightArm3)
@@ -478,7 +479,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLikeOld(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLikeOld(ModelPart head, ModelPart torso,
                                                                                                               ModelPart leftArm, ModelPart rightArm,
                                                                                                               ModelPart tail, List<ModelPart> tailJoints,
                                                                                                               ModelPart leftLeg, ModelPart rightLeg) {
@@ -493,7 +494,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLikeArmor(ModelPart head,
                                                                                                                 ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                                 ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
@@ -507,7 +508,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> humanLike(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> humanLike(ModelPart head,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart leftLeg,
                                                                                                            ModelPart rightLeg) {
@@ -521,7 +522,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wolfLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -538,7 +539,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catLikeArmor(ModelPart head,
                                                                                                                ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                                ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
@@ -552,7 +553,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> catLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> catLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -569,7 +570,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> deerLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> deerLikeArmor(ModelPart head,
                                                                                                                 ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                 ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -585,7 +586,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> deerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> deerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -601,7 +602,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                              ModelPart tail, List<ModelPart> tailJoints,
                                                                                                              ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
@@ -616,7 +617,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> bigTailDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> bigTailDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                              ModelPart tail, List<ModelPart> tailJoints,
                                                                                                              ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                              ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
@@ -631,7 +632,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> wingedDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> wingedDragonLike(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                                    ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                    ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                                    ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad,
@@ -654,7 +655,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogLikeArmor(ModelPart head,
                                                                                                                     ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                                     List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
                                                                                                                     ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -670,7 +671,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> squidDogLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints, List<ModelPart> upperLeftTentacle, List<ModelPart> upperRightTentacle, List<ModelPart> lowerLeftTentacle, List<ModelPart> lowerRightTentacle,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -688,7 +689,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> beeLike(ModelPart head, ModelPart leftAntennae, ModelPart rightAntennae,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> beeLike(ModelPart head, ModelPart leftAntennae, ModelPart rightAntennae,
                                                                                                            ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints, ModelPart leftWing, ModelPart rightWing,
                                                                                                            ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
@@ -706,7 +707,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> beeLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> beeLikeArmor(ModelPart head,
                                                                                                                ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                                ModelPart tail, List<ModelPart> tailJoints, ModelPart leftLeg, ModelPart leftLegLower, ModelPart leftFoot, ModelPart leftPad,
                                                                                                                ModelPart rightLeg, ModelPart rightLegLower, ModelPart rightFoot, ModelPart rightPad) {
@@ -721,7 +722,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> stigerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> stigerLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                                   ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm,
                                                                                                                   ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                                   ModelPart tail, List<ModelPart> tailJoints,
@@ -739,7 +740,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> stigerLikeArmor(ModelPart head,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> stigerLikeArmor(ModelPart head,
                                                                                                                   ModelPart torso, ModelPart upperLeftArm, ModelPart upperRightArm,
                                                                                                                   ModelPart middleLeftArm, ModelPart middleRightArm, ModelPart lowerLeftArm, ModelPart lowerRightArm,
                                                                                                                   ModelPart tail, List<ModelPart> tailJoints,
@@ -756,7 +757,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLikeOld(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLikeOld(ModelPart head, ModelPart torso,
                                                                                                                 ModelPart leftArm, ModelPart rightArm,
                                                                                                                 ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                 ModelPart leftLeg, ModelPart rightLeg,
@@ -773,7 +774,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLikeRemodel(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> dragonLikeRemodel(ModelPart head, ModelPart torso,
                                                                                                                     ModelPart leftArm, ModelPart rightArm,
                                                                                                                     ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                     ModelPart leftLeg, ModelPart rightLeg,
@@ -792,7 +793,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> legacyDragonLike(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> legacyDragonLike(ModelPart head, ModelPart torso,
                                                                                                                ModelPart leftArm, ModelPart rightArm,
                                                                                                                ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                ModelPart leftLeg, ModelPart rightLeg,
@@ -811,7 +812,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkLikeOld(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> sharkLikeOld(ModelPart head, ModelPart torso,
                                                                                                                ModelPart leftArm, ModelPart rightArm,
                                                                                                                ModelPart tail, List<ModelPart> tailJoints,
                                                                                                                ModelPart leftLeg, ModelPart rightLeg) {
@@ -825,7 +826,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> sharkLike(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> sharkLike(ModelPart head, ModelPart torso,
                                                                                                             ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints,
 
@@ -843,7 +844,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> orcaLike(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> orcaLike(ModelPart head, ModelPart torso,
                                                                                                             ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints,
 
@@ -861,7 +862,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> snakeLike(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeLike(ModelPart head, ModelPart torso,
                                                                                                             ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
@@ -875,7 +876,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> snakeLikeV2(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeLikeV2(ModelPart head, ModelPart torso,
                                                                                                             ModelPart leftArm, ModelPart rightArm,
                                                                                                             ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
@@ -889,7 +890,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessShark(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessShark(ModelPart head, ModelPart torso,
                                                                                                                ModelPart leftArm, ModelPart rightArm,
                                                                                                                ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                                ModelPart tail, List<ModelPart> tailJoints) {
@@ -904,7 +905,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessSharkUpperBodyArmor(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessSharkUpperBodyArmor(ModelPart head, ModelPart torso,
                                                                                                                            ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
@@ -915,14 +916,14 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessSharkAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessSharkAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                                          ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints));
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRay(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRay(ModelPart head, ModelPart torso,
                                                                                                                        ModelPart leftArm, ModelPart rightArm,
                                                                                                                        ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                                        ModelPart tail, List<ModelPart> tailJoints) {
@@ -937,7 +938,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayUpperBodyArmor(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayUpperBodyArmor(ModelPart head, ModelPart torso,
                                                                                                                             ModelPart leftArm, ModelPart rightArm) {
         return animator -> {
             animator.addPreset(orcaUpperBody(head, torso, leftArm, rightArm))
@@ -948,14 +949,14 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessMantaRayAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addPreset(leglessV2VerticalSwim(abdomen, lowerAbdomen, tail, tailJoints));
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurLegsOld(ModelPart tail, List<ModelPart> tailJoints,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurLegsOld(ModelPart tail, List<ModelPart> tailJoints,
                                                                                                               ModelPart frontLeftLeg, ModelPart frontRightLeg,
                                                                                                               ModelPart lowerTorso, ModelPart backLeftLeg, ModelPart backRightLeg) {
         return animator -> {
@@ -964,7 +965,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurLegs(ModelPart tail, List<ModelPart> tailJoints,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurLegs(ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart lowerTorso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,
                                                                                                            ModelPart frontRightLeg, ModelPart frontRightLegLower, ModelPart frontRightFoot,
                                                                                                            ModelPart backLeftLeg, ModelPart backLeftLegLower, ModelPart backLeftFoot, ModelPart backLeftPad,
@@ -993,7 +994,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurLikeOld(ModelPart head, ModelPart torso,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurLikeOld(ModelPart head, ModelPart torso,
                                                                                                               ModelPart leftArm, ModelPart rightArm,
                                                                                                               ModelPart tail, List<ModelPart> tailJoints,
                                                                                                               ModelPart frontLeftLeg, ModelPart frontRightLeg,
@@ -1008,7 +1009,7 @@ public class AnimatorPresets {
         };
     }
 
-    public static <T extends ChangedEntity, M extends EntityModel<T>> Consumer<HumanoidAnimator<T, M>> taurLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> taurLike(ModelPart head, ModelPart leftEar, ModelPart rightEar,
                                                                                                            ModelPart torso, ModelPart leftArm, ModelPart rightArm,
                                                                                                            ModelPart tail, List<ModelPart> tailJoints,
                                                                                                            ModelPart lowerTorso, ModelPart frontLeftLeg, ModelPart frontLeftLegLower, ModelPart frontLeftFoot,

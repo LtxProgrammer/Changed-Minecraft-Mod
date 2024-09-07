@@ -6,6 +6,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
@@ -14,6 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.NotImplementedException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,13 +57,20 @@ public class PurifierRecipeCategory implements IRecipeCategory<PurifierRecipe> {
     }
 
     @Override
-    public ResourceLocation getUid() {
-        return Changed.modResource("purifier_recipe");
+    public @NotNull RecipeType<PurifierRecipe> getRecipeType() {
+        return new RecipeType<>(Changed.modResource("purifier_recipe"), PurifierRecipe.class);
     }
 
     @Override
-    public Class<? extends PurifierRecipe> getRecipeClass() {
-        return PurifierRecipe.class;
+    @SuppressWarnings("removal")
+    public @NotNull ResourceLocation getUid() {
+        throw new NotImplementedException("Deprecated");
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public @NotNull Class<? extends PurifierRecipe> getRecipeClass() {
+        throw new NotImplementedException("Deprecated");
     }
 
     @Override

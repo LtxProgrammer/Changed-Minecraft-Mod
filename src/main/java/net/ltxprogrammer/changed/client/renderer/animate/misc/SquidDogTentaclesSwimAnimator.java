@@ -2,14 +2,14 @@ package net.ltxprogrammer.changed.client.renderer.animate.misc;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class SquidDogTentaclesSwimAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractTentaclesAnimator<T, M> {
+public class SquidDogTentaclesSwimAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractTentaclesAnimator<T, M> {
     public static final float SWAY_RATE = 0.33333334F * 0.25F;
     public static final float SWAY_SCALE = 0.025F;
     public static final float DRAG_SCALE = 0.75F;

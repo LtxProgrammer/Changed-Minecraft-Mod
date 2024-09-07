@@ -35,6 +35,14 @@ public class ChangedDamageSources {
         return new TransfurDamageSource(Changed.modResourceStr("transfur"), source == null ? null : source.getEntity());
     }
 
+    public static DamageSource entityAbsorb(LivingEntity source) {
+        return new TransfurDamageSource(Changed.modResourceStr("absorb"), source);
+    }
+
+    public static DamageSource entityAbsorb(@Nullable IAbstractChangedEntity source) {
+        return new TransfurDamageSource(Changed.modResourceStr("absorb"), source == null ? null : source.getEntity());
+    }
+
     public static final DamageSource BLOODLOSS = (new DamageSource(Changed.modResourceStr("bloodloss"))).bypassArmor();
     public static final DamageSource WHITE_LATEX = (new DamageSource(Changed.modResourceStr("white_latex"))).bypassArmor().bypassMagic();
     public static final DamageSource LATEX_FLUID = (new DamageSource(Changed.modResourceStr("latex_fluid"))).bypassArmor().bypassMagic();

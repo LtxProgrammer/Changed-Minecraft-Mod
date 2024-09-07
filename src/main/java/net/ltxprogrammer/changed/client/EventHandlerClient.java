@@ -1,8 +1,11 @@
 package net.ltxprogrammer.changed.client;
 
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
+import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.data.BiListener;
 import net.ltxprogrammer.changed.entity.*;
@@ -18,7 +21,11 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -53,15 +60,7 @@ public class EventHandlerClient {
             if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity()) {
                 event.setCanceled(true);
             } else if (grabAbility != null && grabAbility.shouldRenderGrabbedEntity()) {
-                if (grabAbility.grabbedHasControl && grabAbility.syncEntity != null) {
-                    grabAbility.syncEntity.mirrorLiving(event.getEntity());
-
-                    if (event.getEntity() instanceof Player player) {
-                        TransfurVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
-                    }
-
-                    FormRenderHandler.renderLiving(grabAbility.syncEntity, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
-                }
+                // TODO deprecate
             }
             return;
         }
@@ -182,6 +181,17 @@ public class EventHandlerClient {
             // Comment this line out to disable the content warning screen
             event.setScreen(new ContentWarningScreen());
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void addChangedLayers(EntityRenderersEvent.AddLayers event) {
+        event.getSkins().stream().map(name -> Pair.of(name, event.getSkin(name))).forEach(pair -> {
+            if (pair.getSecond() instanceof PlayerRenderer renderer) {
+                renderer.addLayer(new DarkLatexMaskLayer<>(renderer, event.getEntityModels()));
+                renderer.addLayer(new GasMaskLayer<>(renderer, event.getEntityModels()));
+            }
+        });
     }
 
     @OnlyIn(Dist.CLIENT)

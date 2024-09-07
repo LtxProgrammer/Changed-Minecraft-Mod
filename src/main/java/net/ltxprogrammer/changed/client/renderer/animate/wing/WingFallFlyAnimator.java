@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.wing;
 
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * Animator that handles a slithering entity upright on land
  * @param <T>
  */
-public class WingFallFlyAnimator<T extends ChangedEntity, M extends EntityModel<T>> extends AbstractWingAnimator<T, M> {
+public class WingFallFlyAnimator<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractWingAnimator<T, M> {
     public WingFallFlyAnimator(ModelPart leftWing, ModelPart rightWing) {
         super(leftWing, rightWing);
     }

@@ -13,7 +13,6 @@ import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -293,7 +292,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
-            ProcessTransfur.killPlayerBy(player, cause != null ? cause : newEntity);
+            ProcessTransfur.killPlayerByTransfur(player, cause != null ? cause : newEntity);
         } else if (entity instanceof ChangedEntity changedEntity) {
             newEntity.getBasicPlayerInfo().copyFrom(changedEntity.getBasicPlayerInfo());
             // Take armor and held items

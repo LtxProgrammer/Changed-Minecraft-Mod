@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +18,7 @@ public interface InputWrapper {
     boolean getRight();
     boolean getJumping();
     boolean getShiftKeyDown();
+    boolean getSprintKeyDown();
 
     default Vec2 getMoveVector() {
         return new Vec2(this.getLeftImpulse(), this.getForwardImpulse());
@@ -69,17 +72,25 @@ public interface InputWrapper {
         public boolean getShiftKeyDown() {
             return false;
         }
+
+        @Override
+        public boolean getSprintKeyDown() {
+            return false;
+        }
     }
 
     class InputHolder implements Supplier<Input>, InputWrapper {
         private final Input input;
+        private final Options options;
 
         public InputHolder(Player player) {
             this.input = ((LocalPlayer)player).input;
+            this.options = Minecraft.getInstance().options;
         }
 
-        public InputHolder(Input input) {
+        public InputHolder(Input input, Options options) {
             this.input = input;
+            this.options = options;
         }
 
         @Override
@@ -125,6 +136,11 @@ public interface InputWrapper {
         @Override
         public boolean getShiftKeyDown() {
             return input.shiftKeyDown;
+        }
+
+        @Override
+        public boolean getSprintKeyDown() {
+            return options.keySprint.isDown();
         }
     }
 
