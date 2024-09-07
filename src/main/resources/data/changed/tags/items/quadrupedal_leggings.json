@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "changed:leather_quadrupedal_leggings",
+    "changed:chainmail_quadrupedal_leggings",
+    "changed:iron_quadrupedal_leggings",
+    "changed:golden_quadrupedal_leggings",
+    "changed:diamond_quadrupedal_leggings",
+    "changed:netherite_quadrupedal_leggings"
+  ]
+}

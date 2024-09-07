@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "changed:leather_upper_abdomen_armor",
+    "changed:chainmail_upper_abdomen_armor",
+    "changed:iron_upper_abdomen_armor",
+    "changed:golden_upper_abdomen_armor",
+    "changed:diamond_upper_abdomen_armor",
+    "changed:netherite_upper_abdomen_armor"
+  ]
+}

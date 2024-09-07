@@ -43,6 +43,10 @@ public class ChangedTags {
     public static class Items {
         public static final TagKey<Item> TSC_WEAPON = create("tsc_weapon");
         public static final TagKey<Item> WILL_BREAK_ON_TF = create("will_break_on_tf");
+        public static final TagKey<Item> UPPER_ABDOMEN_ARMOR = create("upper_abdomen_armor");
+        public static final TagKey<Item> LOWER_ABDOMEN_ARMOR = create("lower_abdomen_armor");
+        public static final TagKey<Item> QUADRUPEDAL_LEGGINGS = create("quadrupedal_leggings");
+        public static final TagKey<Item> QUADRUPEDAL_BOOTS = create("quadrupedal_boots");
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registry.ITEM_REGISTRY, Changed.modResource(name));
