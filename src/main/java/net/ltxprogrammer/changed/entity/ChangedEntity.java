@@ -95,8 +95,15 @@ public abstract class ChangedEntity extends Monster {
     final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
 
     public BasicPlayerInfo getBasicPlayerInfo() {
-        if (underlyingPlayer instanceof PlayerDataExtension ext)
+        if (underlyingPlayer instanceof PlayerDataExtension ext) {
+            var variant = ext.getTransfurVariant();
+            if (variant != null && variant.isTemporaryFromSuit()) {
+                if (underlyingPlayer instanceof LivingEntityDataExtension lExt && lExt.getGrabbedBy() instanceof PlayerDataExtension gExt) {
+                    return gExt.getBasicPlayerInfo();
+                }
+            }
             return ext.getBasicPlayerInfo();
+        }
         else
             return this.entityData.get(DATA_LOCAL_VARIANT_INFO);
     }
