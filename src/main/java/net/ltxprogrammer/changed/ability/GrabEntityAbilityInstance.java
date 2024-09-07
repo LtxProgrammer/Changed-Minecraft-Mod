@@ -34,8 +34,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     private boolean wasGrabbedInvisible = false;
     @Nullable
     public LivingEntity grabbedEntity = null;
-    @Nullable
-    public ChangedEntity syncEntity = null;
     private int grabCooldown = 0;
     public boolean grabbedHasControl = false;
     public boolean suited = false;
@@ -43,6 +41,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     public float grabStrengthO = 0.0f;
     public float suitTransition = 0.0f;
     public float suitTransitionO = 0.0f;
+
+    public static final float SUIT_TRANSITION_MAX = 3.0f;
 
     public static final float GRAB_STRENGTH_DECAY = 0.1f / 20;
     public static final float GRAB_STRENGTH_DECAY_SUITED = 0.01f / 20;
@@ -70,7 +70,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public float getSuitTransitionProgress(float partialTicks) {
-        return Mth.lerp(partialTicks, suitTransitionO, suitTransition) / 3.0f;
+        return Mth.lerp(partialTicks, suitTransitionO, suitTransition) / SUIT_TRANSITION_MAX;
     }
 
     public LivingEntity getHoveredEntity(IAbstractChangedEntity entity) {
@@ -116,9 +116,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     }
 
     public void releaseEntity() {
-        if (this.syncEntity != null)
-            this.syncEntity.discard();
-        this.syncEntity = null;
         this.grabbedHasControl = false;
         this.grabStrength = 0.0f;
         this.suitTransition = 0.0f;
@@ -152,17 +149,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         this.grabCooldown = 40;
     }
 
-    private void prepareSyncEntity(LivingEntity syncTo) {
-        if (syncTo instanceof Player)
-            return;
-
-        this.syncEntity = (ChangedEntity) this.entity.getChangedEntity().getType().create(this.entity.getLevel());
-        this.syncEntity.setId(TransfurVariant.getNextEntId());
-        CompoundTag tag = new CompoundTag();
-        this.entity.getChangedEntity().saveWithoutId(tag);
-        this.syncEntity.load(tag);
-    }
-
     public void suitEntity(LivingEntity entity) {
         getController().resetHoldTicks();
 
@@ -172,7 +158,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             wasGrabbedInvisible = entity.isInvisible();
             entity.setSilent(true);
             entity.setInvisible(true);
-            prepareSyncEntity(entity);
         }
 
         if (this.grabbedEntity == entity) {
@@ -189,7 +174,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
 
     public void grabEntity(LivingEntity entity) {
         getController().resetHoldTicks();
-        prepareSyncEntity(entity);
 
         if (this.grabbedEntity == entity) {
             this.suited = false;
@@ -310,7 +294,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                     float trustStrength = Mth.clamp((float)ticksUnpressed / (float)GRAB_ESCAPE_TRUST, 0.0f, 1.0f);
                     float keyStrength = (this.suited ? GRAB_STRENGTH_DECAY_PLAYER_SUITED : GRAB_STRENGTH_DECAY_PLAYER) * trustStrength;
                     this.grabStrength -= keyStrength;
-                    this.suitTransition = Mth.clamp(this.suitTransition - (keyStrength * 0.5f), 0.0f, 3.0f);
+                    this.suitTransition = Mth.clamp(this.suitTransition - (keyStrength * 0.5f), 0.0f, SUIT_TRANSITION_MAX);
                     lastEscapeKey = currentEscapeKey;
                     currentEscapeKey = null;
                     ticksUnpressed = 0;
@@ -344,10 +328,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabCooldown > 0)
             this.grabCooldown--;
 
-        if (this.syncEntity != null) {
-            this.syncEntity.visualTick(this.entity.getLevel());
-        }
-
         if (this.grabbedEntity != null) {
             if (this.grabbedEntity instanceof Mob mob) {
                 mob.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
@@ -373,6 +353,10 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 TransfurVariantInstance.syncEntityPosRotWithEntity(this.entity.getEntity(), this.grabbedEntity);
             }
 
+            if (suited) {
+                this.suitTransition = SUIT_TRANSITION_MAX;
+            }
+
             if (suited && !(this.grabbedEntity instanceof Player)) {
                 this.grabbedEntity.setAirSupply(this.entity.getEntity().getAirSupply());
                 this.grabbedEntity.resetFallDistance();
@@ -392,6 +376,13 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
                     // This runs before the server broadcasts it to players
                     variant.checkForTemporary(this.entity);
+                });
+            }
+
+            else if (!this.suited && this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {
+                ProcessTransfur.ifPlayerTransfurred(player, variant -> {
+                    if (variant.isTemporaryFromSuit())
+                        ProcessTransfur.removePlayerTransfurVariant(player);
                 });
             }
 
@@ -435,12 +426,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 this.suitTransition += 0.075f;
             }
 
-            if (this.suitTransition > 0.0f) {
+            if (this.suitTransition > 0.0f && !suited) {
                 this.suitTransition = Math.max(0.0f, this.suitTransition - 0.025f);
 
-                if (this.suitTransition > 3.0f && !suited) { // 3 seconds
+                if (this.suitTransition > SUIT_TRANSITION_MAX) { // 3 seconds
                     this.suited = true;
-                    this.suitTransition = 0.0f;
+                    this.suitTransition = SUIT_TRANSITION_MAX;
 
                     if (this.entity.getEntity() instanceof Player player && player.level.isClientSide) {
                         Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.suitGrab(player, this.grabbedEntity));
@@ -464,8 +455,14 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 if (suited) {
                     this.grabEntity(this.grabbedEntity);
                     Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                    this.suitTransition = 0.0f;
                 } else
                     this.releaseEntity();
+
+                this.getController().resetHoldTicks();
+            }
+            else if (suited) {
+                this.suitTransition = (1.0f - (this.getController().getHoldTicks() / 40.0f)) * SUIT_TRANSITION_MAX;
             }
             return;
         }
@@ -483,7 +480,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             this.grabStrength = 1.0f;
             this.instructionTicks = 180;
             getController().resetHoldTicks();
-            prepareSyncEntity(grabbedEntity);
         }
     }
 
