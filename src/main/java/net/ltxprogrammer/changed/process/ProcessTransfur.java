@@ -77,7 +77,7 @@ public class ProcessTransfur {
     }
 
     public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
-        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
+        if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
             return false;
         if (player.isDeadOrDying() || player.isRemoved())
             return false;
@@ -123,7 +123,7 @@ public class ProcessTransfur {
         amount = LatexProtectionEnchantment.getLatexProtection(entity, amount);
 
         if (entity instanceof Player player) {
-            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerTransfurred(player))
+            if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
                 return false;
             boolean justHit = player.invulnerableTime == 20 && player.hurtDuration == 10;
 
@@ -397,6 +397,10 @@ public class ProcessTransfur {
         return setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variant));
     }
 
+    public static boolean isPlayerPermTransfurred(Player player) {
+        return getPlayerTransfurVariantSafe(player).map(variant -> !variant.isTemporaryFromSuit()).orElse(false);
+    }
+
     public static boolean isPlayerTransfurred(Player player) {
         if (player instanceof PlayerDataExtension ext)
             return ext.isTransfurred();
@@ -521,7 +525,11 @@ public class ProcessTransfur {
         }
     }
 
-    public static void killPlayerBy(Player player, LivingEntity source) {
+    public static void killPlayerByAbsorption(Player player, LivingEntity source) {
+        player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
+    }
+
+    public static void killPlayerByTransfur(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
     }
 

@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Matrix3f;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -18,7 +17,6 @@ import net.ltxprogrammer.changed.util.Cacheable;
 import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.UniversalDist;
-import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +30,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -53,11 +50,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +60,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static net.ltxprogrammer.changed.entity.variant.TransfurVariant.findEntityTransfurVariant;
@@ -577,7 +571,7 @@ public abstract class ChangedEntity extends Monster {
 
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
-            ProcessTransfur.killPlayerBy(loserPlayer, source.getEntity());
+            ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity());
         }
 
         else {
@@ -620,7 +614,7 @@ public abstract class ChangedEntity extends Monster {
                     if (entity instanceof Player pvpLoser) {
                         ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
                         ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
-                        ProcessTransfur.killPlayerBy(pvpLoser, underlyingPlayer);
+                        ProcessTransfur.killPlayerByAbsorption(pvpLoser, underlyingPlayer);
                     } else {
                         ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
                         ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
