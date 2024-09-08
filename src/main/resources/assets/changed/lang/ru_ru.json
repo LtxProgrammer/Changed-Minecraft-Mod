@@ -141,8 +141,10 @@
 
   "death.attack.changed:transfur": "%1$s был трансфуррирован",
   "death.attack.changed:transfur.player": "%1$s был трансфуррирован %2$s",
-  "death.attack.changed:white_latex": "%s решил испытать белый латекс на плотность",
-  "death.attack.changed:white_latex.player": "%1$s был затянут белым латексом, пытаясь сбежать от %2$s",
+  "death.attack.changed:absorb": "%1$s был поглощен",
+  "death.attack.changed:absorb.player": "%1$s был поглощен %2$s",
+  "death.attack.changed:white_latex": "%s был поглощен белым латексом",
+  "death.attack.changed:white_latex.player": "%1$s был поглощен белым латексом, пытаясь сбежать от %2$s",
   "death.attack.changed:latex_fluid": "%s был растворен в латексной жидкости",
   "death.attack.changed:latex_fluid.player": "%1$s был растворен в латексной жидкости, пытаясь сбежать от %2$s",
   "death.attack.changed:pale": "%s отправился в мир грез из-за Бледного вируса",
@@ -189,14 +191,14 @@
   "text.changed.tamed.wander": "%s бродит",
   "text.changed.tamed.follow": "%s следует",
   "text.changed.warning": "Внимание",
-  "text.changed.warning.content1": "Этот мод содержит контент из игры Changed,",
-  "text.changed.warning.content2": "И он не приемлен для всех возрастных аудиторий. [16+]",
+  "text.changed.warning.content1": "Этот мод содержит контент из Changed,",
+  "text.changed.warning.content2": "который не приемлен для всех возрастных аудиторий.",
 
   "effect.changed.hypercoagulation": "Гиперкоагуляция",
   "effect.changed.shock": "Шок",
   
   "enchantment.changed.latex_protection": "Защита от латекса",
-  "enchantment.changed.latex_protection.desc": "Защищает носителя от трансфурмации.",
+  "enchantment.changed.latex_protection.desc": "Защищает от трансфурмации.",
 
   "block.changed.air_conditioner": "Кондиционер",
   "block.changed.beaker": "Лабораторный стакан",
@@ -482,73 +484,73 @@
   "changed.error.corrupted_disc": "ERR: Некорректный Диск",
 
   "changed.compact_disc.title.light_latex_wolf": "Попытка сохранить мир",
-  "changed.compact_disc.content.light_latex_wolf": "В наших тщетных попытках найти вакцину от вируса во время эпидемии, Мы выяснили, что только животные не подвержены ему. Все мы начали искать способ обьединить человека и животного, в результате мы наконец продвинулись и создали Первичный латекс, Вещество способное менять ДНК за секунды. Мы наконец СМОЖЕМ побороть эпидемию!",
+  "changed.compact_disc.content.light_latex_wolf": "В наших тщетных попытках найти вакцину от вируса во время эпидемии, мы выяснили, что только животные не подвержены ему. Мы начали искать способ обьединить человека и животного, и в результате мы создали Первичный латекс, Вещество способное менять ДНК за секунды. Мы наконец СМОЖЕМ побороть эпидемию!",
   "changed.compact_disc.title.aerosol_latex_wolf": "Коричневые Волки",
   "changed.compact_disc.content.aerosol_latex_wolf": "После долгих бессоных ночей, Я наконец-то внес свой вклад в центр данных. Все эти шаблонные латексные волки такие скучные, так что Я смешал немного коричневой краски, и получил, ну, что-то уже не особо пресное.",
 
   "changed.compact_disc.title.dark_latex_wolf": "Тайна за маской",
-  "changed.compact_disc.content.dark_latex_wolf": "Как было сказано ранее, только животные способны прежить ярость эпидемии. В наших попытках трансфуррировать людей, мы создали волкоподобных существ с маской на лице, смешав наш первичный латекс и тёмный вид латекса. Рекомендуется продолжать опыты.",
+  "changed.compact_disc.content.dark_latex_wolf": "Как было сказано ранее, только животные способны пережить эпидемию. В наших попытках трансформировать людей, мы создали волкоподобных существ с маской на лице, смешав наш первичный латекс и тёмный вид латекса. Рекомендуется продолжать опыты.",
   "changed.compact_disc.title.dark_latex_yufeng": "Драконы в масках?",
-  "changed.compact_disc.content.dark_latex_yufeng": "После изпользования тех же материалов, что и в волке из тёмного латекса но добавив перо, мы создали существо способное планировать по воздуху, но всё ещё не умеющее летать. Оно почти похоже на дракона, но только с маской.",
+  "changed.compact_disc.content.dark_latex_yufeng": "После изпользования тех же материалов, что и в волке из тёмного латекса но добавив мембрану, мы создали существо способное планировать и летать по воздуху. Оно почти похоже на дракона, но только с маской.",
   "changed.compact_disc.title.dark_dragon": "Драконы",
-  "changed.compact_disc.content.dark_dragon": "Не смотря на то что это существо происходит от волков из тёмного латекса, оно на удивление не имеет маски. Эти использующие свои задние лапы \"Драконы\" способны планировать. Объединив кристалл и то же, из чего состоят волки, создается ДНК дракона.",
+  "changed.compact_disc.content.dark_dragon": "Не смотря на то что это существо происходит от волков из тёмного латекса, оно на удивление не имеет маски и не может трансфуррировать. Эти использующие свои задние лапы \"Драконы\" способны планировать и летать. Объединив кристалл, мембрану и то же, из чего состоят волки, мы создали драконий латекс.",
 
   "changed.compact_disc.title.beifeng": "Резюме по рептилиям",
   "changed.compact_disc.content.beifeng": "Смешав синий пигмент с первичным латексом было создано ящероподобное существо, немного более быстрое чем обычное латексное существо, как на суше так и в воде.",
 
   "changed.compact_disc.title.latex_shark": "Первый взгляд на акул",
-  "changed.compact_disc.content.latex_shark": "Акулы что мы создали действительно могут дышать подводой. Их скорость в воде невероятна, ценой мобильности на суше.",
+  "changed.compact_disc.content.latex_shark": "Акулы что мы создали действительно могут дышать подводой. Они быстры в воде, но медленны на суше.",
   "changed.compact_disc.title.latex_tiger_shark": "Акулы с полосками",
-  "changed.compact_disc.content.latex_tiger_shark": "Мы создали другой вариант акулы основываясь на обычной , этот вариант акулы немного быстрей на суше, но медленней в воде.",
+  "changed.compact_disc.content.latex_tiger_shark": "Мы создали другой вариант акулы основываясь на обычной, этот вариант акулы слегка быстрей на суше, но медленней в воде.",
   "changed.compact_disc.title.latex_orca": "Косатка",
   "changed.compact_disc.content.latex_orca": "На ряду с акулами, мы случайно создали косаток.",
-  "changed.compact_disc.title.latex_squid_dog": "Собака... Кальмар?",
-  "changed.compact_disc.content.latex_squid_dog": "Не только дышащие под водой, также имеющие дополнительную пару рук позволяющие держать больше вещей, Сквид доги",
+  "changed.compact_disc.title.latex_squid_dog": "Собака.. Кальмар?",
+  "changed.compact_disc.content.latex_squid_dog": "Не только дышащие под водой, но и также имеющие дополнительную пару рук позволяющие держать больше вещей, Сквид Доги",
 
   "changed.compact_disc.title.white_latex_creature": "Изменчивая жидкость",
-  "changed.compact_disc.content.white_latex_creature": "Этот эксперимент был наверное самым странным. Их генетическое строение позволяло им как бы растворятся и плавать в таком же материале что и они сами. Нужно большее кол-во экспериментов чтобы изучить это точнее.",
+  "changed.compact_disc.content.white_latex_creature": "Этот эксперимент был наверное самым странным из всех. Их генетическое строение позволяет им как бы растворятся и плавать в таком же материале что и они сами. Нужно провести больше экспериментов чтобы изучить это точнее.",
 
   "changed.compact_disc.title.special_latex": "Уникальные варианты",
   "changed.compact_disc.content.special_latex": "Благодаря прекрасным участникам, мы смогли найти и протестировать невообразимо большое кол-во вариантов латекса. Кажется, эксперименты были уникальны для каждого пациента, с которым проводили тест.",
 
   "changed:advancements.main.root.title": "Changed",
-  "changed:advancements.main.root.description": "Добро пожаловать в будущее!",
+  "changed:advancements.main.root.description": "Добро пожаловать в будущее генетики!",
 
   "changed:advancements.main.transfur.title": "Это навсегда!?",
   "changed:advancements.main.transfur.description": "Трансфурмируйтесь.",
 
   "changed:advancements.main.transfur_aquatic.title": "Время плавать!",
-  "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой аква латекс.",
+  "changed:advancements.main.transfur_aquatic.description": "Трансфурмируйтесь в любой водный латекс.",
 
   "changed:advancements.main.aquatic_swimming.title": "Я искал монетку!",
-  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи аква латексом.",
+  "changed:advancements.main.aquatic_swimming.description": "Проведите весь день подводой будучи водным латексом.",
 
   "changed:advancements.main.transfur_white.title": "Единый разум",
   "changed:advancements.main.transfur_white.description": "Трансфурмируйтесь в белый латекс.",
 
   "changed:advancements.main.transfur_dark.title": "Братство",
-  "changed:advancements.main.transfur_dark.description": "Трансфурмируйтесь в любой тёмный латекс.",
+  "changed:advancements.main.transfur_dark.description": "Трансфурмируйтесь в любой вид тёмного латекса.",
 
   "changed:advancements.main.white_latex_fuse.title": "IT'S OVER 9000!",
   "changed:advancements.main.white_latex_fuse.description": "Слейтесь в более совершенную форму латекса.",
 
   "changed:advancements.main.transfur_aerial.title": "Взлеты и падения",
-  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий латекс.",
+  "changed:advancements.main.transfur_aerial.description": "Трансфурмируйтесь в любой летающий вид латекса.",
   
-  "changed:advancements.main.transfur_mask.title": "Отрекая человечность",
+  "changed:advancements.main.transfur_mask.title": "Отвергнуть человечность",
   "changed:advancements.main.transfur_mask.description": "Получите и наденьте маску из тёмного латекса.",
   
   "changed:advancements.main.transfur_legless.title": "Ноги в сторону",
-  "changed:advancements.main.transfur_legless.description": "Трансфурмируйтесь в любую форму латекса не имеющую ног.",
+  "changed:advancements.main.transfur_legless.description": "Трансфурмируйтесь в любой безногий вид латекса.",
   
   "changed:advancements.main.beehive_sleep.title": "Что сниться пчелам...",
   "changed:advancements.main.beehive_sleep.description": "Поспите в кровати улья.",
 
-  "changed:advancements.main.tame_a_latex.title": "Странный друг",
+  "changed:advancements.main.tame_a_latex.title": "Необычный друг",
   "changed:advancements.main.tame_a_latex.description": "Приручите латекс.",
 
-  "changed:advancements.main.kill_all_latex.title": "Совсем невменяемый",
-  "changed:advancements.main.kill_all_latex.description": "Убейте по одному всех видов латексных.",
+  "changed:advancements.main.kill_all_latex.title": "Невменяемый",
+  "changed:advancements.main.kill_all_latex.description": "Убейте все виды латексов.",
 
   "changed:advancements.main.flying.title": "Отличный вид отсюда!",
   "changed:advancements.main.flying.description": "Полетайте над землей 15 секунд.",
