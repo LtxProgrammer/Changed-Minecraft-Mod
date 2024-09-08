@@ -40,7 +40,7 @@ public abstract class EntityRenderDispatcherMixin {
 
     @Shadow public abstract <T extends Entity> EntityRenderer<? super T> getRenderer(T p_114383_);
 
-    @Shadow public abstract Map<String, EntityRenderer<? extends Player>> getSkinMap();
+    @Shadow(remap = false) public abstract Map<String, EntityRenderer<? extends Player>> getSkinMap();
 
     @Shadow public Map<EntityType<?>, EntityRenderer<?>> renderers;
 
