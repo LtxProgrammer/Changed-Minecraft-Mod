@@ -212,7 +212,7 @@ public class ProcessTransfur {
             setPlayerTransfurVariant(player, transfurVariant);
             return player;
         } else {
-            return transfurVariant.replaceEntity(entity);
+            return transfurVariant.replaceEntity(entity).getEntity();
         }
     }
 
@@ -525,12 +525,14 @@ public class ProcessTransfur {
         }
     }
 
-    public static void killPlayerByAbsorption(Player player, LivingEntity source) {
+    public static boolean killPlayerByAbsorption(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
+        return player.isDeadOrDying();
     }
 
-    public static void killPlayerByTransfur(Player player, LivingEntity source) {
+    public static boolean killPlayerByTransfur(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
+        return player.isDeadOrDying();
     }
 
     public static float difficultyAdjustTransfurAmount(Difficulty difficulty, float amount) {
@@ -657,22 +659,6 @@ public class ProcessTransfur {
 
         final boolean doAnimation = level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION);
 
-        if (!keepConscious) {
-            for (var hand : InteractionHand.values()) {
-                if (entity.getItemInHand(hand).is(Items.TOTEM_OF_UNDYING)) {
-                    if (entity instanceof ServerPlayer serverPlayer) {
-                        serverPlayer.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
-                        CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, entity.getItemInHand(hand));
-                    }
-
-                    entity.getItemInHand(hand).shrink(1);
-                    entity.level.broadcastEntityEvent(entity, (byte) 35);
-                    keepConscious = true;
-                    break;
-                }
-            }
-        }
-
         if (entity.level.isClientSide) {
             return;
         }
@@ -704,7 +690,7 @@ public class ProcessTransfur {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context.cause);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (event.variant != null)
-                    onReplicate.accept(IAbstractChangedEntity.forEntity(event.variant.replaceEntity(entity, context.source)), event.variant);
+                    onReplicate.accept(event.variant.replaceEntity(entity, context.source), event.variant);
             }
         }
 

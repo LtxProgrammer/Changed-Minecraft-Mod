@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
@@ -490,6 +491,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
                 this.grabbedHasControl = !this.grabbedHasControl;
                 this.grabbedEntity.noPhysics = !this.grabbedHasControl;
                 this.entity.getEntity().noPhysics = this.grabbedHasControl;
+
+                if (this.grabbedHasControl) {
+                    this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
+                } else {
+                    this.entity.getEntity().setDeltaMovement(Vec3.ZERO);
+                }
             }
         }
     }

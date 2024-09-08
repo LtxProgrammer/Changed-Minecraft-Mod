@@ -571,7 +571,14 @@ public abstract class ChangedEntity extends Monster {
 
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
-            ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity());
+            if (!ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity())) { // Failed to kill player
+                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), TransfurCause.GRAB_REPLICATE, 1.0f);
+                instance.willSurviveTransfur = true;
+
+                ProcessTransfur.forceNearbyToRetarget(level, loserPlayer);
+
+                loserPlayer.heal(10.0F);
+            }
         }
 
         else {

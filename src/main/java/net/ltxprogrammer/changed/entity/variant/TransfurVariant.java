@@ -267,15 +267,15 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return newEntity;
     }
 
-    public ChangedEntity replaceEntity(@NotNull LivingEntity entity) {
+    public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity) {
         return replaceEntity(entity, (LivingEntity) null);
     }
 
-    public ChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable IAbstractChangedEntity cause) {
+    public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable IAbstractChangedEntity cause) {
         return replaceEntity(entity, cause == null ? null : cause.getEntity());
     }
 
-    public ChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable LivingEntity cause) {
+    public IAbstractChangedEntity replaceEntity(@NotNull LivingEntity entity, @Nullable LivingEntity cause) {
         var newEntity = spawnAtEntity(entity);
         if (entity.hasCustomName()) {
             newEntity.setCustomName(entity.getCustomName());
@@ -292,7 +292,16 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         if (entity instanceof Player player) {
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
-            ProcessTransfur.killPlayerByTransfur(player, cause != null ? cause : newEntity);
+            if (!ProcessTransfur.killPlayerByTransfur(player, cause != null ? cause : newEntity)) {
+                newEntity.discard();
+                var instance = ProcessTransfur.setPlayerTransfurVariant(player, this, TransfurCause.GRAB_REPLICATE, 1.0f);
+                instance.willSurviveTransfur = true;
+
+                ProcessTransfur.forceNearbyToRetarget(player.level, player);
+
+                player.heal(10.0F);
+                return IAbstractChangedEntity.forPlayer(player);
+            }
         } else if (entity instanceof ChangedEntity changedEntity) {
             newEntity.getBasicPlayerInfo().copyFrom(changedEntity.getBasicPlayerInfo());
             // Take armor and held items
@@ -314,7 +323,8 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
             entity.discard();
         }
-        return newEntity;
+
+        return IAbstractChangedEntity.forEntity(newEntity);
     }
 
     public BreatheMode getBreatheMode() {
