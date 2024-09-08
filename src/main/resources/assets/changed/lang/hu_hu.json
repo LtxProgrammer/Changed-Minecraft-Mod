@@ -139,8 +139,10 @@
 
   "syringe.changed:form_special": "Pártfogó egyedi formájának fecskendője",
 
-  "death.attack.changed:transfur": "%1$s játékost transzfurálták",
+  "death.attack.changed:transfur": "%1$s transzfurált",
   "death.attack.changed:transfur.player": "%2$s transzfurálta %1$s játékost",
+  "death.attack.changed:absorb": "%1$s elnyelődött",
+  "death.attack.changed:absorb.player": "%2$s elnyelte %1$s játékost",
   "death.attack.changed:white_latex": "%s játékost fehér latex oldotta fel",
   "death.attack.changed:white_latex.player": "%1$s játékost fehér latex oldotta fel, miközben %2$s elől menekült",
   "death.attack.changed:latex_fluid": "%s játékost folyékony latex oldotta fel",
