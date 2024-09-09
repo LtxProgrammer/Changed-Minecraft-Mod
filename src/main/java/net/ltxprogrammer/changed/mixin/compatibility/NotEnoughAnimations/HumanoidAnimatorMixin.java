@@ -32,7 +32,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         final Player player = entity.getUnderlyingPlayer();
         if (!(player instanceof AbstractClientPlayer clientPlayer)) return;
 
-        final PlayerModel<?> propertyModel = this.entityModel;
+        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel();
         NEAnimationsLoader.INSTANCE.playerTransformer.preUpdate(clientPlayer, (PlayerModel)propertyModel, limbSwing, info);
 
         this.applyPropertyModel(propertyModel);
@@ -43,7 +43,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         final Player player = entity.getUnderlyingPlayer();
         if (!(player instanceof AbstractClientPlayer clientPlayer)) return;
 
-        final PlayerModel<?> propertyModel = this.entityModel;
+        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel();
         NEAnimationsLoader.INSTANCE.playerTransformer.updateModel(clientPlayer, (PlayerModel)propertyModel, limbSwing, info);
 
         if (player instanceof PlayerData data) {
