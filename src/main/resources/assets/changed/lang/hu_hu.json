@@ -148,6 +148,7 @@
   "death.attack.changed:latex_fluid": "%s játékost folyékony latex oldotta fel",
   "death.attack.changed:latex_fluid.player": "%1$s játékost folyékony latex oldotta fel, miközben %2$s elől menekült",
   "death.attack.changed:pale": "A pale elvette %s játékos életét",
+  "death.attack.changed:pale.player": "A pale elvette %1$s játékos életét, miközben %2$s elől menekült",
   "death.attack.changed:bloodloss": "%s idegen plazmát használt",
   "death.attack.changed:bloodloss.player": "%1$s %2$s segítségével idegen plazmát használt",
   "death.attack.changed:fan": "%s játékost felkockázta egy ventilátor",
