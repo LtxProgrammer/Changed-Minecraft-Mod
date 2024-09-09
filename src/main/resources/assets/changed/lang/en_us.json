@@ -148,6 +148,7 @@
   "death.attack.changed:latex_fluid": "%s was dissolved by latex fluid",
   "death.attack.changed:latex_fluid.player": "%1$s was dissolved by latex fluid whilst trying to escape %2$s",
   "death.attack.changed:pale": "%s was taken by Pale",
+  "death.attack.changed:pale.player": "%1$s was taken by Pale while fighting %2$s",
   "death.attack.changed:bloodloss": "%s used foreign plasma",
   "death.attack.changed:bloodloss.player": "%1$s used foreign plasma, thanks to %2$s",
   "death.attack.changed:fan": "%s was diced by a fan",
