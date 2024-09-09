@@ -1,5 +1,8 @@
 name: JSON Validator
-on: [push]
+on:
+  push:
+    paths:
+      - "src/main/resources/**.json"
 
 jobs:
   Validate-JSON:
@@ -11,6 +14,6 @@ jobs:
       - name: JSON Validation - Languages
         uses: ammarlakis/action-ajv@v1.0.0
         with:
-          schema: ./.github/schemas/lang.schema.json
-          data: src/main/resources/assets/changed/lang/*.*
+          schema: "./.github/schemas/lang.schema.json"
+          data: "src/main/resources/assets/changed/lang/*.*"
           allErrors: true
