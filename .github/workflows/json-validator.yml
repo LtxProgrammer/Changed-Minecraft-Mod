@@ -1,0 +1,16 @@
+name: JSON Validator
+on: [push]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: JSON Validation - Languages
+        uses: ammarlakis/action-ajv@v1.0.0
+        with:
+          schema: /.github/schemas/lang.schema.json
+          data: /src/main/resources/assets/changed/lang/*.*
+          allErrors: true
