@@ -1,5 +1,6 @@
 name: JSON Validator
 on:
+  workflow_dispatch:
   push:
     paths:
       - "src/main/resources/**.json"
