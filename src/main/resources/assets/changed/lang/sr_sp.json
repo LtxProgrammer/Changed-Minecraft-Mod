@@ -116,7 +116,7 @@
  "item.changed.netherite_quadrupedal_boots" : "Нетхерите чизме са четири ноге",
 
  "item.changed.owo_record": "Латекс плоча",
- "item.changed.owo_record.desc": \" 'Г'вГ\" ' - Аутор Артемка2009",
+ "item.changed.owo_record.desc": " 'Г'вГ\" ' - Аутор Артемка2009",
 
  "item.changed.latex_music_disc": "Латекс плоча",
  "item.changed.black_goo_zone_record.desc": "Shizi - Black Goo Zone",
@@ -269,7 +269,7 @@
  "block.changed.tiles_grayblue_bolted_connected": "Сивоплаве плочице са завртњима",
  "block.changed.tiles_grayblue_bolted": "Серо-синяя плитка с болтами",
  "block.changed.tiles_grayblue_connected": "Сиво плава плочица за спајање",
- "block.changed.tiles_grayblue_stairs":" "Степенице од сиво-плавих плочица",
+ "block.changed.tiles_grayblue_stairs": "Степенице од сиво-плавих плочица",
  "block.changed.tiles_gray": "Сиве плочице",
  "block.changed.tiles_gray_stairs": "Степенице од сиве плочице",
  "block.changed.tiles_greenhouse": "Плочице за стакленике",
@@ -409,7 +409,7 @@
  "item.changed.dark_latex_wolf_pup_spawn_egg": "Јаје призивања Штене од тамног латекса",
  "item.changed.dark_latex_yufeng_spawn_egg": "Јаје призивања Иуфенг од тамног латекса",
  "item.changed.headless_knight_spawn_egg": "Јаје призивања Безглави витез",
- "item.changed.milk_pudding_spawn_egg": " "Јаје призивања Млечни пудинг",
+ "item.changed.milk_pudding_spawn_egg": "Јаје призивања Млечни пудинг",
  "item.changed.latex_alien_spawn_egg": "Јаје призивања Латекс ванземаљац",
  "item.changed.latex_bee_spawn_egg": "Јаје призивања Латекс пчела",
  "item.changed.beifeng_spawn_egg": "Јаје призивања Беифенг",
@@ -490,7 +490,7 @@
  "changed.compact_disc.title.dark_latex_yufeng": "Змајеви у маскама?",
  "changed.compact_disc.content.dark_latex_yufeng": "Након што смо користили исте материјале као и тамни вук од латекса, али смо додали перо, створили смо створење које може да клизи кроз ваздух, али и даље не може да лети. Скоро да личи на змаја, али са маском.",
  "changed.compact_disc.title.dark_dragon": "Змајеви",
- "changed.compact_disc.content.dark_dragon": "Упркос чињеници да ово створење потиче од тамних вукова из латекса, изненађујуће нема маску. Користећи своје задње ноге, ови \"змајеви\" су способни да клизе. Комбиновањем кристала и исте ствари од које су направљени вукови настаје ДНК змаја.
+ "changed.compact_disc.content.dark_dragon": "Упркос чињеници да ово створење потиче од тамних вукова из латекса, изненађујуће нема маску. Користећи своје задње ноге, ови \"змајеви\" су способни да клизе. Комбиновањем кристала и исте ствари од које су направљени вукови настаје ДНК змаја.",
 
  "changed.compact_disc.title.beifeng": "Кратак опис гмизаваца",
  "changed.compact_disc.content.beifeng": "Мешањем плавог пигмента са примордијалним латексом, створено је створење налик гуштеру, нешто брже од нормалног створења од латекса, како на копну, тако и у води.",
