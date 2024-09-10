@@ -18,9 +18,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class BenignPants extends ArmorItem implements Wearable, Shorts, ExtendedItemProperties {
+public class BenignPants extends Item implements Wearable, Shorts, ExtendedItemProperties {
     public BenignPants() {
-        super(MATERIAL, EquipmentSlot.LEGS, new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
+        super(new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
     @Override

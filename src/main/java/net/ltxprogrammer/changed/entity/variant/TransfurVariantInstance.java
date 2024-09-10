@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
@@ -690,6 +691,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 if (!player.level.isClientSide)
                     this.getParent().replaceEntity(player, transfurContext.source);
                 return;
+            } else if (transfurProgression >= 1f) {
+                CurioEntities.INSTANCE.forceReloadCurios(player);
             }
         }
 

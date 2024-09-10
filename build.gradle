@@ -167,9 +167,10 @@ repositories {
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
-        url = "https://modmaven.dev"
+        url = "https://modmaven.dev/"
     }
-    maven { url "https://maven.shedaniel.me" }
+    maven { url "https://maven.theillusivec4.top/" }
+    maven { url "https://maven.shedaniel.me/" }
 }
 
 mixin {
@@ -186,6 +187,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curiosVersion}")
 
     implementation fg.deobf("eu.ha3:PresenceFootsteps-1.18.2-1.5.1-forge:1.18.2-1.5.1") // Presence Footsteps
     implementation fg.deobf('me.lucko:spark-1.9.11-forge:1.9.11') // Spark

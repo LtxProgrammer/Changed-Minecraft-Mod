@@ -7,6 +7,8 @@ import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.extension.curios.CurioEntities;
+import net.ltxprogrammer.changed.extension.curios.CurioSlots;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -54,18 +57,16 @@ public class Changed {
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customPacks);
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::customPacks);
+        MinecraftForge.EVENT_BUS.addListener(this::dataListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();
 
         instance = this;
-
-        // Initialize (Note ModEventBus is a stack; first in - last out)
-
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //    vvv Last to process vvv
         HairStyle.REGISTRY.register(modEventBus);
@@ -114,6 +115,11 @@ public class Changed {
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(RecipeCategories::registerCategories);
         ChangedClient.registerEventListeners();
+    }
+
+    private void dataListeners(final AddReloadListenerEvent event) {
+        event.addListener(CurioSlots.INSTANCE);
+        event.addListener(CurioEntities.INSTANCE);
     }
 
     private void customPacks(final AddPackFindersEvent event) {
