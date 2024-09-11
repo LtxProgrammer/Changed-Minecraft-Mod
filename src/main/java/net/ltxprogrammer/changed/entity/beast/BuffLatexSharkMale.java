@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSharkFemale extends AbstractLatexShark implements GenderedEntity {
-    public LatexSharkFemale(EntityType<? extends LatexSharkFemale> p_19870_, Level p_19871_) {
+public class BuffLatexSharkMale extends AbstractLatexShark implements GenderedEntity {
+    public BuffLatexSharkMale(EntityType<? extends BuffLatexSharkMale> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
@@ -27,21 +27,21 @@ public class LatexSharkFemale extends AbstractLatexShark implements GenderedEnti
     }
 
     @Override
-    public TransfurMode getTransfurMode() {
-        return TransfurMode.ABSORPTION;
-    }
-
-    @Override
     public HairStyle getDefaultHairStyle() {
-        return HairStyle.LONG_MESSY.get();
+        return HairStyle.BALD.get();
     }
 
     public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.FEMALE.getStyles();
+        return HairStyle.Collection.MALE.getStyles();
+    }
+
+    @Override
+    public TransfurMode getTransfurMode() {
+        return TransfurMode.REPLICATION;
     }
 
     @Override
     public Gender getGender() {
-        return Gender.FEMALE;
+        return Gender.MALE;
     }
 }
