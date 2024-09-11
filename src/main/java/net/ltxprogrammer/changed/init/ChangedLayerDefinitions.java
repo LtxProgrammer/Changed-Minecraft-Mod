@@ -85,10 +85,10 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(LatexRedDragonModel.LAYER_LOCATION, LatexRedDragonModel::createBodyLayer);
         event.registerLayerDefinition(LatexRedPandaModel.LAYER_LOCATION, LatexRedPandaModel::createBodyLayer);
         event.registerLayerDefinition(LatexSharkModel.LAYER_LOCATION, LatexSharkModel::createBodyLayer);
-        event.registerLayerDefinition(LatexSharkFemaleModel.LAYER_LOCATION,
-                /*useNewModels ? LatexSharkFemaleModel.Remodel::createBodyLayer :*/ LatexSharkFemaleModel::createBodyLayer);
-        event.registerLayerDefinition(LatexSharkMaleModel.LAYER_LOCATION,
-                /*useNewModels ? LatexSharkMaleModel.Remodel::createBodyLayer :*/ LatexSharkMaleModel::createBodyLayer);
+        event.registerLayerDefinition(BuffLatexSharkFemaleModel.LAYER_LOCATION,
+                /*useNewModels ? LatexSharkFemaleModel.Remodel::createBodyLayer :*/ BuffLatexSharkFemaleModel::createBodyLayer);
+        event.registerLayerDefinition(BuffLatexSharkMaleModel.LAYER_LOCATION,
+                /*useNewModels ? LatexSharkMaleModel.Remodel::createBodyLayer :*/ BuffLatexSharkMaleModel::createBodyLayer);
         event.registerLayerDefinition(LatexSirenModel.LAYER_LOCATION, LatexSirenModel::createBodyLayer);
         event.registerLayerDefinition(LatexSnakeModel.LAYER_LOCATION, LatexSnakeModel::createBodyLayer);
         event.registerLayerDefinition(LatexSniperDogModel.LAYER_LOCATION, LatexSniperDogModel::createBodyLayer);

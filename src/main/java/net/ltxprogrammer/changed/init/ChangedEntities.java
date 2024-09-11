@@ -305,11 +305,11 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexShark>> LATEX_SHARK = register("latex_shark", 0x969696, 0xFFFFFF,
             EntityType.Builder.of(LatexShark::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::oceanSpawning, ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexSharkMale>> LATEX_SHARK_MALE = register("latex_shark_male", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(LatexSharkMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.45F),
+    public static final RegistryObject<EntityType<BuffLatexSharkMale>> LATEX_SHARK_MALE = register("latex_shark_male", 0x969696, 0xFFFFFF,
+            EntityType.Builder.of(BuffLatexSharkMale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::oceanSpawning, ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER);
-    public static final RegistryObject<EntityType<LatexSharkFemale>> LATEX_SHARK_FEMALE = register("latex_shark_female", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(LatexSharkFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.45F),
+    public static final RegistryObject<EntityType<BuffLatexSharkFemale>> LATEX_SHARK_FEMALE = register("latex_shark_female", 0x969696, 0xFFFFFF,
+            EntityType.Builder.of(BuffLatexSharkFemale::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::oceanSpawning, ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER);
     public static final RegistryObject<EntityType<SniperDog>> SNIPER_DOG = registerReducedSpawn("sniper_dog", 0xEF8F44, 0x894633,
             EntityType.Builder.of(SniperDog::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F, 1.93F),

@@ -138,9 +138,9 @@ public class ChangedTransfurVariants {
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SIREN).noLegs().absorbing().addAbility(ChangedAbilities.SIREN_SING));
     public static final RegistryObject<TransfurVariant<LatexMermaidShark>> LATEX_MERMAID_SHARK = register("form_latex_mermaid_shark/male",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_MERMAID_SHARK).replicating().noLegs());
-    public static final RegistryObject<TransfurVariant<LatexSharkFemale>> LATEX_SHARK_FUSION_FEMALE = register("form_latex_shark/female",
+    public static final RegistryObject<TransfurVariant<BuffLatexSharkFemale>> LATEX_SHARK_FUSION_FEMALE = register("form_latex_shark/female",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SHARK_FEMALE).stepSize(0.7f).absorbing().fusionOf(LATEX_SHARK.get(), Shark.class));
-    public static final RegistryObject<TransfurVariant<LatexSharkMale>> LATEX_SHARK_FUSION_MALE = register("form_latex_shark/male",
+    public static final RegistryObject<TransfurVariant<BuffLatexSharkMale>> LATEX_SHARK_FUSION_MALE = register("form_latex_shark/male",
             () -> TransfurVariant.Builder.of(LATEX_SHARK.get(), ChangedEntities.LATEX_SHARK_MALE).stepSize(0.7f).replicating().fusionOf(LATEX_SHARK.get(), Shark.class));
     public static final RegistryObject<TransfurVariant<LatexSnowLeopardFemale>> LATEX_SNOW_LEOPARD_FEMALE = register("form_latex_snow_leopard/female",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_SNOW_LEOPARD_FEMALE).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().jumpStrength(1.25f).absorbing());
@@ -176,7 +176,7 @@ public class ChangedTransfurVariants {
         public static final GenderedPair<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLVES = new GenderedPair<>(PHAGE_LATEX_WOLF_MALE, PHAGE_LATEX_WOLF_FEMALE);
         public static final GenderedPair<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAYS = new GenderedPair<>(LATEX_MANTA_RAY_MALE, LATEX_MANTA_RAY_FEMALE);
         public static final GenderedPair<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARKS = new GenderedPair<>(LATEX_MERMAID_SHARK, LATEX_SIREN);
-        public static final GenderedPair<LatexSharkMale, LatexSharkFemale> LATEX_SHARK_FUSIONS = new GenderedPair<>(LATEX_SHARK_FUSION_MALE, LATEX_SHARK_FUSION_FEMALE);
+        public static final GenderedPair<BuffLatexSharkMale, BuffLatexSharkFemale> LATEX_SHARK_FUSIONS = new GenderedPair<>(LATEX_SHARK_FUSION_MALE, LATEX_SHARK_FUSION_FEMALE);
         public static final GenderedPair<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOGS = new GenderedPair<>(LATEX_SQUID_DOG_MALE, LATEX_SQUID_DOG_FEMALE);
         public static final GenderedPair<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARDS = new GenderedPair<>(LATEX_SNOW_LEOPARD_MALE, LATEX_SNOW_LEOPARD_FEMALE);
         public static final GenderedPair<WhiteWolfMale, WhiteWolfFemale> WHITE_WOLVES = new GenderedPair<>(WHITE_WOLF_MALE, WHITE_WOLF_FEMALE);
