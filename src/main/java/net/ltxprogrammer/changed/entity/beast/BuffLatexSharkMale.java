@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LatexSharkMale extends AbstractLatexShark implements GenderedEntity {
-    public LatexSharkMale(EntityType<? extends LatexSharkMale> p_19870_, Level p_19871_) {
+public class BuffLatexSharkMale extends AbstractLatexShark implements GenderedEntity {
+    public BuffLatexSharkMale(EntityType<? extends BuffLatexSharkMale> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
