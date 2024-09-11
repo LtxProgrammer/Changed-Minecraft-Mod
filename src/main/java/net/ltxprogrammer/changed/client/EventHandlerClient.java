@@ -60,15 +60,7 @@ public class EventHandlerClient {
             if (grabAbility != null && !grabAbility.shouldRenderGrabbedEntity()) {
                 event.setCanceled(true);
             } else if (grabAbility != null && grabAbility.shouldRenderGrabbedEntity()) {
-                if (grabAbility.grabbedHasControl && grabAbility.syncEntity != null) {
-                    grabAbility.syncEntity.mirrorLiving(event.getEntity());
-
-                    if (event.getEntity() instanceof Player player) {
-                        TransfurVariantInstance.syncInventory(grabAbility.syncEntity, player, false);
-                    }
-
-                    FormRenderHandler.renderLiving(grabAbility.syncEntity, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPartialTick());
-                }
+                // TODO deprecate
             }
             return;
         }

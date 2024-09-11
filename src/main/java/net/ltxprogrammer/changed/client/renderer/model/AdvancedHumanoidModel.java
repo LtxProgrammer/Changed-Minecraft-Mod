@@ -44,9 +44,14 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         this.rootModelPart = root;
     }
 
-    private void syncPropertyModel() {
+    public void syncPropertyModel() {
         if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
             modelInterface.getAnimator().writePropertyModel(this);
+    }
+
+    public PlayerModel<?> preparePropertyModel() {
+        syncPropertyModel();
+        return this;
     }
 
     public void prepareMobModel(HumanoidAnimator<T, ? extends EntityModel<T>> animator, T entity, float p_102862_, float p_102863_, float partialTicks) {

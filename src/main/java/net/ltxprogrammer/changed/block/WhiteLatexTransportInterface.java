@@ -8,9 +8,11 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,6 +71,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
         public static class MoverInstance extends PlayerMoverInstance<LatexMover> {
             private Vec3 lastPos = null;
+            private int ticksWhiteLatex = 0;
             private static final double ACCELERATION = 0.2;
             private static final double DECAY = 0.65;
             private static final Vec3 UP = new Vec3(0.0, 1.0, 0.0);
@@ -85,6 +88,18 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
             public TransfurVariantInstance<?> getForm(Player player) {
                 return ProcessTransfur.getPlayerTransfurVariant(player);
+            }
+
+            @Override
+            public void saveTo(CompoundTag tag) {
+                super.saveTo(tag);
+                tag.putInt("ticksWhiteLatex", ticksWhiteLatex);
+            }
+
+            @Override
+            public void readFrom(CompoundTag tag) {
+                super.readFrom(tag);
+                ticksWhiteLatex = tag.getInt("ticksWhiteLatex");
             }
 
             @Override
@@ -108,6 +123,8 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
                 Vec3 currentPos = player.getPosition(1.0f);
                 Vec3 velocity = currentPos.subtract(lastPos).multiply(DECAY, DECAY, DECAY);
+                if (velocity.distanceToSqr(Vec3.ZERO) < 0.00000625)
+                    velocity = Vec3.ZERO;
 
                 Vec3 lookAngle = player.getLookAngle();
                 Vec3 upAngle = player.getUpVector(1.0f);
@@ -116,33 +133,48 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
                 Vec2 horizontal = input.getMoveVector();
                 double vertical = (input.getJumping() ? 1.0 : 0.0) + (input.getShiftKeyDown() ? -1.0 : 0.0);
 
+                double moveSpeed = (input.getSprintKeyDown() ? 1.5 : 0.85) * ACCELERATION;
+
                 Vec3 controlDir = lookAngle.multiply(horizontal.y, horizontal.y, horizontal.y)
                         .add(UP.multiply(vertical, vertical, vertical))
-                        .add(leftAngle.multiply(horizontal.x, horizontal.x, horizontal.x)).normalize().multiply(ACCELERATION, ACCELERATION, ACCELERATION);
+                        .add(leftAngle.multiply(horizontal.x, horizontal.x, horizontal.x)).normalize().multiply(moveSpeed, moveSpeed, moveSpeed);
 
                 player.move(MoverType.SELF, controlDir.add(velocity));
                 lastPos = currentPos;
+
+                ticksWhiteLatex++;
             }
 
             @Override
             public void serverAiStep(Player player, InputWrapper input, LogicalSide side) {
                 var form = getForm(player);
                 if (player instanceof ServerPlayer serverPlayer && form != null)
-                    ChangedCriteriaTriggers.WHITE_LATEX_FUSE.trigger(serverPlayer, form.ticksWhiteLatex);
+                    ChangedCriteriaTriggers.WHITE_LATEX_FUSE.trigger(serverPlayer, ticksWhiteLatex);
             }
 
             @Override
             public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
-                BlockState blockState = player.level.getBlockState(player.blockPosition());
-                BlockState blockStateEye = player.level.getBlockState(player.eyeBlockPosition());
+                boolean shouldRemove = ProcessTransfur.getPlayerTransfurVariantSafe(player)
+                        .map(variant -> variant.getChangedEntity().canEnterPose(Pose.SWIMMING) && ticksWhiteLatex > 2)
+                                .orElseGet(() -> {
+                                    BlockState blockState = player.level.getBlockState(player.blockPosition());
+                                    BlockState blockStateEye = player.level.getBlockState(player.eyeBlockPosition());
 
-                if (!(whiteLatex(blockState) || whiteLatex(blockStateEye))) {
-                    player.setInvulnerable(false);
-                    player.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
-                    return true;
-                }
+                                    return !(whiteLatex(blockState) || whiteLatex(blockStateEye));
+                                });
 
-                return player.isSpectator();
+                return shouldRemove || player.isSpectator();
+            }
+
+            @Override
+            public void onRemove(Player player) {
+                super.onRemove(player);
+
+                if (player.isSpectator())
+                    return;
+
+                player.setInvulnerable(false);
+                player.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
             }
         }
     }

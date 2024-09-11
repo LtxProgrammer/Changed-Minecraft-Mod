@@ -44,7 +44,7 @@ public class TransfurProgressOverlay {
             coverProgress = TransfurAnimator.getCoverProgression(variant.getTransfurProgression(partialTick));
             morphColor = variant.getTransfurColor();
 
-            if (variant.getTransfurProgression(partialTick) >= 1.0f) return;
+            if (variant.getTransfurProgression(partialTick) >= 1.0f && !variant.isTemporaryFromSuit()) return;
         }
 
         if (dangerLevel <= 0.0f && coverProgress <= 0.0f) return;

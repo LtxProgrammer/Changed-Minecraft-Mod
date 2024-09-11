@@ -89,8 +89,15 @@ public abstract class ChangedEntity extends Monster {
     final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
 
     public BasicPlayerInfo getBasicPlayerInfo() {
-        if (underlyingPlayer instanceof PlayerDataExtension ext)
+        if (underlyingPlayer instanceof PlayerDataExtension ext) {
+            var variant = ext.getTransfurVariant();
+            if (variant != null && variant.isTemporaryFromSuit()) {
+                if (underlyingPlayer instanceof LivingEntityDataExtension lExt && lExt.getGrabbedBy() instanceof PlayerDataExtension gExt) {
+                    return gExt.getBasicPlayerInfo();
+                }
+            }
             return ext.getBasicPlayerInfo();
+        }
         else
             return this.entityData.get(DATA_LOCAL_VARIANT_INFO);
     }
@@ -332,7 +339,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     @Override
-    protected boolean canEnterPose(Pose pose) {
+    public boolean canEnterPose(Pose pose) {
         if (overridePose != null && overridePose != pose)
             return false;
         return super.canEnterPose(pose);
@@ -564,7 +571,14 @@ public abstract class ChangedEntity extends Monster {
 
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
-            ProcessTransfur.killPlayerBy(loserPlayer, source.getEntity());
+            if (!ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity())) { // Failed to kill player
+                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), TransfurCause.GRAB_REPLICATE, 1.0f);
+                instance.willSurviveTransfur = true;
+
+                ProcessTransfur.forceNearbyToRetarget(level, loserPlayer);
+
+                loserPlayer.heal(10.0F);
+            }
         }
 
         else {
@@ -607,7 +621,7 @@ public abstract class ChangedEntity extends Monster {
                     if (entity instanceof Player pvpLoser) {
                         ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
                         ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
-                        ProcessTransfur.killPlayerBy(pvpLoser, underlyingPlayer);
+                        ProcessTransfur.killPlayerByAbsorption(pvpLoser, underlyingPlayer);
                     } else {
                         ProcessTransfur.changeTransfur(underlyingPlayer, fusionVariant);
                         ChangedSounds.broadcastSound(underlyingPlayer, ChangedSounds.POISON, 1f, 1f);
