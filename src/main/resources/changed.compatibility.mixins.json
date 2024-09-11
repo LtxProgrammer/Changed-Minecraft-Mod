@@ -32,7 +32,9 @@
     "PresenceFootsteps.StateLookupMixin",
     "Rubidium.BlockRenderPassManagerMixin",
     "Rubidium.BlockRenderPassMixin",
-    "Vivecraft.VRArmRendererMixin"
+    "Vivecraft.VRArmRendererMixin",
+    "WATUT.HumanoidAnimatorMixin",
+    "WATUT.PlayerStatusManagerClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

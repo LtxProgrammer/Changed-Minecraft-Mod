@@ -28,7 +28,8 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
             .put("net.ltxprogrammer.changed.mixin.compatibility.PlayerAnimator", "playeranimator")
             .put("net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps", "presencefootsteps")
             .put("net.ltxprogrammer.changed.mixin.compatibility.Rubidium", "rubidium")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Vivecraft", "vivecraft").build();
+            .put("net.ltxprogrammer.changed.mixin.compatibility.Vivecraft", "vivecraft")
+            .put("net.ltxprogrammer.changed.mixin.compatibility.WATUT", "watut").build();
 
     private static boolean isModPresent(String modId) {
         return FMLLoader.getLoadingModList().getModFileById(modId) != null;

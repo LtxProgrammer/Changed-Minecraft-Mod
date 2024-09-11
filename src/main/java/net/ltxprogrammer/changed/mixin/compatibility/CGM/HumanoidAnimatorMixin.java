@@ -35,6 +35,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         if (player == null) return;
 
         HumanoidModel<?> model = this.entityModel;
+        this.entityModel.syncPropertyModel();
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() instanceof GunItem gunItem) {
             if (player.isLocalPlayer() && limbSwing == 0.0F) {
