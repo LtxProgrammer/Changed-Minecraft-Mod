@@ -224,7 +224,7 @@ public class BuffLatexSharkFemaleModel extends AdvancedHumanoidModel<BuffLatexSh
 	@Override
 	public @Nullable HelperModel getTransfurHelperModel(Limb limb) {
 		if (limb == Limb.TORSO)
-			return TransfurHelper.getFeminineTorsoAlt();
+			return TransfurHelper.getFeminineTorso();
 		return super.getTransfurHelperModel(limb);
 	}
 }
