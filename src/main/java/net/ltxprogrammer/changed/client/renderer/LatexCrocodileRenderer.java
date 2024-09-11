@@ -10,8 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexCrocodileRenderer extends AdvancedHumanoidRenderer<LatexCrocodile, LatexCrocodileModel, ArmorLatexCrocodileModel<LatexCrocodile>> {
     public LatexCrocodileRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexCrocodileModel(context.bakeLayer(LatexCrocodileModel.LAYER_LOCATION)),
-                ArmorLatexCrocodileModel::new, ArmorLatexCrocodileModel.INNER_ARMOR, ArmorLatexCrocodileModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexCrocodileModel(context.bakeLayer(LatexCrocodileModel.LAYER_LOCATION)), ArmorLatexCrocodileModel.MODEL_SET, 0.5f);
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexWolfModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_wolf")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_wolf")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexWolfModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_wolf"), ArmorLatexWolfModel::createArmorLayer, ArmorLatexWolfModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -144,8 +144,8 @@ public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidA
 
     @Deprecated
     public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_wolf_male")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_wolf_male")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelMale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_wolf_male"), RemodelMale::createArmorLayer, RemodelMale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;
@@ -253,8 +253,8 @@ public class ArmorLatexWolfModel<T extends ChangedEntity> extends LatexHumanoidA
 
     @Deprecated
     public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_wolf_female")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_wolf_female")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelFemale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_wolf_female"), RemodelFemale::createArmorLayer, RemodelFemale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;

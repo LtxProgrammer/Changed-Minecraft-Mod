@@ -11,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexTranslucentLizardRenderer extends AdvancedHumanoidRenderer<LatexTranslucentLizard, LatexTranslucentLizardModel, ArmorLatexMaleDragonModel<LatexTranslucentLizard>> {
     public LatexTranslucentLizardRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)),
-                ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexTranslucentLizardModel(context.bakeLayer(LatexTranslucentLizardModel.LAYER_LOCATION)), ArmorLatexMaleDragonModel.MODEL_SET, 0.5f);
         var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_translucent_lizard_outer.png"));
         this.addLayer(translucent);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()).addModel(translucent.getModel(), entity -> translucent.getTexture()));

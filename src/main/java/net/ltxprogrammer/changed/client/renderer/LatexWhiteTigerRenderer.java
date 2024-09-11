@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexWhiteTigerRenderer extends AdvancedHumanoidRenderer<LatexWhiteTiger, LatexWhiteTigerModel, ArmorLatexMaleCatModel<LatexWhiteTiger>> {
     public LatexWhiteTigerRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexWhiteTigerModel(context.bakeLayer(LatexWhiteTigerModel.LAYER_LOCATION)),
-                ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexWhiteTigerModel(context.bakeLayer(LatexWhiteTigerModel.LAYER_LOCATION)), ArmorLatexMaleCatModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

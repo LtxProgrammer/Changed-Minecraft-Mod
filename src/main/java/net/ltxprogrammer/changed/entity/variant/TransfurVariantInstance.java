@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.Clothing;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
@@ -50,6 +51,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -641,25 +643,20 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         float morph = getMorphProgression();
 
-        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
-                        .map(slot -> Pair.of(slot, player.getItemBySlot(slot))).forEach(pair -> {
-                            var itemStack = pair.getSecond();
+        ItemUtil.getWearingItems(entity, ChangedTags.Items.WILL_BREAK_ON_TF).forEach(slottedItem -> {
+            final ItemStack itemStack = slottedItem.itemStack();
+            int currentDamage = itemStack.getDamageValue();
+            int newDamage = (int) Math.ceil(Mth.lerp(morph, 0, itemStack.getMaxDamage()));
 
-                            if (!itemStack.is(ChangedTags.Items.WILL_BREAK_ON_TF))
-                                return;
+            if (newDamage > currentDamage)
+                itemStack.setDamageValue(newDamage);
+            if (newDamage >= itemStack.getMaxDamage()) {
+                player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
+                slottedItem.slot().ifLeft(player::broadcastBreakEvent).ifRight(context -> CuriosApi.getCuriosHelper().onBrokenCurio(context));
 
-                            int currentDamage = itemStack.getDamageValue();
-                            int newDamage = (int) Math.ceil(Mth.lerp(morph, 0, itemStack.getMaxDamage()));
-
-                            if (newDamage > currentDamage)
-                                itemStack.setDamageValue(newDamage);
-                            if (newDamage >= itemStack.getMaxDamage()) {
-                                itemStack.shrink(1);
-
-                                player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
-                                player.broadcastBreakEvent(pair.getFirst());
-                            }
-                        });
+                itemStack.shrink(1);
+            }
+        });
     }
 
     public void tick(Player player) {

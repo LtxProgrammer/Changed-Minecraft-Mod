@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.SpecialLatexModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorSpecialLatexModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
@@ -30,7 +31,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     private final boolean isDelegate;
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context) {
-        super(context, null, (modelPart, model) -> null, null, null, 0.0f);
+        super(context, (SpecialLatexModel) null, (ArmorModelPicker<? super SpecialLatex>) null, 0.0f);
         this.isDelegate = true;
         this.context = context;
     }
@@ -45,9 +46,10 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     }
 
     public SpecialLatexRenderer(EntityRendererProvider.Context context, PatreonBenefits.ModelData modelData) {
-        super(context, new SpecialLatexModel(context.bakeLayer(ensureModelIsLoaded(modelData).modelLayerLocation().get()), modelData),
+        /*super(context, new SpecialLatexModel(context.bakeLayer(ensureModelIsLoaded(modelData).modelLayerLocation().get()), modelData),
                 (part, model) -> new ArmorSpecialLatexModel<>(part, model, modelData), modelData.armorModelLayerLocation().inner().get(),
-                modelData.armorModelLayerLocation().outer().get(), modelData.shadowSize());
+                modelData.armorModelLayerLocation().outer().get(), modelData.shadowSize());*/
+        super(context, (SpecialLatexModel) null, (ArmorModelPicker<? super SpecialLatex>) null, 0.0f);
         if (modelData.emissive().isPresent())
             this.addLayer(new EmissiveBodyLayer<>(this, modelData.emissive().get()));
         this.isDelegate = false;

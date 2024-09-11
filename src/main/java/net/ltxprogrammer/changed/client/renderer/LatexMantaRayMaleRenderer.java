@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexMantaRayMaleRenderer extends AdvancedHumanoidRenderer<LatexMantaRayMale, LatexMantaRayMaleModel, ArmorLatexOrcaModel<LatexMantaRayMale>> {
     public LatexMantaRayMaleRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)),
-                ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexMantaRayMaleModel(context.bakeLayer(LatexMantaRayMaleModel.LAYER_LOCATION)), ArmorLatexMaleSharkModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));

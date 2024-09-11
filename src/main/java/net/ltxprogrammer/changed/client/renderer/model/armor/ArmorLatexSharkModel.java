@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSharkModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexSharkModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_shark"), ArmorLatexSharkModel::createArmorLayer, ArmorLatexSharkModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -153,8 +153,8 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
 
     @Deprecated
     public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_male")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_male")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelMale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_shark_male"), RemodelMale::createArmorLayer, RemodelMale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;
@@ -262,8 +262,8 @@ public class ArmorLatexSharkModel<T extends ChangedEntity> extends LatexHumanoid
 
     @Deprecated
     public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_female")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_female")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelFemale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_shark_female"), RemodelFemale::createArmorLayer, RemodelFemale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;

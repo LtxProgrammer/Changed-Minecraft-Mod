@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleSquidDogModel<T>> implements DoubleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_squid_dog_female_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_squid_dog_female_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexFemaleSquidDogModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_squid_dog_female_unified"), ArmorLatexFemaleSquidDogModel::createArmorLayer, ArmorLatexFemaleSquidDogModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

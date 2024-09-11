@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexPinkDeerRenderer extends AdvancedHumanoidRenderer<LatexPinkDeer, LatexPinkDeerModel, ArmorLatexMaleDragonModel<LatexPinkDeer>> {
     public LatexPinkDeerRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexPinkDeerModel(context.bakeLayer(LatexPinkDeerModel.LAYER_LOCATION)),
-                ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexPinkDeerModel(context.bakeLayer(LatexPinkDeerModel.LAYER_LOCATION)), ArmorLatexMaleDragonModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

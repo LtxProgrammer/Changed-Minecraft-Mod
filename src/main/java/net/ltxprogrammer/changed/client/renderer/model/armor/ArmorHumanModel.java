@@ -2,12 +2,15 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorHumanModel<T>> {
+    public static final ArmorModelSet<ChangedEntity, ArmorHumanModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_player"), ArmorHumanModel::createArmorLayer, ArmorHumanModel::new);
+
     private final ModelPart Head;
     private final ModelPart Hat;
     private final ModelPart Torso;
@@ -37,6 +43,10 @@ public class ArmorHumanModel<T extends ChangedEntity> extends LatexHumanoidArmor
 
         this.animator = HumanoidAnimator.of(this).hipOffset(-1.5f).legLength(10.5f)
                 .addPreset(AnimatorPresets.humanLike(Head, Torso, LeftArm, RightArm, LeftLeg, RightLeg));
+    }
+
+    public static LayerDefinition createArmorLayer(ArmorModel layer) {
+        return LayerDefinition.create(HumanoidModel.createMesh(layer.dualDeformation, 0.0F), 64, 32);
     }
 
     @Override

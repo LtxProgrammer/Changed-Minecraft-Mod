@@ -23,9 +23,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
-public class ArmorLatexCentaurUpperModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurUpperModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_upper")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_upper")).get();
+public class ArmorLatexCentaurUpperModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurUpperModel<T>> {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexCentaurUpperModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_centaur_upper"), ArmorLatexCentaurUpperModel::createArmorLayer, ArmorLatexCentaurUpperModel::new);
 
     private final ModelPart RightArm;
     private final ModelPart LeftArm;

@@ -14,8 +14,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorNoneModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorNoneModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_none")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_none")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorNoneModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_none"), ArmorNoneModel::createArmorLayer, ArmorNoneModel::new);
 
     private final HumanoidAnimator<T, ArmorNoneModel<T>> animator;
 

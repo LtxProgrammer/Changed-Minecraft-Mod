@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexWhiteKnightModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexWhiteKnightModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_white_knight_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_white_knight_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexWhiteKnightModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_white_knight_unified"), ArmorLatexWhiteKnightModel::createArmorLayer, ArmorLatexWhiteKnightModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

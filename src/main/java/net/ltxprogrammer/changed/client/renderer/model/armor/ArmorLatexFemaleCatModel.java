@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexFemaleCatModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleCatModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_cat_female_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_cat_female_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexFemaleCatModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_cat_female_unified"), ArmorLatexFemaleCatModel::createArmorLayer, ArmorLatexFemaleCatModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

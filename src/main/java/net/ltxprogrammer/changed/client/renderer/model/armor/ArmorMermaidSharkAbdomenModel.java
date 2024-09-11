@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ArmorMermaidSharkAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkAbdomenModel<T>> implements LeglessModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_abdomen")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorMermaidSharkAbdomenModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_mermaid_shark_abdomen"), ArmorMermaidSharkAbdomenModel::createArmorLayer, ArmorMermaidSharkAbdomenModel::new);
 
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;

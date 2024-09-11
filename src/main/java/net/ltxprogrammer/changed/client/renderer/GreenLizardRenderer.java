@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GreenLizardRenderer extends AdvancedHumanoidRenderer<GreenLizard, GreenLizardModel, ArmorLatexMaleDragonModel<GreenLizard>> {
     public GreenLizardRenderer(EntityRendererProvider.Context context) {
-        super(context, new GreenLizardModel(context.bakeLayer(GreenLizardModel.LAYER_LOCATION)),
-                ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new GreenLizardModel(context.bakeLayer(GreenLizardModel.LAYER_LOCATION)), ArmorLatexMaleDragonModel.MODEL_SET, 0.5f);
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomCoatLayer<>(this, this.getModel(), Changed.modResource("textures/green_lizard_hair")));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

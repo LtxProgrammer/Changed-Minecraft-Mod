@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexMaleDragonModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleDragonModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_dragon_male_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_dragon_male_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleDragonModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_dragon_male_unified"), ArmorLatexMaleDragonModel::createArmorLayer, ArmorLatexMaleDragonModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

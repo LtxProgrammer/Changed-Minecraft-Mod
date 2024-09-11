@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexSquidDogFemaleRenderer extends AdvancedHumanoidRenderer<LatexSquidDogFemale, LatexSquidDogFemaleModel, ArmorLatexFemaleSquidDogModel<LatexSquidDogFemale>> {
     public LatexSquidDogFemaleRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexSquidDogFemaleModel(context.bakeLayer(LatexSquidDogFemaleModel.LAYER_LOCATION)),
-                ArmorLatexFemaleSquidDogModel::new, ArmorLatexFemaleSquidDogModel.INNER_ARMOR, ArmorLatexFemaleSquidDogModel.OUTER_ARMOR, 0.65f);
+        super(context, new LatexSquidDogFemaleModel(context.bakeLayer(LatexSquidDogFemaleModel.LAYER_LOCATION)), ArmorLatexFemaleSquidDogModel.MODEL_SET, 0.65f);
         this.addLayer(new DoubleItemInHandLayer<>(this));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));

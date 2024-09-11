@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexSnowLeopardFemaleRenderer extends AdvancedHumanoidRenderer<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel, ArmorLatexFemaleCatModel<LatexSnowLeopardFemale>> {
     public LatexSnowLeopardFemaleRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexSnowLeopardFemaleModel(context.bakeLayer(LatexSnowLeopardFemaleModel.LAYER_LOCATION)),
-                ArmorLatexFemaleCatModel::new, ArmorLatexFemaleCatModel.INNER_ARMOR, ArmorLatexFemaleCatModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexSnowLeopardFemaleModel(context.bakeLayer(LatexSnowLeopardFemaleModel.LAYER_LOCATION)), ArmorLatexFemaleCatModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

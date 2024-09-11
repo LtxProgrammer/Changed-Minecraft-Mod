@@ -5,13 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -29,25 +29,18 @@ import java.util.Map;
 public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends RenderLayer<T, M> {
     private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = Maps.newHashMap();
     final AdvancedHumanoidRenderer<T, M, A> parent;
-    final A innerModel;
-    final A outerModel;
+    public final ArmorModelPicker<? super T> modelPicker;
 
-    public LatexHumanoidArmorLayer(AdvancedHumanoidRenderer<T, M, A> parentModel, A innerModel, A outerModel) {
+    public LatexHumanoidArmorLayer(AdvancedHumanoidRenderer<T, M, A> parentModel, ArmorModelPicker<? super T> modelPicker) {
         super(parentModel);
         this.parent = parentModel;
-        this.innerModel = innerModel;
-        this.outerModel = outerModel;
+        this.modelPicker = modelPicker;
     }
 
     public void render(PoseStack pose, MultiBufferSource buffers, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!parent.shouldRenderArmor(entity)) return;
 
-        this.getParentModel().copyPropertiesTo(this.innerModel);
-        this.getParentModel().copyPropertiesTo(this.outerModel);
-        this.innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-        this.innerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        this.outerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-        this.outerModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.modelPicker.prepareAndSetupModels(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         boolean firstPerson = ChangedCompatibility.isFirstPersonRendering();
 
         if (!firstPerson || !entity.isVisuallySwimming()) // Don't render chest-plate if swimming in first person
@@ -58,12 +51,11 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
             this.renderArmorPiece(pose, buffers, entity, EquipmentSlot.HEAD, packedLight, this.getArmorModel(EquipmentSlot.HEAD));
     }
 
-    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<T, ?> model) {
+    private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<? super T, ?> model) {
         ItemStack itemstack = entity.getItemBySlot(slot);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() == slot) {
-                this.getParentModel().copyPropertiesTo(model);
                 boolean foil = itemstack.hasFoil();
                 var altModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemstack, slot, model);
                 if (altModel != model) {
@@ -102,7 +94,7 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
     }
 
     private void renderModel(T entity, ItemStack stack, EquipmentSlot slot,
-                             PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, LatexHumanoidArmorModel<T, ?> model,
+                             PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, LatexHumanoidArmorModel<? super T, ?> model,
                              float red, float green, float blue, ResourceLocation armorResource) {
         model.renderForSlot(entity, stack, slot, pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
@@ -114,8 +106,8 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
         model.renderToBuffer(pose, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
-    public LatexHumanoidArmorModel<T, ?> getArmorModel(EquipmentSlot slot) {
-        return this.usesInnerModel(slot) ? this.innerModel : this.outerModel;
+    public LatexHumanoidArmorModel<? super T, ?> getArmorModel(EquipmentSlot slot) {
+        return modelPicker.getModelForSlot(slot);
     }
 
     private boolean usesInnerModel(EquipmentSlot p_117129_) {

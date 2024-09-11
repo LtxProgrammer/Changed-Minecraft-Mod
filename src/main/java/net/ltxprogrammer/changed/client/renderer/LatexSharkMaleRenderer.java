@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexSharkMaleRenderer extends AdvancedHumanoidRenderer<LatexSharkMale, LatexSharkMaleModel, ArmorLatexBuffSharkModel<LatexSharkMale>> {
     public LatexSharkMaleRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexSharkMaleModel(context.bakeLayer(LatexSharkMaleModel.LAYER_LOCATION)),
-                ArmorLatexBuffSharkModel::new, ArmorLatexBuffSharkModel.INNER_ARMOR, ArmorLatexBuffSharkModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexSharkMaleModel(context.bakeLayer(LatexSharkMaleModel.LAYER_LOCATION)), ArmorLatexBuffSharkModel.MODEL_SET, 0.5f);
     }
 
     @Override
@@ -20,8 +19,7 @@ public class LatexSharkMaleRenderer extends AdvancedHumanoidRenderer<LatexSharkM
 
     public static class Remodel extends AdvancedHumanoidRenderer<LatexSharkMale, LatexSharkMaleModel.Remodel, ArmorLatexBuffSharkModel<LatexSharkMale>> {
         public Remodel(EntityRendererProvider.Context context) {
-            super(context, new LatexSharkMaleModel.Remodel(context.bakeLayer(LatexSharkMaleModel.LAYER_LOCATION)),
-                    ArmorLatexBuffSharkModel::new, ArmorLatexBuffSharkModel.INNER_ARMOR, ArmorLatexBuffSharkModel.OUTER_ARMOR, 0.5f);
+            super(context, new LatexSharkMaleModel.Remodel(context.bakeLayer(LatexSharkMaleModel.LAYER_LOCATION)), ArmorLatexBuffSharkModel.MODEL_SET, 0.5f);
         }
 
         @Override

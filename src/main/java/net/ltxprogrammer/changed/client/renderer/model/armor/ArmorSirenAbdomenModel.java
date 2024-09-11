@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorSirenAbdomenModel<T>> implements LeglessModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_siren_abdomen")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorSirenAbdomenModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_siren_abdomen"), ArmorSirenAbdomenModel::createArmorLayer, ArmorSirenAbdomenModel::new);
 
     private final ModelPart Abdomen;
     private final ModelPart LowerAbdomen;

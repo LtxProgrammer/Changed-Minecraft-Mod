@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorLatexMaleWolfModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleWolfModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_wolf_male_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_wolf_male_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleWolfModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_wolf_male_unified"), ArmorLatexMaleWolfModel::createArmorLayer, ArmorLatexMaleWolfModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

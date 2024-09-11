@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GasWolfRenderer extends AdvancedHumanoidRenderer<GasWolf, GasWolfModel, ArmorLatexMaleWolfModel<GasWolf>> {
     public GasWolfRenderer(EntityRendererProvider.Context context) {
-        super(context, new GasWolfModel(context.bakeLayer( GasWolfModel.LAYER_LOCATION)),
-                ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
+        super(context, new GasWolfModel(context.bakeLayer( GasWolfModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomCoatLayer<>(this, this.getModel(), Changed.modResource("textures/gas_wolf_coat")));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

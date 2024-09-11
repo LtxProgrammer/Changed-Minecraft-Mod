@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorUpperBodyModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorUpperBodyModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_upper_body"), ArmorUpperBodyModel::createArmorLayer, ArmorUpperBodyModel::new);
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
 
     private final ModelPart Head;
@@ -96,8 +96,8 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
 
     @Deprecated
     public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_male")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_male")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelMale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_upper_body_male"), RemodelMale::createArmorLayer, RemodelMale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;
@@ -167,8 +167,8 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
 
     @Deprecated
     public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_female")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_female")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelFemale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_upper_body_female"), RemodelFemale::createArmorLayer, RemodelFemale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;

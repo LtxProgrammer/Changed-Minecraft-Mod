@@ -1,11 +1,17 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
+
+import javax.annotation.Nullable;
 
 public interface Clothing extends ICurioItem {
     ArmorMaterial MATERIAL = new ArmorMaterial() {
@@ -49,4 +55,14 @@ public interface Clothing extends ICurioItem {
             return 0;
         }
     };
+
+    @Nullable
+    default ResourceLocation getTexture(ItemStack stack, Entity entity) {
+        return ResourceLocation.tryParse(stack.getItem().getArmorTexture(stack, entity, EquipmentSlot.MAINHAND, null));
+    }
+
+    @Override
+    default void curioBreak(SlotContext slotContext, ItemStack stack) {
+        slotContext.entity().breakItem(stack);
+    }
 }

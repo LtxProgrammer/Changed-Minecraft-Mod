@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorMermaidSharkUpperBodyModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_mermaid_shark_upper")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_mermaid_shark_upper")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorMermaidSharkUpperBodyModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_mermaid_shark_upper"), ArmorMermaidSharkUpperBodyModel::createArmorLayer, ArmorMermaidSharkUpperBodyModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

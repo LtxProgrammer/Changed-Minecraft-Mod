@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,8 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexAlienModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexAlienModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_alien")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_alien")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexAlienModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_alien"), ArmorLatexAlienModel::createArmorLayer, ArmorLatexAlienModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

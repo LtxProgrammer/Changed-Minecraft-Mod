@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LeglessModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexSnake;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,9 +22,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class ArmorSnakeAbdomenModel<T extends LatexSnake> extends LatexHumanoidArmorModel<T, ArmorSnakeAbdomenModel<T>> implements LeglessModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_snake_abdomen")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_snake_abdomen")).get();
+public class ArmorSnakeAbdomenModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorSnakeAbdomenModel<T>> implements LeglessModel {
+    public static final ArmorModelSet<ChangedEntity, ArmorSnakeAbdomenModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_snake_abdomen"), ArmorSnakeAbdomenModel::createArmorLayer, ArmorSnakeAbdomenModel::new);
     public static final ModelPart EMPTY_PART = new ModelPart(List.of(), Map.of());
 
     private final ModelPart Torso;

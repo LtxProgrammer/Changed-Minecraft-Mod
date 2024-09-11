@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexDeerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexDeerModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_deer_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_deer_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexDeerModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_deer_unified"), ArmorLatexDeerModel::createArmorLayer, ArmorLatexDeerModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

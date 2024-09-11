@@ -10,8 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexMimicPlantRenderer extends AdvancedHumanoidRenderer<LatexMimicPlant, LatexMimicPlantModel, ArmorNoTailModel<LatexMimicPlant>> {
     public LatexMimicPlantRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexMimicPlantModel(context.bakeLayer(LatexMimicPlantModel.LAYER_LOCATION)),
-                ArmorNoTailModel::new, ArmorNoTailModel.INNER_ARMOR, ArmorNoTailModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexMimicPlantModel(context.bakeLayer(LatexMimicPlantModel.LAYER_LOCATION)), ArmorNoTailModel.MODEL_SET, 0.5f);
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

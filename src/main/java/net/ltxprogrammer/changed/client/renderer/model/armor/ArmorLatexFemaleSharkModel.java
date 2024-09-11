@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexFemaleSharkModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleSharkModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_shark_female_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_shark_female_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexFemaleSharkModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_shark_female_unified"), ArmorLatexFemaleSharkModel::createArmorLayer, ArmorLatexFemaleSharkModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

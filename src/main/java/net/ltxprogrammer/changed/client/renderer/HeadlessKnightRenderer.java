@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class HeadlessKnightRenderer extends AdvancedHumanoidRenderer<HeadlessKnight, HeadlessKnightModel, ArmorLatexCentaurLowerModel<HeadlessKnight>> {
     public HeadlessKnightRenderer(EntityRendererProvider.Context context) {
-        super(context, new HeadlessKnightModel(context.bakeLayer(HeadlessKnightModel.LAYER_LOCATION)),
-                ArmorLatexCentaurLowerModel::new, ArmorLatexCentaurLowerModel.INNER_ARMOR, ArmorLatexCentaurLowerModel.OUTER_ARMOR, 0.7f);
+        super(context, new HeadlessKnightModel(context.bakeLayer(HeadlessKnightModel.LAYER_LOCATION)), ArmorLatexCentaurLowerModel.MODEL_SET, 0.7f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new SaddleLayer<>(this, getModel(), Changed.modResource("textures/white_latex_centaur_saddle.png")));

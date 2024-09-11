@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexOrcaRenderer extends AdvancedHumanoidRenderer<LatexOrca, LatexOrcaModel, ArmorLatexOrcaModel<LatexOrca>> {
     public LatexOrcaRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexOrcaModel(context.bakeLayer(LatexOrcaModel.LAYER_LOCATION)),
-                ArmorLatexOrcaModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexOrcaModel(context.bakeLayer(LatexOrcaModel.LAYER_LOCATION)), ArmorLatexMaleSharkModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));

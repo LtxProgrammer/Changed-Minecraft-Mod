@@ -67,6 +67,10 @@ public class CurioSlots extends SimplePreparableReloadListener<List<CurioSlots.S
     }
 
     public static final CurioSlots INSTANCE = new CurioSlots();
+
+    public static final String BODY = "body";
+    public static final String LOWER_BODY = "lower_body";
+
     private final List<SlotDefinition> slotDefinitions = new ArrayList<>();
 
     public boolean isDataSpecifiedSlot(String slot) {

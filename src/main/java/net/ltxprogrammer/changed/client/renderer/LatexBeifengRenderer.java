@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexBeifengRenderer extends AdvancedHumanoidRenderer<Beifeng, LatexBeifengModel, ArmorLatexMaleDragonModel<Beifeng>> {
     public LatexBeifengRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexBeifengModel(context.bakeLayer(LatexBeifengModel.LAYER_LOCATION)),
-                ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexBeifengModel(context.bakeLayer(LatexBeifengModel.LAYER_LOCATION)), ArmorLatexMaleDragonModel.MODEL_SET, 0.5f);
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
                 .withSclera(Color3.WHITE).withIris(Color3.fromInt(0xffe852)).build());

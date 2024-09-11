@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexSnowLeopardModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexSnowLeopardModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_snow_leopard"), ArmorLatexSnowLeopardModel::createArmorLayer, ArmorLatexSnowLeopardModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -139,8 +139,8 @@ public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHu
 
     @Deprecated
     public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard_male")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard_male")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelMale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_snow_leopard_male"), RemodelMale::createArmorLayer, RemodelMale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;
@@ -248,8 +248,8 @@ public class ArmorLatexSnowLeopardModel<T extends ChangedEntity> extends LatexHu
 
     @Deprecated
     public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_snow_leopard_female")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_snow_leopard_female")).get();
+        public static final ArmorModelSet<ChangedEntity, RemodelFemale<ChangedEntity>> MODEL_SET =
+                ArmorModelSet.of(Changed.modResource("armor_latex_snow_leopard_female"), RemodelFemale::createArmorLayer, RemodelFemale::new);
 
         private final ModelPart Head;
         private final ModelPart Torso;

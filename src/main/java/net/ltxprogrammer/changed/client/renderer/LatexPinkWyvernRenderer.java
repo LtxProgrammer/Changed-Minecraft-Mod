@@ -11,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexPinkWyvernRenderer extends AdvancedHumanoidRenderer<LatexPinkWyvern, LatexPinkWyvernModel, ArmorLatexMaleDragonModel<LatexPinkWyvern>> {
     public LatexPinkWyvernRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexPinkWyvernModel(context.bakeLayer(LatexPinkWyvernModel.LAYER_LOCATION)),
-                ArmorLatexMaleDragonModel::new, ArmorLatexMaleDragonModel.INNER_ARMOR, ArmorLatexMaleDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexPinkWyvernModel(context.bakeLayer(LatexPinkWyvernModel.LAYER_LOCATION)), ArmorLatexMaleDragonModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_pink_wyvern_translucent.png")));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));

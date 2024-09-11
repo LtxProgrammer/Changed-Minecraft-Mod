@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.WhiteLatexCentaur;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -22,8 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLightLatexCentaurModel extends LatexHumanoidArmorModel<WhiteLatexCentaur, ArmorLightLatexCentaurModel> implements LowerTorsoedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_light_latex_centaur")).get();
+    public static final ArmorModelSet<WhiteLatexCentaur, ArmorLightLatexCentaurModel> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_light_latex_centaur"), ArmorLightLatexCentaurModel::createArmorLayer, ArmorLightLatexCentaurModel::new);
 
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;

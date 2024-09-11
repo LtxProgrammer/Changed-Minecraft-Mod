@@ -6,6 +6,8 @@ import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelSet;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -30,6 +32,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.client.render.CuriosLayer;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -65,6 +68,8 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         this.addLayer(new LatexBeeStingerLayer<>(this));
         this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexHeldEntityLayer<>(this));
+
+        this.addLayer(new CuriosLayer<>(this));
     }
 
     public void setModelResetPoseStack(T entity, @Nullable PoseStack.Pose pose) {
@@ -80,22 +85,16 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
     }
 
     public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
-                                    BiFunction<ModelPart, ArmorModel, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter, float shadowSize) {
+                                    ArmorModelPicker<? super T> modelPicker, float shadowSize) {
         super(context, main, shadowSize);
         if (main == null) return;
-        this.armorLayer = new LatexHumanoidArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner), ArmorModel.INNER), ctorA.apply(context.bakeLayer(armorOuter), ArmorModel.OUTER));
+        this.armorLayer = new LatexHumanoidArmorLayer<>(this, modelPicker);
         this.addLayers(context, main);
     }
 
-    public <B extends LatexHumanoidArmorModel<T, ?>> AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
-                                                                              BiFunction<ModelPart, ArmorModel, A> ctorA, ModelLayerLocation armorInner, ModelLayerLocation armorOuter,
-                                                                              BiFunction<ModelPart, ArmorModel, B> ctorB, ModelLayerLocation armorInnerOther, ModelLayerLocation armorOuterOther,
-                                                                              Predicate<EquipmentSlot> useOther, Predicate<EquipmentSlot> useInner, float shadowSize) {
-        super(context, main, shadowSize);
-        if (main == null) return;
-        this.armorLayer = new LatexHumanoidSplitArmorLayer<>(this, ctorA.apply(context.bakeLayer(armorInner), ArmorModel.INNER), ctorA.apply(context.bakeLayer(armorOuter), ArmorModel.OUTER),
-                ctorB.apply(context.bakeLayer(armorInnerOther), ArmorModel.INNER), ctorB.apply(context.bakeLayer(armorOuterOther), ArmorModel.OUTER), useOther, useInner);
-        this.addLayers(context, main);
+    public AdvancedHumanoidRenderer(EntityRendererProvider.Context context, M main,
+                                    ArmorModelSet<? super T, ?> modelSet, float shadowSize) {
+        this(context, main, ArmorModelPicker.basic(context.getModelSet(), modelSet), shadowSize);
     }
 
     protected boolean isEntityUprightType(@NotNull T entity) {

@@ -22,8 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> implements TripleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_stiger_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_stiger_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexStigerModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_stiger_unified"), ArmorLatexStigerModel::createArmorLayer, ArmorLatexStigerModel::new);
 
     public final ModelPart Head;
     public final ModelPart Torso;

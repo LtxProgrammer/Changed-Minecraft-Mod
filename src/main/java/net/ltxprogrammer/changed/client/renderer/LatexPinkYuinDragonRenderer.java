@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexPinkYuinDragonRenderer extends AdvancedHumanoidRenderer<LatexPinkYuinDragon, LatexPinkYuinDragonModel, ArmorLatexMaleWingedDragonModel<LatexPinkYuinDragon>> {
     public LatexPinkYuinDragonRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexPinkYuinDragonModel(context.bakeLayer(LatexPinkYuinDragonModel.LAYER_LOCATION)),
-                ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexPinkYuinDragonModel(context.bakeLayer(LatexPinkYuinDragonModel.LAYER_LOCATION)), ArmorLatexMaleWingedDragonModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

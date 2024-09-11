@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorSirenUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorSirenUpperBodyModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_siren_upper")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_siren_upper")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorSirenUpperBodyModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_siren_upper"), ArmorSirenUpperBodyModel::createArmorLayer, ArmorSirenUpperBodyModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

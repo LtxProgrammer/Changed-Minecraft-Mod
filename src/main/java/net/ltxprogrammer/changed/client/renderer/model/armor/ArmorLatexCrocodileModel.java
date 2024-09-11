@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexCrocodileModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCrocodileModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_crocodile")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_crocodile")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexCrocodileModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_crocodile"), ArmorLatexCrocodileModel::createArmorLayer, ArmorLatexCrocodileModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

@@ -18,8 +18,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorFemaleMantaRayUpperBodyModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_manta_ray_female_upper")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_manta_ray_female_upper")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorFemaleMantaRayUpperBodyModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_manta_ray_female_upper"), ArmorFemaleMantaRayUpperBodyModel::createArmorLayer, ArmorFemaleMantaRayUpperBodyModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

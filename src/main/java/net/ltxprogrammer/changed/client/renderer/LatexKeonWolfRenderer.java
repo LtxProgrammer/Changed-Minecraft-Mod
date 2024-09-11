@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexKeonWolfRenderer extends AdvancedHumanoidRenderer<LatexKeonWolf, LatexKeonWolfModel, ArmorLatexMaleWolfModel<LatexKeonWolf>> {
     public LatexKeonWolfRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexKeonWolfModel(context.bakeLayer(LatexKeonWolfModel.LAYER_LOCATION)),
-                ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexKeonWolfModel(context.bakeLayer(LatexKeonWolfModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));

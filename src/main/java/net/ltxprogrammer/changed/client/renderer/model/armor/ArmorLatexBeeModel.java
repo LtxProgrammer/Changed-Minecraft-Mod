@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> implements DoubleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexBeeModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_bee_unified"), ArmorLatexBeeModel::createArmorLayer, ArmorLatexBeeModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

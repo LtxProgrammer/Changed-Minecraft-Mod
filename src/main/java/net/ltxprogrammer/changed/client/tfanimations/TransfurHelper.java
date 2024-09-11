@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 
 /**
@@ -31,9 +32,6 @@ public class TransfurHelper {
     protected final HelperModel Legless;
     protected final HelperModel TaurTorso;
     protected final HelperModel PupTorso;
-
-    protected final ArmorHelper InnerArmor;
-    protected final ArmorHelper OuterArmor;
 
     protected final EnumMap<ArmorModel, ArmorHelper> ArmorMap;
 
@@ -85,12 +83,8 @@ public class TransfurHelper {
         });
         this.PupTorso = HelperModel.fixed(root.getChild("PupTorso"));
 
-        this.InnerArmor = new ArmorHelper(root.getChild("InnerArmor"));
-        this.OuterArmor = new ArmorHelper(root.getChild("OuterArmor"));
-
         ArmorMap = Util.make(new EnumMap<>(ArmorModel.class), map -> {
-            map.put(ArmorModel.INNER, InnerArmor);
-            map.put(ArmorModel.OUTER, OuterArmor);
+            Arrays.stream(ArmorModel.values()).forEach(armorModel -> map.put(armorModel, new ArmorHelper(root.getChild(armorModel.identifier))));
         });
     }
 
@@ -321,11 +315,10 @@ public class TransfurHelper {
 
         // ARMOR
         {
-            PartDefinition innerLayer = partdefinition.addOrReplaceChild("InnerArmor", CubeListBuilder.create(), PartPose.ZERO);
-            createArmorLayer(innerLayer, ArmorModel.INNER);
-
-            PartDefinition outerLayer = partdefinition.addOrReplaceChild("OuterArmor", CubeListBuilder.create(), PartPose.ZERO);
-            createArmorLayer(outerLayer, ArmorModel.OUTER);
+            Arrays.stream(ArmorModel.values()).forEach(armorModel -> {
+                PartDefinition layer = partdefinition.addOrReplaceChild(armorModel.identifier, CubeListBuilder.create(), PartPose.ZERO);
+                createArmorLayer(layer, armorModel);
+            });
         }
 
         return LayerDefinition.create(meshdefinition, 64, 32);

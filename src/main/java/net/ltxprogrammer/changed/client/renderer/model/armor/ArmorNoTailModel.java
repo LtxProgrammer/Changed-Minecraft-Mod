@@ -23,6 +23,8 @@ import java.util.List;
 public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorNoTailModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_no_tail")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_no_tail")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorNoTailModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_no_tail"), ArmorNoTailModel::createArmorLayer, ArmorNoTailModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;

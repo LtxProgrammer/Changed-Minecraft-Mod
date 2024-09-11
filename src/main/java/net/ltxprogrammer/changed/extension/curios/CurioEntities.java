@@ -66,6 +66,9 @@ public class CurioEntities extends SimplePreparableReloadListener<Multimap<Entit
         Multimap<EntityType<?>, String> working = HashMultimap.create();
 
         root.getAsJsonArray("entities").forEach(entity -> {
+            final ResourceLocation entityId = new ResourceLocation(entity.getAsString());
+            if (!ForgeRegistries.ENTITIES.containsKey(entityId))
+                throw new IllegalArgumentException("Unknown entity " + entityId);
             final EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(entity.getAsString()));
 
             root.getAsJsonArray("slots").forEach(slot -> {
@@ -102,7 +105,7 @@ public class CurioEntities extends SimplePreparableReloadListener<Multimap<Entit
 
                 content.close();
             } catch (Exception e) {
-                Changed.LOGGER.error("Failed to load entities for Curios from \"{}\"", filename);
+                Changed.LOGGER.error("Failed to load entities for Curios from \"{}\" : {}", filename, e);
             }
         });
 

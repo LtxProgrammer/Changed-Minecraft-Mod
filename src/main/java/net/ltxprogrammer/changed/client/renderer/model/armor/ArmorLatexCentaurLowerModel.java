@@ -21,9 +21,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> implements LowerTorsoedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
+public class ArmorLatexCentaurLowerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> implements LowerTorsoedModel {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexCentaurLowerModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_centaur_lower"), ArmorLatexCentaurLowerModel::createArmorLayer, ArmorLatexCentaurLowerModel::new);
 
     private final ModelPart FrontRightLeg;
     private final ModelPart FrontLeftLeg;

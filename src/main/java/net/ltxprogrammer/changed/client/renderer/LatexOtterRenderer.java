@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexOtterRenderer extends AdvancedHumanoidRenderer<LatexOtter, LatexOtterModel, ArmorLatexOtterModel<LatexOtter>> {
     public LatexOtterRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexOtterModel(context.bakeLayer(LatexOtterModel.LAYER_LOCATION)),
-                ArmorLatexOtterModel::new, ArmorLatexOtterModel.INNER_ARMOR, ArmorLatexOtterModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexOtterModel(context.bakeLayer(LatexOtterModel.LAYER_LOCATION)), ArmorLatexOtterModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
