@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.minecraft.client.Minecraft;
@@ -44,6 +45,8 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
     private void renderArmWithSpyglass(LivingEntity entity, ItemStack itemStack, HumanoidArm arm, PoseStack pose, MultiBufferSource source, int color) {
         pose.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
+        if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.scaleForHead(pose);
         float f = modelpart.xRot;
         modelpart.xRot = Mth.clamp(modelpart.xRot, (-(float)Math.PI / 6F), ((float)Math.PI / 2F));
         modelpart.translateAndRotate(pose);
@@ -70,6 +73,8 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
             boolean flag = entity.isSleeping();
             pose.pushPose();
             var head = this.getParentModel().getHead();
+            if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+                modelInterface.scaleForHead(pose);
             pose.translate(head.x / 16.0F, (head.y) / 16.0F, head.z / 16.0F);
             pose.mulPose(Vector3f.ZP.rotation(0.0F));
             pose.mulPose(Vector3f.YP.rotationDegrees(netHeadYaw));

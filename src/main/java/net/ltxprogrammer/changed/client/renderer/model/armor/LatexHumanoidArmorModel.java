@@ -2,8 +2,6 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.ltxprogrammer.changed.client.PoseStackExtender;
-import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
@@ -11,15 +9,14 @@ import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +34,21 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
         this.armorModel = model;
     }
 
-    public abstract void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot,
-            PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
+    public void scaleForSlot(RenderLayerParent<T, ?> parent, EquipmentSlot slot, PoseStack poseStack) {
+        switch (slot) {
+            case HEAD -> {
+                if (parent.getModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+                    modelInterface.scaleForHead(poseStack);
+            }
+            case CHEST, LEGS, FEET -> {
+                if (parent.getModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+                    modelInterface.scaleForBody(poseStack);
+            }
+        }
+    }
+
+    public abstract void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot,
+                                       PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 
     protected static void prepareLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg) {
         prepareLegsForArmor(stack, LeftLeg, RightLeg, null);

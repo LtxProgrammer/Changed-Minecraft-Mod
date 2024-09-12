@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -99,7 +100,10 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
-    public void renderForSlot(HeadlessKnight entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(HeadlessKnight entity, RenderLayerParent<HeadlessKnight, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        this.scaleForSlot(parent, slot, poseStack);
+
         switch (slot) {
             case LEGS -> {
                 if (stack.getItem() instanceof Shorts) {
@@ -116,6 +120,8 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
             }
             case FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
+
+        poseStack.popPose();
     }
 
     public ModelPart getArm(HumanoidArm arm) {

@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +50,10 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        this.scaleForSlot(parent, slot, poseStack);
+
         switch (slot) {
             case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             case CHEST -> {
@@ -79,6 +83,8 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
                 RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+
+        poseStack.popPose();
     }
 
     @Override

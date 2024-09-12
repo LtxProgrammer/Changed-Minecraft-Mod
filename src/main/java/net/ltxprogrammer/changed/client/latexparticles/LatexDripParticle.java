@@ -7,6 +7,7 @@ import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -212,16 +213,13 @@ public class LatexDripParticle extends LatexParticle {
         if (!attachedPart.stem.stream().allMatch(part -> part.visible))
             return;
 
-        PoseStackExtender poseStackExtender = (PoseStackExtender)poseStack;
-        Vec3 entityPosition = attachedEntity.getPosition(partialTick);
-        // TODO maybe deprecate? or hold onto in the case of inventory rendering
-        /*Vec3 cameraOffset = EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.getLast()
-                .subtract(entityPosition)
-                .multiply(-1, -1, -1);*/
-
         poseStack.pushPose();
-        if (attachedEntity.getUnderlyingPlayer() != null && attachedEntity.isCrouching() && setupContext != SetupContext.FIRST_PERSON)
-            poseStack.translate(0.0, 0.125, 0.0); // This is to match the offset in the PlayerRenderer. TODO maybe mixin remove offset if player is tf'd?
+        if (this.attachedModel instanceof AdvancedHumanoidModelInterface<?,?> modelInterface) {
+            if (this.attachedPart.getRoot() == attachedModel.getHead())
+                modelInterface.scaleForHead(poseStack);
+            else
+                modelInterface.scaleForBody(poseStack);
+        }
 
         attachedPart.translateAndRotate(poseStack);
         // in C = A * B, this is C

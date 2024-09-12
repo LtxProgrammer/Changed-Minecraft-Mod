@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +68,10 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        this.scaleForSlot(parent, slot, poseStack);
+
         switch (slot) {
             case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             case CHEST -> {
@@ -76,6 +80,8 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
         }
+
+        poseStack.popPose();
     }
 
     public ModelPart getArm(HumanoidArm arm) {
@@ -92,150 +98,5 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
 
     public ModelPart getTorso() {
         return Torso;
-    }
-
-    @Deprecated
-    public static class RemodelMale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelMale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_male")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_male")).get();
-
-        private final ModelPart Head;
-        private final ModelPart Torso;
-        private final ModelPart LeftArm;
-        private final ModelPart RightArm;
-        private final HumanoidAnimator<T, RemodelMale<T>> animator;
-
-        public RemodelMale(ModelPart modelPart, ArmorModel model) {
-            super(modelPart, model);
-            this.Head = modelPart.getChild("Head");
-            this.Torso = modelPart.getChild("Torso");
-            this.LeftArm = modelPart.getChild("LeftArm");
-            this.RightArm = modelPart.getChild("RightArm");
-
-            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
-                    .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm)).hipOffset(0.0f);
-        }
-
-        public static LayerDefinition createArmorLayer(ArmorModel layer) {
-            MeshDefinition meshdefinition = new MeshDefinition();
-            PartDefinition partdefinition = meshdefinition.getRoot();
-
-            PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-            PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-            PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 2.0F, 0.0F));
-
-            PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
-
-            return LayerDefinition.create(meshdefinition, 64, 32);
-        }
-
-        @Override
-        public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-            switch (slot) {
-                case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                case CHEST -> {
-                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                    LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                    RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                }
-            }
-        }
-
-        @Override
-        public HumanoidAnimator<T, RemodelMale<T>> getAnimator() {
-            return animator;
-        }
-
-        public ModelPart getArm(HumanoidArm arm) {
-            return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
-        }
-
-        public ModelPart getLeg(HumanoidArm leg) {
-            return null;
-        }
-
-        public ModelPart getHead() {
-            return this.Head;
-        }
-
-        public ModelPart getTorso() {
-            return Torso;
-        }
-    }
-
-    @Deprecated
-    public static class RemodelFemale<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, RemodelFemale<T>> {
-        public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_upper_body_female")).get();
-        public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_upper_body_female")).get();
-
-        private final ModelPart Head;
-        private final ModelPart Torso;
-        private final ModelPart LeftArm;
-        private final ModelPart RightArm;
-        private final HumanoidAnimator<T, RemodelFemale<T>> animator;
-
-        public RemodelFemale(ModelPart modelPart, ArmorModel model) {
-            super(modelPart, model);
-            this.Head = modelPart.getChild("Head");
-            this.Torso = modelPart.getChild("Torso");
-            this.LeftArm = modelPart.getChild("LeftArm");
-            this.RightArm = modelPart.getChild("RightArm");
-
-            this.animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.upperBody(Head, Torso, LeftArm, RightArm))
-                    .addPreset(AnimatorPresets.aquaticUpperBody(Head, LeftArm, RightArm)).hipOffset(0.0f);
-        }
-
-        public static LayerDefinition createArmorLayer(ArmorModel layer) {
-            MeshDefinition meshdefinition = new MeshDefinition();
-            PartDefinition partdefinition = meshdefinition.getRoot();
-
-            PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-            PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-            PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 2.0F, 0.0F));
-
-            PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
-
-            PartDefinition Breasts = Torso.addOrReplaceChild("Breasts", CubeListBuilder.create().texOffs(18, 18).addBox(-4.0F, -2.75F, -1.0F, 8.0F, 3.0F, 2.0F, layer.deformation.extend(-0.5f))
-                    .texOffs(18, 22).addBox(-4.0F, 1.25F, -1.0F, 8.0F, 1.0F, 2.0F, layer.deformation.extend(-0.5f)), PartPose.offsetAndRotation(0.0F, 2.5F, -2.0F, -0.4363F, 0.0F, 0.0F));
-
-            return LayerDefinition.create(meshdefinition, 64, 32);
-        }
-
-        @Override
-        public void renderForSlot(T entity, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-            switch (slot) {
-                case HEAD -> Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                case CHEST -> {
-                    Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                    LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                    RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                }
-            }
-        }
-
-        @Override
-        public HumanoidAnimator<T, RemodelFemale<T>> getAnimator() {
-            return animator;
-        }
-
-        public ModelPart getArm(HumanoidArm arm) {
-            return arm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm;
-        }
-
-        public ModelPart getLeg(HumanoidArm leg) {
-            return null;
-        }
-
-        public ModelPart getHead() {
-            return this.Head;
-        }
-
-        public ModelPart getTorso() {
-            return Torso;
-        }
     }
 }
