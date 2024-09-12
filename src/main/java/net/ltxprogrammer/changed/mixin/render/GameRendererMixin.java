@@ -114,11 +114,8 @@ public abstract class GameRendererMixin {
         return entity;
     }
 
-    @Inject(method = "renderItemInHand", at = @At("HEAD"))
+    @Inject(method = "renderItemInHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LightTexture;turnOffLightLayer()V"))
     public void hookFirstPersonParticles(PoseStack pose, Camera camera, float partialTicks, CallbackInfo ci) {
-        boolean sleeping = this.minecraft.getCameraEntity() instanceof LivingEntity && ((LivingEntity)this.minecraft.getCameraEntity()).isSleeping();
-        if (!this.isPanoramicMode() && this.minecraft.options.getCameraType().isFirstPerson() && !sleeping && !this.minecraft.options.hideGui && this.minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR) {
-            ChangedClient.particleSystem.render(pose, this.lightTexture(), camera, partialTicks, null, SetupContext.FIRST_PERSON);
-        }
+        ChangedClient.particleSystem.render(pose, this.lightTexture(), camera, partialTicks, null, SetupContext.FIRST_PERSON);
     }
 }
