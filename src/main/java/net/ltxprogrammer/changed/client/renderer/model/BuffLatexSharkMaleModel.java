@@ -216,8 +216,8 @@ public class BuffLatexSharkMaleModel extends AdvancedHumanoidModel<BuffLatexShar
 		return Torso;
 	}
 
-	private final double yOffset = -1.0 / 16.0;
-	private final float bodyScale = 1.0525F;
+	private final double yOffset = -2.88 / 16.0;
+	private final float bodyScale = 1.125F;
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
