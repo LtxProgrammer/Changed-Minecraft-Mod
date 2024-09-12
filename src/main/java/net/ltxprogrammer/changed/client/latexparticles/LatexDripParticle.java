@@ -230,7 +230,7 @@ public class LatexDripParticle extends LatexParticle {
         Vector4f translationVector = new Vector4f(surface.position().x(), surface.position().y(), surface.position().z(), 1.0f);
         translationVector.transform(modelSpaceToScreenSpace); // Coordinates now in screenspace
 
-        Vector4f worldSpace = CameraUtil.toWorldSpace(Minecraft.getInstance().gameRenderer.getMainCamera(), partialTick, translationVector);
+        Vector4f worldSpace = CameraUtil.toWorldSpace(translationVector);
         x = worldSpace.x();
         y = worldSpace.y();
         z = worldSpace.z();
