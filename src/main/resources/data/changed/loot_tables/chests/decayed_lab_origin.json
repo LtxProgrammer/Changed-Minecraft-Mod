@@ -225,7 +225,7 @@
             {
               "function": "changed:random_variant",
               "variants": [
-                "changed:form_latex_sniper_dog",
+                "changed:form_sniper_dog",
                 "changed:form_latex_benign_wolf",
                 "changed:form_white_latex_wolf/male",
                 "changed:form_white_latex_wolf/female",
