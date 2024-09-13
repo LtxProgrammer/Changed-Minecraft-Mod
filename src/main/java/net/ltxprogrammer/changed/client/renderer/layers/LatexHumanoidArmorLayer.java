@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -97,7 +98,7 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
                              PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, LatexHumanoidArmorModel<? super T, ?> model,
                              float red, float green, float blue, ResourceLocation armorResource) {
         model.prepareVisibility(slot, stack);
-        model.renderForSlot(entity, this.parent, stack, slot, pose,
+        model.renderForSlot(entity, (RenderLayerParent) this.parent, stack, slot, pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
         model.prepareVisibility(slot, stack);

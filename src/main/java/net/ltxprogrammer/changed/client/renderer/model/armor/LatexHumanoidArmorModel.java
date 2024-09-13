@@ -34,7 +34,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
         this.armorModel = model;
     }
 
-    public void scaleForSlot(RenderLayerParent<T, ?> parent, EquipmentSlot slot, PoseStack poseStack) {
+    public void scaleForSlot(RenderLayerParent<? super T, ?> parent, EquipmentSlot slot, PoseStack poseStack) {
         switch (slot) {
             case HEAD -> {
                 if (parent.getModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
@@ -47,7 +47,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
         }
     }
 
-    public abstract void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot,
+    public abstract void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot,
                                        PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 
     public static void prepareUnifiedLegsForArmor(ItemStack stack, ModelPart LeftLeg, ModelPart RightLeg) {
@@ -109,6 +109,25 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
         PartDefinition LeftArch_r1 = LeftFoot.addOrReplaceChild("LeftArch_r1", CubeListBuilder.create().texOffs(2, 20).mirror().addBox(-2.0F, -8.45F, -0.725F, 4.0F, 6.0F, 3.0F, layer.altDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 7.075F, -4.975F, -0.3491F, 0.0F, 0.0F));
 
         PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(21, 21).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, layer.deformation.extend(-0.25f)), PartPose.offset(0.0F, 4.325F, -4.425F));
+    }
+
+    protected static void addBreastplate(PartDefinition torso, ArmorModel layer) {
+        switch (layer) {
+            case ARMOR_OUTER -> {
+                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.5F, -2.0F));
+
+                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 2.3F, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(-0.5f)).mirror(false)
+                        .texOffs(18, 19).mirror().addBox(-4.0F, -1.7F, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation.extend(-0.5f)).mirror(false), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.2793F, 0.0F, 0.0F));
+            }
+
+            case CLOTHING_INNER -> {
+                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 1.5F, -2.0F));
+
+                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 1.9F, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation).mirror(false)
+                        .texOffs(18, 19).mirror().addBox(-4.0F, -1.7F, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.2793F, 0.0F, 0.0F));
+
+            }
+        }
     }
 
     protected float distanceTo(@NotNull T entity, @NotNull Entity other, float partialTicks) {

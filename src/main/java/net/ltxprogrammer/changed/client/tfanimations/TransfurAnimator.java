@@ -633,7 +633,7 @@ public abstract class TransfurAnimator {
                                                     before.get(),
                                                     after.get(),
                                                     morphProgress, Color3.WHITE, 1f, stack, buffer, light,
-                                                    texture.get());
+                                                    texture.get(), true);
                                         }
                                     });
                                 }

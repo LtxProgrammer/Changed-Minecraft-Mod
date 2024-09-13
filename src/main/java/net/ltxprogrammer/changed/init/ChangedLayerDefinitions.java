@@ -118,23 +118,9 @@ public class ChangedLayerDefinitions {
         ArmorSnakeAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorHeadlessKnightModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexAlienModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        if (useNewModels) {
-            ArmorLatexWolfModel.RemodelFemale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorLatexWolfModel.RemodelMale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorLatexSharkModel.RemodelFemale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorLatexSharkModel.RemodelMale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorLatexSnowLeopardModel.RemodelFemale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorLatexSnowLeopardModel.RemodelMale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-
-            ArmorUpperBodyModel.RemodelFemale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-            ArmorUpperBodyModel.RemodelMale.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        }
 
         // v --- ARMOR / ENTITY --- ^
 
-        }
-
-        ArmorLatexWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorFemaleMantaRayUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
@@ -152,7 +138,6 @@ public class ChangedLayerDefinitions {
         ArmorLatexBigTailDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLatexSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleSquidDogModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
@@ -165,11 +150,6 @@ public class ChangedLayerDefinitions {
 
         ArmorLatexOtterModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexStigerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLatexCrocodileModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLatexDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLatexSnowLeopardModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLatexBuffSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorLightLatexCentaurModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         if (useNewModels) {
             event.registerLayerDefinition(HairRemodel.RIG_UPPER_LOCATION, HairRemodel::createUpperHair);

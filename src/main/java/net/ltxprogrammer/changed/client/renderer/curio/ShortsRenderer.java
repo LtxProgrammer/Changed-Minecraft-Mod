@@ -72,9 +72,11 @@ public class ShortsRenderer implements ICurioRenderer, TransitionalCurio {
 
                 model.prepareMobModel(changedEntity, limbSwing, limbSwingAmount, partialTicks);
                 model.setupAnim(changedEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                model.renderForSlot(changedEntity, stack, EquipmentSlot.LEGS, matrixStack,
+                model.prepareVisibility(EquipmentSlot.LEGS, stack);
+                model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, EquipmentSlot.LEGS, matrixStack,
                         ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                         light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                model.unprepareVisibility(EquipmentSlot.LEGS, stack);
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 baseModel.copyPropertiesTo(clothingModel);
 
