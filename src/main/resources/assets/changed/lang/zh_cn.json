@@ -473,14 +473,14 @@
   "item.changed.pure_white_latex_wolf_spawn_egg": "白胶狼刷怪蛋",
   
   "changed.patreon.level0": "Discord服务器成员",
-  "changed.patreon.level1": "层级 1",
-  "changed.patreon.level2": "层级 2",
-  "changed.patreon.level3": "层级 3",
-  "changed.patreon.level4": "层级 4",
+  "changed.patreon.level1": "等级 1",
+  "changed.patreon.level2": "等级 2",
+  "changed.patreon.level3": "等级 3",
+  "changed.patreon.level4": "等级 4",
   
-  "changed.error.corrupted_disc": "错误：损坏的CD",
+  "changed.error.corrupted_disc": "错误：损坏的光盘",
   
-  "changed.compact_disc.title.light_latex_wolf": "尝试拯救世界",
+  "changed.compact_disc.title.light_latex_wolf": "尝试挽救世界",
   "changed.compact_disc.content.light_latex_wolf": "在我们试图治愈病毒大爆发的过程中，我们意识到只有动物可以被用来治疗，所以我们试着把人类变得更像动物一些。 我们最终在胶液基上取得了进展，一种可以即时改变DNA的物质。 我们终于可以结束病毒大爆发。",
  
    "changed.compact_disc.title.aerosol_latex_wolf": "棕色的狼",
@@ -578,7 +578,7 @@
   "glu_block.joint.entrance": "入口",
   "glu_block.joint.exit": "出口",
 
-  "eyestyle.changed.v1": "原有",
+  "eyestyle.changed.v1": "原始",
   "eyestyle.changed.v2": "苗条",
   "eyestyle.changed.tall": "高",
  
