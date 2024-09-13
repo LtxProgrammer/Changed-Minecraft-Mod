@@ -38,10 +38,12 @@ public class TransfurHelper {
     public static class ArmorHelper {
         protected final HelperModel DigitigradeLeftLeg;
         protected final HelperModel DigitigradeRightLeg;
+        protected final HelperModel FeminineTorso;
 
         protected ArmorHelper(ModelPart root) {
             this.DigitigradeLeftLeg = HelperModel.fixed(root.getChild("DigitigradeLeftLeg"));
             this.DigitigradeRightLeg = HelperModel.fixed(root.getChild("DigitigradeRightLeg"));
+            this.FeminineTorso = HelperModel.fixed(root.getChild("FeminineTorso"));
         }
     }
 
@@ -126,6 +128,16 @@ public class TransfurHelper {
             PartDefinition RightArch_r1 = RightFoot.addOrReplaceChild("RightArch_r1", CubeListBuilder.create().texOffs(0, 24).addBox(-2.0F, -0.5F, -4.0F, 4.0F, 3.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
 
             PartDefinition RightPad = RightFoot.addOrReplaceChild("RightPad", CubeListBuilder.create().texOffs(0, 26).mirror().addBox(-2.0F, 10.0F, -2.0F, 4.0F, 2.0F, 4.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, -8.0F, -2.0F));
+        }
+
+        // FEMININE TORSO
+        {
+            PartDefinition Torso = root.addOrReplaceChild("FeminineTorso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, armor.dualDeformation), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Plantoids = Torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 1.8F, -1.0F));
+
+            PartDefinition Plantoids_r1 = Plantoids.addOrReplaceChild("Plantoids", CubeListBuilder.create().texOffs(18, 19).mirror().addBox(-4.0F, -2.3F, -0.9F, 8.0F, 2.0F, 2.0F, armor.dualDeformation).mirror(false)
+                    .texOffs(18, 22).mirror().addBox(-4.0F, -0.3F, -0.9F, 8.0F, 1.0F, 2.0F, armor.dualDeformation).mirror(false), PartPose.offset(0.0F, 2.5F, 0.0F));
         }
     }
 
@@ -340,6 +352,10 @@ public class TransfurHelper {
 
     public static HelperModel getDigitigradeRightLeg(ArmorModel model) {
         return INSTANCE.get().ArmorMap.get(model).DigitigradeRightLeg;
+    }
+
+    public static HelperModel getFeminineTorso(ArmorModel model) {
+        return INSTANCE.get().ArmorMap.get(model).FeminineTorso;
     }
 
     public static HelperModel getBasicLeftArm() {

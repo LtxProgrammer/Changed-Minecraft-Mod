@@ -82,6 +82,7 @@
   "item.changed.orange": "Orange",
   "item.changed.pink_pants": "Pink Shorts",
   "item.changed.roomba": "Roomba",
+  "item.changed.sports_bra": "Sports Bra",
   "item.changed.syringe": "Syringe",
   "item.changed.white_latex_goo": "White Latex Goo",
   "item.changed.white_latex_bucket": "White Latex Bucket",
@@ -202,6 +203,7 @@
   "enchantment.changed.latex_protection": "Latex Protection",
   "enchantment.changed.latex_protection.desc": "Protects the wearer from being transfurred.",
 
+  "curios.identifier.legs": "Legs",
   "curios.identifier.lower_body": "Lower Body",
 
   "block.changed.air_conditioner": "Air Conditioner",

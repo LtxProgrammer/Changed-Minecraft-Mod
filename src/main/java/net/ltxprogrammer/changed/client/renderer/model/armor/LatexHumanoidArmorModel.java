@@ -112,20 +112,23 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     }
 
     protected static void addBreastplate(PartDefinition torso, ArmorModel layer) {
+        addBreastplate(torso, layer, 0.0f, 0.0f, 0.0f);
+    }
+
+    protected static void addBreastplate(PartDefinition torso, ArmorModel layer, float yOffset, float zOffset, float sizeOffset) {
         switch (layer) {
             case ARMOR_OUTER -> {
-                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.5F, -2.0F));
+                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
 
-                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 2.3F, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(-0.5f)).mirror(false)
-                        .texOffs(18, 19).mirror().addBox(-4.0F, -1.7F, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation.extend(-0.5f)).mirror(false), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.2793F, 0.0F, 0.0F));
+                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 2.0F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false)
+                        .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation.extend(-0.4f)).mirror(false), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, -0.2793F, 0.0F, 0.0F));
             }
 
             case CLOTHING_INNER -> {
-                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 1.5F, -2.0F));
+                PartDefinition Plantoids = torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -2.0F + zOffset));
 
-                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 1.9F, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation).mirror(false)
-                        .texOffs(18, 19).mirror().addBox(-4.0F, -1.7F, -0.8F, 8.0F, 3.0F, 2.0F, layer.dualDeformation).mirror(false), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.2793F, 0.0F, 0.0F));
-
+                PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 0.5F + yOffset, -0.8F, 8.0F, 1.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false)
+                        .texOffs(18, 19).mirror().addBox(-4.0F, -2.2F + yOffset, -0.8F, 8.0F, 2.0F, 2.0F, layer.dualDeformation.extend(0.05f + sizeOffset)).mirror(false), PartPose.offsetAndRotation(0.0F, 2.5F - yOffset, 0.0F, -0.2793F, 0.0F, 0.0F));
             }
         }
     }

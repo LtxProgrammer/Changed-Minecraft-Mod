@@ -5,6 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,6 +19,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class ArmorLatexFemaleCatModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleCatModel<T>> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexFemaleCatModel<ChangedEntity>> MODEL_SET =
@@ -107,6 +111,13 @@ public class ArmorLatexFemaleCatModel<T extends ChangedEntity> extends LatexHuma
         }
 
         poseStack.popPose();
+    }
+
+    @Override
+    public @Nullable HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorso(this.armorModel);
+        return super.getTransfurHelperModel(limb);
     }
 
     @Override

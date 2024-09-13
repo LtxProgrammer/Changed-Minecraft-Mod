@@ -25,12 +25,17 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
-public class ShortsRenderer implements ICurioRenderer, TransitionalCurio {
-    private final HumanoidModel clothingModel;
+public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio {
+    protected final HumanoidModel clothingModel;
+    protected final ArmorModel armorModel;
+    protected final EquipmentSlot renderAs;
 
-    public ShortsRenderer() {
-        clothingModel = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ArmorHumanModel.MODEL_SET.getModelName(ArmorModel.CLOTHING_INNER)));
+    public SimpleClothingRenderer(ArmorModel armorModel, EquipmentSlot renderAs) {
+        this.armorModel = armorModel;
+        this.renderAs = renderAs;
+        clothingModel = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ArmorHumanModel.MODEL_SET.getModelName(armorModel)));
     }
 
     @Override
@@ -42,8 +47,8 @@ public class ShortsRenderer implements ICurioRenderer, TransitionalCurio {
     public Optional<AdvancedHumanoidModel<?>> getAfterModel(ItemStack stack, SlotContext slotContext, RenderLayerParent<?,?> renderLayerParent) {
         if (renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer) {
             final LatexHumanoidArmorLayer layer = advancedHumanoidRenderer.getArmorLayer();
-            return Optional.of((LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(EquipmentSlot.LEGS)
-                    .get(ArmorModel.CLOTHING_INNER));
+            return Optional.of((LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(renderAs)
+                    .get(armorModel));
         }
 
         return Optional.empty();
@@ -67,16 +72,16 @@ public class ShortsRenderer implements ICurioRenderer, TransitionalCurio {
 
             if (entity instanceof ChangedEntity changedEntity && renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer) {
                 final var layer = advancedHumanoidRenderer.getArmorLayer();
-                final LatexHumanoidArmorModel model = (LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(EquipmentSlot.LEGS)
-                        .get(ArmorModel.CLOTHING_INNER);
+                final LatexHumanoidArmorModel model = (LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(renderAs)
+                        .get(armorModel);
 
                 model.prepareMobModel(changedEntity, limbSwing, limbSwingAmount, partialTicks);
                 model.setupAnim(changedEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                model.prepareVisibility(EquipmentSlot.LEGS, stack);
-                model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, EquipmentSlot.LEGS, matrixStack,
+                model.prepareVisibility(renderAs, stack);
+                model.renderForSlot(changedEntity, advancedHumanoidRenderer, stack, renderAs, matrixStack,
                         ItemRenderer.getArmorFoilBuffer(renderTypeBuffer, RenderType.armorCutoutNoCull(texture), false, stack.hasFoil()),
                         light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-                model.unprepareVisibility(EquipmentSlot.LEGS, stack);
+                model.unprepareVisibility(renderAs, stack);
             } else if (renderLayerParent.getModel() instanceof HumanoidModel<?> baseModel) {
                 baseModel.copyPropertiesTo(clothingModel);
 
@@ -87,5 +92,9 @@ public class ShortsRenderer implements ICurioRenderer, TransitionalCurio {
                         light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
+    }
+
+    public static Supplier<ICurioRenderer> of(ArmorModel armorModel, EquipmentSlot renderAs) {
+        return () -> new SimpleClothingRenderer(armorModel, renderAs);
     }
 }
