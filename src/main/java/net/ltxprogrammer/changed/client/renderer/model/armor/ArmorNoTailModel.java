@@ -81,6 +81,30 @@ public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmo
     }
 
     @Override
+    public void prepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.prepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            if (item.getItem() instanceof Shorts) {
+                setAllPartsVisibility(LeftLeg, false);
+                setAllPartsVisibility(RightLeg, false);
+                LeftLeg.getChild("LeftUpperLeg_r1").visible = true;
+                RightLeg.getChild("RightUpperLeg_r1").visible = true;
+            }
+        }
+    }
+
+    @Override
+    public void unprepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.unprepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            if (item.getItem() instanceof Shorts) {
+                setAllPartsVisibility(LeftLeg, true);
+                setAllPartsVisibility(RightLeg, true);
+            }
+        }
+    }
+
+    @Override
     public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
@@ -93,21 +117,9 @@ public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmo
                 RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
             case LEGS -> {
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, false);
-                    setAllPartsVisibility(RightLeg, false);
-                    LeftLeg.getChild("LeftUpperLeg_r1").visible = true;
-                    RightLeg.getChild("RightUpperLeg_r1").visible = true;
-                }
-
                 Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, true);
-                    setAllPartsVisibility(RightLeg, true);
-                }
             }
             case FEET -> {
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

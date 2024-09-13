@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.TripleArmedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -99,6 +98,22 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
+    public void prepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.prepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+        }
+    }
+
+    @Override
+    public void unprepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.unprepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+        }
+    }
+
+    @Override
     public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
@@ -115,21 +130,9 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
                 RightArm3.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
             case LEGS -> {
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, false);
-                    setAllPartsVisibility(RightLeg, false);
-                    LeftLeg.getChild("LeftUpperLeg_r1").visible = true;
-                    RightLeg.getChild("RightUpperLeg_r1").visible = true;
-                }
-
                 Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LeftLeg, true);
-                    setAllPartsVisibility(RightLeg, true);
-                }
             }
             case FEET -> {
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

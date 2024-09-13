@@ -74,15 +74,29 @@ public class ArmorFemaleMantaRayAbdomenModel<T extends ChangedEntity> extends La
     }
 
     @Override
+    public void prepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.prepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            setAllPartsVisibility(Tail, false);
+        }
+    }
+
+    @Override
+    public void unprepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.unprepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            setAllPartsVisibility(Tail, true);
+        }
+    }
+
+    @Override
     public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
         switch (slot) {
             case LEGS -> {
-                setAllPartsVisibility(Tail, false);
                 Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-                setAllPartsVisibility(Tail, true);
             }
             case FEET -> Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }

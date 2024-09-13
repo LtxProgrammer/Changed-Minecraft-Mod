@@ -129,6 +129,22 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
+    public void prepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.prepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+        }
+    }
+
+    @Override
+    public void unprepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.unprepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+        }
+    }
+
+    @Override
     public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
@@ -143,13 +159,9 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
                 RightArm2.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             }
             case LEGS -> {
-                prepareLegsForArmor(stack, LeftLeg, RightLeg);
-
                 Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
                 RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
-                unprepareLegsForArmor(stack, LeftLeg, RightLeg);
             }
             case FEET -> {
                 LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);

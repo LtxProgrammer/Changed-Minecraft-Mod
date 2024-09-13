@@ -100,25 +100,38 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
+    public void prepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.prepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+
+            if (item.getItem() instanceof Shorts) {
+                setAllPartsVisibility(LowerTorso, false);
+                LeftLeg2.getChild("LeftUpperLeg_r2").visible = true;
+                RightLeg2.getChild("RightUpperLeg_r2").visible = true;
+            }
+        }
+    }
+
+    @Override
+    public void unprepareVisibility(EquipmentSlot armorSlot, ItemStack item) {
+        super.unprepareVisibility(armorSlot, item);
+        if (armorSlot == EquipmentSlot.LEGS) {
+            prepareUnifiedLegsForArmor(item, LeftLeg, RightLeg);
+
+            if (item.getItem() instanceof Shorts) {
+                setAllPartsVisibility(LowerTorso, true);
+            }
+        }
+    }
+
+    @Override
     public void renderForSlot(HeadlessKnight entity, RenderLayerParent<HeadlessKnight, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
         switch (slot) {
-            case LEGS -> {
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LowerTorso, false);
-                    LeftLeg2.getChild("LeftUpperLeg_r2").visible = true;
-                    RightLeg2.getChild("RightUpperLeg_r2").visible = true;
-                }
-
-                LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
-                if (stack.getItem() instanceof Shorts) {
-                    setAllPartsVisibility(LowerTorso, true);
-                }
-            }
-            case FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            case LEGS, FEET -> LowerTorso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
 
         poseStack.popPose();
