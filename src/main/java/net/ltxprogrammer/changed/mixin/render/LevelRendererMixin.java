@@ -2,8 +2,10 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.item.LoopedRecordItem;
+import net.ltxprogrammer.changed.util.CameraUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,5 +66,15 @@ public abstract class LevelRendererMixin {
 
             this.notifyNearbyEntities(this.level, pos, event != null);
         }
+    }
+
+    @Inject(method = "prepareCullFrustum", at = @At("TAIL"))
+    public void captureInverseMatrix(PoseStack poseStack, Vec3 cameraPosition, Matrix4f projectionMatrix, CallbackInfo ci) {
+        Matrix4f modelViewCopy = poseStack.last().pose().copy();
+
+        modelViewCopy.invert();
+        modelViewCopy.translate(new Vector3f((float) cameraPosition.x, (float) cameraPosition.y, (float) cameraPosition.z));
+
+        CameraUtil.setInverseMatrix(modelViewCopy);
     }
 }

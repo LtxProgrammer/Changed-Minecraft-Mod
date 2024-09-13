@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -245,6 +246,10 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
 
         this.shapedHeads.get(headShape).copyFrom(this.getParentModel().getHead());
 
+        pose.pushPose();
+        if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.scaleForHead(pose);
+
         scleraColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getSclera())), packedLight, overlay, data.color, data.alpha);
         });
@@ -260,6 +265,8 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         eyeLashesColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getEyeLashes())), packedLight, overlay, data.color, data.alpha);
         });
+
+        pose.popPose();
     }
 
     public static class Builder<M extends AdvancedHumanoidModel<T>, T extends ChangedEntity> {

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.minecraft.client.Minecraft;
@@ -29,14 +30,18 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
         super(p_174516_);
     }
 
-    protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack p_174529_, MultiBufferSource p_174530_, int p_174531_) {
+    protected void renderArmWithItem(LivingEntity p_174525_, ItemStack p_174526_, ItemTransforms.TransformType p_174527_, HumanoidArm p_174528_, PoseStack poseStack, MultiBufferSource p_174530_, int p_174531_) {
         if (p_174525_ instanceof ChangedEntity ChangedEntity && ChangedEntity.getUnderlyingPlayer() != null)
             p_174525_ = ChangedEntity.getUnderlyingPlayer();
 
         if (p_174526_.is(Items.SPYGLASS) && p_174525_.getUseItem() == p_174526_ && p_174525_.swingTime == 0) {
-            this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, p_174529_, p_174530_, p_174531_);
+            this.renderArmWithSpyglass(p_174525_, p_174526_, p_174528_, poseStack, p_174530_, p_174531_);
         } else {
-            super.renderArmWithItem(p_174525_, p_174526_, p_174527_, p_174528_, p_174529_, p_174530_, p_174531_);
+            poseStack.pushPose();
+            if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+                modelInterface.scaleForBody(poseStack);
+            super.renderArmWithItem(p_174525_, p_174526_, p_174527_, p_174528_, poseStack, p_174530_, p_174531_);
+            poseStack.popPose();
         }
 
     }
@@ -44,6 +49,8 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
     private void renderArmWithSpyglass(LivingEntity entity, ItemStack itemStack, HumanoidArm arm, PoseStack pose, MultiBufferSource source, int color) {
         pose.pushPose();
         ModelPart modelpart = this.getParentModel().getHead();
+        if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+            modelInterface.scaleForHead(pose);
         float f = modelpart.xRot;
         modelpart.xRot = Mth.clamp(modelpart.xRot, (-(float)Math.PI / 6F), ((float)Math.PI / 2F));
         modelpart.translateAndRotate(pose);
@@ -70,6 +77,8 @@ public class LatexItemInHandLayer<T extends ChangedEntity, M extends AdvancedHum
             boolean flag = entity.isSleeping();
             pose.pushPose();
             var head = this.getParentModel().getHead();
+            if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
+                modelInterface.scaleForHead(pose);
             pose.translate(head.x / 16.0F, (head.y) / 16.0F, head.z / 16.0F);
             pose.mulPose(Vector3f.ZP.rotation(0.0F));
             pose.mulPose(Vector3f.YP.rotationDegrees(netHeadYaw));

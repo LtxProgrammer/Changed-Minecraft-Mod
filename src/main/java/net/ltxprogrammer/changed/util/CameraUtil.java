@@ -8,6 +8,7 @@ import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.TugCameraPacket;
+import net.minecraft.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 public class CameraUtil {
     public static class TugData {
@@ -120,21 +122,14 @@ public class CameraUtil {
         livingEntity.yRotO = yRotO;
     }
 
-    public static Vector4f toWorldSpace(Camera camera, float partialTick, Vector4f screenSpace) {
-        Matrix4f matrix = new Matrix4f();
-        matrix.setIdentity();
+    private static @NotNull Matrix4f inverseMatrix = Util.make(new Matrix4f(), Matrix4f::setIdentity);
+    public static void setInverseMatrix(@NotNull Matrix4f matrix) {
+        inverseMatrix = matrix;
+    }
 
-        EntityViewRenderEvent.CameraSetup cameraSetup = ForgeHooksClient.onCameraSetup(Minecraft.getInstance().gameRenderer, camera, partialTick);
-        camera.setAnglesInternal(cameraSetup.getYaw(), cameraSetup.getPitch());
-
-        matrix.multiply(Vector3f.ZP.rotationDegrees(cameraSetup.getRoll()));
-        matrix.multiply(Vector3f.XP.rotationDegrees(camera.getXRot()));
-        matrix.multiply(Vector3f.YP.rotationDegrees(camera.getYRot() + 180.0F));
-        matrix.invert();
-        matrix.translate(new Vector3f((float) camera.position.x, (float) camera.position.y, (float) camera.position.z));
-
+    public static Vector4f toWorldSpace(Vector4f screenSpace) {
         Vector4f v = new Vector4f(screenSpace.x(), screenSpace.y(), screenSpace.z(), screenSpace.w());
-        v.transform(matrix);
+        v.transform(inverseMatrix);
         return v;
     }
 }

@@ -96,23 +96,27 @@ public abstract class TransfurAnimator {
         return newCube;
     }
 
-    private static ModelPart deepCopyPart(@Nullable ModelPart part) {
+    private static ModelPart deepCopyPart(@Nullable ModelPart part, boolean copyVisibility) {
         if (part == null)
             return null;
         ModelPart copied = new ModelPart(
                 part.cubes.stream().map(TransfurAnimator::copyCube).toList(),
-                part.children.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue()))));
+                part.children.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue(), copyVisibility))));
         copied.loadPose(part.storePose());
+        if (copyVisibility)
+            copied.visible = part.visible;
         return copied;
     }
 
-    private static ModelPart deepCopyPart(@Nullable ModelPart part, Predicate<ModelPart> predicate) {
+    private static ModelPart deepCopyPart(@Nullable ModelPart part, Predicate<ModelPart> predicate, boolean copyVisibility) {
         if (part == null)
             return null;
         ModelPart copied = new ModelPart(
                 part.cubes.stream().map(TransfurAnimator::copyCube).toList(),
-                part.children.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue(), predicate))));
+                part.children.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Map.Entry::getKey, entry -> deepCopyPart(entry.getValue(), predicate, copyVisibility))));
         copied.loadPose(part.storePose());
+        if (copyVisibility)
+            copied.visible = part.visible;
         return copied;
     }
 
@@ -150,7 +154,7 @@ public abstract class TransfurAnimator {
         return new ModelPart(part.cubes.stream().map(TransfurAnimator::copyCube).toList(), Map.of());
     }
 
-    private static ModelPart matchCubeCount(ModelPart to, ModelPart from, ModelPart.Cube copyWith) {
+    private static ModelPart matchCubeCount(ModelPart to, ModelPart from, ModelPart.Cube copyWith, boolean copyVisibility) {
         List<ModelPart.Cube> cubes = new ArrayList<>();
 
         final int targetCubeCount = Math.max(to.cubes.size(), from.cubes.size());
@@ -186,14 +190,14 @@ public abstract class TransfurAnimator {
         Map<String, ModelPart> children = new HashMap<>();
 
         for (var k : to.children.keySet()) {
-            children.put(k, deepCopyPart(to.children.get(k)));
+            children.put(k, deepCopyPart(to.children.get(k), copyVisibility));
         }
 
         ModelPart.Cube copyOverride = to.cubes.size() > 0 ? to.cubes.get(0) : copyWith;
 
         for (var k : from.children.keySet()) {
             if (to.children.containsKey(k)) {
-                var model = matchCubeCount(to.children.get(k), from.children.get(k), copyOverride);
+                var model = matchCubeCount(to.children.get(k), from.children.get(k), copyOverride, copyVisibility);
                 model.loadPose(to.children.get(k).storePose());
                 children.put(k, model);
             } else {
@@ -201,11 +205,14 @@ public abstract class TransfurAnimator {
             }
         }
 
-        return new ModelPart(cubes, children);
+        final ModelPart matched = new ModelPart(cubes, children);
+        if (copyVisibility)
+            matched.visible = to.visible;
+        return matched;
     }
 
-    private static ModelPart matchCubeCount(ModelPart to, ModelPart from) {
-        return matchCubeCount(to, from, findCube(to));
+    private static ModelPart matchCubeCount(ModelPart to, ModelPart from, boolean copyVisibility) {
+        return matchCubeCount(to, from, findCube(to), copyVisibility);
     }
 
     private static ModelPart.Vertex lerpVertex(ModelPart.Vertex a, ModelPart.Vertex b, float lerp) {
@@ -295,6 +302,7 @@ public abstract class TransfurAnimator {
         lerped.xRot = Mth.lerp(lerp, a.xRot, b.xRot);
         lerped.yRot = Mth.lerp(lerp, a.yRot, b.yRot);
         lerped.zRot = Mth.lerp(lerp, a.zRot, b.zRot);
+        lerped.visible = a.visible && b.visible;
         return lerped;
     }
 
@@ -308,9 +316,9 @@ public abstract class TransfurAnimator {
         return cubeReturn.getAcquire();
     }
 
-    private static ModelPart transitionModelPart(ModelPart before, ModelPart after, float lerp, boolean remapUV) {
-        ModelPart beforeCopy = matchCubeCount(deepCopyPart(before), after);
-        ModelPart afterCopy = matchCubeCount(deepCopyPart(after), before);
+    private static ModelPart transitionModelPart(ModelPart before, ModelPart after, float lerp, boolean remapUV, boolean copyAfterVisibility) {
+        ModelPart beforeCopy = matchCubeCount(deepCopyPart(before, false), after, false);
+        ModelPart afterCopy = matchCubeCount(deepCopyPart(after, copyAfterVisibility), before, copyAfterVisibility);
 
         return lerpModelPart(beforeCopy, afterCopy, lerp, remapUV);
     }
@@ -372,7 +380,9 @@ public abstract class TransfurAnimator {
         return Optional.ofNullable(afterModel.getTransfurHelperModel(limb));
     }
 
-    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, @Nullable ResourceLocation texture) {
+    private static void renderMorphedLimb(LivingEntity entity, Limb limb, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel,
+                                          float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light,
+                                          @Nullable ResourceLocation texture, boolean listenToAfterVisible) {
         ModelPart before = limb.getModelPart(beforeModel);
         final ModelPart after = limb.getModelPart(afterModel);
         if (before == null || after == null)
@@ -390,8 +400,8 @@ public abstract class TransfurAnimator {
             before = helper.map(HelperModel::getModelPart).orElse(before);
         }
 
-        final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur);
-        final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress, texture == null);
+        final ModelPart afterCopied = deepCopyPart(limb.getModelPart(afterModel), afterModel::shouldPartTransfur, listenToAfterVisible);
+        final ModelPart transitionPart = transitionModelPart(before, afterCopied, morphProgress, texture == null, listenToAfterVisible);
         final ModelPose transitionPose = transitionModelPose(beforePose, afterPose, morphProgress);
 
         if (texture == null)
@@ -415,14 +425,14 @@ public abstract class TransfurAnimator {
         stack.popPose();
     }
 
-    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, @Nullable ResourceLocation texture) {
+    public static void renderMorphedEntity(LivingEntity entity, HumanoidModel<?> beforeModel, AdvancedHumanoidModel<?> afterModel, float morphProgress, Color3 color, float alpha, PoseStack stack, MultiBufferSource buffer, int light, @Nullable ResourceLocation texture, boolean listenToAfterVisible) {
         Arrays.stream(Limb.values()).forEach(limb -> {
             if (ChangedCompatibility.isFirstPersonRendering() && limb == Limb.HEAD)
                 return;
             if (ChangedCompatibility.isFirstPersonRendering() && entity.isSwimming() && limb == Limb.TORSO)
                 return;
 
-            renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, texture);
+            renderMorphedLimb(entity, limb, beforeModel, afterModel, morphProgress, color, alpha, stack, buffer, light, texture, listenToAfterVisible);
         });
     }
 
@@ -478,7 +488,7 @@ public abstract class TransfurAnimator {
 
         final float shrink = (coverAlpha - 1.0f) * 0.5f;
 
-        final ModelPart copiedPart = extendModelPartCubes(deepCopyPart(part), shrink, shrink, shrink);
+        final ModelPart copiedPart = extendModelPartCubes(deepCopyPart(part, false), shrink, shrink, shrink);
         final ModelPose pose = CAPTURED_MODELS.get(part);
 
         stack.pushPose();
@@ -563,7 +573,7 @@ public abstract class TransfurAnimator {
         if (morphAlpha > 0f) {
             final var colors = variant.getTransfurColor();
             renderMorphedEntity(player, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                    morphProgress, colors, morphAlpha, stack, buffer, light, null);
+                    morphProgress, colors, morphAlpha, stack, buffer, light, null, false);
         }
 
         if (coverProgress >= 1f) {
@@ -579,11 +589,14 @@ public abstract class TransfurAnimator {
 
                     var model = armorLayer.getArmorModel(armorSlot);
                     ((HumanoidArmorLayer) armorLayer).setPartVisibility((HumanoidModel) model, armorSlot);
+                    var afterModel = latexHumanoidRenderer.getArmorLayer().getArmorModel(armorSlot);
+                    afterModel.prepareVisibility(armorSlot, item);
                     renderMorphedEntity(player,
                             model,
-                            latexHumanoidRenderer.getArmorLayer().getArmorModel(armorSlot),
+                            afterModel,
                             morphProgress, Color3.WHITE, 1f, stack, buffer, light,
-                            texture);
+                            texture, true);
+                    afterModel.unprepareVisibility(armorSlot, item);
                 });
             });
             findCuriosLayer(livingPlayerRenderer).ifPresent(curiosLayer -> {
@@ -678,7 +691,7 @@ public abstract class TransfurAnimator {
 
         final var color = variant.getTransfurColor();
         renderMorphedLimb(player, limb, playerHumanoidModel, latexHumanoidRenderer.getModel(variant.getChangedEntity()),
-                morphProgress, color, morphAlpha, stack, buffer, light, texture);
+                morphProgress, color, morphAlpha, stack, buffer, light, texture, false);
     }
 
     private static boolean capturingPose = false;

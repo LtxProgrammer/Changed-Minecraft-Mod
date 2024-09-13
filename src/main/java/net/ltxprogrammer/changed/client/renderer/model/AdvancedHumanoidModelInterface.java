@@ -18,4 +18,7 @@ public interface AdvancedHumanoidModelInterface<T extends ChangedEntity, M exten
     default ChangedEntity getFirstPersonReplacementModel() {
         return null;
     }
+
+    default void scaleForBody(PoseStack poseStack) {}
+    default void scaleForHead(PoseStack poseStack) {}
 }

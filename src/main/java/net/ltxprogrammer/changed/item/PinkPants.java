@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,7 +40,7 @@ public class PinkPants extends Item implements Wearable, LatexFusingItem, Shorts
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return Changed.modResourceStr("textures/models/pink_pants.png");
+        return Changed.modResourceStr("textures/models/pink_pants_" + Mth.clamp(stack.getDamageValue() - 1, 0, 4) + ".png");
     }
 
     @Override

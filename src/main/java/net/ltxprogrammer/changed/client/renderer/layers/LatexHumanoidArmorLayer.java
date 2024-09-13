@@ -96,9 +96,11 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
     private void renderModel(T entity, ItemStack stack, EquipmentSlot slot,
                              PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, LatexHumanoidArmorModel<? super T, ?> model,
                              float red, float green, float blue, ResourceLocation armorResource) {
-        model.renderForSlot(entity, stack, slot, pose,
+        model.prepareVisibility(slot, stack);
+        model.renderForSlot(entity, this.parent, stack, slot, pose,
                 ItemRenderer.getArmorFoilBuffer(buffers, RenderType.armorCutoutNoCull(armorResource), false, foil),
                 packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        model.prepareVisibility(slot, stack);
     }
 
     private void renderModel(PoseStack pose, MultiBufferSource buffers, int packedLight, boolean foil, net.minecraft.client.model.Model model, float red, float green, float blue, ResourceLocation armorResource) {

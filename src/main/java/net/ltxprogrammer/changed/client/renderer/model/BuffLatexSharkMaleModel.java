@@ -216,13 +216,34 @@ public class BuffLatexSharkMaleModel extends AdvancedHumanoidModel<BuffLatexShar
 		return Torso;
 	}
 
+	private final double yOffset = -2.88 / 16.0;
+	private final float bodyScale = 1.125F;
+
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		poseStack.pushPose();
+		this.scaleForBody(poseStack);
 		RightLeg.render(poseStack, buffer, packedLight, packedOverlay);
 		LeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
-		Head.render(poseStack, buffer, packedLight, packedOverlay);
 		Torso.render(poseStack, buffer, packedLight, packedOverlay);
 		RightArm.render(poseStack, buffer, packedLight, packedOverlay);
 		LeftArm.render(poseStack, buffer, packedLight, packedOverlay);
+		poseStack.popPose();
+
+		poseStack.pushPose();
+		this.scaleForHead(poseStack);
+		Head.render(poseStack, buffer, packedLight, packedOverlay);
+		poseStack.popPose();
+	}
+
+	@Override
+	public void scaleForBody(PoseStack poseStack) {
+		poseStack.translate(0.0, yOffset, 0.0);
+		poseStack.scale(bodyScale, bodyScale, bodyScale);
+	}
+
+	@Override
+	public void scaleForHead(PoseStack poseStack) {
+		poseStack.translate(0.0, yOffset, 0.0);
 	}
 }

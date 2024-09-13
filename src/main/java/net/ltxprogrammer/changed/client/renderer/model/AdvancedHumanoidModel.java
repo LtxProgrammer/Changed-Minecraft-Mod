@@ -176,34 +176,4 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         REACH,
         HOLD
     }
-
-    public static abstract class LatexRemodel<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AdvancedHumanoidModel<T> implements AdvancedHumanoidModelInterface<T, M> {
-        public LatexRemodel(ModelPart root) {
-            super(root);
-        }
-
-        @Override
-        public final void prepareMobModel(@NotNull T p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-            this.prepareMobModel(getAnimator(), p_102861_, p_102862_, p_102863_, p_102864_);
-        }
-
-        @Override
-        public final void setupHand() {
-            getAnimator().setupHand();
-        }
-
-        @Override
-        public final void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-            getAnimator().setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        }
-
-        @Override
-        public PoseStack getPlacementCorrectors(CorrectorType type) {
-            PoseStack stack = AdvancedHumanoidModelInterface.super.getPlacementCorrectors(type);
-            if (type.isArm())
-                stack.translate(0.10 * (type == CorrectorType.RIGHT_ARM ? -1 : 1), -0.20, 0.0);
-            return stack;
-        }
-    }
 }

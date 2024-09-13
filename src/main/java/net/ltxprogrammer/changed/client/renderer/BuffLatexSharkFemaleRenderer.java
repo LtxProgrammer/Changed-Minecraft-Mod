@@ -30,7 +30,7 @@ public class BuffLatexSharkFemaleRenderer extends AdvancedHumanoidRenderer<BuffL
 
     @Override
     protected void scale(BuffLatexSharkFemale entity, PoseStack pose, float partialTick) {
-        float modelScale = 1.0525F;
+        float modelScale = 1.025F;
         pose.scale(modelScale, modelScale, modelScale);
     }
 }
