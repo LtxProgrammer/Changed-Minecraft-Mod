@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.item.Clothing;
 import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -56,7 +57,7 @@ public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio
 
     @Override
     public Optional<ResourceLocation> getModelTexture(ItemStack stack, SlotContext slotContext) {
-        if (stack.getItem() instanceof Shorts clothing)
+        if (stack.getItem() instanceof Clothing clothing)
             return Optional.ofNullable(clothing.getTexture(stack, slotContext.entity()));
         else
             return Optional.empty();
@@ -65,7 +66,7 @@ public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
                                                                           int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (stack.getItem() instanceof Shorts clothing) {
+        if (stack.getItem() instanceof Clothing clothing) {
             final T entity = (T)slotContext.entity();
             ResourceLocation texture = clothing.getTexture(stack, entity);
             if (texture == null) return;
