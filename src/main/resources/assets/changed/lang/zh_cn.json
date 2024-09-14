@@ -52,6 +52,7 @@
   "subtitles.changed.latex_drip": "胶液滴落",
   "subtitles.changed.monster2": "虎鲨咆哮",
   "subtitles.changed.switch1": "敲击密码盘按钮声",
+  "subtitles.changed.slash10": "短裤撕裂声",
   "subtitles.changed.shot1": "激光激活",
   "subtitles.changed.siren": "塞壬歌唱",
   "subtitles.changed.save": "视网膜扫描器运作",
@@ -138,6 +139,9 @@
   
   "syringe.changed:form_special": "Patron Custom Form Syringe",
   
+  "death.attack.changed:absorb": "%1$s 被吞噬了",
+  "death.attack.changed:absorb:player": "%1$s 被 %2$s 吞噬了",
+  "death.attack.changded:pale.player": "%1$s 在与 %2$s 战斗时死于苍白病",
   "death.attack.changed:transfur": "%1$s 被兽化了",
   "death.attack.changed:transfur.player": "%1$s 被 %2$s 兽化了",
   "death.attack.changed:white_latex": "%1$s 被白胶吞噬了",
