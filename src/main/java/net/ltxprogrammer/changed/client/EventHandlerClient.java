@@ -75,6 +75,9 @@ public class EventHandlerClient {
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
         Player player = event.getPlayer();
 
+        if (event.isCanceled())
+            return;
+
         if (player.isDeadOrDying() && player.getLastDamageSource() instanceof ChangedDamageSources.TransfurDamageSource) {
             event.setCanceled(true);
             return;
