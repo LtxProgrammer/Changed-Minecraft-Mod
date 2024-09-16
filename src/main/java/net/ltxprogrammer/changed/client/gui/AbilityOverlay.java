@@ -47,7 +47,7 @@ public class AbilityOverlay {
         int cool = selected.canUse() ? (int)(controller.coolDownPercent() * 32) : 0;
         int active = cool >= 32 ? (int)(controller.getProgressActive() * 32) : 0;
 
-        int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX) ? 32 : 0;
+        int gooOrNot = variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX) ? 0 : 32;
         blit(stack, x, y, gooOrNot, 0, 32, 32, 64, 96); // back
         if (cool > 0)
             blit(stack, x, y + (32 - cool), gooOrNot, 32 + (32 - cool), 32, cool, 64, 96); // ready

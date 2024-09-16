@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
-import net.ltxprogrammer.changed.util.UniversalDist;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -20,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AbilityRadialScreen extends LatexAbilityRadialScreen<AbilityRadialMenu> {
+public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> {
     public final AbilityRadialMenu menu;
     public final TransfurVariantInstance<?> variant;
     public final List<AbstractAbility<?>> abilities;

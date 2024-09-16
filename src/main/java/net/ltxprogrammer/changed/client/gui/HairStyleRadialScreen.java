@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HairStyleRadialScreen extends LatexAbilityRadialScreen<HairStyleRadialMenu> {
+public class HairStyleRadialScreen extends VariantRadialScreen<HairStyleRadialMenu> {
     public final HairStyleRadialMenu menu;
     public final TransfurVariantInstance<?> variant;
     public final List<HairStyle> styles;

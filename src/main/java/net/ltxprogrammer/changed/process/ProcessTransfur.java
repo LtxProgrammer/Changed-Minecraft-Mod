@@ -451,12 +451,12 @@ public class ProcessTransfur {
     // Checks if player is either not latex or is organic latex
     public static boolean isPlayerNotLatex(Player player) {
         var variant = getPlayerTransfurVariant(player);
-        return variant == null || variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+        return variant == null || !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
     }
 
     public static boolean isPlayerLatex(Player player) {
         var variant = getPlayerTransfurVariant(player);
-        return variant != null && !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+        return variant != null && variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
     }
 
     public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
@@ -489,11 +489,11 @@ public class ProcessTransfur {
             if (latex instanceof SpecialLatex specialLatex)
                 return specialLatex.getCurrentData() != null && specialLatex.getCurrentData().organic();
             else
-                return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+                return !entity.getType().is(ChangedTags.EntityTypes.LATEX);
         }
 
         else return ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
-            if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+            if (!variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX))
                 return true;
             else if (variant.getChangedEntity() instanceof SpecialLatex special &&
                     special.getCurrentData() != null && special.getCurrentData().organic())

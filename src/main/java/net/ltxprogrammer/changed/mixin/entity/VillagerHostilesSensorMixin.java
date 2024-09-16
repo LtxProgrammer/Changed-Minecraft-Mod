@@ -13,14 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class VillagerHostilesSensorMixin {
     @Inject(method = "isClose", at = @At("HEAD"), cancellable = true)
     private void isClose(LivingEntity villager, LivingEntity hostile, CallbackInfoReturnable<Boolean> callback) {
-        if (hostile instanceof ChangedEntity latex && !latex.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX)) {
+        if (hostile instanceof ChangedEntity latex && latex.getType().is(ChangedTags.EntityTypes.LATEX)) {
             callback.setReturnValue(latex.distanceToSqr(villager) <= 64.0);
         }
     }
 
     @Inject(method = "isHostile", at = @At("HEAD"), cancellable = true)
     private void isHostile(LivingEntity hostile, CallbackInfoReturnable<Boolean> callback) {
-        if (hostile instanceof ChangedEntity latex && !latex.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+        if (hostile instanceof ChangedEntity latex && latex.getType().is(ChangedTags.EntityTypes.LATEX))
             callback.setReturnValue(true);
     }
 }

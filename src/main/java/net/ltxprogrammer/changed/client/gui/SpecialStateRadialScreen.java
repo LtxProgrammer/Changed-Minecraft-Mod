@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpecialStateRadialScreen extends LatexAbilityRadialScreen<SpecialStateRadialMenu> {
+public class SpecialStateRadialScreen extends VariantRadialScreen<SpecialStateRadialMenu> {
     public final SpecialStateRadialMenu menu;
     public final SpecialLatex special;
     public final List<String> states;
