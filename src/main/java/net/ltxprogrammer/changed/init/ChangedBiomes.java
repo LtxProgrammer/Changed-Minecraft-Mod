@@ -11,6 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
@@ -44,16 +45,22 @@ import java.util.function.Supplier;
 public class ChangedBiomes {
     public static final Climate.Parameter FULL_RANGE = Climate.Parameter.span(-1.0f, 1.0f);
 
+    public record BiomeHolder<T extends ChangedBiomeInterface>(T biomeInterface, RegistryObject<Biome> registryObject) {
+        public ResourceLocation getId() {
+            return registryObject.getId();
+        }
+    }
+
     public static final Map<RegistryObject<Biome>, ChangedBiomeInterface> DESCRIPTORS = new HashMap<>();
     public static final DeferredRegister<Biome> REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, Changed.MODID);
-    public static final RegistryObject<Biome> DARK_LATEX_PLAINS = register("dark_latex_plains", DarkLatexPlains::new);
-    public static final RegistryObject<Biome> WHITE_LATEX_FOREST = register("white_latex_forest", WhiteLatexForest::new);
+    public static final BiomeHolder<DarkLatexPlains> DARK_LATEX_PLAINS = register("dark_latex_plains", DarkLatexPlains::new);
+    public static final BiomeHolder<WhiteLatexForest> WHITE_LATEX_FOREST = register("white_latex_forest", WhiteLatexForest::new);
 
-    public static <T extends ChangedBiomeInterface> RegistryObject<Biome> register(String name, Supplier<T> supplier) {
-        ChangedBiomeInterface biomeDesc = supplier.get();
+    public static <T extends ChangedBiomeInterface> BiomeHolder<T> register(String name, Supplier<T> supplier) {
+        T biomeDesc = supplier.get();
         RegistryObject<Biome> regObj = REGISTRY.register(name, biomeDesc::build);
         DESCRIPTORS.put(regObj, biomeDesc);
-        return regObj;
+        return new BiomeHolder<>(biomeDesc, regObj);
     }
 
     public static int calculateSkyColor(float p_194844_) {

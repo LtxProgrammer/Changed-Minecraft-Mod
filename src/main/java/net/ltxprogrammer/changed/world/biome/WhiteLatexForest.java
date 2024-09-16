@@ -5,11 +5,11 @@ import net.ltxprogrammer.changed.data.DeferredStateProvider;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedEntities;
+import net.ltxprogrammer.changed.init.ChangedMobCategories;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,8 +35,9 @@ public class WhiteLatexForest implements ChangedBiomeInterface {
 
     public Biome build() {
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-        ChangedEntities.Category.WHITE_LATEX.forEach(
-                (entityType) -> spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(entityType.get(), 1, 1, 1)));
+        BiomeDefaultFeatures.caveSpawns(spawnBuilder);
+        ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.PURE_WHITE_LATEX_WOLF, 50, 1, 3, 0.7, 0.15);
+        ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF, 1, 1, 3, 0.7, 0.15);
 
         BiomeGenerationSettings.Builder genBuilder = new BiomeGenerationSettings.Builder();
         BiomeDefaultFeatures.addDefaultOres(genBuilder);

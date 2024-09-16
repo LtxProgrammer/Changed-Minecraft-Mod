@@ -36,16 +36,6 @@ public abstract class AbstractLatexWolf extends ChangedEntity {
     }
 
     @Override
-    public SoundEvent getHurtSound(DamageSource ds) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
-    }
-
-    @Override
-    public SoundEvent getDeathSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
-    }
-
-    @Override
     public void addAdditionalSaveData(CompoundTag p_20139_) {
         super.addAdditionalSaveData(p_20139_);
     }

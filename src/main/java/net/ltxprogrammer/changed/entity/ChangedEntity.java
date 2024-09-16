@@ -43,6 +43,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -386,15 +387,22 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-        if (world.getDifficulty() == Difficulty.PEACEFUL)
+        /*if (!isDarkEnoughToSpawn(world, pos, random))
+            return false;*/
+        if (pos.getY() < world.getSeaLevel() - 10)
             return false;
-        if (!isDarkEnoughToSpawn(world, pos, random))
+        if (random.nextFloat() < 0.75f)
             return false;
-        return Mob.checkMobSpawnRules(entityType, world, reason, pos, random);
+        return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
     }
 
-    public static <T extends ChangedEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement) {
-        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChangedEntity::checkEntitySpawnRules);
+    @Override
+    public float getWalkTargetValue(BlockPos p_33013_, LevelReader p_33014_) {
+        return 0.0f;
+    }
+
+    public static <T extends ChangedEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
     }
 
     public TransfurVariant<?> getTransfurVariant() {
@@ -724,7 +732,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public boolean tryTransfurTarget(Entity entity) {
-        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+        if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
             return false;
 
         float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
@@ -785,7 +793,7 @@ public abstract class ChangedEntity extends Monster {
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChangedEntity.class, true, this::targetSelectorTest));
-        if (!(this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))) {
+        if (this.getType().is(ChangedTags.EntityTypes.LATEX)) {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
