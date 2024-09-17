@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +53,11 @@ public class DarkLatexBlock extends AbstractLatexBlock {
         boolean isAboveAir = level.getBlockState(above).is(Blocks.AIR);
         boolean isAbove2Air = level.getBlockState(above2).is(Blocks.AIR);
         if (isAboveAir && canSupportRigidBlock(level, position)) { // Do growth event
-            if (random.nextFloat() < 0.5f) return;
+            long crystalCount = level.getBlockStates(new AABB(position).inflate(3.0))
+                    .filter(neighbor -> neighbor.is(ChangedTags.Blocks.LATEX_CRYSTAL))
+                    .count();
+
+            if (crystalCount > 6) return;
 
             if (random.nextFloat() < 0.75f || !isAbove2Air) {
                 level.setBlockAndUpdate(above, Util.getRandom(SMALL_CRYSTALS, random).get().defaultBlockState());

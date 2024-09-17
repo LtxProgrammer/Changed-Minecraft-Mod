@@ -35,6 +35,7 @@ public class ChangedTags {
         public static final TagKey<Block> DUCT_EXIT = create("duct_exit");
         public static final TagKey<Block> GAS = create("gas");
         public static final TagKey<Block> AIR_CONDITIONER = create("air_conditioner");
+        public static final TagKey<Block> LATEX_CRYSTAL = create("latex_crystal");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, Changed.modResource(name));

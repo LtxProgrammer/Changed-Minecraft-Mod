@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "changed:beifeng_crystal",
+    "changed:beifeng_crystal_small",
+    "changed:dark_dragon_crystal",
+    "changed:dark_latex_crystal_large",
+    "changed:latex_crystal",
+    "changed:latex_pup_crystal",
+    "changed:wolf_crystal",
+    "changed:wolf_crystal_small"
+  ]
+}
