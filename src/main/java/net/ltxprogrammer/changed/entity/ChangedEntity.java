@@ -49,6 +49,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.common.ForgeMod;
@@ -340,16 +341,22 @@ public abstract class ChangedEntity extends Monster {
     }
 
     @Override
-    public boolean canEnterPose(Pose pose) {
+    protected boolean canEnterPose(Pose pose) {
         if (overridePose != null && overridePose != pose)
             return false;
         return super.canEnterPose(pose);
     }
 
+    @Override
+    @NotNull
+    public AABB getBoundingBoxForPose(@NotNull Pose pose) {
+        return super.getBoundingBoxForPose(pose);
+    }
+
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this) || WhiteLatexTransportInterface.isEntityInWhiteLatex(this.getUnderlyingPlayer()))
+        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
             return EntityDimensions.scalable(core.width, core.width);
 
         return (switch (Objects.requireNonNullElse(overridePose, pose)) {
