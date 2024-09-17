@@ -16,7 +16,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -153,10 +152,6 @@ public class SeatEntity extends Entity {
                 this.setPos(blockPos.getX() + 0.5, blockPos.getY() - 0.5, blockPos.getZ() + 0.5);
         }
 
-        if (shouldSeatedBeInvisible() && this.getFirstPassenger() instanceof Player player && !player.isInvisible()) {
-            player.setInvisible(true);
-        }
-
         if (this.getFirstPassenger() != null)
             this.tickCount = 0;
         else if (this.tickCount > 100)
@@ -164,10 +159,14 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
-        if (this.shouldSeatedBeInvisible())
-            this.getPassengers().forEach(entity -> entity.setInvisible(false));
-        super.remove(reason);
+    protected void removePassenger(@NotNull Entity entity) {
+        super.removePassenger(entity);
+
+        this.getAttachedBlockState().ifPresent(blockState -> {
+            if (blockState.getBlock() instanceof SeatableBlock seatableBlock) {
+                seatableBlock.onExitSeat(entity.level, blockState, this.getAttachedBlockPos(), entity);
+            }
+        });
     }
 
     @Override

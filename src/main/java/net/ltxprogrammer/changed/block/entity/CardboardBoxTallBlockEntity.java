@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import static net.ltxprogrammer.changed.block.CardboardBoxTall.OPEN;
 
 public class CardboardBoxTallBlockEntity extends BlockEntity implements SeatableBlockEntity {
-    public LivingEntity entity;
     public SeatEntity entityHolder;
     public int ticksSinceChange = 20;
     public static final int OPEN_THRESHOLD = 15;
@@ -34,16 +33,13 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
 
     public boolean hideEntity(LivingEntity entity) {
         if (entityHolder == null || entityHolder.isRemoved()) {
-            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false);
+            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), true);
         }
 
-        if (this.entity != null)
+        if (this.getSeatedEntity() != null)
             return false;
         else if (entityHolder != null) {
-            if (!entityHolder.getPassengers().isEmpty())
-                return false;
-            this.entity = entity;
-            this.entity.startRiding(entityHolder);
+            entity.startRiding(entityHolder);
             ticksSinceChange = 0;
             return true;
         }
@@ -52,20 +48,20 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
     }
 
     public void forceOutEntity() {
+        final var entity = this.getSeatedEntity();
         if (entity != null && entity.vehicle == entityHolder) {
             entity.vehicle = null;
-            entity.setInvisible(false);
         }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CardboardBoxTallBlockEntity blockEntity) {
         blockEntity.ticksSinceChange++;
 
-        if (blockEntity.entity != null && blockEntity.entityHolder != null) {
-            if (blockEntity.entity.vehicle != blockEntity.entityHolder) {
-                if (blockEntity.entity.vehicle == null || !blockEntity.entity.vehicle.blockPosition().equals(blockEntity.entityHolder.blockPosition())) {
-                    blockEntity.entity.setInvisible(false);
-                    blockEntity.entity = null;
+        final var entity = blockEntity.getSeatedEntity();
+
+        if (entity != null && blockEntity.entityHolder != null) {
+            if (entity.vehicle != blockEntity.entityHolder) {
+                if (entity.vehicle == null || !entity.vehicle.blockPosition().equals(blockEntity.entityHolder.blockPosition())) {
                     blockEntity.ticksSinceChange = 0;
                 }
             }
