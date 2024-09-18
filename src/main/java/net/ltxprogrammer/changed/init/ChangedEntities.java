@@ -407,6 +407,9 @@ public class ChangedEntities {
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRAFFIC_CONE_DRAGON, 100, 1, 3, 0.7, 0.15);
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRANSLUCENT_LIZARD, 100, 1, 3, 0.7, 0.15);
 
+            // Passive
+            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, BEIFENG, 10, 1, 1, 0.7, 0.15);
+
             /* Surface spawning entities */
 
             if (event.getCategory() == Biome.BiomeCategory.PLAINS) {
@@ -419,6 +422,8 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_KEON_WOLF, 10, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MING_CAT, 10, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, MILK_PUDDING, 80, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_MALE, 10, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_FEMALE, 10, 1, 1, 0.7, 0.15);
 
                 // Passive
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, WHITE_WOLF_MALE, 10, 1, 2, 0.7, 0.15);
@@ -434,6 +439,10 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_PINK_WYVERN, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_PINK_YUIN_DRAGON, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_YUIN, 100, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_YUFENG, 10, 1, 1, 0.7, 0.15);
+
+                // Passive
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_DRAGON, 10, 1, 1, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.FOREST) {
@@ -449,16 +458,14 @@ public class ChangedEntities {
 
             if (event.getCategory() == Biome.BiomeCategory.JUNGLE) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_RED_PANDA, 100, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_WATERMELON_CAT, 20, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MIMIC_PLANT, 80, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_WATERMELON_CAT, 30, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MIMIC_PLANT, 70, 1, 3, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.DESERT) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_FENNEC_FOX, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SNAKE, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_ALIEN, 20, 1, 3, 0.7, 0.15);
-
-                // Passive
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GREEN_LIZARD, 10, 1, 2, 0.7, 0.15);
             }
 
@@ -475,8 +482,8 @@ public class ChangedEntities {
             }
 
             if (event.getCategory() == Biome.BiomeCategory.SAVANNA) {
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_FENNEC_FOX, 100, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYPNO_CAT, 30, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_FENNEC_FOX, 60, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYPNO_CAT, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MEDUSA_CAT, 30, 1, 3, 0.7, 0.15);
             }
 

@@ -123,7 +123,7 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
 
         PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(37, 0).addBox(-2.0F, 2.4F, 0.6F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.0F, 2.7F, 0.2F, 1.3526F, 0.0F, 0.0F));
 
-        PartDefinition Base_r2 = TailPrimary.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 59).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 4.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.1F, 0.0F, 1.0908F, 0.0F, 0.0F));
+        PartDefinition Base_r2 = TailPrimary.addOrReplaceChild("Base_r2", CubeListBuilder.create().texOffs(0, 59).addBox(-2.0F, 0.0F, -1.0F, 4.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.1F, 0.0F, 1.0908F, 0.0F, 0.0F));
 
         PartDefinition TailSecondary = TailPrimary.addOrReplaceChild("TailSecondary", CubeListBuilder.create(), PartPose.offset(0.0F, 1.6F, 4.6F));
 
@@ -131,11 +131,11 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
 
         PartDefinition TailTertiary = TailSecondary.addOrReplaceChild("TailTertiary", CubeListBuilder.create(), PartPose.offset(0.0F, 0.6F, 2.9F));
 
-        PartDefinition Base_r4 = TailTertiary.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(56, 10).addBox(-3.5F, 3.0F, -2.5F, 7.0F, 5.0F, 5.0F, new CubeDeformation(0.1F)), PartPose.offsetAndRotation(0.0F, 0.25F, -2.7F, 1.7017F, 0.0F, 0.0F));
+        PartDefinition Base_r4 = TailTertiary.addOrReplaceChild("Base_r4", CubeListBuilder.create().texOffs(56, 10).addBox(-3.5F, 3.0F, -2.5F, 7.0F, 5.0F, 5.0F, new CubeDeformation(0.05F)), PartPose.offsetAndRotation(0.0F, 0.25F, -2.7F, 1.7017F, 0.0F, 0.0F));
 
         PartDefinition TailQuaternary = TailTertiary.addOrReplaceChild("TailQuaternary", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 3.4F));
 
-        PartDefinition Base_r5 = TailQuaternary.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(57, 26).addBox(-4.5F, -1.0F, -2.5F, 9.0F, 6.0F, 7.0F, new CubeDeformation(-0.1F)), PartPose.offsetAndRotation(0.0F, 0.55F, 1.15F, 1.8762F, 0.0F, 0.0F));
+        PartDefinition Base_r5 = TailQuaternary.addOrReplaceChild("Base_r5", CubeListBuilder.create().texOffs(57, 26).addBox(-4.5F, -1.0F, -2.5F, 9.0F, 6.0F, 7.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.0F, 0.55F, 1.15F, 1.8762F, 0.0F, 0.0F));
 
         PartDefinition TailQuinary = TailQuaternary.addOrReplaceChild("TailQuinary", CubeListBuilder.create(), PartPose.offset(0.0F, -1.2F, 3.9F));
 
@@ -145,7 +145,7 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
 
         PartDefinition TailSenary = TailQuinary.addOrReplaceChild("TailSenary", CubeListBuilder.create(), PartPose.offset(0.0F, -4.3F, 9.6F));
 
-        PartDefinition Base_r8 = TailSenary.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(0, 80).addBox(-4.5F, 2.0F, -2.5F, 9.0F, 4.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.25F, -1.7F, 1.6581F, 0.0F, 0.0F));
+        PartDefinition Base_r8 = TailSenary.addOrReplaceChild("Base_r8", CubeListBuilder.create().texOffs(0, 80).addBox(-4.5F, 2.0F, -2.5F, 9.0F, 4.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.25F, -1.7F, 1.6581F, 0.0F, 0.0F));
 
         PartDefinition TailSeptenary = TailSenary.addOrReplaceChild("TailSeptenary", CubeListBuilder.create(), PartPose.offset(0.0F, -0.7F, 2.5F));
 
