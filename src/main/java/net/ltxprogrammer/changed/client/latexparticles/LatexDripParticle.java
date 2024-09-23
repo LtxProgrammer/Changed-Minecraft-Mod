@@ -286,6 +286,9 @@ public class LatexDripParticle extends LatexParticle {
             }
         }
 
+        else if (!isCamEntity && context == SetupContext.FIRST_PERSON)
+            return;
+
         this.render(buffer, camera, partialTicks);
     }
 
