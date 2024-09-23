@@ -34,7 +34,7 @@ public class HypnosisAbility extends SimpleAbility {
             if (livingEntity.getLookAngle().dot(self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize()) < 0.85f)
                 return;
 
-            CameraUtil.tugEntityLookDirection(livingEntity, self,  0.25);
+            CameraUtil.tugEntityLookDirection(livingEntity, self,  0.125);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 120, 2, false, false), self);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 2, false, false), self);
         });
@@ -43,5 +43,15 @@ public class HypnosisAbility extends SimpleAbility {
     @Override
     public UseType getUseType(IAbstractChangedEntity entity) {
         return UseType.HOLD;
+    }
+
+    @Override
+    public boolean canUse(IAbstractChangedEntity entity) {
+        return true;
+    }
+
+    @Override
+    public boolean canKeepUsing(IAbstractChangedEntity entity) {
+        return true;
     }
 }
