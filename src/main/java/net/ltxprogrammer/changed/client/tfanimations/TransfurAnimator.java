@@ -196,7 +196,7 @@ public abstract class TransfurAnimator {
             children.put(k, deepCopyPart(to.children.get(k), copyVisibility));
         }
 
-        ModelPart.Cube copyOverride = to.cubes.size() > 0 ? to.cubes.get(0) : copyWith;
+        ModelPart.Cube copyOverride = !to.cubes.isEmpty() ? to.cubes.get(0) : copyWith;
 
         for (var k : from.children.keySet()) {
             if (to.children.containsKey(k)) {
@@ -492,7 +492,7 @@ public abstract class TransfurAnimator {
         final float shrink = (coverAlpha - 1.0f) * 0.5f;
 
         final ModelPart copiedPart = extendModelPartCubes(deepCopyPart(part, false), shrink, shrink, shrink);
-        final ModelPose pose = CAPTURED_MODELS.get(part);
+        final ModelPose pose = CAPTURED_MODELS.getOrDefault(part, NULL_POSE);
 
         stack.pushPose();
         ((PoseStackExtender)stack).setPose(pose.matrix);

@@ -2,12 +2,18 @@ package net.ltxprogrammer.changed.world.biome;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.minecraft.util.random.Weight;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface ChangedBiomeInterface {
     Biome build();
@@ -17,6 +23,30 @@ public interface ChangedBiomeInterface {
     BlockState waterBlock();
 
     List<Climate.ParameterPoint> getPoints();
+
+    static <T extends Entity> MobSpawnSettings.SpawnerData spawn(Supplier<EntityType<T>> entityType, int weight, int minCount, int maxCount) {
+        return new MobSpawnSettings.SpawnerData(entityType.get(), weight, minCount, maxCount);
+    }
+
+    static <T extends Entity> MobSpawnSettings.SpawnerData spawn(Supplier<EntityType<T>> entityType, Weight weight, int minCount, int maxCount) {
+        return new MobSpawnSettings.SpawnerData(entityType.get(), weight, minCount, maxCount);
+    }
+
+    static <T extends Entity> void addSpawn(MobSpawnSettings.Builder builder, MobCategory category, Supplier<EntityType<T>> entityType,
+                                            int weight, int minCount, int maxCount,
+                                            double energyBudget, double charge) {
+        final EntityType<T> type = entityType.get();
+        builder.addSpawn(category, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount))
+                .addMobCharge(type, energyBudget, charge);
+    }
+
+    static <T extends Entity> void addSpawn(MobSpawnSettings.Builder builder, MobCategory category, Supplier<EntityType<T>> entityType,
+                                            Weight weight, int minCount, int maxCount,
+                                            double energyBudget, double charge) {
+        final EntityType<T> type = entityType.get();
+        builder.addSpawn(category, new MobSpawnSettings.SpawnerData(type, weight, minCount, maxCount))
+                .addMobCharge(type, energyBudget, charge);
+    }
 
     public static enum Weirdness {
         MID_SLICE_NORMAL_ASCENDING(Climate.Parameter.span(-1.0F, -0.93333334F)),

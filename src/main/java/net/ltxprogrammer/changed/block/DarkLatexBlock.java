@@ -4,7 +4,9 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
@@ -26,18 +29,6 @@ public class DarkLatexBlock extends AbstractLatexBlock {
         super(p_49795_, LatexType.DARK_LATEX, ChangedItems.DARK_LATEX_GOO);
     }
 
-    @Override
-    public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
-        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
-                random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
-            return;
-
-        BlockPos above = position.above();
-        if (level.getBlockState(above).is(Blocks.AIR) && canSupportRigidBlock(level, position)) {
-            level.setBlockAndUpdate(above, ChangedBlocks.LATEX_CRYSTAL.get().defaultBlockState());
-        }
-    }
-
     private static final List<Supplier<? extends TransfurCrystalBlock>> SMALL_CRYSTALS = List.of(
             ChangedBlocks.LATEX_CRYSTAL,
             ChangedBlocks.DARK_DRAGON_CRYSTAL,
@@ -50,6 +41,33 @@ public class DarkLatexBlock extends AbstractLatexBlock {
             ChangedBlocks.BEIFENG_CRYSTAL,
             ChangedBlocks.WOLF_CRYSTAL
     );
+
+    @Override
+    public void latexTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos position, @NotNull Random random) {
+        if (level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE) == 0 ||
+                random.nextInt(5000) > level.getGameRules().getInt(ChangedGameRules.RULE_LATEX_GROWTH_RATE))
+            return;
+
+        BlockPos above = position.above();
+        BlockPos above2 = above.above();
+        boolean isAboveAir = level.getBlockState(above).is(Blocks.AIR);
+        boolean isAbove2Air = level.getBlockState(above2).is(Blocks.AIR);
+        if (isAboveAir && canSupportRigidBlock(level, position)) { // Do growth event
+            long crystalCount = level.getBlockStates(new AABB(position).inflate(3.0))
+                    .filter(neighbor -> neighbor.is(ChangedTags.Blocks.LATEX_CRYSTAL))
+                    .count();
+
+            if (crystalCount > 6) return;
+
+            if (random.nextFloat() < 0.75f || !isAbove2Air) {
+                level.setBlockAndUpdate(above, Util.getRandom(SMALL_CRYSTALS, random).get().defaultBlockState());
+            } else {
+                final var newBlockState = Util.getRandom(CRYSTALS, random).get().defaultBlockState();
+                level.setBlockAndUpdate(above, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.LOWER));
+                level.setBlockAndUpdate(above2, newBlockState.setValue(AbstractDoubleTransfurCrystal.HALF, DoubleBlockHalf.UPPER));
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onLatexCover(AbstractLatexItem.CoveringBlockEvent event) {

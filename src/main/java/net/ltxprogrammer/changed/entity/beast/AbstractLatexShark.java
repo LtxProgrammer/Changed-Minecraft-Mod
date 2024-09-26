@@ -24,14 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Random;
 
-@Mod.EventBusSubscriber
 public abstract class AbstractLatexShark extends AbstractAquaticEntity {
-    @SubscribeEvent
-    public static void canEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.getEntityLiving() instanceof AquaticEntity && event.getSpawnReason() == MobSpawnType.NATURAL)
-            event.setResult(Event.Result.ALLOW);
-    }
-
     public AbstractLatexShark(EntityType<? extends AbstractLatexShark> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }

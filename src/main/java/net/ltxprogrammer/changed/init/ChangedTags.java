@@ -13,7 +13,8 @@ import net.minecraft.world.level.material.Fluid;
 public class ChangedTags {
     public static class EntityTypes {
         public static final TagKey<EntityType<?>> HUMANOIDS = create("humanoids");
-        public static final TagKey<EntityType<?>> ORGANIC_LATEX = create("organic_latex");
+        public static final TagKey<EntityType<?>> LATEX = create("latexes");
+        @Deprecated public static final TagKey<EntityType<?>> ORGANIC_LATEX = create("organic_latex");
         public static final TagKey<EntityType<?>> PALE_SMALL_EXPOSURE = create("pale_small_exposure");
         public static final TagKey<EntityType<?>> PALE_LARGE_EXPOSURE = create("pale_large_exposure");
         public static final TagKey<EntityType<?>> WHITE_LATEX_SWIMMING = create("white_latex_swimming");
@@ -34,6 +35,7 @@ public class ChangedTags {
         public static final TagKey<Block> DUCT_EXIT = create("duct_exit");
         public static final TagKey<Block> GAS = create("gas");
         public static final TagKey<Block> AIR_CONDITIONER = create("air_conditioner");
+        public static final TagKey<Block> LATEX_CRYSTAL = create("latex_crystal");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, Changed.modResource(name));

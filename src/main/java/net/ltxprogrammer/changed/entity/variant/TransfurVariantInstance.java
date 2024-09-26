@@ -768,7 +768,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             final double nearRunSpeed = 1.2D;
             // Scare mobs
             for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && (parent.ctor.get().is(ChangedTags.EntityTypes.ORGANIC_LATEX) || player.isCreative() || player.isSpectator()))
+                if (entityClass.isAssignableFrom(AbstractVillager.class) && (!parent.ctor.get().is(ChangedTags.EntityTypes.LATEX) || player.isCreative() || player.isSpectator()))
                     continue;
 
                 final double speedScale = entityClass.isAssignableFrom(AbstractVillager.class) ? 0.5D : 1.0D;

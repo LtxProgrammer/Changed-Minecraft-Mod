@@ -13,6 +13,12 @@ public class Shock extends MobEffect {
             ext.setNoControlTicks(ticks);
     }
 
+    public static int getNoControlTicks(LivingEntity entity) {
+        if (entity instanceof LivingEntityDataExtension ext)
+            return ext.getNoControlTicks();
+        return 0;
+    }
+
     public Shock() {
         super(MobEffectCategory.HARMFUL, 14688288);
         setRegistryName("shock");
@@ -31,6 +37,6 @@ public class Shock extends MobEffect {
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         super.applyEffectTick(livingEntity, amplifier);
-        livingEntity.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(0, 1, 0));
+        setNoControlTicks(livingEntity, 5);
     }
 }

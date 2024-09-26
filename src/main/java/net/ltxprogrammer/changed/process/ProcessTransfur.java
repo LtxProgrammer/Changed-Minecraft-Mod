@@ -2,6 +2,9 @@ package net.ltxprogrammer.changed.process;
 
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
@@ -387,6 +390,11 @@ public class ProcessTransfur {
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
             MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
+
+            if (player instanceof LivingEntityDataExtension ext) {
+                AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                        .ifPresent(GrabEntityAbilityInstance::releaseEntity);
+            }
         }
 
         CurioEntities.INSTANCE.forceReloadCurios(player);
@@ -445,12 +453,12 @@ public class ProcessTransfur {
     // Checks if player is either not latex or is organic latex
     public static boolean isPlayerNotLatex(Player player) {
         var variant = getPlayerTransfurVariant(player);
-        return variant == null || variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+        return variant == null || !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
     }
 
     public static boolean isPlayerLatex(Player player) {
         var variant = getPlayerTransfurVariant(player);
-        return variant != null && !variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+        return variant != null && variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX);
     }
 
     public static Optional<TransfurVariant<?>> getEntityVariant(LivingEntity livingEntity) {
@@ -483,11 +491,11 @@ public class ProcessTransfur {
             if (latex instanceof SpecialLatex specialLatex)
                 return specialLatex.getCurrentData() != null && specialLatex.getCurrentData().organic();
             else
-                return entity.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX);
+                return !entity.getType().is(ChangedTags.EntityTypes.LATEX);
         }
 
         else return ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
-            if (variant.getParent().getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+            if (!variant.getParent().getEntityType().is(ChangedTags.EntityTypes.LATEX))
                 return true;
             else if (variant.getChangedEntity() instanceof SpecialLatex special &&
                     special.getCurrentData() != null && special.getCurrentData().organic())
@@ -529,11 +537,15 @@ public class ProcessTransfur {
 
     public static boolean killPlayerByAbsorption(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
+        if (!Float.isFinite(player.getHealth()))
+            player.setHealth(0.0f);
         return player.isDeadOrDying();
     }
 
     public static boolean killPlayerByTransfur(Player player, LivingEntity source) {
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
+        if (!Float.isFinite(player.getHealth()))
+            player.setHealth(0.0f);
         return player.isDeadOrDying();
     }
 

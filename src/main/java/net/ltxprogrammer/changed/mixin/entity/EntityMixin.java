@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -153,5 +154,16 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     protected void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> callback) {
         if (this.updateFluidHeightAndDoFluidPushing(ChangedTags.Fluids.LATEX, 0.007D))
             callback.setReturnValue(true);
+    }
+
+    @Inject(method = "isInvisible", at = @At("RETURN"), cancellable = true)
+    public void hideSeatedEntity(CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue() && (Entity)(Object)this instanceof LivingEntity livingEntity) {
+            if (livingEntity.vehicle != null && livingEntity.vehicle instanceof SeatEntity seat) {
+                if (seat.shouldSeatedBeInvisible()) {
+                    cir.setReturnValue(true);
+                }
+            }
+        }
     }
 }

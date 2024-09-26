@@ -43,11 +43,13 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.common.ForgeMod;
@@ -339,16 +341,22 @@ public abstract class ChangedEntity extends Monster {
     }
 
     @Override
-    public boolean canEnterPose(Pose pose) {
+    protected boolean canEnterPose(Pose pose) {
         if (overridePose != null && overridePose != pose)
             return false;
         return super.canEnterPose(pose);
     }
 
+    @Override
+    @NotNull
+    public AABB getBoundingBoxForPose(@NotNull Pose pose) {
+        return super.getBoundingBoxForPose(pose);
+    }
+
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions core = this.getType().getDimensions();
 
-        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this) || WhiteLatexTransportInterface.isEntityInWhiteLatex(this.getUnderlyingPlayer()))
+        if (WhiteLatexTransportInterface.isEntityInWhiteLatex(this.maybeGetUnderlying()))
             return EntityDimensions.scalable(core.width, core.width);
 
         return (switch (Objects.requireNonNullElse(overridePose, pose)) {
@@ -386,15 +394,22 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-        if (world.getDifficulty() == Difficulty.PEACEFUL)
+        /*if (!isDarkEnoughToSpawn(world, pos, random))
+            return false;*/
+        if (pos.getY() < world.getSeaLevel() - 10)
             return false;
-        if (!isDarkEnoughToSpawn(world, pos, random))
+        if (random.nextFloat() < 0.75f)
             return false;
-        return Mob.checkMobSpawnRules(entityType, world, reason, pos, random);
+        return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
     }
 
-    public static <T extends ChangedEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement) {
-        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChangedEntity::checkEntitySpawnRules);
+    @Override
+    public float getWalkTargetValue(BlockPos p_33013_, LevelReader p_33014_) {
+        return 0.0f;
+    }
+
+    public static <T extends ChangedEntity> ChangedEntities.VoidConsumer getInit(RegistryObject<EntityType<T>> registryObject, SpawnPlacements.Type spawnPlacement, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+        return () -> SpawnPlacements.register(registryObject.get(), spawnPlacement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawnPredicate);
     }
 
     public TransfurVariant<?> getTransfurVariant() {
@@ -499,19 +514,6 @@ public abstract class ChangedEntity extends Monster {
 
     protected LivingEntity maybeGetUnderlying() {
         return underlyingPlayer != null ? underlyingPlayer : this;
-    }
-
-    private static void bonusHurt(LivingEntity entity, DamageSource source, float damage, boolean overrideImmunity) {
-        if (!entity.isInvulnerableTo(source) || overrideImmunity) {
-            boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
-
-            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity) {
-                if (entity.getHealth() - damage > 0)
-                    entity.setHealth(entity.getHealth() - damage);
-                else
-                    entity.hurt(source, Float.MAX_VALUE);
-            }
-        }
     }
 
     /**
@@ -724,7 +726,7 @@ public abstract class ChangedEntity extends Monster {
     }
 
     public boolean tryTransfurTarget(Entity entity) {
-        if (this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+        if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
             return false;
 
         float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
@@ -785,7 +787,7 @@ public abstract class ChangedEntity extends Monster {
             this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ChangedEntity.class, true, this::targetSelectorTest));
-        if (!(this.getType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))) {
+        if (this.getType().is(ChangedTags.EntityTypes.LATEX)) {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
@@ -952,7 +954,7 @@ public abstract class ChangedEntity extends Monster {
         this.tailDragAmountO = this.tailDragAmount;
 
         this.tailDragAmount *= 0.75F;
-        this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
+        this.tailDragAmount -= (float) (Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F);
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         simulatedSprings.forEach((direction, map) -> {

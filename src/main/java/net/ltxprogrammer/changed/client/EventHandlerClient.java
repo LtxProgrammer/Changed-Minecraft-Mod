@@ -75,6 +75,9 @@ public class EventHandlerClient {
     public void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
         Player player = event.getPlayer();
 
+        if (event.isCanceled())
+            return;
+
         if (player.isDeadOrDying() && player.getLastDamageSource() instanceof ChangedDamageSources.TransfurDamageSource) {
             event.setCanceled(true);
             return;
@@ -237,7 +240,7 @@ public class EventHandlerClient {
                 return; // Don't do effect if player is creative mode
 
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, duration, 1, false, false));
-            if (event.newVariant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
+            if (!event.newVariant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
                 return; // Only do blindness if variant is goo
 
             event.livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration, 1, false, false));

@@ -15,8 +15,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import javax.annotation.Nullable;
 
-public abstract class LatexAbilityRadialScreen<T extends AbstractContainerMenu> extends AbstractRadialScreen<T> {
-    public LatexAbilityRadialScreen(T menu, Inventory inventory, Component text, TransfurVariantInstance<?> variant) {
+public abstract class VariantRadialScreen<T extends AbstractContainerMenu> extends AbstractRadialScreen<T> {
+    public VariantRadialScreen(T menu, Inventory inventory, Component text, TransfurVariantInstance<?> variant) {
         super(menu, inventory, text, getColors(variant).setForegroundToBright().background(),
                 getColors(variant).setForegroundToBright().foreground(), variant.getHost());
     }
@@ -30,10 +30,10 @@ public abstract class LatexAbilityRadialScreen<T extends AbstractContainerMenu> 
 
     protected ResourceLocation getTextureForSection(@Nullable TransfurVariant<?> variant, int section, boolean thisHovered, boolean anyHovered) {
         boolean renderSelected = thisHovered || (!anyHovered && this.isSelected(section));
-        if (variant == null || variant.getEntityType().is(ChangedTags.EntityTypes.ORGANIC_LATEX))
-            return Changed.modResource((renderSelected ? PATH_ORGANIC_SELECTED : PATH_ORGANIC) + section + ".png");
-        else
+        if (variant == null || variant.getEntityType().is(ChangedTags.EntityTypes.LATEX))
             return Changed.modResource((renderSelected ? PATH_GOO_SELECTED : PATH_GOO) + section + ".png");
+        else
+            return Changed.modResource((renderSelected ? PATH_ORGANIC_SELECTED : PATH_ORGANIC) + section + ".png");
     }
 
     @Override

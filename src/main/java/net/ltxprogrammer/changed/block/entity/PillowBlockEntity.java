@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntity {
-    public LivingEntity entity;
     public SeatEntity entityHolder;
     private DyeColor color;
 
@@ -35,13 +34,10 @@ public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntit
             entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false);
         }
 
-        if (this.entity != null)
+        if (this.getSeatedEntity() != null)
             return false;
         else if (entityHolder != null) {
-            if (!entityHolder.getPassengers().isEmpty())
-                return false;
-            this.entity = entity;
-            this.entity.startRiding(entityHolder);
+            entity.startRiding(entityHolder);
             return true;
         }
 
@@ -49,6 +45,7 @@ public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntit
     }
 
     public void forceOutEntity() {
+        final var entity = this.getSeatedEntity();
         if (entity != null && entity.vehicle == entityHolder) {
             entity.vehicle = null;
         }
@@ -62,13 +59,5 @@ public class PillowBlockEntity extends BlockEntity implements SeatableBlockEntit
         return color;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, PillowBlockEntity blockEntity) {
-        if (blockEntity.entity != null && blockEntity.entityHolder != null) {
-            if (blockEntity.entity.vehicle != blockEntity.entityHolder) {
-                if (blockEntity.entity.vehicle == null || !blockEntity.entity.vehicle.blockPosition().equals(blockEntity.entityHolder.blockPosition())) {
-                    blockEntity.entity = null;
-                }
-            }
-        }
-    }
+    public static void tick(Level level, BlockPos pos, BlockState state, PillowBlockEntity blockEntity) {}
 }

@@ -62,6 +62,10 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
                 startedUsing = false;
         }
 
+        public boolean canKeepUsing() {
+            return abilityInstance.canKeepUsing();
+        }
+
         public void tickAbility() {
             if (startedUsing) {
                 holdTicks++;
@@ -182,7 +186,7 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         HOLD((keyState, oldState, controller) -> {
             if (keyState && !oldState)
                 controller.activateAbility();
-            else if (keyState)
+            else if (keyState && controller.canKeepUsing())
                 controller.tickAbility();
             else if (oldState) {
                 controller.deactivateAbility();

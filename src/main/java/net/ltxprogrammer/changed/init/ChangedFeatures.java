@@ -132,9 +132,6 @@ public class ChangedFeatures {
                 });
             });
         }
-
-        var spawner = event.getSpawns().getSpawner(MobCategory.MONSTER);
-        ChangedEntities.SPAWNING_ENTITY.forEach(listConsumer -> listConsumer.accept(event, spawner));
     }
 
     @SubscribeEvent

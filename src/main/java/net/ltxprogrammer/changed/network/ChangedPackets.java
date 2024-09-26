@@ -42,6 +42,7 @@ public class ChangedPackets {
         addNetworkMessage(CustomFallable.UpdateFallingBlockEntityData.class, CustomFallable.UpdateFallingBlockEntityData::new);
         addNetworkMessage(SeatEntityInfoPacket.class, SeatEntityInfoPacket::new);
         addNetworkMessage(TransfurEntityEventPacket.class, TransfurEntityEventPacket::new);
+        addNetworkMessage(AbilityPayloadPacket.class, AbilityPayloadPacket::new);
     }
 
     private <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

@@ -9,9 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,6 +26,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -59,36 +58,15 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity)
-            if (blockEntity.entity != null && blockEntity.entity.is(player))
+            if (blockEntity.getSeatedEntity() == player)
                 return false;
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
-    public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
-            blockEntity.forceOutEntity();
-            blockEntity.entityHolder.remove(Entity.RemovalReason.DISCARDED);
-        }
-        /*var player = level.getNearestPlayer(TargetingConditions.forNonCombat(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        if (player != null && player.isInvisible())
-            player.setInvisible(false);*/
-        super.destroy(level, pos, state);
-    }
-
-    @Override
-    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
-        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
-            blockEntity.forceOutEntity();
-            blockEntity.entityHolder.remove(Entity.RemovalReason.DISCARDED);
-        }
-        super.onBlockExploded(state, level, pos, explosion);
-    }
-
-    @Override
     public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
         if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity)
-            if (blockEntity.entity != null && blockEntity.entity.is(entity))
+            if (blockEntity.getSeatedEntity() == entity)
                 return false;
         return super.canEntityDestroy(state, level, pos, entity);
     }
@@ -126,5 +104,14 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
     @Override
     public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
         return SIT_OFFSET;
+    }
+
+    @Override
+    public void onExitSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
+        SeatableBlock.super.onExitSeat(level, state, pos, entity);
+
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
+            blockEntity.ticksSinceChange = 0;
+        }
     }
 }

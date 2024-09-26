@@ -1,24 +1,18 @@
 package net.ltxprogrammer.changed.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.network.packet.TugCameraPacket;
 import net.minecraft.Util;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
@@ -92,7 +86,10 @@ public class CameraUtil {
 
     public static void tugEntityLookDirection(LivingEntity livingEntity, Vec3 direction, double strength) {
         if (livingEntity instanceof Player player && player instanceof PlayerDataExtension ext) {
-            ext.setTugData(new TugData(Either.left(direction), strength * 0.333, 10));
+            var tug = new TugData(Either.left(direction), strength, 10);
+            ext.setTugData(tug);
+            if (player instanceof ServerPlayer serverPlayer)
+                Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new TugCameraPacket(tug));
             return;
         }
 

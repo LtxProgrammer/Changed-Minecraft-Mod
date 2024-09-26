@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -50,6 +51,10 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         if (entity instanceof Player player && player.isSpectator())
             return;
 
+        if (AbstractAbility.getAbilityInstanceSafe(entity, ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                .map(grabAbility -> !grabAbility.suited && grabAbility.grabbedEntity != null).orElse(false))
+            return;
+
         ProcessTransfur.transfur(entity, entity.level, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), false, TransfurContext.hazard(TransfurCause.WHITE_LATEX));
 
         if (entity instanceof PlayerDataExtension ext && (!entity.level.isClientSide || UniversalDist.isLocalPlayer(entity)))
@@ -61,6 +66,18 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
         entity.playSound(ChangedSounds.POISON, 1.0f, 1.0f);
         if (!UniversalDist.isClientRemotePlayer(entity))
             entity.moveTo(pos, entity.getYRot(), entity.getXRot());
+    }
+
+    static boolean isBoundingBoxInWhiteLatex(LivingEntity entity) {
+        return entity.level.getBlockStates(entity.getBoundingBox()).anyMatch(blockState -> {
+            if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
+                return transportInterface.allowTransport(blockState);
+            if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX) {
+                return blockState.isCollisionShapeFullBlock(entity.level, entity.blockPosition());
+            }
+
+            return false;
+        });
     }
 
     class LatexMover extends PlayerMover<LatexMover.MoverInstance> {
@@ -75,12 +92,6 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
             private static final double ACCELERATION = 0.2;
             private static final double DECAY = 0.65;
             private static final Vec3 UP = new Vec3(0.0, 1.0, 0.0);
-
-            static boolean whiteLatex(BlockState blockState) {
-                if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
-                    return transportInterface.allowTransport(blockState);
-                return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
-            }
 
             public MoverInstance(LatexMover parent) {
                 super(parent);
@@ -154,16 +165,9 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
             @Override
             public boolean shouldRemoveMover(Player player, InputWrapper input, LogicalSide side) {
-                boolean shouldRemove = ProcessTransfur.getPlayerTransfurVariantSafe(player)
-                        .map(variant -> variant.getChangedEntity().canEnterPose(Pose.SWIMMING) && ticksWhiteLatex > 2)
-                                .orElseGet(() -> {
-                                    BlockState blockState = player.level.getBlockState(player.blockPosition());
-                                    BlockState blockStateEye = player.level.getBlockState(player.eyeBlockPosition());
-
-                                    return !(whiteLatex(blockState) || whiteLatex(blockStateEye));
-                                });
-
-                return shouldRemove || player.isSpectator();
+                return !isBoundingBoxInWhiteLatex(player) || player.isSpectator() ||
+                        ProcessTransfur.getPlayerTransfurVariantSafe(player)
+                                .map(variant -> variant.getLatexType() != LatexType.WHITE_LATEX).orElse(false);
             }
 
             @Override
@@ -181,41 +185,21 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
 
     @Mod.EventBusSubscriber
     class EventSubscriber {
-        static boolean whiteLatex(BlockState blockState) {
-            if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
-                return transportInterface.allowTransport(blockState);
-            return (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX);
-        }
-
-        static boolean interactionCollide(LivingEntity entity, BlockPos pos, BlockState state) {
-            VoxelShape collision = state.getCollisionShape(entity.level, pos, CollisionContext.of(entity));
-            VoxelShape shapeMoved = collision.move(pos.getX(), pos.getY(), pos.getZ());
-            return Shapes.joinIsNotEmpty(shapeMoved, Shapes.create(entity.getBoundingBox()), BooleanOp.AND);
-        }
-
         @SubscribeEvent
         static void onPlayerTick(TickEvent.PlayerTickEvent event) {
             if (event.phase == TickEvent.Phase.END)
                 return;
 
-            BlockState blockState = event.player.level.getBlockState(event.player.blockPosition());
-            BlockState blockStateEye = event.player.level.getBlockState(event.player.eyeBlockPosition());
-
-            boolean colliding = interactionCollide(event.player, event.player.blockPosition(), blockState);
-            boolean collidingEye = interactionCollide(event.player, event.player.eyeBlockPosition(), blockStateEye);
-
-            if (!isEntityInWhiteLatex(event.player)) {
-                if ((colliding && whiteLatex(blockState)) || (collidingEye && whiteLatex(blockStateEye))) {
-                    ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
-                        if (variant.getLatexType() == LatexType.WHITE_LATEX)
-                            entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
-                        else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
-                            event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
-                    }, () -> {
-                        if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
-                            entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
-                    });
-                }
+            if (!isEntityInWhiteLatex(event.player) && isBoundingBoxInWhiteLatex(event.player)) {
+                ProcessTransfur.ifPlayerTransfurred(event.player, variant -> {
+                    if (variant.getLatexType() == LatexType.WHITE_LATEX)
+                        entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
+                    else if (variant.getLatexType().isHostileTo(LatexType.WHITE_LATEX))
+                        event.player.hurt(ChangedDamageSources.WHITE_LATEX, 2.0f);
+                }, () -> {
+                    if (ProcessTransfur.progressPlayerTransfur(event.player, 4.8f, ChangedTransfurVariants.PURE_WHITE_LATEX_WOLF.get(), TransfurContext.hazard(TransfurCause.WHITE_LATEX)))
+                        entityEnterLatex(event.player, new BlockPos(event.player.getBlockX(), event.player.getBlockY(), event.player.getBlockZ()));
+                });
             }
         }
     }
