@@ -56,7 +56,6 @@ public class BuffLatexSharkFemaleModel extends AdvancedHumanoidModel<BuffLatexSh
 		var rightFoot = rightLowerLeg.getChild("RightFoot");
 
 		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-				.torsoLength(12.5f)
 				.addPreset(AnimatorPresets.sharkLike(
 						Head, Torso, LeftArm, RightArm,
 						Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
@@ -96,7 +95,7 @@ public class BuffLatexSharkFemaleModel extends AdvancedHumanoidModel<BuffLatexSh
 
 		PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(56, 0).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.325F, -4.425F));
 
-		PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(24, 11).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -1.0F, 0.0F));
+		PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(24, 11).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE), PartPose.offset(0.0F, -0.5F, 0.0F));
 
 		PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(64, 56).addBox(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.5F, -3.01F, -7.0F, 0.0F, -0.2182F, 0.0F));
 
@@ -119,10 +118,10 @@ public class BuffLatexSharkFemaleModel extends AdvancedHumanoidModel<BuffLatexSh
 				.texOffs(0, 19).addBox(-4.0F, -33.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.35F)), PartPose.offset(0.0F, 25.0F, 0.0F));
 
 		PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(32, 27).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, CubeDeformation.NONE)
-				.texOffs(28, 36).addBox(-4.0F, 9.5F, -2.0F, 8.0F, 3.0F, 4.0F, CubeDeformation.NONE)
-				.texOffs(32, 0).addBox(-4.0F, 5.25F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(-0.5F))
+				.texOffs(28, 36).addBox(-4.0F, 9.0F, -2.0F, 8.0F, 3.0F, 4.0F, CubeDeformation.NONE)
+				.texOffs(32, 0).addBox(-4.0F, 5.0F, -2.0F, 8.0F, 5.0F, 4.0F, new CubeDeformation(-0.5F))
 				.texOffs(0, 43).addBox(-4.0F, 4.25F, -2.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(-0.3F))
-				.texOffs(0, 37).addBox(-4.0F, 8.25F, -2.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offset(0.0F, -1.0F, 0.0F));
+				.texOffs(0, 37).addBox(-4.0F, 7.75F, -2.0F, 8.0F, 2.0F, 4.0F, new CubeDeformation(-0.3F)), PartPose.offset(0.0F, -0.5F, 0.0F));
 
 		PartDefinition BackFin_r1 = Torso.addOrReplaceChild("BackFin_r1", CubeListBuilder.create().texOffs(24, 4).addBox(-1.0F, 2.0F, -3.0F, 2.0F, 3.0F, 1.0F, CubeDeformation.NONE)
 				.texOffs(0, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 6.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 1.5F, 2.0F, 0.5236F, 0.0F, 0.0F));
@@ -160,13 +159,13 @@ public class BuffLatexSharkFemaleModel extends AdvancedHumanoidModel<BuffLatexSh
 		PartDefinition Center_r1 = Plantoids.addOrReplaceChild("Center_r1", CubeListBuilder.create().texOffs(32, 27).addBox(-0.5F, -1.3F, -0.1F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.192F, 0.0F, 0.0F));
 
 		PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(52, 50).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE)
-				.texOffs(48, 9).addBox(-3.0F, 4.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offset(-5.0F, 1.0F, 0.0F));
+				.texOffs(48, 9).addBox(-3.0F, 4.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
 		PartDefinition Spike_r1 = RightArm.addOrReplaceChild("Spike_r1", CubeListBuilder.create().texOffs(52, 42).addBox(-0.5F, -1.5F, -1.0F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE)
 				.texOffs(16, 53).addBox(-0.5F, -2.5F, -2.0F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-2.0789F, 2.8746F, 1.1151F, -2.6425F, 0.8346F, 3.1091F));
 
 		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(36, 54).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 6.0F, 4.0F, CubeDeformation.NONE)
-				.texOffs(52, 32).addBox(-1.0F, 4.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offset(5.0F, 1.0F, 0.0F));
+				.texOffs(52, 32).addBox(-1.0F, 4.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.1F)), PartPose.offset(5.0F, 1.5F, 0.0F));
 
 		PartDefinition Spike_r2 = LeftArm.addOrReplaceChild("Spike_r2", CubeListBuilder.create().texOffs(68, 35).addBox(0.875F, -1.5F, -0.5F, 1.0F, 5.0F, 1.0F, CubeDeformation.NONE)
 				.texOffs(56, 0).addBox(-0.125F, -0.5F, -0.5F, 1.0F, 4.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(2.6568F, 2.0711F, 1.6568F, -0.4796F, -0.6979F, 0.7102F));
