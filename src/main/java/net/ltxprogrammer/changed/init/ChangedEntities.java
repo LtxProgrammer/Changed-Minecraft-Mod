@@ -160,7 +160,7 @@ public class ChangedEntities {
             EntityType.Builder.of(PhageLatexWolfFemale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PhageLatexWolfFemale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<Beifeng>> BEIFENG = registerSpawning("beifeng", 0x51659D, 0xFFE852,
-            EntityType.Builder.of(Beifeng::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(Beifeng::new, ChangedMobCategories.UNDERGROUND).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, Beifeng::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexBenignWolf>> BENIGN_LATEX_WOLF = registerSpawning("latex_benign_wolf", 0x282828, 0x292929,
             EntityType.Builder.of(LatexBenignWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
