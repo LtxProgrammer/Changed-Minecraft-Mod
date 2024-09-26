@@ -516,19 +516,6 @@ public abstract class ChangedEntity extends Monster {
         return underlyingPlayer != null ? underlyingPlayer : this;
     }
 
-    private static void bonusHurt(LivingEntity entity, DamageSource source, float damage, boolean overrideImmunity) {
-        if (!entity.isInvulnerableTo(source) || overrideImmunity) {
-            boolean justHit = entity.invulnerableTime == 20 && entity.hurtDuration == 10;
-
-            if (justHit || entity.invulnerableTime <= 0 || overrideImmunity) {
-                if (entity.getHealth() - damage > 0)
-                    entity.setHealth(entity.getHealth() - damage);
-                else
-                    entity.hurt(source, Float.MAX_VALUE);
-            }
-        }
-    }
-
     /**
      * @param target entity to try to absorb
      * @param source abstraction of the attacker
@@ -963,7 +950,7 @@ public abstract class ChangedEntity extends Monster {
         this.tailDragAmountO = this.tailDragAmount;
 
         this.tailDragAmount *= 0.75F;
-        this.tailDragAmount -= Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F;
+        this.tailDragAmount -= (float) (Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F);
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         simulatedSprings.forEach((direction, map) -> {

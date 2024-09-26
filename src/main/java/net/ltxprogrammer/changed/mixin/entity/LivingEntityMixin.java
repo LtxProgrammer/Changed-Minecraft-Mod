@@ -202,8 +202,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 move.setWantedPosition(move.getWantedX(), move.getWantedY(), move.getWantedZ(), move.getSpeedModifier());
             }
 
-            if ((Entity)this instanceof Player player)
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> LocalUtil.mulInputImpulse(player, 0.05F));
+            /*if ((Entity)this instanceof Player player)
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> LocalUtil.mulInputImpulse(player, 0.05F));*/
 
             --controlDisabledFor;
         }

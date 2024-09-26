@@ -1,12 +1,17 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedKeyMappings;
+import net.ltxprogrammer.changed.network.packet.AbilityPayloadPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -78,6 +83,26 @@ public abstract class AbstractAbilityInstance {
         if (tag.contains("Controller"))
             controller.readData(tag.getCompound("Controller"));
     }
+
+    public void acceptPayload(CompoundTag tag) {}
+
+    public void sendPayload(CompoundTag tag) {
+        if (this.entity.getLevel().isClientSide) {
+            Changed.PACKET_HANDLER.sendToServer(
+                    new AbilityPayloadPacket(this.entity.getEntity().getId(), this.ability, tag));
+        } else {
+            Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(this.entity::getEntity),
+                    new AbilityPayloadPacket(this.entity.getEntity().getId(), this.ability, tag));
+        }
+    }
+
+    public void sendPayload(CompoundTag tag, Player destination) {
+        if (destination instanceof ServerPlayer serverPlayer) {
+            Changed.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> serverPlayer),
+                    new AbilityPayloadPacket(this.entity.getEntity().getId(), this.ability, tag));
+        }
+    }
+
     public AbstractAbility.UseType getUseType() {
         return ability.getUseType(entity);
     }

@@ -51,6 +51,7 @@
     "client.ClientLevelMixin",
     "client.ForgeHooksClientMixin",
     "client.MinecraftMixin",
+    "client.MouseHandlerMixin",
     "client.OptionsMixin",
     "client.SkinManagerMixin",
     "client.TutorialMixin",
