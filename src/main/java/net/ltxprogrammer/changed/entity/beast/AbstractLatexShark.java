@@ -29,24 +29,6 @@ public abstract class AbstractLatexShark extends AbstractAquaticEntity {
         super(p_19870_, p_19871_);
     }
 
-    private static boolean isDeepEnoughToSpawn(LevelAccessor p_32367_, BlockPos p_32368_) {
-        return p_32368_.getY() < p_32367_.getSeaLevel() - 5;
-    }
-
-    public static boolean checkAquaticLatexSpawnRules(EntityType<? extends ChangedEntity> p_32350_, ServerLevelAccessor p_32351_, MobSpawnType p_32352_, BlockPos p_32353_, Random p_32354_) {
-        if (!p_32351_.getFluidState(p_32353_.below()).is(FluidTags.WATER)) {
-            return false;
-        } else {
-            Holder<Biome> holder = p_32351_.getBiome(p_32353_);
-            boolean flag = p_32351_.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(p_32351_, p_32353_, p_32354_) && (p_32352_ == MobSpawnType.SPAWNER || p_32351_.getFluidState(p_32353_).is(FluidTags.WATER));
-            if (!holder.is(Biomes.RIVER) && !holder.is(Biomes.FROZEN_RIVER)) {
-                return p_32354_.nextInt(40) == 0 && isDeepEnoughToSpawn(p_32351_, p_32353_) && flag;
-            } else {
-                return p_32354_.nextInt(15) == 0 && flag;
-            }
-        }
-    }
-
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;

@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -469,7 +470,7 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GREEN_LIZARD, 10, 1, 2, 0.7, 0.15);
             }
 
-            if (event.getCategory() == Biome.BiomeCategory.BEACH) {
+            if (event.getCategory() == Biome.BiomeCategory.BEACH && !event.getName().equals(Biomes.STONY_SHORE.getRegistryName())) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_OTTER, 100, 1, 3, 0.7, 0.15);
             }
 

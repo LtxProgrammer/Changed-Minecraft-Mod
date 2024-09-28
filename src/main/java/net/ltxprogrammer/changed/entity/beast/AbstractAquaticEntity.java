@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -23,6 +24,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -35,14 +38,27 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     protected final WaterBoundPathNavigation waterNavigation;
     protected final GroundPathNavigation groundNavigation;
 
+    private static boolean isDeepEnoughToSpawn(LevelAccessor p_32367_, BlockPos p_32368_) {
+        return p_32368_.getY() < p_32367_.getSeaLevel() - 5;
+    }
+
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-        /*if (!isDarkEnoughToSpawn(world, pos, random))
-            return false;*/
         if (!world.canSeeSkyFromBelowWater(pos))
             return false;
-        if (random.nextFloat() < 0.75f)
+        if (random.nextFloat() < 0.75F)
             return false;
-        return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
+
+        if (!world.getFluidState(pos.below()).is(FluidTags.WATER)) {
+            return false;
+        } else {
+            Holder<Biome> holder = world.getBiome(pos);
+            boolean flag = world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.SPAWNER || world.getFluidState(pos).is(FluidTags.WATER));
+            if (!holder.is(Biomes.RIVER) && !holder.is(Biomes.FROZEN_RIVER)) {
+                return random.nextInt(40) == 0 && isDeepEnoughToSpawn(world, pos) && flag;
+            } else {
+                return random.nextInt(15) == 0 && flag;
+            }
+        }
     }
 
     @Override
@@ -180,7 +196,7 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
             aquaticEntity.updateSwimming();
 
             LivingEntity livingentity = this.aquaticEntity.getTarget();
-            if (this.aquaticEntity.isInWater()) {
+            if (this.aquaticEntity.isEyeInFluid(FluidTags.WATER)) {
                 if (livingentity != null && livingentity.getY() > this.aquaticEntity.getY()) {
                     double dx = livingentity.getX() - this.aquaticEntity.getX();
                     double dz = livingentity.getZ() - this.aquaticEntity.getZ();

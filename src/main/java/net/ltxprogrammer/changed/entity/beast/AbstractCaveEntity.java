@@ -24,6 +24,8 @@ public abstract class AbstractCaveEntity extends ChangedEntity {
             return false;
         if (random.nextFloat() < 0.75f)
             return false;
+        if (!checkSpawnBlock(world, reason, pos))
+            return false;
         return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
     }
 }

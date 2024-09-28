@@ -25,6 +25,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -393,12 +394,30 @@ public abstract class ChangedEntity extends Monster {
         }
     }
 
+    protected static boolean checkSpawnBlock(ServerLevelAccessor world, MobSpawnType reason, BlockPos pos) {
+        if (reason != MobSpawnType.NATURAL)
+            return true;
+        int index = 3;
+        do {
+            final BlockPos thisPos = pos;
+            BlockState state = world.getBlockState(thisPos);
+            pos = thisPos.below();
+            if (state.is(ChangedTags.Blocks.LATEX_SPAWNABLE_ON))
+                return true;
+            if (state.isAir() || !state.isCollisionShapeFullBlock(world, thisPos))
+                continue;
+            return false;
+        } while (index-- > 0);
+
+        return false;
+    }
+
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-        /*if (!isDarkEnoughToSpawn(world, pos, random))
-            return false;*/
         if (pos.getY() < world.getSeaLevel() - 10)
             return false;
         if (random.nextFloat() < 0.75f)
+            return false;
+        if (!checkSpawnBlock(world, reason, pos))
             return false;
         return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
     }
