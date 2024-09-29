@@ -454,6 +454,12 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
     @Override
     public void tick() {
         if (this.grabbedEntity != null) {
+
+            if (grabbedEntity instanceof Player && !Changed.config.server.isGrabEnabled.get()) {
+                this.releaseEntity();
+                return;
+            }
+
             if (this.getController().getHoldTicks() >= 40) {
                 if (suited) {
                     this.grabEntity(this.grabbedEntity);
@@ -476,6 +482,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         var grabbedEntity = this.getHoveredEntity(entity);
         if (grabbedEntity != null && entity.getLevel().isClientSide && entity.getEntity() instanceof PlayerDataExtension ext) {
             if (!this.entity.getEntity().getBoundingBox().inflate(0.5, 0.0, 0.5).intersects(grabbedEntity.getBoundingBox()))
+                return;
+            if (grabbedEntity instanceof Player && !Changed.config.server.isGrabEnabled.get())
                 return;
 
             this.grabbedEntity = grabbedEntity;
