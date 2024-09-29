@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +13,9 @@ import java.util.Random;
  * This is basic info about the player, that they set.
  */
 public class BasicPlayerInfo {
-    public static final float SIZE_TOLERANCE = 0.05f;
+    public static float getSizeTolerance() {
+        return (float) Changed.config.server.bpiSizeTolerance.get().doubleValue();
+    }
 
     // Default values here are based on Colin's properties
     // When the player is TF'd these values will copy over to the latex representative
@@ -68,7 +71,7 @@ public class BasicPlayerInfo {
         info.irisRightColor = random.nextFloat() > 0.05f ? info.irisLeftColor : Util.getRandom(IRIS_COLORS, random); // 5% for dichrome eyes
         info.eyeStyle = Util.getRandom(EyeStyle.values(), random);
         info.overrideOthersToMatchStyle = false;
-        info.size = (random.nextFloat() * (random.nextBoolean() ? SIZE_TOLERANCE : -SIZE_TOLERANCE)) + 1.0f;
+        info.size = (random.nextFloat() * (random.nextBoolean() ? getSizeTolerance() : -getSizeTolerance())) + 1.0f;
         return info;
     }
 
@@ -133,11 +136,11 @@ public class BasicPlayerInfo {
     }
 
     public float getSize() {
-        return Mth.clamp(size, 1.0f - SIZE_TOLERANCE, 1.0f + SIZE_TOLERANCE);
+        return Mth.clamp(size, 1.0f - getSizeTolerance(), 1.0f + getSizeTolerance());
     }
 
     public double getSizeValueForConfiguration() {
-        return (size - 1.0f + SIZE_TOLERANCE) / (SIZE_TOLERANCE * 2);
+        return (size - 1.0f + getSizeTolerance()) / (getSizeTolerance() * 2);
     }
 
     public void copyFrom(BasicPlayerInfo other) {
