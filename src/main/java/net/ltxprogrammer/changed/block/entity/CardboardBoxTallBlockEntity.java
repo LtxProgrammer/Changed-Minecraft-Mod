@@ -39,7 +39,8 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
         if (this.getSeatedEntity() != null)
             return false;
         else if (entityHolder != null) {
-            entity.startRiding(entityHolder);
+            if (!level.isClientSide)
+                entity.startRiding(entityHolder);
             ticksSinceChange = 0;
             return true;
         }
@@ -71,8 +72,6 @@ public class CardboardBoxTallBlockEntity extends BlockEntity implements Seatable
             if (!state.getValue(OPEN)) {
                 BlockState belowState = level.getBlockState(pos.below());
 
-                if (level.isClientSide)
-                    level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ChangedSounds.BOW2, SoundSource.BLOCKS, 1.0f, 1.0f, true);
                 level.setBlock(pos, state.setValue(OPEN, true), 3);
                 if (belowState.is(state.getBlock()))
                     level.setBlock(pos.below(), belowState.setValue(OPEN, true), 3);

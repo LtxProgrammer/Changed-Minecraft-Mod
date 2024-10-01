@@ -194,6 +194,16 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         });
     }
 
+    @Override
+    public void do_hurtCurrentlyUsedShield(float blocked) {
+        this.hurtCurrentlyUsedShield(blocked);
+    }
+
+    @Override
+    public void do_blockUsingShield(LivingEntity attacker) {
+        this.blockUsingShield(attacker);
+    }
+
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo callback) {
         if (controlDisabledFor > 0) {
@@ -253,6 +263,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow public abstract ItemStack getItemBySlot(EquipmentSlot p_21127_);
 
     @Shadow protected abstract void spawnItemParticles(ItemStack p_21061_, int p_21062_);
+
+    @Shadow protected abstract void hurtCurrentlyUsedShield(float p_21316_);
+
+    @Shadow protected abstract void blockUsingShield(LivingEntity p_21200_);
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

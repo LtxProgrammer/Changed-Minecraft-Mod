@@ -15,4 +15,7 @@ public interface LivingEntityDataExtension {
     void setGrabbedBy(@Nullable LivingEntity holder);
 
     <T extends Gas> Optional<T> isEyeInGas(Class<T> gas);
+
+    void do_hurtCurrentlyUsedShield(float blocked);
+    void do_blockUsingShield(LivingEntity attacker);
 }

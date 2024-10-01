@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public interface SeatableBlock {
     Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos);
 
+    default void onEnterSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
+
+    }
+
     default void onExitSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
 
     }

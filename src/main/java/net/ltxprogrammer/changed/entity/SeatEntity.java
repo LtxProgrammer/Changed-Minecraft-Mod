@@ -159,6 +159,17 @@ public class SeatEntity extends Entity {
     }
 
     @Override
+    protected void addPassenger(@NotNull Entity entity) {
+        super.addPassenger(entity);
+
+        this.getAttachedBlockState().ifPresent(blockState -> {
+            if (blockState.getBlock() instanceof SeatableBlock seatableBlock) {
+                seatableBlock.onEnterSeat(entity.level, blockState, this.getAttachedBlockPos(), entity);
+            }
+        });
+    }
+
+    @Override
     protected void removePassenger(@NotNull Entity entity) {
         super.removePassenger(entity);
 

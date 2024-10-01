@@ -33,7 +33,8 @@ public class OfficeChairBlockEntity extends BlockEntity implements SeatableBlock
         if (this.getSeatedEntity() != null)
             return false;
         else if (entityHolder != null) {
-            entity.startRiding(entityHolder);
+            if (!level.isClientSide)
+                entity.startRiding(entityHolder);
             return true;
         }
 
