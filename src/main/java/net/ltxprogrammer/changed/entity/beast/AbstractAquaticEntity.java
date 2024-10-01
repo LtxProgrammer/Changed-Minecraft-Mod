@@ -5,20 +5,18 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -26,12 +24,15 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.Random;
 
 public abstract class AbstractAquaticEntity extends ChangedEntity implements AquaticEntity {
@@ -81,6 +82,11 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     }
 
     @Override
+    public int getDepthStriderLevel() {
+        return 2;
+    }
+
+    @Override
     public int getTicksRequiredToFreeze() { return 100; }
 
     @Override
@@ -93,7 +99,7 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
 
     @Override
     public MobType getMobType() {
-        return MobType.UNDEFINED;
+        return MobType.WATER;
     }
 
     @Override
@@ -127,6 +133,8 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new GoToWaterGoal(this, 0.3));
+        this.goalSelector.addGoal(1, new SinkFromSurfaceGoal(this, 0.3));
         this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 0.4D, 10));
     }
 
@@ -136,7 +144,10 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     }
 
     public void travel(@NotNull Vec3 p_32394_) {
-        if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim()) {
+        boolean animateSwim = this.isInWater()
+                && this.canFitInWater(this.position());
+
+        if (this.isEffectiveAi() && animateSwim) {
             this.moveRelative(0.01F, p_32394_);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
@@ -146,30 +157,65 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
 
     }
 
+    protected float getWaterDepth(BlockPos pos) {
+        float depth = 0.0f;
+
+        for (int i = 0; i < 3; ++i) {
+            BlockState state = this.level.getBlockState(pos.relative(Direction.DOWN, i));
+            if (state.getFluidState().is(FluidTags.WATER))
+                depth += 1.0f;
+            else if (!state.isAir())
+                break;
+        }
+
+        for (int i = 1; i < 3; ++i) {
+            BlockState state = this.level.getBlockState(pos.relative(Direction.UP, i));
+            if (state.getFluidState().is(FluidTags.WATER))
+                depth += 1.0f;
+            else if (!state.isAir())
+                break;
+        }
+
+        return depth;
+    }
+
+    protected boolean canFitInWater(Vec3 pos) {
+        final float height = this.getDimensions(Pose.STANDING).height;
+
+        final BlockPos originalPos = new BlockPos(Mth.floor(pos.x), Mth.floor(pos.y), Mth.floor(pos.z));
+        return BlockPos.betweenClosedStream(this.getDimensions(Pose.STANDING).makeBoundingBox(pos).inflate(-0.05))
+                .filter(checkPos -> checkPos.getY() == originalPos.getY())
+                .allMatch(blockPos -> getWaterDepth(blockPos) >= height);
+    }
+
+    protected boolean adjacentToLand(BlockPos pos) {
+        return Direction.Plane.HORIZONTAL.stream().map(pos::relative).anyMatch(blockPos -> {
+            if (!this.level.getBlockState(blockPos.above()).isAir())
+                return false;
+            return this.level.getBlockState(blockPos).isCollisionShapeFullBlock(this.level, blockPos);
+        });
+    }
+
     public void updateSwimming() {
         if (!this.level.isClientSide) {
-            if (this.isInWater() && this.isEyeInFluid(FluidTags.WATER)) {
-                if (!this.wantsToSwim() && !this.level.getBlockState(this.blockPosition().above()).getFluidState().is(FluidTags.WATER)) {
-                    if (this.isEffectiveAi())
-                        this.navigation = this.groundNavigation;
-                    this.setPose(Pose.STANDING);
-                    this.setSwimming(false);
-                }
+            this.maxUpStep = this.isInWater() ? 1.05f : 0.7f;
 
-                else {
-                    if (this.isEffectiveAi())
-                        this.navigation = this.waterNavigation;
-                    this.setPose(Pose.SWIMMING);
-                    this.setSwimming(true);
-                }
+            boolean animateSwim = this.isInWater()
+                    && this.canFitInWater(this.position());
+
+            if (this.isEffectiveAi() && animateSwim) {
+                this.navigation = this.waterNavigation;
+                this.setSwimming(true);
             } else {
-                if (this.isEffectiveAi())
-                    this.navigation = this.groundNavigation;
-                this.setPose(Pose.STANDING);
+                this.navigation = this.groundNavigation;
                 this.setSwimming(false);
             }
 
-            this.maxUpStep = this.isInWater() ? 1.05f : 0.7f;
+            if (animateSwim) {
+                this.setPose(Pose.SWIMMING);
+            } else {
+                this.setPose(Pose.STANDING);
+            }
         }
     }
 
@@ -196,7 +242,7 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
             aquaticEntity.updateSwimming();
 
             LivingEntity livingentity = this.aquaticEntity.getTarget();
-            if (this.aquaticEntity.isEyeInFluid(FluidTags.WATER)) {
+            if (this.aquaticEntity.isSwimming()) {
                 if (livingentity != null && livingentity.getY() > this.aquaticEntity.getY()) {
                     double dx = livingentity.getX() - this.aquaticEntity.getX();
                     double dz = livingentity.getZ() - this.aquaticEntity.getZ();
@@ -224,6 +270,128 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
             } else {
                 super.tick();
             }
+        }
+    }
+
+    static class GoToWaterGoal extends Goal {
+        private final AbstractAquaticEntity mob;
+        private double wantedX;
+        private double wantedY;
+        private double wantedZ;
+        private final double speedModifier;
+        private final Level level;
+
+        public GoToWaterGoal(AbstractAquaticEntity entity, double speed) {
+            this.mob = entity;
+            this.speedModifier = speed;
+            this.level = entity.level;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        public boolean canUse() {
+            if (this.mob.isInWater()) {
+                return false;
+            } else if (mob.wantsToSwim()) {
+                return true;
+            } else if (this.mob.getTarget() != null) {
+                return false;
+            } else {
+                Vec3 vec3 = this.getWaterPos();
+                if (vec3 == null) {
+                    return false;
+                } else {
+                    this.wantedX = vec3.x;
+                    this.wantedY = vec3.y;
+                    this.wantedZ = vec3.z;
+                    return true;
+                }
+            }
+        }
+
+        public boolean canContinueToUse() {
+            if (!mob.wantsToSwim() && this.mob.getTarget() != null)
+                return false;
+
+            return !this.mob.getNavigation().isDone();
+        }
+
+        public void start() {
+            this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+        }
+
+        @Nullable
+        private Vec3 getWaterPos() {
+            Random random = this.mob.getRandom();
+            BlockPos blockpos = this.mob.blockPosition();
+
+            for(int i = 0; i < 10; ++i) {
+                BlockPos blockpos1 = blockpos.offset(random.nextInt(20) - 10, 2 - random.nextInt(8), random.nextInt(20) - 10);
+                if (this.level.getBlockState(blockpos1).is(Blocks.WATER)) {
+                    return Vec3.atBottomCenterOf(blockpos1);
+                }
+            }
+
+            return null;
+        }
+    }
+
+    static class SinkFromSurfaceGoal extends Goal {
+        private final AbstractAquaticEntity mob;
+        private double wantedX;
+        private double wantedY;
+        private double wantedZ;
+        private final double speedModifier;
+        private final Level level;
+
+        public SinkFromSurfaceGoal(AbstractAquaticEntity entity, double speed) {
+            this.mob = entity;
+            this.speedModifier = speed;
+            this.level = entity.level;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        public boolean canUse() {
+            if (this.mob.getTarget() != null) {
+                return false;
+            } else if (!this.mob.isInWater()) {
+                return false;
+            } else if (!level.getBlockState(this.mob.blockPosition()).isAir()) {
+                return false;
+            } else if (!this.mob.canFitInWater(this.mob.position())) {
+                return false;
+            } else {
+                this.wantedX = this.mob.getX();
+                this.wantedY = this.mob.getY() - 1.0;
+                this.wantedZ = this.mob.getZ();
+                return true;
+            }
+        }
+
+        public boolean canContinueToUse() {
+            if (this.mob.getTarget() != null) {
+                return false;
+            }
+
+            return !this.mob.getNavigation().isDone();
+        }
+
+        public void start() {
+            this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
+        }
+
+        @Nullable
+        private Vec3 getWaterPos() {
+            Random random = this.mob.getRandom();
+            BlockPos blockpos = this.mob.blockPosition();
+
+            for(int i = 0; i < 10; ++i) {
+                BlockPos blockpos1 = blockpos.offset(random.nextInt(20) - 10, 2 - random.nextInt(8), random.nextInt(20) - 10);
+                if (this.level.getBlockState(blockpos1).is(Blocks.WATER)) {
+                    return Vec3.atBottomCenterOf(blockpos1);
+                }
+            }
+
+            return null;
         }
     }
 }

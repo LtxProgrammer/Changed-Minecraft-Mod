@@ -341,6 +341,10 @@ public abstract class ChangedEntity extends Monster {
                 underlyingPlayer.isAutoSpinAttack();
     }
 
+    public int getDepthStriderLevel() {
+        return 0;
+    }
+
     @Override
     protected boolean canEnterPose(Pose pose) {
         if (overridePose != null && overridePose != pose)

@@ -67,16 +67,6 @@ public class Shark extends AbstractAquaticEntity {
         return 1;
     }
 
-    public void travel(@NotNull Vec3 vec) {
-        if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim()) {
-            this.moveRelative(0.01f, vec);
-            this.move(MoverType.SELF, this.getDeltaMovement());
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-        } else {
-            super.travel(vec);
-        }
-    }
-
     public void tick() {
         super.tick();
         if (this.isNoAi()) {
