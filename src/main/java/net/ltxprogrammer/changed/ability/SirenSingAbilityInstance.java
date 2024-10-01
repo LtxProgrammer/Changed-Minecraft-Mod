@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.effect.Shock;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -44,6 +45,8 @@ public class SirenSingAbilityInstance extends AbstractAbilityInstance {
 
     public void applyEffect(@Nullable LivingEntity livingEntity) {
         if (livingEntity == null)
+            return;
+        if (livingEntity instanceof Player && !Changed.config.server.playerControllingAbilities.get())
             return;
 
         Shock.setNoControlTicks(livingEntity, 5);

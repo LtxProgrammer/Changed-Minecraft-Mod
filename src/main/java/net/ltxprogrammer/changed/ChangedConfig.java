@@ -102,6 +102,9 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> showTFNametags;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistCoverBlocks;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> whitelistCoverBlocks;
+        public final ForgeConfigSpec.ConfigValue<Boolean> playerControllingAbilities;
+        public final ForgeConfigSpec.ConfigValue<Boolean> isGrabEnabled;
+        public final ForgeConfigSpec.ConfigValue<Double> bpiSizeTolerance;
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
@@ -110,6 +113,12 @@ public class ChangedConfig {
             blacklistCoverBlocks = builder.defineList("blacklistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
             builder.comment("Overrides any matches found in blacklistCoverBlocks. If the blacklist is empty, any blocks not in this list will not cover");
             whitelistCoverBlocks = builder.defineList("whitelistCoverBlocks", List::of, RegistryElementPredicate::isValidSyntax);
+            builder.comment("Can latex abilities (hypno, siren) affect players.");
+            playerControllingAbilities = builder.define("playerControllingAbilities", true);
+            builder.comment("Can latexes use the grab ability on players.");
+            isGrabEnabled = builder.define("isGrabEnabled", true);
+            builder.comment("Acceptable model scaling through BPI (Default: +/- 5%)");
+            bpiSizeTolerance = builder.defineInRange("bpiSizeTolerance", 0.05, 0.01, 0.95);
         }
 
         public Stream<RegistryElementPredicate<Block>> getBlacklistedCoverBlocks() {

@@ -32,7 +32,7 @@
  "attribute.name.changed.transfur_damage": "Сила трансфуру",
  "attribute.name.changed.transfur_tolerance": "Толерантність трансфуру",
 
- "subtitles.changed.attack1": "Румба подає звуковий сигнал",
+ "subtitles.changed.attack1": "Робот-пилесос подає звуковий сигнал",
  "subtitles.changed.sound3": "Хтось трансфурмований органічно",
  "subtitles.changed.poison": "Хтось трансфурмований",
  "subtitles.changed.open2": "Двері не відчиняються",
@@ -55,6 +55,9 @@
  "subtitles.changed.paralyze1": "Шоковий удар",
  "subtitles.changed.paralyze3": "Оголошення інтеркому",
  "subtitles.changed.blow1": "Когось ляснув латекс",
+ "subtitles.changed.vacuum": "Вакуум крутиться",
+ "subtitles.changed.fire": "Газ шипить",
+ "subtitles.changed.slash10": "Шорти рвуться",
 
  "item.changed.benign_pants": "Латексні шорти",
  "item.changed.blood_syringe": "Шприц із зразком крові",
@@ -77,6 +80,7 @@
  "item.changed.syringe": "Шприц",
  "item.changed.white_latex_goo": "Білий латекс",
  "item.changed.white_latex_bucket": "Відро білого латексу",
+ "item.changed.roomba": "Робот-пилесос",
 
  "item.changed.tsc_staff": "TSC Жезл",
  "item.changed.tsc_baton": "TSC Дубинка",
@@ -127,6 +131,7 @@
  "item.changed.the_white_tail_chase_part_1_record.desc": "Shizi - The White Tail Chase Part 1",
  "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
  "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",
+ 
  "syringe.changed:form_special": "Шприц із патреон формою",
 
  "death.attack.changed:transfur": "%1$s був трансфурований",
@@ -149,6 +154,7 @@
  "gamerule.changed:transfurTolerance": "Шкода латексних істот за шкалою трансфурмації (У тиках)",
  "gamerule.changed:npcWantFusePlayer": "Латексні НІП навмисно зливаються з гравцем",
  "gamerule.changed:doPale": "Чи буде у світі Блідий вірус ",
+ 
  "key.changed.variant_ability": "Вибір здібності",
  "key.changed.use_ability": "Використання здібності ",
  "key.changed.extra_jump": "Додатковий стрибок ",
@@ -172,6 +178,9 @@
  "text.changed.syringe.no_owner": "Неможливо отримати ім'я користувача",
  "text.changed.tamed.wander": "%s зараз блукає",
  "text.changed.tamed.follow": "%s зараз йде слідом за Вами",
+ "text.changed.warning": "УВАГА!!!",
+ "text.changed.warning.content1": "Ця модифікована версія Minecraft містить контент з гри Changed",
+ "text.changed.warning.content2": "та не підходить до усіх вікових аудиторій",
 
  "effect.changed.hypercoagulation": "Гіперкоагуляція",
  "effect.changed.shock": "Шок",
@@ -179,6 +188,7 @@
  "enchantment.changed.latex_protection": "Захист від латексу",
  "enchantment.changed.latex_protection.desc": "Захищає носія від трансфурмації.",
 
+ "block.changed.air_conditioner": "Кондиціонер",
  "block.changed.beaker": "Лабораторний стакан",
  "block.changed.bedside_iv_rack": "Крапельниця",
  "block.changed.beehive_bed": "Ліжко вулика",
@@ -298,6 +308,7 @@
 
  "fluid.changed.dark_latex": "Рідкий темний латекс",
  "fluid.changed.white_latex": "Рідкий світлий латекс",
+ "fluid.changed.wolf_gas": "Трансфурмаційний газ",
 
  "biome.changed.dark_latex_plains": "Рівнини темного латексу",
  "biome.changed.white_latex_forest": "Рівнини світлого латексу",
@@ -484,9 +495,9 @@
  "changed.compact_disc.content.special_latex": "Завдяки прекрасним учасникам, ми змогли знайти і протестувати неймовірно велику кількість варіантів латексу. Здається, експерименти були унікальні для кожного пацієнта, з яким проводили тест.",
 
  "changed:advancements.main.root.title": "Changed",
- "changed:advancements.main.root.description": "Ласкаво просимо в майбутнє",
+ "changed:advancements.main.root.description": "Ласкаво просимо до пекла",
 
- "changed:advancements.main.transfur.title": "Це назавжди!?",
+ "changed:advancements.main.transfur.title": "Якщо народився людиною, треба нею й померти...",
  "changed:advancements.main.transfur.description": "Трансфурмуйтеся",
 
  "changed:advancements.main.transfur_aquatic.title": "Піду поплаваю в річці глибокій...",
@@ -498,29 +509,32 @@
  "changed:advancements.main.transfur_white.title": "Єдиний розум",
  "changed:advancements.main.transfur_white.description": "Трансфурмуйтеся в будь-який білий латекс.",
 
- "changed:advancements.main.transfur_dark.title": "Братство",
+ "changed:advancements.main.transfur_dark.title": "Добре братство миліше, ніж багатство.",
  "changed:advancements.main.transfur_dark.description": "Трансфурмуйтеся в будь-який темний латекс.",
 
  "changed:advancements.main.white_latex_fuse.title": "Сильні, коли єдині",
  "changed:advancements.main.white_latex_fuse.description": "Злійтеся воєдино в більш досконалу форму латексу.",
 
- "changed:advancements.main.transfur_aerial.title": "Злети та падіння",
+ "changed:advancements.main.transfur_aerial.title": "Як на крилах понесло",
  "changed:advancements.main.transfur_aerial.description": "Трансфурмуйтеся в будь-який літаючий латекс.",
 
- "changed:advancements.main.transfur_mask.title": "Зрікаючи людяність",
+ "changed:advancements.main.transfur_mask.title": "Краще вже так, ніж до русні",
  "changed:advancements.main.transfur_mask.description": "Отримайте та надягніть маску з темного латексу.",
 
- "changed:advancements.main.transfur_legless.title": "Ноги убік",
+ "changed:advancements.main.transfur_legless.title": "Горе не задавить, а з ніг звалить",
  "changed:advancements.main.transfur_legless.description": "Трансфурмуйтеся в будь-яку форму латексу, що не має ніг.",
 
- "changed:advancements.main.beehive_sleep.title": "Що сниться бджолам...",
+ "changed:advancements.main.beehive_sleep.title": "Бджола летить, де мед пахтить",
  "changed:advancements.main.beehive_sleep.description": "Поспіть у ліжку вулика",
 
- "changed:advancements.main.tame_a_latex.title": "Дивний друг",
+ "changed:advancements.main.tame_a_latex.title": "Яку дружбу заведеш, таке й життя поведеш",
  "changed:advancements.main.tame_a_latex.description": "Приручіть латекс",
 
- "changed:advancements.main.kill_all_latex.title": "Вбити їх всіх!!!",
+ "changed:advancements.main.kill_all_latex.title": "\"Нашої фурріфобії недостатньо\"",
  "changed:advancements.main.kill_all_latex.description": "Убийте одного з усіх видів латексних звірів",
+
+ "changed:advancements.main.flying.title": "Куди серце летить, туди й око глядить",
+ "changed:advancements.main.flying.description": "Використовуйте свою здібність польоту протягом 15 секунд",
 
  "changed.tutorial.select_ability.title": "Виберіть здатність",
  "changed.tutorial.select_ability.description": "Натисніть клавішу %s",
@@ -528,7 +542,7 @@
  "changed.tutorial.use_ability.description": "Натисніть або затисніть %s",
 
  "facility.zone.red_zone": "Червона зона",
- "facility.zone.gray_zone": "Серая зона",
+ "facility.zone.gray_zone": "Сіра зона",
  "facility.zone.maintenance_zone": "Зона обслуговування",
  "facility.zone.library_zone": "Бібліотечна зона",
  "facility.zone.vent_zone": "Вентиляційна зона",

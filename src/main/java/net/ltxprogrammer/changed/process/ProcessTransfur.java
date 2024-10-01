@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.process;
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
@@ -20,19 +19,16 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -80,6 +76,38 @@ public class ProcessTransfur {
         return ext.getTransfurProgress();
     }
 
+    protected static float checkBlocked(LivingEntity blocker, float amount, IAbstractChangedEntity source) {
+        if (source == null || amount <= 0.0f)
+            return amount;
+
+        if (!(blocker instanceof LivingEntityDataExtension ext))
+            return amount;
+
+        float blocked = 0.0f;
+        final var pseudoSource = DamageSource.mobAttack(source.getEntity());
+        if (blocker.isDamageSourceBlocked(pseudoSource)) {
+            net.minecraftforge.event.entity.living.ShieldBlockEvent ev = net.minecraftforge.common.ForgeHooks.onShieldBlock(blocker, pseudoSource, amount);
+            if(!ev.isCanceled()) {
+                if (ev.shieldTakesDamage()) ext.do_hurtCurrentlyUsedShield(amount);
+                blocked = ev.getBlockedDamage();
+                amount -= ev.getBlockedDamage();
+                if (!pseudoSource.isProjectile()) {
+                    ext.do_blockUsingShield(source.getEntity());
+                }
+
+                if (blocker instanceof ServerPlayer serverPlayer) {
+                    if (blocked > 0.0F && blocked < 3.4028235E37F) {
+                        serverPlayer.awardStat(Stats.CUSTOM.get(Stats.DAMAGE_BLOCKED_BY_SHIELD), Math.round(blocked * 10.0F));
+                    }
+                }
+
+                blocker.level.broadcastEntityEvent(blocker, (byte)29);
+            }
+        }
+
+        return amount;
+    }
+
     public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
         if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
             return false;
@@ -92,17 +120,22 @@ public class ProcessTransfur {
         }
 
         else {
-            player.invulnerableTime = 20;
-            player.hurtDuration = 10;
-            player.hurtTime = player.hurtDuration;
-            player.setLastHurtByMob(null);
-
             amount = LatexProtectionEnchantment.getLatexProtection(player, amount);
             if (ChangedCompatibility.isPlayerUsedByOtherMod(player)) {
                 setPlayerTransfurProgress(player, 0.0f);
                 player.hurt(DamageSource.mobAttack(context.source == null ? transfurVariant.getEntityType().create(player.level) : context.source.getEntity()), amount);
                 return false;
             }
+
+            amount = checkBlocked(player, amount, context.source);
+
+            if (amount <= 0.0f)
+                return false;
+
+            player.invulnerableTime = 20;
+            player.hurtDuration = 10;
+            player.hurtTime = player.hurtDuration;
+            player.setLastHurtByMob(null);
 
             float old = getPlayerTransfurProgress(player);
             float next = old + amount;

@@ -90,10 +90,16 @@ public class GrabEntityPacket implements ChangedPacket {
                         ChangedSounds.broadcastSound(sender, wasSuited ? ChangedSounds.POISON : ChangedSounds.BLOW1, 1.0f, 1.0f);
                     }
                     case SUIT -> {
+                        if (livingTarget instanceof Player && !Changed.config.server.isGrabEnabled.get())
+                            return;
+
                         ChangedSounds.broadcastSound(sender, ChangedSounds.POISON, 1.0f, 1.0f);
                         ability.suitEntity(livingTarget);
                     }
                     case ARMS -> {
+                        if (livingTarget instanceof Player && !Changed.config.server.isGrabEnabled.get())
+                            return;
+
                         boolean wasSuited = ability.suited;
                         ability.grabEntity(livingTarget);
                         ChangedSounds.broadcastSound(sender, wasSuited ? ChangedSounds.POISON : ChangedSounds.BLOW1, 1.0f, 1.0f);
@@ -116,8 +122,18 @@ public class GrabEntityPacket implements ChangedPacket {
                 variant.ifHasAbility(ChangedAbilities.GRAB_ENTITY_ABILITY.get(), ability -> {
                     switch (type) {
                         case RELEASE -> ability.releaseEntity();
-                        case SUIT -> ability.suitEntity(livingTarget);
-                        case ARMS -> ability.grabEntity(livingTarget);
+                        case SUIT -> {
+                            if (livingTarget instanceof Player && !Changed.config.server.isGrabEnabled.get())
+                                return;
+
+                            ability.suitEntity(livingTarget);
+                        }
+                        case ARMS -> {
+                            if (livingTarget instanceof Player && !Changed.config.server.isGrabEnabled.get())
+                                return;
+
+                            ability.grabEntity(livingTarget);
+                        }
                     }
                 });
             });

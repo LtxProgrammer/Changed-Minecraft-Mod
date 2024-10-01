@@ -58,6 +58,8 @@
  "subtitles.changed.paralyze1": "Шокавы ўдар",
  "subtitles.changed.paralyze3": "Аб'ява інтэркама",
  "subtitles.changed.blow1": "Латэкс некага ляпнуў",
+ "subtitles.changed.vacuum": "Вакуум круціцца",
+ "subtitles.changed.slash10": "Шорты рвуцца",
 
  "item.changed.benign_pants": "Шорты з латекса",
  "item.changed.blood_syringe": "Шпрыц з узорам крыві",
@@ -175,6 +177,9 @@
  "text.changed.syringe.no_owner": "Немагчыма атрымаць імя карыстальніка",
  "text.changed.tamed.wander": "%s зараз у роўмінгу",
  "text.changed.tamed.follow": "%s цяпер сочыць за вамі",
+ "text.changed.warning": "Увага",
+ "text.changed.warning.content1": "Гэтая мадыфікаваная версія Minecraft змяшчае кантэнт з Changed",
+ "text.changed.warning.content2": "і не падыходзіць для ўсіх узростаў",
 
  "effect.changed.hypercoagulation": "Гіперкаагуляцыя",
  "effect.changed.shock": "Шок",
@@ -182,6 +187,7 @@
  "enchantment.changed.latex_protection": "Абарона з латекса",
  "enchantment.changed.latex_protection.desc": "Абараняе ўладальніка ад трансфурмацыі.",
 
+ "block.changed.air_conditioner": "Кандыцыянер",
  "block.changed.beaker": "Лабараторны шклянку",
  "block.changed.bedside_iv_rack": "Кропельніца",
  "block.changed.beehive_bed": "Ложак вулля",
@@ -523,6 +529,9 @@
 
   "changed:advancements.main.kill_all_latex.title": "Забіць іх усіх!!!",
   "changed:advancements.main.kill_all_latex.description": "Забіце аднаго з усіх відаў латексных звяроў",
+
+  "changed:advancements.main.flying.title": "Добры выгляд адсюль!",
+  "changed:advancements.main.flying.description": "Выкарыстоўвайце вашу здольнасць палёту на працягу 15 секунд",
 
   "changed.tutorial.select_ability.title": "Выберыце здольнасць",
   "changed.tutorial.select_ability.description": "Націсніце клавішу %s",

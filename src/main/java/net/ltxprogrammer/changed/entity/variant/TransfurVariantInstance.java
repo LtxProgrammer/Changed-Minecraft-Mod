@@ -50,6 +50,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -617,7 +618,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         float healthPercentage = player.getHealth() / player.getMaxHealth();
 
-        Registry.ATTRIBUTE.entrySet().stream().map(entry -> Pair.of(
+        ForgeRegistries.ATTRIBUTES.getEntries().stream().map(entry -> Pair.of(
                 Optional.ofNullable(variantAttributes0.getInstance(entry.getValue())), Optional.ofNullable(variantAttributes1.getInstance(entry.getValue()))))
                 .filter(pair -> pair.getFirst().isPresent() && pair.getSecond().isPresent()).map(pair -> Pair.of(pair.getFirst().get(), pair.getSecond().get()))
                 .filter(pair -> hostAttributes.hasAttribute(pair.getFirst().getAttribute()))

@@ -3,7 +3,9 @@ package net.ltxprogrammer.changed.block;
 import net.ltxprogrammer.changed.block.entity.CardboardBoxTallBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -107,10 +109,21 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
     }
 
     @Override
+    public void onEnterSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
+        SeatableBlock.super.onEnterSeat(level, state, pos, entity);
+
+        if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
+            entity.level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ChangedSounds.BOW2, SoundSource.BLOCKS, 1.0f, 1.0f, true);
+            blockEntity.ticksSinceChange = 0;
+        }
+    }
+
+    @Override
     public void onExitSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
         SeatableBlock.super.onExitSeat(level, state, pos, entity);
 
         if (getBlockEntityForBlock(level, pos, state) instanceof CardboardBoxTallBlockEntity blockEntity) {
+            entity.level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ChangedSounds.BOW2, SoundSource.BLOCKS, 1.0f, 1.0f, true);
             blockEntity.ticksSinceChange = 0;
         }
     }

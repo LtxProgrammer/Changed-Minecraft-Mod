@@ -1,0 +1,32 @@
+{
+  "replace": false,
+  "values": [
+    "changed:dark_latex_block",
+    "changed:dark_latex_ice",
+    "changed:white_latex_block",
+    "changed:wolf_crystal_block",
+    "minecraft:calcite",
+    "minecraft:clay",
+    "minecraft:coarse_dirt",
+    "minecraft:cobbled_deepslate",
+    "minecraft:cobblestone",
+    "minecraft:dirt",
+    "minecraft:dripstone_block",
+    "minecraft:grass_block",
+    "minecraft:gravel",
+    "minecraft:moss_block",
+    "minecraft:moss_carpet",
+    "minecraft:mossy_cobblestone",
+    "minecraft:packed_ice",
+    "minecraft:podzol",
+    "minecraft:red_sand",
+    "minecraft:red_sandstone",
+    "minecraft:rooted_dirt",
+    "minecraft:sand",
+    "minecraft:sandstone",
+    "minecraft:snow",
+    "minecraft:snow_block",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:terracotta"
+  ]
+}

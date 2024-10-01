@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.util.CameraUtil;
@@ -8,6 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
 public class HypnosisAbility extends SimpleAbility {
@@ -32,6 +34,8 @@ public class HypnosisAbility extends SimpleAbility {
             if (TransfurVariant.getEntityVariant(livingEntity) != null)
                 return;
             if (livingEntity.getLookAngle().dot(self.getEyePosition().subtract(livingEntity.getEyePosition()).normalize()) < 0.85f)
+                return;
+            if (livingEntity instanceof Player && !Changed.config.server.playerControllingAbilities.get())
                 return;
 
             CameraUtil.tugEntityLookDirection(livingEntity, self,  0.125);
