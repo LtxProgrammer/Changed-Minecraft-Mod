@@ -93,11 +93,11 @@ public class LatexOtterModel extends AdvancedHumanoidModel<LatexOtter> implement
 
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(-4.0F, -4.0F, -1.0F));
 
-        PartDefinition RightEar_r1 = RightEar.addOrReplaceChild("RightEar_r1", CubeListBuilder.create().texOffs(60, 57).addBox(0.2F, -5.3F, 0.5F, 2.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5672F, -0.3491F, -0.2182F));
+        PartDefinition RightEar_r1 = RightEar.addOrReplaceChild("RightEar_r1", CubeListBuilder.create().texOffs(60, 57).addBox(0.2F, -5.3F, 0.5F, 2.0F, 4.0F, 4.0F, new CubeDeformation(-0.4F)), PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5672F, -0.3491F, -0.2182F));
 
         PartDefinition LeftEar = Head.addOrReplaceChild("LeftEar", CubeListBuilder.create(), PartPose.offset(4.0F, -4.0F, -1.0F));
 
-        PartDefinition LeftEar_r1 = LeftEar.addOrReplaceChild("LeftEar_r1", CubeListBuilder.create().texOffs(48, 24).addBox(-2.2F, -5.3F, 0.5F, 2.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5672F, 0.3491F, 0.2182F));
+        PartDefinition LeftEar_r1 = LeftEar.addOrReplaceChild("LeftEar_r1", CubeListBuilder.create().texOffs(48, 24).addBox(-2.2F, -5.3F, 0.5F, 2.0F, 4.0F, 4.0F, new CubeDeformation(-0.4F)), PartPose.offsetAndRotation(0.0F, 2.0F, 1.0F, 0.5672F, 0.3491F, 0.2182F));
 
         PartDefinition Hair = Head.addOrReplaceChild("Hair", CubeListBuilder.create().texOffs(0, 0).addBox(-4.5F, -34.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.2F))
                 .texOffs(24, 8).addBox(-4.5F, -34.0F, -4.0F, 8.0F, 7.0F, 8.0F, new CubeDeformation(0.3F)), PartPose.offset(0.5F, 26.0F, 0.0F));
