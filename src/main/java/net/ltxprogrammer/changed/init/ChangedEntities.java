@@ -259,6 +259,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexAlien>> LATEX_ALIEN = registerSpawning("latex_alien", 0x1983A9, 0x2DAAB9,
             EntityType.Builder.of(LatexAlien::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexAlien::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<LatexSiameseCat>> LATEX_SIAMESE_CAT = registerSpawning("latex_siamese_cat", 0xfdeae0, 0x604e61,
+            EntityType.Builder.of(LatexSiameseCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSiameseCat::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSnowLeopardMale>> LATEX_SNOW_LEOPARD_MALE = registerSpawning("latex_snow_leopard_male", 0x9C9C9C, 0x272727,
             EntityType.Builder.of(LatexSnowLeopardMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSnowLeopardMale::checkEntitySpawnRules);
