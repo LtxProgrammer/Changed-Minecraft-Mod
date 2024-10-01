@@ -186,6 +186,8 @@
   "text.changed.tamed.wander": "%s är nu vandrande",
   "text.changed.tamed.follow": "%s är nu följer",
   "text.changed.warning": "Varning",
+  "text.changed.warning.content1": "Denna modifierad version av Minecraft innehåller innehåll från Changed,",
+  "text.changed.warning.content2": "och är inte lämplig för alla målgrupper.",
 
   "effect.changed.hypercoagulation": "Hyperkoagulation",
   "effect.changed.shock": "Stöt",
