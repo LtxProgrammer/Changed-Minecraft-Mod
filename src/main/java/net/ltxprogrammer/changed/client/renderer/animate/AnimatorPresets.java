@@ -867,26 +867,13 @@ public class AnimatorPresets {
                                                                                                             ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
-            animator.addPreset(legless(abdomen, lowerAbdomen, tail, tailJoints))
-                    .addPreset(upperBody(head, torso, leftArm, rightArm))
-                    .addAnimator(new AquaticHeadInitAnimator<>(head))
-                    .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
-                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
-                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
-        };
-    }
-
-    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeLikeV2(ModelPart head, ModelPart torso,
-                                                                                                            ModelPart leftArm, ModelPart rightArm,
-                                                                                                            ModelPart abdomen, ModelPart lowerAbdomen,
-                                                                                                            ModelPart tail, List<ModelPart> tailJoints) {
-        return animator -> {
             animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints))
-                    .addPreset(upperBody(head, torso, leftArm, rightArm))
-                    .addAnimator(new AquaticHeadInitAnimator<>(head))
-                    .addAnimator(new AquaticArmSwimAnimator<>(leftArm, rightArm))
+                    .addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new SharkHeadSwimAnimator<>(head))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
-                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
+                    .addCameraAnimator(new SharkCameraSwimAnimator<>());
         };
     }
 
