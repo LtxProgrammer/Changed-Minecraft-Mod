@@ -147,11 +147,9 @@ public class PooltoyWolfModel extends AdvancedHumanoidModel<PooltoyWolf> impleme
 
         PartDefinition Base_r3 = TailTertiary.addOrReplaceChild("Base_r3", CubeListBuilder.create().texOffs(48, 22).addBox(-3.0F, -1.2F, -2.95F, 5.0F, 4.0F, 5.0F, new CubeDeformation(-0.15F)), PartPose.offsetAndRotation(0.5F, 0.0F, 4.0F, 1.8326F, 0.0F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 38).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(-4, 65).addBox(-3.0F, 8.0F, -2.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-4.5F, 3.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(24, 38).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(-4.5F, 3.5F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 38).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE)
-                .texOffs(-4, 61).addBox(-1.0F, 8.0F, -2.0F, 4.0F, 0.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(4.5F, 3.5F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 38).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(4.5F, 3.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 96, 96);
     }

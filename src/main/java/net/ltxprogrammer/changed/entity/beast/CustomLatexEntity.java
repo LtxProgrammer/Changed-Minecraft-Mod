@@ -56,6 +56,7 @@ public class CustomLatexEntity extends ChangedEntity {
 
     public enum LegType {
         BIPEDAL,
+        CENTAUR,
         SNAKE;
 
         LegType cycle() {
@@ -65,7 +66,7 @@ public class CustomLatexEntity extends ChangedEntity {
 
     public enum ArmType {
         GENERIC,
-        DRAGON,
+        WYVERN,
         SHARK;
 
         ArmType cycle() {
