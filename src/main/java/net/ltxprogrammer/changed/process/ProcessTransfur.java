@@ -75,7 +75,7 @@ public class ProcessTransfur {
         return ext.getTransfurProgress();
     }
 
-    protected static float checkBlocked(LivingEntity blocker, float amount, IAbstractChangedEntity source) {
+    public static float checkBlocked(LivingEntity blocker, float amount, IAbstractChangedEntity source) {
         if (source == null || amount <= 0.0f)
             return amount;
 
@@ -125,8 +125,6 @@ public class ProcessTransfur {
                 player.hurt(DamageSource.mobAttack(context.source == null ? transfurVariant.getEntityType().create(player.level) : context.source.getEntity()), amount);
                 return false;
             }
-
-            amount = checkBlocked(player, amount, context.source);
 
             if (amount <= 0.0f)
                 return false;

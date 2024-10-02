@@ -757,16 +757,17 @@ public abstract class ChangedEntity extends Monster {
         TransfurVariant<?> variant = this.getTransfurVariant();
 
         if (entity instanceof LivingEntity livingEntity) {
-            IAbstractChangedEntity source = IAbstractChangedEntity.forEither(maybeGetUnderlying());
-            if (tryFuseWithTarget(livingEntity, source, damage))
+            final var context = getAttackContext();
+            damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
+            if (tryFuseWithTarget(livingEntity, context.source, damage))
                 return true;
 
             if (TransfurVariant.getEntityVariant(livingEntity) == null) {
                 if (livingEntity instanceof Player player) {
-                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, getAttackContext());
+                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, context);
                     return true;
                 } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, getAttackContext());
+                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, context);
                     return true;
                 }
             }
