@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TamableLatexEntity;
 import net.ltxprogrammer.changed.entity.ai.LatexFollowOwnerGoal;
+import net.ltxprogrammer.changed.entity.ai.LatexOwnerHurtByTargetGoal;
+import net.ltxprogrammer.changed.entity.ai.LatexOwnerHurtTargetGoal;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.util.Color3;
@@ -26,6 +28,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -51,6 +55,8 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(6, new LatexFollowOwnerGoal<>(this, 0.35D, 10.0F, 2.0F, false));
+        this.targetSelector.addGoal(1, new LatexOwnerHurtByTargetGoal<>(this));
+        this.targetSelector.addGoal(2, new LatexOwnerHurtTargetGoal<>(this));
     }
 
     @Override
@@ -112,8 +118,11 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
     @Override
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
-        if (livingEntity == this.getOwner())
+        final var owner = this.getOwner();
+        if (livingEntity == owner)
             return false;
+        if (owner != null)
+            return livingEntity == owner.getLastHurtByMob();
         
         if (!this.isMaskless()) {// Check if masked DL can see entity
             if (livingEntity.distanceToSqr(this) <= 1.0)
@@ -248,6 +257,15 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
             this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -2));
         }
 
+    }
+
+    @Override
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
+        if (target instanceof AbstractDarkLatexEntity) {
+            return false;
+        }
+
+        return TamableLatexEntity.super.wantsToAttack(target, owner);
     }
 
     @Override
