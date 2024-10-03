@@ -136,12 +136,12 @@ public class LatexKeonWolfModel extends AdvancedHumanoidModel<LatexKeonWolf> imp
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexKeonWolf entity) {
         animator.setupHand();
     }
 
     @Override
-    public HumanoidAnimator<LatexKeonWolf, LatexKeonWolfModel> getAnimator() {
+    public HumanoidAnimator<LatexKeonWolf, LatexKeonWolfModel> getAnimator(LatexKeonWolf entity) {
         return animator;
     }
 

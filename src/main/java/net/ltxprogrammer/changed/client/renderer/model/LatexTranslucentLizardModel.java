@@ -138,7 +138,7 @@ public class LatexTranslucentLizardModel extends AdvancedHumanoidModel<LatexTran
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexTranslucentLizard entity) {
         animator.setupHand();
     }
 
@@ -175,7 +175,7 @@ public class LatexTranslucentLizardModel extends AdvancedHumanoidModel<LatexTran
     }
 
     @Override
-    public HumanoidAnimator<LatexTranslucentLizard, LatexTranslucentLizardModel> getAnimator() {
+    public HumanoidAnimator<LatexTranslucentLizard, LatexTranslucentLizardModel> getAnimator(LatexTranslucentLizard entity) {
         return animator;
     }
 }

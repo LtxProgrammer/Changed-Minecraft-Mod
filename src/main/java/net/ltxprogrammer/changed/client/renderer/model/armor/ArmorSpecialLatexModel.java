@@ -97,7 +97,7 @@ public class ArmorSpecialLatexModel<T extends ChangedEntity> extends LatexHumano
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorSpecialLatexModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorSpecialLatexModel<T>> getAnimator(T entity) {
         return animator;
     }
 

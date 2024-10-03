@@ -91,7 +91,7 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexOrcaModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexOrcaModel<T>> getAnimator(T entity) {
         return animator;
     }
 

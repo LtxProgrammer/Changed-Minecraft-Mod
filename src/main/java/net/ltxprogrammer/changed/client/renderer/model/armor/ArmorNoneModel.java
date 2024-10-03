@@ -30,7 +30,7 @@ public class ArmorNoneModel<T extends ChangedEntity> extends LatexHumanoidArmorM
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorNoneModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorNoneModel<T>> getAnimator(T entity) {
         return animator;
     }
 

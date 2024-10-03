@@ -182,7 +182,7 @@ public class LatexHyenaTaurModel extends AdvancedHumanoidModel<LatexHyenaTaur> i
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexHyenaTaur entity) {
         animator.setupHand();
     }
 
@@ -243,7 +243,7 @@ public class LatexHyenaTaurModel extends AdvancedHumanoidModel<LatexHyenaTaur> i
     }
 
     @Override
-    public HumanoidAnimator<LatexHyenaTaur, LatexHyenaTaurModel> getAnimator() {
+    public HumanoidAnimator<LatexHyenaTaur, LatexHyenaTaurModel> getAnimator(LatexHyenaTaur entity) {
         return animator;
     }
 

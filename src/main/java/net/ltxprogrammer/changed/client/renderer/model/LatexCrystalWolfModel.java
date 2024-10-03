@@ -135,7 +135,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<CrystalWolf> im
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(CrystalWolf entity) {
         animator.setupHand();
     }
 
@@ -172,7 +172,7 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<CrystalWolf> im
     }
 
     @Override
-    public HumanoidAnimator<CrystalWolf, LatexCrystalWolfModel> getAnimator() {
+    public HumanoidAnimator<CrystalWolf, LatexCrystalWolfModel> getAnimator(CrystalWolf entity) {
         return animator;
     }
 }

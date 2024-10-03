@@ -156,7 +156,7 @@ public class LatexSnowLeopardFemaleModel extends AdvancedHumanoidModel<LatexSnow
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexSnowLeopardFemale entity) {
         animator.setupHand();
     }
 
@@ -193,7 +193,7 @@ public class LatexSnowLeopardFemaleModel extends AdvancedHumanoidModel<LatexSnow
     }
 
     @Override
-    public HumanoidAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexSnowLeopardFemale, LatexSnowLeopardFemaleModel> getAnimator(LatexSnowLeopardFemale entity) {
         return animator;
     }
 }

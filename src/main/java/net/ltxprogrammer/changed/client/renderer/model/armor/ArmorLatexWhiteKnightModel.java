@@ -135,7 +135,7 @@ public class ArmorLatexWhiteKnightModel<T extends ChangedEntity> extends LatexHu
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexWhiteKnightModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexWhiteKnightModel<T>> getAnimator(T entity) {
         return animator;
     }
 

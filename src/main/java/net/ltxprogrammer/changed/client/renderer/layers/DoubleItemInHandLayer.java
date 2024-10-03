@@ -16,7 +16,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public class DoubleItemInHandLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & DoubleArmedModel & HeadedModel> extends ItemInHandLayer<T, M> {
+public class DoubleItemInHandLayer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T> & DoubleArmedModel<T> & HeadedModel> extends ItemInHandLayer<T, M> {
     public DoubleItemInHandLayer(RenderLayerParent<T, M> parent) {
         super(parent);
     }
@@ -42,10 +42,10 @@ public class DoubleItemInHandLayer<T extends ChangedEntity, M extends AdvancedHu
         }
     }
 
-    protected void renderArmWithItem(LivingEntity entity, ItemStack item, ItemTransforms.TransformType transformType, HumanoidArm arm, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    protected void renderArmWithItem(T entity, ItemStack item, ItemTransforms.TransformType transformType, HumanoidArm arm, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         if (!item.isEmpty()) {
             poseStack.pushPose();
-            this.getParentModel().translateToLowerHand(arm, poseStack);
+            this.getParentModel().translateToLowerHand(entity, arm, poseStack);
             poseStack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
             boolean flag = arm == HumanoidArm.LEFT;

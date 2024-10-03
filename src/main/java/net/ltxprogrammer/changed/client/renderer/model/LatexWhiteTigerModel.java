@@ -134,7 +134,7 @@ public class LatexWhiteTigerModel extends AdvancedHumanoidModel<LatexWhiteTiger>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexWhiteTiger entity) {
         animator.setupHand();
     }
 
@@ -171,7 +171,7 @@ public class LatexWhiteTigerModel extends AdvancedHumanoidModel<LatexWhiteTiger>
     }
 
     @Override
-    public HumanoidAnimator<LatexWhiteTiger, LatexWhiteTigerModel> getAnimator() {
+    public HumanoidAnimator<LatexWhiteTiger, LatexWhiteTigerModel> getAnimator(LatexWhiteTiger entity) {
         return animator;
     }
 }

@@ -62,7 +62,7 @@ public class ArmorUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorUpperBodyModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorUpperBodyModel<T>> getAnimator(T entity) {
         return animator;
     }
 

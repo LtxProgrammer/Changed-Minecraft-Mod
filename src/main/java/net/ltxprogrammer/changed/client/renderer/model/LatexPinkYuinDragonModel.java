@@ -220,7 +220,7 @@ public class LatexPinkYuinDragonModel extends AdvancedHumanoidModel<LatexPinkYui
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexPinkYuinDragon entity) {
         animator.setupHand();
     }
 
@@ -257,7 +257,7 @@ public class LatexPinkYuinDragonModel extends AdvancedHumanoidModel<LatexPinkYui
     }
 
     @Override
-    public HumanoidAnimator<LatexPinkYuinDragon, LatexPinkYuinDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexPinkYuinDragon, LatexPinkYuinDragonModel> getAnimator(LatexPinkYuinDragon entity) {
         return animator;
     }
 }

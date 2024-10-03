@@ -157,7 +157,7 @@ public class LatexMutantBloodcellWolfModel extends AdvancedHumanoidModel<LatexMu
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMutantBloodcellWolf entity) {
         animator.setupHand();
     }
 
@@ -194,7 +194,7 @@ public class LatexMutantBloodcellWolfModel extends AdvancedHumanoidModel<LatexMu
     }
 
     @Override
-    public HumanoidAnimator<LatexMutantBloodcellWolf, LatexMutantBloodcellWolfModel> getAnimator() {
+    public HumanoidAnimator<LatexMutantBloodcellWolf, LatexMutantBloodcellWolfModel> getAnimator(LatexMutantBloodcellWolf entity) {
         return animator;
     }
 }

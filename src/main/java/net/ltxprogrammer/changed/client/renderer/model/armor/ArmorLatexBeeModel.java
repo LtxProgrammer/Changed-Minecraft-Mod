@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> implements DoubleArmedModel {
+public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> implements DoubleArmedModel<T> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexBeeModel<ChangedEntity>> MODEL_SET =
             ArmorModelSet.of(Changed.modResource("armor_latex_bee_unified"), ArmorLatexBeeModel::createArmorLayer, ArmorLatexBeeModel::new);
 
@@ -132,7 +132,7 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexBeeModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexBeeModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -153,12 +153,12 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 

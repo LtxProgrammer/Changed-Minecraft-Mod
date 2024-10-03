@@ -198,7 +198,7 @@ public class LatexCrocodileModel extends AdvancedHumanoidModel<LatexCrocodile> i
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexCrocodile entity) {
         animator.setupHand();
     }
 
@@ -257,7 +257,7 @@ public class LatexCrocodileModel extends AdvancedHumanoidModel<LatexCrocodile> i
     }
 
     @Override
-    public HumanoidAnimator<LatexCrocodile, LatexCrocodileModel> getAnimator() {
+    public HumanoidAnimator<LatexCrocodile, LatexCrocodileModel> getAnimator(LatexCrocodile entity) {
         return animator;
     }
 }

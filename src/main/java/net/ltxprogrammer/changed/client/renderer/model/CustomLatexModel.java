@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
-import net.ltxprogrammer.changed.entity.beast.PureWhiteLatexWolf;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -61,6 +60,7 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
     private final ModelPart WyvernLeftArm;
 
     private final HumanoidAnimator<CustomLatexEntity, CustomLatexModel> animator;
+    private final HumanoidAnimator<CustomLatexEntity, CustomLatexModel> leglessAnimator;
 
     public CustomLatexModel(ModelPart root) {
         super(root);
@@ -107,6 +107,7 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
         var rightFoot = rightLowerLeg.getChild("RightFoot");
 
         animator = HumanoidAnimator.of(this).hipOffset(-1.5f);
+        leglessAnimator = HumanoidAnimator.of(this).hipOffset(-1.5f).torsoLength(9.0f).legLength(9.5f);
 
         {
             var tailPrimary = WolfTail.getChild("TailPrimary");
@@ -154,7 +155,7 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
             var tailQuaternary = tailTertiary.getChild("TailQuaternary3");
             var tailQuintary = tailQuaternary.getChild("TailQuintary");
 
-            animator.addPreset(AnimatorPresets.leglessV2(Abdomen, LowerAbdomen, LeglessTail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary, tailQuintary)));
+            leglessAnimator.addPreset(AnimatorPresets.leglessShark(Head, Torso, LeftArm, RightArm, Abdomen, LowerAbdomen, LeglessTail, List.of(tailPrimary, tailSecondary, tailTertiary, tailQuaternary, tailQuintary)));
         }
     }
 
@@ -191,7 +192,7 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
         PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(24, 0).addBox(-2.0F, 0.0F, -2.5F, 4.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 4.325F, -4.425F));
 
         {
-            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create(), PartPose.offset(0.0F, 8.0F, 0.0F));
+            PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(28, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(0.0F, 8.0F, 0.0F));
             PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(28, 28).addBox(-4.5F, -1.25F, -2.5F, 9.0F, 7.0F, 5.0F, new CubeDeformation(0.06F)), PartPose.offset(0.0F, 4.25F, 0.0F));
             PartDefinition Tail2 = LowerAbdomen.addOrReplaceChild("Tail2", CubeListBuilder.create().texOffs(28, 32).addBox(-4.0F, -0.75F, -2.0F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 5.5F, 0.0F));
             PartDefinition TailPrimary5 = Tail2.addOrReplaceChild("TailPrimary5", CubeListBuilder.create().texOffs(28, 32).addBox(-3.5F, -0.25F, -2.0F, 7.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.5F, 0.0F));
@@ -526,17 +527,17 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
 
     @Override
     public void prepareMobModel(CustomLatexEntity p_102861_, float p_102862_, float p_102863_, float p_102864_) {
-        this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
+        this.prepareMobModel(getAnimator(p_102861_), p_102861_, p_102862_, p_102863_, p_102864_);
         this.prepareVisibility(p_102861_);
     }
 
-    public void setupHand() {
-        animator.setupHand();
+    public void setupHand(CustomLatexEntity entity) {
+        getAnimator(entity).setupHand();
     }
 
     @Override
     public void setupAnim(@NotNull CustomLatexEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        animator.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        getAnimator(entity).setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -568,7 +569,10 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
     }
 
     @Override
-    public HumanoidAnimator<CustomLatexEntity, CustomLatexModel> getAnimator() {
-        return animator;
+    public HumanoidAnimator<CustomLatexEntity, CustomLatexModel> getAnimator(CustomLatexEntity entity) {
+        if (entity.getLegType() == CustomLatexEntity.LegType.MERMAID)
+            return leglessAnimator;
+        else
+            return animator;
     }
 }

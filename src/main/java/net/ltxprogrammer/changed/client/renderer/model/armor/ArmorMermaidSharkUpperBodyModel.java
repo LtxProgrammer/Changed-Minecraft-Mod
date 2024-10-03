@@ -55,7 +55,7 @@ public class ArmorMermaidSharkUpperBodyModel<T extends ChangedEntity> extends La
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorMermaidSharkUpperBodyModel<T>> getAnimator(T entity) {
         return animator;
     }
 

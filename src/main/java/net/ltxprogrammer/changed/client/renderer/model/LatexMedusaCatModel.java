@@ -182,7 +182,7 @@ public class LatexMedusaCatModel extends AdvancedHumanoidModel<LatexMedusaCat> i
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMedusaCat entity) {
         animator.setupHand();
     }
 
@@ -228,7 +228,7 @@ public class LatexMedusaCatModel extends AdvancedHumanoidModel<LatexMedusaCat> i
     }
 
     @Override
-    public HumanoidAnimator<LatexMedusaCat, LatexMedusaCatModel> getAnimator() {
+    public HumanoidAnimator<LatexMedusaCat, LatexMedusaCatModel> getAnimator(LatexMedusaCat entity) {
         return animator;
     }
 }

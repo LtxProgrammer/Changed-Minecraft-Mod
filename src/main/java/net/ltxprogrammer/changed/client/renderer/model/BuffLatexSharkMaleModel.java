@@ -185,12 +185,12 @@ public class BuffLatexSharkMaleModel extends AdvancedHumanoidModel<BuffLatexShar
 		this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
 	}
 
-	public void setupHand() {
+	public void setupHand(BuffLatexSharkMale entity) {
 		animator.setupHand();
 	}
 
 	@Override
-	public HumanoidAnimator<BuffLatexSharkMale, BuffLatexSharkMaleModel> getAnimator() {
+	public HumanoidAnimator<BuffLatexSharkMale, BuffLatexSharkMaleModel> getAnimator(BuffLatexSharkMale entity) {
 		return animator;
 	}
 

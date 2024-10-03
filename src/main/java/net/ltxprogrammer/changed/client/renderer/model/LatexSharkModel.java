@@ -161,12 +161,12 @@ public class LatexSharkModel extends AdvancedHumanoidModel<LatexShark> implement
 		this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
 	}
 
-	public void setupHand() {
+	public void setupHand(LatexShark entity) {
 		animator.setupHand();
 	}
 
 	@Override
-	public HumanoidAnimator<LatexShark, LatexSharkModel> getAnimator() {
+	public HumanoidAnimator<LatexShark, LatexSharkModel> getAnimator(LatexShark entity) {
 		return animator;
 	}
 

@@ -139,7 +139,7 @@ public class LatexTrafficConeDragonModel extends AdvancedHumanoidModel<LatexTraf
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexTrafficConeDragon entity) {
         animator.setupHand();
     }
 
@@ -176,7 +176,7 @@ public class LatexTrafficConeDragonModel extends AdvancedHumanoidModel<LatexTraf
     }
 
     @Override
-    public HumanoidAnimator<LatexTrafficConeDragon, LatexTrafficConeDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexTrafficConeDragon, LatexTrafficConeDragonModel> getAnimator(LatexTrafficConeDragon entity) {
         return animator;
     }
 }

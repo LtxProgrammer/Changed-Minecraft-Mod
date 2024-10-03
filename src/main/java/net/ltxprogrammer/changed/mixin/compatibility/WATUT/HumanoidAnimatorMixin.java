@@ -25,10 +25,10 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> extends Pla
     public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         Player player = pEntity.getUnderlyingPlayer();
         if (player == null) return;
-        if (!(this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)) return;
+        if (!(this instanceof AdvancedHumanoidModelInterface modelInterface)) return;
 
         this.syncPropertyModel();
         WatutMod.getPlayerStatusManagerClient().setupRotationsHook(this, player, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        modelInterface.getAnimator().applyPropertyModel(this);
+        modelInterface.getAnimator(pEntity).applyPropertyModel(this);
     }
 }

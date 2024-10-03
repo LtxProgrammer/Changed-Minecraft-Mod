@@ -98,7 +98,7 @@ public class LatexSnakeModel extends AdvancedHumanoidModel<LatexSnake> implement
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexSnake entity) {
         animator.setupHand();
     }
 
@@ -146,7 +146,7 @@ public class LatexSnakeModel extends AdvancedHumanoidModel<LatexSnake> implement
     }
 
     @Override
-    public HumanoidAnimator<LatexSnake, LatexSnakeModel> getAnimator() {
+    public HumanoidAnimator<LatexSnake, LatexSnakeModel> getAnimator(LatexSnake entity) {
         return animator;
     }
 }

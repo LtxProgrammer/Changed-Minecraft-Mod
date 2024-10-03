@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogMale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +16,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LatexSquidDogMaleModel extends AdvancedHumanoidModel<LatexSquidDogMale> implements AdvancedHumanoidModelInterface<LatexSquidDogMale, LatexSquidDogMaleModel>, DoubleArmedModel {
+public class LatexSquidDogMaleModel extends AdvancedHumanoidModel<LatexSquidDogMale> implements AdvancedHumanoidModelInterface<LatexSquidDogMale, LatexSquidDogMaleModel>, DoubleArmedModel<LatexSquidDogMale> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_male"), "main");
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -301,24 +302,24 @@ public class LatexSquidDogMaleModel extends AdvancedHumanoidModel<LatexSquidDogM
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(LatexSquidDogMale entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(LatexSquidDogMale entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void setupHand() {
+    public void setupHand(LatexSquidDogMale entity) {
         animator.setupHand();
     }
 
     @Override
-    public HumanoidAnimator<LatexSquidDogMale, LatexSquidDogMaleModel> getAnimator() {
+    public HumanoidAnimator<LatexSquidDogMale, LatexSquidDogMaleModel> getAnimator(LatexSquidDogMale entity) {
         return animator;
     }
 

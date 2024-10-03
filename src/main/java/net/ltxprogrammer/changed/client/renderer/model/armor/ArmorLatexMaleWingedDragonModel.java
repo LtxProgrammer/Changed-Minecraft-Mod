@@ -156,7 +156,7 @@ public class ArmorLatexMaleWingedDragonModel<T extends ChangedEntity> extends La
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexMaleWingedDragonModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleWingedDragonModel<T>> getAnimator(T entity) {
         return animator;
     }
 

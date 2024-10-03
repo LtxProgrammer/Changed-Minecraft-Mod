@@ -160,7 +160,7 @@ public class LatexPinkDeerModel extends AdvancedHumanoidModel<LatexPinkDeer> imp
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexPinkDeer entity) {
         animator.setupHand();
     }
 
@@ -197,7 +197,7 @@ public class LatexPinkDeerModel extends AdvancedHumanoidModel<LatexPinkDeer> imp
     }
 
     @Override
-    public HumanoidAnimator<LatexPinkDeer, LatexPinkDeerModel> getAnimator() {
+    public HumanoidAnimator<LatexPinkDeer, LatexPinkDeerModel> getAnimator(LatexPinkDeer entity) {
         return animator;
     }
 }

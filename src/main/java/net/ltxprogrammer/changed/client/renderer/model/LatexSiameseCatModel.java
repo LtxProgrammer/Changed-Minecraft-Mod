@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.tfanimations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.beast.LatexSiameseCat;
-import net.ltxprogrammer.changed.entity.beast.LatexSnowLeopardFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -157,7 +156,7 @@ public class LatexSiameseCatModel extends AdvancedHumanoidModel<LatexSiameseCat>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexSiameseCat entity) {
         animator.setupHand();
     }
 
@@ -194,7 +193,7 @@ public class LatexSiameseCatModel extends AdvancedHumanoidModel<LatexSiameseCat>
     }
 
     @Override
-    public HumanoidAnimator<LatexSiameseCat, LatexSiameseCatModel> getAnimator() {
+    public HumanoidAnimator<LatexSiameseCat, LatexSiameseCatModel> getAnimator(LatexSiameseCat entity) {
         return animator;
     }
 }

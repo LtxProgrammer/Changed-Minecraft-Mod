@@ -129,7 +129,7 @@ public class ArmorLatexMaleSharkModel<T extends ChangedEntity> extends LatexHuma
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexMaleSharkModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleSharkModel<T>> getAnimator(T entity) {
         return animator;
     }
 

@@ -133,7 +133,7 @@ public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmo
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorNoTailModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorNoTailModel<T>> getAnimator(T entity) {
         return animator;
     }
 

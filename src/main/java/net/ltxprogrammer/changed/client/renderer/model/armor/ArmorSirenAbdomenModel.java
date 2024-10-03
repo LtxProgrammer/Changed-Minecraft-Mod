@@ -68,7 +68,7 @@ public class ArmorSirenAbdomenModel<T extends ChangedEntity> extends LatexHumano
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorSirenAbdomenModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorSirenAbdomenModel<T>> getAnimator(T entity) {
         return animator;
     }
 

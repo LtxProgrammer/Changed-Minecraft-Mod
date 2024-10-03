@@ -134,7 +134,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<LatexRedPanda> imp
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexRedPanda entity) {
         animator.setupHand();
     }
 
@@ -171,7 +171,7 @@ public class LatexRedPandaModel extends AdvancedHumanoidModel<LatexRedPanda> imp
     }
 
     @Override
-    public HumanoidAnimator<LatexRedPanda, LatexRedPandaModel> getAnimator() {
+    public HumanoidAnimator<LatexRedPanda, LatexRedPandaModel> getAnimator(LatexRedPanda entity) {
         return animator;
     }
 }

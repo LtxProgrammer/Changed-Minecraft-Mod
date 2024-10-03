@@ -135,7 +135,7 @@ public class WhiteLatexKnightModel extends AdvancedHumanoidModel<WhiteLatexKnigh
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(WhiteLatexKnight entity) {
         animator.setupHand();
 
     }
@@ -173,7 +173,7 @@ public class WhiteLatexKnightModel extends AdvancedHumanoidModel<WhiteLatexKnigh
     }
 
     @Override
-    public HumanoidAnimator<WhiteLatexKnight, WhiteLatexKnightModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexKnight, WhiteLatexKnightModel> getAnimator(WhiteLatexKnight entity) {
         return animator;
     }
 }

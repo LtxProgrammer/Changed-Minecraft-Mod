@@ -147,7 +147,7 @@ public class LatexLeafModel extends AdvancedHumanoidModel<LatexLeaf> implements 
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexLeaf entity) {
         animator.setupHand();
     }
 
@@ -184,7 +184,7 @@ public class LatexLeafModel extends AdvancedHumanoidModel<LatexLeaf> implements 
     }
 
     @Override
-    public HumanoidAnimator<LatexLeaf, LatexLeafModel> getAnimator() {
+    public HumanoidAnimator<LatexLeaf, LatexLeafModel> getAnimator(LatexLeaf entity) {
         return animator;
     }
 }

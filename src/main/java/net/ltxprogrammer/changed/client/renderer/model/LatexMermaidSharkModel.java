@@ -128,7 +128,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<LatexMermaidSh
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMermaidShark entity) {
         animator.setupHand();
     }
 
@@ -176,7 +176,7 @@ public class LatexMermaidSharkModel extends AdvancedHumanoidModel<LatexMermaidSh
     }
 
     @Override
-    public HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> getAnimator() {
+    public HumanoidAnimator<LatexMermaidShark, LatexMermaidSharkModel> getAnimator(LatexMermaidShark entity) {
         return animator;
     }
 }

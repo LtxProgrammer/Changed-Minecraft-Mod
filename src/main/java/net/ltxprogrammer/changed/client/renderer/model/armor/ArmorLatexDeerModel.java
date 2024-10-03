@@ -123,7 +123,7 @@ public class ArmorLatexDeerModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexDeerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexDeerModel<T>> getAnimator(T entity) {
         return animator;
     }
 

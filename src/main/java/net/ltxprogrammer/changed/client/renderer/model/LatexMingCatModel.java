@@ -137,7 +137,7 @@ public class LatexMingCatModel extends AdvancedHumanoidModel<LatexMingCat> imple
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMingCat entity) {
         animator.setupHand();
     }
 
@@ -174,7 +174,7 @@ public class LatexMingCatModel extends AdvancedHumanoidModel<LatexMingCat> imple
     }
 
     @Override
-    public HumanoidAnimator<LatexMingCat, LatexMingCatModel> getAnimator() {
+    public HumanoidAnimator<LatexMingCat, LatexMingCatModel> getAnimator(LatexMingCat entity) {
         return animator;
     }
 }

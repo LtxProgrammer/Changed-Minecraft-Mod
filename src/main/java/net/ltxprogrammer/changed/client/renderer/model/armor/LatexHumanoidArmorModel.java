@@ -144,12 +144,12 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
 
     @Override
     public void prepareMobModel(@NotNull T entity, float p_102862_, float p_102863_, float partialTicks) {
-        this.prepareMobModel(getAnimator(), entity, p_102862_, p_102863_, partialTicks);
+        this.prepareMobModel(getAnimator(entity), entity, p_102862_, p_102863_, partialTicks);
     }
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        getAnimator().setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        getAnimator(entity).setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
@@ -161,7 +161,7 @@ public abstract class LatexHumanoidArmorModel<T extends ChangedEntity, M extends
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {}
 
     @Override
-    public final void setupHand() {
+    public final void setupHand(T entity) {
 
     }
 

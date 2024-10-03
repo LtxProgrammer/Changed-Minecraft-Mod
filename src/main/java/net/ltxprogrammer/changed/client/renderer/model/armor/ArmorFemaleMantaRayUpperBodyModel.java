@@ -60,7 +60,7 @@ public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends 
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorFemaleMantaRayUpperBodyModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorFemaleMantaRayUpperBodyModel<T>> getAnimator(T entity) {
         return animator;
     }
 

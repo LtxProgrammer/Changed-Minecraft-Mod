@@ -94,7 +94,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
-    public HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator() {
+    public HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator(HeadlessKnight entity) {
         return animator;
     }
 

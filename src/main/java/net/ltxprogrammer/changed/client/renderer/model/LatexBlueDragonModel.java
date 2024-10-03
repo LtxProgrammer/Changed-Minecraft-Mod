@@ -152,7 +152,7 @@ public class LatexBlueDragonModel extends AdvancedHumanoidModel<LatexBlueDragon>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexBlueDragon entity) {
         animator.setupHand();
     }
 
@@ -189,7 +189,7 @@ public class LatexBlueDragonModel extends AdvancedHumanoidModel<LatexBlueDragon>
     }
 
     @Override
-    public HumanoidAnimator<LatexBlueDragon, LatexBlueDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexBlueDragon, LatexBlueDragonModel> getAnimator(LatexBlueDragon entity) {
         return animator;
     }
 }

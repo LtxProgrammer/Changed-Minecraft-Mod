@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.NotNull;
 
@@ -159,7 +158,7 @@ public class PooltoyWolfModel extends AdvancedHumanoidModel<PooltoyWolf> impleme
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(PooltoyWolf entity) {
         animator.setupHand();
     }
 
@@ -196,7 +195,7 @@ public class PooltoyWolfModel extends AdvancedHumanoidModel<PooltoyWolf> impleme
     }
 
     @Override
-    public HumanoidAnimator<PooltoyWolf, PooltoyWolfModel> getAnimator() {
+    public HumanoidAnimator<PooltoyWolf, PooltoyWolfModel> getAnimator(PooltoyWolf entity) {
         return animator;
     }
 }

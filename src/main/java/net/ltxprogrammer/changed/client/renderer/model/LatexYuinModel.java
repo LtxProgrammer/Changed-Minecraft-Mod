@@ -131,7 +131,7 @@ public class LatexYuinModel extends AdvancedHumanoidModel<LatexYuin> implements 
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexYuin entity) {
         animator.setupHand();
     }
 
@@ -168,7 +168,7 @@ public class LatexYuinModel extends AdvancedHumanoidModel<LatexYuin> implements 
     }
 
     @Override
-    public HumanoidAnimator<LatexYuin, LatexYuinModel> getAnimator() {
+    public HumanoidAnimator<LatexYuin, LatexYuinModel> getAnimator(LatexYuin entity) {
         return animator;
     }
 }

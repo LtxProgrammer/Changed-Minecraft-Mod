@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleSquidDogModel<T>> implements DoubleArmedModel {
+public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexFemaleSquidDogModel<T>> implements DoubleArmedModel<T> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexFemaleSquidDogModel<ChangedEntity>> MODEL_SET =
             ArmorModelSet.of(Changed.modResource("armor_latex_squid_dog_female_unified"), ArmorLatexFemaleSquidDogModel::createArmorLayer, ArmorLatexFemaleSquidDogModel::new);
 
@@ -186,7 +186,7 @@ public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends Late
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexFemaleSquidDogModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexFemaleSquidDogModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -207,12 +207,12 @@ public class ArmorLatexFemaleSquidDogModel<T extends ChangedEntity> extends Late
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 

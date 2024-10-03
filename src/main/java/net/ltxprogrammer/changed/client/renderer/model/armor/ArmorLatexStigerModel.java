@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> implements TripleArmedModel {
+public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> implements TripleArmedModel<T> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexStigerModel<ChangedEntity>> MODEL_SET =
             ArmorModelSet.of(Changed.modResource("armor_latex_stiger_unified"), ArmorLatexStigerModel::createArmorLayer, ArmorLatexStigerModel::new);
 
@@ -143,7 +143,7 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexStigerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexStigerModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -184,19 +184,19 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToMiddleHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToMiddleHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getMiddleArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }

@@ -63,7 +63,7 @@ public class ArmorLatexCentaurUpperModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexCentaurUpperModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexCentaurUpperModel<T>> getAnimator(T entity) {
         return animator;
     }
 

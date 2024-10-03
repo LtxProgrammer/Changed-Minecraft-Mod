@@ -217,7 +217,7 @@ public class LatexRedDragonModel extends AdvancedHumanoidModel<LatexRedDragon> i
     }
 
 
-    public void setupHand() {
+    public void setupHand(LatexRedDragon entity) {
         animator.setupHand();
     }
 
@@ -259,7 +259,7 @@ public class LatexRedDragonModel extends AdvancedHumanoidModel<LatexRedDragon> i
 
 
     @Override
-    public HumanoidAnimator<LatexRedDragon, LatexRedDragonModel> getAnimator() {
+    public HumanoidAnimator<LatexRedDragon, LatexRedDragonModel> getAnimator(LatexRedDragon entity) {
         return animator;
     }
 }

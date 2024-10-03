@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> implements DoubleArmedModel {
+public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> implements DoubleArmedModel<T> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleSquidDogModel<ChangedEntity>> MODEL_SET =
             ArmorModelSet.of(Changed.modResource("armor_latex_squid_dog_male_unified"), ArmorLatexMaleSquidDogModel::createArmorLayer, ArmorLatexMaleSquidDogModel::new);
 
@@ -172,7 +172,7 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -193,12 +193,12 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 

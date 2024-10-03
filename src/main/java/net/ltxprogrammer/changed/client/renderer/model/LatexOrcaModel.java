@@ -154,7 +154,7 @@ public class LatexOrcaModel extends AdvancedHumanoidModel<LatexOrca> implements 
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexOrca entity) {
         animator.setupHand();
     }
 
@@ -191,7 +191,7 @@ public class LatexOrcaModel extends AdvancedHumanoidModel<LatexOrca> implements 
     }
 
     @Override
-    public HumanoidAnimator<LatexOrca, LatexOrcaModel> getAnimator() {
+    public HumanoidAnimator<LatexOrca, LatexOrcaModel> getAnimator(LatexOrca entity) {
         return animator;
     }
 }

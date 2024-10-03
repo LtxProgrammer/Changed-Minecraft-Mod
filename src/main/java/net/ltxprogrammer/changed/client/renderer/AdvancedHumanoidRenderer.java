@@ -5,17 +5,13 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelSet;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -33,10 +29,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.client.render.CuriosLayer;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
     @Nullable
@@ -150,8 +142,8 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
             super.setupRotations(entity, poseStack, bob, bodyYRot, partialTicks);
         }
 
-        if (this.getModel(entity) instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
-            poseStack.translate(0, 0, modelInterface.getAnimator().forwardOffset / 16.0D);
+        if (this.getModel(entity) instanceof AdvancedHumanoidModelInterface modelInterface)
+            poseStack.translate(0, 0, modelInterface.getAnimator(entity).forwardOffset / 16.0D);
     }
 
     public static HumanoidModel.ArmPose getArmPose(ChangedEntity p_117795_, InteractionHand p_117796_) {
@@ -194,8 +186,8 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
 
     @Override
     public void render(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
-            modelInterface.getAnimator().partialTicks = partialTicks;
+        if (this instanceof AdvancedHumanoidModelInterface modelInterface)
+            modelInterface.getAnimator(entity).partialTicks = partialTicks;
         super.render(entity, yRot, partialTicks, poseStack, bufferSource, packedLight);
     }
 

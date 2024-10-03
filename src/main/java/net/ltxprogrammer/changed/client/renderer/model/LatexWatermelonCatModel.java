@@ -168,7 +168,7 @@ public class LatexWatermelonCatModel extends AdvancedHumanoidModel<LatexWatermel
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexWatermelonCat entity) {
         animator.setupHand();
     }
 
@@ -205,7 +205,7 @@ public class LatexWatermelonCatModel extends AdvancedHumanoidModel<LatexWatermel
     }
 
     @Override
-    public HumanoidAnimator<LatexWatermelonCat, LatexWatermelonCatModel> getAnimator() {
+    public HumanoidAnimator<LatexWatermelonCat, LatexWatermelonCatModel> getAnimator(LatexWatermelonCat entity) {
         return animator;
     }
 }

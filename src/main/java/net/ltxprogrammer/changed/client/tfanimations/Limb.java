@@ -16,27 +16,27 @@ public enum Limb {
     RIGHT_ARM(model -> model.rightArm, model -> model.getArm(HumanoidArm.RIGHT)),
 
     LEFT_ARM2(model -> model.leftArm, model -> {
-        if (model instanceof TripleArmedModel tripleArmedModel)
+        if (model instanceof TripleArmedModel<?> tripleArmedModel)
             return tripleArmedModel.getMiddleArm(HumanoidArm.LEFT);
-        if (model instanceof DoubleArmedModel doubleArmedModel)
+        if (model instanceof DoubleArmedModel<?> doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.LEFT);
         return null;
     }, false),
     RIGHT_ARM2(model -> model.rightArm, model -> {
-        if (model instanceof TripleArmedModel tripleArmedModel)
+        if (model instanceof TripleArmedModel<?> tripleArmedModel)
             return tripleArmedModel.getMiddleArm(HumanoidArm.RIGHT);
-        if (model instanceof DoubleArmedModel doubleArmedModel)
+        if (model instanceof DoubleArmedModel<?> doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.RIGHT);
         return null;
     }, false),
 
     LEFT_ARM3(model -> model.leftArm, model -> {
-        if (model instanceof TripleArmedModel doubleArmedModel)
+        if (model instanceof TripleArmedModel<?> doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.LEFT);
         return null;
     }, false),
     RIGHT_ARM3(model -> model.rightArm, model -> {
-        if (model instanceof TripleArmedModel doubleArmedModel)
+        if (model instanceof TripleArmedModel<?> doubleArmedModel)
             return doubleArmedModel.getOtherArm(HumanoidArm.RIGHT);
         return null;
     }, false),

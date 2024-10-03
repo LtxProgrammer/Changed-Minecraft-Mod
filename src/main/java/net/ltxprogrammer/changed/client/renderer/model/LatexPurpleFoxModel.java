@@ -136,7 +136,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<LatexPurpleFox> i
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexPurpleFox entity) {
         animator.setupHand();
     }
 
@@ -173,7 +173,7 @@ public class LatexPurpleFoxModel extends AdvancedHumanoidModel<LatexPurpleFox> i
     }
 
     @Override
-    public HumanoidAnimator<LatexPurpleFox, LatexPurpleFoxModel> getAnimator() {
+    public HumanoidAnimator<LatexPurpleFox, LatexPurpleFoxModel> getAnimator(LatexPurpleFox entity) {
         return animator;
     }
 }

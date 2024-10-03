@@ -231,7 +231,7 @@ public class DarkLatexYufengModel extends AdvancedHumanoidModel<DarkLatexYufeng>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(DarkLatexYufeng entity) {
         animator.setupHand();
     }
 
@@ -268,7 +268,7 @@ public class DarkLatexYufengModel extends AdvancedHumanoidModel<DarkLatexYufeng>
     }
 
     @Override
-    public HumanoidAnimator<DarkLatexYufeng, DarkLatexYufengModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexYufeng, DarkLatexYufengModel> getAnimator(DarkLatexYufeng entity) {
         return animator;
     }
 }

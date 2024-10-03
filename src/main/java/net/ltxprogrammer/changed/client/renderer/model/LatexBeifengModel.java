@@ -151,7 +151,7 @@ public class LatexBeifengModel extends AdvancedHumanoidModel<Beifeng> implements
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(Beifeng entity) {
         animator.setupHand();
     }
 
@@ -188,7 +188,7 @@ public class LatexBeifengModel extends AdvancedHumanoidModel<Beifeng> implements
     }
 
     @Override
-    public HumanoidAnimator<Beifeng, LatexBeifengModel> getAnimator() {
+    public HumanoidAnimator<Beifeng, LatexBeifengModel> getAnimator(Beifeng entity) {
         return animator;
     }
 }

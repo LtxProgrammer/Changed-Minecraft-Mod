@@ -6,16 +6,12 @@ import com.mrcrayfish.guns.item.GunItem;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +31,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         if (player == null) return;
 
         HumanoidModel<?> model = this.entityModel;
-        this.entityModel.syncPropertyModel();
+        this.entityModel.syncPropertyModel(entity);
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() instanceof GunItem gunItem) {
             if (player.isLocalPlayer() && limbSwing == 0.0F) {

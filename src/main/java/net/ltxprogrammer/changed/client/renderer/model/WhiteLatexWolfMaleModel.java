@@ -137,7 +137,7 @@ public class WhiteLatexWolfMaleModel extends AdvancedHumanoidModel<WhiteLatexWol
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(WhiteLatexWolfMale entity) {
         animator.setupHand();
     }
 
@@ -174,7 +174,7 @@ public class WhiteLatexWolfMaleModel extends AdvancedHumanoidModel<WhiteLatexWol
     }
 
     @Override
-    public HumanoidAnimator<WhiteLatexWolfMale, WhiteLatexWolfMaleModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexWolfMale, WhiteLatexWolfMaleModel> getAnimator(WhiteLatexWolfMale entity) {
         return animator;
     }
 }

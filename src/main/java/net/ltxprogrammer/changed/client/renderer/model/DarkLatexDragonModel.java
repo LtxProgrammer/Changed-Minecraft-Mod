@@ -197,7 +197,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkDragon> impl
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(DarkDragon entity) {
         animator.setupHand();
     }
 
@@ -234,7 +234,7 @@ public class DarkLatexDragonModel extends AdvancedHumanoidModel<DarkDragon> impl
     }
 
     @Override
-    public HumanoidAnimator<DarkDragon, DarkLatexDragonModel> getAnimator() {
+    public HumanoidAnimator<DarkDragon, DarkLatexDragonModel> getAnimator(DarkDragon entity) {
         return animator;
     }
 }

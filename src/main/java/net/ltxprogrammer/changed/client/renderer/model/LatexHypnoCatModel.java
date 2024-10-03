@@ -140,7 +140,7 @@ public class LatexHypnoCatModel extends AdvancedHumanoidModel<LatexHypnoCat> imp
 		this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
 	}
 
-	public void setupHand() {
+	public void setupHand(LatexHypnoCat entity) {
 		animator.setupHand();
 	}
 
@@ -177,7 +177,7 @@ public class LatexHypnoCatModel extends AdvancedHumanoidModel<LatexHypnoCat> imp
 	}
 
 	@Override
-	public HumanoidAnimator<LatexHypnoCat, LatexHypnoCatModel> getAnimator() {
+	public HumanoidAnimator<LatexHypnoCat, LatexHypnoCatModel> getAnimator(LatexHypnoCat entity) {
 		return animator;
 	}
 }

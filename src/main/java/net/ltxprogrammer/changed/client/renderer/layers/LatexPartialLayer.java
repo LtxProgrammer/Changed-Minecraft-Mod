@@ -51,7 +51,7 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
             }
 
             this.prepareMobModel(entity, partialTicks);
-            this.model.getAnimator().setupVariables(entity, partialTicks);
+            this.model.getAnimator(entity).setupVariables(entity, partialTicks);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.model.renderToBuffer(pose, vertexconsumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
@@ -76,7 +76,7 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
     @Override
     public void renderFirstPersonOnArms(PoseStack stack, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {
         this.getModel().setupAnim(entity, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        model.setupHand();
+        model.setupHand(entity);
         stack.pushPose();
         stack.scale(ZFIGHT_OFFSET, ZFIGHT_OFFSET, ZFIGHT_OFFSET);
         FormRenderHandler.renderModelPartWithTexture(this.getArm(arm), stackCorrector, stack, bufferSource.getBuffer(this.renderType()), packedLight, 1F);
