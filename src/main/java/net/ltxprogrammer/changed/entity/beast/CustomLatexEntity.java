@@ -15,7 +15,8 @@ public class CustomLatexEntity extends ChangedEntity {
     public enum TorsoType {
         GENERIC,
         CHISELED,
-        FEMALE;
+        FEMALE,
+        HEAVY;
 
         TorsoType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -57,7 +58,7 @@ public class CustomLatexEntity extends ChangedEntity {
     public enum LegType {
         BIPEDAL,
         CENTAUR,
-        SNAKE;
+        MERMAID;
 
         LegType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -208,7 +209,22 @@ public class CustomLatexEntity extends ChangedEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setRawFormFlags(tag.getInt("RawFormFlags"));
+        if (tag.contains("RawFormFlags"))
+            this.setRawFormFlags(tag.getInt("RawFormFlags"));
+    }
+
+    @Override
+    public CompoundTag savePlayerVariantData() {
+        final var tag = super.savePlayerVariantData();
+        tag.putInt("RawFormFlags", this.getRawFormFlags());
+        return tag;
+    }
+
+    @Override
+    public void readPlayerVariantData(CompoundTag tag) {
+        super.readPlayerVariantData(tag);
+        if (tag.contains("RawFormFlags"))
+            this.setRawFormFlags(tag.getInt("RawFormFlags"));
     }
 
     @Override

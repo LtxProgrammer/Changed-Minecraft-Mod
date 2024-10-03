@@ -311,6 +311,10 @@ public class ChangedEntities {
             EntityType.Builder.of(PureWhiteLatexWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexWolf::checkEntitySpawnRules);
 
+    public static final RegistryObject<EntityType<CustomLatexEntity>> CUSTOM_LATEX = registerSpawning("custom_latex", 0xFFFFFF, 0xFAFAFA,
+            EntityType.Builder.of(CustomLatexEntity::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, CustomLatexEntity::checkEntitySpawnRules);
+
     public static final RegistryObject<EntityType<SeatEntity>> SEAT_ENTITY = REGISTRY.register("seat_entity",
             () -> EntityType.Builder.of(SeatEntity::new, MobCategory.MISC).sized(0.01f, 0.01f).build("seat_entity"));
 

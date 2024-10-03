@@ -113,6 +113,8 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
         event.registerLayerDefinition(PureWhiteLatexWolfModel.LAYER_LOCATION, PureWhiteLatexWolfModel::createBodyLayer);
 
+        event.registerLayerDefinition(CustomLatexModel.LAYER_LOCATION, CustomLatexModel::createBodyLayer);
+
         ArmorNoneModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorNoTailModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);

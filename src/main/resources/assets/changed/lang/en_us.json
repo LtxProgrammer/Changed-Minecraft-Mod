@@ -385,6 +385,7 @@
   "entity.changed.latex_shark_male": "Buff Male Latex Shark",
   "entity.changed.latex_snow_leopard_female": "Female Latex Snow Leopard",
   "entity.changed.latex_snow_leopard_male": "Male Latex Snow Leopard",
+  "entity.changed.latex_siamese_cat": "Latex Siamese Cat",
   "entity.changed.latex_siren": "Latex Siren",
   "entity.changed.latex_snake": "Latex Snake",
   "entity.changed.latex_squid_dog_female": "Female Latex Squid Dog",
@@ -412,6 +413,7 @@
   "entity.changed.white_latex_wolf_male": "Male White Latex Wolf",
   "entity.changed.white_wolf_female": "Female White Wolf",
   "entity.changed.white_wolf_male": "Male White Wolf",
+  "entity.changed.custom_latex": "Custom Latex",
 
   "item.changed.beifeng_spawn_egg": "Beifeng Spawn Egg",
   "item.changed.crystal_wolf_spawn_egg": "Crystal Wolf Spawn Egg",
@@ -462,6 +464,7 @@
   "item.changed.latex_squid_dog_male_spawn_egg": "Male Latex Squid Dog Spawn Egg",
   "item.changed.latex_squirrel_spawn_egg": "Latex Squirrel Spawn Egg",
   "item.changed.latex_stiger_spawn_egg": "Latex Stiger Spawn Egg",
+  "item.changed.latex_siamese_cat_spawn_egg": "Latex Siamese Cat Spawn Egg",
   "item.changed.latex_siren_spawn_egg": "Latex Siren Spawn Egg",
   "item.changed.latex_snake_spawn_egg": "Latex Snake Spawn Egg",
   "item.changed.latex_tiger_shark_spawn_egg": "Latex Tiger Shark Spawn Egg",
@@ -484,6 +487,7 @@
   "item.changed.white_latex_wolf_male_spawn_egg": "Male White Latex Wolf Spawn Egg",
   "item.changed.white_wolf_female_spawn_egg": "White Wolf Female Spawn Egg",
   "item.changed.white_wolf_male_spawn_egg": "White Wolf Male Spawn Egg",
+  "item.changed.custom_latex_spawn_egg": "Custom Latex Spawn Egg",
 
   "changed.patreon.level0": "Discord Member",
   "changed.patreon.level1": "Tier 1",
