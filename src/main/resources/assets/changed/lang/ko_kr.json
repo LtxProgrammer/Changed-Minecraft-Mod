@@ -57,7 +57,7 @@
   "subtitles.changed.save": "홍채 스캐너가 삐빅거림",
   "subtitles.changed.slash10": "숏팬츠가 찢어짐",
   "subtitles.changed.sword1": "주삿바늘이 찌름",
-  "subtitles.changed.paralyze1": "무기로 전기 충격함",
+  "subtitles.changed.paralyze1": "무기가 전기 충격함",
   "subtitles.changed.paralyze3": "인터콤이 방송함",
   "subtitles.changed.blow1": "플레이어가 감염됨",
   "subtitles.changed.vacuum": "청소기가 작동함",
@@ -193,7 +193,7 @@
   "text.changed.tamed.follow": "%s이(가) 이제 따라옵니다",
   "text.changed.warning": "경고",
   "text.changed.warning.content1": "이 모딩된 마인크래프트는 체인지드에 등장하는 요소들이 포함되어 있으며,",
-  "text.changed.warning.content2": "모든 연령대에 적합하지 않습니다. [TEXT NOT FINAL]",
+  "text.changed.warning.content2": "모든 연령대에 적합하지 않습니다.",
 
   "effect.changed.hypercoagulation": "과응고",
   "effect.changed.shock": "감전",
