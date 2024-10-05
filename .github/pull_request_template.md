@@ -1,8 +1,6 @@
-Fixes #
+## Proposed Changes/Fixes
 
-## Proposed Changes
-
-  -
-  -
-  -
+  - _I modified this..._
+  - _And this..._
+  - _Etc, fill and edit as needed_
 
