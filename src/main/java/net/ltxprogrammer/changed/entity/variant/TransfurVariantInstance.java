@@ -17,7 +17,6 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -56,10 +55,11 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
 public class TransfurVariantInstance<T extends ChangedEntity> {
-    private static final Cacheable<AttributeMap> BASELINE_ATTRIBUTES = Cacheable.of(() -> new AttributeMap(Player.createAttributes().build()));
+    private static final Cacheable<AttributeMap> DEFAULT_PLAYER_ATTRIBUTES = Cacheable.of(() -> new AttributeMap(Player.createAttributes().build()));
 
     private final TransfurVariant<T> parent;
     private final T entity;
@@ -78,12 +78,27 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int ticksFlying;
     protected int ticksSinceLastAbilityActivity = 0;
 
+    private final Map<Attribute, Double> previousAttributes = new HashMap<>();
+    private final Map<Attribute, Double> newAttributes = new HashMap<>();
     private float transfurProgressionO = 0.0f;
     public float transfurProgression = 0.0f;
     public TransfurContext transfurContext = TransfurContext.hazard(TransfurCause.ATTACK_REPLICATE_LEFT);
     public boolean willSurviveTransfur = true;
     private boolean isTemporaryFromSuit = false;
     private IAbstractChangedEntity suitGrabber = null;
+
+    private void captureBaseline(Map<Attribute, Double> baseValues, AttributeMap attributeMap) {
+        baseValues.clear();
+        baseValues.putAll(getBaseAttributeValues(attributeMap));
+    }
+
+    private Map<Attribute, Double> getBaseAttributeValues(AttributeMap attributeMap) {
+        Map<Attribute, Double> map = new HashMap<>();
+        ForgeRegistries.ATTRIBUTES.getValues().stream()
+                .filter(attributeMap::hasAttribute)
+                .forEach(attribute -> map.put(attribute, attributeMap.getBaseValue(attribute)));
+        return map;
+    }
 
     public CompoundTag save() {
         CompoundTag tag = new CompoundTag();
@@ -94,6 +109,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         tag.putInt("ticksBreathingUnderwater", ticksBreathingUnderwater);
         tag.putInt("ticksFlying", ticksFlying);
 
+        tag.put("previousAttributes", TagUtil.createMap(previousAttributes, (attribute, base, map) ->
+            map.putDouble(attribute.getRegistryName().toString(), base)
+        ));
+        tag.put("newAttributes", TagUtil.createMap(newAttributes, (attribute, base, map) ->
+            map.putDouble(attribute.getRegistryName().toString(), base)
+        ));
         tag.putFloat("transfurProgressionO", transfurProgressionO);
         tag.putFloat("transfurProgression", transfurProgression);
         tag.putBoolean("willSurviveTransfur", willSurviveTransfur);
@@ -112,6 +133,26 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         dead = tag.getBoolean("dead");
         ticksBreathingUnderwater = tag.getInt("ticksBreathingUnderwater");
         ticksFlying = tag.getInt("ticksFlying");
+
+        TagUtil.readMap(tag.getCompound("previousAttributes"), (key, map) ->
+                previousAttributes.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key)), map.getDouble(key))
+        );
+        TagUtil.readMap(tag.getCompound("newAttributes"), (key, map) ->
+                newAttributes.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key)), map.getDouble(key))
+        );
+
+        if (previousAttributes.isEmpty() && newAttributes.isEmpty()) {
+            captureBaseline(previousAttributes, DEFAULT_PLAYER_ATTRIBUTES.get());
+            captureBaseline(newAttributes, entity.getAttributes());
+            mapAttributes(this.host, previousAttributes, TransfurVariantInstance::noOp,
+                    newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
+        }
+
+        if (previousAttributes.isEmpty())
+            captureBaseline(previousAttributes, DEFAULT_PLAYER_ATTRIBUTES.get());
+
+        if (newAttributes.isEmpty())
+            captureBaseline(newAttributes, entity.getAttributes());
 
         final float taggedProgress = tag.getFloat("transfurProgression");
         if (Mth.abs(transfurProgression - taggedProgress) > 0.5f) { // Prevent sync shudder
@@ -599,6 +640,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     protected static double correctScaling(Attribute attribute, double original) {
         if (attribute == Attributes.MOVEMENT_SPEED)
             return original * 0.1;
+        if (attribute == ForgeMod.SWIM_SPEED.get())
+            return original * Mth.map(original, 1.0, 5.0, 1.0, 0.75);
         return original;
     }
 
@@ -606,26 +649,25 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return original;
     }
 
-    protected void mapAttributes(Player player, AttributeMap variantAttributes, BiFunction<Attribute, Double, Double> fixer) {
+    protected void mapAttributes(Player player, Map<Attribute, Double> variantAttributes, BiFunction<Attribute, Double, Double> fixer) {
         mapAttributes(player, variantAttributes, fixer, variantAttributes, fixer, 1.0f);
     }
 
-    protected void mapAttributes(Player player, AttributeMap variantAttributes0, BiFunction<Attribute, Double, Double> fixer0, AttributeMap variantAttributes1, BiFunction<Attribute, Double, Double> fixer1, float alpha) {
+    protected void mapAttributes(Player player, Map<Attribute, Double> variantAttributes0, BiFunction<Attribute, Double, Double> fixer0, Map<Attribute, Double> variantAttributes1, BiFunction<Attribute, Double, Double> fixer1, float alpha) {
         final var hostAttributes = player.getAttributes();
 
         float healthPercentage = player.getHealth() / player.getMaxHealth();
 
-        ForgeRegistries.ATTRIBUTES.getEntries().stream().map(entry -> Pair.of(
-                Optional.ofNullable(variantAttributes0.getInstance(entry.getValue())), Optional.ofNullable(variantAttributes1.getInstance(entry.getValue()))))
-                .filter(pair -> pair.getFirst().isPresent() && pair.getSecond().isPresent()).map(pair -> Pair.of(pair.getFirst().get(), pair.getSecond().get()))
-                .filter(pair -> hostAttributes.hasAttribute(pair.getFirst().getAttribute()))
-                .forEach(pair -> {
-                    final var hostAttributeInstance = hostAttributes.getInstance(pair.getFirst().getAttribute());
+        ForgeRegistries.ATTRIBUTES.getValues().stream().filter(variantAttributes0::containsKey).filter(variantAttributes1::containsKey)
+                .forEach(attribute -> {
+                    final var hostAttributeInstance = hostAttributes.getInstance(attribute);
                     if (hostAttributeInstance == null) return;
 
-                    hostAttributeInstance.setBaseValue(Mth.lerp(alpha,
-                            fixer0.apply(pair.getFirst().getAttribute(), pair.getFirst().getBaseValue()),
-                            fixer1.apply(pair.getSecond().getAttribute(), pair.getSecond().getBaseValue())));
+                    final double base0 = fixer0.apply(attribute, variantAttributes0.get(attribute));
+                    final double base1 = fixer1.apply(attribute, variantAttributes1.get(attribute));
+                    final double newBase = Mth.lerp(alpha, base0, base1);
+
+                    hostAttributeInstance.setBaseValue(newBase);
                 });
 
         player.getAbilities().setWalkingSpeed((float) hostAttributes.getInstance(Attributes.MOVEMENT_SPEED).getBaseValue());
@@ -672,6 +714,20 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         ageAsVariant++;
 
+        if (previousAttributes.isEmpty()) {
+            if (transfurProgression == 0.0f)
+                captureBaseline(previousAttributes, this.host.getAttributes());
+            else
+                captureBaseline(previousAttributes, DEFAULT_PLAYER_ATTRIBUTES.get());
+        }
+
+        if (newAttributes.isEmpty()) {
+            captureBaseline(newAttributes, this.entity.getAttributes());
+
+            mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp,
+                    newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
+        }
+
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
             transfurProgression += (1.0f / transfurContext.cause.getDuration()) * 0.05f;
@@ -685,6 +741,8 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
 
             checkBreakItems(player);
+            mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp,
+                    newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
 
             if (transfurProgression >= 1f && !willSurviveTransfur) {
                 if (!player.level.isClientSide)
@@ -698,9 +756,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             if (player instanceof ServerPlayer serverPlayer)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
-
-        mapAttributes(player, BASELINE_ATTRIBUTES.get(), TransfurVariantInstance::noOp,
-                entity.getAttributes(), TransfurVariantInstance::correctScaling, getMorphProgression());
 
         player.refreshDimensions();
         if (player.isOnGround())
@@ -931,7 +986,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         abilityInstances.forEach((name, ability) -> {
             ability.onRemove();
         });
-        mapAttributes(player, BASELINE_ATTRIBUTES.get(), TransfurVariantInstance::noOp);
+        mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp);
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth()));
         if (parent.canGlide) {
             player.getAbilities().mayfly = player.isCreative() || player.isSpectator();
@@ -987,13 +1042,13 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public float getSwimEfficiency() {
-        double baselineSwim = BASELINE_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
+        double baselineSwim = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
         double intendedSwim = entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get());
         return (float)(baselineSwim / intendedSwim);
     }
 
     public float getSprintEfficiency() {
-        double baselineSprint = BASELINE_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
+        double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
         double intendedSprint = entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
         return (float)(baselineSprint / intendedSprint);
     }

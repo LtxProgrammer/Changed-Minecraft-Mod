@@ -22,7 +22,7 @@ public class BuffLatexSharkFemale extends AbstractLatexShark implements Gendered
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.9);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.35);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.5);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
     }
 
