@@ -112,7 +112,10 @@ public abstract class TransfurAnimator {
         return copied;
     }
 
-    private static ModelPart.Cube clampCube(ModelPart.Cube a, ModelPart.Cube clampBy) {
+    private static ModelPart.Cube clampCube(ModelPart.Cube a, @Nullable ModelPart.Cube clampBy) {
+        if (clampBy == null)
+            clampBy = a;
+
         float minX = Mth.clamp(a.minX, clampBy.minX, clampBy.maxX);
         float minY = Mth.clamp(a.minY, clampBy.minY, clampBy.maxY);
         float minZ = Mth.clamp(a.minZ, clampBy.minZ, clampBy.maxZ);
