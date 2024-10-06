@@ -106,8 +106,18 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                     helper.transitionOriginal((HumanoidModel<?>)(Object)this, TransfurAnimator.getPreMorphProgression(variant.getTransfurProgression(ageInTicks)));
                 });
             } else {
+                if (!cachedAnimationInstance.containsKey(entity))
+                    return;
+
+                cachedAnimationInstance.get(entity).resetToBaseline((HumanoidModel<?>)(Object)this);
                 cachedAnimationInstance.remove(entity);
             }
+        }, () -> {
+            if (!cachedAnimationInstance.containsKey(entity))
+                return;
+
+            cachedAnimationInstance.get(entity).resetToBaseline((HumanoidModel<?>)(Object)this);
+            cachedAnimationInstance.remove(entity);
         });
     }
 }

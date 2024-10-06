@@ -25,6 +25,12 @@ public class AnimationInstance {
         });
     }
 
+    public void resetToBaseline(HumanoidModel<?> model) {
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baseline::containsKey).forEach(limb -> {
+            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baseline.get(limb)));
+        });
+    }
+
     public void captureBaseline(AdvancedHumanoidModel<?> model) {
         /* Capture model position baseline */
         animation.channels.keySet().forEach(limb -> {
