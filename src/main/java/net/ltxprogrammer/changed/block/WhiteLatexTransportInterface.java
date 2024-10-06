@@ -69,7 +69,7 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     }
 
     static boolean isBoundingBoxInWhiteLatex(LivingEntity entity) {
-        return entity.level.getBlockStates(entity.getBoundingBox()).anyMatch(blockState -> {
+        return entity.level.getBlockStates(entity.getBoundingBox().inflate(-0.05)).anyMatch(blockState -> {
             if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
                 return transportInterface.allowTransport(blockState);
             if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX) {
