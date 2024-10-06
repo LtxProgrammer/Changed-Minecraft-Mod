@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -223,13 +224,13 @@ public class ProcessTransfur {
             }
 
             else {
-                List<TransfurVariant<?>> mobFusion = TransfurVariant.getFusionCompatible(transfurVariant, entity.getClass());
+                List<TransfurVariant<?>> mobFusion = ChangedFusions.INSTANCE.getFusionsFor(transfurVariant, entity.getClass()).toList();
 
                 if (mobFusion.isEmpty())
                     return false;
 
                 if (health <= amount * scale && health > 0.0F) {
-                    ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false, context);
+                    ProcessTransfur.transfur(entity, entity.level, Util.getRandom(mobFusion, entity.getRandom()), false, context);
                     return true;
                 }
 
@@ -739,7 +740,7 @@ public class ProcessTransfur {
 
         else {
             TransfurVariant<?> current = TransfurVariant.getEntityVariant(entity);
-            List<TransfurVariant<?>> possible = TransfurVariant.getFusionCompatible(current, variant);
+            List<TransfurVariant<?>> possible = ChangedFusions.INSTANCE.getFusionsFor(current, variant).toList();
 
             if (possible.isEmpty())
                 return;

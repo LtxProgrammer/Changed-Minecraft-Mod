@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedFusions.FusionDefinition>> {
     public record FusionDefinition(ResourceLocation name, TransfurVariant<?> fusion, TransfurVariant<?> variant, Either<TransfurVariant<?>, Class<? extends LivingEntity>> other) {
@@ -56,11 +57,38 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
                 return new FusionDefinition(name, fusion, variant, otherVariant != null ? Either.left(otherVariant) : Either.right(mob));
             }
         }
+
+        public boolean matches(TransfurVariant<?> variantA, TransfurVariant<?> variantB) {
+            return other.left().filter(transfurVariant -> (variantA == variant && variantB == transfurVariant) ||
+                    (variantA == transfurVariant && variantB == variant)).isPresent();
+        }
+
+        public boolean matches(TransfurVariant<?> variant, Class<? extends LivingEntity> mob) {
+            return other.right().filter(mobClass -> variant == this.variant && mob == mobClass).isPresent();
+        }
     }
 
     public static final ChangedFusions INSTANCE = new ChangedFusions();
 
     private final List<FusionDefinition> fusionDefinitions = new ArrayList<>();
+
+    public Stream<FusionDefinition> getFusionDefinitions() {
+        return fusionDefinitions.stream();
+    }
+
+    public Stream<TransfurVariant<?>> getFusionsFor(TransfurVariant<?> variantA, TransfurVariant<?> variantB) {
+        return getFusionDefinitions().mapMulti((fusionDefinition, next) -> {
+            if (fusionDefinition.matches(variantA, variantB))
+                next.accept(fusionDefinition.fusion());
+        });
+    }
+
+    public Stream<TransfurVariant<?>> getFusionsFor(TransfurVariant<?> variant, Class<? extends LivingEntity> mob) {
+        return getFusionDefinitions().mapMulti((fusionDefinition, next) -> {
+            if (fusionDefinition.matches(variant, mob))
+                next.accept(fusionDefinition.fusion());
+        });
+    }
 
     private FusionDefinition processJSONFile(ResourceLocation name, JsonObject root) throws ClassNotFoundException {
         FusionDefinition.Builder builder = new FusionDefinition.Builder();

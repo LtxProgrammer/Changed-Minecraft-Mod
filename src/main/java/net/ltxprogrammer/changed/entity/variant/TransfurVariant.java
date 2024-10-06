@@ -50,6 +50,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return ChangedRegistry.TRANSFUR_VARIANT.get().getValues().stream().filter(variant -> !SPECIAL_LATEX_FORMS.contains(variant.getRegistryName()));
     }
 
+    @Deprecated
     public static List<TransfurVariant<?>> getFusionCompatible(TransfurVariant<?> source, TransfurVariant<?> other) {
         List<TransfurVariant<?>> list = new ArrayList<>();
         ChangedRegistry.TRANSFUR_VARIANT.get().forEach(variant -> {
@@ -59,6 +60,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return list;
     }
 
+    @Deprecated
     public static List<TransfurVariant<?>> getFusionCompatible(TransfurVariant<?> source, Class<? extends LivingEntity> clazz) {
         List<TransfurVariant<?>> list = new ArrayList<>();
         ChangedRegistry.TRANSFUR_VARIANT.get().forEach(variant -> {
@@ -89,32 +91,20 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return ChangedEntities.getCachedEntity(level, ctor.get()).getTicksRequiredToFreeze();
     }
 
+    @Deprecated
     public boolean isFusionOf(TransfurVariant<?> variantA, TransfurVariant<?> variantB) {
         if (variantA == null || variantB == null)
             return false;
 
-        if (fusionOf.isPresent()) {
-            return
-                    (fusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            fusionOf.get().getSecond().getFormId().equals(variantB.getFormId())) ||
-
-                    (fusionOf.get().getSecond().getFormId().equals(variantA.getFormId()) &&
-                            fusionOf.get().getFirst().getFormId().equals(variantB.getFormId()));
-        }
-
-        return false;
+        return ChangedFusions.INSTANCE.getFusionsFor(variantA, variantB).anyMatch(fusion -> fusion == this);
     }
 
+    @Deprecated
     public boolean isFusionOf(TransfurVariant<?> variantA, Class<? extends LivingEntity> clazz) {
         if (variantA == null || clazz == null)
             return false;
 
-        if (mobFusionOf.isPresent()) {
-            return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            mobFusionOf.get().getSecond().isAssignableFrom(clazz);
-        }
-
-        return false;
+        return ChangedFusions.INSTANCE.getFusionsFor(variantA, clazz).anyMatch(fusion -> fusion == this);
     }
 
     @Deprecated(forRemoval = true)

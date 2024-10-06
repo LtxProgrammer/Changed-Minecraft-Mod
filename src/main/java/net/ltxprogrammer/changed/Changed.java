@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -57,6 +58,7 @@ public class Changed {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customPacks);
+        MinecraftForge.EVENT_BUS.addListener(this::dataListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();
@@ -114,6 +116,10 @@ public class Changed {
     private void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(RecipeCategories::registerCategories);
         ChangedClient.registerEventListeners();
+    }
+
+    private void dataListeners(final AddReloadListenerEvent event) {
+        event.addListener(ChangedFusions.INSTANCE);
     }
 
     private void customPacks(final AddPackFindersEvent event) {
