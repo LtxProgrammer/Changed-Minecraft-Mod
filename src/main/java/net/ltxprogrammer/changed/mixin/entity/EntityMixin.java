@@ -172,7 +172,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
 
         if (this instanceof LivingEntityDataExtension ext) {
             boolean shouldRender = AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
-                    .map(ability -> !ability.suited && ability.grabbedHasControl)
+                    .map(ability -> !(ability.suited && !ability.grabbedHasControl))
                     .orElse(true);
 
             if (!shouldRender) {
