@@ -168,6 +168,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         this.loadAbilities(tag.getCompound("abilities"));
     }
 
+    public void handleRespawn() {
+        captureBaseline(previousAttributes, host.getAttributes());
+        mapAttributes(this.host, previousAttributes, TransfurVariantInstance::noOp,
+                newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
+    }
+
     public int getTicksSinceLastAbilityActivity() {
         return ticksSinceLastAbilityActivity;
     }
