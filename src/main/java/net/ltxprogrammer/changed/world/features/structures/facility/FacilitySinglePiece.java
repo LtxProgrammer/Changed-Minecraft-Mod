@@ -103,9 +103,6 @@ public abstract class FacilitySinglePiece extends FacilityPiece {
 
             final BiConsumer<BlockPos, Direction> withNormal = (processPos, normal) -> {
                 BlockState state = level.getBlockState(processPos);
-                if (state.getBlock() instanceof ConnectedFloorBlock)
-                    return; // These are okay to fail
-
                 BlockPos relativePos = processPos.relative(normal);
                 BlockState relativeState = level.getBlockState(relativePos);
                 BlockState nState = state.updateShape(normal, relativeState, level, processPos, relativePos);
