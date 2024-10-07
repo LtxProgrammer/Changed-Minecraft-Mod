@@ -72,6 +72,7 @@
   "item.changed.lab_book": "Książka laboratoryjna",
   "item.changed.latex_base": "Baza latexu",
   "item.changed.beifeng_crystal_fragment": "Kawałek kryształu Beifengowego ciemnego latexu",
+  "item.changed.latex_flask": "kolba z Latexem",
   "item.changed.latex_inkball": "Kulka atramentu",
   "item.changed.latex_syringe": "Strzykawka z latexem",
   "item.changed.wolf_crystal_fragment": "Kawałek wilczego latexowego kryształu",
@@ -150,7 +151,7 @@
 
   "command.changed.error.not_latex_form": "nieprawidłowa forma",
   "command.changed.error.not_cause": "nieprawidłowy powód transfura",
-  "command.changed.error.used_by_other_mod": "Gracz jest używany przez innego moda",
+  "command.changed.error.used_by_other_mod": "model gracza jest używany przez innego moda",
   "command.changed.error.no_special_form": "Brak specjalnej formy, odwiedź https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:fusabilityDurationPlayer": "Post-transfurowa możliwość na złączenie (w Tickach)",
@@ -185,7 +186,7 @@
   "text.changed.tamed.wander": "%s teraz wędruje",
   "text.changed.tamed.follow": "%s teraz podąża",
   "text.changed.warning": "Uwaga",
-  "text.changed.warning.content1": "Ta zmodyfikowana wersja Minecrafta zawiera zawartość z gry Changed,",
+  "text.changed.warning.content1": "Ta zmodyfikowana wersja Minecrafta zawiera zawartość z gry Changed i Changed Special,",
   "text.changed.warning.content2": "i to nie jest odpowiednie dla każdej grupy wiekowej",
 
 
@@ -256,6 +257,7 @@
   "block.changed.pipe": "Rury",
   "block.changed.purifier": "Oczyszczacz",
   "block.changed.retinal_scanner": "Skaner siatkówki",
+  "block.changed.roomba_charger": "stacja ładująca",
   "block.changed.speaker": "Głośnik",
   "block.changed.tape_recorder": "Nagrywarka",
   "block.changed.tiles_blue": "Niebieskie płytki",
