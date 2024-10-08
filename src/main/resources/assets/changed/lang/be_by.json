@@ -60,6 +60,7 @@
  "subtitles.changed.blow1": "Латэкс некага ляпнуў",
  "subtitles.changed.vacuum": "Вакуум круціцца",
  "subtitles.changed.slash10": "Шорты рвуцца",
+ "subtitles.changed.fire": "Газ шыпіць",
 
  "item.changed.benign_pants": "Шорты з латекса",
  "item.changed.blood_syringe": "Шпрыц з узорам крыві",
@@ -83,6 +84,7 @@
  "item.changed.white_latex_goo": "Белы латекс",
  "item.changed.white_latex_bucket": "Вядро белага латекса",
  "item.changed.latex_flask": "Колба латэкса",
+ "item.changed.roomba": "Робат-пыласос",
 
  "item.changed.tsc_staff": "TSC стрыжань",
  "item.changed.tsc_baton": "TSC дубінка",
@@ -144,10 +146,17 @@
  "death.attack.changed:bloodloss.player": "%1$s атрымаў чужую кроў дзякуючы %2$s",
  "death.attack.changed:fan": "%s ператварыўся ў бекон пасля таго, як сутыкнуўся з лопасцю вентылятара",
  "death.attack.changed:fan.player": "%1$s быў парэзаны лопасцямі вентылятара, адскокваючы ад %2$s",
+ "death.attack.changed:absorb": "%1$s быў паглынуты",
+ "death.attack.changed:absorb.player": "%1$s быў паглынуты %2$s",
+ "death.attack.changed:latex_fluid": "%1$s быў раствораны латэкснай вадкасцю",
+ "death.attack.changed:latex_fluid.player": "%1$s быў раствораны латэкснай вадкасцю, спрабуючы выратавацца ад %2$s",
+ "death.attack.changed:pale.player": "%1$s пайшоў у лепшы свет дзякуючы Бледнаму вірусу падчас бітвы з %2$s",
   
  "command.changed.error.not_latex_form": "Латексная форма недаступная",
  "command.changed.error.used_by_other_mod": "Гулец ужо выкарыстоўвае іншы мод",
  "command.changed.error.no_special_form": "У вас няма доступу да спецыяльнай формы, калі вы хочаце яе атрымаць, падтрымайце аўтара на patreon і звяжыцеся з ім https://www.patreon.com/ltxprogrammer",
+ "command.changed.error.not_cause": "Няслушная прычына трансфурмацыі",
+ "gamerule.changed:doTransfurAnimation": "У гульцоў будзе кароткая анімацыя трансфурмацыі",
  "gamerule.changed:fusabilityDurationPlayer": "Тривалість можливості зливатись після трансфурмації (У тиках)",
  "gamerule.changed:keepConscious": "Вы не расстанецеся з розумам пасля трансфурмацыі",
  "gamerule.changed:keepForm": "Перма-трансфур",
@@ -167,6 +176,7 @@
  "container.changed.note": "Нататка",
  "container.changed.access_chest": "Меню ручнога куфра",
  "container.changed.cardboard_container": "Кардонная скрынка",
+ "container.changed.cardboard_box_small": "Маленькая кардонная скрынка",
 
  "text.changed.game_saved": "Гульня захавана.",
  "text.changed.game_saved_fail": "Немагчыма захаваць гульню.",
@@ -287,6 +297,8 @@
  "block.changed.white_latex_block": "Блок светлага латекса",
  "block.changed.white_latex_pillar": "Калона светлага латэкса",
  "block.changed.wolf_gas_canister": "Газавы балончык",
+ "block.changed.black_railing": "Чорныя парэнчы",
+ "block.changed.beifeng_crystal_small": "Маленькі зялёны крышталь",
 
  "block.changed.black_pillow": "Чорная падушка",
  "block.changed.blue_pillow": "Сіняя падушка",
@@ -307,6 +319,7 @@
 
  "fluid.changed.dark_latex": "Вадкі цёмны латекс",
  "fluid.changed.white_latex": "Вадкі лёгкі латекс",
+ "fluid.changed.wolf_gas": "Трансфурмацыйны газ",
 
  "biome.changed.dark_latex_plains": "Раўніны цёмнага латекса",
  "biome.changed.white_latex_forest": "Пляскі лёгкага латекса",
@@ -384,6 +397,10 @@
  "entity.changed.pure_white_latex_wolf": "Воўк з белага латекса",
  "entity.changed.phage_latex_wolf_female": "Латексная ваўчыца-бактэрыяфага",
  "entity.changed.phage_latex_wolf_male": "Латексный воўк-бактэрыяфага",
+ "entity.changed.latex_mutant_bloodcell_wolf": "Латексный воўк-мутант клеткі крыві",
+ "entity.changed.roomba": "Робат-пыласос",
+ "entity.changed.white_wolf_female": "Белая ваўчыца",
+ "entity.changed.white_wolf_male": "Белы воўк",
 
  "item.changed.gas_wolf_spawn_egg": "Яйка выкліку Газавы воўк",
  "item.changed.dark_latex_wolf_female_spawn_egg": "Яйка выкліку Ваўчыца з цёмнага латекса",
@@ -450,6 +467,10 @@
  "item.changed.shark_spawn_egg": "Яйка выкліку Дзіўная акула",
  "item.changed.phage_latex_wolf_female_spawn_egg": "Яйка выкліку Латексная ваўчыца-бактэрыяфага",
  "item.changed.phage_latex_wolf_male_spawn_egg": "Яйка выкліку Латексный воўк-бактэрыяфага",
+ "item.changed.latex_mutant_bloodcell_wolf_spawn_egg": "Яйка выкліку Латексный воўк-мутант клеткі крыві",
+ "item.changed.pure_white_latex_wolf_spawn_egg": "Яйка выкліку Воўк з белага латекса",
+ "item.changed.white_wolf_female_spawn_egg": "Яйка выкліку Белая ваўчыца",
+ "item.changed.white_wolf_male_spawn_egg": "Яйка выкліку Белы воўк",
 
  "changed.patreon.level0": "Удзельнік сервера Discord",
  "changed.patreon.level1": "I ўзровень",
@@ -478,7 +499,8 @@
  "changed.compact_disc.content.latex_shark": "Створаныя намі акулы сапраўды могуць дыхаць пад вадой. Іх хуткасць у вадзе неверагодная, але за кошт мабільнасці на сушы.",
  "changed.compact_disc.title.latex_tiger_shark": "Акулы з палосамі",
  "changed.compact_disc.content.latex_tiger_shark": "Мы стварылі іншы варыянт акулы на аснове звычайнага, гэты варыянт акулы крыху хутчэйшы на сушы, але павольнейшы ў вадзе.",
- "changed.compact_disc.title.latex_orca": "Разам з акуламі мы выпадкова стварылі касатак.",
+ "changed.compact_disc.title.latex_orca": "Касаткі",
+ "changed.compact_disc.content.latex_orca": "Разам з акуламі, мы выпадкова стварылі касатак",
  "changed.compact_disc.title.latex_squid_dog": "Сабака... Кальмар?",
  "changed.compact_disc.content.latex_squid_dog": "Яны не толькі дыхаюць пад вадой, але і маюць дадатковую пару рук, якія дазваляюць ім трымаць больш рэчаў, Кальмаравыя сабакі",
 
