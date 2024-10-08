@@ -4,6 +4,10 @@ on:
   push:
     paths:
       - "src/main/resources/**.json"
+  pull_request:
+    types: [opened, reopened, edited]
+    paths:
+      - "src/main/resources/**.json"
 
 jobs:
   Validate-JSON:
