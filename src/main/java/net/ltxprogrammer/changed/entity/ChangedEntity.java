@@ -419,7 +419,7 @@ public abstract class ChangedEntity extends Monster {
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
         if (pos.getY() < world.getSeaLevel() - 10)
             return false;
-        if (random.nextFloat() < 0.75f)
+        if (random.nextFloat() > 0.035f)
             return false;
         if (!checkSpawnBlock(world, reason, pos))
             return false;
