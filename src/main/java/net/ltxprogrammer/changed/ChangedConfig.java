@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import net.ltxprogrammer.changed.client.gui.TransfurProgressOverlay;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.minecraft.core.Registry;
@@ -58,6 +59,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> memCacheBaseImages;
         public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
         public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
+        public final ForgeConfigSpec.ConfigValue<TransfurProgressOverlay.Position> transfurMeterPosition;
 
         public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
@@ -78,6 +80,8 @@ public class ChangedConfig {
             generateUniqueTexturesForAllBlocks = builder.define("generateUniqueTexturesForAllBlocks", true);
             builder.comment("Got a lot of mods? Unique model generation will be limited to minecraft and changed");
             fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
+            builder.comment("Specify the location of the transfur meter");
+            transfurMeterPosition = builder.defineEnum("transfurMeterPosition", TransfurProgressOverlay.Position.HOTBAR_LEFT);
         }
 
         @Override
