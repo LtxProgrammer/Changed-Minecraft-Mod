@@ -48,6 +48,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext.cause, oldVariant.transfurProgression);
                 newVariant.load(oldVariant.save());
                 newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
+                newVariant.handleRespawn();
             });
         }
     }
@@ -57,7 +58,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         if (tag.contains("PaleExposure")) {
             Pale.setPaleExposure(this, tag.getInt("PaleExposure"));
         }
-        if (tag.contains("TransfurProgress") && tag.contains("TransfurProgressType")) {
+        if (tag.contains("TransfurProgress")) {
             if (tag.get("TransfurProgress") instanceof IntTag intTag) { // Adapt to old progress saving method
                 ProcessTransfur.setPlayerTransfurProgress(this, (float)intTag.getAsInt() * 0.001f);
             } else if (tag.get("TransfurProgress") instanceof FloatTag floatTag) {

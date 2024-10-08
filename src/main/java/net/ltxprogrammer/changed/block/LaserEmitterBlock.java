@@ -11,10 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -28,6 +25,14 @@ public class LaserEmitterBlock extends DirectionalBlock {
 
     public LaserEmitterBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(5.5F, 6.0F).requiresCorrectToolForDrops());
+    }
+
+    public BlockState rotate(BlockState p_55115_, Rotation p_55116_) {
+        return p_55115_.setValue(FACING, p_55116_.rotate(p_55115_.getValue(FACING)));
+    }
+
+    public BlockState mirror(BlockState p_55112_, Mirror p_55113_) {
+        return p_55112_.rotate(p_55113_.getRotation(p_55112_.getValue(FACING)));
     }
 
     @Override

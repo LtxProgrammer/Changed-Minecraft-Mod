@@ -291,8 +291,8 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
         public boolean canUse() {
             if (this.mob.isInWater()) {
                 return false;
-            } else if (mob.wantsToSwim()) {
-                return true;
+            } else if (!mob.wantsToSwim()) {
+                return false;
             } else if (this.mob.getTarget() != null) {
                 return false;
             } else {

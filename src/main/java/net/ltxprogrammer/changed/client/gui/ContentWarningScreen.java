@@ -50,6 +50,7 @@ public class ContentWarningScreen extends Screen {
         int l = this.height / 4 + 48 + 72;
         this.addRenderableWidget(new Button(this.width / 2 - 100, l, 200, 20, new TranslatableComponent("gui.proceed"), (p_96776_) -> {
             Changed.config.client.showContentWarning.set(false);
+            Changed.config.client.showContentWarning.save();
             this.minecraft.setScreen(new TitleScreen(true));
         }));
     }

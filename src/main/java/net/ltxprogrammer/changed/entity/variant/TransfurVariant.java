@@ -50,6 +50,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return ChangedRegistry.TRANSFUR_VARIANT.get().getValues().stream().filter(variant -> !SPECIAL_LATEX_FORMS.contains(variant.getRegistryName()));
     }
 
+    @Deprecated
     public static List<TransfurVariant<?>> getFusionCompatible(TransfurVariant<?> source, TransfurVariant<?> other) {
         List<TransfurVariant<?>> list = new ArrayList<>();
         ChangedRegistry.TRANSFUR_VARIANT.get().forEach(variant -> {
@@ -59,6 +60,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return list;
     }
 
+    @Deprecated
     public static List<TransfurVariant<?>> getFusionCompatible(TransfurVariant<?> source, Class<? extends LivingEntity> clazz) {
         List<TransfurVariant<?>> list = new ArrayList<>();
         ChangedRegistry.TRANSFUR_VARIANT.get().forEach(variant -> {
@@ -89,32 +91,20 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         return ChangedEntities.getCachedEntity(level, ctor.get()).getTicksRequiredToFreeze();
     }
 
+    @Deprecated
     public boolean isFusionOf(TransfurVariant<?> variantA, TransfurVariant<?> variantB) {
         if (variantA == null || variantB == null)
             return false;
 
-        if (fusionOf.isPresent()) {
-            return
-                    (fusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            fusionOf.get().getSecond().getFormId().equals(variantB.getFormId())) ||
-
-                    (fusionOf.get().getSecond().getFormId().equals(variantA.getFormId()) &&
-                            fusionOf.get().getFirst().getFormId().equals(variantB.getFormId()));
-        }
-
-        return false;
+        return ChangedFusions.INSTANCE.getFusionsFor(variantA, variantB).anyMatch(fusion -> fusion == this);
     }
 
+    @Deprecated
     public boolean isFusionOf(TransfurVariant<?> variantA, Class<? extends LivingEntity> clazz) {
         if (variantA == null || clazz == null)
             return false;
 
-        if (mobFusionOf.isPresent()) {
-            return mobFusionOf.get().getFirst().getFormId().equals(variantA.getFormId()) &&
-                            mobFusionOf.get().getSecond().isAssignableFrom(clazz);
-        }
-
-        return false;
+        return ChangedFusions.INSTANCE.getFusionsFor(variantA, clazz).anyMatch(fusion -> fusion == this);
     }
 
     @Deprecated(forRemoval = true)
@@ -188,8 +178,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public final UseItemMode itemUseMode;
     public final List<Class<? extends PathfinderMob>> scares;
     public final TransfurMode transfurMode;
-    public final Optional<Pair<TransfurVariant<?>, TransfurVariant<?>>> fusionOf;
-    public final Optional<Pair<TransfurVariant<?>, Class<? extends LivingEntity>>> mobFusionOf;
     public final ImmutableList<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities;
     public final float cameraZOffset;
     public final ResourceLocation sound;
@@ -198,8 +186,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
                            float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
                            VisionType visionType, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
-                           Optional<Pair<TransfurVariant<?>, TransfurVariant<?>>> fusionOf,
-                           Optional<Pair<TransfurVariant<?>, Class<? extends LivingEntity>>> mobFusionOf, List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
+                           List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
         this.jumpStrength = jumpStrength;
@@ -216,8 +203,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         this.canClimb = canClimb;
         this.scares = scares;
         this.transfurMode = transfurMode;
-        this.fusionOf = fusionOf;
-        this.mobFusionOf = mobFusionOf;
         this.cameraZOffset = cameraZOffset;
         this.sound = sound;
     }
@@ -379,8 +364,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         UseItemMode itemUseMode = UseItemMode.NORMAL;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
         TransfurMode transfurMode = TransfurMode.REPLICATION;
-        Optional<Pair<TransfurVariant<?>, TransfurVariant<?>>> fusionOf = Optional.empty();
-        Optional<Pair<TransfurVariant<?>, Class<? extends LivingEntity>>> mobFusionOf = Optional.empty();
         List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities = new ArrayList<>();
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.POISON.getLocation();
@@ -389,9 +372,11 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             this.entityType = entityType;
 
             var event = new UniversalAbilitiesEvent(this.abilities);
-            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX), ChangedAbilities.SWITCH_TRANSFUR_MODE);
             event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS)), ChangedAbilities.GRAB_ENTITY_ABILITY);
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS))
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.GRAB_ENTITY_ABILITY);
 
             MinecraftForge.EVENT_BUS.post(event);
         }
@@ -400,13 +385,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public static <T extends ChangedEntity> Builder<T> of(Supplier<EntityType<T>> entityType) {
             return new Builder<T>(entityType);
-        }
-
-        public static <T extends ChangedEntity> Builder<T> of(TransfurVariant<?> variant, Supplier<EntityType<T>> entityType) {
-            return (new Builder<T>(entityType)).faction(variant.type)
-                    .jumpStrength(variant.jumpStrength).breatheMode(variant.breatheMode).stepSize(variant.stepSize).glide(variant.canGlide).extraJumps(variant.extraJumpCharges)
-                    .abilities(variant.abilities).reducedFall(variant.reducedFall).canClimb(variant.canClimb).visionType(variant.visionType).hasLegs(variant.hasLegs).scares(variant.scares)
-                    .transfurMode(variant.transfurMode).cameraZOffset(variant.cameraZOffset).itemUseMode(variant.itemUseMode);
         }
 
         public Builder<T> faction(LatexType type) {
@@ -529,14 +507,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             this.transfurMode = mode; return this;
         }
 
-        public Builder<T> fusionOf(TransfurVariant<?> formA, TransfurVariant<?> formB) {
-            this.fusionOf = Optional.of(Pair.of(formA, formB)); return this;
-        }
-
-        public Builder<T> fusionOf(TransfurVariant<?> formA, Class<? extends LivingEntity> mobClass) {
-            this.mobFusionOf = Optional.of(Pair.of(formA, mobClass)); return this;
-        }
-
         public Builder<T> noLegs() {
             this.legCount = 0;
             return this;
@@ -577,7 +547,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public TransfurVariant<T> build() {
             return new TransfurVariant<>(entityType, type, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
-                    reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, fusionOf, mobFusionOf, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
         }
     }
 
@@ -672,10 +642,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
                 UseItemMode.valueOf(GsonHelper.getAsString(root, "itemUseMode", UseItemMode.NORMAL.toString())),
                 scares,
                 TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),
-                fusionOf.size() < 2 ? Optional.empty() : Optional.of(new Pair<>(
-                        fusionOf.get(0), fusionOf.get(1)
-                )),
-                mobFusionLatex.get() != null && mobFusionMob.get() != null ? Optional.of(new Pair<>(mobFusionLatex.getAcquire(), mobFusionMob.getAcquire())) : Optional.empty(),
                 nAbilitiesList,
                 GsonHelper.getAsFloat(root, "cameraZOffset", 0.0F),
                 ResourceLocation.tryParse(GsonHelper.getAsString(root, "sound", ChangedSounds.POISON.getLocation().toString()))).setRegistryName(id);

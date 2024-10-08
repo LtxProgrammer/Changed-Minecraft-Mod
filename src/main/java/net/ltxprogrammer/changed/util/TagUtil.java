@@ -6,10 +6,14 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class TagUtil {
     public static void replace(CompoundTag from, CompoundTag target) {
@@ -55,5 +59,15 @@ public class TagUtil {
 
     public static void putResourceLocation(CompoundTag cTag, String name, ResourceLocation location) {
         cTag.putString(name, location.toString());
+    }
+
+    public static <T, V> CompoundTag createMap(Map<T, V> map, TriConsumer<T, V, CompoundTag> consumer) {
+        CompoundTag tag = new CompoundTag();
+        map.forEach((key, value) -> consumer.accept(key, value, tag));
+        return tag;
+    }
+
+    public static void readMap(CompoundTag mapTag, BiConsumer<String, CompoundTag> consumer) {
+        mapTag.getAllKeys().forEach(key -> consumer.accept(key, mapTag));
     }
 }

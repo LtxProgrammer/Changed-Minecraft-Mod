@@ -1,7 +1,11 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -163,6 +167,16 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 if (seat.shouldSeatedBeInvisible()) {
                     cir.setReturnValue(true);
                 }
+            }
+        }
+
+        if (this instanceof LivingEntityDataExtension ext) {
+            boolean shouldRender = AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                    .map(ability -> !(ability.suited && !ability.grabbedHasControl))
+                    .orElse(true);
+
+            if (!shouldRender) {
+                cir.setReturnValue(true);
             }
         }
     }

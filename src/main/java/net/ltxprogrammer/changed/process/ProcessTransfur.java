@@ -19,6 +19,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -76,7 +77,7 @@ public class ProcessTransfur {
         return ext.getTransfurProgress();
     }
 
-    protected static float checkBlocked(LivingEntity blocker, float amount, IAbstractChangedEntity source) {
+    public static float checkBlocked(LivingEntity blocker, float amount, IAbstractChangedEntity source) {
         if (source == null || amount <= 0.0f)
             return amount;
 
@@ -126,8 +127,6 @@ public class ProcessTransfur {
                 player.hurt(DamageSource.mobAttack(context.source == null ? transfurVariant.getEntityType().create(player.level) : context.source.getEntity()), amount);
                 return false;
             }
-
-            amount = checkBlocked(player, amount, context.source);
 
             if (amount <= 0.0f)
                 return false;
@@ -226,13 +225,13 @@ public class ProcessTransfur {
             }
 
             else {
-                List<TransfurVariant<?>> mobFusion = TransfurVariant.getFusionCompatible(transfurVariant, entity.getClass());
+                List<TransfurVariant<?>> mobFusion = ChangedFusions.INSTANCE.getFusionsFor(transfurVariant, entity.getClass()).toList();
 
                 if (mobFusion.isEmpty())
                     return false;
 
                 if (health <= amount * scale && health > 0.0F) {
-                    ProcessTransfur.transfur(entity, entity.level, mobFusion.get(entity.getRandom().nextInt(mobFusion.size())), false, context);
+                    ProcessTransfur.transfur(entity, entity.level, Util.getRandom(mobFusion, entity.getRandom()), false, context);
                     return true;
                 }
 
@@ -743,7 +742,7 @@ public class ProcessTransfur {
 
         else {
             TransfurVariant<?> current = TransfurVariant.getEntityVariant(entity);
-            List<TransfurVariant<?>> possible = TransfurVariant.getFusionCompatible(current, variant);
+            List<TransfurVariant<?>> possible = ChangedFusions.INSTANCE.getFusionsFor(current, variant).toList();
 
             if (possible.isEmpty())
                 return;

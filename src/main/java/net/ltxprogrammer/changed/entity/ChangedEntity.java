@@ -620,7 +620,7 @@ public abstract class ChangedEntity extends Monster {
         var targetVariant = TransfurVariant.getEntityVariant(entity);
         List<TransfurVariant<?>> possibleMobFusions = new ArrayList<>();
         if (selfVariant != null && targetVariant != null) {
-            var possibleFusion = TransfurVariant.getFusionCompatible(selfVariant, targetVariant);
+            var possibleFusion = ChangedFusions.INSTANCE.getFusionsFor(selfVariant, targetVariant).toList();
             if (possibleFusion.isEmpty())
                 return false;
 
@@ -630,16 +630,16 @@ public abstract class ChangedEntity extends Monster {
             { // Check if attacker can't fuse
                 var instance = ProcessTransfur.getPlayerTransfurVariant(underlyingPlayer);
                 if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion.clear();
+                    possibleFusion = List.of();
             }
 
             { // Check if attackee can't fuse
                 var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
                 if (instance != null && instance.ageAsVariant > level.getGameRules().getInt(ChangedGameRules.RULE_FUSABILITY_DURATION_PLAYER))
-                    possibleFusion.clear();
+                    possibleFusion = List.of();
             }
 
-            if (possibleFusion.size() > 0) {
+            if (!possibleFusion.isEmpty()) {
                 TransfurVariant<?> fusionVariant = Util.getRandom(possibleFusion, random);
 
                 if (underlyingPlayer != null) {
@@ -666,8 +666,8 @@ public abstract class ChangedEntity extends Monster {
                 selfVariant = this.getTransfurVariant();
 
             if (!level.isClientSide) {
-                possibleMobFusions.addAll(TransfurVariant.getFusionCompatible(selfVariant, entity.getClass()));
-                possibleMobFusions.addAll(TransfurVariant.getFusionCompatible(targetVariant, this.getClass()));
+                ChangedFusions.INSTANCE.getFusionsFor(selfVariant, entity.getClass()).forEach(possibleMobFusions::add);
+                ChangedFusions.INSTANCE.getFusionsFor(targetVariant, this.getClass()).forEach(possibleMobFusions::add);
             }
 
             { // Check if attacker can't fuse
@@ -757,16 +757,17 @@ public abstract class ChangedEntity extends Monster {
         TransfurVariant<?> variant = this.getTransfurVariant();
 
         if (entity instanceof LivingEntity livingEntity) {
-            IAbstractChangedEntity source = IAbstractChangedEntity.forEither(maybeGetUnderlying());
-            if (tryFuseWithTarget(livingEntity, source, damage))
+            final var context = getAttackContext();
+            damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
+            if (tryFuseWithTarget(livingEntity, context.source, damage))
                 return true;
 
             if (TransfurVariant.getEntityVariant(livingEntity) == null) {
                 if (livingEntity instanceof Player player) {
-                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, getAttackContext());
+                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, context);
                     return true;
                 } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, getAttackContext());
+                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, context);
                     return true;
                 }
             }

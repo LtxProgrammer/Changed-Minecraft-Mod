@@ -81,6 +81,7 @@
  "item.changed.white_latex_goo": "Білий латекс",
  "item.changed.white_latex_bucket": "Відро білого латексу",
  "item.changed.roomba": "Робот-пилесос",
+ "item.changed.latex_flask": "Колба з латексом",
 
  "item.changed.tsc_staff": "TSC Жезл",
  "item.changed.tsc_baton": "TSC Дубинка",
@@ -288,6 +289,7 @@
  "block.changed.white_latex_block": "Блок світлого латексу",
  "block.changed.white_latex_pillar": "Колона світлого латексу",
  "block.changed.wolf_gas_canister": "Каністра з газом",
+ "block.changed.roomba_charger": "Зарядник робота-пилесоса",
 
  "block.changed.black_pillow": "Чорна подушка",
  "block.changed.blue_pillow": "Синя подушка",

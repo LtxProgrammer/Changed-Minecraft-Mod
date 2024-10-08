@@ -82,6 +82,7 @@
  "item.changed.syringe": "Шпрыц",
  "item.changed.white_latex_goo": "Белы латекс",
  "item.changed.white_latex_bucket": "Вядро белага латекса",
+ "item.changed.latex_flask": "Колба латэкса",
 
  "item.changed.tsc_staff": "TSC стрыжань",
  "item.changed.tsc_baton": "TSC дубінка",
@@ -246,6 +247,7 @@
  "block.changed.pipe": "Трубы",
  "block.changed.purifier": "Ачышчальнік",
  "block.changed.retinal_scanner": "Сканер сятчаткі вока",
+ "block.changed.roomba_charger": "Зараднік для робата-пыласоса",
  "block.changed.speaker": "Гучнагаварыцель",
  "block.changed.tape_recorder": "Магнітафон",
  "block.changed.tiles_blue": "Сіняя плітка",

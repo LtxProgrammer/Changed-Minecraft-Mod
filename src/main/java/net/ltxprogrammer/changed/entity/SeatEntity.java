@@ -36,7 +36,8 @@ public class SeatEntity extends Entity {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (level.getBlockEntity(this.getAttachedBlockPos()) instanceof SeatableBlockEntity seatableBlockEntity) {
+        final BlockPos attached = this.getAttachedBlockPos();
+        if (level.isLoaded(attached) && level.getBlockEntity(attached) instanceof SeatableBlockEntity seatableBlockEntity) {
             var existing = seatableBlockEntity.getEntityHolder();
             if (existing == null || existing.isRemoved())
                 seatableBlockEntity.setEntityHolder(this);

@@ -140,8 +140,7 @@
   "syringe.changed:form_special": "Patron Custom Form Syringe",
   
   "death.attack.changed:absorb": "%1$s 被吞噬了",
-  "death.attack.changed:absorb:player": "%1$s 被 %2$s 吞噬了",
-  "death.attack.changded:pale.player": "%1$s 在与 %2$s 战斗时死于苍白病",
+  "death.attack.changed:absorb.player": "%1$s 被 %2$s 吞噬了",
   "death.attack.changed:transfur": "%1$s 被兽化了",
   "death.attack.changed:transfur.player": "%1$s 被 %2$s 兽化了",
   "death.attack.changed:white_latex": "%1$s 被白胶吞噬了",
@@ -149,6 +148,7 @@
   "death.attack.changed:latex_fluid": "%s 被胶液溶解",
   "death.attack.changed:latex_fluid.player": "%1$s 在试图逃离 %2$s 时被胶液溶解了",
   "death.attack.changed:pale": "%s 死于苍白病",
+  "death.attack.changed:pale.player": "%1$s 在与 %2$s 战斗时死于苍白病",
   "death.attack.changed:bloodloss": "%s 死于血液排异",
   "death.attack.changed:bloodloss.player": "1$s 注射 %2$s 的血浆后死于血液排异",
   "death.attack.changed:fan": "%s 被排风扇搅碎",
@@ -193,7 +193,7 @@
   "text.changed.tamed.follow": "%s 现在正在跟随你",
   "text.changed.warning": "警告",
   "text.changed.warning.content1": "本修改版 Minecraft 包含来自 Changed 的内容，",
-  "text.changed.warning.content2": "并且不适合所有受众。[文本非最终版本]",
+  "text.changed.warning.content2": "并且不适合所有受众。",
 
   "effect.changed.hypercoagulation": "凝血症",
   "effect.changed.shock": "麻痹",

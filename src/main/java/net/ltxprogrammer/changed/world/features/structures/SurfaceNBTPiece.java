@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.world.features.structures;
 
+import net.ltxprogrammer.changed.block.ConnectedFloorBlock;
 import net.ltxprogrammer.changed.init.ChangedStructurePieceTypes;
 import net.ltxprogrammer.changed.util.TagUtil;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class SurfaceNBTPiece extends StructurePiece {
     private final ResourceLocation templateName;
@@ -95,5 +98,40 @@ public class SurfaceNBTPiece extends StructurePiece {
         if (lootTable != null)
             settings.addProcessor(ChestLootTableProcessor.of(lootTable));
         template.placeInWorld(level, generationPosition, generationPosition, settings, random, 2);
+        BoundingBox intersect = new BoundingBox(
+                Math.max(this.boundingBox.minX(), bb.minX()),
+                Math.max(this.boundingBox.minY(), bb.minY()),
+                Math.max(this.boundingBox.minZ(), bb.minZ()),
+                Math.min(this.boundingBox.maxX(), bb.maxX()),
+                Math.min(this.boundingBox.maxY(), bb.maxY()),
+                Math.min(this.boundingBox.maxZ(), bb.maxZ())
+        );
+
+        final BiConsumer<BlockPos, Direction> withNormal = (processPos, normal) -> {
+            BlockState state = level.getBlockState(processPos);
+            BlockPos relativePos = processPos.relative(normal);
+            BlockState relativeState = level.getBlockState(relativePos);
+            BlockState nState = state.updateShape(normal, relativeState, level, processPos, relativePos);
+            BlockState nRelativeState = relativeState.updateShape(normal.getOpposite(), nState, level, relativePos, processPos);
+            if (nState != state)
+                level.setBlock(processPos, nState, 2);
+            if (nRelativeState != relativeState)
+                level.setBlock(relativePos, nRelativeState, 2);
+        };
+
+        BlockPos.betweenClosedStream(intersect).forEach(processPos -> {
+            if (processPos.getX() == boundingBox.minX())
+                withNormal.accept(processPos, Direction.WEST);
+            if (processPos.getX() == boundingBox.maxX())
+                withNormal.accept(processPos, Direction.EAST);
+            if (processPos.getY() == boundingBox.minY())
+                withNormal.accept(processPos, Direction.DOWN);
+            if (processPos.getY() == boundingBox.maxY())
+                withNormal.accept(processPos, Direction.UP);
+            if (processPos.getZ() == boundingBox.minZ())
+                withNormal.accept(processPos, Direction.NORTH);
+            if (processPos.getZ() == boundingBox.maxZ())
+                withNormal.accept(processPos, Direction.SOUTH);
+        });
     }
 }

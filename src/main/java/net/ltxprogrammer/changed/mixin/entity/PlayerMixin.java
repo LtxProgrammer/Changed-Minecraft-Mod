@@ -4,7 +4,6 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedAttributes;
@@ -16,7 +15,6 @@ import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,7 +37,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity implements PlayerDataExtension {
@@ -256,17 +253,16 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         });
     }
 
-    // TODO make interactions pass the grabbed entity
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSpectator()Z"))
-    public boolean isSpectatorOrGrabbed(Player player) {
-        if (player instanceof LivingEntityDataExtension ext) {
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void checkGrabbed(CallbackInfo ci) {
+        if (this instanceof LivingEntityDataExtension ext) {
             var grabbedBy = ext.getGrabbedBy();
             var ability = AbstractAbility.getAbilityInstance(grabbedBy, ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (ability != null && !ability.grabbedHasControl)
-                return true;
+            if (ability != null && !ability.grabbedHasControl) {
+                this.noPhysics = true;
+                this.onGround = false;
+            }
         }
-
-        return this.isSpectator();
     }
 
     @Nullable

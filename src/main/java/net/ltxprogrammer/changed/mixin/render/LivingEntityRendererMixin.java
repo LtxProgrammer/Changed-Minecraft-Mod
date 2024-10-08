@@ -15,10 +15,14 @@ import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(LivingEntityRenderer.class)
@@ -37,8 +41,32 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
     @Shadow protected abstract float getAttackAnim(T p_115343_, float p_115344_);
 
+    @Unique private final List<RenderLayer<T, M>> backupLayers = new ArrayList<>();
+
+    @Unique
+    private void prepareLayers() {
+        if (!TransfurAnimator.isCapturing())
+            return;
+
+        backupLayers.addAll(layers);
+        layers.clear();
+        backupLayers.stream().filter(TransfurAnimator::isLayerAllowed).forEach(layers::add);
+    }
+
+    @Unique
+    private void unprepareLayers() {
+        if (!TransfurAnimator.isCapturing())
+            return;
+
+        layers.clear();
+        layers.addAll(backupLayers);
+        backupLayers.clear();
+    }
+
     @Override
     public void directRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        this.prepareLayers();
+
         this.model.attackTime = this.getAttackAnim(entity, partialTicks);
         this.model.riding = false;
         this.model.young = entity.isBaby();
@@ -56,13 +84,17 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         for (var layer : this.layers) {
             layer.render(poseStack, bufferSource, packedLight, entity, 0.0f, 0.0f, partialTicks, 0.0f, 0.0f, 0.0f);
         }
+
+        this.unprepareLayers();
     }
 
-    @WrapWithCondition(
-            method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/layers/RenderLayer;render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/Entity;FFFFFF)V")
-    )
-    public boolean orCapture(RenderLayer<T, M> instance, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        return !TransfurAnimator.isCapturing() || TransfurAnimator.isLayerAllowed(instance);
+    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"))
+    public void beforeRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
+        this.prepareLayers();
+    }
+
+    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("RETURN"))
+    public void afterRender(T entity, float yRot, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, CallbackInfo ci) {
+        this.unprepareLayers();
     }
 }

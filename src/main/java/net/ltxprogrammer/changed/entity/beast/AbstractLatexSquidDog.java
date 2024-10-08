@@ -39,7 +39,7 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.925);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.2);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.3);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(30.0);
     }
 }

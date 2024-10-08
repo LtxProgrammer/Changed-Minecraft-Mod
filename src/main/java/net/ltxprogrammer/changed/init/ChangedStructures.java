@@ -41,8 +41,6 @@ public class ChangedStructures {
     public static final Holder<ConfiguredStructureFeature<?, ?>> TREATMENT_1 = registerLab("treatment_1", LootTables.HIGH_TIER_LAB);
     public static final Holder<ConfiguredStructureFeature<?, ?>> TREATMENT_2 = registerLab("treatment_2", LootTables.HIGH_TIER_LAB);
     public static final Holder<ConfiguredStructureFeature<?, ?>> TREATMENT_3 = registerLab("treatment_3", LootTables.HIGH_TIER_LAB);
-    // TODO replace with procedural gen facility that stretches underground
-    //public static final Holder<ConfiguredStructureFeature<?, ?>> UNDERGROUND_DL_LAB1 = registerLab("underground_dl_lab1", LootTables.DECAYED_LAB_DL);
     public static final Holder<ConfiguredStructureFeature<?, ?>> WHITE_LATEX_LAB1 = registerLab("white_latex_lab1", LootTables.DECAYED_LAB_WL, ChangedTags.Biomes.HAS_WHITE_DECAYED_LABS);
     public static final Holder<ConfiguredStructureFeature<?, ?>> WHITE_LATEX_LAB2 = registerLab("white_latex_lab2", LootTables.DECAYED_LAB_WL, ChangedTags.Biomes.HAS_WHITE_DECAYED_LABS);
 
