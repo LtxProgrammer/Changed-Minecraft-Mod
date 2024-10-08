@@ -11,13 +11,53 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TransfurProgressOverlay {
+    public enum Position {
+        BOTTOM_LEFT(0f, 10, 1f, -40, 0, 0),
+        HOTBAR_LEFT(0.5f, -110, 1f, -40, -29, 0),
+        HOTBAR_RIGHT(0.5f, 100, 1f, -40, 0, 29);
+
+        private final float xScale;
+        private final int xOffset;
+        private final float yScale;
+        private final int yOffset;
+        private final int offhandOffsetLeft;
+        private final int offhandOffsetRight;
+
+        Position(float xScale, int xOffset, float yScale, int yOffset, int offhandOffsetLeft, int offhandOffsetRight) {
+            this.xScale = xScale;
+            this.xOffset = xOffset;
+            this.yScale = yScale;
+            this.yOffset = yOffset;
+            this.offhandOffsetLeft = offhandOffsetLeft;
+            this.offhandOffsetRight = offhandOffsetRight;
+        }
+
+        public int getX(float screenWidth, LivingEntity livingEntity) {
+            int offset;
+            if (livingEntity.getOffhandItem().isEmpty())
+                offset = 0;
+            else if (livingEntity.getMainArm().getOpposite() == HumanoidArm.LEFT)
+                offset = offhandOffsetLeft;
+            else
+                offset = offhandOffsetRight;
+
+            return Mth.floor(screenWidth * xScale) + xOffset + offset;
+        }
+
+        public int getY(float screenHeight) {
+            return Mth.floor(screenHeight * yScale) + yOffset;
+        }
+    }
+
     private static final ResourceLocation DANGER_INDICATOR = Changed.modResource("textures/gui/danger.png");
 
     public static boolean getBlink(float danger, float morph) {
@@ -47,7 +87,7 @@ public class TransfurProgressOverlay {
             if (variant.getTransfurProgression(partialTick) >= 1.0f && !variant.isTemporaryFromSuit()) return;
         }
 
-        if (dangerLevel <= 0.0f && coverProgress <= 0.0f) return;
+        if (dangerLevel <= 0.1f && coverProgress <= 0.0f) return;
 
         dangerLevel = Mth.clamp(dangerLevel, 0.0f, 1.0f);
         coverProgress = Mth.clamp(coverProgress, 0.0f, 1.0f);
@@ -55,8 +95,10 @@ public class TransfurProgressOverlay {
         RenderSystem.setShaderTexture(0, DANGER_INDICATOR);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        int x = 10;
-        int y = screenHeight - 40;
+        final Position position = Changed.config.client.transfurMeterPosition.get();
+
+        int x = position.getX(screenWidth, player);
+        int y = position.getY(screenHeight);
         Gui.blit(poseStack, x, y, 0, 0, 8, 32, 48, 32);
         Gui.blit(poseStack, x, y + Mth.ceil((1.0f - dangerLevel) * 32.0f), 8,  Mth.ceil((1.0f - dangerLevel) * 32.0f), 8, Mth.floor(dangerLevel * 32.0f), 48, 32);
         if (coverProgress > 0.0f) {

@@ -158,7 +158,6 @@
   "gamerule.changed:keepConscious": "Zawsze zachowuj świadomość po transfurze",
   "gamerule.changed:keepForm": "Permanentny transfur",
   "gamerule.changed:latexGrowthRate": "Wzrost latexu i jego rozprzestrzenianie się",
-  "gamerule.changed:transfurTolerance": "Obrażenia Transfur od NPCów (w Tickach)",
   "gamerule.changed:npcWantFusePlayer": "Latexowe NPC chcą złączyć się z graczem",
   "gamerule.changed:doPale": "Czy Pale jest włączony",
 
@@ -394,7 +393,6 @@
   "entity.changed.white_latex_wolf_female": "Żeński jasny latexowy wilk",
   "entity.changed.white_latex_wolf_male": "Męski jasny latexowy wilk",
   "entity.changed.roomba": "Odkurzacz Roomba",
-  "entity.changed.light_latex_wolf_organic": "Organiczny jasny wilk",
   "entity.changed.shark": "Rekin",
   "entity.changed.pure_white_latex_wolf": "Biały latexowy wilk",
   "entity.changed.phage_latex_wolf_female": "Źeński Fagowy Latexowy Wilk",
@@ -462,10 +460,7 @@
   "item.changed.white_latex_knight_fusion_spawn_egg": "Jajo przyzywające fuzję jasnego latexowego rycerza",
   "item.changed.white_latex_knight_spawn_egg": "Jajo przyzywające jasnego latexowego rycerza",
   "item.changed.white_latex_wolf_female_spawn_egg": "Jajo przyzywające żeńskiego jasnego latexowego wilka",
-  "item.changed.light_latex_wolf_male_spawn_egg": "Jajo przyzywające męskiego jasnego latexowego wilka",
-  "item.changed.light_latex_wolf_organic_spawn_egg": "Jajo przyzywające jasnego latexowego wilka",
   "item.changed.shark_spawn_egg": "Jajo przyzywające rekina",
-  "item.changed.white_latex_wolf_spawn_egg": "Jajo przyzywające białego latexowego wilka",
   "item.changed.phage_latex_wolf_female_spawn_egg": "jajo pryzywające źeńskiego fagowego latexowego wilka",
   "item.changed.phage_latex_wolf_male_spawn_egg": "jajo przyzywające męskiego fagowego latexowego wilka",
 
