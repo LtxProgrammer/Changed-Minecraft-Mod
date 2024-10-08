@@ -138,7 +138,6 @@
   "gamerule.changed:keepConscious": "Pysy aina tietoisena transfurmaatiosta",
   "gamerule.changed:keepForm": "Pysyvä transfur",
   "gamerule.changed:latexGrowthRate": "Lateksin kasvuprosentti prosenttia",
-  "gamerule.changed:transfurTolerance": "Lateksin transfur vahinko kokonaisuudessaan (punkit).",
   "gamerule.changed:npcWantFusePlayer": "Lateksit haluavat sulautua pelaajan kanssa yhteen",
   "gamerule.changed:doPale": "Onko Pale käytössä",
 
@@ -365,7 +364,6 @@
   "entity.changed.white_latex_knight": "Vaalea lateksinen ritari",
   "entity.changed.white_latex_wolf_female": "Vaalea naislateksisusi",
   "entity.changed.white_latex_wolf_male": "Vaalea mieslateksisusi",
-  "entity.changed.light_latex_wolf_organic": "Orgaaninen vaalea lateksisusi",
   "entity.changed.shark": "Hai",
   "entity.changed.pure_white_latex_wolf": "Valkoinen kateksisusi",
   "entity.changed.phage_latex_wolf_female": "Naaras Phage Lateksi Susi",
@@ -431,11 +429,7 @@
   "item.changed.white_latex_centaur_spawn_egg": "Vaalean lateksisen kentaurin kutumuna",
   "item.changed.white_latex_knight_fusion_spawn_egg": "Fuusioutuneen vaalean lateksisen ritarin kutumuna",
   "item.changed.white_latex_knight_spawn_egg": "Vaalean lateksisen ritarin kutumuna",
-  "item.changed.light_latex_wolf_female_spawn_egg": "Vaalean naisateksisuden kutumuna",
-  "item.changed.light_latex_wolf_male_spawn_egg": "Vaalean mieslateksisensuden kutumuna",
-  "item.changed.light_latex_wolf_organic_spawn_egg": "Organisen vaalean lateksisuden kutumuna",
   "item.changed.shark_spawn_egg": "Hai kutumuna",
-  "item.changed.white_latex_wolf_spawn_egg": "Valkoisen lateksisuden kutumuna",
   "item.changed.phage_latex_wolf_female_spawn_egg": "Naaras Phage Lateksi Susi Kutumuna",
   "item.changed.phage_latex_wolf_male_spawn_egg": "Uros Phage Lateksi Susi Kutumuna",
 
@@ -539,7 +533,6 @@
 
   "changed.config.bpi.screen": "Pelaajan perustiedot",
   "changed.config.bpi.hair_color": "Hiusten väri",
-  "changed.config.bpi.iris_color": "Iiriksen väri",
   "changed.config.bpi.sclera_color": "Scleran väri",
   "changed.config.bpi.eye_style": "Silmätyyli: %s",
   "changed.config.bpi.override_dl_iris": "Ohita iiriksen väri tummissa lateksivaihtoehdoissa",

@@ -152,7 +152,6 @@
  "gamerule.changed:keepConscious": "Ви не розлучитеся зі своїм розумом після трансфурмації",
  "gamerule.changed:keepForm": "Перма-трансфур",
  "gamerule.changed:latexGrowthRate": "Дозволяє латексу розповсюджуватися",
- "gamerule.changed:transfurTolerance": "Шкода латексних істот за шкалою трансфурмації (У тиках)",
  "gamerule.changed:npcWantFusePlayer": "Латексні НІП навмисно зливаються з гравцем",
  "gamerule.changed:doPale": "Чи буде у світі Блідий вірус ",
  
@@ -384,7 +383,6 @@
  "entity.changed.white_latex_knight": "Лицар зі світлого латексу",
  "entity.changed.white_latex_wolf_female": "Вовчиця зі світлого латексу",
  "entity.changed.white_latex_wolf_male": "Вовк зі світлого латексу",
- "entity.changed.light_latex_wolf_organic": "Органічний вовк зі світлого латексу",
  "entity.changed.shark": "Дивна акула",
  "entity.changed.pure_white_latex_wolf": "Вовк з білого латексу",
  "entity.changed.phage_latex_wolf_female": "Латексна вовчиця-бактеріофаг",
@@ -452,9 +450,7 @@
  "item.changed.white_latex_knight_spawn_egg": "Яйце виклику Лицар зі світлого латексу",
  "item.changed.white_latex_wolf_female_spawn_egg": "Яйце виклику Вовчиця зі світлого латексу",
  "item.changed.white_latex_wolf_male_spawn_egg": "Яйце виклику Вовк зі світлого латексу",
- "item.changed.light_latex_wolf_organic_spawn_egg": "Яйце виклику Органічний вовк зі світлого латексу",
  "item.changed.shark_spawn_egg": "Яйце виклику Дивна акула",
- "item.changed.white_latex_wolf_spawn_egg": "Яйце виклику Вовк з білого латексу",
  "item.changed.phage_latex_wolf_female_spawn_egg": "Яйце виклику Латексна вовчиця-бактеріофаг",
  "item.changed.phage_latex_wolf_male_spawn_egg": "Яйце виклику Латексний вовк-бактеріофаг",
 
