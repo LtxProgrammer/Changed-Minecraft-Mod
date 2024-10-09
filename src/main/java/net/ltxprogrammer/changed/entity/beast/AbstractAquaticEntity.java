@@ -46,7 +46,7 @@ public abstract class AbstractAquaticEntity extends ChangedEntity implements Aqu
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
         if (!world.canSeeSkyFromBelowWater(pos))
             return false;
-        if (random.nextFloat() > 0.035f)
+        if (random.nextFloat() > 0.5f)
             return false;
 
         if (!world.getFluidState(pos.below()).is(FluidTags.WATER)) {
