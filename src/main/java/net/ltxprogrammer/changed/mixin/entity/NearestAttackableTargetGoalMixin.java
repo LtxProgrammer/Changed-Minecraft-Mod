@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -29,6 +31,16 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> {
                     .orElse(true);
         };
 
-        this.targetConditions = this.targetConditions.selector(predicate != null ? predicate.and(scaryPredicate) : scaryPredicate);
+        final Predicate<LivingEntity> neutralPredicate = livingEntity -> {
+            if (livingEntity instanceof ChangedEntity) {
+                return livingEntity.getType().is(ChangedTags.EntityTypes.LATEX);
+            }
+
+            return true;
+        };
+
+        final Predicate<LivingEntity> custom = scaryPredicate.and(neutralPredicate);
+
+        this.targetConditions = this.targetConditions.selector(predicate != null ? predicate.and(custom) : custom);
     }
 }

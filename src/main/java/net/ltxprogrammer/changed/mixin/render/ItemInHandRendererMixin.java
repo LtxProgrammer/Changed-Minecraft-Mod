@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.UseItemMode;
+import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -88,5 +92,14 @@ public abstract class ItemInHandRendererMixin {
 
             bufferSource.endBatch();
         });
+
+        if (!(player instanceof LivingEntityDataExtension ext)) return;
+        AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                .ifPresent(ability -> {
+                    if (ability.grabbedHasControl) return;
+
+                    callback.cancel();
+                    bufferSource.endBatch();
+                });
     }
 }
