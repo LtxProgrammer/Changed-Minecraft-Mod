@@ -168,7 +168,7 @@
   "gamerule.changed:doPale": "Er Pale aktivert",
 
   "key.changed.variant_ability": "Aktiv variantevne",
-  "key.changed.use_ability": "Bruke variantevne",
+  "key.changed.use_ability": "Bruk variantevne",
   "key.changed.extra_jump": "Ekstra hopp",
 
   "container.changed.extra_hands": "Ekstra hendermeny",
@@ -553,9 +553,12 @@
   "changed:advancements.main.kill_all_latex.title": "Gått berserk",
   "changed:advancements.main.kill_all_latex.description": "Drep et av hvert slag av lateksdyr",
 
+  "changed:advancements.main.flying.title": "Sprer dine vinger",
+  "changed:advancements.main.flying.description": "Bruk din flygeevner i 15 sekunder",
+
   "changed.tutorial.select_ability.title": "Velge din evne",
   "changed.tutorial.select_ability.description": "Trykk på %s",
-  "changed.tutorial.use_ability.title": "Bruke din evne",
+  "changed.tutorial.use_ability.title": "Bruk din evne",
   "changed.tutorial.use_ability.description": "Trykk på eller hold %s",
 
   "facility.zone.red_zone": "Rød sone",

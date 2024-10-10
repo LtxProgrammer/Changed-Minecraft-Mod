@@ -6,11 +6,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -52,6 +54,16 @@ public class DroppedOrange extends Block implements NonLatexCoverableBlock, Simp
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         return List.of(new ItemStack(ChangedItems.ORANGE.get(), state.getValue(ORANGES)));
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+        }
     }
 
     @Override
