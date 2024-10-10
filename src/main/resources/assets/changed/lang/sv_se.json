@@ -553,9 +553,12 @@
   "changed:advancements.main.kill_all_latex.title": "Blivit bärsärk",
   "changed:advancements.main.kill_all_latex.description": "Döda en av varje slags av latexdjur",
 
+  "changed:advancements.main.flying.title": "Sprider dina vingar",
+  "changed:advancements.main.flying.description": "Använd din flygförmågor i 15 sekunder",
+
   "changed.tutorial.select_ability.title": "Välj din förmåga",
   "changed.tutorial.select_ability.description": "Tryck %s",
-  "changed.tutorial.use_ability.title": "Använda din förmåga",
+  "changed.tutorial.use_ability.title": "Använd din förmåga",
   "changed.tutorial.use_ability.description": "Tryck eller håll ned %s",
 
   "facility.zone.red_zone": "Röd zon",
