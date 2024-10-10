@@ -14,7 +14,7 @@ This repository holds the source code for the **Changed: Minecraft Mod**. Releas
 Any aspiring developer is welcome to fork and create a pull request to submit their content. Programmers, texture artists, and 3D modelers all have a place here.
 - Textures are kept in *src/main/resources/assets/changed/textures*
 - Java code is in *src/main/java/net/ltxprogrammer/changed*
-- 3D models are kept in *src/main/java/net/ltxprogrammer/changed/client/renderer/model*
+- 3D models are kept in *3dmodels*
 
 Even if you aren't a developer, you can help with translations, documentation, or other simple issues. However, any changes you make to the code or files should be on your own fork. Create a pull request when you are ready to submit any changes.
 
