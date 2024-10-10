@@ -35,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -357,6 +358,19 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             if (!variant.getItemUseMode().breakBlocks && !event.getPlayer().getAbilities().instabuild)
                 event.setCanceled(true);
         });
+    }
+
+    @SubscribeEvent
+    public static void onClick(InputEvent.ClickInputEvent event) {
+        if (!(UniversalDist.getLocalPlayer() instanceof LivingEntityDataExtension ext)) return;
+
+        AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                .ifPresent(ability -> {
+                    if (ability.grabbedHasControl) return;
+
+                    event.setCanceled(true);
+                    event.setSwingHand(false);
+                });
     }
 
     @SubscribeEvent
