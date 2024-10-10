@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import javax.annotation.Nullable;
+
 public class GrabEntityAbility extends AbstractAbility<GrabEntityAbilityInstance> {
     public GrabEntityAbility() {
         super(GrabEntityAbilityInstance::new);
@@ -23,5 +25,11 @@ public class GrabEntityAbility extends AbstractAbility<GrabEntityAbilityInstance
         }
 
         return false;
+    }
+
+    public static @Nullable IAbstractChangedEntity getGrabber(LivingEntity grabbed) {
+        if (!(grabbed instanceof LivingEntityDataExtension ext)) return null;
+
+        return IAbstractChangedEntity.forEither(ext.getGrabbedBy());
     }
 }

@@ -370,13 +370,15 @@ public class ProcessTransfur {
     }
 
     public static TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
-        return setPlayerTransfurVariant(player, ogVariant, cause, progress, (variant) -> {});
+        return setPlayerTransfurVariant(player, ogVariant, cause, progress, false);
     }
 
     @Contract("_, null, _, _, _ -> null; _, !null, _, _, _ -> !null")
     public static @Nullable
-    TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress,
-                                                        Consumer<TransfurVariantInstance<?>> beforeBroadcast) {
+    TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant,
+                                                        @Nullable TransfurCause cause,
+                                                        float progress,
+                                                        boolean temporaryFromSuit) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
         MinecraftForge.EVENT_BUS.post(event);
@@ -395,13 +397,16 @@ public class ProcessTransfur {
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
         playerDataExtension.setTransfurVariant(instance);
 
-        if (instance != null)
+        if (instance != null) {
+            instance.transfurProgressionO = progress;
             instance.transfurProgression = progress;
+        }
 
         if (oldVariant != null) {
             oldVariant.unhookAll(player);
-            if (instance != null) {
+            if (instance != null) { // TODO transition between variants
                 instance.willSurviveTransfur = oldVariant.willSurviveTransfur;
+                instance.transfurProgressionO = oldVariant.transfurProgressionO;
                 instance.transfurProgression = oldVariant.transfurProgression;
                 instance.transfurContext = oldVariant.transfurContext;
             }
@@ -411,7 +416,7 @@ public class ProcessTransfur {
             instance.transfurContext = instance.transfurContext.withCause(cause);
 
         if (instance != null)
-            beforeBroadcast.accept(instance);
+            instance.setTemporaryForSuit(temporaryFromSuit);
         if (instance != null && !instance.isTemporaryFromSuit()) {
             player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         } else {
@@ -421,11 +426,6 @@ public class ProcessTransfur {
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
             MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
-
-            if (player instanceof LivingEntityDataExtension ext) {
-                AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
-                        .ifPresent(GrabEntityAbilityInstance::releaseEntity);
-            }
         }
 
         if (player instanceof ServerPlayer serverPlayer)

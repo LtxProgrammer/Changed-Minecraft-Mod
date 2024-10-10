@@ -134,8 +134,11 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
             ext.setGrabbedBy(null);
 
-        if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
+        if (this.entity.getEntity() instanceof Player player && player == UniversalDist.getLocalPlayer()) {
+            for (StackTraceElement traceElement : Thread.currentThread().getStackTrace())
+                Changed.LOGGER.info("\tat {}", traceElement);
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
+        }
         if (entity instanceof Player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
         } else {
@@ -163,13 +166,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             entity.setInvisible(true);
         }
 
-        if (this.grabbedEntity == entity) {
-            this.suited = true;
-            this.grabStrength = 1.0f;
-            return;
-        }
+        if (this.grabbedEntity != entity)
+            this.releaseEntity();
 
-        this.releaseEntity();
         this.grabbedEntity = entity;
         this.suited = true;
         this.grabStrength = 1.0f;
@@ -376,10 +375,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerTransfurred(player)) {
-                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
-                    // This runs before the server broadcasts it to players
-                    variant.checkForTemporary(this.entity);
-                });
+                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, true);
             }
 
             else if (!this.suited && this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {

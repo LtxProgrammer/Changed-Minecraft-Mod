@@ -89,6 +89,8 @@ public enum TransfurCause {
     PINK_PANTS(WAIST_HAZARD),
     WHITE_LATEX(GRAB_REPLICATE);
 
+    public static final TransfurCause DEFAULT = ATTACK_REPLICATE_LEFT;
+
     private static float firstLimb(float totalProgress) {
         return Mth.clamp(Mth.map(totalProgress, 0.0f, 0.33333f, 0.0f, 1.0f), 0.0f, 1.0f);
     }
