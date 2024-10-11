@@ -596,6 +596,5 @@
   "changed.config.bpi.size": "Rozmiar modelu",
   "changed.config.bpi.size.value": "Rozmiar: %s%%",
   "changed.config.bpi.override_dl_iris": "Zastąp kolor oczu w ciemnych latexach",
-  "changed.config.bpi.override_all_eye_styles": "zastąp kolor oczu u wszystkich",
-  "gamerule.changed:doTransfurAnimation": "Players have a small transfur animation"
+  "changed.config.bpi.override_all_eye_styles": "zastąp kolor oczu u wszystkich"
 }
