@@ -24,7 +24,7 @@
   "ability.changed.select_special_state": "Wybierz Specjalny Stan",
   "ability.changed.summon_sharks": "Przywołaj rekiny",
 
-   "ability.changed.grab_entity": "Złap istotę",
+  "ability.changed.grab_entity": "Złap istotę",
   "ability.changed.grab_entity.how_to_grab": "przytrzymaj [%s] by złapać",
   "ability.changed.grab_entity.how_to_release": "przytrzymaj [%s] by wypuścić",
   "ability.changed.grab_entity.how_to_transfur": "przytrzymaj [%s] dla transfura",
@@ -159,10 +159,11 @@
   "command.changed.error.used_by_other_mod": "model gracza jest używany przez innego moda",
   "command.changed.error.no_special_form": "Brak specjalnej formy, odwiedź https://www.patreon.com/ltxprogrammer",
 
-  "gamerule.changed:fusabilityDurationPlayer": "Post-transfurowa możliwość na złączenie (w Tickach)",
+  "gamerule.changed:fusabilityDurationPlayer": "Post-transfurowa szansa na złączenie (w Tickach)",
   "gamerule.changed:keepConscious": "Zawsze zachowuj świadomość po transfurze",
   "gamerule.changed:keepForm": "Permanentny transfur",
-  "gamerule.changed:latexGrowthRate": "Wzrost latexu i jego rozprzestrzenianie się",
+  "gamerule.changed:latexGrowthRate": "Rozwój Latexu i jego rozprzestrzenianie się",
+  "gamerule.changed:doTransfurAnimation": "Gracz ma krótką animację transformacji"
   "gamerule.changed:npcWantFusePlayer": "Latexowe NPC chcą złączyć się z graczem",
   "gamerule.changed:doPale": "Czy Pale jest włączony",
 
@@ -517,16 +518,16 @@
   "changed:advancements.main.root.title": "Changed",
   "changed:advancements.main.root.description": "pobudka,witaj w pryszłości",
 
-  "changed:advancements.main.transfur.title": "To jest na zawsze!?",
+  "changed:advancements.main.transfur.title": "To jest na stałe!?",
   "changed:advancements.main.transfur.description": "Dokonaj transfura",
 
   "changed:advancements.main.transfur_aquatic.title": "Czas popływać!",
   "changed:advancements.main.transfur_aquatic.description": "Dokonaj transfura w formę wodną",
 
-  "changed:advancements.main.aquatic_swimming.title": "No i popływano",
+  "changed:advancements.main.aquatic_swimming.title": "Podmorski rejs",
   "changed:advancements.main.aquatic_swimming.description": "Spędź cały minecraftowy dzień pod wodą jako forma wodna",
 
-  "changed:advancements.main.transfur_white.title": "Jedno w tym samym",
+  "changed:advancements.main.transfur_white.title": "Wspólny umysł",
   "changed:advancements.main.transfur_white.description": "Dokonaj transfura w formę białego latexu",
 
   "changed:advancements.main.transfur_dark.title": "Bractwo",
