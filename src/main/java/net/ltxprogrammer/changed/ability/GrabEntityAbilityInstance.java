@@ -456,7 +456,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             if (this.getController().getHoldTicks() >= 40) {
                 if (suited) {
                     this.grabEntity(this.grabbedEntity);
-                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                    if (this.entity.getLevel().isClientSide)
+                        Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
                     this.suitTransition = 0.0f;
                 } else
                     this.releaseEntity();

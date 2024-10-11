@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface IAbstractChangedEntity {
@@ -85,6 +86,10 @@ public interface IAbstractChangedEntity {
             doesAbsorption = false;
 
         return doesAbsorption;
+    }
+
+    default <T extends AbstractAbilityInstance> Optional<T> getAbilityInstanceSafe(AbstractAbility<T> ability) {
+        return Optional.ofNullable(getAbilityInstance(ability));
     }
 
     static IAbstractChangedEntity forPlayer(Player player) {
