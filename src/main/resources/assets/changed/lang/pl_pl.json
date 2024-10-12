@@ -8,7 +8,7 @@
   "ability.changed.access_saddle": "Dosięgnij siodła",
   "ability.changed.switch_transfur_mode": "Zmień tryb transfur",
   "ability.changed.switch_transfur_mode.select": "Tryb Transfur: %s",
-   "ability.changed.switch_transfur_mode.absorption": "Absorpcja",
+  "ability.changed.switch_transfur_mode.absorption": "Absorpcja",
   "ability.changed.switch_transfur_mode.replication": "Replikacja",
   "ability.changed.create_cobweb": "Stwórz pajęczynę",
   "ability.changed.create_inkball": "Stwórz kulkę atramentu",
@@ -163,7 +163,7 @@
   "gamerule.changed:keepConscious": "Zawsze zachowuj świadomość po transfurze",
   "gamerule.changed:keepForm": "Permanentny transfur",
   "gamerule.changed:latexGrowthRate": "Rozwój Latexu i jego rozprzestrzenianie się",
-  "gamerule.changed:doTransfurAnimation": "Gracz ma krótką animację transformacji"
+  "gamerule.changed:doTransfurAnimation": "Gracz ma krótką animację transformacji",
   "gamerule.changed:npcWantFusePlayer": "Latexowe NPC chcą złączyć się z graczem",
   "gamerule.changed:doPale": "Czy Pale jest włączony",
 
