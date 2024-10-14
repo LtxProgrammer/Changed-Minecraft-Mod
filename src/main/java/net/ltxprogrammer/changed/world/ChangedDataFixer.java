@@ -220,10 +220,8 @@ public class ChangedDataFixer {
     private static final Consumer<CompoundTag> NULL_OP = tag -> {};
 
     public static void updateCompoundTag(@NotNull DataFixTypes type, @Nullable CompoundTag tag) {
-        if (tag == null) {
-            Changed.LOGGER.error("Encountered null tag when updating tag for {}", type);
+        if (tag == null)
             return;
-        }
 
         DATA_FIXERS.getOrDefault(type, NULL_OP).accept(tag);
     }
