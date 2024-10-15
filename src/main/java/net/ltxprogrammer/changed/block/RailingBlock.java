@@ -21,6 +21,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.Nullable;
+
 public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWaterloggedBlock {
     private static final VoxelShape POST_SHAPE = Block.box(6.0, 0.0, 12.0, 10.0, 16.0, 16.0);
     private static final VoxelShape POST_SHAPE_TALL = Block.box(6.0, 0.0, 12.0, 10.0, 24.0, 16.0);
@@ -72,15 +74,33 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
         }
     }
 
-    record ConnectResult(boolean canConnect, Direction preferredOrientation, boolean alteredDir) {
-        private static final ConnectResult NONE = new ConnectResult(false, null, false);
+    enum ConnectionStrength {
+        NONE,
+        WEAK,
+        STRONG;
 
-        public static ConnectResult direction(Direction preferredOrientation, boolean alteredDir) {
-            return new ConnectResult(true, preferredOrientation, alteredDir);
+        public boolean isWeakerThan(ConnectionStrength strength) {
+            return this.ordinal() < strength.ordinal();
+        }
+    }
+
+    record ConnectResult(boolean canConnect, Direction preferredOrientation, ConnectionStrength strength, boolean alteredDir) {
+        private static final ConnectResult NONE = new ConnectResult(false, null, ConnectionStrength.NONE, false);
+
+        public static ConnectResult direction(Direction preferredOrientation, ConnectionStrength strength, boolean alteredDir) {
+            if (strength == ConnectionStrength.NONE)
+                return NONE;
+            return new ConnectResult(true, preferredOrientation, strength, alteredDir);
         }
 
         public static ConnectResult none() {
             return NONE;
+        }
+
+        public ConnectResult filter(ConnectionStrength strength) {
+            if (this.strength.isWeakerThan(strength))
+                return NONE;
+            return this;
         }
     }
 
@@ -100,20 +120,24 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
 
     ConnectResult canConnect(BlockGetter level, BlockState state, Direction direction, BlockState otherState, BlockPos otherPos) {
         if (otherState.isFaceSturdy(level, otherPos, direction.getOpposite(), SupportType.FULL)) { // Sturdy face
-            return ConnectResult.direction(state.getValue(FACING), false);
+            return ConnectResult.direction(state.getValue(FACING), ConnectionStrength.WEAK, false);
         } else if (otherState.is(this)) {
-            if (otherState.getValue(FACING) == state.getValue(FACING).getOpposite() &&
-                    (otherState.getValue(SHAPE) == Shape.SIDE || state.getValue(SHAPE) == Shape.SIDE))
+            final Direction otherFacing = otherState.getValue(FACING);
+
+            if (otherState.getValue(FACING) == state.getValue(FACING).getOpposite())
                 return ConnectResult.none();
             else {
                 return switch(otherState.getValue(SHAPE)) {
-                    case POST, SIDE -> ConnectResult.direction(otherState.getValue(FACING), false);
-                    case INNER_CORNER, OUTER_CORNER -> otherState.getValue(FACING).getAxis() == direction.getAxis() ?
-                            ConnectResult.direction(otherState.getValue(FACING).getCounterClockWise(), true) :
-                            ConnectResult.direction(otherState.getValue(FACING), false);
-                    case OUTER_CORNER_ALT -> otherState.getValue(FACING).getAxis() == direction.getAxis() ?
-                            ConnectResult.direction(otherState.getValue(FACING).getClockWise(), true) :
-                            ConnectResult.direction(otherState.getValue(FACING), false);
+                    case POST -> ConnectResult.direction(otherFacing, ConnectionStrength.STRONG, false);
+                    case INNER_CORNER, OUTER_CORNER -> otherFacing.getAxis() == direction.getAxis() ?
+                            ConnectResult.direction(otherFacing.getCounterClockWise(), ConnectionStrength.STRONG, true) :
+                            ConnectResult.direction(otherFacing, ConnectionStrength.STRONG, false);
+                    case OUTER_CORNER_ALT -> otherFacing.getAxis() == direction.getAxis() ?
+                            ConnectResult.direction(otherFacing.getClockWise(), ConnectionStrength.STRONG, true) :
+                            ConnectResult.direction(otherFacing, ConnectionStrength.STRONG, false);
+                    case SIDE -> otherFacing.getAxis() == direction.getAxis() ?
+                            ConnectResult.none() :
+                            ConnectResult.direction(otherFacing, ConnectionStrength.STRONG, false);
                 };
             }
         }
@@ -121,23 +145,7 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
         return ConnectResult.none();
     }
 
-    public BlockState computeState(LevelReader level, BlockPos pos, BlockState state) {
-        if (state == null)
-            return null;
-
-        BlockState stateNorth = level.getBlockState(pos.north());
-        BlockState stateEast = level.getBlockState(pos.east());
-        BlockState stateSouth = level.getBlockState(pos.south());
-        BlockState stateWest = level.getBlockState(pos.west());
-
-        ConnectResult connectNorth = canConnect(level, state, Direction.NORTH, stateNorth, pos.north());
-        ConnectResult connectEast = canConnect(level, state, Direction.EAST, stateEast, pos.east());
-        ConnectResult connectSouth = canConnect(level, state, Direction.SOUTH, stateSouth, pos.south());
-        ConnectResult connectWest = canConnect(level, state, Direction.WEST, stateWest, pos.west());
-
-        if (!connectNorth.canConnect && !connectEast.canConnect && !connectSouth.canConnect && !connectWest.canConnect)
-            return state.setValue(SHAPE, Shape.POST);
-
+    private @Nullable BlockState checkConnections(BlockState state, ConnectResult connectNorth, ConnectResult connectEast, ConnectResult connectSouth, ConnectResult connectWest) {
         // Check straight line connections
         if (!connectNorth.canConnect && !connectSouth.canConnect) {
             if (connectEast.canConnect && connectWest.canConnect) {
@@ -148,7 +156,7 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
             if (connectEast.canConnect && !connectEast.alteredDir && !connectWest.canConnect) {
                 return state.setValue(FACING, connectEast.preferredOrientation).setValue(SHAPE,
                         connectEast.preferredOrientation == Direction.SOUTH ? Shape.OUTER_CORNER_ALT : Shape.OUTER_CORNER);
-            } else if (!connectEast.canConnect && !connectWest.alteredDir) {
+            } else if (!connectEast.canConnect && !connectWest.alteredDir && connectWest.canConnect) {
                 return state.setValue(FACING, connectWest.preferredOrientation).setValue(SHAPE,
                         connectWest.preferredOrientation == Direction.SOUTH ? Shape.OUTER_CORNER : Shape.OUTER_CORNER_ALT);
             }
@@ -161,7 +169,7 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
             if (connectNorth.canConnect && !connectNorth.alteredDir && !connectSouth.canConnect) {
                 return state.setValue(FACING, connectNorth.preferredOrientation).setValue(SHAPE,
                         connectNorth.preferredOrientation == Direction.EAST ? Shape.OUTER_CORNER_ALT : Shape.OUTER_CORNER);
-            } else if (!connectNorth.canConnect && !connectSouth.alteredDir) {
+            } else if (!connectNorth.canConnect && !connectSouth.alteredDir && connectSouth.canConnect) {
                 return state.setValue(FACING, connectSouth.preferredOrientation).setValue(SHAPE,
                         connectSouth.preferredOrientation == Direction.EAST ? Shape.OUTER_CORNER : Shape.OUTER_CORNER_ALT);
             }
@@ -192,6 +200,55 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
             else
                 return state.setValue(FACING, connectWest.preferredOrientation).setValue(SHAPE, connectWest.preferredOrientation == Direction.NORTH ? Shape.INNER_CORNER : Shape.OUTER_CORNER);
         }
+
+        return null;
+    }
+
+    public BlockState computeState(LevelReader level, BlockPos pos, BlockState state) {
+        if (state == null)
+            return null;
+
+        BlockState stateNorth = level.getBlockState(pos.north());
+        BlockState stateEast = level.getBlockState(pos.east());
+        BlockState stateSouth = level.getBlockState(pos.south());
+        BlockState stateWest = level.getBlockState(pos.west());
+
+        ConnectResult connectNorth = canConnect(level, state, Direction.NORTH, stateNorth, pos.north());
+        ConnectResult connectEast = canConnect(level, state, Direction.EAST, stateEast, pos.east());
+        ConnectResult connectSouth = canConnect(level, state, Direction.SOUTH, stateSouth, pos.south());
+        ConnectResult connectWest = canConnect(level, state, Direction.WEST, stateWest, pos.west());
+
+        if (!connectNorth.canConnect && !connectEast.canConnect && !connectSouth.canConnect && !connectWest.canConnect)
+            return state.setValue(SHAPE, Shape.POST);
+
+        BlockState strongConnection = checkConnections(state,
+                connectNorth.filter(ConnectionStrength.STRONG),
+                connectEast.filter(ConnectionStrength.STRONG),
+                connectSouth.filter(ConnectionStrength.STRONG),
+                connectWest.filter(ConnectionStrength.STRONG)
+        );
+
+        if (strongConnection != null)
+            return strongConnection;
+
+        BlockState weakConnection = checkConnections(state,
+                connectNorth,
+                connectEast,
+                connectSouth,
+                connectWest
+        );
+
+        if (weakConnection != null)
+            return weakConnection;
+
+        if (connectNorth.canConnect)
+            return state.setValue(SHAPE, Shape.OUTER_CORNER_ALT).setValue(FACING, connectNorth.preferredOrientation.getOpposite());
+        if (connectEast.canConnect)
+            return state.setValue(SHAPE, Shape.OUTER_CORNER_ALT).setValue(FACING, connectEast.preferredOrientation.getOpposite());
+        if (connectSouth.canConnect)
+            return state.setValue(SHAPE, Shape.OUTER_CORNER_ALT).setValue(FACING, connectSouth.preferredOrientation.getOpposite());
+        if (connectWest.canConnect)
+            return state.setValue(SHAPE, Shape.OUTER_CORNER_ALT).setValue(FACING, connectWest.preferredOrientation.getOpposite());
 
         return state.setValue(SHAPE, Shape.POST);
     }
