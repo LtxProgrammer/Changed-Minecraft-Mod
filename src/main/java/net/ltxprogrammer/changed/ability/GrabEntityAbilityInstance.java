@@ -134,11 +134,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
             ext.setGrabbedBy(null);
 
-        if (this.entity.getEntity() instanceof Player player && player == UniversalDist.getLocalPlayer()) {
-            for (StackTraceElement traceElement : Thread.currentThread().getStackTrace())
-                Changed.LOGGER.info("\tat {}", traceElement);
+        if (this.entity.getEntity() instanceof Player player && player == UniversalDist.getLocalPlayer())
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
-        }
         if (entity instanceof Player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
         } else {
@@ -459,7 +456,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             if (this.getController().getHoldTicks() >= 40) {
                 if (suited) {
                     this.grabEntity(this.grabbedEntity);
-                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                    if (this.entity.getLevel().isClientSide)
+                        Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
                     this.suitTransition = 0.0f;
                 } else
                     this.releaseEntity();

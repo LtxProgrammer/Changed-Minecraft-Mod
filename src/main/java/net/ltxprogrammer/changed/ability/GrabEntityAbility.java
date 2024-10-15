@@ -6,6 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class GrabEntityAbility extends AbstractAbility<GrabEntityAbilityInstance> {
     public GrabEntityAbility() {
@@ -31,5 +32,11 @@ public class GrabEntityAbility extends AbstractAbility<GrabEntityAbilityInstance
         if (!(grabbed instanceof LivingEntityDataExtension ext)) return null;
 
         return IAbstractChangedEntity.forEither(ext.getGrabbedBy());
+    }
+
+    public static Optional<IAbstractChangedEntity> getGrabberSafe(LivingEntity grabbed) {
+        if (!(grabbed instanceof LivingEntityDataExtension ext)) return Optional.empty();
+
+        return Optional.ofNullable(IAbstractChangedEntity.forEither(ext.getGrabbedBy()));
     }
 }

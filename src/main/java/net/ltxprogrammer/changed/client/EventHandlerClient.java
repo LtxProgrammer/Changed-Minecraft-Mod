@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.gui.ContentWarningScreen;
 import net.ltxprogrammer.changed.client.renderer.layers.DarkLatexMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
@@ -164,6 +165,14 @@ public class EventHandlerClient {
                     }
                 });
             });
+
+            GrabEntityAbility.getGrabberSafe(localPlayer).flatMap(entity -> entity.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get()))
+                    .ifPresent(ability -> {
+                        if (ability.grabbedHasControl) return;
+
+                        event.setCanceled(true);
+                        event.setSwingHand(false);
+                    });
         }
     }
 
