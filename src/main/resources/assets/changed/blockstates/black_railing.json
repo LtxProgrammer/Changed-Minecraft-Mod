@@ -7,9 +7,6 @@
       "model": "changed:block/black_railing_side"
     },
     "facing=north,shape=outer_corner": {
-      "model": "changed:block/black_railing_outer_corner"
-    },
-    "facing=north,shape=outer_corner_alt": {
       "model": "changed:block/black_railing_outer_corner",
       "y": 90
     },
@@ -25,10 +22,6 @@
       "y": 90
     },
     "facing=east,shape=outer_corner": {
-      "model": "changed:block/black_railing_outer_corner",
-      "y": 90
-    },
-    "facing=east,shape=outer_corner_alt": {
       "model": "changed:block/black_railing_outer_corner",
       "y": 180
     },
@@ -46,10 +39,6 @@
     },
     "facing=south,shape=outer_corner": {
       "model": "changed:block/black_railing_outer_corner",
-      "y": 180
-    },
-    "facing=south,shape=outer_corner_alt": {
-      "model": "changed:block/black_railing_outer_corner",
       "y": 270
     },
     "facing=south,shape=inner_corner": {
@@ -65,10 +54,6 @@
       "y": 270
     },
     "facing=west,shape=outer_corner": {
-      "model": "changed:block/black_railing_outer_corner",
-      "y": 270
-    },
-    "facing=west,shape=outer_corner_alt": {
       "model": "changed:block/black_railing_outer_corner"
     },
     "facing=west,shape=inner_corner": {

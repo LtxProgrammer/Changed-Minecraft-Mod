@@ -70,6 +70,13 @@ public enum TransfurCause {
             LimbCoverTransition.COVER_START, TransfurCause::secondLimb, // RIGHT ARM
             LimbCoverTransition.COVER_START, TransfurCause::firstLimb, // LEFT LEG
             LimbCoverTransition.COVER_START, TransfurCause::firstLimb), // RIGHT LEG
+    FLOOR_HAZARD(
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // HEAD
+            LimbCoverTransition.COVER_FROM_LEGS, TransfurCause::secondLimb, // TORSO
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // LEFT ARM
+            LimbCoverTransition.COVER_START, TransfurCause::thirdLimb, // RIGHT ARM
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb, // LEFT LEG
+            LimbCoverTransition.COVER_END, TransfurCause::firstLimb), // RIGHT LEG
     FACE_HAZARD(
             LimbCoverTransition.COVER_ATTACK, TransfurCause::firstLimb, // HEAD
             LimbCoverTransition.COVER_FROM_HEAD, TransfurCause::secondLimb, // TORSO
@@ -80,7 +87,7 @@ public enum TransfurCause {
 
     // Specific causes that inherit from generic causes
     CRYSTAL(FOOT_HAZARD_RIGHT),
-    LATEX_PUDDLE(FOOT_HAZARD_RIGHT),
+    LATEX_PUDDLE(FLOOR_HAZARD),
     LATEX_SYRINGE_FLOOR(FOOT_HAZARD_RIGHT),
     LATEX_WALL_SPLOTCH(WALL_HAZARD_RIGHT),
     SQUID_DOG_INKBALL(GRAB_REPLICATE),
