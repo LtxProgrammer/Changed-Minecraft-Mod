@@ -162,7 +162,6 @@
   "command.changed.success.progresstf.many": "Progressed transfur for %s player(s)",
   "command.changed.success.regresstf.one": "Regressed transfur for %s",
   "command.changed.success.regresstf.many": "Regressed transfur for %s player(s)",
-
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.not_cause": "Invalid transfur cause",
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
