@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "changed:behemoth_head",
+    "changed:behemoth_hand_left",
+    "changed:behemoth_hand_right",
     "changed:white_latex_wolf_female",
     "changed:white_latex_wolf_male",
     "changed:white_latex_knight",
