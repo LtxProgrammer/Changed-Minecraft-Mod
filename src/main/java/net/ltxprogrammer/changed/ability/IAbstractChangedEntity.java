@@ -62,12 +62,9 @@ public interface IAbstractChangedEntity {
     void setEyeStyle(EyeStyle style);
     void causeFoodExhaustion(float exhaustion);
 
-    default boolean haveTransfurMode() {
-        if (getEntity() instanceof ChangedEntity changedEntity)
-            return changedEntity.getTransfurMode() != TransfurMode.NONE;
-        else if (getTransfurVariantInstance() != null)
-            return getTransfurVariantInstance().transfurMode != TransfurMode.NONE;
-        return false;
+    default boolean hasTransfurMode() {
+        final TransfurMode mode = getTransfurMode();
+        return mode != TransfurMode.NONE;
     }
 
     default boolean wantAbsorption() {
@@ -145,7 +142,7 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull TransfurMode getTransfurMode() {
-                return ProcessTransfur.getPlayerTransfurVariant(player).transfurMode;
+                return instance.get().transfurMode;
             }
 
             @org.jetbrains.annotations.Nullable
