@@ -69,7 +69,9 @@ public interface IAbstractChangedEntity {
 
     default boolean wantAbsorption() {
         boolean doesAbsorption;
-        if (getEntity() instanceof ChangedEntity changedEntity)
+        if (getEntity() instanceof TamableLatexEntity tamableLatex && tamableLatex.isTame())
+            doesAbsorption = true;
+        else if (getEntity() instanceof ChangedEntity changedEntity)
             doesAbsorption = changedEntity.getTransfurMode() == TransfurMode.ABSORPTION;
         else if (getTransfurVariantInstance() != null)
             doesAbsorption = getTransfurVariantInstance().transfurMode == TransfurMode.ABSORPTION;
