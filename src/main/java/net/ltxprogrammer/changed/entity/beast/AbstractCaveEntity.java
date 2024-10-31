@@ -22,7 +22,7 @@ public abstract class AbstractCaveEntity extends ChangedEntity {
             return false;
         if (pos.getY() > world.getSeaLevel() - 10)
             return false;
-        if (random.nextFloat() < 0.75f)
+        if (random.nextFloat() > 0.5f)
             return false;
         if (!checkSpawnBlock(world, reason, pos))
             return false;

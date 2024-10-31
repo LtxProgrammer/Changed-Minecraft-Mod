@@ -30,9 +30,10 @@
  "ability.changed.grab_entity.how_to_transfur": "Држите [%s] да напредујете трансфур",
  "ability.changed.grab_entity.how_to_absorb": "Држите [%s] и [%s] да бисте напредовали у апсорпцији",
  "ability.changed.grab_entity.how_to_suit": "Држите [%s] да бисте прешли на одело",
+ "ability.changed.grab_entity.how_to_toggle_control": "Притисните [%s] да пребаците контролу",
 
- "attribute.name.changed.transfur_damage": "Трансфурматион дамаге",
- "attribute.name.changed.transfur_tolerance": "Трансфурматион Ресистанце",
+ "attribute.name.changed.transfur_damage": "Трансфурматион оштећења",
+ "attribute.name.changed.transfur_tolerance": "Трансфурматион отпор",
 
  "subtitles.changed.attack1": "Робот усисивач пишти",
  "subtitles.changed.sound3": "Неко се органски трансфурмише",
@@ -149,6 +150,9 @@
  "death.attack.changed:bloodloss.player": "%1$s је примио туђу крв захваљујући %2$s",
  "death.attack.changed:fan": "%s се претворио у комадиће сланине након што га је набола оштрица вентилатора",
  "death.attack.changed:fan.player": "%1$s је посекао ножеви вентилатора док се борио против %2$s",
+ "death.attack.changed:absorb": "%1$s био апсорбован",
+ "death.attack.changed:absorb.player": "%1$s био апсорбован %2$s",
+ "death.attack.changed:pale.player": "%s је дошао у бољи свет због вируса Пале док се борио против %2$s",
 
  "command.changed.error.not_latex_form": "Непостојећи облик",
  "command.changed.error.not_cause": "Погрешан разлог за трансфурмацију",

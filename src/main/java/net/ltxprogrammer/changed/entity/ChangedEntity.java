@@ -25,9 +25,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -419,7 +417,7 @@ public abstract class ChangedEntity extends Monster {
     public static <T extends ChangedEntity> boolean checkEntitySpawnRules(EntityType<T> entityType, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
         if (pos.getY() < world.getSeaLevel() - 10)
             return false;
-        if (random.nextFloat() < 0.75f)
+        if (random.nextFloat() > 0.5f)
             return false;
         if (!checkSpawnBlock(world, reason, pos))
             return false;
@@ -750,6 +748,10 @@ public abstract class ChangedEntity extends Monster {
 
     public boolean tryTransfurTarget(Entity entity) {
         if (!this.getType().is(ChangedTags.EntityTypes.LATEX))
+            return false;
+
+        IAbstractChangedEntity abstractChangedEntity = IAbstractChangedEntity.forEither(maybeGetUnderlying());
+        if (abstractChangedEntity == null || !abstractChangedEntity.hasTransfurMode())
             return false;
 
         float damage = (float)maybeGetUnderlying().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());

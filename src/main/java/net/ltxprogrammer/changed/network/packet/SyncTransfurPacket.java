@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.network.packet;
 
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -13,20 +14,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import javax.annotation.Nullable;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SyncTransfurPacket implements ChangedPacket {
-    record Listing(int form, CompoundTag data) {
+    record Listing(int form,
+                   TransfurCause cause,
+                   float progress,
+                   boolean temporaryFromSuit, CompoundTag data) {
         static Listing fromStream(FriendlyByteBuf buf) {
-            return new Listing(buf.readInt(), buf.readNbt());
+            return new Listing(
+                    buf.readInt(),
+                    buf.readEnum(TransfurCause.class),
+                    buf.readFloat(),
+                    buf.readBoolean(),
+                    buf.readAnySizeNbt());
         }
 
         void toStream(FriendlyByteBuf buf) {
             buf.writeInt(form);
+            buf.writeEnum(cause);
+            buf.writeFloat(progress);
+            buf.writeBoolean(temporaryFromSuit);
             buf.writeNbt(data);
         }
     }
@@ -57,7 +67,11 @@ public class SyncTransfurPacket implements ChangedPacket {
             changedForms.forEach((uuid, listing) -> {
                 Player player = level.getPlayerByUUID(uuid);
                 if (player != null) {
-                    final var variant = ProcessTransfur.setPlayerTransfurVariant(player, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form), null);
+                    final var variant = ProcessTransfur.setPlayerTransfurVariant(player,
+                            ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form),
+                            listing.cause,
+                            listing.progress,
+                            listing.temporaryFromSuit);
                     if (variant != null)
                         variant.load(listing.data);
                 }
@@ -67,7 +81,11 @@ public class SyncTransfurPacket implements ChangedPacket {
         else if (context.getDirection().getReceptionSide().isServer()) { // Mirror packet
             ServerPlayer sender = context.getSender();
             if (sender != null) {
-                Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), this);
+                final Listing senderListing = this.changedForms.get(sender.getUUID());
+
+                if (senderListing != null)
+                    Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(),
+                            new SyncTransfurPacket(Map.of(sender.getUUID(), senderListing)));
             }
             context.setPacketHandled(true);
         }
@@ -79,10 +97,15 @@ public class SyncTransfurPacket implements ChangedPacket {
         public void addPlayer(Player player) {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 changedForms.put(player.getUUID(),
-                        new Listing(ChangedRegistry.TRANSFUR_VARIANT.get().getID(variant.getParent()), variant.save()));
+                        new Listing(ChangedRegistry.TRANSFUR_VARIANT.get().getID(
+                                variant.getParent()),
+                                variant.transfurContext.cause,
+                                variant.transfurProgression,
+                                variant.isTemporaryFromSuit(),
+                                variant.save()));
             }, () -> {
                 changedForms.put(player.getUUID(),
-                        new Listing(NO_FORM, new CompoundTag()));
+                        new Listing(NO_FORM, TransfurCause.DEFAULT, 0f, false, new CompoundTag()));
             });
         }
 

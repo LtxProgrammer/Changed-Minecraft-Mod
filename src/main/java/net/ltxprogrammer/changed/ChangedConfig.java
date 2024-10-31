@@ -81,7 +81,7 @@ public class ChangedConfig {
             builder.comment("Got a lot of mods? Unique model generation will be limited to minecraft and changed");
             fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
             builder.comment("Specify the location of the transfur meter");
-            transfurMeterPosition = builder.defineEnum("transfurMeterPosition", TransfurProgressOverlay.Position.HOTBAR_LEFT);
+            transfurMeterPosition = builder.defineEnum("transfurMeterPosition", TransfurProgressOverlay.Position.BOTTOM_LEFT);
         }
 
         @Override

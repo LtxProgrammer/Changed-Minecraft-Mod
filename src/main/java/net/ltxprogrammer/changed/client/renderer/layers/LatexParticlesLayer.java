@@ -225,7 +225,7 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         });
     }
 
-    @Override
+    /*@Override
     public void renderFirstPersonOnArms(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, HumanoidArm arm, PoseStack stackCorrector, float partialTick) {
         final var model = parent.getModel();
         model.setAllLimbsVisible(entity, false);
@@ -236,5 +236,5 @@ public class LatexParticlesLayer<T extends ChangedEntity, M extends AdvancedHuma
         });
 
         model.setAllLimbsVisible(entity, true);
-    }
+    }*/
 }

@@ -155,6 +155,14 @@
   "death.attack.changed:fan": "%s was diced by a fan",
   "death.attack.changed:fan.player": "%1$s was diced by a fan whilst fighting %2$s",
 
+  "command.changed.success.transfurred.one": "Transfurred %s into %s",
+  "command.changed.success.transfurred.many": "Transfurred %s player(s) into %s",
+  "command.changed.success.untransfurred.one": "Untransfurred %s",
+  "command.changed.success.untransfurred.many": "Untransfurred %s player(s)",
+  "command.changed.success.progresstf.one": "Progressed transfur for %s",
+  "command.changed.success.progresstf.many": "Progressed transfur for %s player(s)",
+  "command.changed.success.regresstf.one": "Regressed transfur for %s",
+  "command.changed.success.regresstf.many": "Regressed transfur for %s player(s)",
   "command.changed.error.not_latex_form": "Invalid latex form",
   "command.changed.error.not_cause": "Invalid transfur cause",
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
@@ -566,7 +574,7 @@
   "changed:advancements.main.kill_all_latex.title": "Gone Berserk",
   "changed:advancements.main.kill_all_latex.description": "Kill one of every kind of latex beast",
 
-  "changed:advancements.main.flying.title": "Great View From Up Here",
+  "changed:advancements.main.flying.title": "Spreading your wings",
   "changed:advancements.main.flying.description": "Use your flying abilities for 15 seconds",
 
   "changed.tutorial.select_ability.title": "Select your ability",

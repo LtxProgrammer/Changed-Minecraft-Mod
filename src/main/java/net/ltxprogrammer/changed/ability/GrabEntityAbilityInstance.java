@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -134,7 +135,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabbedEntity instanceof LivingEntityDataExtension ext)
             ext.setGrabbedBy(null);
 
-        if (this.entity.getEntity() instanceof Player player && player.level.isClientSide)
+        if (this.entity.getEntity() instanceof Player player && player == UniversalDist.getLocalPlayer())
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
         if (entity instanceof Player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
@@ -163,13 +164,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             entity.setInvisible(true);
         }
 
-        if (this.grabbedEntity == entity) {
-            this.suited = true;
-            this.grabStrength = 1.0f;
-            return;
-        }
+        if (this.grabbedEntity != entity)
+            this.releaseEntity();
 
-        this.releaseEntity();
         this.grabbedEntity = entity;
         this.suited = true;
         this.grabStrength = 1.0f;
@@ -376,10 +373,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (this.suited && this.grabbedEntity instanceof Player player && !ProcessTransfur.isPlayerTransfurred(player)) {
-                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, (variant) -> {
-                    // This runs before the server broadcasts it to players
-                    variant.checkForTemporary(this.entity);
-                });
+                ProcessTransfur.setPlayerTransfurVariant(player, this.entity.getSelfVariant(), TransfurCause.GRAB_REPLICATE, 1.0f, true);
             }
 
             else if (!this.suited && this.grabbedEntity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {
@@ -420,7 +414,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (attackDown && !suited) {
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(), TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE))
+                float damage = (float)entity.getEntity().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
+                damage = ProcessTransfur.difficultyAdjustTransfurAmount(entity.getLevel().getDifficulty(), damage);
+                if (ProcessTransfur.progressTransfur(this.grabbedEntity, damage, entity.getChangedEntity().getTransfurVariant(), TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE))
                         && !this.entity.getLevel().isClientSide)
                     this.releaseEntity();
             }
@@ -463,7 +459,8 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             if (this.getController().getHoldTicks() >= 40) {
                 if (suited) {
                     this.grabEntity(this.grabbedEntity);
-                    Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
+                    if (this.entity.getLevel().isClientSide)
+                        Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.initialGrab((Player)entity.getEntity(), this.grabbedEntity));
                     this.suitTransition = 0.0f;
                 } else
                     this.releaseEntity();

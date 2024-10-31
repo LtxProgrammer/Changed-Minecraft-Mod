@@ -154,6 +154,15 @@
   "death.attack.changed:fan": "%s foi picotado por um ventilador",
   "death.attack.changed:fan.player": "%1$s foi picotado por um ventilador enquanto lutava contra %2$s",
 
+  "command.changed.success.transfurred.one": "Transfurmou %s em %s",
+  "command.changed.success.transfurred.many": "Transfurmou %s jogador(es) em %s",
+  "command.changed.success.untransfurred.one": "Destransfurmou %s",
+  "command.changed.success.untransfurred.many": "Destransfurmou %s jogador(es)",
+  "command.changed.success.progresstf.one": "Progrediu a transfurmação de %s",
+  "command.changed.success.progresstf.many": "Progrediu a transfurmação de %s jogador(es)",
+  "command.changed.success.regresstf.one": "Regrediu a transfurmação de %s",
+  "command.changed.success.regresstf.many": "Regrediu a transfurmação de %s jogador(es)",
+
   "command.changed.error.not_latex_form": "Forma de látex inválida",
   "command.changed.error.not_cause": "cause inválida de transfur",
   "command.changed.error.used_by_other_mod": "Jogador já  esta sendo usado por outro mod",

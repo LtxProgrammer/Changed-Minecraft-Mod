@@ -197,10 +197,10 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSquirrel::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSquirrel::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMantaRayFemale>> LATEX_MANTA_RAY_FEMALE = registerSpawning("latex_manta_ray_female", 0x6f7696, 0xd2d9e1,
-            EntityType.Builder.of(LatexMantaRayFemale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.58625F),
+            EntityType.Builder.of(LatexMantaRayFemale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexMantaRayFemale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMantaRayMale>> LATEX_MANTA_RAY_MALE = registerSpawning("latex_manta_ray_male", 0x6f7696, 0xd2d9e1,
-            EntityType.Builder.of(LatexMantaRayMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexMantaRayMale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexMantaRayMale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMedusaCat>> LATEX_MEDUSA_CAT = registerSpawning("latex_medusa_cat", 0xFFDB4F, 0xF398B7,
             EntityType.Builder.of(LatexMedusaCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -209,7 +209,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexMingCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexMingCat::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMermaidShark>> LATEX_MERMAID_SHARK = registerSpawning("latex_mermaid_shark", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(LatexMermaidShark::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.58625F),
+            EntityType.Builder.of(LatexMermaidShark::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexMermaidShark::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMoth>> LATEX_MOTH = registerSpawning("latex_moth", 0xFBE5BC, 0xD8BC99,
             EntityType.Builder.of(LatexMoth::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -218,7 +218,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexMutantBloodcellWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexMutantBloodcellWolf::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSiren>> LATEX_SIREN = registerSpawning("latex_siren", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(LatexSiren::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.58625F),
+            EntityType.Builder.of(LatexSiren::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexSiren::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSnake>> LATEX_SNAKE = registerSpawning("latex_snake", 0xFFFFFF, 0x7E7E7E,
             EntityType.Builder.of(LatexSnake::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -245,13 +245,13 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexRedPanda::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexRedPanda::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexShark>> LATEX_SHARK = registerSpawning("latex_shark", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(LatexShark::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexShark::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexShark::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<BuffLatexSharkMale>> LATEX_SHARK_MALE = registerSpawning("latex_shark_male", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(BuffLatexSharkMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.8F, 2.2F),
+            EntityType.Builder.of(BuffLatexSharkMale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.8F, 2.2F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, BuffLatexSharkMale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<BuffLatexSharkFemale>> LATEX_SHARK_FEMALE = registerSpawning("latex_shark_female", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(BuffLatexSharkFemale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.8F, 2.25F),
+            EntityType.Builder.of(BuffLatexSharkFemale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.8F, 2.25F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, BuffLatexSharkFemale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<SniperDog>> SNIPER_DOG = registerSpawning("sniper_dog", 0xEF8F44, 0x894633,
             EntityType.Builder.of(SniperDog::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -269,16 +269,16 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSnowLeopardFemale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSnowLeopardFemale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSquidDogFemale>> LATEX_SQUID_DOG_FEMALE = registerSpawning("latex_squid_dog_female", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogFemale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.8F, 2.1F),
+            EntityType.Builder.of(LatexSquidDogFemale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexSquidDogFemale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSquidDogMale>> LATEX_SQUID_DOG_MALE = registerSpawning("latex_squid_dog_male", 0xFFFFFF, 0x0,
-            EntityType.Builder.of(LatexSquidDogMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.8F, 2.1F),
+            EntityType.Builder.of(LatexSquidDogMale::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.8F, 2.1F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexSquidDogMale::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexStiger>> LATEX_STIGER = registerSpawning("latex_stiger", 0x7b4251, 0xe0cfd9,
             EntityType.Builder.of(LatexStiger::new, ChangedMobCategories.UNDERGROUND).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexStiger::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexTigerShark>> LATEX_TIGER_SHARK = registerSpawning("latex_tiger_shark", 0x969696, 0x0,
-            EntityType.Builder.of(LatexTigerShark::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexTigerShark::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexTigerShark::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexTrafficConeDragon>> LATEX_TRAFFIC_CONE_DRAGON = registerSpawning("latex_traffic_cone_dragon", 0xFFD201, 0x0,
             EntityType.Builder.of(LatexTrafficConeDragon::new, ChangedMobCategories.UNDERGROUND).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -287,7 +287,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexTranslucentLizard::new, ChangedMobCategories.UNDERGROUND).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexTranslucentLizard::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexOrca>> LATEX_ORCA = registerSpawning("latex_orca", 0x393939, 0xFFFFFF,
-            EntityType.Builder.of(LatexOrca::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexOrca::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexOrca::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexOtter>> LATEX_OTTER = registerSpawning("latex_otter", 0x5D4743, 0xB6957C,
             EntityType.Builder.of(LatexOtter::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -305,7 +305,7 @@ public class ChangedEntities {
             EntityType.Builder.of(MilkPudding::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.6F, 0.5F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, MilkPudding::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<Shark>> SHARK = registerSpawning("shark", 0x969696, 0xFFFFFF,
-            EntityType.Builder.of(Shark::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.9F, 0.6F),
+            EntityType.Builder.of(Shark::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.9F, 0.6F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, Shark::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = registerSpawning("pure_white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(PureWhiteLatexWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
@@ -516,18 +516,18 @@ public class ChangedEntities {
             /* Water spawning entities */
 
             if (event.getCategory() == Biome.BiomeCategory.OCEAN || event.getCategory() == Biome.BiomeCategory.RIVER) {
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MANTA_RAY_MALE, 30, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MANTA_RAY_FEMALE, 30, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MERMAID_SHARK, 20, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SIREN, 20, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SHARK, 100, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SHARK_MALE, 30, 1, 3, 0.7, 0.5);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SHARK_FEMALE, 30, 1, 3, 0.7, 0.5);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_TIGER_SHARK, 20, 1, 3, 0.7, 0.35);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_ORCA, 80, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SQUID_DOG_MALE, 80, 1, 3, 0.7, 0.35);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SQUID_DOG_FEMALE, 80, 1, 3, 0.7, 0.35);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, SHARK, 100, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_MANTA_RAY_MALE, 30, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_MANTA_RAY_FEMALE, 30, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_MERMAID_SHARK, 20, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SIREN, 20, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SHARK, 100, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SHARK_MALE, 30, 1, 3, 0.7, 0.5);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SHARK_FEMALE, 30, 1, 3, 0.7, 0.5);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_TIGER_SHARK, 20, 1, 3, 0.7, 0.35);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_ORCA, 80, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SQUID_DOG_MALE, 80, 1, 3, 0.7, 0.35);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, LATEX_SQUID_DOG_FEMALE, 80, 1, 3, 0.7, 0.35);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.AQUATIC, SHARK, 100, 1, 3, 0.7, 0.15);
             }
         }
     }

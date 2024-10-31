@@ -29,7 +29,7 @@
   "ability.changed.grab_entity.how_to_release": "Tartsa nyomva a [%s] gombot az entitás elengedéséhez",
   "ability.changed.grab_entity.how_to_transfur": "Tartsa nyomva a [%s] gombot a transzfur előrehaladásához",
   "ability.changed.grab_entity.how_to_absorb": "Tartsa nyomva a [%s] és a [%s] gombokat az elnyelés előrehaladásához",
-  "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot jelmezzé váltásához",
+  "ability.changed.grab_entity.how_to_suit": "Tartsa nyomva a [%s] gombot beburkoláshoz",
   "ability.changed.grab_entity.how_to_toggle_control": "Nyomja meg a [%s] gombot az irányítás váltásához",
 
   "attribute.name.changed.transfur_damage": "Transzfur okozta sebzés",
@@ -154,6 +154,14 @@
   "death.attack.changed:fan": "%s játékost felkockázta egy ventilátor",
   "death.attack.changed:fan.player": "%1$s játékost felkockázta egy ventilátor, miközben vele harcolt: %2$s",
 
+  "command.changed.success.transfurred.one": "%s játékos %s alakra lett transzfurálva",
+  "command.changed.success.transfurred.many": "%s játékosok %s alakra lettek transzfurálva",
+  "command.changed.success.untransfurred.one": "%s játékos vissza lett transzfurálva",
+  "command.changed.success.untransfurred.many": "%s játékosok vissza lettek transzfurálva",
+  "command.changed.success.progresstf.one": "Előrehaladott a transzfur %s játékos számára",
+  "command.changed.success.progresstf.many": "Előrehaladott a transzfur %s játékosok számára",
+  "command.changed.success.regresstf.one": "Visszafejlődött a transzfur %s játékos számára",
+  "command.changed.success.regresstf.many": "Visszafejlődött a transzfur %s játékosok számára",
   "command.changed.error.not_latex_form": "Érvénytelen latex forma",
   "command.changed.error.not_cause": "A transzfur oka érvénytelen",
   "command.changed.error.used_by_other_mod": "A játékost már használja egy másik mod",
@@ -412,7 +420,7 @@
   "item.changed.dark_dragon_spawn_egg": "Sötét sárkányidéző tojás",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Nőstény sötét latex farkasidéző tojás",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Hím sötét latex farkasidéző tojás",
-  "item.changed.dark_latex_pup_spawn_egg": "Sötét latex farkaskölyökidéző tojás",
+  "item.changed.dark_latex_wolf_pup_spawn_egg": "Sötét latex farkaskölyökidéző tojás",
   "item.changed.dark_latex_yufeng_spawn_egg": "Sötét latex jüfengidéző tojás",
   "item.changed.gas_wolf_spawn_egg": "Gáz farkasidéző tojás",
   "item.changed.green_lizard_spawn_egg": "Zöld gyíkidéző tojás",
@@ -553,7 +561,7 @@
   "changed:advancements.main.kill_all_latex.title": "Megőrült",
   "changed:advancements.main.kill_all_latex.description": "Vadássz le egyet minden latex lényből",
 
-  "changed:advancements.main.flying.title": "Nagyszerű kilátás fentről",
+  "changed:advancements.main.flying.title": "Tárja ki szárnyait",
   "changed:advancements.main.flying.description": "Használja a repülési képességeit 15 másodpercig",
   
   "changed.tutorial.select_ability.title": "Válassza ki képességét",

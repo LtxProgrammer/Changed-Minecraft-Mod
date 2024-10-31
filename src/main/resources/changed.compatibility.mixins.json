@@ -9,6 +9,7 @@
   "client": [
     "BeyondEarth.OxygenSystemMixin",
     "CarryOn.HoldEntityAnimatorMixin",
+    "CarryOn.PickupHandlerMixin",
     "CarryOn.RenderEventsMixin",
     "CGM.AdvancedHumanoidRendererMixin",
     "CGM.HumanoidAnimatorMixin",

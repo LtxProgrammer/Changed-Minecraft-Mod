@@ -6,8 +6,8 @@
   "itemGroup.tab_changed_music": "Changed Musikk",
 
   "ability.changed.access_saddle": "Tilgang sal",
-  "ability.changed.switch_transfur_mode": "Endre transpelsmodus",
-  "ability.changed.switch_transfur_mode.select": "Transpelsmodus er nå: %s",
+  "ability.changed.switch_transfur_mode": "Endre forvandpelsmodus",
+  "ability.changed.switch_transfur_mode.select": "Forvandpelsmodus er nå: %s",
   "ability.changed.switch_transfur_mode.absorption": "Absorpsjon",
   "ability.changed.switch_transfur_mode.replication": "Replikering",
   "ability.changed.create_cobweb": "Lage spindelvev",
@@ -32,12 +32,12 @@
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] for å bytte til drakt",
   "ability.changed.grab_entity.how_to_toggle_control": "Trykk på [%s] for å veksle kontroll",
 
-  "attribute.name.changed.transfur_damage": "Transpelsskade",
-  "attribute.name.changed.transfur_tolerance": "Transpels toleranse",
+  "attribute.name.changed.transfur_damage": "Forvandpels skade",
+  "attribute.name.changed.transfur_tolerance": "Forvandpels toleranse",
 
   "subtitles.changed.attack1": "Feiende robot piper",
-  "subtitles.changed.sound3": "Organisk transpels",
-  "subtitles.changed.poison": "Transpels",
+  "subtitles.changed.sound3": "Organisk forvandpels",
+  "subtitles.changed.poison": "Forvandpels",
   "subtitles.changed.open2": "Dør vil ikke åpne",
   "subtitles.changed.open3": "Laboratoriedør åpnes",
   "subtitles.changed.close3": "Laboratoriedør lukkes",
@@ -139,8 +139,8 @@
 
   "syringe.changed:form_special": "Beskytter tilpasset form sprøyte",
 
-  "death.attack.changed:transfur": "%1$s ble transpelsert",
-  "death.attack.changed:transfur.player": "%1$s ble transpelsert av %2$s",
+  "death.attack.changed:transfur": "%1$s ble forvandpelset",
+  "death.attack.changed:transfur.player": "%1$s ble forvandpelset av %2$s",
   "death.attack.changed:absorb": "%1$s ble absorbert",
   "death.attack.changed:absorb.player": "%1$s ble absorbert av %2$s",
   "death.attack.changed:white_latex": "%s ble oppløst av hvit lateks",
@@ -154,21 +154,29 @@
   "death.attack.changed:fan": "%s ble hakket opp av en vifte",
   "death.attack.changed:fan.player": "%1$s ble hakket opp av en vifte i kamp med %2$s",
 
+  "command.changed.success.transfurred.one": "Forvandpelset %s til %s",
+  "command.changed.success.transfurred.many": "Forvandpelset %s spiller(e) til %s",
+  "command.changed.success.untransfurred.one": "Uforvandpelset %s",
+  "command.changed.success.untransfurred.many": "Uforvandpelset %s spiller(e)",
+  "command.changed.success.progresstf.one": "Fremskritt forvandpels for %s",
+  "command.changed.success.progresstf.many": "Fremskritt forvandpels for %s spiller(e)",
+  "command.changed.success.regresstf.one": "Regressert forvandpels for %s",
+  "command.changed.success.regresstf.many": "Regressert forvandpels for %s spiller(e)",
   "command.changed.error.not_latex_form": "Ugyldig lateksform",
-  "command.changed.error.not_cause": "Ugyldig årsak til transpels",
+  "command.changed.error.not_cause": "Ugyldig årsak til forvandpels",
   "command.changed.error.used_by_other_mod": "Spiller er allerede en form fra en annen mod",
   "command.changed.error.no_special_form": "Ingen spesiell form er tildelt, besøk https://www.patreon.com/ltxprogrammer",
 
-  "gamerule.changed:fusabilityDurationPlayer": "Post-transpels fusabilitet varighet (Tikker)",
-  "gamerule.changed:keepConscious": "Alltid holde bevisst etter transpelsmasjon",
-  "gamerule.changed:keepForm": "Permanent transpels",
+  "gamerule.changed:fusabilityDurationPlayer": "Post-forvandpels fusabilitet varighet (Tikker)",
+  "gamerule.changed:keepConscious": "Alltid holde bevissthet etter forvandpels",
+  "gamerule.changed:keepForm": "Permanent forvandpels",
   "gamerule.changed:latexGrowthRate": "Lateks vekstprosent",
-  "gamerule.changed:doTransfurAnimation": "Spillere har en små transpels animasjon",
+  "gamerule.changed:doTransfurAnimation": "Spillere har en små forvandpels animasjon",
   "gamerule.changed:npcWantFusePlayer": "Lateks ISKer ønsker å smelte sammen med spilleren",
   "gamerule.changed:doPale": "Er Pale aktivert",
 
   "key.changed.variant_ability": "Aktiv variantevne",
-  "key.changed.use_ability": "Bruke variantevne",
+  "key.changed.use_ability": "Bruk variantevne",
   "key.changed.extra_jump": "Ekstra hopp",
 
   "container.changed.extra_hands": "Ekstra hendermeny",
@@ -199,7 +207,7 @@
   "effect.changed.shock": "Støt",
 
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
-  "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli transpelsert.",
+  "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli forvandpelset.",
 
   "block.changed.air_conditioner": "Klimaanlegg",
   "block.changed.beaker": "Begerglass",
@@ -518,31 +526,31 @@
   "changed:advancements.main.root.description": "Velkommen til fremtiden",
 
   "changed:advancements.main.transfur.title": "Er det permanent?!?",
-  "changed:advancements.main.transfur.description": "Transpels deg selv",
+  "changed:advancements.main.transfur.description": "Forvandpels deg selv",
 
   "changed:advancements.main.transfur_aquatic.title": "Skal svømme!",
-  "changed:advancements.main.transfur_aquatic.description": "Transpels deg selv inn i en akvatisk form",
+  "changed:advancements.main.transfur_aquatic.description": "Forvandpels deg selv inn i en akvatisk form",
 
   "changed:advancements.main.aquatic_swimming.title": "Dro for å svømme",
   "changed:advancements.main.aquatic_swimming.description": "Tilbring en hel dag under vann som en akvatisk form",
 
   "changed:advancements.main.transfur_white.title": "En i samme",
-  "changed:advancements.main.transfur_white.description": "Transpels deg selv inn i en hvit lateksform",
+  "changed:advancements.main.transfur_white.description": "Forvandpels deg selv inn i en hvit lateksform",
 
   "changed:advancements.main.transfur_dark.title": "Brorskap",
-  "changed:advancements.main.transfur_dark.description": "Transpels deg selv inn i en mørk lateksform",
+  "changed:advancements.main.transfur_dark.description": "Forvandpels deg selv inn i en mørk lateksform",
 
   "changed:advancements.main.white_latex_fuse.title": "Homogenitet",
   "changed:advancements.main.white_latex_fuse.description": "Slå sammen til hvit lateks som en hvit lateksform",
 
   "changed:advancements.main.transfur_aerial.title": "Flytimer",
-  "changed:advancements.main.transfur_aerial.description": "Transpels deg selv inn i en luftform",
+  "changed:advancements.main.transfur_aerial.description": "Forvandpels deg selv inn i en luftform",
 
   "changed:advancements.main.transfur_mask.title": "Avviser menneskeheten",
   "changed:advancements.main.transfur_mask.description": "Skaffe og ta på en mørk lateks maske.",
 
   "changed:advancements.main.transfur_legless.title": "Mine ben!",
-  "changed:advancements.main.transfur_legless.description": "Transpels deg selv inn i en benløs form",
+  "changed:advancements.main.transfur_legless.description": "Forvandpels deg selv inn i en benløs form",
 
   "changed:advancements.main.beehive_sleep.title": "Drøm søtere",
   "changed:advancements.main.beehive_sleep.description": "Sov i en bikubeseng",
@@ -553,9 +561,12 @@
   "changed:advancements.main.kill_all_latex.title": "Gått berserk",
   "changed:advancements.main.kill_all_latex.description": "Drep et av hvert slag av lateksdyr",
 
+  "changed:advancements.main.flying.title": "Sprer dine vinger",
+  "changed:advancements.main.flying.description": "Bruk din flygeevner i 15 sekunder",
+
   "changed.tutorial.select_ability.title": "Velge din evne",
   "changed.tutorial.select_ability.description": "Trykk på %s",
-  "changed.tutorial.use_ability.title": "Bruke din evne",
+  "changed.tutorial.use_ability.title": "Bruk din evne",
   "changed.tutorial.use_ability.description": "Trykk på eller hold %s",
 
   "facility.zone.red_zone": "Rød sone",

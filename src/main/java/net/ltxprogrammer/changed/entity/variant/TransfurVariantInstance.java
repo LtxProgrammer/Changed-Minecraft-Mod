@@ -83,12 +83,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     private final Map<Attribute, Double> previousAttributes = new HashMap<>();
     private final Map<Attribute, Double> newAttributes = new HashMap<>();
-    private float transfurProgressionO = 0.0f;
+    public float transfurProgressionO = 0.0f;
     public float transfurProgression = 0.0f;
     public TransfurContext transfurContext = TransfurContext.hazard(TransfurCause.ATTACK_REPLICATE_LEFT);
     public boolean willSurviveTransfur = true;
     private boolean isTemporaryFromSuit = false;
-    private IAbstractChangedEntity suitGrabber = null;
 
     private void captureBaseline(Map<Attribute, Double> baseValues, AttributeMap attributeMap) {
         baseValues.clear();
@@ -235,24 +234,29 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         return isTemporaryFromSuit;
     }
 
-    public boolean checkForTemporary(@Nullable IAbstractChangedEntity grabber) {
+    public void setTemporaryForSuit(boolean value) {
+        this.isTemporaryFromSuit = value;
+    }
+
+    public boolean checkForTemporary() {
+        final var grabber = GrabEntityAbility.getGrabber(this.host);
+
         if (!isTemporaryFromSuit && grabber != null) {
             var ability = grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (ability == null || ability.grabbedEntity != this.host)
                 return false;
 
             isTemporaryFromSuit = true;
-            suitGrabber = grabber;
             return false;
         }
 
         else if (!this.host.level.isClientSide && isTemporaryFromSuit) {
-            if (suitGrabber == null || suitGrabber.getEntity().isDeadOrDying() || suitGrabber.getEntity().isRemoved()) { // Remove variant if grabber doesn't exist
+            if (grabber == null || grabber.getEntity().isDeadOrDying() || grabber.getEntity().isRemoved()) { // Remove variant if grabber doesn't exist
                 ProcessTransfur.removePlayerTransfurVariant(this.host);
                 return true;
             }
 
-            var ability = suitGrabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
+            var ability = grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (ability == null || ability.grabbedEntity != this.host) {
                 ProcessTransfur.removePlayerTransfurVariant(this.host);
                 return true;
@@ -710,7 +714,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public void tick(Player player) {
         if (player == null) return;
 
-        if (checkForTemporary(null))
+        if (checkForTemporary())
             return;
 
         if (ageAsVariant == 0 && transfurProgression >= 1f)
@@ -759,7 +763,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
             transfurContext = transfurContext.withSource(null);
-            if (player instanceof ServerPlayer serverPlayer)
+            if (player instanceof ServerPlayer serverPlayer && willSurviveTransfur)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
 

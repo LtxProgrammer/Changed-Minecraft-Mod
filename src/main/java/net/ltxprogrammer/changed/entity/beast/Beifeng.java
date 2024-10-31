@@ -1,8 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.entity.PatronOC;
-import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -13,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Beifeng extends AbstractLatexWolf implements DarkLatexEntity, PatronOC {
+public class Beifeng extends AbstractCaveEntity implements DarkLatexEntity, PatronOC {
     public Beifeng(EntityType<? extends Beifeng> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
@@ -24,6 +22,14 @@ public class Beifeng extends AbstractLatexWolf implements DarkLatexEntity, Patro
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.05);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.0);
     }
+
+    @Override
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
+    }
+
+    @Override
+    public TransfurMode getTransfurMode() { return TransfurMode.NONE; }
 
     @Override
     public Color3 getDripColor() {
