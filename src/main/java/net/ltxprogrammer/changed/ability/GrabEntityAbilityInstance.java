@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.init.ChangedAttributes;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.network.packet.GrabEntityPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -413,7 +414,9 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             }
 
             if (attackDown && !suited) {
-                if (ProcessTransfur.progressTransfur(this.grabbedEntity, 4.0f, entity.getChangedEntity().getTransfurVariant(), TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE))
+                float damage = (float)entity.getEntity().getAttributeValue(ChangedAttributes.TRANSFUR_DAMAGE.get());
+                damage = ProcessTransfur.difficultyAdjustTransfurAmount(entity.getLevel().getDifficulty(), damage);
+                if (ProcessTransfur.progressTransfur(this.grabbedEntity, damage, entity.getChangedEntity().getTransfurVariant(), TransfurContext.latexHazard(this.entity, TransfurCause.GRAB_REPLICATE))
                         && !this.entity.getLevel().isClientSide)
                     this.releaseEntity();
             }
