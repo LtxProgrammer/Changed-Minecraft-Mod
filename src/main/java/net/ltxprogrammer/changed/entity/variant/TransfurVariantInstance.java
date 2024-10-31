@@ -763,7 +763,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
             transfurContext = transfurContext.withSource(null);
-            if (player instanceof ServerPlayer serverPlayer)
+            if (player instanceof ServerPlayer serverPlayer && willSurviveTransfur)
                 ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
         }
 
