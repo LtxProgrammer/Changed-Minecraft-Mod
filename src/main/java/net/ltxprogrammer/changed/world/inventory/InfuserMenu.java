@@ -204,7 +204,7 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
         this.customSlots.put(SLOT_INPUT, this.addSlot(new InfuserSlotItemHandler(this, internal, 1, 18, 33) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ChangedItems.BLOOD_SYRINGE.get()) || stack.is(Items.ARROW) || stack.is(Items.GLASS_BOTTLE);
+                return stack.is(ChangedItems.BLOOD_SYRINGE.get()) || stack.is(Items.ARROW) || stack.is(ChangedItems.getBlockItem(ChangedBlocks.ERLENMEYER_FLASK.get());
             }
         }));
 
