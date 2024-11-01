@@ -23,7 +23,7 @@ public class PooltoyWolf extends AbstractPooltoy {
 
     @Override
     protected void setAttributes(AttributeMap attributes) {
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.2);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.95);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(4.0);
     }
