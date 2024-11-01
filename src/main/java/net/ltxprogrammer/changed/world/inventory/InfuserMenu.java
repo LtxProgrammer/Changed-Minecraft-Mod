@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.world.inventory;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.init.ChangedItems;
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
