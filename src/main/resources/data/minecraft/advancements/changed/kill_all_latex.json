@@ -1056,6 +1056,20 @@
       }
     }
   },
+  "changed:pooltoy_wolf": {
+    "trigger": "minecraft:player_killed_entity",
+    "conditions": {
+      "entity": [
+        {
+          "condition": "minecraft:entity_properties",
+          "predicate": {
+            "type": "changed:pooltoy_wolf"
+          },
+          "entity": "this"
+        }
+      ]
+    }
+  },
   "requirements": [
     [
       "changed:gas_wolf"
@@ -1278,6 +1292,9 @@
     ],
     [
       "changed:phage_latex_wolf_male"
+    ],
+    [
+      "changed:pooltoy_wolf"
     ]
   ]
 }

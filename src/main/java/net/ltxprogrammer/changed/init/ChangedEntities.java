@@ -434,7 +434,8 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, HEADLESS_KNIGHT, 40, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, WHITE_LATEX_KNIGHT_FUSION, 20, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_KEON_WOLF, 10, 1, 1, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MING_CAT, 10, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MING_CAT, 15, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SIAMESE_CAT, 15, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, MILK_PUDDING, 80, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_MALE, 10, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_FEMALE, 10, 1, 1, 0.7, 0.15);
@@ -446,7 +447,6 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, CRYSTAL_WOLF_HORNED, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GAS_WOLF, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, SNIPER_DOG, 10, 1, 2, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, POOLTOY_WOLF, 1, 1, 2, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.MOUNTAIN) {
@@ -486,6 +486,9 @@ public class ChangedEntities {
 
             if (event.getCategory() == Biome.BiomeCategory.BEACH && !event.getName().equals(Biomes.STONY_SHORE.getRegistryName())) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_OTTER, 100, 1, 3, 0.7, 0.15);
+
+                // Passive
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, POOLTOY_WOLF, 1, 1, 2, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.MESA) {

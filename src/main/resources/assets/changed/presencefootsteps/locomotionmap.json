@@ -26,6 +26,7 @@
   "changed:latex_fennec_fox": "BIPED",
   "changed:green_lizard": "BIPED",
   "changed:latex_human": "BIPED",
+  "changed:latex_hyena_taur": "QUADRUPED",
   "changed:latex_hypno_cat": "BIPED",
   "changed:latex_leaf": "BIPED",
   "changed:latex_squirrel": "BIPED",
@@ -69,5 +70,6 @@
   "changed:white_wolf_female": "BIPED",
   "changed:white_wolf_male": "BIPED",
   "changed:phage_latex_wolf_female": "BIPED",
-  "changed:phage_latex_wolf_male": "BIPED"
+  "changed:phage_latex_wolf_male": "BIPED",
+  "changed:pooltoy_wolf": "BIPED"
 }
