@@ -169,6 +169,9 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven {
+        url "https://cursemaven.com"
+    }
     maven { url "https://maven.shedaniel.me" }
 }
 
@@ -183,7 +186,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
+    minecraft "net.minecraftforge:forge:${minecraftVersion}-40.2.4"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
@@ -191,7 +194,7 @@ dependencies {
     implementation fg.deobf('me.lucko:spark-1.9.11-forge:1.9.11') // Spark
     implementation fg.deobf('org.embeddedt:modernfix-forge-5.2.5+mc1.18.2:5.2.5') // ModernFix
     implementation fg.deobf('me.jellysquid.mods:rubidium-0.5.6:0.5.6') // Rubidium
-    implementation fg.deobf('net.coderbot:oculus-mc1.18.2-1.6.4:1.6.4') // Oculus
+    compileOnly fg.deobf('net.coderbot:oculus-mc1.18.2-1.6.4:1.6.4') // Oculus
     implementation fg.deobf('org:vivecraft-1.18.2-0.0.15-forge:0.0.15') // Vivecraft
     //implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.c-298") // Create
 
@@ -229,6 +232,12 @@ dependencies {
     compileOnly fg.deobf("mod:ChiselsBits-forge-1.18.2:1.2.116-universal")
     //runtimeOnly fg.deobf("com.corosus:coroutil-forge-1.18.2:1.3.6")
     compileOnly fg.deobf("com.corosus:watut-forge-1.18.2:1.0.14")
+    //origin_mod
+    implementation fg.deobf("curse.maven:originsforge-474438:5179273")
+    runtimeOnly fg.deobf("curse.maven:configured-457570:4462832")
+    runtimeOnly fg.deobf("curse.maven:survive-367337:4665174")
+    runtimeOnly fg.deobf("curse.maven:caelus-308989:3650485")
+    runtimeOnly fg.deobf("curse.maven:unionlib-367806:4729780")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
