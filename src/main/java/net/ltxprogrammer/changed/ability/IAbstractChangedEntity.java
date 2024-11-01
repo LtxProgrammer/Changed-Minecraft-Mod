@@ -62,17 +62,16 @@ public interface IAbstractChangedEntity {
     void setEyeStyle(EyeStyle style);
     void causeFoodExhaustion(float exhaustion);
 
-    default boolean haveTransfurMode() {
-        if (getEntity() instanceof ChangedEntity changedEntity)
-            return changedEntity.getTransfurMode() != TransfurMode.NONE;
-        else if (getTransfurVariantInstance() != null)
-            return getTransfurVariantInstance().transfurMode != TransfurMode.NONE;
-        return false;
+    default boolean hasTransfurMode() {
+        final TransfurMode mode = getTransfurMode();
+        return mode != TransfurMode.NONE;
     }
 
     default boolean wantAbsorption() {
         boolean doesAbsorption;
-        if (getEntity() instanceof ChangedEntity changedEntity)
+        if (getEntity() instanceof TamableLatexEntity tamableLatex && tamableLatex.isTame())
+            doesAbsorption = true;
+        else if (getEntity() instanceof ChangedEntity changedEntity)
             doesAbsorption = changedEntity.getTransfurMode() == TransfurMode.ABSORPTION;
         else if (getTransfurVariantInstance() != null)
             doesAbsorption = getTransfurVariantInstance().transfurMode == TransfurMode.ABSORPTION;
@@ -145,7 +144,7 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull TransfurMode getTransfurMode() {
-                return ProcessTransfur.getPlayerTransfurVariant(player).transfurMode;
+                return instance.get().transfurMode;
             }
 
             @org.jetbrains.annotations.Nullable

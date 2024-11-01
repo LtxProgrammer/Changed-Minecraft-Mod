@@ -3,12 +3,15 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.util.Color3;
 import net.ltxprogrammer.changed.util.UniversalDist;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 @OnlyIn(Dist.CLIENT)
@@ -35,18 +39,18 @@ public class GrabOverlay {
         Gui.blit(stack, left, up, u0, v0, width, height, textureWidth, textureHeight);
     }
 
-    public static void renderBackground(int x, int y, int width, int height, PoseStack stack) {
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
+    public static void renderBackground(int x, int y, int width, int height, PoseStack stack, Color3 barColor) {
+        RenderSystem.setShaderColor(barColor.red(), barColor.green(), barColor.blue(), 1.0F);
         blit(stack, x, y, 0, 0, width, height, width, height * 3);
     }
 
-    public static void renderForeground(int x, int y, int width, int height, PoseStack stack, float progress) {
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
+    public static void renderForeground(int x, int y, int width, int height, PoseStack stack, float progress, Color3 barColor) {
+        RenderSystem.setShaderColor(barColor.red(), barColor.green(), barColor.blue(), 1.0F);
         blit(stack, x, y, 0, height, (int)(progress * width), height, width, height * 3);
     }
 
-    public static void renderSuit(int x, int y, int width, int height, PoseStack stack, float progress) {
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0F);
+    public static void renderSuit(int x, int y, int width, int height, PoseStack stack, float progress, Color3 barColor) {
+        RenderSystem.setShaderColor(barColor.red(), barColor.green(), barColor.blue(), 1.0F);
         float halfWidth = progress * width * 0.5f;
 
         if (progress >= 1.0f) {
@@ -56,6 +60,10 @@ public class GrabOverlay {
             blit(stack, x, y, 0, height * 2, (int)halfWidth, height, width, height * 3); // Left
             blit(stack, x + rightOffset, y, rightOffset, height * 2, (int)halfWidth, height, width, height * 3); // Right
         }
+    }
+
+    private static Color3 getBrightVariantColor(Pair<Color3, Color3> pair) {
+        return new AbstractRadialScreen.ColorScheme(pair.getFirst(), pair.getSecond()).setForegroundToBright().foreground();
     }
 
     public static void renderProgressBarPlayer(PoseStack stack, float partialTicks, int screenWidth, int screenHeight) {
@@ -68,9 +76,16 @@ public class GrabOverlay {
             if (grabAbility == null) return;
             if (grabAbility.grabbedHasControl) return;
 
-            renderBackground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack);
-            renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength(partialTicks));
-            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getSuitTransitionProgress(partialTicks));
+            var tfVariant = grabAbility.entity.getTransfurVariant();
+            Color3 barColor;
+            if (tfVariant != null) {
+                barColor = getBrightVariantColor(tfVariant.getColors());
+            } else
+                barColor = Color3.WHITE;
+
+            renderBackground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, Color3.WHITE);
+            renderForeground(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getGrabStrength(partialTicks), barColor);
+            renderSuit(x, y, BAR_WIDTH_PLAYER, BAR_HEIGHT_PLAYER, stack, grabAbility.getSuitTransitionProgress(partialTicks), barColor);
         }
     }
 
@@ -86,9 +101,16 @@ public class GrabOverlay {
         if (grabAbility.grabbedEntity == null) return;
         if (grabAbility.grabbedHasControl) return;
 
-        renderBackground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack);
-        renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength(partialTicks));
-        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getSuitTransitionProgress(partialTicks));
+        var tfVariant = grabAbility.entity.getSelfVariant();
+        Color3 barColor;
+        if (tfVariant != null) {
+            barColor = getBrightVariantColor(tfVariant.getColors());
+        } else
+            barColor = Color3.WHITE;
+
+        renderBackground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, Color3.WHITE);
+        renderForeground(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getGrabStrength(partialTicks), barColor);
+        renderSuit(x, y, BAR_WIDTH_LATEX, BAR_HEIGHT_LATEX, stack, grabAbility.getSuitTransitionProgress(partialTicks), barColor);
     }
 
     public static void renderEscapeKeyAt(Gui gui, PoseStack stack, int x, int y, AbstractAbilityInstance.KeyReference key, float alpha) {

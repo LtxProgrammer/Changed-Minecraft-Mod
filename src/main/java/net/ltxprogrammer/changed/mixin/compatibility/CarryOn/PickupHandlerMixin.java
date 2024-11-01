@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import tschipp.carryon.common.config.Configs;
 import tschipp.carryon.common.handler.PickupHandler;
 
-@Mixin(PickupHandler.class)
+@Mixin(value = PickupHandler.class, remap = false)
 public class PickupHandlerMixin {
     @Inject(method = "canPlayerPickUpEntity", at = @At("HEAD"), cancellable = true, remap = false)
     private static void handleChangedEntities(ServerPlayer player, Entity toPickUp, CallbackInfoReturnable<Boolean> cir) {
