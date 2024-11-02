@@ -153,18 +153,27 @@
   "death.attack.changed:bloodloss.player": "%1$s получил чужую кровь, благодаря %2$s",
   "death.attack.changed:fan": "%s превратился в кусочки бекона напоровшись на лопасти вентилятора",
   "death.attack.changed:fan.player": "%1$s был изрезан лопастями вентилятора, отбиваясь от %2$s",
-  
+
+  "command.changed.success.transfurred.one": "%s был трансфуррирован в %s",
+  "command.changed.success.transfurred.many": "%s игрок(ов) были трансфуррированы в %s",
+  "command.changed.success.untransfurred.one": "%s детрансфуррирован",
+  "command.changed.success.untransfurred.many": "%s игрок(ов) детрансфуррированы",
+  "command.changed.success.progresstf.one": "Прогрессировали прогресс трансфурмации для %s",
+  "command.changed.success.progresstf.many": "Прогрессировали прогресс трансфурмации для %s игрок(ов)",
+  "command.changed.success.regresstf.one": "Регрессировали прогресс трансфурмации для %s",
+  "command.changed.success.regresstf.many": "Регрессировали прогресс трансфурмации для %s игрок(ов)",
+
   "command.changed.error.not_latex_form": "Несуществующая форма",
   "command.changed.error.not_cause": "Неправильная причина трансфурмации",
   "command.changed.error.used_by_other_mod": "Игрок уже использует другой мод",
   "command.changed.error.no_special_form": "У вас нет доступа к особой форме, если вы хотите её получить поддержите автора на Patreon и свяжитесь с ним https://www.patreon.com/ltxprogrammer",
 
   "gamerule.changed:fusabilityDurationPlayer": "Длительность возможности слияния после трансфурмации",
-  "gamerule.changed:keepConscious": "Вы не расстанитесь со своим разумом после трансфурмации",
+  "gamerule.changed:keepConscious": "Вы не потеряете свой разум после трансфурмации",
   "gamerule.changed:keepForm": "Трансфурмация навсегда",
   "gamerule.changed:latexGrowthRate": "Скорость распространения латекса",
   "gamerule.changed:doTransfurAnimation": "У игроков будет анимация трансфурмации",
-  "gamerule.changed:npcWantFusePlayer": "Латексные НИП намеренно пытаются сливаться с игроком",
+  "gamerule.changed:npcWantFusePlayer": "Латексные НИП намеренно будут пытаться слиться с игроком",
   "gamerule.changed:doPale": "Будет ли в мире Бледный вирус",
 
   "key.changed.variant_ability": "Выбор Способности",
