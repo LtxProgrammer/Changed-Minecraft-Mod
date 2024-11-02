@@ -37,7 +37,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -147,11 +146,16 @@ public class CommandTransfur {
         } catch (IllegalArgumentException ex) {
             throw NOT_CAUSE.create();
         }
-        boolean conditionValue= PatienceCompatibility.isConditionMet();
-        if(conditionValue){
+
+        // 使用 PatienceCompatibility 检查玩家的 Origin 条件
+        PatienceCompatibility compatibility = new PatienceCompatibility(player);  // player 是 ServerPlayer
+        compatibility.checkOriginCondition(source.getServer());
+
+        if (compatibility.isConditionMet()) {
             source.sendFailure(new TranslatableComponent("command.changed.failure.transfurred.cannot"));
-            return 0; // 返回成功以停止进一步的处理
+            return 0; // 返回 0 以停止进一步的处理
         }
+
         // 其他代码逻辑
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
@@ -173,6 +177,8 @@ public class CommandTransfur {
 
         return Command.SINGLE_SUCCESS;
     }
+
+
 
     private static int transfurPlayers(CommandSourceStack source, Collection<ServerPlayer> players, ResourceLocation form, String cause) throws CommandSyntaxException {
         if (players.size() == 1) {

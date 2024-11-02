@@ -1,13 +1,14 @@
 package net.ltxprogrammer.changed.VariantCheck;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 @Mod.EventBusSubscriber
 public class TickEventProcess {
@@ -34,11 +35,13 @@ public class TickEventProcess {
             return;
         }
 
-        // 遍历所有在线玩家并调用 condition 方法
-        for (Player player : server.getPlayerList().getPlayers()) {
-            // 创建 PatienceCompatibility 实例并调用其 condition 方法
+        // 获取所有在线玩家
+        List<ServerPlayer> players = server.getPlayerList().getPlayers();
+
+        for (ServerPlayer player : players) {
+            // 创建 PatienceCompatibility 实例，并调用方法更新条件
             PatienceCompatibility compatibility = new PatienceCompatibility(player);
-            compatibility.OriginCondition(server); // 确保 condition 方法是实例方法
+            compatibility.checkOriginCondition(server); // 使用 server 更新变身条件
         }
     }
 }
