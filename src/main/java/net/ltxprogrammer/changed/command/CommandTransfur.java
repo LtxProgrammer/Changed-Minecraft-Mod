@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.VariantCheck.PatienceCompatibility;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -36,6 +37,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class CommandTransfur {
+
     private static final SimpleCommandExceptionType NOT_LATEX_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_latex_form"));
     private static final SimpleCommandExceptionType NOT_CAUSE = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_cause"));
     private static final SimpleCommandExceptionType USED_BY_OTHER_MOD = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.used_by_other_mod"));
@@ -144,24 +147,30 @@ public class CommandTransfur {
         } catch (IllegalArgumentException ex) {
             throw NOT_CAUSE.create();
         }
-
+        boolean conditionValue= PatienceCompatibility.isConditionMet();
+        if(conditionValue){
+            source.sendFailure(new TranslatableComponent("command.changed.failure.transfurred.cannot"));
+            return 0; // 返回成功以停止进一步的处理
+        }
+        // 其他代码逻辑
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
+        // 处理变身逻辑
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true,
                     TransfurContext.hazard(transfurCause));
-        }
-        else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
+        } else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), true,
                     TransfurContext.hazard(transfurCause));
-        }
-        else
+        } else {
             throw NOT_LATEX_FORM.create();
+        }
+
         return Command.SINGLE_SUCCESS;
     }
 
