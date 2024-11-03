@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed;
 
+import net.ltxprogrammer.changed.VariantCheck.VariantConfig;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.EventHandlerClient;
 import net.ltxprogrammer.changed.client.RecipeCategories;
@@ -22,6 +23,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -45,6 +47,7 @@ public class Changed {
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
     public static EventHandlerClient eventHandlerClient;
     public static ChangedConfig config;
+    public static VariantConfig Vconfig;
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource(MODID), () -> PROTOCOL_VERSION,
@@ -54,6 +57,7 @@ public class Changed {
 
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
+        Vconfig =new VariantConfig(ModLoadingContext.get());
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
