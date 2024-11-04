@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -61,6 +62,10 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
 
     private final HumanoidAnimator<CustomLatexEntity, CustomLatexModel> animator;
     private final HumanoidAnimator<CustomLatexEntity, CustomLatexModel> leglessAnimator;
+
+    private double yOffset = 0.0;
+    private float bodyScale = 1.0F;
+    private float headScale = 1.0F;
 
     public CustomLatexModel(ModelPart root) {
         super(root);
@@ -523,6 +528,11 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
         this.prepareTail(entity.getTailType());
         this.prepareLegs(entity.getLegType());
         this.prepareArms(entity.getArmType());
+
+        var scaleType = entity.getScaleType();
+        this.bodyScale = scaleType.bodyScale;
+        this.headScale = scaleType.headScale;
+        this.yOffset = Mth.map(this.bodyScale, 1.0F, 1.125F, 0.0F, -2.88F / 16.0F);
     }
 
     @Override
@@ -559,13 +569,20 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        poseStack.pushPose();
+        this.scaleForBody(poseStack);
         Abdomen.render(poseStack, buffer, packedLight, packedOverlay, red, green ,blue, alpha);
         RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        this.scaleForHead(poseStack);
+        Head.render(poseStack, buffer, packedLight, packedOverlay);
+        poseStack.popPose();
     }
 
     @Override
@@ -574,5 +591,16 @@ public class CustomLatexModel extends AdvancedHumanoidModel<CustomLatexEntity> i
             return leglessAnimator;
         else
             return animator;
+    }
+
+    @Override
+    public void scaleForBody(PoseStack poseStack) {
+        poseStack.translate(0.0, yOffset, 0.0);
+        poseStack.scale(bodyScale, bodyScale, bodyScale);
+    }
+
+    @Override
+    public void scaleForHead(PoseStack poseStack) {
+        poseStack.translate(0.0, yOffset, 0.0);
     }
 }

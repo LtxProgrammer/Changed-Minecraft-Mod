@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
@@ -338,5 +339,23 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
     private void maybeAddAir(int current, CallbackInfoReturnable<Integer> cir) {
         TransfurGas.validEntityInGas((LivingEntity)(Object)this).ifPresent(gas -> cir.setReturnValue(current));
+    }
+
+    @Inject(method = "checkBedExists", at = @At("HEAD"), cancellable = true)
+    private void bedExistsOrIsStabilized(CallbackInfoReturnable<Boolean> cir) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            cir.setReturnValue(true);
+    }
+
+    @Inject(method = "isSleeping", at = @At("HEAD"), cancellable = true)
+    public void isSleepingOrStabilized(CallbackInfoReturnable<Boolean> cir) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            cir.setReturnValue(true);
+    }
+
+    @Inject(method = "stopSleeping", at = @At("HEAD"), cancellable = true)
+    public void unlessIsStabilized(CallbackInfo ci) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            ci.cancel();
     }
 }

@@ -275,6 +275,7 @@
   "block.changed.retinal_scanner": "Retinal Scanner",
   "block.changed.roomba_charger": "Roomba Charger",
   "block.changed.speaker": "Speaker",
+  "block.changed.stasis_chamber": "Stasis Chamber",
   "block.changed.tape_recorder": "Tape Recorder",
   "block.changed.tiles_blue": "Blue Tiles",
   "block.changed.tiles_blue_small": "Small Blue Tiles",
@@ -617,5 +618,12 @@
   "changed.config.bpi.size": "Model Size",
   "changed.config.bpi.size.value": "Size: %s%%",
   "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",
-  "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match"
+  "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match",
+
+  "changed.stasis.open": "Open Door",
+  "changed.stasis.close": "Close Door",
+  "changed.stasis.run": "Execute Modifications",
+  "changed.stasis.capture_next": "Capture Next",
+  "changed.stasis.toggle_stasis": "Stasis: %s",
+  "changed.stasis.modify": "Modifications"
 }

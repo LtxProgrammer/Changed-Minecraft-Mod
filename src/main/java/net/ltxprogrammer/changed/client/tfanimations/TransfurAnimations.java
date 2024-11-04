@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.tfanimations;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.minecraft.Util;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,9 +59,10 @@ public class TransfurAnimations {
 
     public static final Map<TransfurCause, AnimationDefinition> CAUSE_ASSOCIATION = Util.make(new HashMap<>(), map -> {
         map.put(TransfurCause.GRAB_REPLICATE, BASIC_ANIMATION);
+        map.put(TransfurCause.STASIS_CHAMBER, null);
     });
 
-    public static AnimationDefinition getAnimationFromCause(TransfurCause cause) {
+    public static @Nullable AnimationDefinition getAnimationFromCause(TransfurCause cause) {
         if (!CAUSE_ASSOCIATION.containsKey(cause) && cause.getParent().isPresent())
             return getAnimationFromCause(cause.getParent().get());
         else

@@ -11,7 +11,11 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ChangedTransfurVariants {
     public static final DeferredRegister<TransfurVariant<?>> REGISTRY = ChangedRegistry.TRANSFUR_VARIANT.createDeferred(Changed.MODID);
@@ -172,14 +176,35 @@ public class ChangedTransfurVariants {
     }
 
     public static class Gendered {
-        public static final GenderedPair<WhiteLatexWolfMale, WhiteLatexWolfFemale> WHITE_LATEX_WOLVES = new GenderedPair<>(WHITE_LATEX_WOLF_MALE, WHITE_LATEX_WOLF_FEMALE);
-        public static final GenderedPair<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLVES = new GenderedPair<>(DARK_LATEX_WOLF_MALE, DARK_LATEX_WOLF_FEMALE);
-        public static final GenderedPair<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLVES = new GenderedPair<>(PHAGE_LATEX_WOLF_MALE, PHAGE_LATEX_WOLF_FEMALE);
-        public static final GenderedPair<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAYS = new GenderedPair<>(LATEX_MANTA_RAY_MALE, LATEX_MANTA_RAY_FEMALE);
-        public static final GenderedPair<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARKS = new GenderedPair<>(LATEX_MERMAID_SHARK, LATEX_SIREN);
-        public static final GenderedPair<BuffLatexSharkMale, BuffLatexSharkFemale> LATEX_SHARK_FUSIONS = new GenderedPair<>(LATEX_SHARK_FUSION_MALE, LATEX_SHARK_FUSION_FEMALE);
-        public static final GenderedPair<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOGS = new GenderedPair<>(LATEX_SQUID_DOG_MALE, LATEX_SQUID_DOG_FEMALE);
-        public static final GenderedPair<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARDS = new GenderedPair<>(LATEX_SNOW_LEOPARD_MALE, LATEX_SNOW_LEOPARD_FEMALE);
-        public static final GenderedPair<WhiteWolfMale, WhiteWolfFemale> WHITE_WOLVES = new GenderedPair<>(WHITE_WOLF_MALE, WHITE_WOLF_FEMALE);
+        private static final List<GenderedPair<?, ?>> PAIRS = new ArrayList<>();
+
+        public static final GenderedPair<WhiteLatexWolfMale, WhiteLatexWolfFemale> WHITE_LATEX_WOLVES = registerPair(WHITE_LATEX_WOLF_MALE, WHITE_LATEX_WOLF_FEMALE);
+        public static final GenderedPair<DarkLatexWolfMale, DarkLatexWolfFemale> DARK_LATEX_WOLVES = registerPair(DARK_LATEX_WOLF_MALE, DARK_LATEX_WOLF_FEMALE);
+        public static final GenderedPair<PhageLatexWolfMale, PhageLatexWolfFemale> PHAGE_LATEX_WOLVES = registerPair(PHAGE_LATEX_WOLF_MALE, PHAGE_LATEX_WOLF_FEMALE);
+        public static final GenderedPair<LatexMantaRayMale, LatexMantaRayFemale> LATEX_MANTA_RAYS = registerPair(LATEX_MANTA_RAY_MALE, LATEX_MANTA_RAY_FEMALE);
+        public static final GenderedPair<LatexMermaidShark, LatexSiren> LATEX_MERMAID_SHARKS = registerPair(LATEX_MERMAID_SHARK, LATEX_SIREN);
+        public static final GenderedPair<BuffLatexSharkMale, BuffLatexSharkFemale> LATEX_SHARK_FUSIONS = registerPair(LATEX_SHARK_FUSION_MALE, LATEX_SHARK_FUSION_FEMALE);
+        public static final GenderedPair<LatexSquidDogMale, LatexSquidDogFemale> LATEX_SQUID_DOGS = registerPair(LATEX_SQUID_DOG_MALE, LATEX_SQUID_DOG_FEMALE);
+        public static final GenderedPair<LatexSnowLeopardMale, LatexSnowLeopardFemale> LATEX_SNOW_LEOPARDS = registerPair(LATEX_SNOW_LEOPARD_MALE, LATEX_SNOW_LEOPARD_FEMALE);
+        public static final GenderedPair<WhiteWolfMale, WhiteWolfFemale> WHITE_WOLVES = registerPair(WHITE_WOLF_MALE, WHITE_WOLF_FEMALE);
+
+        public static <M extends ChangedEntity, F extends ChangedEntity> GenderedPair<M, F> registerPair(Supplier<? extends TransfurVariant<M>> maleVariant, Supplier<? extends TransfurVariant<F>> femaleVariant) {
+            var pair = new GenderedPair<>(maleVariant, femaleVariant);
+            PAIRS.add(pair);
+            return pair;
+        }
+
+        public static Stream<GenderedPair<?, ?>> getPairs() {
+            return PAIRS.stream();
+        }
+
+        public static Optional<TransfurVariant<?>> getOpposite(TransfurVariant<?> variant) {
+            return getPairs().<TransfurVariant<?>>mapMulti((pair, consumer) -> {
+                if (pair.getMaleVariant() == variant)
+                    consumer.accept(pair.getFemaleVariant());
+                else if (pair.getFemaleVariant() == variant)
+                    consumer.accept(pair.getMaleVariant());
+            }).findAny();
+        }
     }
 }
