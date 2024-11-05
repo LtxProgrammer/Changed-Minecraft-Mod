@@ -1129,4 +1129,8 @@ public abstract class ChangedEntity extends Monster {
         else
             return UseItemMode.NORMAL;
     }
+
+    public boolean isItemAllowedInSlot(ItemStack stack, EquipmentSlot slot) {
+        return true;
+    }
 }

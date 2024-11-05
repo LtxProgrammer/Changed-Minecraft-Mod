@@ -23,16 +23,20 @@ public interface ExtendedItemProperties {
         return false;
     }
 
-    default boolean allowedToWear(ItemStack itemStack, LivingEntity wearer) {
-        var slot = itemStack.getEquipmentSlot();
-        if (slot == null || slot.getType() != EquipmentSlot.Type.ARMOR)
-            return false;
-
-        return allowedToWear(itemStack, wearer, slot);
+    default boolean allowedInSlot(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
+        return switch (slot.getType()) {
+            case ARMOR -> allowedToWear(itemStack, wearer, slot);
+            case HAND -> true;
+        };
     }
 
+    // Should only be called with armor slots
     default boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
         return itemStack.getEquipmentSlot() == slot || (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getSlot() == slot);
+    }
+
+    default int getExpectedLegCount(ItemStack itemStack) {
+        return 2;
     }
 
     default void wearTick(ItemStack itemStack, LivingEntity wearer) {
@@ -47,7 +51,7 @@ public interface ExtendedItemProperties {
                             .forEach(slot -> {
                                 var itemStack = event.getEntityLiving().getItemBySlot(slot);
                                 if (itemStack.getItem() instanceof ExtendedItemProperties extended) {
-                                    if (!extended.allowedToWear(itemStack, event.getEntityLiving(), slot)) {
+                                    if (!extended.allowedInSlot(itemStack, event.getEntityLiving(), slot)) {
                                         ItemStack nStack = itemStack.copy();
                                         itemStack.setCount(0);
                                         if (event.getEntityLiving() instanceof Player player)
