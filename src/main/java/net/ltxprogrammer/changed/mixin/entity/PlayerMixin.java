@@ -142,7 +142,7 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Inject(method = "setItemSlot", at = @At("HEAD"), cancellable = true)
     public void denyInvalidArmor(EquipmentSlot slot, ItemStack item, CallbackInfo ci) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (!variant.canWear(player, item, slot)) {
+            if (!variant.canWear(player, item, slot) && slot != EquipmentSlot.MAINHAND) {
                 ci.cancel();
                 this.setItemSlot(EquipmentSlot.MAINHAND, item);
             }

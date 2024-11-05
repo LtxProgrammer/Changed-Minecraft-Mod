@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.ltxprogrammer.changed.process.Pale;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +25,9 @@ public class CommandPale {
         event.getDispatcher().register(Commands.literal("curepale").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .executes(context -> {
-                            Pale.tryCure(EntityArgument.getPlayer(context, "player"));
+                            Player player = EntityArgument.getPlayer(context, "player");
+                            Pale.setPaleExposure(player, 0); // Reset pale exposure incase player is not TF'd
+                            Pale.tryCure(player);
                             return Command.SINGLE_SUCCESS;
                         })
                 ));

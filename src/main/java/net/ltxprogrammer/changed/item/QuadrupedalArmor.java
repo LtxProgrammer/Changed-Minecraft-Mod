@@ -100,6 +100,11 @@ public class QuadrupedalArmor extends ArmorItem implements ExtendedItemPropertie
         }
     }
 
+    @Override
+    public int getExpectedLegCount(ItemStack itemStack) {
+        return 4;
+    }
+
     @Nullable
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, @Nullable String type) {

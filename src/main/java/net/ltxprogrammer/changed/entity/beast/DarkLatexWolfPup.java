@@ -252,4 +252,11 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
     }
+
+    @Override
+    public boolean isItemAllowedInSlot(ItemStack stack, EquipmentSlot slot) {
+        if (slot.getType() == EquipmentSlot.Type.ARMOR)
+            return false;
+        return super.isItemAllowedInSlot(stack, slot);
+    }
 }
