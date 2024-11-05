@@ -25,6 +25,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -920,6 +922,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.maxUpStep = 0.6f;
         else
             player.maxUpStep = parent.stepSize;
+
+        // Effects
+        if (parent.visionType == VisionType.BLIND) {
+            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
+        }
 
         for (var instance : abilityInstances.values()) {
             instance.getController().tickCoolDown();
