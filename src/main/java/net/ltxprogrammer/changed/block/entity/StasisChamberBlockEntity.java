@@ -112,7 +112,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
 
     public boolean chamberEntity(LivingEntity entity) {
         if (entityHolder == null || entityHolder.isRemoved()) {
-            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false);
+            entityHolder = SeatEntity.createFor(entity.level, this.getBlockState(), this.getBlockPos(), false, true);
         }
 
         if (this.getSeatedEntity() != null)

@@ -498,7 +498,7 @@ public class StasisChamber extends HorizontalDirectionalBlock implements NonLate
         return null;
     }
 
-    private static final Vec3 SIT_OFFSET = new Vec3(0.0D, -0.9D, 0.0D);
+    private static final Vec3 SIT_OFFSET = new Vec3(0.0D, -0.6D, 0.0D);
 
     @Override
     public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {

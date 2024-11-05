@@ -28,6 +28,7 @@ public class SeatEntity extends Entity {
     public static final EntityDataAccessor<Optional<BlockState>> BLOCK_STATE = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BLOCK_STATE);
     public static final EntityDataAccessor<BlockPos> BLOCK_POS = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BLOCK_POS);
     public static final EntityDataAccessor<Boolean> SEATED_INVISIBLE = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> SEATED_LOCKED = SynchedEntityData.defineId(SeatEntity.class, EntityDataSerializers.BOOLEAN);
 
     public SeatEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -44,7 +45,7 @@ public class SeatEntity extends Entity {
         }
     }
 
-    private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
+    private static SeatEntity actuallyCreateFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedLocked) {
         SeatEntity seat = ChangedEntities.SEAT_ENTITY.get().create(level);
         if (seat == null)
             return null;
@@ -52,6 +53,7 @@ public class SeatEntity extends Entity {
         seat.entityData.set(BLOCK_STATE, Optional.of(state));
         seat.entityData.set(BLOCK_POS, pos);
         seat.entityData.set(SEATED_INVISIBLE, seatedInvisible);
+        seat.entityData.set(SEATED_LOCKED, seatedLocked);
         if (state.getBlock() instanceof SeatableBlock seatableBlock) {
             var offset = seatableBlock.getSitOffset(level, state, pos);
             seat.setPos(pos.getX() + 0.5 + offset.x, pos.getY() + 0.5, pos.getZ() + 0.5 + offset.z);
@@ -64,18 +66,24 @@ public class SeatEntity extends Entity {
     }
 
     public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible) {
+        return createFor(level, state, pos, seatedInvisible, false);
+    }
+
+    public static SeatEntity createFor(Level level, BlockState state, BlockPos pos, boolean seatedInvisible, boolean seatedLocked) {
         if (level.isClientSide) {
             var seatEntity = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos)).stream().filter(entity -> {
-                return entity.getAttachedBlockPos().equals(pos) && entity.getAttachedBlockState().isPresent() && entity.getAttachedBlockState().get().getBlock() == state.getBlock();
+                return entity.getAttachedBlockPos().equals(pos) &&
+                        entity.getAttachedBlockState().isPresent() &&
+                        entity.getAttachedBlockState().get().getBlock() == state.getBlock();
             }).findFirst(); // Check for existing SeatEntities to prevent duplicates
 
             return seatEntity.orElseGet(() -> {
                 Changed.PACKET_HANDLER.sendToServer(new SeatEntityInfoPacket(pos)); // Request the server send information for the seat entity
-                return actuallyCreateFor(level, state, pos, seatedInvisible);
+                return actuallyCreateFor(level, state, pos, seatedInvisible, seatedLocked);
             });
         }
 
-        SeatEntity seat = actuallyCreateFor(level, state, pos, seatedInvisible);
+        SeatEntity seat = actuallyCreateFor(level, state, pos, seatedInvisible, seatedLocked);
         if (seat != null)
             level.addFreshEntity(seat);
         return seat;
@@ -91,6 +99,10 @@ public class SeatEntity extends Entity {
 
     public boolean shouldSeatedBeInvisible() {
         return this.entityData.get(SEATED_INVISIBLE);
+    }
+
+    public boolean canSeatedDismount() {
+        return !this.entityData.get(SEATED_LOCKED);
     }
 
     @Override
@@ -186,6 +198,7 @@ public class SeatEntity extends Entity {
         this.entityData.define(BLOCK_STATE, Optional.empty());
         this.entityData.define(BLOCK_POS, BlockPos.ZERO);
         this.entityData.define(SEATED_INVISIBLE, false);
+        this.entityData.define(SEATED_LOCKED, false);
     }
 
     @Override
@@ -196,6 +209,8 @@ public class SeatEntity extends Entity {
             this.entityData.set(BLOCK_POS, TagUtil.getBlockPos(tag, "attachedBlockPos"));
         if (tag.contains("seatedInvisible"))
             this.entityData.set(SEATED_INVISIBLE, tag.getBoolean("seatedInvisible"));
+        if (tag.contains("seatedDismount"))
+            this.entityData.set(SEATED_LOCKED, tag.getBoolean("seatedDismount"));
     }
 
     @Override
@@ -205,6 +220,7 @@ public class SeatEntity extends Entity {
         });
         TagUtil.putBlockPos(tag, "attachedBlockPos", this.getAttachedBlockPos());
         tag.putBoolean("seatedInvisible", this.shouldSeatedBeInvisible());
+        tag.putBoolean("seatedDismount", this.canSeatedDismount());
     }
 
     @Override
