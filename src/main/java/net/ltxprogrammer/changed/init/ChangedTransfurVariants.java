@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.VisionType;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.GenderedPair;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -79,7 +80,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexMoth>> LATEX_MOTH = register("form_latex_moth",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_MOTH).extraJumps(6).reducedFall().breatheMode(TransfurVariant.BreatheMode.WEAK));
     public static final RegistryObject<TransfurVariant<LatexMutantBloodcellWolf>> LATEX_MUTANT_BLODDCELL_WOLF = register("form_latex_mutant_bloodcell_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF).stepSize(0.7f).faction(LatexType.WHITE_LATEX).absorbing());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_MUTANT_BLOODCELL_WOLF).stepSize(0.7f).faction(LatexType.WHITE_LATEX).visionType(VisionType.REDUCED).absorbing());
     public static final RegistryObject<TransfurVariant<LatexOrca>> LATEX_ORCA = register("form_latex_orca",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_ORCA).stepSize(0.7f).gills());
     public static final RegistryObject<TransfurVariant<LatexOtter>> LATEX_OTTER = register("form_latex_otter",
@@ -93,7 +94,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexPurpleFox>> LATEX_PURPLE_FOX = register("form_latex_purple_fox",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_PURPLE_FOX).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<LatexRaccoon>> LATEX_RACCOON = register("form_latex_raccoon",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_RACCOON).noVision());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_RACCOON).visionType(VisionType.REDUCED));
     public static final RegistryObject<TransfurVariant<LatexRedDragon>> LATEX_RED_DRAGON = register("form_latex_red_dragon",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_RED_DRAGON).glide());
     public static final RegistryObject<TransfurVariant<LatexRedPanda>> LATEX_RED_PANDA = register("form_latex_red_panda",
@@ -154,7 +155,7 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.WHITE_WOLF_MALE).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
 
     public static final RegistryObject<TransfurVariant<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = register("form_pure_white_latex_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF).stepSize(0.7f).faction(LatexType.WHITE_LATEX));
+            TransfurVariant.Builder.of(ChangedEntities.PURE_WHITE_LATEX_WOLF).stepSize(0.7f).faction(LatexType.WHITE_LATEX).visionType(VisionType.REDUCED));
 
     public static final Supplier<? extends TransfurVariant<?>> FALLBACK_VARIANT = WHITE_LATEX_WOLF_MALE;
 
