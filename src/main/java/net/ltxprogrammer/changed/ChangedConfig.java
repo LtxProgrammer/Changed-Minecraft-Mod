@@ -148,12 +148,6 @@ public class ChangedConfig {
         }
     }
 
-    public static class Variant {
-
-        // Constructor that accepts ModLoadingContext
-
-    }
-
     private final Pair<Common, ForgeConfigSpec> commonPair;
     private final Pair<Client, ForgeConfigSpec> clientPair;
     private final Pair<Server, ForgeConfigSpec> serverPair;
