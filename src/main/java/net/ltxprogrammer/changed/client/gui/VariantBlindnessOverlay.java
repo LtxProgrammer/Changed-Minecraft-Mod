@@ -7,8 +7,10 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.entity.VisionType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -31,15 +33,20 @@ public class VariantBlindnessOverlay {
     public static void eventHandler(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             Player player = Minecraft.getInstance().player;
-            if (player == null || !ProcessTransfur.isPlayerTransfurred(player))
+            if (!ProcessTransfur.isPlayerTransfurred(player))
                 return;
             var variant = ProcessTransfur.getPlayerTransfurVariant(player);
-            if (variant == null || variant.getLatexType() == LatexType.NEUTRAL)
+            if (variant == null)
                 return;
-            if (variant.getChangedEntity() instanceof DarkLatexEntity darkLatex && (darkLatex.isMaskless()
-                || player.hasEffect(MobEffects.NIGHT_VISION)))
+            if (player.hasEffect(MobEffects.NIGHT_VISION))
+                return; // Override effect
+            if (variant.getChangedEntity() instanceof DarkLatexEntity darkLatex) {
+                if (darkLatex.isMaskless())
+                    return;
+            }
+            else if (variant.getParent().visionType != VisionType.REDUCED)
                 return;
-            float color = variant.getLatexType() == LatexType.DARK_LATEX ? 0.0F : 1.0F;
+            Color3 color = variant.getParent().getColors().getFirst();
             float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
             float alpha;
             if (variant.getLatexType() == LatexType.DARK_LATEX)
@@ -61,10 +68,10 @@ public class VariantBlindnessOverlay {
             Tesselator tesselator = Tesselator.getInstance();
             BufferBuilder bufferbuilder = tesselator.getBuilder();
             bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color, color, color, alpha).endVertex();
-            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color, color, color, alpha).endVertex();
-            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color, color, color, alpha).endVertex();
-            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color, color, color, alpha).endVertex();
+            bufferbuilder.vertex(0.0D, (double)j1, -90).uv(0.0F, 1.0F).color(color.red(), color.green(), color.blue(), alpha).endVertex();
+            bufferbuilder.vertex((double)i1, (double)j1, -90).uv(1.0F, 1.0F).color(color.red(), color.green(), color.blue(), alpha).endVertex();
+            bufferbuilder.vertex((double)i1, 0.0D, -90).uv(1.0F, 0.0F).color(color.red(), color.green(), color.blue(), alpha).endVertex();
+            bufferbuilder.vertex(0.0D, 0.0D, -90).uv(0.0F, 0.0F).color(color.red(), color.green(), color.blue(), alpha).endVertex();
             tesselator.end();
             RenderSystem.depthMask(true);
             RenderSystem.defaultBlendFunc();

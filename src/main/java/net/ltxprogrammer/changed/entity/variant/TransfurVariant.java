@@ -266,6 +266,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         if (entity.hasCustomName()) {
             newEntity.setCustomName(entity.getCustomName());
             newEntity.setCustomNameVisible(entity.isCustomNameVisible());
+            newEntity.setPersistenceRequired();
         }
 
         if (entity instanceof Mob mob) {

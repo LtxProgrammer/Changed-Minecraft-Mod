@@ -27,6 +27,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -625,29 +627,23 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
+        if (slot == EquipmentSlot.MAINHAND)
+            return true;
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem && !wearableItem.allowedInSlot(itemStack, player, slot))
+            return false;
+        if (!entity.isItemAllowedInSlot(itemStack, slot))
+            return false;
+
+        int expectedLegCount;
         if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
-            return wearableItem.allowedToWear(itemStack, player, slot);
+            expectedLegCount = wearableItem.getExpectedLegCount(itemStack);
+        else
+            expectedLegCount = 2;
 
-        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-            if (parent.is(ChangedTransfurVariants.DARK_LATEX_WOLF_PUP))
-                return false;
-
-            if (itemStack.getItem() instanceof ArmorItem armorItem) {
-                if (parent.legCount == 2)
-                    return true;
-                else {
-                    switch (armorItem.getSlot()) {
-                        case FEET:
-                        case LEGS:
-                            return false;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-
-        return true;
+        return switch (slot) {
+            case LEGS, FEET -> expectedLegCount == parent.legCount;
+            default -> true;
+        };
     }
 
     protected static double correctScaling(Attribute attribute, double original) {
@@ -935,6 +931,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.maxUpStep = 0.6f;
         else
             player.maxUpStep = parent.stepSize;
+
+        // Effects
+        if (parent.visionType == VisionType.BLIND) {
+            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
+        }
 
         for (var instance : abilityInstances.values()) {
             instance.getController().tickCoolDown();
