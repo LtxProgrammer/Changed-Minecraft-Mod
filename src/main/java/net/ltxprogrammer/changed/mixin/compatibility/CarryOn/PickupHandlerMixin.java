@@ -13,7 +13,7 @@ import tschipp.carryon.common.handler.PickupHandler;
 
 @Mixin(value = PickupHandler.class, remap = false)
 public class PickupHandlerMixin {
-    @Inject(method = "canPlayerPickUpEntity", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "canPlayerPickUpEntity", at = @At("HEAD"), cancellable = true)
     private static void handleChangedEntities(ServerPlayer player, Entity toPickUp, CallbackInfoReturnable<Boolean> cir) {
         if (!(toPickUp instanceof ChangedEntity changedEntity)) return;
         if (Configs.Settings.pickupHostileMobs.get()) return;

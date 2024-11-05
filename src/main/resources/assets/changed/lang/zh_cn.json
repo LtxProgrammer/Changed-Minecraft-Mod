@@ -166,7 +166,7 @@
   "command.changed.error.not_cause": "兽化源无效",
   "command.changed.error.used_by_other_mod": "玩家模型已经被另一个模组占用",
   "command.changed.error.no_special_form": "没有指定特殊形态，请访问 https://www.patreon.com/ltxprogrammer",
-  "command.changed.error.used_by_other_mod2": "玩家图形层已经被另一个模组占用，如果想要开启请到changed-variant.toml中修改",
+  "command.changed.error.used_by_other_mod2": "玩家图形层已经被另一个模组占用，如果想要开启请到changed-common.toml中修改",
 
 
   "gamerule.changed:fusabilityDurationPlayer": "兽化后可以和胶兽合并的倒计时（Ticks）",
