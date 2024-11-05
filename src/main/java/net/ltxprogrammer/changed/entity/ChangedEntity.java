@@ -421,7 +421,7 @@ public abstract class ChangedEntity extends Monster {
             return false;
         if (!checkSpawnBlock(world, reason, pos))
             return false;
-        return Monster.checkAnyLightMonsterSpawnRules(entityType, world, reason, pos, random);
+        return Monster.checkMonsterSpawnRules(entityType, world, reason, pos, random);
     }
 
     @Override
