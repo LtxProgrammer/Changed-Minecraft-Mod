@@ -75,6 +75,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public AbstractAbility<?> menuAbility = null;
     public boolean abilityKeyState = false;
     public TransfurMode transfurMode;
+    public VisionType visionType;
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
@@ -216,6 +217,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         this.host = host;
 
         this.transfurMode = parent.transfurMode;
+        this.visionType = parent.visionType;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
         parent.abilities.forEach(abilityFunction -> {
@@ -933,7 +935,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.maxUpStep = parent.stepSize;
 
         // Effects
-        if (parent.visionType == VisionType.BLIND) {
+        if (visionType == VisionType.BLIND) {
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
         }
 

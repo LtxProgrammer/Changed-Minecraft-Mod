@@ -56,7 +56,7 @@ public abstract class GameRendererMixin {
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void getNightVisionScale(LivingEntity livingEntity, float p_109110_, CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(livingEntity), variant -> {
-            if (variant.getParent().visionType.test(MobEffects.NIGHT_VISION)) {
+            if (variant.visionType.test(MobEffects.NIGHT_VISION)) {
                 callback.setReturnValue(1.0f);
             }
 

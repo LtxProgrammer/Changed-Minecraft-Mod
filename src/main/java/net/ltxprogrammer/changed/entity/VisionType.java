@@ -13,7 +13,8 @@ public enum VisionType implements StringRepresentable, Predicate<MobEffect> {
     NORMAL("normal", effect -> false),
     NIGHT_VISION("night_vision", MobEffects.NIGHT_VISION::equals),
     BLIND("blind", MobEffects.BLINDNESS::equals),
-    REDUCED("reduced", effect -> false);
+    REDUCED("reduced", effect -> false),
+    WAVE_VISION("wave_vision", effect -> false);
 
     public static Codec<VisionType> CODEC = Codec.STRING.comapFlatMap(VisionType::fromSerial, VisionType::getSerializedName).orElse(NORMAL);
 

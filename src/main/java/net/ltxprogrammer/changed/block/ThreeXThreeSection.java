@@ -153,9 +153,9 @@ public enum ThreeXThreeSection implements StringRepresentable {
 
         return switch (facing) {
             case NORTH -> current.offset(-x, y, -z);
-            case EAST -> current.offset(-z, y, -x);
+            case EAST -> current.offset(z, y, -x);
             case SOUTH -> current.offset(x, y, z);
-            case WEST -> current.offset(z, y, x);
+            case WEST -> current.offset(-z, y, x);
             default -> current;
         };
     }
@@ -177,9 +177,9 @@ public enum ThreeXThreeSection implements StringRepresentable {
 
         return switch (facing) {
             case NORTH -> new Vec3i(-x, y, -z);
-            case EAST -> new Vec3i(-z, y, -x);
+            case EAST -> new Vec3i(z, y, -x);
             case SOUTH -> new Vec3i(x, y, z);
-            case WEST -> new Vec3i(z, y, x);
+            case WEST -> new Vec3i(-z, y, x);
             default -> Vec3i.ZERO;
         };
     }
@@ -196,10 +196,10 @@ public enum ThreeXThreeSection implements StringRepresentable {
             switch (axis) {
                 case X: switch (facing) {
                     case EAST, WEST -> axis = Direction.Axis.Z;
-                }
+                } break;
                 case Z: switch (facing) {
                     case EAST, WEST -> axis = Direction.Axis.X;
-                }
+                } break;
             }
         }
 

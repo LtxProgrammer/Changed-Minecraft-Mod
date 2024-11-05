@@ -40,11 +40,7 @@ public class VariantBlindnessOverlay {
                 return;
             if (player.hasEffect(MobEffects.NIGHT_VISION))
                 return; // Override effect
-            if (variant.getChangedEntity() instanceof DarkLatexEntity darkLatex) {
-                if (darkLatex.isMaskless())
-                    return;
-            }
-            else if (variant.getParent().visionType != VisionType.REDUCED)
+            if (variant.visionType != VisionType.REDUCED)
                 return;
             Color3 color = variant.getParent().getColors().getFirst();
             float darkness = (15 - player.level.getRawBrightness(player.eyeBlockPosition(), 0)) / 15.0f;
