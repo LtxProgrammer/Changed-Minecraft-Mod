@@ -167,7 +167,7 @@
   "command.changed.error.not_cause": "Invalid transfur cause",
   "command.changed.error.used_by_other_mod": "Player is already used by another mod",
   "command.changed.error.no_special_form": "No special form assigned, visit https://www.patreon.com/ltxprogrammer",
-  "command.changed.failure.transfurred.cannot": "A mysterious force is preventing you from becoming latex!",
+  "command.changed.error.used_by_other_mod2": "Player is already used by another mod.If you want to turn it on, go to changed-variant.toml and change",
 
 
   "gamerule.changed:fusabilityDurationPlayer": "Post-Transfur Fusability Duration (Ticks)",

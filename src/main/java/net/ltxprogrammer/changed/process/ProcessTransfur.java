@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.process;
 
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.VariantCheck.PatienceCompatibility;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -688,7 +689,12 @@ public class ProcessTransfur {
         if (entity == null)
             return;
         if (entity.isDeadOrDying())
-            return; // To prevent most bugs, entity has to be alive to transfur
+            return;//
+        // To prevent most bugs, entity has to be alive to transfur
+        PatienceCompatibility compatibility = new PatienceCompatibility((ServerPlayer) entity);
+
+        if (!(compatibility.isConditionMet()))
+            return;
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
             keepConscious = true;
         else if (entity instanceof Player player) {

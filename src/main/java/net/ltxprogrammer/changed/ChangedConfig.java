@@ -4,7 +4,7 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import net.ltxprogrammer.changed.client.gui.TransfurProgressOverlay;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
-import net.minecraft.core.Registry;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.block.Block;
@@ -14,9 +14,6 @@ import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.GameData;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,12 +38,17 @@ public class ChangedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<String> githubDomain;
         public final ForgeConfigSpec.ConfigValue<Boolean> displayPatronage;
+        public final ForgeConfigSpec.ConfigValue<Boolean> openOrigin;
+
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Choose your domain. Use \"raw.fastgit.org\" if your ISP blocks github.");
             githubDomain = builder.define("githubDomain", "raw.githubusercontent.com");
             builder.comment("Compatibility is weird, you can disable displaying player's patronage to Changed:MC here");
             displayPatronage = builder.define("displayPatronage", true);
+            builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
+            openOrigin = builder.define("openOrigin", false);
+
         }
     }
 
@@ -60,6 +62,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
         public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
         public final ForgeConfigSpec.ConfigValue<TransfurProgressOverlay.Position> transfurMeterPosition;
+
 
         public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
@@ -142,6 +145,12 @@ public class ChangedConfig {
         }
     }
 
+    public static class Variant {
+
+        // Constructor that accepts ModLoadingContext
+
+    }
+
     private final Pair<Common, ForgeConfigSpec> commonPair;
     private final Pair<Client, ForgeConfigSpec> clientPair;
     private final Pair<Server, ForgeConfigSpec> serverPair;
@@ -204,6 +213,7 @@ public class ChangedConfig {
                 .configure(Client::new);
         serverPair = new ForgeConfigSpec.Builder()
                 .configure(Server::new);
+
 
         additionalDataList.add(clientPair.getLeft());
 

@@ -11,42 +11,60 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Objects;
 
-public class PatienceCompatibility {
-    private final ServerPlayer player;  // 将类型更改为 ServerPlayer
-    private int variantType = -1;
-    private boolean conditionValue = false;
+enum VariantType {
+    LATEX_RESISTANCE, COMPATIBILITY, DEFAULT
+}
 
-    // 修改构造函数以接受 ServerPlayer 和 MinecraftServer
+public class PatienceCompatibility {
+    private final ServerPlayer player;
+    private boolean conditionValue = false;
+    private VariantType variantType = VariantType.DEFAULT;
+
     public PatienceCompatibility(ServerPlayer player) {
         this.player = player;
+        checkOriginCondition(player.getServer());
     }
 
     private void applyVariantLogic() {
         switch (variantType) {
-            case 0 -> conditionValue = true; // 耐心行为
-            case 1 -> conditionValue = false; // 兼容性行为
-            default -> conditionValue = false; // 默认行为
+            case LATEX_RESISTANCE -> conditionValue = true;
+            case COMPATIBILITY -> conditionValue = false;
+            default -> conditionValue = false;
         }
     }
 
-    // 检查玩家是否满足条件
     public boolean isConditionMet() {
         return conditionValue;
     }
 
-    // 检查 Origin 条件并更新变身条件
     public void checkOriginCondition(MinecraftServer server) {
-        OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
-        Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
+        OriginLayer layer = getOriginLayer(server, "origins:origin");
+        Origin origin = getOrigin(server, "origins:human");
+
+        if (layer == null || origin == null) {
+            System.err.println("Failed to retrieve Origin layer or origin from registry.");
+            return;
+        }
 
         boolean nowHuman = hasOrigin(player, layer, origin);
-        variantType = nowHuman ? -1 : 0;
-        if(!(Changed.Vconfig.openOrigin.get())) {
+        variantType = nowHuman ? VariantType.LATEX_RESISTANCE : VariantType.COMPATIBILITY;
+
+        if (!(Changed.config.common.openOrigin.get())){
             applyVariantLogic();
         }
     }
 
     private boolean hasOrigin(ServerPlayer player, OriginLayer layer, Origin origin) {
-        return IOriginContainer.get(player).map(x -> Objects.equals(x.getOrigin(layer), origin)).orElse(false);
+        return IOriginContainer.get(player)
+                .map(container -> Objects.equals(container.getOrigin(layer), origin))
+                .orElse(false);
+    }
+
+    private OriginLayer getOriginLayer(MinecraftServer server, String layerPath) {
+        return OriginsAPI.getLayersRegistry(server).get(new ResourceLocation(layerPath));
+    }
+
+    private Origin getOrigin(MinecraftServer server, String originPath) {
+        return OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation(originPath));
     }
 }

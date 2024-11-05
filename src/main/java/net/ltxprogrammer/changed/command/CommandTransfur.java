@@ -147,20 +147,17 @@ public class CommandTransfur {
             throw NOT_CAUSE.create();
         }
 
-        // 使用 PatienceCompatibility 检查玩家的 Origin 条件
-        PatienceCompatibility compatibility = new PatienceCompatibility(player);  // player 是 ServerPlayer
+        PatienceCompatibility compatibility = new PatienceCompatibility(player);
         compatibility.checkOriginCondition(source.getServer());
 
-        if (compatibility.isConditionMet()) {
-            source.sendFailure(new TranslatableComponent("command.changed.failure.transfurred.cannot"));
-            return 0; // 返回 0 以停止进一步的处理
+        if (!(compatibility.isConditionMet())) {
+            source.sendFailure(new TranslatableComponent("command.changed.error.used_by_other_mod2"));
+            return 0;
         }
 
-        // 其他代码逻辑
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
-        // 处理变身逻辑
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true,
                     TransfurContext.hazard(transfurCause));
