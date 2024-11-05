@@ -23,6 +23,7 @@
   "ability.changed.select_hairstyle": "Velg hårstil",
   "ability.changed.select_special_state": "Velg spesiell stat",
   "ability.changed.summon_sharks": "Fremkalle haier",
+  "ability.changed.toggle_night_vision": "Veksle nattsyn",
 
   "ability.changed.grab_entity": "Gripe enhet",
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] for å grabbe en enhet",
