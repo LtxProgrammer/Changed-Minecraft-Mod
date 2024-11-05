@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
@@ -38,7 +39,7 @@ public class ChangedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<String> githubDomain;
         public final ForgeConfigSpec.ConfigValue<Boolean> displayPatronage;
-        public final ForgeConfigSpec.ConfigValue<Boolean> openOrigin;
+        public ForgeConfigSpec.ConfigValue<Boolean> openOrigin;
 
 
         public Common(ForgeConfigSpec.Builder builder) {
@@ -46,8 +47,10 @@ public class ChangedConfig {
             githubDomain = builder.define("githubDomain", "raw.githubusercontent.com");
             builder.comment("Compatibility is weird, you can disable displaying player's patronage to Changed:MC here");
             displayPatronage = builder.define("displayPatronage", true);
-            builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
-            openOrigin = builder.define("openOrigin", false);
+            if(ModList.get().isLoaded("origins")) {
+                builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
+                openOrigin = builder.define("openOrigin", false);
+            }
 
         }
     }
