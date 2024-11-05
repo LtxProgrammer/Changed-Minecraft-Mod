@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -37,6 +39,11 @@ public class LatexHyenaTaur extends WhiteLatexKnight implements LatexTaur<LatexH
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
+    }
+
+    @Override
+    public TransfurVariant<?> getTransfurVariant() {
+        return ChangedTransfurVariants.LATEX_HYENA_TAUR.get();
     }
 
     @Override
