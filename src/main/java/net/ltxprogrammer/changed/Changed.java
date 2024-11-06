@@ -46,7 +46,6 @@ public class Changed {
     public static EventHandlerClient eventHandlerClient;
     public static ChangedConfig config;
 
-
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource(MODID), () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
