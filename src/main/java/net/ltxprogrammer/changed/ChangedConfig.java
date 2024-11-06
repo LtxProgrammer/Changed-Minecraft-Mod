@@ -49,7 +49,7 @@ public class ChangedConfig {
             displayPatronage = builder.define("displayPatronage", true);
             if(ModList.get().isLoaded("origins")) {
                 builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
-                openOrigin = builder.define("openOrigin", false);
+                openOrigin = builder.define("enableTransfurringOrigins", false);
             }else{
                 openOrigin = null;
             }
