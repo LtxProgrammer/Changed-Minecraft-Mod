@@ -122,6 +122,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
             if (variant.visionType.test(effect))
                 callback.setReturnValue(true);
 
+            if (variant.miningStrength.test(effect))
+                callback.setReturnValue(true);
+
             if (effect.equals(MobEffects.NIGHT_VISION)) {
                 if (variant.getChangedEntity().getLatexType() == LatexType.WHITE_LATEX && WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
                     callback.setReturnValue(true);
@@ -136,6 +139,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
             if (variant.visionType.test(effect))
                 callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
+
+            if (variant.miningStrength.test(effect))
+                callback.setReturnValue(new MobEffectInstance(effect, 300, 2, false, false));
 
             if (effect.equals(MobEffects.NIGHT_VISION)) {
                 if (variant.getChangedEntity().getLatexType() == LatexType.WHITE_LATEX && WhiteLatexTransportInterface.isEntityInWhiteLatex(player))

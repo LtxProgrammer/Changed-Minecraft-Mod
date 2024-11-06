@@ -941,10 +941,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
         }
 
-        if (miningStrength == MiningStrength.WEAK) {
-            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 20, 2, false, false, false));
-        }
-
         for (var instance : abilityInstances.values()) {
             instance.getController().tickCoolDown();
         }
