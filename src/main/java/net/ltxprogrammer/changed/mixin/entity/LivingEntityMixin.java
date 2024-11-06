@@ -141,7 +141,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
 
             if (variant.miningStrength.test(effect))
-                callback.setReturnValue(new MobEffectInstance(effect, 300, 2, false, false));
+                callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
 
             if (effect.equals(MobEffects.NIGHT_VISION)) {
                 if (variant.getChangedEntity().getLatexType() == LatexType.WHITE_LATEX && WhiteLatexTransportInterface.isEntityInWhiteLatex(player))
