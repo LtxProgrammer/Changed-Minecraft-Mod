@@ -26,7 +26,11 @@ public class PatienceCompatibility {
     }
 
     private void applyVariantLogic() {
-        conditionValue = Objects.requireNonNull(variantType) == VariantType.LATEX_RESISTANCE;
+        switch (variantType){
+            case LATEX_RESISTANCE -> conditionValue =true;
+            default -> conditionValue =false;
+        }
+
     }
 
     public boolean isConditionMet() {
@@ -43,9 +47,9 @@ public class PatienceCompatibility {
         }
 
         boolean nowHuman = hasOrigin(player, layer, origin);
-        variantType = nowHuman ? VariantType.LATEX_RESISTANCE : VariantType.COMPATIBILITY;
+        variantType = nowHuman ? VariantType.DEFAULT : VariantType.LATEX_RESISTANCE;
 
-        if (!(Changed.config.common.openOrigin.get())){
+        if (Changed.config.common.openOrigin.get()){
             applyVariantLogic();
         }
     }

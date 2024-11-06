@@ -39,7 +39,7 @@ public class ChangedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<String> githubDomain;
         public final ForgeConfigSpec.ConfigValue<Boolean> displayPatronage;
-        public ForgeConfigSpec.ConfigValue<Boolean> openOrigin;
+        public final ForgeConfigSpec.ConfigValue<Boolean> openOrigin ;
 
 
         public Common(ForgeConfigSpec.Builder builder) {
@@ -50,8 +50,9 @@ public class ChangedConfig {
             if(ModList.get().isLoaded("origins")) {
                 builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
                 openOrigin = builder.define("openOrigin", false);
+            }else{
+                openOrigin = null;
             }
-
         }
     }
 
