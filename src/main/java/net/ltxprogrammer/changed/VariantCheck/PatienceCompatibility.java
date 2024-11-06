@@ -19,6 +19,7 @@ public class PatienceCompatibility {
     private final ServerPlayer player;
     private boolean conditionValue = false;
     private VariantType variantType = VariantType.DEFAULT;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public PatienceCompatibility(ServerPlayer player) {
         this.player = player;
@@ -42,7 +43,7 @@ public class PatienceCompatibility {
         Origin origin = getOrigin(server, "origins:human");
 
         if (layer == null || origin == null) {
-            System.err.println("Failed to retrieve Origin layer or origin from registry.");
+            LOGGER.error("Failed to retrieve Origin layer or origin from registry.");
             return;
         }
 
