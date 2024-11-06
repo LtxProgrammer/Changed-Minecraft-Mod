@@ -175,8 +175,6 @@ public class CommandTransfur {
         return Command.SINGLE_SUCCESS;
     }
 
-
-
     private static int transfurPlayers(CommandSourceStack source, Collection<ServerPlayer> players, ResourceLocation form, String cause) throws CommandSyntaxException {
         if (players.size() == 1) {
             final ServerPlayer player = players.stream().findFirst().get();
