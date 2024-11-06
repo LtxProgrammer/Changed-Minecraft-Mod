@@ -26,11 +26,7 @@ public class PatienceCompatibility {
     }
 
     private void applyVariantLogic() {
-        switch (variantType) {
-            case LATEX_RESISTANCE -> conditionValue = true;
-            case COMPATIBILITY -> conditionValue = false;
-            default -> conditionValue = false;
-        }
+        conditionValue = Objects.requireNonNull(variantType) == VariantType.LATEX_RESISTANCE;
     }
 
     public boolean isConditionMet() {
