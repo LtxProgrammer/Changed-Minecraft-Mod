@@ -38,6 +38,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -691,10 +692,11 @@ public class ProcessTransfur {
         if (entity.isDeadOrDying())
             return;//
         // To prevent most bugs, entity has to be alive to transfur
-        PatienceCompatibility compatibility = new PatienceCompatibility((ServerPlayer) entity);
-
-        if (!(compatibility.isConditionMet()))
-            return;
+        if(entity instanceof Player player){
+            PatienceCompatibility compatibility = new PatienceCompatibility((ServerPlayer) player);
+            if (!(compatibility.isConditionMet()))
+                return;
+        }
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))
             keepConscious = true;
         else if (entity instanceof Player player) {
