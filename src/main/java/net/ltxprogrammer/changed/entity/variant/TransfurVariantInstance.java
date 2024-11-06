@@ -76,6 +76,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean abilityKeyState = false;
     public TransfurMode transfurMode;
     public VisionType visionType;
+    public MiningStrength miningStrength;
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
@@ -218,6 +219,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.transfurMode = parent.transfurMode;
         this.visionType = parent.visionType;
+        this.miningStrength = parent.miningStrength;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
         parent.abilities.forEach(abilityFunction -> {
@@ -937,6 +939,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         // Effects
         if (visionType == VisionType.BLIND) {
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
+        }
+
+        if (miningStrength == MiningStrength.WEAK) {
+            player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 20, 2, false, false, false));
         }
 
         for (var instance : abilityInstances.values()) {
