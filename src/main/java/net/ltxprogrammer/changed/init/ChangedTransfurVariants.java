@@ -24,7 +24,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<GasWolf>> GAS_WOLF = register("form_gas_wolf",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.POOLTOY_WOLF).breatheMode(TransfurVariant.BreatheMode.NONE).transfurMode(TransfurMode.NONE).stepSize(0.7f));
+            TransfurVariant.Builder.of(ChangedEntities.POOLTOY_WOLF).breatheMode(TransfurVariant.BreatheMode.NONE).weakMining().transfurMode(TransfurMode.NONE).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<Beifeng>> BEIFENG = register("form_beifeng",
             TransfurVariant.Builder.of(ChangedEntities.BEIFENG).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<WhiteLatexWolfFemale>> WHITE_LATEX_WOLF_FEMALE = register("form_white_latex_wolf/female",
@@ -42,7 +42,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = register("form_phage_latex_wolf/male",
             TransfurVariant.Builder.of(ChangedEntities.PHAGE_LATEX_WOLF_MALE).stepSize(0.7f).faction(LatexType.DARK_LATEX).addAbility(ChangedAbilities.TOGGLE_WAVE_VISION));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPup>> DARK_LATEX_WOLF_PUP = register("form_dark_latex_wolf_pup",
-            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PUP).stepSize(0.7f).faction(LatexType.DARK_LATEX).addAbility(ChangedAbilities.TOGGLE_WAVE_VISION).transfurMode(TransfurMode.NONE).holdItemsInMouth().reducedFall().addAbility(ChangedAbilities.PUDDLE));
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PUP).stepSize(0.7f).faction(LatexType.DARK_LATEX).weakMining().addAbility(ChangedAbilities.TOGGLE_WAVE_VISION).transfurMode(TransfurMode.NONE).holdItemsInMouth().reducedFall().addAbility(ChangedAbilities.PUDDLE));
     public static final RegistryObject<TransfurVariant<DarkLatexWolfPartial>> DARK_LATEX_WOLF_PARTIAL = register("form_dark_latex_wolf_partial",
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE));
     public static final RegistryObject<TransfurVariant<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("form_dark_latex_yufeng",
@@ -52,7 +52,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexBee>> LATEX_BEE = register("form_latex_bee",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_BEE).extraJumps(4).reducedFall().extraHands().addAbility(ChangedAbilities.CREATE_HONEYCOMB).breatheMode(TransfurVariant.BreatheMode.WEAK).absorbing());
     public static final RegistryObject<TransfurVariant<LatexBenignWolf>> LATEX_BENIGN_WOLF = register("form_latex_benign_wolf",
-            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_WOLF).noVision().absorbing().disableItems().jumpStrength(0.5F));
+            TransfurVariant.Builder.of(ChangedEntities.BENIGN_LATEX_WOLF).noVision().absorbing().disableItems().weakMining().jumpStrength(0.5F));
     public static final RegistryObject<TransfurVariant<LatexBlueDragon>> LATEX_BLUE_DRAGON = register("form_latex_blue_dragon",
             TransfurVariant.Builder.of(ChangedEntities.BLUE_LATEX_DRAGON).stepSize(0.7f));
     public static final RegistryObject<TransfurVariant<LatexBlueWolf>> LATEX_BLUE_WOLF = register("form_latex_blue_wolf",

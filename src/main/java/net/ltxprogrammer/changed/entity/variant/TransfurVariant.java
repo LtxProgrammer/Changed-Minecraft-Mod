@@ -173,6 +173,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public final boolean reducedFall;
     public final boolean canClimb;
     public final VisionType visionType;
+    public final MiningStrength miningStrength;
     public final int legCount;
     public final boolean hasLegs;
     public final UseItemMode itemUseMode;
@@ -185,13 +186,14 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type,
                            float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
-                           VisionType visionType, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                           VisionType visionType, MiningStrength miningStrength, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                            List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
         this.jumpStrength = jumpStrength;
         this.breatheMode = breatheMode;
         this.stepSize = stepSize;
+        this.miningStrength = miningStrength;
         this.visionType = visionType;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
@@ -361,6 +363,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         boolean reducedFall = false;
         boolean canClimb = false;
         VisionType visionType = VisionType.NORMAL;
+        MiningStrength miningStrength = MiningStrength.NORMAL;
         int legCount = 2;
         UseItemMode itemUseMode = UseItemMode.NORMAL;
         List<Class<? extends PathfinderMob>> scares = new ArrayList<>(ImmutableList.of(AbstractVillager.class));
@@ -504,6 +507,18 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             this.visionType = type; return this;
         }
 
+        public Builder<T> weakMining() {
+            this.miningStrength = MiningStrength.WEAK; return this;
+        }
+
+        public Builder<T> weakMining(boolean v) {
+            this.miningStrength = v ? MiningStrength.WEAK : miningStrength; return this;
+        }
+
+        public Builder<T> miningStrength(MiningStrength strength) {
+            this.miningStrength = strength; return this;
+        }
+
         public Builder<T> transfurMode(TransfurMode mode) {
             this.transfurMode = mode; return this;
         }
@@ -548,7 +563,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public TransfurVariant<T> build() {
             return new TransfurVariant<>(entityType, type, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
-                    reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, visionType, miningStrength, legCount, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
         }
     }
 
@@ -623,6 +638,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         List<Function<EntityType<?>, ? extends AbstractAbility<?>>> nAbilitiesList = abilities.stream().map(a -> (Function<EntityType<?>, AbstractAbility<?>>) type -> a).collect(Collectors.toList());
 
         boolean nightVision = GsonHelper.getAsBoolean(root, "nightVision", false);
+        boolean weakMining = GsonHelper.getAsBoolean(root, "weakMining", false);
         float speed = GsonHelper.getAsFloat(root, "groundSpeed", 1.0F) * 0.1f;
         float swimSpeed = GsonHelper.getAsFloat(root, "swimSpeed", 1.0F);
         int additionalHealth = GsonHelper.getAsInt(root, "additionalHealth", 4);
@@ -639,6 +655,8 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
                 GsonHelper.getAsBoolean(root, "canClimb", false),
                 VisionType.fromSerial(GsonHelper.getAsString(root, "visionType", (nightVision ? VisionType.NIGHT_VISION : VisionType.NORMAL).getSerializedName()))
                         .result().orElse(VisionType.NORMAL),
+                MiningStrength.fromSerial(GsonHelper.getAsString(root, "miningStrength", (weakMining ? MiningStrength.WEAK : MiningStrength.NORMAL).getSerializedName()))
+                        .result().orElse(MiningStrength.NORMAL),
                 GsonHelper.getAsInt(root, "legCount", 2),
                 UseItemMode.valueOf(GsonHelper.getAsString(root, "itemUseMode", UseItemMode.NORMAL.toString())),
                 scares,

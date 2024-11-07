@@ -12,7 +12,7 @@ public enum UseItemMode implements IExtensibleEnum {
     /**
      * The variant can only hold one item out, in their mouth.
      */
-    MOUTH(true, true, false, true, false),
+    MOUTH(true, true, false, true, true),
     /**
      * The variant can't hold any items out, nor use them.
      */
