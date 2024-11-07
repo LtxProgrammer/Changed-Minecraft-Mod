@@ -78,21 +78,7 @@ public abstract class LatexCoveredBlocks {
                     Changed.modResource("blocks/white_latex_block")));
     public static final ResourceLocation LATEX_COVER_ATLAS = Changed.modResource("textures/atlas/latex_blocks.png");
 
-    protected static final RenderStateShard.TextureStateShard LATEX_SHEET_MIPPED = new RenderStateShard.TextureStateShard(LATEX_COVER_ATLAS, false, true);
-    protected static final RenderStateShard.TextureStateShard LATEX_SHEET = new RenderStateShard.TextureStateShard(LATEX_COVER_ATLAS, false, false);
-    protected static final RenderStateShard.LightmapStateShard LIGHTMAP = new RenderStateShard.LightmapStateShard(true);
-    protected static final RenderStateShard.ShaderStateShard RENDERTYPE_SOLID_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeSolidShader);
-    protected static final RenderStateShard.ShaderStateShard RENDERTYPE_CUTOUT_MIPPED_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeCutoutMippedShader);
-    protected static final RenderStateShard.ShaderStateShard RENDERTYPE_CUTOUT_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeCutoutShader);
-    private static final RenderType LATEX_SOLID = RenderType.create("changed:latex_solid", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_SOLID_SHADER).setTextureState(LATEX_SHEET_MIPPED).createCompositeState(true));
-    private static final RenderType LATEX_CUTOUT_MIPPED = RenderType.create("changed:latex_cutout_mipped", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 131072, true, false, RenderType.CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_CUTOUT_MIPPED_SHADER).setTextureState(LATEX_SHEET_MIPPED).createCompositeState(true));
-    private static final RenderType LATEX_CUTOUT = RenderType.create("changed:latex_cutout", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 131072, true, false, RenderType.CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_CUTOUT_SHADER).setTextureState(LATEX_SHEET).createCompositeState(true));
-
     public static boolean isRenderingChangedBlockLayer = false;
-
-    public static RenderType latexSolid() { return LATEX_SOLID; }
-    public static RenderType latexCutoutMipped() { return LATEX_CUTOUT_MIPPED; }
-    public static RenderType latexCutout() { return LATEX_CUTOUT; }
 
     public static class LatexAtlas extends TextureAtlas {
         private final Function<ResourceLocation, MixedTexture> textureFunction;

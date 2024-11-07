@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import net.ltxprogrammer.changed.client.ChangedShaders;
 import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -24,11 +25,11 @@ public abstract class ItemBlockRenderTypesMixin {
             return;
         }
 
-        if (type == LatexCoveredBlocks.latexSolid())
+        if (type == ChangedShaders.latexSolid())
             callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.solid()));
-        else if (type == LatexCoveredBlocks.latexCutoutMipped())
+        else if (type == ChangedShaders.latexCutoutMipped())
             callback.setReturnValue(ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutoutMipped()));
-        else if (type == LatexCoveredBlocks.latexCutout())
+        else if (type == ChangedShaders.latexCutout())
             callback.setReturnValue(
                     ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.cutout()) ||
                     ItemBlockRenderTypes.canRenderInLayer(state.setValue(COVERED, LatexType.NEUTRAL), RenderType.translucent()));

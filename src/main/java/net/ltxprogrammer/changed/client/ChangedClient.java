@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client;
 
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
@@ -7,7 +8,10 @@ import net.ltxprogrammer.changed.client.renderer.layers.FirstPersonLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.sound.GasSFX;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.VisionType;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.player.Player;
@@ -83,5 +87,64 @@ public class ChangedClient {
         clientTicks++;
 
         GasSFX.ensureGasSfx();
+    }
+
+    public enum WaveVisionRenderPhase {
+        TERRAIN,
+        ENTITIES,
+        BLOCK_ENTITIES
+    }
+
+    private static WaveVisionRenderPhase phase = WaveVisionRenderPhase.TERRAIN;
+
+    public static WaveVisionRenderPhase getWaveRenderPhase() {
+        return phase;
+    }
+
+    public static void setWaveRenderPhase(WaveVisionRenderPhase phase) {
+        ChangedClient.phase = phase;
+    }
+
+    public static boolean shouldRenderingWaveVision() {
+        return ProcessTransfur.getPlayerTransfurVariantSafe(EntityUtil.playerOrNull(minecraft.cameraEntity))
+                .map(variant -> variant.visionType == VisionType.WAVE_VISION)
+                .orElse(false);
+    }
+
+    private static boolean renderingWaveVision = false;
+    private static float waveEffect = 0.0f;
+    private static Vector3f waveResonance = Vector3f.ZERO;
+    public static float setupWaveVisionEffect(float partialTicks) {
+        float effect = ProcessTransfur.getPlayerTransfurVariantSafe(EntityUtil.playerOrNull(minecraft.cameraEntity))
+                .filter(variant -> variant.visionType == VisionType.WAVE_VISION)
+                .map(TransfurVariantInstance::getTicksInWaveVision)
+                .map(ticks -> ticks + partialTicks).orElse(0.0f);
+
+        waveEffect = effect * 0.5f;
+        return waveEffect;
+    }
+
+    public static void setRenderingWaveVision(boolean renderingWaveVision) {
+        ChangedClient.renderingWaveVision = renderingWaveVision;
+    }
+
+    public static boolean isRenderingWaveVision() {
+        return ChangedClient.renderingWaveVision;
+    }
+
+    public static float getWaveEffect() {
+        return waveEffect;
+    }
+
+    public static void setWaveResonance(Vector3f resonance) {
+        ChangedClient.waveResonance = resonance;
+    }
+
+    public static void resetWaveResonance() {
+        ChangedClient.waveResonance = Vector3f.ZERO;
+    }
+
+    public static Vector3f getWaveResonance() {
+        return waveResonance;
     }
 }

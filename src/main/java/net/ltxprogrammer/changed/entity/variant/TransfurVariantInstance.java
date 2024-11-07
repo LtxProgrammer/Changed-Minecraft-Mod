@@ -83,6 +83,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int ticksBreathingUnderwater;
     public int ticksFlying;
     protected int ticksSinceLastAbilityActivity = 0;
+    private int ticksInWaveVision = 0;
 
     private final Map<Attribute, Double> previousAttributes = new HashMap<>();
     private final Map<Attribute, Double> newAttributes = new HashMap<>();
@@ -939,6 +940,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
         }
 
+        if (visionType == VisionType.WAVE_VISION) {
+            ticksInWaveVision++;
+        } else {
+            ticksInWaveVision = 0;
+        }
+
         for (var instance : abilityInstances.values()) {
             instance.getController().tickCoolDown();
         }
@@ -1073,5 +1080,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
         double intendedSprint = entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
         return (float)(baselineSprint / intendedSprint);
+    }
+
+    public int getTicksInWaveVision() {
+        return ticksInWaveVision;
     }
 }

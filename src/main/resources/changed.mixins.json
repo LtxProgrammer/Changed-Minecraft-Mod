@@ -91,6 +91,7 @@
     "render.PlayerRendererMixin",
     "render.PoseStackMixin",
     "render.RenderLayerMixin",
+    "render.RenderSystemMixin",
     "render.RenderTypeMixin",
     "render.TextureAtlasMixin"
   ],

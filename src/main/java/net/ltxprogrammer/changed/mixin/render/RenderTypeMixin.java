@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.google.common.collect.ImmutableList;
+import net.ltxprogrammer.changed.client.ChangedShaders;
 import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -21,9 +22,9 @@ public abstract class RenderTypeMixin extends RenderStateShard {
     @Inject(method = "chunkBufferLayers", at = @At("RETURN"), cancellable = true)
     private static void chunkBufferLayers(CallbackInfoReturnable<List<RenderType>> callback) {
         var layers = new ArrayList<>(callback.getReturnValue());
-        layers.add(layers.indexOf(RenderType.solid()) + 1, LatexCoveredBlocks.latexSolid());
-        layers.add(layers.indexOf(RenderType.cutoutMipped()) + 1, LatexCoveredBlocks.latexCutoutMipped());
-        layers.add(layers.indexOf(RenderType.cutout()) + 1, LatexCoveredBlocks.latexCutout());
+        layers.add(layers.indexOf(RenderType.solid()) + 1, ChangedShaders.latexSolid());
+        layers.add(layers.indexOf(RenderType.cutoutMipped()) + 1, ChangedShaders.latexCutoutMipped());
+        layers.add(layers.indexOf(RenderType.cutout()) + 1, ChangedShaders.latexCutout());
         callback.setReturnValue(ImmutableList.copyOf(layers));
     }
 }
