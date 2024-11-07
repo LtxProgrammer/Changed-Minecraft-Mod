@@ -51,7 +51,7 @@ public class CheckCondition {
                 .orElse(false);
         variantType = nowHuman ? VariantType.DEFAULT : VariantType.LATEX_RESISTANCE;
 
-        if (Changed.config.common.openOrigin.get()) {
+        if (Changed.config.common.enableTransfurringOrigins.get()) {
             applyVariantLogic();
         }
     }
