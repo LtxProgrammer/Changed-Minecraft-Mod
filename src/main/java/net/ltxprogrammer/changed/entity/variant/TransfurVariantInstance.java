@@ -76,6 +76,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean abilityKeyState = false;
     public TransfurMode transfurMode;
     public VisionType visionType;
+    public MiningStrength miningStrength;
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
@@ -218,6 +219,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.transfurMode = parent.transfurMode;
         this.visionType = parent.visionType;
+        this.miningStrength = parent.miningStrength;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
         parent.abilities.forEach(abilityFunction -> {
