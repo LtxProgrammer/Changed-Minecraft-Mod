@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.VariantCheck.PatienceCompatibility;
+import net.ltxprogrammer.changed.latexvariant.CheckCondition;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
@@ -147,7 +147,7 @@ public class CommandTransfur {
             throw NOT_CAUSE.create();
         }
 
-        PatienceCompatibility compatibility = new PatienceCompatibility(player);
+        CheckCondition compatibility = new CheckCondition(player);
         compatibility.checkOriginCondition(source.getServer());
 
         if (!(compatibility.isConditionMet())) {

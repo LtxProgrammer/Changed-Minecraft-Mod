@@ -2,9 +2,7 @@ package net.ltxprogrammer.changed.process;
 
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.VariantCheck.PatienceCompatibility;
-import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
+import net.ltxprogrammer.changed.latexvariant.CheckCondition;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
@@ -38,7 +36,6 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -693,7 +690,7 @@ public class ProcessTransfur {
             return;//
         // To prevent most bugs, entity has to be alive to transfur
         if(entity instanceof Player player){
-            PatienceCompatibility compatibility = new PatienceCompatibility((ServerPlayer) player);
+            CheckCondition compatibility = new CheckCondition((ServerPlayer) player);
             if (!(compatibility.isConditionMet()))
                 return;
         }
