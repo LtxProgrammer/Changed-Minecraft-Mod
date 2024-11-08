@@ -23,7 +23,8 @@
   "ability.changed.select_hairstyle": "Válassz egy frizurát",
   "ability.changed.select_special_state": "Válassz egy speciális állapotot",
   "ability.changed.summon_sharks": "Idézz cápákat",
-
+  "ability.changed.use_waves": "Hullámok alkalmazása",
+  
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.how_to_grab": "Tartsa nyomva a [%s] gombot egy entitás megragadásához",
   "ability.changed.grab_entity.how_to_release": "Tartsa nyomva a [%s] gombot az entitás elengedéséhez",
