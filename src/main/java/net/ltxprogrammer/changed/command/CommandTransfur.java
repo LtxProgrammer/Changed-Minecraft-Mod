@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class CommandTransfur {
-
     private static final SimpleCommandExceptionType NOT_LATEX_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_latex_form"));
     private static final SimpleCommandExceptionType NOT_CAUSE = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_cause"));
     private static final SimpleCommandExceptionType USED_BY_OTHER_MOD = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.used_by_other_mod"));
@@ -151,8 +150,7 @@ public class CommandTransfur {
         compatibility.checkOriginCondition(source.getServer());
 
         if (!(compatibility.isConditionMet())) {
-            source.sendFailure(new TranslatableComponent("command.changed.error.used_by_other_mod2"));
-            return 0;
+            throw NOT_LATEX_FORM.create();
         }
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))

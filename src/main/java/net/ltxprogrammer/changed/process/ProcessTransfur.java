@@ -689,8 +689,8 @@ public class ProcessTransfur {
         if (entity.isDeadOrDying())
             return;//
         // To prevent most bugs, entity has to be alive to transfur
-        if(entity instanceof Player player){
-            CheckCondition compatibility = new CheckCondition((ServerPlayer) player);
+        if(entity instanceof ServerPlayer player){
+            CheckCondition compatibility = new CheckCondition(player);
             if (!(compatibility.isConditionMet()))
                 return;
         }

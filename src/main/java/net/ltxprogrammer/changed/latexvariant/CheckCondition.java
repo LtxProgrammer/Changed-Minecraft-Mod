@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.fml.ModList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +17,12 @@ import java.util.Objects;
 
 public class CheckCondition {
     private final ServerPlayer player;
-    private static boolean conditionValue = false;
-    private static VariantType variantType = VariantType.DEFAULT;
+    private  boolean conditionValue = false;
+    private  VariantType variantType = VariantType.DEFAULT;
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
 
     public CheckCondition(ServerPlayer player) {
         this.player = player;
-        checkOriginCondition(player.getServer());
     }
 
     private void applyVariantLogic() {
@@ -38,20 +38,13 @@ public class CheckCondition {
     }
 
     public void checkOriginCondition(MinecraftServer server) {
-        OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
-        Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
-
-        if (layer == null || origin == null) {
-            LOGGER.error("Failed to retrieve Origin layer or origin from registry.");
-            return;
-        }
-
-        boolean nowHuman = IOriginContainer.get(player)
-                .map(container -> Objects.equals(container.getOrigin(layer), origin))
-                .orElse(false);
-        variantType = nowHuman ? VariantType.DEFAULT : VariantType.LATEX_RESISTANCE;
-
-        if (Changed.config.common.enableTransfurringOrigins.get()) {
+        if (!(Changed.config.server.enableTransfurringOrigins.get())&&(ModList.get().isLoaded("origins"))){
+            OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
+            Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
+            boolean nowHuman = IOriginContainer.get(player)
+                    .map(container -> Objects.equals(container.getOrigin(layer), origin))
+                    .orElse(false);
+            variantType = nowHuman ? VariantType.DEFAULT : VariantType.LATEX_RESISTANCE;
             applyVariantLogic();
         }
     }

@@ -39,20 +39,12 @@ public class ChangedConfig {
     public static class Common {
         public final ForgeConfigSpec.ConfigValue<String> githubDomain;
         public final ForgeConfigSpec.ConfigValue<Boolean> displayPatronage;
-        public final ForgeConfigSpec.ConfigValue<Boolean> enableTransfurringOrigins;
-
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Choose your domain. Use \"raw.fastgit.org\" if your ISP blocks github.");
             githubDomain = builder.define("githubDomain", "raw.githubusercontent.com");
             builder.comment("Compatibility is weird, you can disable displaying player's patronage to Changed:MC here");
             displayPatronage = builder.define("displayPatronage", true);
-            if(ModList.get().isLoaded("origins")) {
-                builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
-                enableTransfurringOrigins = builder.define("enableTransfurringOrigins", false);
-            }else{
-                enableTransfurringOrigins = null;
-            }
         }
     }
 
@@ -116,6 +108,8 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> playerControllingAbilities;
         public final ForgeConfigSpec.ConfigValue<Boolean> isGrabEnabled;
         public final ForgeConfigSpec.ConfigValue<Double> bpiSizeTolerance;
+        public final ForgeConfigSpec.ConfigValue<Boolean> enableTransfurringOrigins;
+
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Should transfurred players have a nametag");
@@ -130,6 +124,12 @@ public class ChangedConfig {
             isGrabEnabled = builder.define("isGrabEnabled", true);
             builder.comment("Acceptable model scaling through BPI (Default: +/- 5%)");
             bpiSizeTolerance = builder.defineInRange("bpiSizeTolerance", 0.05, 0.01, 0.95);
+            if(ModList.get().isLoaded("origins")) {
+                builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
+                enableTransfurringOrigins = builder.define("enableTransfurringOrigins", false);
+            }else{
+                enableTransfurringOrigins = null;
+            }
         }
 
         public Stream<RegistryElementPredicate<Block>> getBlacklistedCoverBlocks() {
@@ -211,7 +211,6 @@ public class ChangedConfig {
                 .configure(Client::new);
         serverPair = new ForgeConfigSpec.Builder()
                 .configure(Server::new);
-
 
         additionalDataList.add(clientPair.getLeft());
 
