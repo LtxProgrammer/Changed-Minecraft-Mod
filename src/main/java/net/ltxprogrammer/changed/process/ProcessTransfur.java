@@ -691,7 +691,7 @@ public class ProcessTransfur {
         // To prevent most bugs, entity has to be alive to transfur
         if(entity instanceof ServerPlayer player){
             CheckCondition compatibility = new CheckCondition(player);
-            if (!(compatibility.isConditionMet()))
+            if ((compatibility.isConditionMet()))
                 return;
         }
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))

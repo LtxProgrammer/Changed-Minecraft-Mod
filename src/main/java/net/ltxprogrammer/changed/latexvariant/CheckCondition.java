@@ -54,7 +54,11 @@ public class CheckCondition {
                 boolean nowHuman = IOriginContainer.get(player)
                         .map(container -> Objects.equals(container.getOrigin(layer), origin))
                         .orElse(false);
-                variantType = nowHuman ? VariantType.DEFAULT : VariantType.ORIGINS;
+                if (nowHuman) {
+                    variantType = VariantType.DEFAULT;
+                } else {
+                    variantType = VariantType.ORIGINS;
+                }
                 applyVariantLogic();
             }
         }

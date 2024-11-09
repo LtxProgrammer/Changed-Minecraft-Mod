@@ -149,7 +149,7 @@ public class CommandTransfur {
         CheckCondition compatibility = new CheckCondition(player);
         compatibility.checkOriginCondition(source.getServer());
 
-        if (!(compatibility.isConditionMet())) {
+        if ((compatibility.isConditionMet())) {
             throw NOT_LATEX_FORM.create();
         }
 
