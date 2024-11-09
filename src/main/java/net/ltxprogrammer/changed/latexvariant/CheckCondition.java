@@ -42,7 +42,6 @@ public class CheckCondition {
         return conditionValue;
     }
 
-    // 修改 VariantTypeNumber 方法，返回 varianttypenumber
     public int VariantTypeNumber() {
         return varianttypenumber;
     }

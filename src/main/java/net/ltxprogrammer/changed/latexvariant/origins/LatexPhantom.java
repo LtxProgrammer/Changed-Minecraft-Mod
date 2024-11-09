@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber
 public class LatexPhantom {
     /**
      * Handles the living entity update event and prevents sunburn if the player has a specific origin and variant type.
