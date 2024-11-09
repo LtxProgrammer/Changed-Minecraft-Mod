@@ -10,6 +10,12 @@ import java.util.function.Function;
 
 public enum Limb {
     HEAD(HumanoidModel::getHead, AdvancedHumanoidModel::getHead),
+    HEAD2(HumanoidModel::getHead, model -> {
+        if (model instanceof DoubleHeadedModel<?> doubleHeadedModel)
+            return doubleHeadedModel.getOtherHead();
+        return null;
+    }),
+
     TORSO(model -> model.body, AdvancedHumanoidModel::getTorso),
 
     LEFT_ARM(model -> model.leftArm, model -> model.getArm(HumanoidArm.LEFT)),
