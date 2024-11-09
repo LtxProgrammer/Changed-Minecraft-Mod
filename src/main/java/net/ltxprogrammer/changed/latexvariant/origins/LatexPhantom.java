@@ -20,44 +20,36 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber
 public class LatexPhantom {
-    private final ServerPlayer player;
-    public LatexPhantom(ServerPlayer player){
-        this.player = player;
-    }
-
     /**
-     * Handles the living entity update event and performs logic based on the player's origin and variant type.
+     * Handles the living entity update event and prevents sunburn if the player has a specific origin and variant type.
      *
-     * <p>This method is invoked every time a living entity's state is updated. It checks if the player has a specific origin
-     * (such as `phantom`), and if the player's variant type meets the conditions, and if the entity is on fire, it clears the fire.</p>
+     * <p>This method is invoked every time a living entity's state is updated. It checks if the player has the `phantom` origin
+     * and a specific variant type. If these conditions are met, the player is protected from sunlight-induced burning.</p>
      *
-     * @param event The living entity update event that contains the entity information.
-     * @param server The current Minecraft server instance, used to retrieve server-related resources, such as the origin layer and origins registry.
+     * @param event The living entity update event containing entity information.
+     * @param server The current Minecraft server instance, used to retrieve server-related resources.
      */
     @SubscribeEvent
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event, MinecraftServer server) {
-        if(ProcessTransfur.isPlayerTransfurred(player)){
-            if((ModList.get().isLoaded("origins"))) {
-                if (Changed.config.server.enableTransfurringOrigins.get()) {
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event, MinecraftServer server) {
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        if (!(entity instanceof ServerPlayer player)) return;
+        if (ModList.get().isLoaded("origins") && ProcessTransfur.isPlayerTransfurred(player)) {
+            if (Changed.config.server.enableTransfurringOrigins.get()) {
                 OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
                 Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:phantom"));
                 boolean nowPhantom = IOriginContainer.get(player)
                         .map(container -> Objects.equals(container.getOrigin(layer), origin))
                         .orElse(false);
-                ServerPlayer player = (ServerPlayer) event.getEntity();
                 CheckCondition compatibility = new CheckCondition(player);
-                compatibility.VariantTypeNumber();
-                    if (nowPhantom) {
-                        if (compatibility.VariantTypeNumber() == 1) {
-                        LivingEntity entity = (LivingEntity) event.getEntity();
-                            if (entity.isOnFire()) {
-                            entity.clearFire();
-                            }
-                        }
+                if (nowPhantom && compatibility.VariantTypeNumber() == 1) {
+                    boolean inSunlight = player.level.isDay() &&
+                            player.level.canSeeSky(player.blockPosition()) &&
+                            !player.level.isRaining();
+                    if (inSunlight && player.isOnFire()) {
+                        player.clearFire();
                     }
                 }
             }
         }
     }
 }
-
