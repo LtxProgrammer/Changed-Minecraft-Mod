@@ -14,12 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
-
 public class CheckCondition {
     private final ServerPlayer player;
-    private  boolean conditionValue = false;
-    private  VariantType variantType = VariantType.DEFAULT;
+    private boolean conditionValue = false;
+    public VariantType variantType = VariantType.DEFAULT;
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
+    public int varianttypenumber = 0;
 
     public CheckCondition(ServerPlayer player) {
         this.player = player;
@@ -27,25 +27,37 @@ public class CheckCondition {
 
     private void applyVariantLogic() {
         switch (variantType) {
-            case LATEX_RESISTANCE -> conditionValue = true;
-            default -> conditionValue = false;
+            case ORIGINS -> {
+                conditionValue = true;
+                varianttypenumber = 1;
+            }
+            default -> {
+                conditionValue = false;
+                varianttypenumber = 0;
+            }
         }
-
     }
 
     public boolean isConditionMet() {
         return conditionValue;
     }
 
+    // 修改 VariantTypeNumber 方法，返回 varianttypenumber
+    public int VariantTypeNumber() {
+        return varianttypenumber;
+    }
+
     public void checkOriginCondition(MinecraftServer server) {
-        if (!(Changed.config.server.enableTransfurringOrigins.get())&&(ModList.get().isLoaded("origins"))){
-            OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
-            Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
-            boolean nowHuman = IOriginContainer.get(player)
-                    .map(container -> Objects.equals(container.getOrigin(layer), origin))
-                    .orElse(false);
-            variantType = nowHuman ? VariantType.DEFAULT : VariantType.LATEX_RESISTANCE;
-            applyVariantLogic();
+        if ((ModList.get().isLoaded("origins"))) {
+            if (!(Changed.config.server.enableTransfurringOrigins.get())) {
+                OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
+                Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
+                boolean nowHuman = IOriginContainer.get(player)
+                        .map(container -> Objects.equals(container.getOrigin(layer), origin))
+                        .orElse(false);
+                variantType = nowHuman ? VariantType.DEFAULT : VariantType.ORIGINS;
+                applyVariantLogic();
+            }
         }
     }
 }
