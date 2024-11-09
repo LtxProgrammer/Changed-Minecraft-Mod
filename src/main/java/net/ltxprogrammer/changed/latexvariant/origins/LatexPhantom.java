@@ -10,22 +10,22 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 public class LatexPhantom {
-    /**
-     * Handles the living entity update event and prevents sunburn if the player has a specific origin and variant type.
-     *
-     * <p>This method is invoked every time a living entity's state is updated. It checks if the player has the `phantom` origin
-     * and a specific variant type. If these conditions are met, the player is protected from sunlight-induced burning.</p>
-     *
-     * @param event The living entity update event containing entity information.
-     */
+
+    private static final Map<ServerPlayer, Integer> immunePlayers = new ConcurrentHashMap<>();
+
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = (LivingEntity) event.getEntity();
@@ -40,12 +40,15 @@ public class LatexPhantom {
                         .orElse(false);
                 CheckCondition compatibility = new CheckCondition(player);
                 compatibility.checkOriginCondition(server);
-                if (nowPhantom && compatibility.VariantTypeNumber() == 1) {
-                    boolean inSunlight = player.level.isDay() &&
-                            player.level.canSeeSky(player.blockPosition()) &&
-                            !player.level.isRaining();
-                    if (inSunlight && player.isOnFire()) {
-                        player.clearFire();
+                boolean inSunlight = player.level.isDay() &&
+                        player.level.canSeeSky(player.blockPosition()) &&
+                        !player.level.isRaining();
+                if(player.isOnFire()) {
+                    if (nowPhantom && compatibility.VariantTypeNumber() == 1 && inSunlight) {
+                            player.clearFire();
+                            player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 6000, 0));
+                        } else {
+                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 0, 0));
                     }
                 }
             }
