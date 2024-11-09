@@ -78,6 +78,7 @@ public class ChangedEntityRenderers {
         registerHumanoid(event, ChangedEntities.DARK_LATEX_WOLF_MALE.get(), DarkLatexWolfMaleRenderer::new);
         registerHumanoid(event, ChangedEntities.DARK_LATEX_WOLF_PUP.get(), DarkLatexWolfPupRenderer::new);
         registerHumanoid(event, ChangedEntities.DARK_LATEX_YUFENG.get(), DarkLatexYufengRenderer::new);
+        registerHumanoid(event, ChangedEntities.DARK_LATEX_DOUBLE_YUFENG.get(), DarkLatexDoubleYufengRenderer::new);
         registerHumanoid(event, ChangedEntities.PHAGE_LATEX_WOLF_FEMALE.get(), PhageLatexWolfFemaleRenderer::new);
         registerHumanoid(event, ChangedEntities.PHAGE_LATEX_WOLF_MALE.get(), PhageLatexWolfMaleRenderer::new);
         registerHumanoid(event, ChangedEntities.HEADLESS_KNIGHT.get(), HeadlessKnightRenderer::new);

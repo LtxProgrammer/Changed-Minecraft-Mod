@@ -160,6 +160,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = registerSpawning("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexYufeng::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<DarkLatexDoubleYufeng>> DARK_LATEX_DOUBLE_YUFENG = registerSpawning("dark_latex_double_yufeng", 0x393939, 0x0,
+            EntityType.Builder.of(DarkLatexDoubleYufeng::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexDoubleYufeng::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = registerSpawning("phage_latex_wolf_male", 0x393939, 0x3499ff,
             EntityType.Builder.of(PhageLatexWolfMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PhageLatexWolfMale::checkEntitySpawnRules);

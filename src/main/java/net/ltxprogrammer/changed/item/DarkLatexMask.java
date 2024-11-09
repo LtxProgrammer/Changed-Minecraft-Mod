@@ -30,6 +30,7 @@ public class DarkLatexMask extends Item implements ExtendedItemProperties {
             ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.getId(),
             ChangedTransfurVariants.DARK_LATEX_WOLF_FEMALE.getId(),
             ChangedTransfurVariants.DARK_LATEX_YUFENG.getId(),
+            ChangedTransfurVariants.DARK_LATEX_DOUBLE_YUFENG.getId(),
             ChangedTransfurVariants.DARK_LATEX_WOLF_PUP.getId()
     ));
 

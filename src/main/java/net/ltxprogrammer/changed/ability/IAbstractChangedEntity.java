@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -483,5 +484,13 @@ public interface IAbstractChangedEntity {
         else if (entity instanceof ChangedEntity changed)
             return forEntity(changed);
         return null;
+    }
+
+    static Optional<IAbstractChangedEntity> forEitherSafe(Entity entity) {
+        if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
+            return Optional.of(forPlayer(player));
+        else if (entity instanceof ChangedEntity changed)
+            return Optional.of(forEntity(changed));
+        return Optional.empty();
     }
 }

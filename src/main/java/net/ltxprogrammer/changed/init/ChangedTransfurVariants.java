@@ -47,6 +47,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_WOLF_PARTIAL).faction(LatexType.DARK_LATEX).transfurMode(TransfurMode.NONE));
     public static final RegistryObject<TransfurVariant<DarkLatexYufeng>> DARK_LATEX_YUFENG = register("form_dark_latex_yufeng",
             TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_YUFENG).glide().faction(LatexType.DARK_LATEX).addAbility(ChangedAbilities.TOGGLE_WAVE_VISION));
+    public static final RegistryObject<TransfurVariant<DarkLatexDoubleYufeng>> DARK_LATEX_DOUBLE_YUFENG = register("form_dark_latex_double_yufeng",
+            TransfurVariant.Builder.of(ChangedEntities.DARK_LATEX_DOUBLE_YUFENG).glide().faction(LatexType.DARK_LATEX).addAbility(ChangedAbilities.TOGGLE_WAVE_VISION));
     public static final RegistryObject<TransfurVariant<LatexAlien>> LATEX_ALIEN = register("form_latex_alien",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_ALIEN).stepSize(0.7f).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION).absorbing());
     public static final RegistryObject<TransfurVariant<LatexBee>> LATEX_BEE = register("form_latex_bee",
