@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Objects;
@@ -26,12 +25,12 @@ public class LatexPhantom {
      * and a specific variant type. If these conditions are met, the player is protected from sunlight-induced burning.</p>
      *
      * @param event The living entity update event containing entity information.
-     * @param server The current Minecraft server instance, used to retrieve server-related resources.
      */
     @SubscribeEvent
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event, MinecraftServer server) {
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = (LivingEntity) event.getEntity();
         if (!(entity instanceof ServerPlayer player)) return;
+        MinecraftServer server = player.getServer();
         if (ModList.get().isLoaded("origins") && ProcessTransfur.isPlayerTransfurred(player)) {
             if (Changed.config.server.enableTransfurringOrigins.get()) {
                 OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
@@ -44,6 +43,7 @@ public class LatexPhantom {
                     boolean inSunlight = player.level.isDay() &&
                             player.level.canSeeSky(player.blockPosition()) &&
                             !player.level.isRaining();
+                    System.out.println("onLivingUpdate");
                     if (inSunlight && player.isOnFire()) {
                         player.clearFire();
                     }

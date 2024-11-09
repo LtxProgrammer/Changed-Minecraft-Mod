@@ -29,14 +29,13 @@ public class CheckCondition {
         switch (variantType) {
             case ORIGINS -> {
                 conditionValue = true;
-                varianttypenumber = 1;
             }
             default -> {
                 conditionValue = false;
-                varianttypenumber = 0;
             }
         }
     }
+
 
     public boolean isConditionMet() {
         return conditionValue;
@@ -48,12 +47,17 @@ public class CheckCondition {
 
     public void checkOriginCondition(MinecraftServer server) {
         if ((ModList.get().isLoaded("origins"))) {
-            if (!(Changed.config.server.enableTransfurringOrigins.get())) {
-                OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
-                Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
-                boolean nowHuman = IOriginContainer.get(player)
+           OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
+           Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
+            boolean nowHuman = IOriginContainer.get(player)
                         .map(container -> Objects.equals(container.getOrigin(layer), origin))
                         .orElse(false);
+                if(nowHuman){
+                    varianttypenumber = 0;
+                }else{
+                    varianttypenumber = 1;
+                }
+            if (!(Changed.config.server.enableTransfurringOrigins.get())) {
                 if (nowHuman) {
                     variantType = VariantType.DEFAULT;
                 } else {
