@@ -6,6 +6,7 @@ import io.github.edwinmindcraft.origins.api.origin.Origin;
 import io.github.edwinmindcraft.origins.api.origin.OriginLayer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.latexvariant.CheckCondition;
+import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Mod.EventBusSubscriber
 public class LatexPhantom {
     private final ServerPlayer player;
-    public LatexPhantom(ServerPlayer player) {
+    public LatexPhantom(ServerPlayer player){
         this.player = player;
     }
 
@@ -35,8 +36,9 @@ public class LatexPhantom {
      */
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event, MinecraftServer server) {
-        if((ModList.get().isLoaded("origins"))) {
-            if(Changed.config.server.enableTransfurringOrigins.get()) {
+        if(ProcessTransfur.isPlayerTransfurred(player)){
+            if((ModList.get().isLoaded("origins"))) {
+                if (Changed.config.server.enableTransfurringOrigins.get()) {
                 OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
                 Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:phantom"));
                 boolean nowPhantom = IOriginContainer.get(player)
@@ -45,11 +47,12 @@ public class LatexPhantom {
                 ServerPlayer player = (ServerPlayer) event.getEntity();
                 CheckCondition compatibility = new CheckCondition(player);
                 compatibility.VariantTypeNumber();
-                if(nowPhantom) {
-                    if (compatibility.VariantTypeNumber() == 1) {
+                    if (nowPhantom) {
+                        if (compatibility.VariantTypeNumber() == 1) {
                         LivingEntity entity = (LivingEntity) event.getEntity();
-                        if (entity.isOnFire()) {
+                            if (entity.isOnFire()) {
                             entity.clearFire();
+                            }
                         }
                     }
                 }
