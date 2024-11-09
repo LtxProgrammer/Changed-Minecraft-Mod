@@ -39,11 +39,11 @@ public class LatexPhantom {
                         .map(container -> Objects.equals(container.getOrigin(layer), origin))
                         .orElse(false);
                 CheckCondition compatibility = new CheckCondition(player);
+                compatibility.checkOriginCondition(server);
                 if (nowPhantom && compatibility.VariantTypeNumber() == 1) {
                     boolean inSunlight = player.level.isDay() &&
                             player.level.canSeeSky(player.blockPosition()) &&
                             !player.level.isRaining();
-                    System.out.println("onLivingUpdate");
                     if (inSunlight && player.isOnFire()) {
                         player.clearFire();
                     }
