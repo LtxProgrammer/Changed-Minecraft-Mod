@@ -999,6 +999,20 @@
         ]
       }
     },
+    "changed:pooltoy_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:pooltoy_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:pure_white_latex_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1068,20 +1082,6 @@
           }
         ]
       }
-    }
-  },
-  "changed:pooltoy_wolf": {
-    "trigger": "minecraft:player_killed_entity",
-    "conditions": {
-      "entity": [
-        {
-          "condition": "minecraft:entity_properties",
-          "predicate": {
-            "type": "changed:pooltoy_wolf"
-          },
-          "entity": "this"
-        }
-      ]
     }
   },
   "requirements": [
@@ -1296,6 +1296,9 @@
       "changed:shark"
     ],
     [
+      "changed:pooltoy_wolf"
+    ],
+    [
       "changed:pure_white_latex_wolf"
     ],
     [
@@ -1309,9 +1312,6 @@
     ],
     [
       "changed:phage_latex_wolf_male"
-    ],
-    [
-      "changed:pooltoy_wolf"
     ]
   ]
 }
