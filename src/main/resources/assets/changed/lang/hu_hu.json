@@ -276,6 +276,7 @@
   "block.changed.retinal_scanner": "Retina szkenner",
   "block.changed.roomba_charger": "Robotporszívó töltő",
   "block.changed.speaker": "Hangszóró",
+  "block.changed.stasis_chamber": "Sztázis kamra",
   "block.changed.tape_recorder": "Magnetofon",
   "block.changed.tiles_blue": "Kék burkolat",
   "block.changed.tiles_blue_small": "Kicsi kék burkolat",
@@ -620,5 +621,12 @@
   "changed.config.bpi.size": "Modell mérete",
   "changed.config.bpi.size.value": "Méret: %s%%",
   "changed.config.bpi.override_dl_iris": "Szivárványhártya színének felülbírálása sötét latex változatoknál",
-  "changed.config.bpi.override_all_eye_styles": "Az összes szem stílus felülbírálása, hogy megfeleljen"
+  "changed.config.bpi.override_all_eye_styles": "Az összes szem stílus felülbírálása, hogy megfeleljen",
+
+  "changed.stasis.open": "Ajtó megnyitása",
+  "changed.stasis.close": "Ajtó bezárása",
+  "changed.stasis.run": "Módosítások végrehajtása",
+  "changed.stasis.capture_next": "Következő rögzítése",
+  "changed.stasis.toggle_stasis": "Sztázis: %s",
+  "changed.stasis.modify": "Módosítások"
 }
