@@ -131,6 +131,20 @@
         ]
       }
     },
+    "changed:dark_latex_double_yufeng": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_double_yufeng"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:headless_knight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1094,6 +1108,9 @@
     ],
     [
       "changed:dark_latex_yufeng"
+    ],
+    [
+      "changed:dark_latex_double_yufeng"
     ],
     [
       "changed:headless_knight"
