@@ -23,7 +23,7 @@ import java.util.Objects;
 public class LatexPhantom {
     private final ServerPlayer player;
     private boolean nowphantom = false;
-    private static final Map<ServerPlayer, Long> playerCooldown = new HashMap<>(); // 存储玩家和时间戳
+    private static final Map<ServerPlayer, Long> playerCooldown = new HashMap<>();
     public LatexPhantom(ServerPlayer player) {
         this.player = player;
     }
