@@ -63,8 +63,8 @@ public class LatexPhantom {
                         if (serverPlayer.level.isDay()) {
                             long currentTime = serverPlayer.level.getGameTime();
                             if (!playerCooldown.containsKey(serverPlayer) || currentTime - playerCooldown.get(serverPlayer) >= 100) {
-                                serverPlayer.setSecondsOnFire(5);  // 设置玩家燃烧 5 秒
-                                playerCooldown.put(serverPlayer, currentTime);  // 更新计时器
+                                serverPlayer.setSecondsOnFire(5);
+                                playerCooldown.put(serverPlayer, currentTime);
                             }
                         }
                     } else {
@@ -77,9 +77,8 @@ public class LatexPhantom {
     }
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
-        // 当玩家死亡时，重置冷却计时器
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            playerCooldown.remove(serverPlayer);  // 清除玩家的冷却时间
+            playerCooldown.remove(serverPlayer);
         }
     }
 }
