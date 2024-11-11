@@ -1,0 +1,18 @@
+{
+  "powers": [
+    "origins:burn_in_daylight",
+    "origins:latextype",
+    "origins:phantomize",
+    "origins:translucent",
+    "origins:phasing",
+    "origins:invisibility",
+    "origins:hunger_over_time",
+    "origins:fragile",
+    "origins:phantomize_overlay"
+  ],
+  "icon": {
+    "item": "minecraft:phantom_membrane"
+  },
+  "order": 2,
+  "impact": 3
+}

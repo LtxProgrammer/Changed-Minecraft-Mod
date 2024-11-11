@@ -60,8 +60,6 @@ public class Changed {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customPacks);
         MinecraftForge.EVENT_BUS.addListener(this::dataListeners);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(LatexPhantom.class);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();

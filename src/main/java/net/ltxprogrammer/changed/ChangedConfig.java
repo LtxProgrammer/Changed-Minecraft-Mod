@@ -126,7 +126,7 @@ public class ChangedConfig {
             bpiSizeTolerance = builder.defineInRange("bpiSizeTolerance", 0.05, 0.01, 0.95);
             if(ModList.get().isLoaded("origins")) {
                 builder.comment("Enabling this config will allow you to have both origin and latex variants. (default is false)");
-                enableTransfurringOrigins = builder.define("enableTransfurringOrigins", false);
+                enableTransfurringOrigins = builder.define("enableTransfurringOrigins", true);
             }else{
                 enableTransfurringOrigins = null;
             }

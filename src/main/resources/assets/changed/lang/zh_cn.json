@@ -610,5 +610,8 @@
   "changed.config.bpi.size": "型号尺寸",
   "changed.config.bpi.size.value": "尺寸：%s%%",
   "changed.config.bpi.override_dl_iris": "覆盖黑胶兽的眼睛颜色",
-  "changed.config.bpi.override_all_eye_styles": "覆盖所有眼睛样式以匹配"
+  "changed.config.bpi.override_all_eye_styles": "覆盖所有眼睛样式以匹配",
+
+  "power.origins.latextype.name": "胶性",
+  "power.origins.latextype.description": "如果你被兽化时，某些能力将会被强化或者削弱！或者你会拥有某些能力或者失去某些能力！"
 }

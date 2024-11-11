@@ -605,5 +605,9 @@
   "changed.config.bpi.size": "Model Size",
   "changed.config.bpi.size.value": "Size: %s%%",
   "changed.config.bpi.override_dl_iris": "Override Iris Color on Dark Latex Variants",
-  "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match"
+  "changed.config.bpi.override_all_eye_styles": "Override All Eye Styles to Match",
+
+
+  "power.origins.latextype.name": "latex type",
+  "power.origins.latextype.description": "Certain powers will be strengthened or weakened if and when you are transfured! Or you will have certain powers or lose certain powers!"
 }

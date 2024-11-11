@@ -20,11 +20,9 @@ public class CheckCondition {
     public VariantType variantType = VariantType.DEFAULT;
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
     public int varianttypenumber = 0;
-
     public CheckCondition(ServerPlayer player) {
         this.player = player;
     }
-
     private void applyVariantLogic() {
         switch (variantType) {
             case ORIGINS -> {
@@ -35,16 +33,12 @@ public class CheckCondition {
             }
         }
     }
-
-
     public boolean isConditionMet() {
         return conditionValue;
     }
-
     public int VariantTypeNumber() {
         return varianttypenumber;
     }
-
     public void checkOriginCondition(MinecraftServer server) {
         if ((ModList.get().isLoaded("origins"))) {
            OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));

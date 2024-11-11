@@ -26,3 +26,10 @@ description='''Gooey transfur mod inspired by Dragon Snow's Changed.'''
     versionRange="[1.18.2]"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.changed]]
+    modId="origins"
+    mandatory=false
+    versionRange="[*,]"
+    ordering="BEFORE"
+    side="BOTH"
