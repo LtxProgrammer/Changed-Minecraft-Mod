@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 
 public class DarkLatexDoubleYufeng extends DarkLatexYufeng implements DoubleHeadedEntity {
     protected float yHead2Rot = 0.0f;
@@ -145,6 +148,14 @@ public class DarkLatexDoubleYufeng extends DarkLatexYufeng implements DoubleHead
         this.lyHead2Rot = yRot;
         this.lxHead2Rot = xRot;
         this.lerpHead2Steps = steps;
+    }
+
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.0);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.85);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28.0);
     }
 
     @Override

@@ -458,6 +458,7 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_PINK_YUIN_DRAGON, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_YUIN, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_YUFENG, 20, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_DOUBLE_YUFENG, 5, 1, 1, 0.7, 0.15);
 
                 // Passive
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_DRAGON, 5, 1, 1, 0.7, 0.15);
