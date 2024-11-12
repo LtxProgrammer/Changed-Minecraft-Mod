@@ -5,14 +5,19 @@ import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -23,8 +28,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,13 +40,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock implements SeatableBlock {
+public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock implements SeatableBlock, SimpleWaterloggedBlock {
     public static BooleanProperty OPEN = BlockStateProperties.OPEN;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public CardboardBoxTall() {
         super(BlockBehaviour.Properties.of(Material.WOOL).strength(1.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never)
                 .sound(SoundType.SCAFFOLDING));
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false).setValue(OPEN, false));
     }
 
     protected BlockEntity getBlockEntityForBlock(BlockGetter level, BlockPos pos, BlockState state) {
@@ -73,9 +82,66 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
         return super.canEntityDestroy(state, level, pos, entity);
     }
 
+    public PushReaction getPistonPushReaction(BlockState p_52814_) {
+        return PushReaction.DESTROY;
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(OPEN);
+        builder.add(OPEN, WATERLOGGED);
+    }
+
+    public BlockState updateShape(BlockState state, Direction direction, BlockState dState, LevelAccessor level, BlockPos pos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
+        if (isDoubleBlock(state)) {
+            DoubleBlockHalf half = state.getValue(HALF);
+            if ((direction.getAxis() != Direction.Axis.Y) || ((half == DoubleBlockHalf.LOWER) != (direction == Direction.UP)) || ((dState.getBlock() == this) && (dState.getValue(HALF) != half))) {
+                if ((half != DoubleBlockHalf.LOWER) || (direction != Direction.DOWN) || state.canSurvive(level, pos)) {
+                    return state;
+                }
+            }
+
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        return state;
+    }
+
+    private boolean isDoubleBlock(BlockState state) {
+        return state.hasProperty(HALF);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        FluidState fluidState = level.getFluidState(pos);
+        if (pos.getY() < level.getHeight() - 1) {
+            if (level.getBlockState(pos.above()).canBeReplaced(context)) {
+                return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())
+                        .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state) {
+        BlockPos posAbove = pos.above();
+        boolean isDoubleBlock = isDoubleBlock(state);
+        if (isDoubleBlock) {
+            FluidState fluidStateAbove = level.getFluidState(posAbove);
+            level.setBlockAndUpdate(posAbove, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(WATERLOGGED, fluidStateAbove.getType() == Fluids.WATER));
+        }
     }
 
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
