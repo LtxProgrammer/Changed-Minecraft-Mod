@@ -15,6 +15,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -135,13 +136,17 @@ public class CardboardBoxTall extends AbstractCustomShapeTallEntityBlock impleme
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state) {
-        BlockPos posAbove = pos.above();
-        boolean isDoubleBlock = isDoubleBlock(state);
-        if (isDoubleBlock) {
-            FluidState fluidStateAbove = level.getFluidState(posAbove);
-            level.setBlockAndUpdate(posAbove, state.setValue(HALF, DoubleBlockHalf.UPPER).setValue(WATERLOGGED, fluidStateAbove.getType() == Fluids.WATER));
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        if (!isDoubleBlock(state)) {
+            return true;
         }
+
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            return true;
+        }
+
+        BlockState below = level.getBlockState(pos.below());
+        return below.getBlock() == this && below.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
