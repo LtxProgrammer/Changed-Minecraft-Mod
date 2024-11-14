@@ -38,6 +38,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -56,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -215,7 +217,12 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         this.transfurMode = parent.transfurMode;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
-        parent.abilities.forEach(abilityFunction -> {
+        List<Function<EntityType<?>, ? extends AbstractAbility<?>>> list = new ArrayList<>(parent.abilities);
+        if (!this.parent.LockAbilities){
+            var event = new TransfurVariant.UniversalAbilitiesEvent(list);
+            MinecraftForge.EVENT_BUS.post(event);
+        }
+        list.forEach(abilityFunction -> {
             var ability = abilityFunction.apply(this.parent.getEntityType());
             if (ability != null)
                 builder.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
