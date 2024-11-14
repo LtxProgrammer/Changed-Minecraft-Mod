@@ -181,6 +181,8 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public final float cameraZOffset;
     public final ResourceLocation sound;
 
+    public final boolean LockAbilities;
+
     public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type,
                            float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
@@ -204,6 +206,33 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         this.transfurMode = transfurMode;
         this.cameraZOffset = cameraZOffset;
         this.sound = sound;
+        this.LockAbilities = false;
+    }
+
+    public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type,
+                           float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
+                           boolean reducedFall, boolean canClimb,
+                           VisionType visionType, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                           List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities,boolean lockAbilities, float cameraZOffset, ResourceLocation sound) {
+        this.ctor = ctor;
+        this.type = type;
+        this.jumpStrength = jumpStrength;
+        this.breatheMode = breatheMode;
+        this.stepSize = stepSize;
+        this.visionType = visionType;
+        this.canGlide = canGlide;
+        this.extraJumpCharges = extraJumpCharges;
+        this.legCount = legCount;
+        this.hasLegs = legCount > 0;
+        this.itemUseMode = itemUseMode;
+        this.abilities = ImmutableList.<Function<EntityType<?>, ? extends AbstractAbility<?>>>builder().addAll(abilities).build();
+        this.reducedFall = reducedFall;
+        this.canClimb = canClimb;
+        this.scares = scares;
+        this.transfurMode = transfurMode;
+        this.cameraZOffset = cameraZOffset;
+        this.sound = sound;
+        this.LockAbilities = lockAbilities;
     }
 
     public LatexType getLatexType() {
@@ -368,23 +397,21 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         float cameraZOffset = 0.0F;
         ResourceLocation sound = ChangedSounds.POISON.getLocation();
 
+        boolean lockAbilities = false;
+
         public Builder(Supplier<EntityType<T>> entityType) {
             this.entityType = entityType;
-
-            var event = new UniversalAbilitiesEvent(this.abilities);
-            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.SWITCH_TRANSFUR_MODE);
-            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS))
-                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.GRAB_ENTITY_ABILITY);
-
-            MinecraftForge.EVENT_BUS.post(event);
         }
 
         public void ignored() {}
 
         public static <T extends ChangedEntity> Builder<T> of(Supplier<EntityType<T>> entityType) {
             return new Builder<T>(entityType);
+        }
+
+        public Builder<T> lockAbilities(boolean lockAbilities){
+            // Lock the abilities
+            this.lockAbilities = lockAbilities; return this;
         }
 
         public Builder<T> faction(LatexType type) {
@@ -547,7 +574,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public TransfurVariant<T> build() {
             return new TransfurVariant<>(entityType, type, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
-                    reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, visionType, legCount, itemUseMode, scares, transfurMode, abilities,lockAbilities, cameraZOffset, sound);
         }
     }
 
