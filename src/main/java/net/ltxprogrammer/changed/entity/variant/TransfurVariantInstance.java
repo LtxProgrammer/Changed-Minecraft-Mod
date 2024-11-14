@@ -221,12 +221,18 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         if (!this.parent.LockAbilities){
             var event = new TransfurVariant.UniversalAbilitiesEvent(list);
             MinecraftForge.EVENT_BUS.post(event);
+            list.forEach(abilityFunction -> {
+                var ability = abilityFunction.apply(this.parent.getEntityType());
+                if (ability != null)
+                    builder.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
+            });
+        } else {
+            parent.abilities.forEach(abilityFunction -> {
+                var ability = abilityFunction.apply(this.parent.getEntityType());
+                if (ability != null)
+                    builder.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
+            });
         }
-        list.forEach(abilityFunction -> {
-            var ability = abilityFunction.apply(this.parent.getEntityType());
-            if (ability != null)
-                builder.put(ability, ability.makeInstance(IAbstractChangedEntity.forPlayer(host)));
-        });
         abilityInstances = builder.build();
         if (abilityInstances.size() > 0)
             selectedAbility = abilityInstances.keySet().asList().get(0);
