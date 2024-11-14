@@ -220,6 +220,11 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         List<Function<EntityType<?>, ? extends AbstractAbility<?>>> list = new ArrayList<>(parent.abilities);
         if (!this.parent.LockAbilities){
             var event = new TransfurVariant.UniversalAbilitiesEvent(list);
+            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.SWITCH_TRANSFUR_MODE);
+            event.addAbility(event.isOfTag(ChangedTags.EntityTypes.LATEX)
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS))
+                    .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.GRAB_ENTITY_ABILITY);
             MinecraftForge.EVENT_BUS.post(event);
             list.forEach(abilityFunction -> {
                 var ability = abilityFunction.apply(this.parent.getEntityType());
