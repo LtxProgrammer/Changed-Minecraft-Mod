@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.util;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -79,6 +80,14 @@ public record Color3(float red, float green, float blue) {
 
     public Color3 mul(float v) {
         return new Color3(red * v, green * v, blue * v);
+    }
+
+    public Color3 clamp() {
+        return this.clamp(0.0f, 1.0f);
+    }
+
+    public Color3 clamp(float min, float max) {
+        return new Color3(Mth.clamp(red, min, max), Mth.clamp(green, min, max), Mth.clamp(blue, min, max));
     }
 
     public float dot(Color3 color) {

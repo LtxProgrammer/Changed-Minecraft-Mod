@@ -50,15 +50,6 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     public void stopUsing(IAbstractChangedEntity entity) {}
 
     @Override
-    public ResourceLocation getTexture(IAbstractChangedEntity entity) {
-        if (entity.getTransfurMode() == TransfurMode.NONE)
-            return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_replication.png");
-
-        return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + "_" +
-                entity.getTransfurMode().toString().toLowerCase() + ".png");
-    }
-
-    @Override
     public int getCoolDown(IAbstractChangedEntity entity) {
         return 10;
     }

@@ -118,6 +118,7 @@ public class Changed {
     }
 
     private void dataListeners(final AddReloadListenerEvent event) {
+
         event.addListener(ChangedFusions.INSTANCE);
         event.addListener(CurioSlots.INSTANCE);
         event.addListener(CurioEntities.INSTANCE);

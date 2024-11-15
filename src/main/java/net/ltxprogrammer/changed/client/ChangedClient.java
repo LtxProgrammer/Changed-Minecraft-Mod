@@ -14,14 +14,20 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
+
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public class ChangedClient {
@@ -30,10 +36,17 @@ public class ChangedClient {
     public static final LatexParticleEngine particleSystem = new LatexParticleEngine(minecraft);
     public static final ChangedBlockEntityWithoutLevelRenderer itemRenderer =
             new ChangedBlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
+    public static final AbilityColors abilityColors = AbilityColors.createDefault();
+    public static final AbilityRenderer abilityRenderer = new AbilityRenderer(minecraft.textureManager, minecraft.getModelManager(), abilityColors);
 
     public static void registerEventListeners() {
         MinecraftForge.EVENT_BUS.addListener(ChangedClient::afterRenderStage);
         MinecraftForge.EVENT_BUS.addListener(ChangedClient::onClientTick);
+    }
+
+    public static void registerReloadListeners(Consumer<PreparableReloadListener> resourceManager) {
+        resourceManager.accept(particleSystem);
+        resourceManager.accept(abilityRenderer);
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {

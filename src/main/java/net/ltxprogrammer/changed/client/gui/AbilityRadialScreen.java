@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
@@ -12,7 +13,10 @@ import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 
 import javax.annotation.Nullable;
@@ -79,13 +83,22 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
         }
 
         else {
-            RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(IAbstractChangedEntity.forPlayer(menu.player)));
+            ChangedClient.abilityRenderer.renderAndDecorateAbility(
+                    menu.player,
+                    menu.variant.getAbilityInstance(abilities.get(section)),
+                    (int) (x - 24 + this.leftPos),
+                    (int) (y - 24 + this.topPos),
+                    (enabled ? 1 : 0.5f),
+                    enabled,
+                    0);
+
+            /*RenderSystem.setShaderTexture(0, abilities.get(section).getTexture(IAbstractChangedEntity.forPlayer(menu.player)));
             if (enabled) {
                 RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
                 GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos + 4, 0, 0, 48, 48, 48, 48);
             }
             RenderSystem.setShaderColor(red, green, blue, (enabled ? 1 : 0.5f) * alpha);
-            GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);
+            GuiComponent.blit(pose, (int)x - 24 + this.leftPos, (int)y - 24 + this.topPos, 0, 0, 48, 48, 48, 48);*/
         }
     }
 
