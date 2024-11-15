@@ -381,7 +381,7 @@ public class ProcessTransfur {
                                                         boolean temporaryFromSuit) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
-        MinecraftForge.EVENT_BUS.post(event);
+        Changed.postModEvent(event);
         @Nullable TransfurVariant<?> variant = event.variant;
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
@@ -424,7 +424,7 @@ public class ProcessTransfur {
         }
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
-            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
+            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
@@ -696,7 +696,7 @@ public class ProcessTransfur {
                 keepConscious = true;
             else {
                 KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 keepConscious = event.shouldKeepConscious;
             }
         }
@@ -732,7 +732,7 @@ public class ProcessTransfur {
 
             else if (!entity.level.isClientSide) {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context.cause);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 if (event.variant != null)
                     onReplicate.accept(event.variant.replaceEntity(entity, context.source), event.variant);
             }
@@ -776,7 +776,7 @@ public class ProcessTransfur {
 
             else if (!entity.level.isClientSide) {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion, context.cause);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 if (event.variant != null)
                     event.variant.replaceEntity(entity, context.source);
             }
