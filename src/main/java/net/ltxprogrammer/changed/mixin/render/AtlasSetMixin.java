@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.minecraft.client.renderer.texture.AtlasSet;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +21,6 @@ public abstract class AtlasSetMixin implements AutoCloseable {
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(Collection<TextureAtlas> textureAtlases, CallbackInfo callback) {
         if (atlases.containsKey(TextureAtlas.LOCATION_BLOCKS))
-            atlases.put(LatexCoveredBlocks.LATEX_COVER_ATLAS, LatexCoveredBlocks.getUploader().getTextureAtlas());
+            atlases.put(LatexCoveredBlockRenderer.LATEX_COVER_ATLAS, LatexCoveredBlockRenderer.getUploader().getTextureAtlas());
     }
 }

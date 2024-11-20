@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.extension.chiselsandbits;
 
 import mod.chiselsandbits.client.model.baked.chiseled.ChiselRenderType;
 import mod.chiselsandbits.client.model.baked.chiseled.VoxelType;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.minecraft.client.renderer.RenderType;
 
 import java.lang.reflect.Method;
@@ -29,8 +29,8 @@ public abstract class ChangedChiselRenderTypes {
         ctor = tmp;
     }
 
-    public static final ChiselRenderType LATEX_SOLID = create("LATEX_SOLID", LatexCoveredBlocks.latexSolid(), VoxelType.SOLID);
-    public static final ChiselRenderType LATEX_SOLID_FLUID = create("LATEX_SOLID_FLUID", LatexCoveredBlocks.latexSolid(), VoxelType.FLUID);
-    public static final ChiselRenderType LATEX_CUTOUT = create("LATEX_CUTOUT", LatexCoveredBlocks.latexCutout(), VoxelType.UNKNOWN);
-    public static final ChiselRenderType LATEX_CUTOUT_MIPPED = create("LATEX_CUTOUT_MIPPED", LatexCoveredBlocks.latexCutoutMipped(), VoxelType.UNKNOWN);
+    public static final ChiselRenderType LATEX_SOLID = create("LATEX_SOLID", LatexCoveredBlockRenderer.latexSolid(), VoxelType.SOLID);
+    public static final ChiselRenderType LATEX_SOLID_FLUID = create("LATEX_SOLID_FLUID", LatexCoveredBlockRenderer.latexSolid(), VoxelType.FLUID);
+    public static final ChiselRenderType LATEX_CUTOUT = create("LATEX_CUTOUT", LatexCoveredBlockRenderer.latexCutout(), VoxelType.UNKNOWN);
+    public static final ChiselRenderType LATEX_CUTOUT_MIPPED = create("LATEX_CUTOUT_MIPPED", LatexCoveredBlockRenderer.latexCutoutMipped(), VoxelType.UNKNOWN);
 }

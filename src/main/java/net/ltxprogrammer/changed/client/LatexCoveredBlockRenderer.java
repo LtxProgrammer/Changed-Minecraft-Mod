@@ -15,6 +15,7 @@ import net.ltxprogrammer.changed.data.MixedTexture;
 import net.ltxprogrammer.changed.data.RegistryElementPredicate;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.item.AbstractLatexItem;
+import net.ltxprogrammer.changed.process.LatexCoveredBlocks;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -33,7 +34,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -45,7 +45,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -65,7 +64,7 @@ import java.util.stream.Collectors;
 
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
-public abstract class LatexCoveredBlocks {
+public abstract class LatexCoveredBlockRenderer {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final ImmutableMap<LatexType, MixedTexture.OverlayBlock> TYPE_OVERLAY = ImmutableMap.of(
             LatexType.DARK_LATEX, new MixedTexture.OverlayBlock(
@@ -345,13 +344,13 @@ public abstract class LatexCoveredBlocks {
         return Changed.modResource("builtin/" + type.getSerializedName());
     }
 
-    private static final Function<LatexType, ResourceLocation> getDefaultLatexCoverCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexCover);
+    private static final Function<LatexType, ResourceLocation> getDefaultLatexCoverCached = Util.memoize(LatexCoveredBlockRenderer::getDefaultLatexCover);
 
     private static ModelResourceLocation getDefaultLatexModel(LatexType type) {
         return new ModelResourceLocation(getDefaultLatexCoverCached.apply(type), "block");
     }
 
-    private static final Function<LatexType, ModelResourceLocation> getDefaultLatexModelCached = Util.memoize(LatexCoveredBlocks::getDefaultLatexModel);
+    private static final Function<LatexType, ModelResourceLocation> getDefaultLatexModelCached = Util.memoize(LatexCoveredBlockRenderer::getDefaultLatexModel);
 
     private static boolean namespaceQualifiesForCheap(String sourceNamespace) { // Maybe allow configuring preserved namespaces
         if (sourceNamespace.equals("minecraft"))
@@ -563,7 +562,7 @@ public abstract class LatexCoveredBlocks {
         @SubscribeEvent
         public static void onInitModelBaking(ModelRegistryEvent event) {
             // This step should have already completed by this point, but race conditions will be race conditions
-            AbstractLatexItem.removeLatexCoveredStates();
+            LatexCoveredBlocks.removeLatexCoveredStates();
         }
 
         @SubscribeEvent
@@ -575,7 +574,7 @@ public abstract class LatexCoveredBlocks {
             LOGGER.info("Gathering blocks to cover");
 
             HashSet<RegistryElementPredicate<Block>> notCoverable = new HashSet<>();
-            Changed.postModEvent(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
+            Changed.postModEvent(new LatexCoveredBlocks.GatherNonCoverableBlocksEvent(notCoverable));
 
             List<Block> toCover = ForgeRegistries.BLOCKS.getValues().stream().filter(block -> {
                 if (!block.getStateDefinition().getProperties().contains(COVERED))
