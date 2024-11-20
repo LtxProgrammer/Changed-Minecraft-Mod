@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.util.Color3;
@@ -133,9 +134,9 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
 
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new ContainerScreenEvent.DrawBackground(this, ms, mouseX, mouseY));
+        Changed.postModEvent(new ContainerScreenEvent.DrawBackground(this, ms, mouseX, mouseY));
         this.renderBackground(ms);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new ContainerScreenEvent.DrawForeground(this, ms, mouseX, mouseY));
+        Changed.postModEvent(new ContainerScreenEvent.DrawForeground(this, ms, mouseX, mouseY));
         this.renderBg(ms, partialTicks, mouseX, mouseY);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);

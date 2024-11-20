@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
@@ -28,8 +29,8 @@ public class ChangedClient {
             new ChangedBlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels());
 
     public static void registerEventListeners() {
-        MinecraftForge.EVENT_BUS.addListener(ChangedClient::afterRenderStage);
-        MinecraftForge.EVENT_BUS.addListener(ChangedClient::onClientTick);
+        Changed.addEventListener(ChangedClient::afterRenderStage);
+        Changed.addEventListener(ChangedClient::onClientTick);
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {

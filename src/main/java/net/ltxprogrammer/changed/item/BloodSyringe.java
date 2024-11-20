@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedEffects;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedSounds;
@@ -137,7 +138,7 @@ public class BloodSyringe extends Item implements SpecializedAnimations {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
-        return MinecraftForge.EVENT_BUS.post(
+        return Changed.postModEvent(
                 new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
@@ -149,7 +150,7 @@ public class BloodSyringe extends Item implements SpecializedAnimations {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity livingEntity, InteractionHand hand) {
-        return MinecraftForge.EVENT_BUS.post(
+        return Changed.postModEvent(
                 new UsedOnEntity(livingEntity,
                         player.level,
                         player,

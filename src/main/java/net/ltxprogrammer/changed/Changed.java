@@ -12,6 +12,7 @@ import net.ltxprogrammer.changed.latexvariant.origins.LatexPhantom;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
+import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
@@ -19,10 +20,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.IEventBusInvokeDispatcher;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,6 +37,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -46,6 +51,7 @@ public class Changed {
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
     public static EventHandlerClient eventHandlerClient;
     public static ChangedConfig config;
+    public static ChangedDataFixer dataFixer;
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(modResource(MODID), () -> PROTOCOL_VERSION,
@@ -56,10 +62,10 @@ public class Changed {
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::customPacks);
-        MinecraftForge.EVENT_BUS.addListener(this::dataListeners);
+        addLoadingEventListener(this::commonSetup);
+        addLoadingEventListener(this::clientSetup);
+        addLoadingEventListener(this::customPacks);
+        addEventListener(this::dataListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();
@@ -92,6 +98,9 @@ public class Changed {
         ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         //    ^^^ First to process ^^^
+
+        // Our DFU references the above registries, so they need to be initialized before the DFU is created
+        dataFixer = new ChangedDataFixer();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -149,5 +158,29 @@ public class Changed {
     }
     public static String modResourceStr(String path) {
         return MODID + ":" + path;
+    }
+
+    public static <T extends Event & IModBusEvent> void addLoadingEventListener(Consumer<T> listener) {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(listener);
+    }
+
+    public static <T extends Event & IModBusEvent> boolean postModLoadingEvent(T event) {
+        return FMLJavaModLoadingContext.get().getModEventBus().post(event);
+    }
+    
+    public static <T extends Event & IModBusEvent> boolean postModLoadingEvent(T event, IEventBusInvokeDispatcher dispatcher) {
+        return FMLJavaModLoadingContext.get().getModEventBus().post(event, dispatcher);
+    }
+
+    public static <T extends Event> void addEventListener(Consumer<T> listener) {
+        MinecraftForge.EVENT_BUS.addListener(listener);
+    }
+
+    public static <T extends Event> boolean postModEvent(T event) {
+        return MinecraftForge.EVENT_BUS.post(event);
+    }
+    
+    public static <T extends Event> boolean postModEvent(T event, IEventBusInvokeDispatcher dispatcher) {
+        return MinecraftForge.EVENT_BUS.post(event, dispatcher);
     }
 }

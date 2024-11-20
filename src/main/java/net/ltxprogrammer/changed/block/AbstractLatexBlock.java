@@ -169,7 +169,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
                 return;
 
             var event = new AbstractLatexItem.CoveringBlockEvent(latexType, checkState, checkPos, level);
-            if (MinecraftForge.EVENT_BUS.post(event))
+            if (Changed.postModEvent(event))
                 return;
             if (event.originalState == event.plannedState)
                 return;

@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
 
@@ -321,7 +322,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
     public boolean rideable() { return this.abilities.contains(ChangedAbilities.ACCESS_SADDLE); }
 
-    public static class UniversalAbilitiesEvent extends Event {
+    public static class UniversalAbilitiesEvent extends Event implements IModBusEvent {
         private final List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities;
 
         public UniversalAbilitiesEvent(List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities) {
@@ -378,7 +379,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
                     .and(event.isNotOfTag(ChangedTags.EntityTypes.ARMLESS))
                     .and(event.isNotOfTag(ChangedTags.EntityTypes.PARTIAL_LATEX)), ChangedAbilities.GRAB_ENTITY_ABILITY);
 
-            MinecraftForge.EVENT_BUS.post(event);
+            Changed.postModLoadingEvent(event);
         }
 
         public void ignored() {}
