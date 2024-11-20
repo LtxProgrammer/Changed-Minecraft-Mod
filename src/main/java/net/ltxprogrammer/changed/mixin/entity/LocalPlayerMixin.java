@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.NullInput;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
@@ -52,6 +53,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Shadow public float xBobO;
 
     @Shadow public float xBob;
+
+    @Shadow private boolean flashOnSetHealth;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void applyBasicPlayerInfo(Minecraft mc, ClientLevel level, ClientPacketListener packetListener, StatsCounter stats, ClientRecipeBook recipeBook, boolean p_108626_, boolean p_108627_, CallbackInfo ci) {
@@ -180,5 +183,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
             input = inputCopy;
             inputCopy = null;
         }
+    }
+
+    @Inject(method = "hurtTo", at = @At("HEAD"))
+    public void disableFlashOnTf(float health, CallbackInfo ci) {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            if (variant.isTransfurring())
+                this.flashOnSetHealth = false;
+        });
     }
 }

@@ -566,6 +566,7 @@ public class ProcessTransfur {
     }
 
     public static boolean killPlayerByAbsorption(Player player, LivingEntity source) {
+        player.invulnerableTime = 0;
         player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
         if (!Float.isFinite(player.getHealth()))
             player.setHealth(0.0f);
@@ -573,6 +574,7 @@ public class ProcessTransfur {
     }
 
     public static boolean killPlayerByTransfur(Player player, LivingEntity source) {
+        player.invulnerableTime = 0;
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
         if (!Float.isFinite(player.getHealth()))
             player.setHealth(0.0f);
