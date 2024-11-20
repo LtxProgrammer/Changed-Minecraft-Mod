@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.item.AbstractLatexItem;
+import net.ltxprogrammer.changed.process.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -51,7 +51,6 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             return block.latexType;
         return LatexType.NEUTRAL;
     }
-
 
     public AbstractLatexBlock(Properties p_49795_, LatexType latexType, Supplier<? extends Item> goo) {
         super(p_49795_.randomTicks().dynamicShape());
@@ -168,7 +167,7 @@ public abstract class AbstractLatexBlock extends Block implements NonLatexCovera
             if (Arrays.stream(Direction.values()).noneMatch(direction -> isValidSurface(level, checkPos, checkPos.relative(direction), direction)))
                 return;
 
-            var event = new AbstractLatexItem.CoveringBlockEvent(latexType, checkState, checkPos, level);
+            var event = new LatexCoveredBlocks.CoveringBlockEvent(latexType, checkState, checkPos, level);
             if (Changed.postModEvent(event))
                 return;
             if (event.originalState == event.plannedState)

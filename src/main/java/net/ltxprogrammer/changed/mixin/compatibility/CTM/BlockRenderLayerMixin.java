@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.compatibility.CTM;
 
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,11 +12,11 @@ import team.chisel.ctm.client.util.BlockRenderLayer;
 public abstract class BlockRenderLayerMixin {
     @Inject(method = "fromType", at = @At("HEAD"), cancellable = true)
     private static void remapChanged(RenderType layer, CallbackInfoReturnable<BlockRenderLayer> cir) {
-        if (layer == LatexCoveredBlocks.latexSolid())
+        if (layer == LatexCoveredBlockRenderer.latexSolid())
             cir.setReturnValue(BlockRenderLayer.SOLID);
-        else if (layer == LatexCoveredBlocks.latexCutout())
+        else if (layer == LatexCoveredBlockRenderer.latexCutout())
             cir.setReturnValue(BlockRenderLayer.CUTOUT);
-        else if (layer == LatexCoveredBlocks.latexCutoutMipped())
+        else if (layer == LatexCoveredBlockRenderer.latexCutoutMipped())
             cir.setReturnValue(BlockRenderLayer.CUTOUT_MIPPED);
     }
 }
