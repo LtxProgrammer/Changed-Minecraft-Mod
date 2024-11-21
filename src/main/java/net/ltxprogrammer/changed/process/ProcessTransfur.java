@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.process;
 
 import com.mojang.logging.LogUtils;
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.latexvariant.CheckCondition;
+import net.ltxprogrammer.changed.extension.latexvariant.CheckCondition;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
@@ -691,7 +691,7 @@ public class ProcessTransfur {
         // To prevent most bugs, entity has to be alive to transfur
         if(entity instanceof ServerPlayer player){
             CheckCondition compatibility = new CheckCondition(player);
-            if ((compatibility.isConditionMet()))
+            if ((compatibility.getConditionMet()))
                 return;
         }
         if (level.getGameRules().getBoolean(RULE_KEEP_BRAIN))

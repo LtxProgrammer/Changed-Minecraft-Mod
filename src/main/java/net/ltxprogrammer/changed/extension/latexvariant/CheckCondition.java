@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.latexvariant;
+package net.ltxprogrammer.changed.extension.latexvariant;
 
 import io.github.edwinmindcraft.origins.api.OriginsAPI;
 import io.github.edwinmindcraft.origins.api.capabilities.IOriginContainer;
@@ -19,9 +19,9 @@ public class CheckCondition {
     private boolean conditionValue = false;
     public VariantType variantType = VariantType.DEFAULT;
     public static final Logger LOGGER = LogManager.getLogger(Changed.class);
-    public int varianttypenumber = 0;
     public CheckCondition(ServerPlayer player) {
         this.player = player;
+        checkOriginCondition();
     }
     private void applyVariantLogic() {
         switch (variantType) {
@@ -33,32 +33,36 @@ public class CheckCondition {
             }
         }
     }
-    public boolean isConditionMet() {
+    public boolean getConditionMet() {
         return conditionValue;
     }
-    public int VariantTypeNumber() {
-        return varianttypenumber;
-    }
-    public void checkOriginCondition(MinecraftServer server) {
+    public void checkOriginCondition() {
         if ((ModList.get().isLoaded("origins"))) {
-           OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
-           Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
+            MinecraftServer server=this.player.getServer();
+            OriginLayer layer = OriginsAPI.getLayersRegistry(server).get(new ResourceLocation("origins:origin"));
+            Origin origin = OriginsAPI.getOriginsRegistry(server).get(new ResourceLocation("origins:human"));
             boolean nowHuman = IOriginContainer.get(player)
                         .map(container -> Objects.equals(container.getOrigin(layer), origin))
                         .orElse(false);
-                if(nowHuman){
-                    varianttypenumber = 0;
-                }else{
-                    varianttypenumber = 1;
-                }
-            if (!(Changed.config.server.enableTransfurringOrigins.get())) {
-                if (nowHuman) {
-                    variantType = VariantType.DEFAULT;
-                } else {
-                    variantType = VariantType.ORIGINS;
-                }
-                applyVariantLogic();
-            }
+            if(!(Changed.config.server.enableTransfurringOrigins.get())) {
+               if (nowHuman) {
+                   variantType = VariantType.DEFAULT;
+               } else {
+                   variantType = VariantType.ORIGINS;
+               }
+               applyVariantLogic();
+           }
         }
+    }
+}
+enum VariantType {
+    DEFAULT(0),
+    ORIGINS(1);
+    private final int varianttypenumber;
+    VariantType(int varianttypenumber) {
+        this.varianttypenumber = varianttypenumber;
+    }
+    public int getVariantTypeNumber() {
+        return this.varianttypenumber;
     }
 }

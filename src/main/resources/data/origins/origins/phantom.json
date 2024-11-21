@@ -1,7 +1,7 @@
 {
   "powers": [
     "origins:burn_in_daylight",
-    "origins:latextype",
+    "origins:latex_type",
     "origins:phantomize",
     "origins:translucent",
     "origins:phasing",
