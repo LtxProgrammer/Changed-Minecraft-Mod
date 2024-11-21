@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin;
 
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
@@ -23,8 +24,8 @@ public abstract class PrimaryLevelDataMixin {
 
     @Inject(method = "updatePlayerTag", at = @At("RETURN"))
     private void updateChangedTag(CallbackInfo callback) {
-        if (this.playerDataVersion >= SharedConstants.getCurrentVersion().getWorldVersion())
-            ChangedDataFixer.updateCompoundTag(DataFixTypes.PLAYER, this.loadedPlayerTag);
+        if (this.playerDataVersion >= SharedConstants.getCurrentVersion().getWorldVersion() && Changed.dataFixer != null)
+            Changed.dataFixer.updateCompoundTag(DataFixTypes.PLAYER, this.loadedPlayerTag);
     }
 
     // FORGE

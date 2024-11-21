@@ -109,7 +109,7 @@ public class AbstractLatexItem extends ItemNameBlockItem {
     public static synchronized void removeLatexCoveredStates() {
         if (!removalCompleted) {
             HashSet<RegistryElementPredicate<Block>> notCoverable = new HashSet<>();
-            MinecraftForge.EVENT_BUS.post(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
+            Changed.postModEvent(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
 
             ForgeRegistries.BLOCKS.forEach(block -> {
                 if (!block.getStateDefinition().getProperties().contains(AbstractLatexBlock.COVERED))
@@ -184,7 +184,7 @@ public class AbstractLatexItem extends ItemNameBlockItem {
             if (this.getDefaultInstance().is(type.goo.get()))
                 thisType = type;
         var event = new CoveringBlockEvent(thisType, state, context.getClickedPos(), context.getLevel());
-        if (MinecraftForge.EVENT_BUS.post(event))
+        if (Changed.postModEvent(event))
             return InteractionResult.FAIL;
         if (event.originalState == event.plannedState)
             return InteractionResult.FAIL;

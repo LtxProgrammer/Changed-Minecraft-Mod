@@ -575,7 +575,7 @@ public abstract class LatexCoveredBlocks {
             LOGGER.info("Gathering blocks to cover");
 
             HashSet<RegistryElementPredicate<Block>> notCoverable = new HashSet<>();
-            MinecraftForge.EVENT_BUS.post(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
+            Changed.postModEvent(new AbstractLatexItem.GatherNonCoverableBlocksEvent(notCoverable));
 
             List<Block> toCover = ForgeRegistries.BLOCKS.getValues().stream().filter(block -> {
                 if (!block.getStateDefinition().getProperties().contains(COVERED))
