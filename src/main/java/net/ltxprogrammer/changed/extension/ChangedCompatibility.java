@@ -1,8 +1,10 @@
 package net.ltxprogrammer.changed.extension;
 
 import com.mojang.logging.LogUtils;
+import net.ltxprogrammer.changed.extension.origins.OriginsHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -35,6 +37,10 @@ public class ChangedCompatibility {
         }
 
         return tmp;
+    }
+
+    public static void addDataListeners(AddReloadListenerEvent event) {
+        OriginsHelper.addDataListeners(event);
     }
 
     public static class ClassField<Clazz, T> implements Function<Clazz, T> {
@@ -172,6 +178,8 @@ public class ChangedCompatibility {
 
     public static boolean isPlayerUsedByOtherMod(Player player) {
         if (by_dragonsurvivalteam_dragonsurvival_util$DragonUtils$isDragon.applyOr(player, false))
+            return true;
+        if (OriginsHelper.doesOriginUsePlayer(player))
             return true;
         return false;
     }

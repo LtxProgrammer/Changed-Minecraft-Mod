@@ -369,11 +369,10 @@ public class ProcessTransfur {
         return setPlayerTransfurVariant(player, ogVariant, cause, player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
     }
 
-    public static TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
+    public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
         return setPlayerTransfurVariant(player, ogVariant, cause, progress, false);
     }
 
-    @Contract("_, null, _, _, _ -> null; _, !null, _, _, _ -> !null")
     public static @Nullable
     TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant,
                                                         @Nullable TransfurCause cause,
@@ -388,10 +387,10 @@ public class ProcessTransfur {
             variant = null;
 
         var oldVariant = playerDataExtension.getTransfurVariant();
-        if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
+        if (variant != null && oldVariant != null && variant == oldVariant.getParent())
             return oldVariant;
         if (variant == null && oldVariant == null)
-            return oldVariant;
+            return null;
         if (oldVariant != null && oldVariant.getChangedEntity() != null)
             oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
@@ -417,11 +416,7 @@ public class ProcessTransfur {
 
         if (instance != null)
             instance.setTemporaryForSuit(temporaryFromSuit);
-        if (instance != null && !instance.isTemporaryFromSuit()) {
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
-        } else {
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
-        }
+        player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
             Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
@@ -642,7 +637,7 @@ public class ProcessTransfur {
     private static int worldTickCount = 0;
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.side.isServer()) {
+        if (event.side.isServer() && event.phase == TickEvent.Phase.END) {
             worldTickCount++;
 
             if (worldTickCount % 60 == 0) { // Discrete sync packet

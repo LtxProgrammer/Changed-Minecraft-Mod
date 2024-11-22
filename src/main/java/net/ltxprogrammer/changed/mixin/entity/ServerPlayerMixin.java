@@ -3,7 +3,9 @@ package net.ltxprogrammer.changed.mixin.entity;
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
+import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
@@ -16,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.IntTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.HangingEntity;
@@ -24,10 +27,12 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,6 +58,41 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
         }
     }
 
+    @Unique
+    private void readTransfurVariant(CompoundTag tag) {
+        if (tag.contains("TransfurVariant")) {
+            ResourceLocation variantId = TagUtil.getResourceLocation(tag, "TransfurVariant");
+            TransfurVariant<?> variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(variantId);
+            if (variant == null) {
+                Changed.LOGGER.warn("Missing transfur variant registry entry for {}, falling back", variantId);
+                variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
+            }
+            final TransfurVariantInstance<?> variantInstance = ProcessTransfur.setPlayerTransfurVariant(this, variant, TransfurCause.DEFAULT, 1.0f, false);
+
+            if (variantInstance == null) {
+                Changed.LOGGER.warn("Instanced transfur variant is null");
+                return;
+            }
+
+            if (tag.contains("TransfurVariantData"))
+                variantInstance.load(tag.getCompound("TransfurVariantData"));
+            else {
+                if (tag.contains("TransfurVariantAge"))
+                    variantInstance.ageAsVariant = tag.getInt("TransfurVariantAge");
+                if (tag.contains("TransfurAbilities"))
+                    variantInstance.loadAbilities(tag.getCompound("TransfurAbilities"));
+            }
+
+            final var entity = variantInstance.getChangedEntity();
+            if (tag.contains("TransfurData"))
+                entity.readPlayerVariantData(tag.getCompound("TransfurData"));
+
+
+            if (tag.contains("Leash", 10))
+                entity.setLeashInfoTag(tag.getCompound("Leash"));
+        }
+    }
+
     @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
     protected void readAdditionalSaveData(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("PaleExposure")) {
@@ -65,27 +105,8 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 ProcessTransfur.setPlayerTransfurProgress(this, floatTag.getAsFloat());
             }
         }
-        if (tag.contains("TransfurVariant")) {
-            final var variant = ProcessTransfur.setPlayerTransfurVariant(this,
-                    Optional.ofNullable(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "TransfurVariant")))
-                            .orElseGet(() -> (TransfurVariant)ChangedTransfurVariants.FALLBACK_VARIANT.get()));
-            if (tag.contains("TransfurVariantData"))
-                variant.load(tag.getCompound("TransfurVariantData"));
-            else {
-                if (tag.contains("TransfurVariantAge"))
-                    variant.ageAsVariant = tag.getInt("TransfurVariantAge");
-                if (tag.contains("TransfurAbilities"))
-                    variant.loadAbilities(tag.getCompound("TransfurAbilities"));
-            }
 
-            final var entity = variant.getChangedEntity();
-            if (tag.contains("TransfurData"))
-                entity.readPlayerVariantData(tag.getCompound("LatexData"));
-
-
-            if (tag.contains("Leash", 10))
-                entity.setLeashInfoTag(tag.getCompound("Leash"));
-        }
+        readTransfurVariant(tag);
 
         if (tag.contains("PlayerMover")) {
             try {

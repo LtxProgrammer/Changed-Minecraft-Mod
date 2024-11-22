@@ -233,6 +233,9 @@ dependencies {
     //runtimeOnly fg.deobf("curse.maven:coroutil-237749:5008370") // Forge 1.18.2 v1.3.6
     compileOnly fg.deobf("curse.maven:what-are-they-up-to-945479:5008387") // Forge 1.18.2 v1.0.14
 
+    compileOnly fg.deobf("curse.maven:originsforge-474438:5179273") // Forge 1.18.2 v1.5.0.2
+    //runtimeOnly fg.deobf("curse.maven:caelus-308989:3650485")
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
