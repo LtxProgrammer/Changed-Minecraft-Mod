@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
@@ -129,6 +130,7 @@ public class Changed {
 
     private void dataListeners(final AddReloadListenerEvent event) {
         event.addListener(ChangedFusions.INSTANCE);
+        ChangedCompatibility.addDataListeners(event);
     }
 
     private void customPacks(final AddPackFindersEvent event) {

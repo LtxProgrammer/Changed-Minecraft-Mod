@@ -74,6 +74,9 @@ public class ChangedClient {
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END)
+            return;
+
         if (minecraft.level != null && particleSystem.tick()) {
             var cameraPos = minecraft.gameRenderer.getMainCamera().getBlockPosition();
             var aabb = AABB.of(BoundingBox.fromCorners(cameraPos.offset(-64, -64, -64), cameraPos.offset(64, 64, 64)));

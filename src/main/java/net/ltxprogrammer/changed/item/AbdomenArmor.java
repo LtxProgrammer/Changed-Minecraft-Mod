@@ -67,4 +67,9 @@ public class AbdomenArmor extends ArmorItem implements ExtendedItemProperties {
         return String.format(java.util.Locale.ROOT, "%s:textures/models/abdomen_armor/%s_layer_%d%s.png", domain, texture, (useInnerAbdomenModel(slot) ? 2 : 1),
                 type == null ? "" : String.format(java.util.Locale.ROOT, "_%s", type));
     }
+
+    @Override
+    public int getExpectedLegCount(ItemStack itemStack) {
+        return 0;
+    }
 }

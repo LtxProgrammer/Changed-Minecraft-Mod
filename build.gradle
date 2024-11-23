@@ -188,12 +188,13 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-    implementation fg.deobf("eu.ha3:PresenceFootsteps-1.18.2-1.5.1-forge:1.18.2-1.5.1") // Presence Footsteps
-    implementation fg.deobf('me.lucko:spark-1.9.11-forge:1.9.11') // Spark
-    implementation fg.deobf('org.embeddedt:modernfix-forge-5.2.5+mc1.18.2:5.2.5') // ModernFix
-    implementation fg.deobf('me.jellysquid.mods:rubidium-0.5.6:0.5.6') // Rubidium
-    compileOnly fg.deobf('net.coderbot:oculus-mc1.18.2-1.6.4:1.6.4') // Oculus
-    implementation fg.deobf('org:vivecraft-1.18.2-0.0.15-forge:0.0.15') // Vivecraft
+
+    implementation fg.deobf("curse.maven:presence-footsteps-forge-433068:4328018") // Forge 1.18.2 v1.5.1
+    implementation fg.deobf("curse.maven:spark-361579:4505375") // Forge 1.18.2 v1.10.38
+    implementation fg.deobf("curse.maven:modernfix-790626:5399365") // Forge 1.18.2 v5.18.0
+    implementation fg.deobf("curse.maven:rubidium-574856:4494903") // Forge 1.18.2 v0.5.6
+    implementation fg.deobf("curse.maven:oculus-581495:4578744") // Forge 1.18.2 v1.6.4
+    implementation fg.deobf("curse.maven:vivecraft-667903:5830810") // Forge 1.18.2 v1.1.14
     //implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.c-298") // Create
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
@@ -203,13 +204,15 @@ dependencies {
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:${clothVersion}")
     implementation fg.deobf("dev.architectury:architectury-forge:${archVersion}")
 
-    compileOnly fg.deobf("net.mehvahdjukaar:selene-1.18.2:1.17.14")
-    //runtimeOnly fg.deobf("net.mehvahdjukaar:supplementaries-1.18.2:1.5.18")
+    compileOnly fg.deobf("curse.maven:selene-499980:5660287") // Forge 1.18.2 v1.17.16
+    //runtimeOnly fg.deobf("curse.maven:supplementaries-412082:4548315") // Forge 1.18.2 v1.5.18
 
-    compileOnly fg.deobf("net.blay09.mods:balm:3.2.6")
-    compileOnly fg.deobf("net.blay09.mods:hardcorerevival-forge-1.18.2:8.0.1")
+    compileOnly fg.deobf("curse.maven:balm-531761:4442615") // Forge 1.18.2 v3.2.6
+    compileOnly fg.deobf("curse.maven:hardcore-revival-274036:3830873") // Forge 1.18.2 v8.0.1
 
-    compileOnly fg.deobf("virtuoel:Pehkui-3.7.11+1.18.2-forge:3.7.11")
+    compileOnly fg.deobf("curse.maven:pehkui-319596:5393085") // Forge 1.18.2 v3.8.2
+
+    // These mods have 3rd party sharing disabled
     compileOnly fg.deobf("dev.tr7zw:notenoughanimations-forge-1.7.0-mc1.18.2:1.7.0")
     compileOnly fg.deobf("dev.tr7zw:firstperson-forge-2.3.2-mc1.18.2:2.3.2")
 

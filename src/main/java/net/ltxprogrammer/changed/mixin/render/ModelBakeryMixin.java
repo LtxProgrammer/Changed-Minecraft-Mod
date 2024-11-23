@@ -2,7 +2,7 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.math.Transformation;
 import net.ltxprogrammer.changed.client.BakeryExtender;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.UnbakedModel;
@@ -29,7 +29,7 @@ public abstract class ModelBakeryMixin implements BakeryExtender {
 
     @Inject(method = "loadModel", at = @At("HEAD"), cancellable = true)
     private void loadModel(ResourceLocation name, CallbackInfo callback) {
-        var model = LatexCoveredBlocks.getCachedModel(name);
+        var model = LatexCoveredBlockRenderer.getCachedModel(name);
         if (model == null)
             return;
         this.cacheAndQueueDependencies(name, model);
