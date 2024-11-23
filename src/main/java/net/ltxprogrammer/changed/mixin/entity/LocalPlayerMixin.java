@@ -92,44 +92,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         if (!player.level.isClientSide) return;
 
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-            if (variant.getParent().canGlide) {
-                KeyboardInput kb;
-                if (input instanceof KeyboardInput k) kb = k;
-                else return;
-
-                boolean jumping = input.jumping;
-                boolean flying = this.getAbilities().flying;
-
-                jumping = kb.options.keyJump.isDown();
-
-                boolean flag3 = false;
-                if (this.autoJumpTime > 0) {
-                    flag3 = true;
-                    jumping = true;
-                }
-
-                boolean flag7 = false;
-                if (this.getAbilities().mayfly) {
-                    if (this.minecraft.gameMode.isAlwaysFlying()) {
-                        if (!flying) {
-                            flying = true;
-                            flag7 = true;
-                        }
-                    } else if (!input.jumping && jumping && !flag3) {
-                        if (this.jumpTriggerTime != 0 && !this.isSwimming()) {
-                            flying = !flying;
-                            flag7 = true;
-                        }
-                    }
-                }
-
-                if (jumping && !flag7 && !input.jumping && !flying && !this.isPassenger() && !this.onClimbable()) {
-                    if (this.tryToStartFallFlying()) {
-                        this.connection.send(new ServerboundPlayerCommandPacket(this, ServerboundPlayerCommandPacket.Action.START_FALL_FLYING));
-                    }
-                }
-            }
-
             if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
                 player.setSprinting(true);
         });
