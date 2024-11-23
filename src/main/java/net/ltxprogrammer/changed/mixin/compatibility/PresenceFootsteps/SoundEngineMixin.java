@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps;
 import eu.ha3.presencefootsteps.sound.PFIsolator;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.extension.presencefootsteps.ChangedPresenceFootsteps;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -27,7 +28,7 @@ public abstract class SoundEngineMixin implements PreparableReloadListener {
         event.loadBlockMap(ChangedPresenceFootsteps.BLOCK_MAP);
         event.loadLocomotionMap(ChangedPresenceFootsteps.LOCOMOTION_MAP);
 
-        MinecraftForge.EVENT_BUS.post(event);
+        Changed.postModEvent(event);
     }
 
     @Inject(method = "getLocomotion", at = @At("HEAD"), cancellable = true)

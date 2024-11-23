@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.Pale;
@@ -202,7 +203,7 @@ public class Syringe extends Item implements SpecializedAnimations {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
-        return MinecraftForge.EVENT_BUS.post(
+        return Changed.postModEvent(
                 new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
@@ -219,7 +220,7 @@ public class Syringe extends Item implements SpecializedAnimations {
             return InteractionResult.sidedSuccess(player.level.isClientSide);
         }
 
-        return MinecraftForge.EVENT_BUS.post(
+        return Changed.postModEvent(
                 new UsedOnEntity(livingEntity,
                         player.level,
                         player,

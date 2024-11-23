@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.client;
 
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
@@ -40,8 +41,8 @@ public class ChangedClient {
     public static final AbilityRenderer abilityRenderer = new AbilityRenderer(minecraft.textureManager, minecraft.getModelManager(), abilityColors);
 
     public static void registerEventListeners() {
-        MinecraftForge.EVENT_BUS.addListener(ChangedClient::afterRenderStage);
-        MinecraftForge.EVENT_BUS.addListener(ChangedClient::onClientTick);
+        Changed.addEventListener(ChangedClient::afterRenderStage);
+        Changed.addEventListener(ChangedClient::onClientTick);
     }
 
     public static void registerReloadListeners(Consumer<PreparableReloadListener> resourceManager) {
@@ -90,6 +91,9 @@ public class ChangedClient {
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END)
+            return;
+
         if (minecraft.level != null && particleSystem.tick()) {
             var cameraPos = minecraft.gameRenderer.getMainCamera().getBlockPosition();
             var aabb = AABB.of(BoundingBox.fromCorners(cameraPos.offset(-64, -64, -64), cameraPos.offset(64, 64, 64)));

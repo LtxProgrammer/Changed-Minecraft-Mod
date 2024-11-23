@@ -1,10 +1,10 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
-import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -35,6 +35,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
@@ -123,20 +124,12 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         });
     }
 
-    @Inject(method = "isInWall", at = @At("HEAD"), cancellable = true)
-    public void isInWall(CallbackInfoReturnable<Boolean> callback) {
-        if (asEntity() instanceof Player player && ProcessTransfur.isPlayerTransfurred(player)) {
-            if (player.noPhysics) {
-                callback.setReturnValue(false);
-            } else {
-                float f = player.getDimensions(player.getPose()).width * 0.8F;
-                AABB aabb = AABB.ofSize(new Vec3(player.getX(), player.getEyeY(), player.getZ()), (double)f, 1.0E-6D, (double)f);
-                callback.setReturnValue(BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
-                    BlockState blockstate = player.level.getBlockState(p_201942_);
-                    return !blockstate.isAir() && blockstate.isSuffocating(player.level, p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(player.level, p_201942_).move((double)p_201942_.getX(), (double)p_201942_.getY(), (double)p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
-                }));
-            }
-        }
+    @Redirect(method = "isInWall", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyePosition()Lnet/minecraft/world/phys/Vec3;"))
+    public Vec3 isInWall(Entity entity) {
+        TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
+        if (variant != null && variant.getParent().cameraZOffset != 0.0f)
+            return new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+        return this.getEyePosition();
     }
 
     @Inject(method = "canEnterPose", at = @At("HEAD"), cancellable = true)
@@ -152,6 +145,8 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     }
 
     @Shadow public abstract boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double scale);
+
+    @Shadow public abstract Vec3 getEyePosition();
 
     @Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("RETURN"), cancellable = true)
     protected void updateInWaterStateAndDoFluidPushing(CallbackInfoReturnable<Boolean> callback) {

@@ -3,7 +3,6 @@ package net.ltxprogrammer.changed.extension.chiselsandbits;
 import mod.chiselsandbits.client.model.baked.chiseled.ChiselRenderType;
 import mod.chiselsandbits.client.model.baked.chiseled.VoxelType;
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.minecraft.client.renderer.RenderType;
 
 import java.lang.reflect.Method;

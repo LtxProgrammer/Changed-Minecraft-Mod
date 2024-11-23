@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;

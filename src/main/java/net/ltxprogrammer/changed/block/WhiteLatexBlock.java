@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.item.AbstractLatexItem;
+import net.ltxprogrammer.changed.process.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -150,7 +150,7 @@ public class WhiteLatexBlock extends AbstractLatexBlock implements WhiteLatexTra
     );
 
     @SubscribeEvent
-    public static void onLatexCover(AbstractLatexItem.CoveringBlockEvent event) {
+    public static void onLatexCover(LatexCoveredBlocks.CoveringBlockEvent event) {
         if (event.latexType != LatexType.WHITE_LATEX)
             return;
 

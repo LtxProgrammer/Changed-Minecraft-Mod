@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;

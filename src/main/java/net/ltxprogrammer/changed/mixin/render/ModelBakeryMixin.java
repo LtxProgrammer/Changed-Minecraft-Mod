@@ -3,7 +3,7 @@ package net.ltxprogrammer.changed.mixin.render;
 import com.mojang.math.Transformation;
 import net.ltxprogrammer.changed.client.AbilityRenderer;
 import net.ltxprogrammer.changed.client.BakeryExtender;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BakedModel;
@@ -63,7 +63,7 @@ public abstract class ModelBakeryMixin implements BakeryExtender {
 
     @Inject(method = "loadModel", at = @At("HEAD"), cancellable = true)
     private void loadModel(ResourceLocation name, CallbackInfo callback) throws IOException {
-        var model = LatexCoveredBlocks.getCachedModel(name);
+        var model = LatexCoveredBlockRenderer.getCachedModel(name);
         if (model != null) {
             this.cacheAndQueueDependencies(name, model);
             callback.cancel();

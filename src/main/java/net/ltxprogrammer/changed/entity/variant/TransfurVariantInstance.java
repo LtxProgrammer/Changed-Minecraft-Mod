@@ -19,6 +19,8 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
+import net.minecraft.Util;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -117,10 +119,10 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         tag.putInt("ticksFlying", ticksFlying);
 
         tag.put("previousAttributes", TagUtil.createMap(previousAttributes, (attribute, base, map) ->
-            map.putDouble(attribute.getRegistryName().toString(), base)
+            map.putDouble(ForgeRegistries.ATTRIBUTES.getKey(attribute).toString(), base)
         ));
         tag.put("newAttributes", TagUtil.createMap(newAttributes, (attribute, base, map) ->
-            map.putDouble(attribute.getRegistryName().toString(), base)
+            map.putDouble(ForgeRegistries.ATTRIBUTES.getKey(attribute).toString(), base)
         ));
         tag.putFloat("transfurProgressionO", transfurProgressionO);
         tag.putFloat("transfurProgression", transfurProgression);
@@ -142,10 +144,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         ticksFlying = tag.getInt("ticksFlying");
 
         TagUtil.readMap(tag.getCompound("previousAttributes"), (key, map) ->
-                previousAttributes.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key)), map.getDouble(key))
+                Util.ifElse(Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key))), attribute ->
+                        previousAttributes.put(attribute, map.getDouble(key)),
+                        () -> TagUtil.LOGGER.warn("Missing registered attribute {}", key))
         );
         TagUtil.readMap(tag.getCompound("newAttributes"), (key, map) ->
-                newAttributes.put(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key)), map.getDouble(key))
+                Util.ifElse(Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(key))), attribute ->
+                        newAttributes.put(attribute, map.getDouble(key)),
+                        () -> TagUtil.LOGGER.warn("Missing registered attribute {}", key))
         );
 
         if (previousAttributes.isEmpty() && newAttributes.isEmpty()) {
@@ -413,26 +419,27 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            Pale.tickPaleExposure(event.player);
-            ProcessTransfur.ifPlayerTransfurred(event.player, instance -> {
-                if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
-                    ProcessTransfur.removePlayerTransfurVariant(event.player);
-                    return;
-                }
+        if (event.phase != TickEvent.Phase.END)
+            return;
 
-                try {
-                    instance.tick(event.player);
-                    if (!event.player.isSpectator()) {
-                        if (!instance.entity.level.isClientSide)
-                            instance.entity.tickLeash();
-                        instance.getChangedEntity().variantTick(event.player.level);
-                    }
-                } catch (Exception x) {
-                    x.printStackTrace();
+        Pale.tickPaleExposure(event.player);
+        ProcessTransfur.ifPlayerTransfurred(event.player, instance -> {
+            if (ChangedCompatibility.isPlayerUsedByOtherMod(event.player)) {
+                ProcessTransfur.removePlayerTransfurVariant(event.player);
+                return;
+            }
+
+            try {
+                instance.tick(event.player);
+                if (!event.player.isSpectator()) {
+                    if (!instance.entity.level.isClientSide)
+                        instance.entity.tickLeash();
+                    instance.getChangedEntity().variantTick(event.player.level);
                 }
-            });
-        }
+            } catch (Exception x) {
+                x.printStackTrace();
+            }
+        });
     }
 
     @SubscribeEvent
@@ -1074,14 +1081,24 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public float getSwimEfficiency() {
         double baselineSwim = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
-        double intendedSwim = entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get());
+        double intendedSwim = newAttributes.get(ForgeMod.SWIM_SPEED.get());
         return (float)(baselineSwim / intendedSwim);
     }
 
     public float getSprintEfficiency() {
         double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
-        double intendedSprint = entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+        double intendedSprint = newAttributes.get(Attributes.MOVEMENT_SPEED) * 0.1;
         return (float)(baselineSprint / intendedSprint);
+    }
+
+    public float getFoodEfficiency() {
+        if (host.isSwimming() || host.isEyeInFluid(FluidTags.WATER) || host.isInWater()) {
+            return getSwimEfficiency();
+        } else if (host.isOnGround() && host.isSprinting()) {
+            return getSprintEfficiency();
+        }
+
+        return 1.0f;
     }
 
     public int getTicksInWaveVision() {

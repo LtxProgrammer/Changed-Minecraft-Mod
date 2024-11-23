@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
+import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +17,7 @@ import java.util.Set;
 public abstract class TextureAtlasMixin {
     @Inject(method = "getBasicSpriteInfos", at = @At("HEAD"), cancellable = true)
     private void getBasicSpriteInfos(ResourceManager resources, Set<ResourceLocation> sprites, CallbackInfoReturnable<Collection<TextureAtlasSprite.Info>> callback) {
-        if (((Object)this) instanceof LatexCoveredBlocks.LatexAtlas atlas) {
+        if (((Object)this) instanceof LatexCoveredBlockRenderer.LatexAtlas atlas) {
             callback.setReturnValue(atlas.getBasicSpriteInfos(resources, sprites));
         }
     }
@@ -25,7 +25,7 @@ public abstract class TextureAtlasMixin {
     @Inject(method = "load(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/renderer/texture/TextureAtlasSprite$Info;IIIII)Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", at = @At("HEAD"), cancellable = true)
     private void load(ResourceManager rm, TextureAtlasSprite.Info info, int atlasWidth, int atlasHeight, int mipLevels, int x, int y,
                       CallbackInfoReturnable<TextureAtlasSprite> callback) {
-        if (((Object)this) instanceof LatexCoveredBlocks.LatexAtlas atlas) {
+        if (((Object)this) instanceof LatexCoveredBlockRenderer.LatexAtlas atlas) {
             callback.setReturnValue(atlas.load(rm, info, atlasWidth, atlasHeight, mipLevels, x, y));
         }
     }

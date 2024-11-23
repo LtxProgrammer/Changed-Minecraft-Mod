@@ -149,8 +149,8 @@ public class ChangedShaders {
 
     public static final RenderStateShard.TextureStateShard BLOCK_SHEET_MIPPED = new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, true);
     public static final RenderStateShard.TextureStateShard BLOCK_SHEET = new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false);
-    public static final RenderStateShard.TextureStateShard LATEX_SHEET_MIPPED = new RenderStateShard.TextureStateShard(LatexCoveredBlocks.LATEX_COVER_ATLAS, false, true);
-    public static final RenderStateShard.TextureStateShard LATEX_SHEET = new RenderStateShard.TextureStateShard(LatexCoveredBlocks.LATEX_COVER_ATLAS, false, false);
+    public static final RenderStateShard.TextureStateShard LATEX_SHEET_MIPPED = new RenderStateShard.TextureStateShard(LatexCoveredBlockRenderer.LATEX_COVER_ATLAS, false, true);
+    public static final RenderStateShard.TextureStateShard LATEX_SHEET = new RenderStateShard.TextureStateShard(LatexCoveredBlockRenderer.LATEX_COVER_ATLAS, false, false);
 
     private static final RenderType LATEX_SOLID = RenderType.create("changed:latex_solid", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 2097152, true, false, RenderType.CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_SOLID_SHADER).setTextureState(LATEX_SHEET_MIPPED).createCompositeState(true));
     private static final RenderType LATEX_CUTOUT_MIPPED = RenderType.create("changed:latex_cutout_mipped", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 131072, true, false, RenderType.CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_CUTOUT_MIPPED_SHADER).setTextureState(LATEX_SHEET_MIPPED).createCompositeState(true));

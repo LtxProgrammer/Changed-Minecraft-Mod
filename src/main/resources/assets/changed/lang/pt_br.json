@@ -31,6 +31,7 @@
   "ability.changed.grab_entity.how_to_absorb": "Segure [%s] and [%s] para progressar absorção",
   "ability.changed.grab_entity.how_to_suit": "Segure [%s] para alterar para terno",
   "ability.changed.grab_entity.how_to_toggle_control": "pressione [%s] para toggle control",
+  "ability.changed.toggle_night_vision": "Alternar visão noturna",
 
   "attribute.name.changed.transfur_damage": "Dano Transfur",
   "attribute.name.changed.transfur_tolerance": "Tolerancia Transfur",
@@ -162,7 +163,6 @@
   "command.changed.success.progresstf.many": "Progrediu a transfurmação de %s jogador(es)",
   "command.changed.success.regresstf.one": "Regrediu a transfurmação de %s",
   "command.changed.success.regresstf.many": "Regrediu a transfurmação de %s jogador(es)",
-
   "command.changed.error.not_latex_form": "Forma de látex inválida",
   "command.changed.error.not_cause": "cause inválida de transfur",
   "command.changed.error.used_by_other_mod": "Jogador já  esta sendo usado por outro mod",
