@@ -1061,13 +1061,23 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
     public float getSwimEfficiency() {
         double baselineSwim = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
-        double intendedSwim = entity.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get());
+        double intendedSwim = newAttributes.get(ForgeMod.SWIM_SPEED.get());
         return (float)(baselineSwim / intendedSwim);
     }
 
     public float getSprintEfficiency() {
         double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
-        double intendedSprint = entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+        double intendedSprint = newAttributes.get(Attributes.MOVEMENT_SPEED) * 0.1;
         return (float)(baselineSprint / intendedSprint);
+    }
+
+    public float getFoodEfficiency() {
+        if (host.isSwimming() || host.isEyeInFluid(FluidTags.WATER) || host.isInWater()) {
+            return getSwimEfficiency();
+        } else if (host.isOnGround() && host.isSprinting()) {
+            return getSprintEfficiency();
+        }
+
+        return 1.0f;
     }
 }

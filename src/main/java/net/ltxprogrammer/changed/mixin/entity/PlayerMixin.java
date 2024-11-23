@@ -15,6 +15,8 @@ import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -209,28 +211,26 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
                 ci.cancel();
     }
 
-    @ModifyArg(method = "checkMovementStatistics", at =
-    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 0))
-    public float foodEfficiencySwimming(float distance) {
-        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
+    @Unique
+    private float foodEfficiency = 1.0f;
+
+    @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
+    public void applyFoodEfficiency(double dX, double dY, double dZ, CallbackInfo ci) {
+        foodEfficiency = 1.0f;
+        if (latexVariant == null)
+            return;
+
+        foodEfficiency = latexVariant.getFoodEfficiency();
     }
 
-    @ModifyArg(method = "checkMovementStatistics", at =
-    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 1))
-    public float foodEfficiencyWalkUnderWater(float distance) {
-        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
+    @Inject(method = "checkMovementStatistics", at = @At("RETURN"))
+    public void resetFoodEfficiency(double dX, double dY, double dZ, CallbackInfo ci) {
+        foodEfficiency = 1.0f;
     }
 
-    @ModifyArg(method = "checkMovementStatistics", at =
-    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 2))
-    public float foodEfficiencyWalkOnWater(float distance) {
-        return latexVariant != null ? latexVariant.getSwimEfficiency() * distance : distance;
-    }
-
-    @ModifyArg(method = "checkMovementStatistics", at =
-    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V", ordinal = 3))
-    public float foodEfficiencySprinting(float distance) {
-        return latexVariant != null ? latexVariant.getSprintEfficiency() * distance : distance;
+    @Redirect(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V"))
+    public void efficientFoodExhaustion(Player instance, float amount) {
+        instance.causeFoodExhaustion(amount * foodEfficiency);
     }
 
     @Inject(method = "getDimensions", at = @At("RETURN"), cancellable = true)
