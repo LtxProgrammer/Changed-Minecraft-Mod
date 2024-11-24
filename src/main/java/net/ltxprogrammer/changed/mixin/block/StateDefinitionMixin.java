@@ -1,7 +1,8 @@
 package net.ltxprogrammer.changed.mixin.block;
 
 import net.ltxprogrammer.changed.block.NonLatexCoverableBlock;
-import net.ltxprogrammer.changed.util.StateHolderHelper;
+import net.ltxprogrammer.changed.item.AbstractLatexItem;
+import net.ltxprogrammer.changed.process.LatexCoveredBlocks;
 import net.minecraft.Util;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
@@ -82,7 +83,7 @@ public abstract class StateDefinitionMixin<O, S extends StateHolder<O, S>> {
 
     @Inject(method = "create", at = @At("HEAD"))
     public void create(Function<O, S> defaultState, StateDefinition.Factory<O, S> stateFactory, CallbackInfoReturnable<StateDefinition<O, S>> callbackInfo) {
-        if (defaultState == StateHolderHelper.FN_STATE_CREATION_BYPASS)
+        if (LatexCoveredBlocks.isRemovingStates())
             return;
 
         if (owner instanceof Block ownerBlock) {

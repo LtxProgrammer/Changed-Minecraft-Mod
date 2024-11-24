@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.mixin.compatibility.Oculus;
 
 import net.coderbot.iris.pipeline.WorldRenderingPhase;
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

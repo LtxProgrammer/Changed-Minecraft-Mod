@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.util;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
@@ -7,6 +8,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -16,6 +18,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class TagUtil {
+    public static final Logger LOGGER = LogUtils.getLogger();
+
     public static void replace(CompoundTag from, CompoundTag target) {
         HashSet<String> oldKeys = new HashSet<>(target.getAllKeys());
         oldKeys.forEach(target::remove);
@@ -63,7 +67,14 @@ public class TagUtil {
 
     public static <T, V> CompoundTag createMap(Map<T, V> map, TriConsumer<T, V, CompoundTag> consumer) {
         CompoundTag tag = new CompoundTag();
-        map.forEach((key, value) -> consumer.accept(key, value, tag));
+        map.forEach((key, value) -> {
+            if (key == null) {
+                LOGGER.warn("Encountered null attribute, skipping");
+                return;
+            }
+
+            consumer.accept(key, value, tag);
+        });
         return tag;
     }
 

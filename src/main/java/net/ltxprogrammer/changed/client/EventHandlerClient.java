@@ -183,7 +183,7 @@ public class EventHandlerClient {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void onRegisterReloadListenerEvent(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(ChangedClient.particleSystem);
+        ChangedClient.registerReloadListeners(event::registerReloadListener);
     }
 
     @OnlyIn(Dist.CLIENT)

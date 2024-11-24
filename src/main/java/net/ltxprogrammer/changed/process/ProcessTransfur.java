@@ -370,11 +370,10 @@ public class ProcessTransfur {
         return setPlayerTransfurVariant(player, ogVariant, cause, player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
     }
 
-    public static TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
+    public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
         return setPlayerTransfurVariant(player, ogVariant, cause, progress, false);
     }
 
-    @Contract("_, null, _, _, _ -> null; _, !null, _, _, _ -> !null")
     public static @Nullable
     TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant,
                                                         @Nullable TransfurCause cause,
@@ -382,17 +381,17 @@ public class ProcessTransfur {
                                                         boolean temporaryFromSuit) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
         EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
-        MinecraftForge.EVENT_BUS.post(event);
+        Changed.postModEvent(event);
         @Nullable TransfurVariant<?> variant = event.variant;
 
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             variant = null;
 
         var oldVariant = playerDataExtension.getTransfurVariant();
-        if (variant != null && oldVariant != null && variant.getFormId().equals(oldVariant.getFormId()))
+        if (variant != null && oldVariant != null && variant == oldVariant.getParent())
             return oldVariant;
         if (variant == null && oldVariant == null)
-            return oldVariant;
+            return null;
         if (oldVariant != null && oldVariant.getChangedEntity() != null)
             oldVariant.getChangedEntity().discard();
         TransfurVariantInstance<?> instance = TransfurVariantInstance.variantFor(variant, player);
@@ -418,14 +417,10 @@ public class ProcessTransfur {
 
         if (instance != null)
             instance.setTemporaryForSuit(temporaryFromSuit);
-        if (instance != null && !instance.isTemporaryFromSuit()) {
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
-        } else {
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
-        }
+        player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
-            MinecraftForge.EVENT_BUS.post(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
+            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
@@ -568,6 +563,7 @@ public class ProcessTransfur {
     }
 
     public static boolean killPlayerByAbsorption(Player player, LivingEntity source) {
+        player.invulnerableTime = 0;
         player.hurt(ChangedDamageSources.entityAbsorb(source), Float.MAX_VALUE);
         if (!Float.isFinite(player.getHealth()))
             player.setHealth(0.0f);
@@ -575,6 +571,7 @@ public class ProcessTransfur {
     }
 
     public static boolean killPlayerByTransfur(Player player, LivingEntity source) {
+        player.invulnerableTime = 0;
         player.hurt(ChangedDamageSources.entityTransfur(source), Float.MAX_VALUE);
         if (!Float.isFinite(player.getHealth()))
             player.setHealth(0.0f);
@@ -642,7 +639,7 @@ public class ProcessTransfur {
     private static int worldTickCount = 0;
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.side.isServer()) {
+        if (event.side.isServer() && event.phase == TickEvent.Phase.END) {
             worldTickCount++;
 
             if (worldTickCount % 60 == 0) { // Discrete sync packet
@@ -698,7 +695,7 @@ public class ProcessTransfur {
                 keepConscious = true;
             else {
                 KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 keepConscious = event.shouldKeepConscious;
             }
         }
@@ -734,7 +731,7 @@ public class ProcessTransfur {
 
             else if (!entity.level.isClientSide) {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, variant, context.cause);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 if (event.variant != null)
                     onReplicate.accept(event.variant.replaceEntity(entity, context.source), event.variant);
             }
@@ -778,7 +775,7 @@ public class ProcessTransfur {
 
             else if (!entity.level.isClientSide) {
                 EntityVariantAssigned event = new EntityVariantAssigned(entity, fusion, context.cause);
-                MinecraftForge.EVENT_BUS.post(event);
+                Changed.postModEvent(event);
                 if (event.variant != null)
                     event.variant.replaceEntity(entity, context.source);
             }
