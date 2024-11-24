@@ -11,6 +11,9 @@
       "item": "minecraft:string"
     },
     {
+      "item": "minecraft:salmon"
+    },
+    {
       "item": "minecraft:light_gray_dye"
     }
   ],
