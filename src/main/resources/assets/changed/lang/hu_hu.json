@@ -24,7 +24,7 @@
   "ability.changed.select_special_state": "Válassz egy speciális állapotot",
   "ability.changed.summon_sharks": "Idézz cápákat",
   "ability.changed.toggle_night_vision": "Éjjellátás kapcsolása",
-  "ability.changed.use_waves": "Hullámok alkalmazása",
+  "ability.changed.toggle_wave_vision": "Hullámlátás kapcsolása",
 
   "ability.changed.grab_entity": "Entitás megragadása",
   "ability.changed.grab_entity.how_to_grab": "Tartsa nyomva a [%s] gombot egy entitás megragadásához",
