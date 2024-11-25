@@ -186,8 +186,8 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<LatexMantaRa
     public HelperModel getTransfurHelperModel(Limb limb) {
         if (limb == Limb.ABDOMEN)
             return TransfurHelper.getLegless();
-        if (limb == Limb.TORSO)
-            return TransfurHelper.getFeminineTorsoAlt();
+        else if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorsoLegless();
         return super.getTransfurHelperModel(limb);
     }
 
