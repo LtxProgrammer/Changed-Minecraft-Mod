@@ -59,12 +59,20 @@ public class Changed {
     private static final ChangedPackets PACKETS = new ChangedPackets(PACKET_HANDLER);
     private static int messageID = 0;
 
+    /**
+     * This function is split out of the main function as a request by mod extension devs
+     */
+    private void registerLoadingEventListeners(IEventBus eventBus) {
+        eventBus.addListener(this::commonSetup);
+        eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::customPacks);
+    }
+
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
 
-        addLoadingEventListener(this::commonSetup);
-        addLoadingEventListener(this::clientSetup);
-        addLoadingEventListener(this::customPacks);
+        registerLoadingEventListeners(FMLJavaModLoadingContext.get().getModEventBus());
+
         addEventListener(this::dataListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
