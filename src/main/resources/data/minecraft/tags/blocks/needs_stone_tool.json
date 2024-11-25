@@ -19,6 +19,7 @@
     "changed:library_door",
     "changed:maintenance_door",
     "changed:purifier",
+    "changed:stasis_chamber",
     "changed:vent_fan",
     "changed:vent_hatch",
     "changed:white_lab_table"
