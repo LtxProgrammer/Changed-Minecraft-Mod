@@ -149,6 +149,7 @@ public class ChangedLayerDefinitions {
         ArmorLatexWhiteKnightModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexCentaurUpperModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexCentaurLowerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleTaurUpperModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         ArmorHumanModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
