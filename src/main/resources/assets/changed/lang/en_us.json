@@ -24,7 +24,7 @@
   "ability.changed.select_special_state": "Select Special State",
   "ability.changed.summon_sharks": "Summon Sharks",
   "ability.changed.toggle_night_vision": "Toggle Night Vision",
-  "ability.changed.use_waves": "Use Waves",
+  "ability.changed.toggle_wave_vision": "Toggle Wave Vision",
 
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
