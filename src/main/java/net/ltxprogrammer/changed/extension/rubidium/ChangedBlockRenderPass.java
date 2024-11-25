@@ -2,7 +2,6 @@ package net.ltxprogrammer.changed.extension.rubidium;
 
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPass;
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.minecraft.client.renderer.RenderType;
 
 import java.lang.reflect.Method;

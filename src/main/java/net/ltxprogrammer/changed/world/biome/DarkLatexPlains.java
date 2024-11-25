@@ -66,6 +66,7 @@ public class DarkLatexPlains implements ChangedBiomeInterface {
         ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.DARK_LATEX_WOLF_PARTIAL, 1, 1, 1, 0.7, 0.15);
         ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.DARK_LATEX_WOLF_PUP, 30, 1, 4, 0.7, 0.15);
         ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.DARK_LATEX_YUFENG, 40, 1, 3, 0.7, 0.15);
+        ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.DARK_LATEX_DOUBLE_YUFENG, 6, 1, 1, 0.7, 0.15);
         ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.PHAGE_LATEX_WOLF_MALE, 20, 1, 2, 0.7, 0.15);
         ChangedBiomeInterface.addSpawn(spawnBuilder, ChangedMobCategories.CHANGED, ChangedEntities.PHAGE_LATEX_WOLF_FEMALE, 20, 1, 2, 0.7, 0.15);
 

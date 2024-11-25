@@ -28,11 +28,11 @@ import java.util.function.Consumer;
 public class ChangedDataFixer {
     public static final int DATAFIX_ID = 1;
 
-    private static <T extends Entity> ResourceLocation spawnEggHelper(RegistryObject<EntityType<T>> entity) {
+    private <T extends Entity> ResourceLocation spawnEggHelper(RegistryObject<EntityType<T>> entity) {
         return Objects.requireNonNull(ChangedEntities.SPAWN_EGGS.get(entity)).getId();
     }
 
-    private static final HashMap<ResourceLocation, ResourceLocation> ENTITY_ID_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<ResourceLocation, ResourceLocation> ENTITY_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("aerosol_latex_wolf"), ChangedEntities.GAS_WOLF.getId());
         map.put(Changed.modResource("dark_latex_dragon"), ChangedEntities.DARK_DRAGON.getId());
         map.put(Changed.modResource("latex_beifeng"), ChangedEntities.BEIFENG.getId());
@@ -48,7 +48,7 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("white_latex_wolf"), ChangedEntities.PURE_WHITE_LATEX_WOLF.getId());
     });
 
-    private static final HashMap<ResourceLocation, ResourceLocation> ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<ResourceLocation, ResourceLocation> ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("aerosol_latex_wolf_spawn_egg"), spawnEggHelper(ChangedEntities.GAS_WOLF));
         map.put(Changed.modResource("dark_latex_dragon_spawn_egg"), spawnEggHelper(ChangedEntities.DARK_DRAGON));
         map.put(Changed.modResource("latex_beifeng_spawn_egg"), spawnEggHelper(ChangedEntities.BEIFENG));
@@ -67,12 +67,12 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("dark_latex_dragon_crystal_fragment"), ChangedItems.DARK_DRAGON_CRYSTAL_FRAGMENT.getId());
     });
 
-    private static final HashMap<ResourceLocation, ResourceLocation> BLOCK_ID_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<ResourceLocation, ResourceLocation> BLOCK_ID_REMAP = Util.make(new HashMap<>(), map -> {
 
     });
 
     // IDs that both blocks and items share
-    private static final HashMap<ResourceLocation, ResourceLocation> BLOCK_ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<ResourceLocation, ResourceLocation> BLOCK_ITEM_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("dark_latex_dragon_crystal"), ChangedBlocks.DARK_DRAGON_CRYSTAL.getId());
         map.put(Changed.modResource("latex_beifeng_crystal"), ChangedBlocks.BEIFENG_CRYSTAL.getId());
         map.put(Changed.modResource("latex_beifeng_crystal_small"), ChangedBlocks.BEIFENG_CRYSTAL_SMALL.getId());
@@ -83,7 +83,7 @@ public class ChangedDataFixer {
         map.put(Changed.modResource("light_latex_puddle_male"), ChangedBlocks.WHITE_LATEX_PUDDLE_MALE.getId());
     });
 
-    private static final HashMap<ResourceLocation, ResourceLocation> VARIANT_ID_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<ResourceLocation, ResourceLocation> VARIANT_ID_REMAP = Util.make(new HashMap<>(), map -> {
         map.put(Changed.modResource("form_aerosol_latex_wolf"), ChangedTransfurVariants.GAS_WOLF.getId());
         map.put(Changed.modResource("form_dark_latex_dragon"), ChangedTransfurVariants.DARK_DRAGON.getId());
         map.put(Changed.modResource("form_latex_beifeng"), ChangedTransfurVariants.BEIFENG.getId());
@@ -101,27 +101,27 @@ public class ChangedDataFixer {
 
     //TODO: add remap for latex syringes and arrows
 
-    private static final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<String, String> ENUM_REMAP = Util.make(new HashMap<>(), map -> {
         map.put("DARK_LATEX", LatexType.DARK_LATEX.name());
         map.put("WHITE_LATEX", LatexType.WHITE_LATEX.name());
     });
 
-    private static final HashMap<String, String> TAG_REMAP = Util.make(new HashMap<>(), map -> {
+    private final HashMap<String, String> TAG_REMAP = Util.make(new HashMap<>(), map -> {
         map.put("LatexVariant", "TransfurVariant");
         map.put("LatexVariantAge", "TransfurVariantAge");
         map.put("LatexAbilities", "TransfurAbilities");
         map.put("LatexData", "TransfurData");
     });
 
-    private static ResourceLocation updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
+    private ResourceLocation updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, ResourceLocation id) {
         return remap.getOrDefault(id, id);
     }
 
-    private static String updateName(@NotNull Map<String, String> remap, String name) {
+    private String updateName(@NotNull Map<String, String> remap, String name) {
         return remap.getOrDefault(name, name);
     }
 
-    private static void updateTagNames(@NotNull CompoundTag tag) {
+    private void updateTagNames(@NotNull CompoundTag tag) {
         tag.getAllKeys().stream().toList().forEach(key -> {
             if (TAG_REMAP.containsKey(key)) {
                 final var newKey = TAG_REMAP.get(key);
@@ -134,40 +134,40 @@ public class ChangedDataFixer {
         });
     }
 
-    private static void updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, @NotNull CompoundTag tag, String idName) {
+    private void updateID(@NotNull Map<ResourceLocation, ResourceLocation> remap, @NotNull CompoundTag tag, String idName) {
         if (!tag.contains(idName)) return;
         final ResourceLocation id = ResourceLocation.tryParse(tag.getString(idName));
         if (id != null)
             tag.putString(idName, updateID(remap, id).toString());
     }
 
-    private static void updateName(@NotNull Map<String, String> remap, @NotNull CompoundTag tag, String idName) {
+    private void updateName(@NotNull Map<String, String> remap, @NotNull CompoundTag tag, String idName) {
         if (!tag.contains(idName)) return;
         final String id = tag.getString(idName);
         tag.putString(idName, updateName(remap, id));
     }
 
-    private static void updateEntity(@NotNull CompoundTag entityTag) {
+    private void updateEntity(@NotNull CompoundTag entityTag) {
         updateID(ENTITY_ID_REMAP, entityTag, "id");
     }
 
-    private static void updateBlockEntity(@NotNull CompoundTag entityTag) {
+    private void updateBlockEntity(@NotNull CompoundTag entityTag) {
         updateTagNames(entityTag);
         updateID(ENTITY_ID_REMAP, entityTag, "id");
 
         updateName(ENUM_REMAP, entityTag, "LatexType");
     }
 
-    private static void updateBlock(@NotNull CompoundTag blockTag) {
+    private void updateBlock(@NotNull CompoundTag blockTag) {
         updateID(BLOCK_ID_REMAP, blockTag, "Name");
         updateID(BLOCK_ITEM_ID_REMAP, blockTag, "Name");
     }
 
-    private static void updateItemTag(@NotNull CompoundTag itemTag) {
+    private void updateItemTag(@NotNull CompoundTag itemTag) {
         updateID(VARIANT_ID_REMAP,  itemTag, "form");
     }
 
-    private static void updateItem(@NotNull CompoundTag itemStack) {
+    private void updateItem(@NotNull CompoundTag itemStack) {
         updateID(ITEM_ID_REMAP, itemStack, "id");
         updateID(BLOCK_ITEM_ID_REMAP, itemStack, "id");
         if (itemStack.contains("tag")) {
@@ -175,7 +175,7 @@ public class ChangedDataFixer {
         }
     }
 
-    private static final Map<DataFixTypes, Consumer<CompoundTag>> DATA_FIXERS = Util.make(new HashMap<>(), map -> {
+    private final Map<DataFixTypes, Consumer<CompoundTag>> DATA_FIXERS = Util.make(new HashMap<>(), map -> {
         map.put(DataFixTypes.ENTITY_CHUNK, tag -> {
             if (tag.get("Entities") instanceof ListTag listTag) {
                 listTag.forEach(entityTag -> {
@@ -219,14 +219,14 @@ public class ChangedDataFixer {
 
     private static final Consumer<CompoundTag> NULL_OP = tag -> {};
 
-    public static void updateCompoundTag(@NotNull DataFixTypes type, @Nullable CompoundTag tag) {
+    public void updateCompoundTag(@NotNull DataFixTypes type, @Nullable CompoundTag tag) {
         if (tag == null)
             return;
 
         DATA_FIXERS.getOrDefault(type, NULL_OP).accept(tag);
     }
 
-    public static <T extends Comparable<T>> Optional<T> updateBlockState(@NotNull Property<T> property, String value) {
+    public <T extends Comparable<T>> Optional<T> updateBlockState(@NotNull Property<T> property, String value) {
         if (property instanceof EnumProperty<?>) {
             return property.getValue(updateName(ENUM_REMAP, value.toUpperCase()).toLowerCase());
         }

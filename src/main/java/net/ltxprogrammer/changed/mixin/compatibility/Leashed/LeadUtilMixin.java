@@ -13,7 +13,7 @@ import plutosion.leashed.util.LeadUtil;
 @Mixin(value = LeadUtil.class, remap = false)
 public abstract class LeadUtilMixin {
     @Inject(method = "canBeCustomleashed", at = @At("HEAD"), cancellable = true)
-    protected static void denyTransfurredPlayers(Mob mobEntity, Player player, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+    private static void denyTransfurredPlayers(Mob mobEntity, Player player, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (mobEntity instanceof ChangedEntity changedEntity && changedEntity.getUnderlyingPlayer() != null)
             cir.setReturnValue(false);
     }

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/use_waves_pulse",
+    "layer1": "changed:abilities/use_waves_mask"
+  }
+}

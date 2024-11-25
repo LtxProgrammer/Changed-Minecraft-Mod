@@ -4,7 +4,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHyenaTaurModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexCentaurLowerModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexCentaurUpperModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexFemaleTaurUpperModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
 import net.ltxprogrammer.changed.entity.beast.LatexHyenaTaur;
 import net.ltxprogrammer.changed.item.QuadrupedalArmor;
@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class LatexHyenaTaurRenderer extends AdvancedHumanoidRenderer<LatexHyenaTaur, LatexHyenaTaurModel, ArmorLatexCentaurUpperModel<LatexHyenaTaur>> {
+public class LatexHyenaTaurRenderer extends AdvancedHumanoidRenderer<LatexHyenaTaur, LatexHyenaTaurModel, ArmorLatexFemaleTaurUpperModel<LatexHyenaTaur>> {
     public LatexHyenaTaurRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexHyenaTaurModel(context.bakeLayer(LatexHyenaTaurModel.LAYER_LOCATION)),
-                ArmorModelPicker.centaur(context.getModelSet(), ArmorLatexCentaurUpperModel.MODEL_SET, ArmorLatexCentaurLowerModel.MODEL_SET), 0.7f);
+                ArmorModelPicker.centaur(context.getModelSet(), ArmorLatexFemaleTaurUpperModel.MODEL_SET, ArmorLatexCentaurLowerModel.MODEL_SET), 0.7f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet(),
                 CustomEyesLayer.fixedColor(Color3.parseHex("#ffffff")),
