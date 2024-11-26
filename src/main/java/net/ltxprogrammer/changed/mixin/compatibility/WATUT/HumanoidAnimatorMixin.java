@@ -19,11 +19,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> extends Pla
         super(p_170821_, p_170822_);
     }
 
-    @Shadow
-    public void syncPropertyModel(T entity) {
-        if (this instanceof AdvancedHumanoidModelInterface modelInterface)
-            modelInterface.getAnimator(entity).writePropertyModel(this);
-    }
+    @Shadow public abstract void syncPropertyModel(T entity);
 
     @Inject(method = "setupAnim", at = @At("TAIL"))
     public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {

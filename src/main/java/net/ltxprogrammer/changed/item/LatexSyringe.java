@@ -210,7 +210,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
-        if (MinecraftForge.EVENT_BUS.post(
+        if (Changed.postModEvent(
                 new UsedOnBlock(context.getClickedPos(),
                         clickedState,
                         context.getLevel(),
@@ -226,7 +226,7 @@ public class LatexSyringe extends ItemNameBlockItem implements SpecializedAnimat
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity livingEntity, InteractionHand hand) {
-        return MinecraftForge.EVENT_BUS.post(
+        return Changed.postModEvent(
                 new UsedOnEntity(livingEntity,
                         player.level,
                         player,

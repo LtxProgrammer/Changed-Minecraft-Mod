@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin;
 
 import com.mojang.datafixers.DataFixer;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.ChangedDataFixer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -18,11 +19,15 @@ import java.util.Optional;
 public abstract class NbtUtilsMixin {
     @Inject(method = "update(Lcom/mojang/datafixers/DataFixer;Lnet/minecraft/util/datafix/DataFixTypes;Lnet/minecraft/nbt/CompoundTag;II)Lnet/minecraft/nbt/CompoundTag;", at = @At("RETURN"))
     private static void dataFixForChanged(DataFixer dataFixer, DataFixTypes types, CompoundTag tag, int taggedVersion, int loadedVersion, CallbackInfoReturnable<CompoundTag> callback) {
-        ChangedDataFixer.updateCompoundTag(types, tag);
+        if (Changed.dataFixer != null)
+            Changed.dataFixer.updateCompoundTag(types, tag);
     }
 
     @Redirect(method = "setValueHelper", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/properties/Property;getValue(Ljava/lang/String;)Ljava/util/Optional;"))
     private static <T extends Comparable<T>> Optional<T> getValueAndUpdate(Property<T> instance, String s) {
-        return instance.getValue(s).or(() -> ChangedDataFixer.updateBlockState(instance, s));
+        if (Changed.dataFixer != null)
+            return instance.getValue(s).or(() -> Changed.dataFixer.updateBlockState(instance, s));
+        else
+            return instance.getValue(s);
     }
 }

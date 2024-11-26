@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.NullInput;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.InputWrapper;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
@@ -53,6 +54,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
 
     @Shadow public float xBob;
 
+    @Shadow private boolean flashOnSetHealth;
+
     @Inject(method = "<init>", at = @At("RETURN"))
     public void applyBasicPlayerInfo(Minecraft mc, ClientLevel level, ClientPacketListener packetListener, StatsCounter stats, ClientRecipeBook recipeBook, boolean p_108626_, boolean p_108627_, CallbackInfo ci) {
         this.setBasicPlayerInfo(Changed.config.client.basicPlayerInfo);
@@ -89,44 +92,6 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         if (!player.level.isClientSide) return;
 
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-            if (variant.getParent().canGlide) {
-                KeyboardInput kb;
-                if (input instanceof KeyboardInput k) kb = k;
-                else return;
-
-                boolean jumping = input.jumping;
-                boolean flying = this.getAbilities().flying;
-
-                jumping = kb.options.keyJump.isDown();
-
-                boolean flag3 = false;
-                if (this.autoJumpTime > 0) {
-                    flag3 = true;
-                    jumping = true;
-                }
-
-                boolean flag7 = false;
-                if (this.getAbilities().mayfly) {
-                    if (this.minecraft.gameMode.isAlwaysFlying()) {
-                        if (!flying) {
-                            flying = true;
-                            flag7 = true;
-                        }
-                    } else if (!input.jumping && jumping && !flag3) {
-                        if (this.jumpTriggerTime != 0 && !this.isSwimming()) {
-                            flying = !flying;
-                            flag7 = true;
-                        }
-                    }
-                }
-
-                if (jumping && !flag7 && !input.jumping && !flying && !this.isPassenger() && !this.onClimbable()) {
-                    if (this.tryToStartFallFlying()) {
-                        this.connection.send(new ServerboundPlayerCommandPacket(this, ServerboundPlayerCommandPacket.Action.START_FALL_FLYING));
-                    }
-                }
-            }
-
             if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
                 player.setSprinting(true);
         });
@@ -180,5 +145,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
             input = inputCopy;
             inputCopy = null;
         }
+    }
+
+    @Inject(method = "hurtTo", at = @At("HEAD"))
+    public void disableFlashOnTf(float health, CallbackInfo ci) {
+        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
+            if (variant.isTransfurring())
+                this.flashOnSetHealth = false;
+        });
     }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "changed:abilities/switch_transfur_mode_replication",
+    "layer1": "changed:abilities/switch_transfur_mode_absorption"
+  }
+}

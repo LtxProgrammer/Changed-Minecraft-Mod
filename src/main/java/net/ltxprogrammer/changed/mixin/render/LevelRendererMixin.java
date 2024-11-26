@@ -156,19 +156,19 @@ public abstract class LevelRendererMixin {
     @Inject(method = "renderChunkLayer", at = @At("RETURN"))
     public void postRenderLayer(RenderType type, PoseStack pose, double x, double y, double z, Matrix4f matrix, CallbackInfo callback) {
         if (type == RenderType.solid()) {
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
             renderChunkLayer(ChangedShaders.latexSolid(), pose, x, y, z, matrix);
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
         }
         else if (type == RenderType.cutoutMipped()) {
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
             renderChunkLayer(ChangedShaders.latexCutoutMipped(), pose, x, y, z, matrix);
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
         }
         else if (type == RenderType.cutout()) {
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = true;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = true;
             renderChunkLayer(ChangedShaders.latexCutout(), pose, x, y, z, matrix);
-            LatexCoveredBlocks.isRenderingChangedBlockLayer = false;
+            LatexCoveredBlockRenderer.isRenderingChangedBlockLayer = false;
         }
     }
 

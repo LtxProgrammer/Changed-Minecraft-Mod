@@ -256,10 +256,6 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
     public void saveData(CompoundTag tag, IAbstractChangedEntity entity) {}
     public void readData(CompoundTag tag, IAbstractChangedEntity entity) {}
 
-    public ResourceLocation getTexture(IAbstractChangedEntity entity) {
-        return new ResourceLocation(getRegistryName().getNamespace(), "textures/abilities/" + getRegistryName().getPath() + ".png");
-    }
-
     // Broadcast changes to clients
     public final void setDirty(IAbstractChangedEntity entity) {
         CompoundTag data = new CompoundTag();

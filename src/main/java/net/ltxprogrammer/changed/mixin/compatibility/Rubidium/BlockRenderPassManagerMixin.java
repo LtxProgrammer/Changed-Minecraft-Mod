@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPass;
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPassManager;
 import net.ltxprogrammer.changed.client.ChangedShaders;
-import net.ltxprogrammer.changed.client.LatexCoveredBlocks;
 import net.ltxprogrammer.changed.extension.rubidium.ChangedBlockRenderPass;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Final;
