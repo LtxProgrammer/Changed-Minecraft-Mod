@@ -328,6 +328,7 @@
   "block.changed.red_pillow": "红色枕头",
   "block.changed.white_pillow": "白色枕头",
   "block.changed.yellow_pillow": "黄色枕头",
+  "block.changed.stasis_chamber": "冷冻仓",
 
   "fluid.changed.dark_latex": "液态黑胶",
   "fluid.changed.white_latex": "液态白胶",
@@ -413,6 +414,11 @@
   "entity.changed.white_latex_wolf_male": "雄性白胶狼",
   "entity.changed.white_wolf_female": "雌性白狼",
   "entity.changed.white_wolf_male": "雄性白狼",
+  "entity.changed.dark_latex_double_yufeng": "双头驭风",
+  "entity.changed.latex_hyena_taur": "胶液鬣狗牛",
+  "entity.changed.latex_siamese_cat": "胶液暹罗猫",
+  "entity.changed.pooltoy_wolf": "Pooltoy狼",
+  "entity.changed.custom_latex": "自定义胶兽",
 
   "item.changed.beifeng_spawn_egg": "北风刷怪蛋",
   "item.changed.crystal_wolf_spawn_egg": "魔晶狼刷怪蛋",
@@ -483,6 +489,11 @@
   "item.changed.white_latex_wolf_male_spawn_egg": "雄性白胶狼刷怪蛋",
   "item.changed.white_wolf_female_spawn_egg":"雌性白狼刷怪蛋",
   "item.changed.white_wolf_male_spawn_egg": "雄性白狼刷怪蛋",
+  "item.changed.dark_latex_double_yufeng_spawn_egg": "双头驭风刷怪蛋",
+  "item.changed.latex_hyena_taur_spawn_egg": "鬣狗牛刷怪蛋",
+  "item.changed.latex_siamese_cat_spawn_egg": "暹罗猫刷怪蛋",
+  "item.changed.pooltoy_wolf_spawn_egg": "Pooltoy狼刷怪蛋",
+  "item.changed.custom_latex_spawn_egg": "自定义胶兽刷怪蛋",
   
   "changed.patreon.level0": "Discord服务器成员",
   "changed.patreon.level1": "等级 1",
@@ -612,21 +623,10 @@
   "changed.config.bpi.override_dl_iris": "覆盖黑胶兽的眼睛颜色",
   "changed.config.bpi.override_all_eye_styles": "覆盖所有眼睛样式以匹配",
 
-  "entity.changed.dark_latex_double_yufeng": "双头驭风",
-  "entity.changed.latex_hyena_taur": "胶液鬣狗牛",
-  "entity.changed.latex_siamese_cat": "胶液暹罗猫",
-  "entity.changed.pooltoy_wolf": "Pooltoy狼",
-  "entity.changed.custom_latex": "自定义胶兽",
-  "item.changed.dark_latex_double_yufeng_spawn_egg": "双头驭风刷怪蛋",
-  "item.changed.latex_hyena_taur_spawn_egg": "鬣狗牛刷怪蛋",
-  "item.changed.latex_siamese_cat_spawn_egg": "暹罗猫刷怪蛋",
-  "item.changed.pooltoy_wolf_spawn_egg": "Pooltoy狼刷怪蛋",
-  "item.changed.custom_latex_spawn_egg": "自定义胶兽刷怪蛋",
   "changed.stasis.open": "开门",
   "changed.stasis.close": "关门",
   "changed.stasis.run": "执行修改",
   "changed.stasis.capture_next": "捕捉下一个",
   "changed.stasis.toggle_stasis": "冷冻状态: %s",
-  "changed.stasis.modify": "修改",
-  "block.changed.stasis_chamber": "冷冻仓"
+  "changed.stasis.modify": "修改"
 }
