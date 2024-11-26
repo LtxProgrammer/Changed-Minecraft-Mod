@@ -17,6 +17,7 @@
     "ChiselsAndBits.ChiselRenderTypeMixin",
     "CTM.BlockRenderLayerMixin",
     "FirstPerson.FirstPersonBaseMixin",
+    "Forgery.LatexHumanoidArmorLayerMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
     "Leashed.LeadUtilMixin",
     "Moonlight.AbstractUpperBodyAnimatorMixin",
