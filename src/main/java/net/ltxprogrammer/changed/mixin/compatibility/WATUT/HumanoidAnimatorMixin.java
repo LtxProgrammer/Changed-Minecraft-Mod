@@ -4,6 +4,7 @@ import com.corosus.watut.WatutMod;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AdvancedHumanoidModel.class, remap = false)
+@RequiredMods("watut")
 public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> extends PlayerModel<T> {
     public HumanoidAnimatorMixin(ModelPart p_170821_, boolean p_170822_) {
         super(p_170821_, p_170822_);

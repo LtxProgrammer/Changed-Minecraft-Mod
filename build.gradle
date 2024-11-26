@@ -187,6 +187,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor project(':ap')
 
     implementation fg.deobf("curse.maven:presence-footsteps-forge-433068:4328018") // Forge 1.18.2 v1.5.1
     implementation fg.deobf("curse.maven:spark-361579:4505375") // Forge 1.18.2 v1.10.38

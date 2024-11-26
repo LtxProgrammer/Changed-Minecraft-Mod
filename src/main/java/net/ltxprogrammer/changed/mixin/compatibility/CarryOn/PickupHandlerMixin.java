@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.compatibility.CarryOn;
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +13,7 @@ import tschipp.carryon.common.config.Configs;
 import tschipp.carryon.common.handler.PickupHandler;
 
 @Mixin(value = PickupHandler.class, remap = false)
+@RequiredMods("carryon")
 public class PickupHandlerMixin {
     @Inject(method = "canPlayerPickUpEntity", at = @At("HEAD"), cancellable = true)
     private static void handleChangedEntities(ServerPlayer player, Entity toPickUp, CallbackInfoReturnable<Boolean> cir) {

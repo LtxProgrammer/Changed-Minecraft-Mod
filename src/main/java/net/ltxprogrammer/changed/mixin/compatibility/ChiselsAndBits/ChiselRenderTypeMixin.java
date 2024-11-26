@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.ChiselsAndBits;
 
 import mod.chiselsandbits.client.model.baked.chiseled.ChiselRenderType;
 import mod.chiselsandbits.client.model.baked.chiseled.VoxelType;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.extension.chiselsandbits.ChangedChiselRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.common.IExtensibleEnum;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ChiselRenderType.class, remap = false)
+@RequiredMods("chiselsandbits")
 public abstract class ChiselRenderTypeMixin implements IExtensibleEnum {
     private static ChiselRenderType create(String name, RenderType layer, VoxelType type) {
         throw new NotImplementedException("Enum not extended");

@@ -7,6 +7,7 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -43,6 +44,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Mixin(value = RenderEvents.class, remap = false)
+@RequiredMods("carryon")
 public abstract class RenderEventsMixin {
     @Unique private static Player currentPlayer = null;
 
