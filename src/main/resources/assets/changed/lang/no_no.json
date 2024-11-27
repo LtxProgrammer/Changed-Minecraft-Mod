@@ -622,5 +622,12 @@
   "changed.config.bpi.size": "Modellstørrelse",
   "changed.config.bpi.size.value": "Størrelse: %s%%",
   "changed.config.bpi.override_dl_iris": "Overstyre regnbuehinnefarge på mørk lateks varianter",
-  "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche"
+  "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche",
+
+  "changed.stasis.open": "Åpne dør",
+  "changed.stasis.close": "Lukk dør",
+  "changed.stasis.run": "Utføre modifikasjoner",
+  "changed.stasis.capture_next": "Fange neste",
+  "changed.stasis.toggle_stasis": "Stase: %s",
+  "changed.stasis.modify": "Modifikasjoner"
 }

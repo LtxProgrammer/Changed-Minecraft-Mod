@@ -622,5 +622,12 @@
   "changed.config.bpi.size": "Modellstorlek",
   "changed.config.bpi.size.value": "Storlek: %s%%",
   "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",
-  "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha"
+  "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha",
+
+  "changed.stasis.open": "Öppna dörr",
+  "changed.stasis.close": "Stäng dörr",
+  "changed.stasis.run": "Exekvera modifikationer",
+  "changed.stasis.capture_next": "Fångst nästa",
+  "changed.stasis.toggle_stasis": "Stas: %s",
+  "changed.stasis.modify": "Modifikationer"
 }
