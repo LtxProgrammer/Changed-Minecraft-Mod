@@ -1,9 +1,17 @@
 package net.ltxprogrammer.changed.util;
 
 import net.ltxprogrammer.changed.block.entity.GluBlockEntity;
+import net.ltxprogrammer.changed.client.LocalTransfurVariantInstance;
+import net.ltxprogrammer.changed.client.RemoteTransfurVariantInstance;
 import net.ltxprogrammer.changed.client.gui.GluBlockEditScreen;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.server.ServerTransfurVariantInstance;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -36,11 +45,26 @@ public class UniversalDist {
             if (player == getLocalPlayer())
                 Minecraft.getInstance().setScreen(new GluBlockEditScreen(gluBlockEntity));
         }
+
+        public static TransfurVariantInstance<?> createVariantFor(TransfurVariant<?> variant, @NotNull Player host) {
+            if (host instanceof LocalPlayer localPlayer)
+                return new LocalTransfurVariantInstance<>(variant, localPlayer);
+            else if (host instanceof RemotePlayer remotePlayer)
+                return new RemoteTransfurVariantInstance<>(variant, remotePlayer);
+            else
+                return null;
+        }
     }
 
     public static class ServerDist {
         public static Level getLevel() {
             return ServerLifecycleHooks.getCurrentServer().overworld();
+        }
+
+        public static TransfurVariantInstance<?> createVariantFor(TransfurVariant<?> variant, @NotNull Player host) {
+            if (host instanceof ServerPlayer serverPlayer)
+                return new ServerTransfurVariantInstance<>(variant, serverPlayer);
+            return null;
         }
     }
 
@@ -84,5 +108,13 @@ public class UniversalDist {
 
     public static void openGluBlock(Player player, GluBlockEntity gluBlockEntity) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientDist.openGluBlock(player, gluBlockEntity));
+    }
+
+    @Nullable
+    public static TransfurVariantInstance<?> createVariantFor(@NotNull TransfurVariant<?> variant, @NotNull Player host) {
+        if (host instanceof ServerPlayer)
+            return ServerDist.createVariantFor(variant, host);
+        else
+            return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> ClientDist.createVariantFor(variant, host));
     }
 }
