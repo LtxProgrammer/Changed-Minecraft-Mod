@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.client.animations.HelperModel;
 import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.util.Cacheable;
