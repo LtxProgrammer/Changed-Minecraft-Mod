@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
@@ -981,13 +983,19 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     }
 
     public float getSwimEfficiency() {
-        double baselineSwim = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(ForgeMod.SWIM_SPEED.get()).getBaseValue();
+        if (!newAttributes.containsKey(ForgeMod.SWIM_SPEED.get()))
+            return 1.0f;
+
+        double baselineSwim = DEFAULT_PLAYER_ATTRIBUTES.get().getBaseValue(ForgeMod.SWIM_SPEED.get());
         double intendedSwim = newAttributes.get(ForgeMod.SWIM_SPEED.get());
         return (float)(baselineSwim / intendedSwim);
     }
 
     public float getSprintEfficiency() {
-        double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getInstance(Attributes.MOVEMENT_SPEED).getBaseValue();
+        if (!newAttributes.containsKey(Attributes.MOVEMENT_SPEED))
+            return 1.0f;
+
+        double baselineSprint = DEFAULT_PLAYER_ATTRIBUTES.get().getBaseValue(Attributes.MOVEMENT_SPEED);
         double intendedSprint = newAttributes.get(Attributes.MOVEMENT_SPEED) * 0.1;
         return (float)(baselineSprint / intendedSprint);
     }
