@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.client.tfanimations;
+package net.ltxprogrammer.changed.client.animations;
 
 import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;

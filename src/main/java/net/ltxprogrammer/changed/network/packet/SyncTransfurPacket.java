@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.network.packet;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.client.Minecraft;
@@ -69,7 +70,7 @@ public class SyncTransfurPacket implements ChangedPacket {
                 if (player != null) {
                     final var variant = ProcessTransfur.setPlayerTransfurVariant(player,
                             ChangedRegistry.TRANSFUR_VARIANT.get().getValue(listing.form),
-                            listing.cause,
+                            TransfurContext.hazard(listing.cause),
                             listing.progress,
                             listing.temporaryFromSuit);
                     if (variant != null)

@@ -1,9 +1,10 @@
 package net.ltxprogrammer.changed.mixin.render;
 
+import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
-import net.ltxprogrammer.changed.client.tfanimations.AnimationInstance;
-import net.ltxprogrammer.changed.client.tfanimations.Limb;
+import net.ltxprogrammer.changed.client.animations.AnimationInstance;
+import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
@@ -16,7 +17,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -67,7 +68,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 !mainHandItem.isEmpty() && mainHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
             if (handler != null && handler.setupAnimation(mainHandItem, entityContext, upperModelContext, InteractionHand.MAIN_HAND)) {
-                return;
+                callback.cancel();
             }
         }
 
@@ -75,25 +76,19 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 !offHandItem.isEmpty() && offHandItem.getItem() instanceof SpecializedAnimations specialized) {
             var handler = specialized.getAnimationHandler();
             if (handler != null && handler.setupAnimation(offHandItem, entityContext, upperModelContext, InteractionHand.OFF_HAND)) {
-                return;
+                callback.cancel();
             }
         }
     }
 
-    @Unique
-    private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/geom/ModelPart;copyFrom(Lnet/minecraft/client/model/geom/ModelPart;)V"))
     public void setupAnimAndForceAnimation(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float p_102870_, float p_102871_, CallbackInfo ci) {
+        ((ClientLivingEntityExtender)entity).getOrderedAnimations().forEach(instance -> {
+            instance.animate((HumanoidModel<?>)(Object)this, Mth.positiveModulo(ageInTicks, 1.0f));
+        });
+
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(entity), variant -> {
             if (variant.transfurProgression < 1f) {
-                final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
-                    final var anim = TransfurAnimations.getAnimationFromCause(variant.transfurContext.cause);
-                    return anim != null ? anim.createInstance((HumanoidModel<?>)(Object)this) : null;
-                });
-
-                if (instance != null && !FormRenderHandler.isRenderingHand())
-                    instance.animate((HumanoidModel<?>)(Object)this, variant.getTransfurProgression(ageInTicks) * variant.transfurContext.cause.getDuration());
-
                 final Minecraft minecraft = Minecraft.getInstance();
                 final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
                 final var latexRenderer = dispatcher.getRenderer(variant.getChangedEntity());
@@ -105,19 +100,7 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 Arrays.stream(Limb.values()).map(latexModel::getTransfurHelperModel).filter(Objects::nonNull).forEach(helper -> {
                     helper.transitionOriginal((HumanoidModel<?>)(Object)this, TransfurAnimator.getPreMorphProgression(variant.getTransfurProgression(ageInTicks)));
                 });
-            } else {
-                if (!cachedAnimationInstance.containsKey(entity))
-                    return;
-
-                cachedAnimationInstance.get(entity).resetToBaseline((HumanoidModel<?>)(Object)this);
-                cachedAnimationInstance.remove(entity);
             }
-        }, () -> {
-            if (!cachedAnimationInstance.containsKey(entity))
-                return;
-
-            cachedAnimationInstance.get(entity).resetToBaseline((HumanoidModel<?>)(Object)this);
-            cachedAnimationInstance.remove(entity);
         });
     }
 }

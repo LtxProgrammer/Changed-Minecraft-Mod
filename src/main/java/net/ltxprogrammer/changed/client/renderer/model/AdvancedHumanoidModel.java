@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.client.renderer.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
+import net.ltxprogrammer.changed.client.animations.AnimationInstance;
+import net.ltxprogrammer.changed.client.animations.HelperModel;
+import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.*;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
@@ -15,6 +19,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 
 import javax.annotation.Nullable;
@@ -81,21 +86,10 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         }
     }
 
-    private final Map<T, AnimationInstance> cachedAnimationInstance = new HashMap<>();
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        ProcessTransfur.ifPlayerTransfurred(entity.getUnderlyingPlayer(), variant -> {
-            if (variant.transfurProgression < 1f) {
-                final var instance = cachedAnimationInstance.computeIfAbsent(entity, e -> {
-                    final var anim = TransfurAnimations.getAnimationFromCause(variant.transfurContext.cause);
-                    return anim != null ? anim.createInstance(this) : null;
-                });
-
-                if (instance != null && !FormRenderHandler.isRenderingHand())
-                    instance.animate(this, variant.getTransfurProgression(ageInTicks) * variant.transfurContext.cause.getDuration());
-            } else {
-                cachedAnimationInstance.remove(entity);
-            }
+        ((ClientLivingEntityExtender)entity.maybeGetUnderlying()).getOrderedAnimations().forEach(instance -> {
+            instance.animate(this, Mth.positiveModulo(ageInTicks, 1.0f));
         });
 
         this.syncPropertyModel(entity);

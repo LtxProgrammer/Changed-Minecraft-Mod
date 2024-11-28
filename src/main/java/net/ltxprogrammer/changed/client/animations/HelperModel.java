@@ -1,5 +1,6 @@
-package net.ltxprogrammer.changed.client.tfanimations;
+package net.ltxprogrammer.changed.client.animations;
 
+import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 

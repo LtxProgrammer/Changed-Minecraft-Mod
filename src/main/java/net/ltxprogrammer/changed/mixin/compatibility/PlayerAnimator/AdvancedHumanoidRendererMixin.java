@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -27,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AdvancedHumanoidRenderer.class, remap = false)
+@RequiredMods("playeranimator")
 public abstract class AdvancedHumanoidRendererMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
     @Shadow public abstract AdvancedHumanoidModel<T> getModel(ChangedEntity entity);
     @Shadow public abstract void setModelResetPoseStack(T entity, @Nullable PoseStack.Pose pose);

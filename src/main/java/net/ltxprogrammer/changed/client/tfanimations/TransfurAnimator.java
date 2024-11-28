@@ -6,6 +6,8 @@ import com.mojang.math.Matrix4f;
 import net.ltxprogrammer.changed.client.CubeExtender;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
+import net.ltxprogrammer.changed.client.animations.HelperModel;
+import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.curio.TransitionalCurio;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;

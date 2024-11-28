@@ -18,7 +18,18 @@ Any aspiring developer is welcome to fork and create a pull request to submit th
 
 Even if you aren't a developer, you can help with translations, documentation, or other simple issues. However, any changes you make to the code or files should be on your own fork. Create a pull request when you are ready to submit any changes.
 
-## How can I make my own sub-mod?
+## Expectation of Quality
+We strive to keep the code and assets of the Changed: Minecraft Mod at a excellent level of quality. All pull requests and issues are subject to be reviewed for quality assurance. Some quality points to keep in mind:
+- Keep translation files organized (reference `en_us.json` for order/layout)
+- Code should be efficient, well thought out, and should be able to handle most variations of mod environments.
+- Code comments (if any) should be written in English. Comments are only necessary if the code may be difficult to understand
+- Textures should fit Minecraft's vanilla style.
+- 3D should use textures to show small/medium detail, and should reserve additional parts for large details.
+- Issues should be written clearly in English
+
+Submitting content that fails to meet quality expectations isn't an issue, and can be a good learning experience on what can be improved. However, excessively submitting issues/pull requests that repeatedly fail to meet quality expectations will result in a warning, and then a ban from contributing.
+
+## How can I make my own extension mod?
 First, grab the [Forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install **Intellij**.
 Changed:MC uses many mixins to alter code for compatibility and functionality.
 Add this line to your buildscript dependencies and repositories (*build.gradle*):

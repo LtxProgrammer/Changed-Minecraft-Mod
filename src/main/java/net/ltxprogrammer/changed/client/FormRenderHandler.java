@@ -35,6 +35,8 @@ public abstract class FormRenderHandler {
             variant.sync(player);
             variant.getChangedEntity().setCustomNameVisible(true);
 
+            variant.prepareForRender(partialTick);
+
             if (variant.getTransfurProgression(partialTick) < 1f && !variant.isTemporaryFromSuit()) {
                 TransfurAnimator.startCapture();
 

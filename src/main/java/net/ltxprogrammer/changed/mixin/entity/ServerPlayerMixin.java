@@ -50,7 +50,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 if (!oldVariant.willSurviveTransfur)
                     return;
 
-                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext.cause, oldVariant.transfurProgression);
+                var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext, oldVariant.transfurProgression);
                 newVariant.load(oldVariant.save());
                 newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
                 newVariant.handleRespawn();
@@ -67,7 +67,7 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 Changed.LOGGER.warn("Missing transfur variant registry entry for {}, falling back", variantId);
                 variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
             }
-            final TransfurVariantInstance<?> variantInstance = ProcessTransfur.setPlayerTransfurVariant(this, variant, TransfurCause.DEFAULT, 1.0f, false);
+            final TransfurVariantInstance<?> variantInstance = ProcessTransfur.setPlayerTransfurVariant(this, variant, null, 1.0f, false);
 
             if (variantInstance == null) {
                 Changed.LOGGER.warn("Instanced transfur variant is null");

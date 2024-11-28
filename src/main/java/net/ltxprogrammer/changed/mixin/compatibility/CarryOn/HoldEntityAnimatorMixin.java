@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpper
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.HoldEntityAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -28,6 +29,7 @@ import tschipp.carryon.common.scripting.CarryOnOverride;
 import tschipp.carryon.common.scripting.ScriptChecker;
 
 @Mixin(value = HoldEntityAnimator.class, remap = false)
+@RequiredMods("carryon")
 public abstract class HoldEntityAnimatorMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends AbstractUpperBodyAnimator<T, M> {
     public HoldEntityAnimatorMixin(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
         super(head, torso, leftArm, rightArm);

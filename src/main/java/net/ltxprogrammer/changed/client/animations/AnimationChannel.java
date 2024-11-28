@@ -1,26 +1,42 @@
-package net.ltxprogrammer.changed.client.tfanimations;
+package net.ltxprogrammer.changed.client.animations;
 
 import com.mojang.math.Vector3f;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 public class AnimationChannel {
-    private final Targets target;
+    private final Target target;
     private final List<Keyframe> keyframes;
 
-    public Targets getTarget() {
+    public static Codec<AnimationChannel> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+            Target.CODEC.fieldOf("target").forGetter(channel -> channel.target),
+            Codec.list(Keyframe.CODEC).fieldOf("keyframes").forGetter(channel -> channel.keyframes)
+    ).apply(builder, AnimationChannel::new));
+
+    public Target getTarget() {
         return target;
     }
 
-    public AnimationChannel(Targets target, Keyframe... keyframes) {
+    public AnimationChannel(Target target, Keyframe... keyframes) {
         this.target = target;
         this.keyframes = Arrays.asList(keyframes);
+        this.keyframes.sort((k1, k2) -> Float.compare(k1.getTime(), k2.getTime()));
+    }
+
+    public AnimationChannel(Target target, List<Keyframe> keyframes) {
+        this.target = target;
+        this.keyframes = new ArrayList<>(keyframes);
         this.keyframes.sort((k1, k2) -> Float.compare(k1.getTime(), k2.getTime()));
     }
 
@@ -46,6 +62,10 @@ public class AnimationChannel {
         }
 
         return Pair.of(Pair.of(k1, k2), Pair.of(k3, k4));
+    }
+
+    public boolean isDone(float time) {
+        return keyframes.stream().map(Keyframe::getTime).allMatch(keyTime -> keyTime < time);
     }
 
     public void animate(AnimationDefinition definition, ModelPart part, float time) {
@@ -97,14 +117,32 @@ public class AnimationChannel {
         }
     }
 
-    public enum Targets {
-        POSITION,
-        ROTATION
+    public enum Target implements StringRepresentable {
+        POSITION("position"),
+        ROTATION("rotation");
+
+        public static final Codec<Target> CODEC = Codec.STRING.comapFlatMap(Target::fromSerial, Target::getSerializedName);
+
+        private final String serialName;
+
+        Target(String serialName) {
+            this.serialName = serialName;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
+
+        public static DataResult<Target> fromSerial(String name) {
+            return Arrays.stream(values()).filter(type -> type.serialName.equals(name))
+                    .findFirst().map(DataResult::success).orElseGet(() -> DataResult.error(name + " is not a valid target"));
+        }
     }
 
-    public enum Interpolations implements BiConsumer<Float, AnimationChannel.Float4Consumer> {
-        LINEAR((u, consumer) -> consumer.accept(0.0f, 1.0f - u, u, 0.0f)),
-        CATMULLROM((u, consumer) -> {
+    public enum Interpolation implements BiConsumer<Float, AnimationChannel.Float4Consumer>, StringRepresentable {
+        LINEAR("linear", (u, consumer) -> consumer.accept(0.0f, 1.0f - u, u, 0.0f)),
+        CATMULLROM("catmullrom", (u, consumer) -> {
             final float T = 0.5f;
             final float u2 = u * u;
             final float u3 = u2 * u;
@@ -117,10 +155,24 @@ public class AnimationChannel {
             );
         });
 
+        public static final Codec<Interpolation> CODEC = Codec.STRING.comapFlatMap(Interpolation::fromSerial, Interpolation::getSerializedName);
+
+        private final String serialName;
         private final BiConsumer<Float, Float4Consumer> fn;
 
-        Interpolations(BiConsumer<Float, Float4Consumer> fn) {
+        Interpolation(String serialName, BiConsumer<Float, Float4Consumer> fn) {
+            this.serialName = serialName;
             this.fn = fn;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serialName;
+        }
+
+        public static DataResult<Interpolation> fromSerial(String name) {
+            return Arrays.stream(values()).filter(type -> type.serialName.equals(name))
+                    .findFirst().map(DataResult::success).orElseGet(() -> DataResult.error(name + " is not a known interpolation"));
         }
 
         @Override

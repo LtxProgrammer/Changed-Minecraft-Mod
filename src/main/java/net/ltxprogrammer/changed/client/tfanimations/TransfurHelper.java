@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.client.tfanimations;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.animations.HelperModel;
+import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.Util;
@@ -28,6 +30,7 @@ public class TransfurHelper {
     protected final HelperModel TailedTorso;
     protected final HelperModel FeminineTorso;
     protected final HelperModel FeminineTorsoAlt;
+    protected final HelperModel FeminineTorsoLegless;
     protected final HelperModel SnoutedHead;
     protected final HelperModel Legless;
     protected final HelperModel TaurTorso;
@@ -61,6 +64,7 @@ public class TransfurHelper {
         this.TailedTorso = HelperModel.fixed(root.getChild("TailedTorso"));
         this.FeminineTorso = HelperModel.fixed(root.getChild("FeminineTorso"));
         this.FeminineTorsoAlt = HelperModel.fixed(root.getChild("FeminineTorsoAlt"));
+        this.FeminineTorsoLegless = HelperModel.fixed(root.getChild("FeminineTorsoLegless"));
         this.SnoutedHead = HelperModel.fixed(root.getChild("SnoutedHead"));
         this.Legless = HelperModel.withPrepareAndTransition(root.getChild("Legless"), (beforePose, part, model) -> {
             return beforePose.translate(0.0f, 12.0f, 0.0f)
@@ -234,6 +238,22 @@ public class TransfurHelper {
             PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(58, 2).addBox(-1.0F, 0.25F, -0.5F, 2.0F, 1.0F, 2.0F, new CubeDeformation(-0.2F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.1309F, 0.0F, 0.0F));
         }
 
+        // FEMININE TORSO LEGLESS
+        {
+            PartDefinition LeglessFeminineTorso = partdefinition.addOrReplaceChild("FeminineTorsoLegless", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Torso_r1 = LeglessFeminineTorso.addOrReplaceChild("Torso_r1", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 5.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition TorsoLower_r1 = LeglessFeminineTorso.addOrReplaceChild("TorsoLower_r1", CubeListBuilder.create().texOffs(16, 21).addBox(-4.0F, 5.0F, -2.0F, 8.0F, 7.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+            PartDefinition Plantoids2 = LeglessFeminineTorso.addOrReplaceChild("Plantoids2", CubeListBuilder.create(), PartPose.offset(0.0F, 0.25F, -2.0F));
+
+            PartDefinition RightPlantoid_r2 = Plantoids2.addOrReplaceChild("RightPlantoid_r2", CubeListBuilder.create().texOffs(18, 18).addBox(-4.0F, -1.9F, 0.15F, 4.0F, 4.0F, 2.0F, new CubeDeformation(-0.03F))
+                    .texOffs(22, 18).addBox(0.0F, -1.9F, 0.15F, 4.0F, 4.0F, 2.0F, new CubeDeformation(-0.03F)), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.0017F, 0.0F, 0.0F));
+
+            PartDefinition Center_r2 = Plantoids2.addOrReplaceChild("Center_r2", CubeListBuilder.create().texOffs(22, 19).addBox(-0.5F, -1.5F, 0.4F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.2F)), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.0009F, 0.0F, 0.0F));
+        }
+
         // SNOUTED HEAD
         {
             PartDefinition SnoutedHead = partdefinition.addOrReplaceChild("SnoutedHead", CubeListBuilder.create().texOffs(-6, -6).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE)
@@ -376,6 +396,10 @@ public class TransfurHelper {
 
     public static HelperModel getFeminineTorsoAlt() {
         return INSTANCE.get().FeminineTorsoAlt;
+    }
+
+    public static HelperModel getFeminineTorsoLegless() {
+        return INSTANCE.get().FeminineTorsoLegless;
     }
 
     public static HelperModel getSnoutedHead() {

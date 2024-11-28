@@ -20,7 +20,6 @@ import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,14 +32,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -62,14 +56,13 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = Changed.MODID)
-public class TransfurVariantInstance<T extends ChangedEntity> {
+public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     private static final Cacheable<AttributeMap> DEFAULT_PLAYER_ATTRIBUTES = Cacheable.of(() -> new AttributeMap(Player.createAttributes().build()));
 
-    private final TransfurVariant<T> parent;
-    private final T entity;
+    protected final TransfurVariant<T> parent;
+    protected final T entity;
     private final Player host;
     public final ImmutableMap<AbstractAbility<?>, AbstractAbilityInstance> abilityInstances;
 
@@ -94,7 +87,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public float transfurProgression = 0.0f;
     public TransfurContext transfurContext = TransfurContext.hazard(TransfurCause.ATTACK_REPLICATE_LEFT);
     public boolean willSurviveTransfur = true;
-    private boolean isTemporaryFromSuit = false;
+    protected boolean isTemporaryFromSuit = false;
 
     private void captureBaseline(Map<Attribute, Double> baseValues, AttributeMap attributeMap) {
         baseValues.clear();
@@ -239,8 +232,9 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             selectedAbility = abilityInstances.keySet().asList().get(0);
     }
 
+    @Nullable
     public static TransfurVariantInstance<?> variantFor(@Nullable TransfurVariant<?> variant, @NotNull Player host) {
-        return variant != null ? new TransfurVariantInstance<>(variant, host) : null;
+        return variant != null ? UniversalDist.createVariantFor(variant, host) : null;
     }
 
     public boolean isTemporaryFromSuit() {
@@ -261,19 +255,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
 
             isTemporaryFromSuit = true;
             return false;
-        }
-
-        else if (!this.host.level.isClientSide && isTemporaryFromSuit) {
-            if (grabber == null || grabber.getEntity().isDeadOrDying() || grabber.getEntity().isRemoved()) { // Remove variant if grabber doesn't exist
-                ProcessTransfur.removePlayerTransfurVariant(this.host);
-                return true;
-            }
-
-            var ability = grabber.getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get());
-            if (ability == null || ability.grabbedEntity != this.host) {
-                ProcessTransfur.removePlayerTransfurVariant(this.host);
-                return true;
-            }
         }
 
         return false;
@@ -430,7 +411,7 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
 
             try {
-                instance.tick(event.player);
+                instance.tick();
                 if (!event.player.isSpectator()) {
                     if (!instance.entity.level.isClientSide)
                         instance.entity.tickLeash();
@@ -609,21 +590,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 living.setItemSlot(value, shouldReset ? ItemStack.EMPTY : player.getItemBySlot(value).copy());
             }
         }
-
-        /*if(player.isUsingItem())
-        {
-            if(player.getItemInUseMaxCount() == 1) {
-                living.swingingArm = player.swingingArm;
-                Hand hand = player.getActiveHand();
-                living.setActiveHand(hand);
-                living.setLivingFlag(1, true);
-                living.setLivingFlag(2, hand == Hand.OFF_HAND);
-            }
-        }
-        else {
-            living.setLivingFlag(1, false);
-            living.resetActiveHand();
-        }*/
     }
 
     public void sync(Player player) {
@@ -719,191 +685,93 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
         });
     }
 
-    public void tick(Player player) {
-        if (player == null) return;
-
-        if (checkForTemporary())
-            return;
-
-        if (ageAsVariant == 0 && transfurProgression >= 1f)
-            checkBreakItems(player);
-
-        ageAsVariant++;
-
-        if (previousAttributes.isEmpty()) {
-            if (transfurProgression == 0.0f)
-                captureBaseline(previousAttributes, this.host.getAttributes());
-            else
-                captureBaseline(previousAttributes, DEFAULT_PLAYER_ATTRIBUTES.get());
-        }
-
-        if (newAttributes.isEmpty()) {
-            captureBaseline(newAttributes, this.entity.getAttributes());
-
-            mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp,
-                    newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
-        }
-
+    protected void tickTransfurProgress() {
         transfurProgressionO = transfurProgression;
         if (transfurProgression < 1f) {
             transfurProgression += (1.0f / transfurContext.cause.getDuration()) * 0.05f;
-            if (!player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
+            if (!host.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION)) {
                 transfurProgressionO = 1f;
                 transfurProgression = 1f;
             }
 
-            if (player.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
+            if (host.level.getGameRules().getBoolean(ChangedGameRules.RULE_KEEP_BRAIN)) {
                 willSurviveTransfur = true;
             }
 
-            checkBreakItems(player);
-            mapAttributes(player, previousAttributes, TransfurVariantInstance::noOp,
+            checkBreakItems(host);
+            mapAttributes(host, previousAttributes, TransfurVariantInstance::noOp,
                     newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
 
-            if (transfurProgression >= 1f && !willSurviveTransfur) {
-                if (!player.level.isClientSide)
-                    this.getParent().replaceEntity(player, transfurContext.source);
-                return;
-            } else if (transfurProgression >= 1f) {
-                CurioEntities.INSTANCE.forceReloadCurios(player);
+            if (transfurProgression >= 1f && willSurviveTransfur) {
+                CurioEntities.INSTANCE.forceReloadCurios(host);
             }
         }
+    }
 
-        if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
-            transfurContext = transfurContext.withSource(null);
-            if (player instanceof ServerPlayer serverPlayer && willSurviveTransfur)
-                ChangedCriteriaTriggers.TRANSFUR.trigger(serverPlayer, getParent());
-        }
-
-        player.refreshDimensions();
-        if (player.isOnGround())
-            jumpCharges = parent.extraJumpCharges;
-
-        if (parent.rideable())
-            player.stopRiding();
-
+    protected void tickFlying() {
         if (parent.canGlide && shouldApplyAbilities()) {
-            if (!player.isCreative() && !player.isSpectator()) {
-                if (player.getFoodData().getFoodLevel() <= 6.0F && player.getAbilities().mayfly) {
-                    player.getAbilities().mayfly = false;
-                    player.getAbilities().flying = false;
-                    player.onUpdateAbilities();
-                } else if (player.isEyeInFluid(FluidTags.WATER) && player.getAbilities().mayfly) {
-                    player.getAbilities().mayfly = false;
-                    player.getAbilities().flying = false;
-                    player.onUpdateAbilities();
-                } else if (player.getVehicle() != null && player.getAbilities().mayfly) {
-                    player.getAbilities().mayfly = false;
-                    player.getAbilities().flying = false;
-                    player.onUpdateAbilities();
-                } else if (player.getFoodData().getFoodLevel() > 6.0F && !player.getAbilities().mayfly) {
-                    player.getAbilities().mayfly = true;
-                    player.onUpdateAbilities();
+            if (!host.isCreative() && !host.isSpectator()) {
+                if (host.getFoodData().getFoodLevel() <= 6.0F && host.getAbilities().mayfly) {
+                    host.getAbilities().mayfly = false;
+                    host.getAbilities().flying = false;
+                    host.onUpdateAbilities();
+                } else if (host.isEyeInFluid(FluidTags.WATER) && host.getAbilities().mayfly) {
+                    host.getAbilities().mayfly = false;
+                    host.getAbilities().flying = false;
+                    host.onUpdateAbilities();
+                } else if (host.getVehicle() != null && host.getAbilities().mayfly) {
+                    host.getAbilities().mayfly = false;
+                    host.getAbilities().flying = false;
+                    host.onUpdateAbilities();
+                } else if (host.getFoodData().getFoodLevel() > 6.0F && !host.getAbilities().mayfly) {
+                    host.getAbilities().mayfly = true;
+                    host.onUpdateAbilities();
                 }
 
-                if (player.getAbilities().flying) {
-                    float horizontalPenalty = player.isSprinting() ? 0.825f : 0.8f;
-                    float verticalPenalty = player.getDeltaMovement().y > 0.0 ? 0.45f : 0.8f;
-                    player.setDeltaMovement(player.getDeltaMovement().multiply(horizontalPenalty, verticalPenalty, horizontalPenalty)); // Speed penalty
-                    player.causeFoodExhaustion(player.isSprinting() ? 0.05F : 0.025F); // Food penalty
+                if (host.getAbilities().flying) {
+                    float horizontalPenalty = host.isSprinting() ? 0.825f : 0.8f;
+                    float verticalPenalty = host.getDeltaMovement().y > 0.0 ? 0.45f : 0.8f;
+                    host.setDeltaMovement(host.getDeltaMovement().multiply(horizontalPenalty, verticalPenalty, horizontalPenalty)); // Speed penalty
+                    host.causeFoodExhaustion(host.isSprinting() ? 0.05F : 0.025F); // Food penalty
                 }
             }
 
-            if (!player.isSpectator() && player.getAbilities().flying) {
+            if (!host.isSpectator() && host.getAbilities().flying)
                 ticksFlying++;
-                if (player instanceof ServerPlayer serverPlayer)
-                    ChangedCriteriaTriggers.FLYING.trigger(serverPlayer, ticksFlying);
-            } else
+            else
                 ticksFlying = 0;
-
-            if (!player.level.isClientSide) {
-                this.entity.setChangedEntityFlag(ChangedEntity.FLAG_IS_FLYING, player.getAbilities().flying);
-            }
         } else
             ticksFlying = 0;
+    }
 
-        if (shouldApplyAbilities())
-            this.ticksSinceLastAbilityActivity++;
-
-        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
-                .forEach(slot -> { // Force unequip invalid items
-                    var itemStack = player.getItemBySlot(slot);
-                    if (!canWear(player, itemStack, slot)) {
-                        ItemStack copy = itemStack.copy();
-                        itemStack.setCount(0);
-                        if (!player.addItem(copy))
-                            player.drop(copy, false);
-                    }
-                });
-
-        if(!player.level.isClientSide) {
-            final double distance = 8D;
-            final double farRunSpeed = 1.0D;
-            final double nearRunSpeed = 1.2D;
-            // Scare mobs
-            for (Class<? extends PathfinderMob> entityClass : parent.scares) {
-                if (entityClass.isAssignableFrom(AbstractVillager.class) && (!parent.ctor.get().is(ChangedTags.EntityTypes.LATEX) || player.isCreative() || player.isSpectator()))
-                    continue;
-
-                final double speedScale = entityClass.isAssignableFrom(AbstractVillager.class) ? 0.5D : 1.0D;
-
-                List<? extends PathfinderMob> entitiesScared = player.level.getEntitiesOfClass(entityClass, player.getBoundingBox().inflate(distance, 6D, distance), entity -> entity.hasLineOfSight(player));
-
-                for (var v : entitiesScared) {
-                    //if the creature has no path, or the target path is < distance, make the creature run.
-                    if (v.getNavigation().getPath() == null || player.distanceToSqr(v.getNavigation().getTargetPos().getX(), v.getNavigation().getTargetPos().getY(), v.getNavigation().getTargetPos().getZ()) < distance * distance) {
-                        Vec3 vector3d = DefaultRandomPos.getPosAway(v, 16, 7, new Vec3(player.getX(), player.getY(), player.getZ()));
-
-                        if (vector3d != null && player.distanceToSqr(vector3d) > player.distanceToSqr(v)) {
-                            Path path = v.getNavigation().createPath(vector3d.x, vector3d.y, vector3d.z, 0);
-
-                            if (path != null) {
-                                double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                                v.getNavigation().moveTo(path, speed * speedScale);
-                            }
-                        }
-                    }
-                    else {
-                        double speed = v.distanceToSqr(player) < 49D ? nearRunSpeed : farRunSpeed;
-                        v.getNavigation().setSpeedModifier(speed * speedScale);
-                    }
-
-                    if (v.getTarget() == player)
-                        v.setTarget(null);
-                }
-            }
-        }
-
-        // Breathing
-        if (player.isAlive() && parent.breatheMode.canBreatheWater() && shouldApplyAbilities()) {
+    protected void tickBreathing() {
+        if (host.isAlive() && parent.breatheMode.canBreatheWater() && shouldApplyAbilities()) {
             if (air == -100) {
-                air = player.getAirSupply();
+                air = host.getAirSupply();
             }
 
             //if the player is in water, add air
-            if (player.isEyeInFluid(FluidTags.WATER)) {
+            if (host.isEyeInFluid(FluidTags.WATER)) {
                 //Taken from determineNextAir in LivingEntity
-                air = Math.min(air + 4, player.getMaxAirSupply());
-                player.setAirSupply(air);
+                air = Math.min(air + 4, host.getMaxAirSupply());
+                host.setAirSupply(air);
                 this.ticksBreathingUnderwater++;
-                if (player instanceof ServerPlayer serverPlayer)
-                    ChangedCriteriaTriggers.AQUATIC_BREATHE.trigger(serverPlayer, this.ticksBreathingUnderwater);
             }
 
             //if the player is on land and the entity suffocates
             else if (!parent.breatheMode.canBreatheAir()) {
                 //taken from decreaseAirSupply in Living Entity
-                int i = EnchantmentHelper.getRespiration(player);
-                air = i > 0 && player.getRandom().nextInt(i + 1) > 0 ? air : air - 1;
+                int i = EnchantmentHelper.getRespiration(host);
+                air = i > 0 && host.getRandom().nextInt(i + 1) > 0 ? air : air - 1;
 
                 if(air == -20)
                 {
                     air = 0;
 
-                    player.hurt(DamageSource.DROWN, 2F);
+                    host.hurt(DamageSource.DROWN, 2F);
                 }
 
-                player.setAirSupply(air);
+                host.setAirSupply(air);
                 this.ticksBreathingUnderwater = 0;
             }
             else {
@@ -911,50 +779,27 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
             }
         }
 
-        else if (player.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == TransfurVariant.BreatheMode.WEAK && shouldApplyAbilities()) {
+        else if (host.isAlive() && !parent.breatheMode.canBreatheWater() && parent.breatheMode == TransfurVariant.BreatheMode.WEAK && shouldApplyAbilities()) {
             //if the player is in water, remove more air
-            if (player.isEyeInFluid(FluidTags.WATER)) {
-                int air = player.getAirSupply();
+            if (host.isEyeInFluid(FluidTags.WATER)) {
+                int air = host.getAirSupply();
                 if (air > -10)
-                    player.setAirSupply(air-1);
+                    host.setAirSupply(air-1);
                 this.ticksBreathingUnderwater = 0;
             }
         }
 
         // Air is fixed, doesn't increase or decrease
-        else if (player.isAlive() && parent.breatheMode == TransfurVariant.BreatheMode.NONE && shouldApplyAbilities()) {
+        else if (host.isAlive() && parent.breatheMode == TransfurVariant.BreatheMode.NONE && shouldApplyAbilities()) {
             if (air == -100) {
-                air = player.getAirSupply();
+                air = host.getAirSupply();
             }
 
-            player.setAirSupply(Mth.clamp(air, 0, player.getMaxAirSupply()));
+            host.setAirSupply(Mth.clamp(air, 0, host.getMaxAirSupply()));
         }
+    }
 
-        if (!parent.hasLegs && player.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
-            player.setPose(Pose.SWIMMING);
-
-        // Speed
-        if (player.getAttributeValue(ForgeMod.SWIM_SPEED.get()) > 1.0) {
-            player.setNoGravity(player.isEyeInFluid(FluidTags.WATER));
-        }
-
-        // Step size
-        if (player.isCrouching() && parent.stepSize > 0.6f)
-            player.maxUpStep = 0.6f;
-        else
-            player.maxUpStep = parent.stepSize;
-
-        // Effects
-        if (visionType == VisionType.BLIND) {
-            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
-        }
-
-        if (visionType == VisionType.WAVE_VISION) {
-            ticksInWaveVision++;
-        } else {
-            ticksInWaveVision = 0;
-        }
-
+    protected void tickAbilities() {
         for (var instance : abilityInstances.values()) {
             instance.getController().tickCoolDown();
         }
@@ -971,14 +816,14 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                     boolean oldState = controller.exchangeKeyState(abilityKeyState);
                     if (abilityKeyState || instance.getController().isCoolingDown())
                         this.resetTicksSinceLastAbilityActivity();
-                    if (player.containerMenu == player.inventoryMenu && !player.isUsingItem() && !instance.getController().isCoolingDown())
+                    if (host.containerMenu == host.inventoryMenu && !host.isUsingItem() && !instance.getController().isCoolingDown())
                         instance.getUseType().check(abilityKeyState, oldState, controller);
                 }
             }
 
             if (menuAbility != null) {
                 var instance = abilityInstances.get(menuAbility);
-                if (instance != null && player.containerMenu != player.inventoryMenu)
+                if (instance != null && host.containerMenu != host.inventoryMenu)
                     instance.tick();
                 else {
                     if (instance != null)
@@ -987,8 +832,86 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
                 }
             }
         }
+    }
 
-        sync(player);
+    public void tick() {
+        if (checkForTemporary())
+            return;
+
+        if (ageAsVariant == 0 && transfurProgression >= 1f)
+            checkBreakItems(host);
+
+        ageAsVariant++;
+
+        if (previousAttributes.isEmpty()) {
+            if (transfurProgression == 0.0f)
+                captureBaseline(previousAttributes, this.host.getAttributes());
+            else
+                captureBaseline(previousAttributes, DEFAULT_PLAYER_ATTRIBUTES.get());
+        }
+
+        if (newAttributes.isEmpty()) {
+            captureBaseline(newAttributes, this.entity.getAttributes());
+
+            mapAttributes(host, previousAttributes, TransfurVariantInstance::noOp,
+                    newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
+        }
+
+        this.tickTransfurProgress();
+
+        host.refreshDimensions();
+        if (host.isOnGround())
+            jumpCharges = parent.extraJumpCharges;
+
+        if (parent.rideable())
+            host.stopRiding();
+
+        this.tickFlying();
+
+        if (shouldApplyAbilities())
+            this.ticksSinceLastAbilityActivity++;
+
+        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
+                .forEach(slot -> { // Force unequip invalid items
+                    var itemStack = host.getItemBySlot(slot);
+                    if (!canWear(host, itemStack, slot)) {
+                        ItemStack copy = itemStack.copy();
+                        itemStack.setCount(0);
+                        if (!host.addItem(copy))
+                            host.drop(copy, false);
+                    }
+                });
+
+        this.tickBreathing();
+
+        if (!parent.hasLegs && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
+            host.setPose(Pose.SWIMMING);
+
+        // Sink in water
+        if (host.getAttributeValue(ForgeMod.SWIM_SPEED.get()) > 1.0) {
+            host.setNoGravity(host.isEyeInFluid(FluidTags.WATER));
+        }
+
+        // Step size
+        if (host.isCrouching() && parent.stepSize > 0.6f)
+            host.maxUpStep = 0.6f;
+        else
+            host.maxUpStep = parent.stepSize;
+
+        // Effects
+        if (parent.visionType == VisionType.BLIND) {
+            host.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
+        }
+
+        if (visionType == VisionType.WAVE_VISION) {
+            ticksInWaveVision++;
+        } else {
+            ticksInWaveVision = 0;
+        }
+
+        this.tickAbilities();
+
+        sync(host);
     }
 
     public CompoundTag saveAbilities() {
@@ -1104,4 +1027,6 @@ public class TransfurVariantInstance<T extends ChangedEntity> {
     public int getTicksInWaveVision() {
         return ticksInWaveVision;
     }
+
+    public void prepareForRender(float partialTicks) {}
 }

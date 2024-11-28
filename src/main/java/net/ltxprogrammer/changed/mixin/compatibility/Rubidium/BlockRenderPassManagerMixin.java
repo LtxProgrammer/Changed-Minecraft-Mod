@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Reference2IntArrayMap;
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPass;
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPassManager;
 import net.ltxprogrammer.changed.client.ChangedShaders;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.extension.rubidium.ChangedBlockRenderPass;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Final;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = BlockRenderPassManager.class, remap = false)
+@RequiredMods("rubidium")
 public abstract class BlockRenderPassManagerMixin {
     @Shadow @Final private Reference2IntArrayMap<RenderType> mappingsId;
 

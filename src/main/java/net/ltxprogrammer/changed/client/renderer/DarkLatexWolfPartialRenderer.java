@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.*;
 import net.ltxprogrammer.changed.client.renderer.model.DarkLatexWolfPartialModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -47,5 +48,10 @@ public class DarkLatexWolfPartialRenderer extends AdvancedHumanoidRenderer<DarkL
 	protected void scale(DarkLatexWolfPartial entity, PoseStack pose, float partialTick) {
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
+	}
+
+	@Override
+	protected void scaleForBPI(BasicPlayerInfo bpi, PoseStack poseStack) {
+
 	}
 }

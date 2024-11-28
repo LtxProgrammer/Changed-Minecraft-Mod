@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps;
 import eu.ha3.presencefootsteps.world.Lookup;
 import eu.ha3.presencefootsteps.world.StateLookup;
 import net.ltxprogrammer.changed.entity.LatexType;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.ltxprogrammer.changed.block.AbstractLatexBlock.COVERED;
 
 @Mixin(value = StateLookup.class, remap = false)
+@RequiredMods("presencefootsteps")
 public abstract class StateLookupMixin implements Lookup<BlockState> {
     @Shadow public abstract String getAssociation(BlockState state, String substrate);
 
