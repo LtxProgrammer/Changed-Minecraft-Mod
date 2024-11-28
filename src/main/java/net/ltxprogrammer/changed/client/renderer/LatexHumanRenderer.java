@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorHumanModel;
+import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexWolfPartial;
 import net.ltxprogrammer.changed.entity.beast.LatexHuman;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -47,5 +48,10 @@ public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, Lat
 	protected void scale(LatexHuman entity, PoseStack pose, float partialTick) {
 		float f = 0.9375F;
 		pose.scale(0.9375F, 0.9375F, 0.9375F);
+	}
+
+	@Override
+	protected void scaleForBPI(BasicPlayerInfo bpi, PoseStack poseStack) {
+
 	}
 }

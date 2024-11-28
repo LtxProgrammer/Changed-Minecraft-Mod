@@ -19,6 +19,7 @@
     "Curios.SlotHelperMixin",
     "Curios.SlotTypeManagerMixin",
     "FirstPerson.FirstPersonBaseMixin",
+    "Forgery.LatexHumanoidArmorLayerMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
     "Leashed.LeadUtilMixin",
     "Moonlight.AbstractUpperBodyAnimatorMixin",

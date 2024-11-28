@@ -61,19 +61,28 @@ public class Changed {
     private static final ChangedPackets PACKETS = new ChangedPackets(PACKET_HANDLER);
     private static int messageID = 0;
 
+    /**
+     * This function is split out of the main function as a request by mod extension devs
+     */
+    private void registerLoadingEventListeners(IEventBus eventBus) {
+        eventBus.addListener(this::commonSetup);
+        eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::customPacks);
+    }
+
     public Changed() {
         config = new ChangedConfig(ModLoadingContext.get());
 
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::clientSetup);
-        modEventBus.addListener(this::customPacks);
+        registerLoadingEventListeners(FMLJavaModLoadingContext.get().getModEventBus());
+
         addEventListener(this::dataListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> this::registerClientEventListeners);
 
         PACKETS.registerPackets();
 
         instance = this;
+
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);

@@ -9,6 +9,7 @@ import io.github.edwinmindcraft.origins.api.capabilities.IOriginContainer;
 import io.github.edwinmindcraft.origins.api.origin.Origin;
 import io.github.edwinmindcraft.origins.common.registry.OriginRegisters;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.util.ResourceUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -91,39 +92,11 @@ public class OriginsInterface extends SimplePreparableReloadListener<Multimap<Ta
 
     @Override
     protected Multimap<TagKey<Origin>, ResourceLocation> prepare(ResourceManager resources, ProfilerFiller profiler) {
-        final var entries = resources.listResources("tags/origins/origin", filename ->
-                ResourceLocation.isValidResourceLocation(filename) &&
-                        filename.endsWith(".json"));
-
-        Multimap<TagKey<Origin>, ResourceLocation> working = HashMultimap.create();
-
-        entries.forEach(filename -> {
-            try {
-                final String id = Path.of(filename.getPath()).getFileName().toString().replace(".json", "");
-                final Resource content = resources.getResource(filename);
-
-                try {
-                    final Reader reader = new InputStreamReader(content.getInputStream(), StandardCharsets.UTF_8);
-                    final ResourceLocation tagName = new ResourceLocation(filename.getNamespace(), id);
-                    final TagKey<Origin> tagKey = OriginRegisters.ORIGINS.createTagKey(tagName);
-
-                    processJSONFile(JsonParser.parseReader(reader).getAsJsonObject(), origin -> {
-                        working.put(tagKey, origin);
-                    });
-
-                    reader.close();
-                } catch (Exception e) {
-                    content.close();
-                    throw e;
-                }
-
-                content.close();
-            } catch (Exception e) {
-                Changed.LOGGER.error("Failed to load origin tag from \"{}\"", filename);
-            }
-        });
-
-        return working;
+        return ResourceUtil.processJSONResources(HashMultimap.create(), resources, "tags/origins/origin",
+                (map, filename, id, json) -> {
+                    final TagKey<Origin> tagKey = OriginRegisters.ORIGINS.createTagKey(id);
+                    processJSONFile(json, origin -> map.put(tagKey, origin));
+        }, (exception, filename) -> Changed.LOGGER.error("Failed to load origin tag from \"{}\" : {}", filename, exception));
     }
 
     @Override

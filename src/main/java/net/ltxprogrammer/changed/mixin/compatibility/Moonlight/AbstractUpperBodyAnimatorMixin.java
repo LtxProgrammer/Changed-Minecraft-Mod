@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.upperbody.AbstractUpperBodyAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.mehvahdjukaar.selene.api.IThirdPersonAnimationProvider;
 import net.mehvahdjukaar.selene.util.TwoHandedAnimation;
 import net.minecraft.client.model.EntityModel;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = AbstractUpperBodyAnimator.class, remap = false)
+@RequiredMods("selene")
 public abstract class AbstractUpperBodyAnimatorMixin<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> extends HumanoidAnimator.Animator<T, M> {
     @Unique
     public TwoHandedAnimation animationType = new TwoHandedAnimation();

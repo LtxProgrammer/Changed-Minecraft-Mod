@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Curios;
 
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.extension.curios.CurioSlots;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,6 +15,7 @@ import top.theillusivec4.curios.common.slottype.SlotTypeManager;
 import java.util.*;
 
 @Mixin(value = SlotTypeManager.class, remap = false)
+@RequiredMods("curios")
 public abstract class SlotTypeManagerMixin {
     @Shadow private static Map<String, Set<String>> idsToMods;
 

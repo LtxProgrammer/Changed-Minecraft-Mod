@@ -7,6 +7,7 @@ import dev.kosmx.playerAnim.impl.IPlayerModel;
 import dev.kosmx.playerAnim.impl.animation.AnimationApplier;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = HumanoidAnimator.class, remap = false)
+@RequiredMods("playeranimator")
 public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> implements IPlayerModel {
     @Shadow public abstract HumanoidModel<?> getPropertyModel(@Nullable EquipmentSlot slot);
 

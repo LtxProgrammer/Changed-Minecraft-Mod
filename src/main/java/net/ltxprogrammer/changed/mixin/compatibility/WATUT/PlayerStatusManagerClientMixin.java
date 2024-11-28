@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.compatibility.WATUT;
 
 import com.corosus.watut.PlayerStatusManagerClient;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = PlayerStatusManagerClient.class, remap = false)
+@RequiredMods("watut")
 public class PlayerStatusManagerClientMixin {
     @Inject(method = "getParticlePosition", at = @At("RETURN"), cancellable = true)
     public void overrideForModelSize(Player player, CallbackInfoReturnable<Vec3> cir) {

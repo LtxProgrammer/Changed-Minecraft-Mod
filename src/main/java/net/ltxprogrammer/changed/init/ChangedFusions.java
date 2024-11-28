@@ -1,10 +1,13 @@
 package net.ltxprogrammer.changed.init;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.datafixers.util.Either;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.animations.AnimationDefinition;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.util.ResourceUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -103,36 +106,11 @@ public class ChangedFusions extends SimplePreparableReloadListener<List<ChangedF
 
     @Override
     @NotNull
-    protected List<FusionDefinition> prepare(@NotNull ResourceManager resources, @NotNull ProfilerFiller profiler) {
-        final var entries = resources.listResources("latex_fusions", filename ->
-                ResourceLocation.isValidResourceLocation(filename) &&
-                        filename.endsWith(".json"));
-
-        List<FusionDefinition> working = new ArrayList<>();
-
-        entries.forEach(filename -> {
-            try {
-                final String id = Path.of(filename.getPath()).getFileName().toString().replace(".json", "");
-                final Resource content = resources.getResource(filename);
-
-                try {
-                    final Reader reader = new InputStreamReader(content.getInputStream(), StandardCharsets.UTF_8);
-
-                    working.add(processJSONFile(new ResourceLocation(filename.getNamespace(), id), JsonParser.parseReader(reader).getAsJsonObject()));
-
-                    reader.close();
-                } catch (Exception e) {
-                    content.close();
-                    throw e;
-                }
-
-                content.close();
-            } catch (Exception e) {
-                Changed.LOGGER.error("Failed to load latex fusions from \"{}\"", filename);
-            }
-        });
-
-        return working;
+    protected List<FusionDefinition> prepare(@NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
+        return ResourceUtil.processJSONResources(new ArrayList<>(),
+                resourceManager, "latex_fusions",
+                (list, filename, id, json) -> list.add(processJSONFile(id, json)),
+                (exception, filename) -> Changed.LOGGER.error("Failed to load latex fusions from \"{}\" : {}", filename, exception));
     }
 
     @Override

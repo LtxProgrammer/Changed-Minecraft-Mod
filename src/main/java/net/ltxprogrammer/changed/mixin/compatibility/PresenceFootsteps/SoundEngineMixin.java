@@ -4,6 +4,7 @@ import eu.ha3.presencefootsteps.sound.PFIsolator;
 import eu.ha3.presencefootsteps.sound.SoundEngine;
 import eu.ha3.presencefootsteps.sound.generator.Locomotion;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.extension.presencefootsteps.ChangedPresenceFootsteps;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = SoundEngine.class, remap = false)
+@RequiredMods("presencefootsteps")
 public abstract class SoundEngineMixin implements PreparableReloadListener {
     @Shadow private PFIsolator isolator;
 

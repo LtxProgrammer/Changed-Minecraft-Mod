@@ -1,37 +1,15 @@
 package net.ltxprogrammer.changed.mixin.compatibility;
 
-import com.google.common.collect.ImmutableMap;
-import net.ltxprogrammer.changed.Changed;
+import com.google.common.collect.Multimap;
 import net.minecraftforge.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class ChangedMixinPlugin implements IMixinConfigPlugin {
-    private static final Map<String, String> MOD_ID_MAP = new ImmutableMap.Builder<String, String>()
-            .put("net.ltxprogrammer.changed.mixin.compatibility.BeyondEarth", "beyond_earth")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.CarryOn", "carryon")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.CGM", "cgm")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.ChiselsAndBits", "chiselsandbits")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.CTM", "ctm")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Curios", "curios")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.FirstPerson", "firstperson")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.HardcoreRevival", "hardcorerevival")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Leashed", "leashed")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Moonlight", "selene")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.NotEnoughAnimations", "notenoughanimations")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Oculus", "oculus")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Pehkui", "pehkui")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.PlayerAnimator", "playeranimator")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.PresenceFootsteps", "presencefootsteps")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Rubidium", "rubidium")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.Vivecraft", "vivecraft")
-            .put("net.ltxprogrammer.changed.mixin.compatibility.WATUT", "watut").build();
-
     private static boolean isModPresent(String modId) {
         return FMLLoader.getLoadingModList().getModFileById(modId) != null;
     }
@@ -46,14 +24,11 @@ public class ChangedMixinPlugin implements IMixinConfigPlugin {
         return null;
     }
 
-    private static String getPackageName(String className) {
-        return className.substring(0, className.lastIndexOf('.'));
-    }
-
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        var modId = MOD_ID_MAP.getOrDefault(getPackageName(mixinClassName), Changed.MODID);
-        return isModPresent(modId);
+        // This map is generated at compile-time, and doesn't exist until then
+        final Multimap<String, String> dependencies = net.ltxprogrammer.changed.extension.MixinDependencies.MULTIMAP;
+        return dependencies.get(mixinClassName).stream().allMatch(ChangedMixinPlugin::isModPresent);
     }
 
     @Override

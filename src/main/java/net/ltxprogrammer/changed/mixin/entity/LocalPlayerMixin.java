@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.LocalPlayerAccessor;
 import net.ltxprogrammer.changed.client.NullInput;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
@@ -35,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(LocalPlayer.class)
-public abstract class LocalPlayerMixin extends AbstractClientPlayer implements PlayerDataExtension, LivingEntityDataExtension {
+public abstract class LocalPlayerMixin extends AbstractClientPlayer implements PlayerDataExtension, LivingEntityDataExtension, LocalPlayerAccessor {
     public LocalPlayerMixin(ClientLevel p_108548_, GameProfile p_108549_) {
         super(p_108548_, p_108549_);
     }
@@ -55,6 +56,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
     @Shadow public float xBob;
 
     @Shadow private boolean flashOnSetHealth;
+
+    @Shadow private boolean handsBusy;
+
+    @Override
+    public void setHandsBusy(boolean busy) {
+        this.handsBusy = busy;
+    }
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void applyBasicPlayerInfo(Minecraft mc, ClientLevel level, ClientPacketListener packetListener, StatsCounter stats, ClientRecipeBook recipeBook, boolean p_108626_, boolean p_108627_, CallbackInfo ci) {

@@ -534,7 +534,7 @@ public abstract class ChangedEntity extends Monster {
             return TransfurContext.playerLatexAttack(underlyingPlayer);
     }
 
-    protected LivingEntity maybeGetUnderlying() {
+    public LivingEntity maybeGetUnderlying() {
         return underlyingPlayer != null ? underlyingPlayer : this;
     }
 
@@ -562,7 +562,7 @@ public abstract class ChangedEntity extends Monster {
             TransfurVariant<?> mobFusionVariant = possibleMobFusions.get(source.getEntity().getRandom().nextInt(possibleMobFusions.size()));
             if (source.getEntity() instanceof Player sourcePlayer) {
                 float beforeHealth = sourcePlayer.getHealth();
-                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack().cause);
+                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack());
                 sourcePlayer.setHealth(beforeHealth);
             }
 
@@ -576,7 +576,7 @@ public abstract class ChangedEntity extends Monster {
         else if (source.getSelfVariant() == null || !source.getSelfVariant().getFormId().equals(source.getTransfurVariant().getFormId())) {
             if (source.getEntity() instanceof Player sourcePlayer) {
                 float beforeHealth = sourcePlayer.getHealth();
-                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, source.getTransfurVariant(), source.attack().cause);
+                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, source.getTransfurVariant(), source.attack());
                 sourcePlayer.setHealth(beforeHealth);
             }
 
@@ -596,7 +596,7 @@ public abstract class ChangedEntity extends Monster {
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
             if (!ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity())) { // Failed to kill player
-                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), TransfurCause.GRAB_REPLICATE, 1.0f);
+                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), source.attack(), 1.0f);
                 instance.willSurviveTransfur = true;
 
                 ProcessTransfur.forceNearbyToRetarget(level, loserPlayer);
@@ -683,13 +683,13 @@ public abstract class ChangedEntity extends Monster {
 
                 if (underlyingPlayer != null) {
                     float beforeHealth = underlyingPlayer.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAttackContext().cause);
+                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAttackContext());
                     underlyingPlayer.setHealth(beforeHealth);
                 }
 
                 else if (entity instanceof Player victimPlayer) {
                     float beforeHealth = entity.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAttackContext().cause);
+                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAttackContext());
                     entity.setHealth(beforeHealth);
                     this.discard();
                     return true;

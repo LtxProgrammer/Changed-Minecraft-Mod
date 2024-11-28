@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.compatibility.Rubidium;
 
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPass;
+import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.ltxprogrammer.changed.extension.rubidium.ChangedBlockRenderPass;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.common.IExtensibleEnum;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = BlockRenderPass.class, remap = false)
+@RequiredMods("rubidium")
 public abstract class BlockRenderPassMixin implements IExtensibleEnum {
     private static BlockRenderPass create(String name, RenderType layer, boolean translucent, float alphaCutoff) {
         throw new IllegalStateException("Enum not extended");

@@ -367,20 +367,24 @@ public class ProcessTransfur {
     }
 
     public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause) {
-        return setPlayerTransfurVariant(player, ogVariant, cause, player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+        return setPlayerTransfurVariant(player, ogVariant, TransfurContext.hazard(cause), player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
     }
 
-    public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurCause cause, float progress) {
-        return setPlayerTransfurVariant(player, ogVariant, cause, progress, false);
+    public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurContext context) {
+        return setPlayerTransfurVariant(player, ogVariant, context, player.level.getGameRules().getBoolean(ChangedGameRules.RULE_DO_TRANSFUR_ANIMATION) ? 0.0f : 1.0f);
+    }
+
+    public static @Nullable TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant, @Nullable TransfurContext context, float progress) {
+        return setPlayerTransfurVariant(player, ogVariant, context, progress, false);
     }
 
     public static @Nullable
     TransfurVariantInstance<?> setPlayerTransfurVariant(Player player, @Nullable TransfurVariant<?> ogVariant,
-                                                        @Nullable TransfurCause cause,
+                                                        @Nullable TransfurContext context,
                                                         float progress,
                                                         boolean temporaryFromSuit) {
         PlayerDataExtension playerDataExtension = (PlayerDataExtension)player;
-        EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, cause);
+        EntityVariantAssigned event = new EntityVariantAssigned(player, ogVariant, context == null ? null : context.cause);
         Changed.postModEvent(event);
         @Nullable TransfurVariant<?> variant = event.variant;
 
@@ -412,15 +416,17 @@ public class ProcessTransfur {
             }
         }
 
-        if (instance != null && cause != null)
-            instance.transfurContext = instance.transfurContext.withCause(cause);
+        if (instance != null) {
+            if (context != null)
+                instance.transfurContext = context;
 
-        if (instance != null)
             instance.setTemporaryForSuit(temporaryFromSuit);
+        }
+
         player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
 
         if (variant != null && !event.isRedundant() && !instance.isTemporaryFromSuit()) {
-            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, cause));
+            Changed.postModEvent(new EntityVariantAssigned.ChangedVariant(player, variant, context == null ? null : context.cause));
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
@@ -717,7 +723,7 @@ public class ProcessTransfur {
         if (!LatexType.hasLatexType(entity)) {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             if ((keepConscious || doAnimation) && entity instanceof ServerPlayer player) {
-                var instance = setPlayerTransfurVariant(player, variant, context.cause, doAnimation ? 0.0f : 1.0f);
+                var instance = setPlayerTransfurVariant(player, variant, context, doAnimation ? 0.0f : 1.0f);
                 instance.willSurviveTransfur = keepConscious;
                 instance.transfurContext = context;
 
@@ -725,7 +731,6 @@ public class ProcessTransfur {
 
                 player.heal(10.0F);
 
-                LOGGER.info("Transfurred " + entity + " into " + variant);
                 onReplicate.accept(IAbstractChangedEntity.forPlayer(player), variant);
             }
 
@@ -753,7 +758,7 @@ public class ProcessTransfur {
             ChangedSounds.broadcastSound(entity, fusion.sound, 1.0f, 1.0f);
 
             if (entity instanceof ServerPlayer player) {
-                setPlayerTransfurVariant(player, fusion, context.cause);
+                setPlayerTransfurVariant(player, fusion, context);
 
                 // Force retargeting
                 for (ChangedEntity changedEntity : level.getEntitiesOfClass(ChangedEntity.class, player.getBoundingBox().inflate(64))) {

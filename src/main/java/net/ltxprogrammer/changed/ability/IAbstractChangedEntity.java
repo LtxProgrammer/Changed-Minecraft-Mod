@@ -180,7 +180,7 @@ public interface IAbstractChangedEntity {
             @Override
             public void replaceVariant(TransfurVariant<?> otherVariant) {
                 var old = getTransfurVariantInstance();
-                ProcessTransfur.setPlayerTransfurVariant(player, otherVariant, old.transfurContext.cause, 1.0f);
+                ProcessTransfur.setPlayerTransfurVariant(player, otherVariant, old.transfurContext, 1.0f);
                 instance.clear();
                 latex.clear();
             }

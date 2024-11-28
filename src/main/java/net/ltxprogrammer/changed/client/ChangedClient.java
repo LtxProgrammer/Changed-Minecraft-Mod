@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client;
 
 import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleEngine;
 import net.ltxprogrammer.changed.client.latexparticles.SetupContext;
 import net.ltxprogrammer.changed.client.renderer.blockentity.ChangedBlockEntityWithoutLevelRenderer;
@@ -48,6 +49,7 @@ public class ChangedClient {
     public static void registerReloadListeners(Consumer<PreparableReloadListener> resourceManager) {
         resourceManager.accept(particleSystem);
         resourceManager.accept(abilityRenderer);
+        resourceManager.accept(AnimationDefinitions.INSTANCE);
     }
 
     public static void afterRenderStage(RenderLevelStageEvent event) {

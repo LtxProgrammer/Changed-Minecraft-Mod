@@ -8,3 +8,5 @@
  */
 
 rootProject.name = 'Changed-m1.18.2-f40.2.0'
+include 'ap'
+
