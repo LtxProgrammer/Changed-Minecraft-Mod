@@ -281,7 +281,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
             newEntity.getBasicPlayerInfo().copyFrom(((PlayerDataExtension)player).getBasicPlayerInfo());
             if (!ProcessTransfur.killPlayerByTransfur(player, cause != null ? cause : newEntity)) {
                 newEntity.discard();
-                var instance = ProcessTransfur.setPlayerTransfurVariant(player, this, TransfurCause.GRAB_REPLICATE, 1.0f);
+                var instance = ProcessTransfur.setPlayerTransfurVariant(player, this, TransfurContext.hazard(TransfurCause.GRAB_REPLICATE), 1.0f);
                 instance.willSurviveTransfur = true;
 
                 ProcessTransfur.forceNearbyToRetarget(player.level, player);

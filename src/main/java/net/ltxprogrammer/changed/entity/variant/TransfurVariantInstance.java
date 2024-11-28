@@ -1001,4 +1001,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         return 1.0f;
     }
+
+    public void prepareForRender(float partialTicks) {}
 }
