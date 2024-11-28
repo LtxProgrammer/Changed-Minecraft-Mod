@@ -81,11 +81,11 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
     // Returns true if continue with regular code, false if to return, accepts if delegate and valid
     protected <R> Optional<R> runIfValid(SpecialLatex entity, Function<SpecialLatexRenderer, R> rendererConsumer) {
         if (this.isDelegate) {
-            if (entity.getAssignedUUID() == null) return Optional.ofNullable(null);
+            if (entity.getAssignedUUID() == null) return Optional.empty();
             PatreonBenefits.SpecialForm form = PatreonBenefits.getPlayerSpecialForm(entity.getAssignedUUID());
-            if (form == null) return Optional.ofNullable(null);
+            if (form == null) return Optional.empty();
 
-            return Optional.of(rendererConsumer.apply(getAndCacheFor(entity)));
+            return Optional.ofNullable(rendererConsumer.apply(getAndCacheFor(entity)));
         }
 
         else
@@ -115,11 +115,7 @@ public class SpecialLatexRenderer extends AdvancedHumanoidRenderer<SpecialLatex,
 
     public AdvancedHumanoidModel<SpecialLatex> getModel(ChangedEntity entity) {
         if (entity instanceof SpecialLatex specialLatex) {
-            var opt = runIfValid(specialLatex, renderer -> { return renderer.getModel(); });
-            if (opt.isEmpty())
-                return this.getModel();
-            else
-                return opt.get();
+            return runIfValid(specialLatex, renderer -> { return renderer.getModel(); }).orElseGet(this::getModel);
         }
 
         return null;
