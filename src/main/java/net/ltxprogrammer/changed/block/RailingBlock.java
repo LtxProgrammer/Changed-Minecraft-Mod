@@ -352,7 +352,18 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        return computeState(level, pos, super.updateShape(state, direction, otherState, level, pos, otherPos));
+        BlockState newState = super.updateShape(state, direction, otherState, level, pos, otherPos);
+
+        boolean fullyConnected = newState.getValue(SHAPE).getConnectionDirections(newState.getValue(FACING))
+                .filter(connectionDirection -> connectionDirection != direction)
+                .map(connectionDirection ->
+                        canConnect(level, newState, connectionDirection, level.getBlockState(pos.relative(connectionDirection)), pos.relative(connectionDirection)).strength)
+                .filter(strength -> strength == ConnectionStrength.STRONG).count() == 2;
+
+        if (fullyConnected)
+            return newState;
+
+        return computeState(level, pos, newState);
     }
 
     @Override
