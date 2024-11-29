@@ -78,13 +78,9 @@ public class ChangedTags {
     }
 
     public static class TransfurVariants {
-        public static final TagKey<TransfurVariant<?>> WOLF_LIKE = create("wolf_like");
-        public static final TagKey<TransfurVariant<?>> SHARK_LIKE = create("shark_like");
-        public static final TagKey<TransfurVariant<?>> CAT_LIKE = create("cat_like");
-        public static final TagKey<TransfurVariant<?>> LEOPARD_LIKE = create("leopard_like");
-
         public static final TagKey<TransfurVariant<?>> CAN_SLEEP_ON_PILLOWS = create("can_sleep_on_pillows");
         public static final TagKey<TransfurVariant<?>> BREAK_ITEMS_ON_TF = create("break_items_on_tf");
+        public static final TagKey<TransfurVariant<?>> TEMPORARY_ONLY = create("temporary_only");
 
         private static TagKey<TransfurVariant<?>> create(String name) {
             return TagKey.create(ChangedRegistry.TRANSFUR_VARIANT.key, Changed.modResource(name));

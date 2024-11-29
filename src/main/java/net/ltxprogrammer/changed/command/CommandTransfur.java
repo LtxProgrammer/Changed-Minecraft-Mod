@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.SharedConstants;
+import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -49,10 +50,12 @@ public class CommandTransfur {
     private static final SimpleCommandExceptionType NOT_CAUSE = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.not_cause"));
     private static final SimpleCommandExceptionType USED_BY_OTHER_MOD = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.used_by_other_mod"));
     private static final SimpleCommandExceptionType NO_SPECIAL_FORM = new SimpleCommandExceptionType(new TranslatableComponent("command.changed.error.no_special_form"));
+    private static final ResourceLocation RANDOM_VARIANT = Changed.modResource("random");
 
-    public static final SuggestionProvider<CommandSourceStack> SUGGEST_LATEX_FORMS = SuggestionProviders.register(Changed.modResource("latex_forms"), (p_121667_, p_121668_) -> {
+    public static final SuggestionProvider<CommandSourceStack> SUGGEST_TRANSFUR_VARIANT = SuggestionProviders.register(Changed.modResource("transfur_variant"), (p_121667_, p_121668_) -> {
         var list = TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).collect(Collectors.toCollection(ArrayList::new));
         list.add(TransfurVariant.SPECIAL_LATEX);
+        list.add(RANDOM_VARIANT);
         return SharedSuggestionProvider.suggestResource(list, p_121668_);
     });
 
@@ -65,7 +68,7 @@ public class CommandTransfur {
     public static void registerCommands(RegisterCommandsEvent event) {
         var transfurNode = event.getDispatcher().register(Commands.literal("transfur").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("players", EntityArgument.player())
-                        .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_LATEX_FORMS)
+                        .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_TRANSFUR_VARIANT)
                                 .executes(context -> transfurPlayers(context.getSource(),
                                         EntityArgument.getPlayers(context, "players"),
                                         ResourceLocationArgument.getId(context, "form"),
@@ -79,7 +82,7 @@ public class CommandTransfur {
         event.getDispatcher().register(Commands.literal("tf").requires(p -> p.hasPermission(2)).redirect(transfurNode));
         var progressTransfurNode = event.getDispatcher().register(Commands.literal("progresstransfur").requires(p -> p.hasPermission(2))
                 .then(Commands.argument("players", EntityArgument.players())
-                        .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_LATEX_FORMS)
+                        .then(Commands.argument("form", ResourceLocationArgument.id()).suggests(SUGGEST_TRANSFUR_VARIANT)
                                 .then(Commands.argument("progression", FloatArgumentType.floatArg(0.0f))
                                         .executes(context -> progressPlayersTransfur(context.getSource(),
                                                 EntityArgument.getPlayers(context, "players"),
@@ -148,6 +151,9 @@ public class CommandTransfur {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
+        if (form.equals(RANDOM_VARIANT))
+            form = Util.getRandom(TransfurVariant.getPublicTransfurVariants().collect(Collectors.toList()), player.getRandom()).getFormId();
+
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true,
                     TransfurContext.hazard(transfurCause));
@@ -204,6 +210,9 @@ public class CommandTransfur {
             context = TransfurContext.npcLatexHazard(sourceNpc, transfurCause);
         else
             context = null;
+
+        if (form.equals(RANDOM_VARIANT))
+            form = Util.getRandom(TransfurVariant.getPublicTransfurVariants().collect(Collectors.toList()), player.getRandom()).getFormId();
 
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.progressPlayerTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context);
