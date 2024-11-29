@@ -19,7 +19,7 @@ public class LocalTransfurVariantInstance<T extends ChangedEntity> extends Clien
     protected void tickTransfurProgress() {
         super.tickTransfurProgress();
 
-        if (transfurProgression < 1f) {
+        if (transfurProgression < 1f || this.ageAsVariant < 30 || !this.getItemUseMode().holdMainHand) {
             ((LocalPlayerAccessor)host).setHandsBusy(true);
         } else if (host.getVehicle() == null && host.isHandsBusy()) {
             ((LocalPlayerAccessor)host).setHandsBusy(false);

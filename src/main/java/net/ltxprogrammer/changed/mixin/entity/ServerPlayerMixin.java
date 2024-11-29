@@ -4,10 +4,12 @@ import com.mojang.authlib.GameProfile;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.PlayerDataExtension;
 import net.ltxprogrammer.changed.entity.TransfurCause;
+import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.network.packet.MountTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
@@ -49,8 +51,12 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
             ProcessTransfur.ifPlayerTransfurred(player, oldVariant -> {
                 if (!oldVariant.willSurviveTransfur)
                     return;
+                if (!restore && oldVariant.getParent().is(ChangedTags.TransfurVariants.TEMPORARY_ONLY))
+                    return; // Exception to keepForm gamerule
 
                 var newVariant = ProcessTransfur.setPlayerTransfurVariant(self, oldVariant.getParent(), oldVariant.transfurContext, oldVariant.transfurProgression);
+                if (newVariant == null)
+                    return;
                 newVariant.load(oldVariant.save());
                 newVariant.getChangedEntity().readPlayerVariantData(oldVariant.getChangedEntity().savePlayerVariantData());
                 newVariant.handleRespawn();
