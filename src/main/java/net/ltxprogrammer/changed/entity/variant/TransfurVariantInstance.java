@@ -609,21 +609,28 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND)
             return true;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem && !wearableItem.allowedInSlot(itemStack, player, slot))
-            return false;
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem) {
+            if (!wearableItem.allowedInSlot(itemStack, player, slot))
+                return false;
+        }
+
+        else { // Default expected entity shapes
+            boolean shapeFits = switch (slot) {
+                case HEAD -> getEntityShape().getHeadShape() == ClothingShape.Head.ANTRHO;
+                case CHEST -> getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTRHO;
+                case LEGS -> getEntityShape().getLegsShape() == ClothingShape.Legs.BIPEDAL;
+                case FEET -> getEntityShape().getFeetShape() == ClothingShape.Feet.BIPEDAL;
+                default -> true;
+            };
+
+            if (!shapeFits)
+                return false;
+        }
+
         if (!entity.isItemAllowedInSlot(itemStack, slot))
             return false;
 
-        int expectedLegCount;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
-            expectedLegCount = wearableItem.getExpectedLegCount(itemStack);
-        else
-            expectedLegCount = 2;
-
-        return switch (slot) {
-            case LEGS, FEET -> expectedLegCount == parent.legCount;
-            default -> true;
-        };
+        return true;
     }
 
     protected static double correctScaling(Attribute attribute, double original) {
@@ -886,7 +893,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.tickBreathing();
 
-        if (!parent.hasLegs && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
+        if (getEntityShape().isLegless() && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
             host.setPose(Pose.SWIMMING);
 
         // Sink in water
@@ -1034,6 +1041,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     public int getTicksInWaveVision() {
         return ticksInWaveVision;
+    }
+
+    public EntityShape getEntityShape() {
+        return entity.getEntityShape();
     }
 
     public void prepareForRender(float partialTicks) {}

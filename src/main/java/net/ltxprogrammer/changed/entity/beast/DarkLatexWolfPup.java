@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -251,6 +253,11 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.25);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
+    }
+
+    @Override
+    public @NotNull EntityShape getEntityShape() {
+        return EntityShape.FERAL;
     }
 
     @Override

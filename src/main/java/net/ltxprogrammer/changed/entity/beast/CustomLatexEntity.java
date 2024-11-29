@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomLatexEntity extends ChangedEntity {
     public enum TorsoType {
@@ -287,5 +289,14 @@ public class CustomLatexEntity extends ChangedEntity {
     @Override
     public float getScale() {
         return getScaleType().bbScale * super.getScale();
+    }
+
+    @Override
+    public @NotNull EntityShape getEntityShape() {
+        return switch (getLegType()) {
+            case BIPEDAL -> EntityShape.ANTHRO;
+            case CENTAUR -> EntityShape.TAUR;
+            case MERMAID -> EntityShape.MER;
+        };
     }
 }

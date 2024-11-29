@@ -1,5 +1,9 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.variant.ClothingShape;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,11 +36,35 @@ public interface ExtendedItemProperties {
 
     // Should only be called with armor slots
     default boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
-        return itemStack.getEquipmentSlot() == slot || (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getSlot() == slot);
+        if (!(itemStack.getEquipmentSlot() == slot || (itemStack.getItem() instanceof ArmorItem armorItem && armorItem.getSlot() == slot)))
+            return false;
+        final EntityShape entityShape = IAbstractChangedEntity.forEitherSafe(wearer)
+                .map(IAbstractChangedEntity::getChangedEntity)
+                .map(ChangedEntity::getEntityShape)
+                .orElse(EntityShape.ANTHRO);
+        return switch (slot) {
+            case HEAD -> entityShape.getHeadShape() == getExpectedHeadShape(itemStack);
+            case CHEST -> entityShape.getTorsoShape() == getExpectedTorsoShape(itemStack);
+            case LEGS -> entityShape.getLegsShape() == getExpectedLegShape(itemStack);
+            case FEET -> entityShape.getFeetShape() == getExpectedFeetShape(itemStack);
+            default -> false;
+        };
     }
 
-    default int getExpectedLegCount(ItemStack itemStack) {
-        return 2;
+    default ClothingShape.Head getExpectedHeadShape(ItemStack itemStack) {
+        return ClothingShape.Head.ANTRHO;
+    }
+
+    default ClothingShape.Torso getExpectedTorsoShape(ItemStack itemStack) {
+        return ClothingShape.Torso.ANTRHO;
+    }
+
+    default ClothingShape.Legs getExpectedLegShape(ItemStack itemStack) {
+        return ClothingShape.Legs.BIPEDAL;
+    }
+
+    default ClothingShape.Feet getExpectedFeetShape(ItemStack itemStack) {
+        return ClothingShape.Feet.BIPEDAL;
     }
 
     default void wearTick(ItemStack itemStack, LivingEntity wearer) {
