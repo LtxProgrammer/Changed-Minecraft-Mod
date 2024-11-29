@@ -108,14 +108,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
         }
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    public void orNotHurt(DamageSource p_36154_, float p_36155_, CallbackInfoReturnable<Boolean> cir) {
-        ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), variant -> {
-            if (variant.ageAsVariant < 30)
-                cir.cancel();
-        });
-    }
-
     @Inject(method = "createAttributes", at = @At("RETURN"))
     private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         cir.getReturnValue().add(ChangedAttributes.TRANSFUR_DAMAGE.get(), 3.0D);
