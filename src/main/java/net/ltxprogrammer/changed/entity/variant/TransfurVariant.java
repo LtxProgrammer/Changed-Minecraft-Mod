@@ -175,8 +175,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public final boolean canClimb;
     public final VisionType visionType;
     public final MiningStrength miningStrength;
-    public final int legCount;
-    public final boolean hasLegs;
     public final UseItemMode itemUseMode;
     public final List<Class<? extends PathfinderMob>> scares;
     public final TransfurMode transfurMode;
@@ -187,7 +185,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
     public TransfurVariant(Supplier<EntityType<T>> ctor, LatexType type,
                            float jumpStrength, BreatheMode breatheMode, float stepSize, boolean canGlide, int extraJumpCharges,
                            boolean reducedFall, boolean canClimb,
-                           VisionType visionType, MiningStrength miningStrength, int legCount, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
+                           VisionType visionType, MiningStrength miningStrength, UseItemMode itemUseMode, List<Class<? extends PathfinderMob>> scares, TransfurMode transfurMode,
                            List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities, float cameraZOffset, ResourceLocation sound) {
         this.ctor = ctor;
         this.type = type;
@@ -198,8 +196,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         this.visionType = visionType;
         this.canGlide = canGlide;
         this.extraJumpCharges = extraJumpCharges;
-        this.legCount = legCount;
-        this.hasLegs = legCount > 0;
         this.itemUseMode = itemUseMode;
         this.abilities = ImmutableList.<Function<EntityType<?>, ? extends AbstractAbility<?>>>builder().addAll(abilities).build();
         this.reducedFall = reducedFall;
@@ -564,7 +560,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
         public TransfurVariant<T> build() {
             return new TransfurVariant<>(entityType, type, jumpStrength, breatheMode, stepSize, canGlide, extraJumpCharges,
-                    reducedFall, canClimb, visionType, miningStrength, legCount, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
+                    reducedFall, canClimb, visionType, miningStrength, itemUseMode, scares, transfurMode, abilities, cameraZOffset, sound);
         }
     }
 
@@ -658,7 +654,6 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
                         .result().orElse(VisionType.NORMAL),
                 MiningStrength.fromSerial(GsonHelper.getAsString(root, "miningStrength", (weakMining ? MiningStrength.WEAK : MiningStrength.NORMAL).getSerializedName()))
                         .result().orElse(MiningStrength.NORMAL),
-                GsonHelper.getAsInt(root, "legCount", 2),
                 UseItemMode.valueOf(GsonHelper.getAsString(root, "itemUseMode", UseItemMode.NORMAL.toString())),
                 scares,
                 TransfurMode.valueOf(GsonHelper.getAsString(root, "transfurMode", TransfurMode.REPLICATION.toString())),

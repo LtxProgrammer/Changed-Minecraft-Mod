@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -842,7 +843,7 @@ public abstract class ChangedEntity extends Monster {
         var variant = getSelfVariant();
         if (variant == null) return;
 
-        if (this.vehicle != null && (variant.rideable() || !variant.hasLegs))
+        if (this.vehicle != null && variant.rideable())
             this.stopRiding();
     }
     
@@ -1133,6 +1134,11 @@ public abstract class ChangedEntity extends Monster {
             return getSelfVariant().itemUseMode;
         else
             return UseItemMode.NORMAL;
+    }
+
+    @NotNull
+    public EntityShape getEntityShape() {
+        return EntityShape.ANTHRO;
     }
 
     public boolean isItemAllowedInSlot(ItemStack stack, EquipmentSlot slot) {
