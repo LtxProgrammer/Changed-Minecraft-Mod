@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
@@ -13,7 +10,6 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.item.Clothing;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
@@ -609,21 +605,28 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND)
             return true;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem && !wearableItem.allowedInSlot(itemStack, player, slot))
-            return false;
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem) {
+            if (!wearableItem.allowedInSlot(itemStack, player, slot))
+                return false;
+        }
+
+        else { // Default expected entity shapes
+            boolean shapeFits = switch (slot) {
+                case HEAD -> getEntityShape().getHeadShape() == ClothingShape.Head.ANTHRO;
+                case CHEST -> getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTHRO;
+                case LEGS -> getEntityShape().getLegsShape() == ClothingShape.Legs.BIPEDAL;
+                case FEET -> getEntityShape().getFeetShape() == ClothingShape.Feet.BIPEDAL;
+                default -> true;
+            };
+
+            if (!shapeFits)
+                return false;
+        }
+
         if (!entity.isItemAllowedInSlot(itemStack, slot))
             return false;
 
-        int expectedLegCount;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
-            expectedLegCount = wearableItem.getExpectedLegCount(itemStack);
-        else
-            expectedLegCount = 2;
-
-        return switch (slot) {
-            case LEGS, FEET -> expectedLegCount == parent.legCount;
-            default -> true;
-        };
+        return true;
     }
 
     protected static double correctScaling(Attribute attribute, double original) {
@@ -886,7 +889,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.tickBreathing();
 
-        if (!parent.hasLegs && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
+        if (getEntityShape().isLegless() && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
             host.setPose(Pose.SWIMMING);
 
         // Sink in water
@@ -1034,6 +1037,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
     public int getTicksInWaveVision() {
         return ticksInWaveVision;
+    }
+
+    public EntityShape getEntityShape() {
+        return entity.getEntityShape();
     }
 
     public void prepareForRender(float partialTicks) {}

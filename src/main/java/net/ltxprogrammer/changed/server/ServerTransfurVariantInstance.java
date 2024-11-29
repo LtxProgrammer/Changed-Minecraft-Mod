@@ -60,7 +60,7 @@ public class ServerTransfurVariantInstance<T extends ChangedEntity> extends Tran
         if (transfurProgression >= 1f && !isTemporaryFromSuit()) {
             transfurContext = transfurContext.withSource(null);
             if (willSurviveTransfur)
-                ChangedCriteriaTriggers.TRANSFUR.trigger(host, getParent());
+                ChangedCriteriaTriggers.TRANSFUR.trigger(host, this);
         }
     }
 

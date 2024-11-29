@@ -69,7 +69,7 @@ public abstract class GameRendererMixin {
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void bobView(PoseStack pose, float partialTicks, CallbackInfo callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(Minecraft.getInstance().getCameraEntity()), variant -> {
-            if (!variant.getParent().hasLegs)
+            if (variant.getEntityShape().isLegless())
                 callback.cancel();
         });
     }
