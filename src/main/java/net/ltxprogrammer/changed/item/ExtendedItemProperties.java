@@ -52,11 +52,11 @@ public interface ExtendedItemProperties {
     }
 
     default ClothingShape.Head getExpectedHeadShape(ItemStack itemStack) {
-        return ClothingShape.Head.ANTRHO;
+        return ClothingShape.Head.ANTHRO;
     }
 
     default ClothingShape.Torso getExpectedTorsoShape(ItemStack itemStack) {
-        return ClothingShape.Torso.ANTRHO;
+        return ClothingShape.Torso.ANTHRO;
     }
 
     default ClothingShape.Legs getExpectedLegShape(ItemStack itemStack) {

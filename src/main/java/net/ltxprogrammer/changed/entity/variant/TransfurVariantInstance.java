@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
@@ -13,7 +10,6 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.item.Clothing;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
@@ -616,8 +612,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         else { // Default expected entity shapes
             boolean shapeFits = switch (slot) {
-                case HEAD -> getEntityShape().getHeadShape() == ClothingShape.Head.ANTRHO;
-                case CHEST -> getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTRHO;
+                case HEAD -> getEntityShape().getHeadShape() == ClothingShape.Head.ANTHRO;
+                case CHEST -> getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTHRO;
                 case LEGS -> getEntityShape().getLegsShape() == ClothingShape.Legs.BIPEDAL;
                 case FEET -> getEntityShape().getFeetShape() == ClothingShape.Feet.BIPEDAL;
                 default -> true;

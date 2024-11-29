@@ -10,7 +10,7 @@ public enum EntityShape implements EntityShapeProvider, IExtensibleEnum, StringR
     /**
      * Upright bipedal entity
      */
-    ANTHRO("anthro", ClothingShape.Head.ANTRHO, ClothingShape.Torso.ANTRHO, ClothingShape.Legs.BIPEDAL, ClothingShape.Feet.BIPEDAL),
+    ANTHRO("anthro", ClothingShape.Head.ANTHRO, ClothingShape.Torso.ANTHRO, ClothingShape.Legs.BIPEDAL, ClothingShape.Feet.BIPEDAL),
     /**
      * Quadrupedal entity, set on all fours
      */
@@ -18,15 +18,15 @@ public enum EntityShape implements EntityShapeProvider, IExtensibleEnum, StringR
     /**
      * Half anthro, 2/3 quadrupedal
      */
-    TAUR("taur", ClothingShape.Head.ANTRHO, ClothingShape.Torso.ANTRHO, ClothingShape.Legs.QUADRUPEDAL, ClothingShape.Feet.QUADRUPEDAL),
+    TAUR("taur", ClothingShape.Head.ANTHRO, ClothingShape.Torso.ANTHRO, ClothingShape.Legs.QUADRUPEDAL, ClothingShape.Feet.QUADRUPEDAL),
     /**
      * Half anthro, half snake
      */
-    NAGA("naga", ClothingShape.Head.ANTRHO, ClothingShape.Torso.ANTRHO, ClothingShape.Legs.TAIL, ClothingShape.Feet.TAIL),
+    NAGA("naga", ClothingShape.Head.ANTHRO, ClothingShape.Torso.ANTHRO, ClothingShape.Legs.TAIL, ClothingShape.Feet.TAIL),
     /**
      * Half anthro, half fish
      */
-    MER("mer", ClothingShape.Head.ANTRHO, ClothingShape.Torso.ANTRHO, ClothingShape.Legs.TAIL, ClothingShape.Feet.TAIL);
+    MER("mer", ClothingShape.Head.ANTHRO, ClothingShape.Torso.ANTHRO, ClothingShape.Legs.TAIL, ClothingShape.Feet.TAIL);
 
     private final String serialName;
     public final ClothingShape.Head headShape;

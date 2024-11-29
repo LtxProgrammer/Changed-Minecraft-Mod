@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 public abstract class ClothingShape {
     public enum Head implements IExtensibleEnum, StringRepresentable {
         NONE("none"),
-        ANTRHO("anthro");
+        ANTHRO("anthro");
 
         private final String serialName;
 
@@ -25,7 +25,7 @@ public abstract class ClothingShape {
 
         @Nullable
         public ResourceLocation getEmptyArmorSlot() {
-            if (this == NONE || this == ANTRHO)
+            if (this == NONE || this == ANTHRO)
                 return null;
             return Changed.modResource("items/empty_armor_slot_" + serialName + "_head");
         }
@@ -37,7 +37,7 @@ public abstract class ClothingShape {
 
     public enum Torso implements IExtensibleEnum, StringRepresentable {
         NONE("none"),
-        ANTRHO("anthro");
+        ANTHRO("anthro");
 
         private final String serialName;
 
@@ -52,7 +52,7 @@ public abstract class ClothingShape {
 
         @Nullable
         public ResourceLocation getEmptyArmorSlot() {
-            if (this == NONE || this == ANTRHO)
+            if (this == NONE || this == ANTHRO)
                 return null;
             return Changed.modResource("items/empty_armor_slot_" + serialName + "_torso");
         }
