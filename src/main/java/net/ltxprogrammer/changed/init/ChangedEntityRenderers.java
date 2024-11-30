@@ -142,6 +142,7 @@ public class ChangedEntityRenderers {
         registerHumanoid(event, ChangedEntities.WHITE_WOLF_MALE.get(), WhiteWolfMaleRenderer::new);
         registerHumanoid(event, ChangedEntities.WHITE_WOLF_FEMALE.get(), WhiteWolfFemaleRenderer::new);
         registerHumanoid(event, ChangedEntities.PURE_WHITE_LATEX_WOLF.get(), PureWhiteLatexWolfRenderer::new);
+        registerHumanoid(event, ChangedEntities.PURE_WHITE_LATEX_WOLF_PUP.get(), PureWhiteLatexWolfPupRenderer::new);
 
         registerHumanoid(event, ChangedEntities.CUSTOM_LATEX.get(), CustomLatexRenderer::new);
 

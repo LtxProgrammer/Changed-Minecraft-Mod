@@ -113,6 +113,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(MilkPuddingModel.LAYER_LOCATION, MilkPuddingModel::createBodyLayer);
         event.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
         event.registerLayerDefinition(PureWhiteLatexWolfModel.LAYER_LOCATION, PureWhiteLatexWolfModel::createBodyLayer);
+        event.registerLayerDefinition(PureWhiteLatexWolfPupModel.LAYER_LOCATION, PureWhiteLatexWolfPupModel::createBodyLayer);
 
         event.registerLayerDefinition(CustomLatexModel.LAYER_LOCATION, CustomLatexModel::createBodyLayer);
 
