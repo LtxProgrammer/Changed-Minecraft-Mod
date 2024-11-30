@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexRaccoonRenderer extends AdvancedHumanoidRenderer<LatexRaccoon, LatexRaccoonModel, ArmorLatexMaleCatModel<LatexRaccoon>> {
     public LatexRaccoonRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexRaccoonModel(context.bakeLayer(LatexRaccoonModel.LAYER_LOCATION)),
-                ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexRaccoonModel(context.bakeLayer(LatexRaccoonModel.LAYER_LOCATION)), ArmorLatexMaleCatModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));

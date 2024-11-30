@@ -134,7 +134,7 @@ public class LatexSirenModel extends AdvancedHumanoidModel<LatexSiren> implement
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexSiren entity) {
         animator.setupHand();
     }
 
@@ -194,7 +194,7 @@ public class LatexSirenModel extends AdvancedHumanoidModel<LatexSiren> implement
     }
 
     @Override
-    public HumanoidAnimator<LatexSiren, LatexSirenModel> getAnimator() {
+    public HumanoidAnimator<LatexSiren, LatexSirenModel> getAnimator(LatexSiren entity) {
         return animator;
     }
 }

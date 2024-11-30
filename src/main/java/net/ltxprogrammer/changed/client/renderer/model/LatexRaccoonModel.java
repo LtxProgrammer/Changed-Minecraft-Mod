@@ -147,7 +147,7 @@ public class LatexRaccoonModel extends AdvancedHumanoidModel<LatexRaccoon> imple
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexRaccoon entity) {
         animator.setupHand();
     }
 
@@ -184,7 +184,7 @@ public class LatexRaccoonModel extends AdvancedHumanoidModel<LatexRaccoon> imple
     }
 
     @Override
-    public HumanoidAnimator<LatexRaccoon, LatexRaccoonModel> getAnimator() {
+    public HumanoidAnimator<LatexRaccoon, LatexRaccoonModel> getAnimator(LatexRaccoon entity) {
         return animator;
     }
 }

@@ -159,7 +159,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<LatexMantaRa
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMantaRayFemale entity) {
         animator.setupHand();
     }
 
@@ -209,7 +209,7 @@ public class LatexMantaRayFemaleModel extends AdvancedHumanoidModel<LatexMantaRa
     }
 
     @Override
-    public HumanoidAnimator<LatexMantaRayFemale, LatexMantaRayFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexMantaRayFemale, LatexMantaRayFemaleModel> getAnimator(LatexMantaRayFemale entity) {
         return animator;
     }
 }

@@ -134,7 +134,7 @@ public class LatexOtterModel extends AdvancedHumanoidModel<LatexOtter> implement
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexOtter entity) {
         animator.setupHand();
     }
 
@@ -171,7 +171,7 @@ public class LatexOtterModel extends AdvancedHumanoidModel<LatexOtter> implement
     }
 
     @Override
-    public HumanoidAnimator<LatexOtter, LatexOtterModel> getAnimator() {
+    public HumanoidAnimator<LatexOtter, LatexOtterModel> getAnimator(LatexOtter entity) {
         return animator;
     }
 }

@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BuffLatexSharkMaleRenderer extends AdvancedHumanoidRenderer<BuffLatexSharkMale, BuffLatexSharkMaleModel, ArmorLatexMaleSharkModel<BuffLatexSharkMale>> {
     public BuffLatexSharkMaleRenderer(EntityRendererProvider.Context context) {
-        super(context, new BuffLatexSharkMaleModel(context.bakeLayer(BuffLatexSharkMaleModel.LAYER_LOCATION)),
-                ArmorLatexMaleSharkModel::new, ArmorLatexMaleSharkModel.INNER_ARMOR, ArmorLatexMaleSharkModel.OUTER_ARMOR, 0.5f);
+        super(context, new BuffLatexSharkMaleModel(context.bakeLayer(BuffLatexSharkMaleModel.LAYER_LOCATION)), ArmorLatexMaleSharkModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

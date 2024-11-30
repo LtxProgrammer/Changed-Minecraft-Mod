@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DarkLatexYufengRenderer extends AdvancedHumanoidRenderer<DarkLatexYufeng, DarkLatexYufengModel, ArmorLatexMaleWingedDragonModel<DarkLatexYufeng>> {
     public DarkLatexYufengRenderer(EntityRendererProvider.Context context) {
-        super(context, new DarkLatexYufengModel(context.bakeLayer(DarkLatexYufengModel.LAYER_LOCATION)),
-                ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new DarkLatexYufengModel(context.bakeLayer(DarkLatexYufengModel.LAYER_LOCATION)), ArmorLatexMaleWingedDragonModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

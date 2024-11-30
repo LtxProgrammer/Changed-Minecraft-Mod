@@ -25,7 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends PlayerModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
+public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends PlayerModel<T> implements AdvancedArmedModel<T>, HeadedModel, TorsoedModel {
     public static final CubeDeformation NO_DEFORMATION = CubeDeformation.NONE;
     public static final CubeDeformation TEXTURE_DEFORMATION = new CubeDeformation(-0.01F);
     protected static final ModelPart NULL_PART = new ModelPart(List.of(), Map.of());
@@ -45,13 +45,13 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         this.rootModelPart = root;
     }
 
-    public void syncPropertyModel() {
-        if (this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
-            modelInterface.getAnimator().writePropertyModel(this);
+    public void syncPropertyModel(T entity) {
+        if (this instanceof AdvancedHumanoidModelInterface modelInterface)
+            modelInterface.getAnimator(entity).writePropertyModel(this);
     }
 
-    public PlayerModel<?> preparePropertyModel() {
-        syncPropertyModel();
+    public PlayerModel<?> preparePropertyModel(T entity) {
+        syncPropertyModel(entity);
         return this;
     }
 
@@ -70,7 +70,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
             getTorso().visible = true;
         }
 
-        this.syncPropertyModel();
+        this.syncPropertyModel(entity);
     }
 
     public PoseStack.Pose resetPoseStack = null;
@@ -89,7 +89,7 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
             instance.animate(this, Mth.positiveModulo(ageInTicks, 1.0f));
         });
 
-        this.syncPropertyModel();
+        this.syncPropertyModel(entity);
     }
 
     public abstract ModelPart getArm(HumanoidArm arm);
@@ -112,10 +112,10 @@ public abstract class AdvancedHumanoidModel<T extends ChangedEntity> extends Pla
         return true;
     }
 
-    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToHand(T entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         if (this instanceof AdvancedHumanoidModelInterface modelInterface)
-            poseStack.translate(0.0, (modelInterface.getAnimator().armLength - 12.0f) / 20.0, 0.0);
+            poseStack.translate(0.0, (modelInterface.getAnimator(entity).armLength - 12.0f) / 20.0, 0.0);
     }
 
     private Stream<ModelPartStem> getAllPartsFor(ModelPart root) {

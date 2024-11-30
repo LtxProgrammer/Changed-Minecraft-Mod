@@ -19,10 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 public class LatexHumanRenderer extends AdvancedHumanoidRenderer<LatexHuman, LatexHumanModel, ArmorHumanModel<LatexHuman>> {
 	public LatexHumanRenderer(EntityRendererProvider.Context context, boolean slim) {
 		super(context, new LatexHumanModel(context.bakeLayer(
-				slim ? LatexHumanModel.LAYER_LOCATION_SLIM : LatexHumanModel.LAYER_LOCATION)),
-				ArmorHumanModel::new,
-				slim ? ModelLayers.PLAYER_SLIM_INNER_ARMOR : ModelLayers.PLAYER_INNER_ARMOR,
-				slim ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR, 0.5f);
+				slim ? LatexHumanModel.LAYER_LOCATION_SLIM : LatexHumanModel.LAYER_LOCATION)), ArmorHumanModel.MODEL_SET, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(new DarkLatexMaskLayer<>(this, context.getModelSet()));

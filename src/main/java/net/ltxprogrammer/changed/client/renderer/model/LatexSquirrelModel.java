@@ -171,7 +171,7 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexSquirrel entity) {
         animator.setupHand();
     }
 
@@ -208,7 +208,7 @@ public class LatexSquirrelModel extends AdvancedHumanoidModel<LatexSquirrel> imp
     }
 
     @Override
-    public HumanoidAnimator<LatexSquirrel, LatexSquirrelModel> getAnimator() {
+    public HumanoidAnimator<LatexSquirrel, LatexSquirrelModel> getAnimator(LatexSquirrel entity) {
         return animator;
     }
 }

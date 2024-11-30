@@ -145,7 +145,7 @@ public class LatexMimicPlantModel extends AdvancedHumanoidModel<LatexMimicPlant>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMimicPlant entity) {
         animator.setupHand();
     }
 
@@ -182,7 +182,7 @@ public class LatexMimicPlantModel extends AdvancedHumanoidModel<LatexMimicPlant>
     }
 
     @Override
-    public HumanoidAnimator<LatexMimicPlant, LatexMimicPlantModel> getAnimator() {
+    public HumanoidAnimator<LatexMimicPlant, LatexMimicPlantModel> getAnimator(LatexMimicPlant entity) {
         return animator;
     }
 }

@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexTrafficConeDragonRenderer extends AdvancedHumanoidRenderer<LatexTrafficConeDragon, LatexTrafficConeDragonModel, ArmorLatexBigTailDragonModel<LatexTrafficConeDragon>> {
 	public LatexTrafficConeDragonRenderer(EntityRendererProvider.Context context) {
-		super(context, new LatexTrafficConeDragonModel(context.bakeLayer(LatexTrafficConeDragonModel.LAYER_LOCATION)),
-				ArmorLatexBigTailDragonModel::new, ArmorLatexBigTailDragonModel.INNER_ARMOR, ArmorLatexBigTailDragonModel.OUTER_ARMOR, 0.5f);
+		super(context, new LatexTrafficConeDragonModel(context.bakeLayer(LatexTrafficConeDragonModel.LAYER_LOCATION)), ArmorLatexBigTailDragonModel.MODEL_SET, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, this.model));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

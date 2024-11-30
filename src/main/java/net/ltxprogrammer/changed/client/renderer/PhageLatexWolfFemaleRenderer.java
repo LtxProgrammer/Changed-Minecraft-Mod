@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PhageLatexWolfFemaleRenderer extends AdvancedHumanoidRenderer<PhageLatexWolfFemale, PhageLatexWolfFemaleModel, ArmorLatexFemaleWolfModel<PhageLatexWolfFemale>> {
 	public PhageLatexWolfFemaleRenderer(EntityRendererProvider.Context context) {
-		super(context, new PhageLatexWolfFemaleModel(context.bakeLayer(PhageLatexWolfFemaleModel.LAYER_LOCATION)),
-				ArmorLatexFemaleWolfModel::new, ArmorLatexFemaleWolfModel.INNER_ARMOR, ArmorLatexFemaleWolfModel.OUTER_ARMOR, 0.5f);
+		super(context, new PhageLatexWolfFemaleModel(context.bakeLayer(PhageLatexWolfFemaleModel.LAYER_LOCATION)), ArmorLatexFemaleWolfModel.MODEL_SET, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

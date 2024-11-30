@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,8 @@ public interface IAbstractChangedEntity {
     @NotNull CompoundTag getPersistentData();
     @Nullable List<HairStyle> getValidHairStyles();
     @NotNull HairStyle getHairStyle();
+
+    void replaceVariant(TransfurVariant<?> otherVariant);
 
     boolean isPlayer();
     boolean isStillLatex();
@@ -175,6 +178,14 @@ public interface IAbstractChangedEntity {
             }
 
             @Override
+            public void replaceVariant(TransfurVariant<?> otherVariant) {
+                var old = getTransfurVariantInstance();
+                ProcessTransfur.setPlayerTransfurVariant(player, otherVariant, old.transfurContext, 1.0f);
+                instance.clear();
+                latex.clear();
+            }
+
+            @Override
             public boolean isPlayer() {
                 return true;
             }
@@ -262,36 +273,38 @@ public interface IAbstractChangedEntity {
     }
 
     static IAbstractChangedEntity forEntity(ChangedEntity entity) {
+        Cacheable<ChangedEntity> cached = Cacheable.of(() -> entity);
+
         return new IAbstractChangedEntity() {
             @Override
             public @NotNull LivingEntity getEntity() {
-                return entity;
+                return cached.get();
             }
 
             @Override
             public @NotNull ChangedEntity getChangedEntity() {
-                return entity;
+                return cached.get();
             }
 
             @Override
             public @NotNull TransfurContext attack() {
-                return TransfurContext.npcLatexAttack(entity);
+                return TransfurContext.npcLatexAttack(cached.get());
             }
 
             @Override
             public @NotNull BlockPos getBlockPosition() {
-                return entity.blockPosition();
+                return cached.get().blockPosition();
             }
 
             @Override
             public @Nullable TransfurVariant<?> getSelfVariant() {
-                return entity.getSelfVariant();
+                return cached.get().getSelfVariant();
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public TransfurVariant<?> getTransfurVariant() {
-                return entity.getTransfurVariant();
+                return cached.get().getTransfurVariant();
             }
 
             @org.jetbrains.annotations.Nullable
@@ -302,23 +315,23 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull Level getLevel() {
-                return entity.level;
+                return cached.get().level;
             }
 
             @Override
             public @NotNull UUID getUUID() {
-                return entity.getUUID();
+                return cached.get().getUUID();
             }
 
             @Override
             public @NotNull TransfurMode getTransfurMode() {
-                return entity.getTransfurMode();
+                return cached.get().getTransfurMode();
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public <T extends AbstractAbilityInstance> T getAbilityInstance(AbstractAbility<T> ability) {
-                return entity.getAbilityInstance(ability);
+                return cached.get().getAbilityInstance(ability);
             }
 
             @org.jetbrains.annotations.Nullable
@@ -329,18 +342,31 @@ public interface IAbstractChangedEntity {
 
             @Override
             public @NotNull CompoundTag getPersistentData() {
-                return entity.getPersistentData();
+                return cached.get().getPersistentData();
             }
 
             @org.jetbrains.annotations.Nullable
             @Override
             public List<HairStyle> getValidHairStyles() {
-                return entity.getValidHairStyles();
+                return cached.get().getValidHairStyles();
             }
 
             @Override
             public @NotNull HairStyle getHairStyle() {
-                return entity.getHairStyle();
+                return cached.get().getHairStyle();
+            }
+
+            @Override
+            public void replaceVariant(TransfurVariant<?> otherVariant) { // Replaces entity without invalidating this abstraction
+                ChangedEntity oldEntity = cached.get();
+                ChangedEntity newEntity = otherVariant.getEntityType().create(getLevel());
+                getLevel().addFreshEntity(newEntity);
+                newEntity.teleportTo(oldEntity.getX(), oldEntity.getY(), oldEntity.getZ());
+                newEntity.setYRot(oldEntity.getYRot());
+                newEntity.setXRot(oldEntity.getXRot());
+                oldEntity.discard();
+
+                cached.forceValue(newEntity);
             }
 
             @Override
@@ -355,7 +381,7 @@ public interface IAbstractChangedEntity {
 
             @Override
             public boolean isDeadOrDying() {
-                return entity.isDeadOrDying();
+                return cached.get().isDeadOrDying();
             }
 
             @Override
@@ -365,17 +391,17 @@ public interface IAbstractChangedEntity {
 
             @Override
             public boolean isCrouching() {
-                return entity.isCrouching();
+                return cached.get().isCrouching();
             }
 
             @Override
             public boolean isSleeping() {
-                return entity.isSleeping();
+                return cached.get().isSleeping();
             }
 
             @Override
             public boolean isInWaterOrBubble() {
-                return entity.isInWaterOrBubble();
+                return cached.get().isInWaterOrBubble();
             }
 
             @Override
@@ -403,25 +429,25 @@ public interface IAbstractChangedEntity {
                 if (stack.isEmpty()) {
                     return;
                 } else {
-                    if (entity.level.isClientSide) {
-                        entity.swing(InteractionHand.MAIN_HAND);
+                    if (cached.get().level.isClientSide) {
+                        cached.get().swing(InteractionHand.MAIN_HAND);
                     }
 
-                    double d0 = entity.getEyeY() - (double)0.3F;
-                    ItemEntity itementity = new ItemEntity(entity.level, entity.getX(), d0, entity.getZ(), stack);
+                    double d0 = cached.get().getEyeY() - (double)0.3F;
+                    ItemEntity itementity = new ItemEntity(cached.get().level, cached.get().getX(), d0, cached.get().getZ(), stack);
                     itementity.setPickUpDelay(40);
                     if (includeName) {
-                        itementity.setThrower(entity.getUUID());
+                        itementity.setThrower(cached.get().getUUID());
                     }
 
                     float f7 = 0.3F;
-                    float f8 = Mth.sin(entity.getXRot() * ((float)Math.PI / 180F));
-                    float f2 = Mth.cos(entity.getXRot() * ((float)Math.PI / 180F));
-                    float f3 = Mth.sin(entity.getYRot() * ((float)Math.PI / 180F));
-                    float f4 = Mth.cos(entity.getYRot() * ((float)Math.PI / 180F));
-                    float f5 = entity.level.random.nextFloat() * ((float)Math.PI * 2F);
-                    float f6 = 0.02F * entity.level.random.nextFloat();
-                    itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (entity.level.random.nextFloat() - entity.level.random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+                    float f8 = Mth.sin(cached.get().getXRot() * ((float)Math.PI / 180F));
+                    float f2 = Mth.cos(cached.get().getXRot() * ((float)Math.PI / 180F));
+                    float f3 = Mth.sin(cached.get().getYRot() * ((float)Math.PI / 180F));
+                    float f4 = Mth.cos(cached.get().getYRot() * ((float)Math.PI / 180F));
+                    float f5 = cached.get().level.random.nextFloat() * ((float)Math.PI * 2F);
+                    float f6 = 0.02F * cached.get().level.random.nextFloat();
+                    itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (cached.get().level.random.nextFloat() - cached.get().level.random.nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
                 }
             }
 
@@ -437,12 +463,12 @@ public interface IAbstractChangedEntity {
 
             @Override
             public void setHairStyle(HairStyle style) {
-                entity.setHairStyle(style);
+                cached.get().setHairStyle(style);
             }
 
             @Override
             public void setEyeStyle(EyeStyle style) {
-                entity.setEyeStyle(style);
+                cached.get().setEyeStyle(style);
             }
 
             @Override
@@ -453,10 +479,18 @@ public interface IAbstractChangedEntity {
     }
 
     static @Nullable IAbstractChangedEntity forEither(LivingEntity entity) {
-        if (entity instanceof Player player)
+        if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
             return forPlayer(player);
         else if (entity instanceof ChangedEntity changed)
             return forEntity(changed);
         return null;
+    }
+
+    static Optional<IAbstractChangedEntity> forEitherSafe(Entity entity) {
+        if (entity instanceof Player player && ProcessTransfur.isPlayerTransfurred(player))
+            return Optional.of(forPlayer(player));
+        else if (entity instanceof ChangedEntity changed)
+            return Optional.of(forEntity(changed));
+        return Optional.empty();
     }
 }

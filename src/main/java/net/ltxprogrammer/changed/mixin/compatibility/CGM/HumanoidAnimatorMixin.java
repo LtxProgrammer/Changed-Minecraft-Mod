@@ -14,11 +14,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -40,7 +38,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         if (player == null) return;
 
         HumanoidModel<?> model = this.entityModel;
-        this.entityModel.syncPropertyModel();
+        this.entityModel.syncPropertyModel(entity);
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() instanceof GunItem gunItem) {
             if (player.isLocalPlayer() && limbSwing == 0.0F) {

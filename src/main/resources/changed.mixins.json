@@ -49,7 +49,7 @@
     "block.BlockColorsMixin",
     "client.ClientLevelMixin",
     "client.ClientLivingEntityMixin",
-    "client.ForgeHooksClientMixin",
+    "client.SheetsMixin",
     "client.MinecraftMixin",
     "client.MouseHandlerMixin",
     "client.OptionsMixin",
@@ -91,6 +91,7 @@
     "render.PlayerRendererMixin",
     "render.PoseStackMixin",
     "render.RenderLayerMixin",
+    "render.RenderSystemMixin",
     "render.RenderTypeMixin",
     "render.TextureAtlasMixin"
   ],

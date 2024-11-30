@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexFennecFoxRenderer extends AdvancedHumanoidRenderer<LatexFennecFox, LatexFennecFoxModel, ArmorLatexMaleWolfModel<LatexFennecFox>> {
     public LatexFennecFoxRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexFennecFoxModel(context.bakeLayer(LatexFennecFoxModel.LAYER_LOCATION)),
-                ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexFennecFoxModel(context.bakeLayer(LatexFennecFoxModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
+import net.ltxprogrammer.changed.client.renderer.curio.TransitionalCurio;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
@@ -28,6 +29,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,6 +37,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+import top.theillusivec4.curios.client.render.CuriosLayer;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -113,9 +121,9 @@ public abstract class TransfurAnimator {
         return copied;
     }
 
-    private static ModelPart.Cube clampCube(ModelPart.Cube a, @Nullable ModelPart.Cube clampBy) {
+    private static ModelPart.Cube clampCube(ModelPart.Cube a, ModelPart.Cube clampBy) {
         if (clampBy == null)
-            clampBy = a;
+            return a;
 
         float minX = Mth.clamp(a.minX, clampBy.minX, clampBy.maxX);
         float minY = Mth.clamp(a.minY, clampBy.minY, clampBy.maxY);
@@ -511,6 +519,13 @@ public abstract class TransfurAnimator {
         return Optional.empty();
     }
 
+    private static Optional<CuriosLayer<?,?>> findCuriosLayer(LivingEntityRenderer<?,?> renderer) {
+        for (var layer : renderer.layers)
+            if (layer instanceof CuriosLayer<?,?> curiosLayer)
+                return Optional.of(curiosLayer);
+        return Optional.empty();
+    }
+
     public static void renderTransfurringPlayer(Player player, TransfurVariantInstance<?> variant, PoseStack stack, MultiBufferSource buffer, int light, float partialTick) {
         final Minecraft minecraft = Minecraft.getInstance();
         final EntityRenderDispatcher dispatcher = minecraft.getEntityRenderDispatcher();
@@ -587,6 +602,47 @@ public abstract class TransfurAnimator {
                             texture, true);
                     afterModel.unprepareVisibility(armorSlot, item);
                 });
+            });
+            findCuriosLayer(livingPlayerRenderer).ifPresent(curiosLayer -> {
+                CuriosApi.getCuriosHelper().getCuriosHandler(player)
+                        .ifPresent(handler -> handler.getCurios().forEach((id, stacksHandler) -> {
+                            IDynamicStackHandler stackHandler = stacksHandler.getStacks();
+                            IDynamicStackHandler cosmeticStacksHandler = stacksHandler.getCosmeticStacks();
+
+                            for (int i = 0; i < stackHandler.getSlots(); i++) {
+                                ItemStack itemStack = cosmeticStacksHandler.getStackInSlot(i);
+                                boolean cosmetic = true;
+                                NonNullList<Boolean> renderStates = stacksHandler.getRenders();
+                                boolean renderable = renderStates.size() > i && renderStates.get(i);
+
+                                if (itemStack.isEmpty() && renderable) {
+                                    itemStack = stackHandler.getStackInSlot(i);
+                                    cosmetic = false;
+                                }
+
+                                if (!itemStack.isEmpty()) {
+                                    SlotContext slotContextPlayer = new SlotContext(id, player, i, cosmetic, renderable);
+                                    SlotContext slotContextVariant = new SlotContext(id, variant.getChangedEntity(), i, cosmetic, renderable);
+                                    ItemStack finalStack = itemStack;
+                                    CuriosRendererRegistry.getRenderer(itemStack.getItem()).ifPresent(renderer -> {
+                                        if (renderer instanceof TransitionalCurio transitionalCurio) {
+                                            final var texture = transitionalCurio.getModelTexture(finalStack, slotContextVariant);
+                                            final var before = transitionalCurio.getBeforeModel(finalStack, slotContextPlayer, livingPlayerRenderer);
+                                            final var after = transitionalCurio.getAfterModel(finalStack, slotContextPlayer, latexHumanoidRenderer);
+
+                                            if (texture.isEmpty() || before.isEmpty() || after.isEmpty())
+                                                return;
+
+                                            renderMorphedEntity(player,
+                                                    before.get(),
+                                                    after.get(),
+                                                    morphProgress, Color3.WHITE, 1f, stack, buffer, light,
+                                                    texture.get(), true);
+                                        }
+                                    });
+                                }
+                            }
+                        }));
             });
         }
     }
@@ -677,6 +733,8 @@ public abstract class TransfurAnimator {
         if (layer instanceof HumanoidArmorLayer<?,?,?>)
             return true;
         if (layer instanceof LatexHumanoidArmorLayer<?,?,?>)
+            return true;
+        if (layer instanceof CuriosLayer<?,?>)
             return true;
         return false;
     }

@@ -175,7 +175,7 @@ public class WhiteLatexCentaurModel extends AdvancedHumanoidModel<WhiteLatexCent
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(WhiteLatexCentaur entity) {
         animator.setupHand();
     }
 
@@ -236,7 +236,7 @@ public class WhiteLatexCentaurModel extends AdvancedHumanoidModel<WhiteLatexCent
     }
 
     @Override
-    public HumanoidAnimator<WhiteLatexCentaur, WhiteLatexCentaurModel> getAnimator() {
+    public HumanoidAnimator<WhiteLatexCentaur, WhiteLatexCentaurModel> getAnimator(WhiteLatexCentaur entity) {
         return animator;
     }
 

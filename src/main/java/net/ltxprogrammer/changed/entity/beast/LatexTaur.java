@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 public interface LatexTaur<T extends ChangedEntity> extends Saddleable {
     @Override default boolean isSaddleable() { return false; }
@@ -29,13 +30,8 @@ public interface LatexTaur<T extends ChangedEntity> extends Saddleable {
     }
 
     default boolean isSaddled(T self) {
-        return ProcessTransfur.ifPlayerTransfurred(self.getUnderlyingPlayer(), variant -> {
-            var ability = variant.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
-            if (ability != null)
-                return ability.saddle != null && !ability.saddle.isEmpty();
-            else
-                return false;
-        }, () -> self.getPersistentData().contains(SADDLE_LOCATION));
+        return !CuriosApi.getCuriosHelper().findCurios(self, Items.SADDLE).isEmpty() ||
+                self.getPersistentData().contains(SADDLE_LOCATION);
     }
 
     default void doPlayerRide(T self, Player player) {

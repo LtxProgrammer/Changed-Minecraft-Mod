@@ -25,16 +25,6 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedTextures {
     public static final Map<ResourceLocation, AbstractTexture> REGISTRY = new HashMap<>();
-    public static final Map<ResourceLocation, Material> MATERIAL_MAP = new HashMap<>();
-
-    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_UPPER_ABDOMEN =
-            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_upper_abdomen")));
-    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_LOWER_ABDOMEN =
-            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_lower_abdomen")));
-    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_QUADRUPEDAL_LEGGINGS =
-            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_quadrupedal_leggings")));
-    public static Pair<ResourceLocation, ResourceLocation> EMPTY_ARMOR_SLOT_QUADRUPEDAL_BOOTS =
-            registerMaterial(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_armor_slot_quadrupedal_boots")));
 
     private static void doOnRenderThread(RenderCall call) {
         if (!RenderSystem.isOnRenderThread())
@@ -46,11 +36,6 @@ public class ChangedTextures {
     public static ResourceLocation register(ResourceLocation location, Supplier<AbstractTexture> texture) {
         REGISTRY.computeIfAbsent(location, ignored -> texture.get());
         return location;
-    }
-
-    public static Pair<ResourceLocation, ResourceLocation> registerMaterial(Material material) {
-        MATERIAL_MAP.putIfAbsent(material.texture(), material);
-        return new Pair<>(material.atlasLocation(), material.texture());
     }
 
     public static void lateRegisterTextureNoSave(ResourceLocation location, Supplier<AbstractTexture> texture) {

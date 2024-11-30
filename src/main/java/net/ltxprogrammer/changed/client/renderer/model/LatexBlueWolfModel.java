@@ -158,7 +158,7 @@ public class LatexBlueWolfModel extends AdvancedHumanoidModel<LatexBlueWolf> imp
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexBlueWolf entity) {
         animator.setupHand();
     }
 
@@ -204,7 +204,7 @@ public class LatexBlueWolfModel extends AdvancedHumanoidModel<LatexBlueWolf> imp
     }
 
     @Override
-    public HumanoidAnimator<LatexBlueWolf, LatexBlueWolfModel> getAnimator() {
+    public HumanoidAnimator<LatexBlueWolf, LatexBlueWolfModel> getAnimator(LatexBlueWolf entity) {
         return animator;
     }
 }

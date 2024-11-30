@@ -14,8 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DarkLatexWolfPupRenderer extends AdvancedHumanoidRenderer<DarkLatexWolfPup, DarkLatexWolfPupModel, ArmorNoneModel<DarkLatexWolfPup>> {
 	public DarkLatexWolfPupRenderer(EntityRendererProvider.Context context) {
-		super(context, new DarkLatexWolfPupModel(context.bakeLayer(DarkLatexWolfPupModel.LAYER_LOCATION)),
-				ArmorNoneModel::new, ArmorNoneModel.INNER_ARMOR, ArmorNoneModel.OUTER_ARMOR, 0.4F);
+		super(context, new DarkLatexWolfPupModel(context.bakeLayer(DarkLatexWolfPupModel.LAYER_LOCATION)), ArmorNoneModel.MODEL_SET, 0.4F);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel(), model::isPartNotMask));
 		this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
 				.withSclera(Color3.fromInt(0x242424))

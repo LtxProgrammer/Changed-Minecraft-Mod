@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.TripleArmedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -21,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> implements TripleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_stiger_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_stiger_unified")).get();
+public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexStigerModel<T>> implements TripleArmedModel<T> {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexStigerModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_stiger_unified"), ArmorLatexStigerModel::createArmorLayer, ArmorLatexStigerModel::new);
 
     public final ModelPart Head;
     public final ModelPart Torso;
@@ -80,15 +79,15 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
 
         PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.75F, -1.5F, 4.0F, 4.0F, 4.0F, layer.altDeformation.extend(-0.3F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.2654F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 7.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 7.5F, 0.0F));
 
         PartDefinition RightArm2 = partdefinition.addOrReplaceChild("RightArm2", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 4.5F, 0.0F));
 
         PartDefinition RightArm3 = partdefinition.addOrReplaceChild("RightArm3", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 7.5F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation).mirror(false), PartPose.offset(5.0F, 7.5F, 0.0F));
 
         PartDefinition LeftArm2 = partdefinition.addOrReplaceChild("LeftArm2", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 4.5F, 0.0F));
 
@@ -114,7 +113,7 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -144,7 +143,7 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexStigerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexStigerModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -185,19 +184,19 @@ public class ArmorLatexStigerModel<T extends ChangedEntity> extends LatexHumanoi
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToMiddleHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToMiddleHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getMiddleArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }

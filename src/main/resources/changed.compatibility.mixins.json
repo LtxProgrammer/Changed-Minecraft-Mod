@@ -16,6 +16,8 @@
     "CGM.LatexItemInHandLayerMixin",
     "ChiselsAndBits.ChiselRenderTypeMixin",
     "CTM.BlockRenderLayerMixin",
+    "Curios.SlotHelperMixin",
+    "Curios.SlotTypeManagerMixin",
     "FirstPerson.FirstPersonBaseMixin",
     "Forgery.LatexHumanoidArmorLayerMixin",
     "HardcoreRevival.KnockoutHandlerMixin",

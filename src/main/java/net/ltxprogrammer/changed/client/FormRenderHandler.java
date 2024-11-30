@@ -92,14 +92,14 @@ public abstract class FormRenderHandler {
             renderingHand = true;
 
             AdvancedHumanoidModel entModel = advRenderer.getModel(changedEntity);
-            var modelInterface = (AdvancedHumanoidModelInterface<?,?>)entModel;
+            var modelInterface = (AdvancedHumanoidModelInterface)entModel;
 
-            var controller = modelInterface.getAnimator();
+            var controller = modelInterface.getAnimator(changedEntity);
 
             controller.resetVariables();
             ModelPart handPart = entModel.getArm(arm);
             entModel.setupAnim(changedEntity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-            modelInterface.setupHand();
+            modelInterface.setupHand(changedEntity);
 
             PoseStack stackCorrector = modelInterface.getPlacementCorrectors(CorrectorType.fromArm(arm));
             ResourceLocation texture = entRenderer.getTextureLocation(changedEntity);

@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexDeerRenderer extends AdvancedHumanoidRenderer<LatexDeer, LatexDeerModel, ArmorLatexDeerModel<LatexDeer>> {
     public LatexDeerRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexDeerModel(context.bakeLayer(LatexDeerModel.LAYER_LOCATION)),
-                ArmorLatexDeerModel::new, ArmorLatexDeerModel.INNER_ARMOR, ArmorLatexDeerModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexDeerModel(context.bakeLayer(LatexDeerModel.LAYER_LOCATION)), ArmorLatexDeerModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

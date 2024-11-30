@@ -163,7 +163,7 @@ public class LatexTigerSharkModel extends AdvancedHumanoidModel<LatexTigerShark>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexTigerShark entity) {
         animator.setupHand();
     }
 
@@ -200,7 +200,7 @@ public class LatexTigerSharkModel extends AdvancedHumanoidModel<LatexTigerShark>
     }
 
     @Override
-    public HumanoidAnimator<LatexTigerShark, LatexTigerSharkModel> getAnimator() {
+    public HumanoidAnimator<LatexTigerShark, LatexTigerSharkModel> getAnimator(LatexTigerShark entity) {
         return animator;
     }
 }

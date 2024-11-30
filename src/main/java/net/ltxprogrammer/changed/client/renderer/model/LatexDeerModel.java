@@ -153,7 +153,7 @@ public class LatexDeerModel extends AdvancedHumanoidModel<LatexDeer> implements 
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexDeer entity) {
         animator.setupHand();
     }
 
@@ -190,7 +190,7 @@ public class LatexDeerModel extends AdvancedHumanoidModel<LatexDeer> implements 
     }
 
     @Override
-    public HumanoidAnimator<LatexDeer, LatexDeerModel> getAnimator() {
+    public HumanoidAnimator<LatexDeer, LatexDeerModel> getAnimator(LatexDeer entity) {
         return animator;
     }
 }

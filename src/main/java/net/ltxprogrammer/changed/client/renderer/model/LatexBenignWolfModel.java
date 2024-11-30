@@ -140,7 +140,7 @@ public class LatexBenignWolfModel extends AdvancedHumanoidModel<LatexBenignWolf>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexBenignWolf entity) {
         animator.setupHand();
     }
 
@@ -177,7 +177,7 @@ public class LatexBenignWolfModel extends AdvancedHumanoidModel<LatexBenignWolf>
     }
 
     @Override
-    public HumanoidAnimator<LatexBenignWolf, LatexBenignWolfModel> getAnimator() {
+    public HumanoidAnimator<LatexBenignWolf, LatexBenignWolfModel> getAnimator(LatexBenignWolf entity) {
         return animator;
     }
 }

@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -58,11 +59,21 @@ public class AbilityOverlay {
     }
 
     public static void renderForeground(int x, int y, PoseStack stack, AbstractRadialScreen.ColorScheme scheme, Player player, TransfurVariantInstance<?> variant, AbstractAbilityInstance selected) {
-        RenderSystem.setShaderTexture(0, selected.ability.getTexture(IAbstractChangedEntity.forPlayer(player)));
+        ChangedClient.abilityRenderer.renderAndDecorateAbility(
+                player,
+                selected,
+                x,
+                y,
+                1.0f,
+                true,
+                0
+        );
+
+        /*RenderSystem.setShaderTexture(0, selected.ability.getTexture(IAbstractChangedEntity.forPlayer(player)));
         RenderSystem.setShaderColor(0, 0, 0, 0.5f); // Render ability shadow
         blit(stack, x, y + 4, 0, 0, 32, 32, 32, 32);
         RenderSystem.setShaderColor(scheme.foreground().red(), scheme.foreground().green(), scheme.foreground().blue(), 1.0F);
-        blit(stack, x, y, 0, 0, 32, 32, 32, 32);
+        blit(stack, x, y, 0, 0, 32, 32, 32, 32);*/
     }
 
     public static void renderSelectedAbility(Gui gui, PoseStack stack, float partialTick, int screenWidth, int screenHeight) {

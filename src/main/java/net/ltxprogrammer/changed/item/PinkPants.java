@@ -17,9 +17,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
 
-public class PinkPants extends ArmorItem implements Wearable, LatexFusingItem, Shorts {
+public class PinkPants extends Item implements Wearable, LatexFusingItem, Shorts {
     public PinkPants() {
-        super(MATERIAL, EquipmentSlot.LEGS, new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS));
+        super(new Properties().tab(ChangedTabs.TAB_CHANGED_ITEMS).durability(5));
     }
 
     @Override

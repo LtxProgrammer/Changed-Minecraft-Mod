@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexStiger;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
 
-public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> implements AdvancedHumanoidModelInterface<LatexStiger, LatexStigerModel>, TripleArmedModel {
+public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> implements AdvancedHumanoidModelInterface<LatexStiger, LatexStigerModel>, TripleArmedModel<LatexStiger> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_stiger"), "main");
     public final ModelPart Head;
     public final ModelPart Torso;
@@ -213,19 +214,19 @@ public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> impleme
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(LatexStiger entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToMiddleHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToMiddleHand(LatexStiger entity, HumanoidArm arm, PoseStack poseStack) {
         this.getMiddleArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(LatexStiger entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
@@ -235,12 +236,12 @@ public class LatexStigerModel extends AdvancedHumanoidModel<LatexStiger> impleme
     }
 
     @Override
-    public void setupHand() {
+    public void setupHand(LatexStiger entity) {
         animator.setupHand();
     }
 
     @Override
-    public HumanoidAnimator<LatexStiger, LatexStigerModel> getAnimator() {
+    public HumanoidAnimator<LatexStiger, LatexStigerModel> getAnimator(LatexStiger entity) {
         return animator;
     }
 

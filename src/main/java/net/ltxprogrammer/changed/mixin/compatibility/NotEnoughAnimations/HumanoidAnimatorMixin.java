@@ -9,7 +9,6 @@ import net.ltxprogrammer.changed.extension.RequiredMods;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import javax.annotation.Nullable;
 
 @Mixin(value = HumanoidAnimator.class, remap = false)
 @RequiredMods("notenoughanimations")
@@ -34,7 +31,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         final Player player = entity.getUnderlyingPlayer();
         if (!(player instanceof AbstractClientPlayer clientPlayer)) return;
 
-        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel();
+        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel(entity);
         NEAnimationsLoader.INSTANCE.playerTransformer.preUpdate(clientPlayer, (PlayerModel)propertyModel, limbSwing, info);
 
         this.applyPropertyModel(propertyModel);
@@ -45,7 +42,7 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity, M extends A
         final Player player = entity.getUnderlyingPlayer();
         if (!(player instanceof AbstractClientPlayer clientPlayer)) return;
 
-        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel();
+        final PlayerModel<?> propertyModel = this.entityModel.preparePropertyModel(entity);
         NEAnimationsLoader.INSTANCE.playerTransformer.updateModel(clientPlayer, (PlayerModel)propertyModel, limbSwing, info);
 
         if (player instanceof PlayerData data) {

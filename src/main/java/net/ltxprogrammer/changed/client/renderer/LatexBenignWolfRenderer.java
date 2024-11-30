@@ -11,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexBenignWolfRenderer extends AdvancedHumanoidRenderer<LatexBenignWolf, LatexBenignWolfModel, ArmorLatexMaleWolfModel<LatexBenignWolf>> {
     public LatexBenignWolfRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexBenignWolfModel(context.bakeLayer(LatexBenignWolfModel.LAYER_LOCATION)),
-                ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexBenignWolfModel(context.bakeLayer(LatexBenignWolfModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
     }

@@ -136,7 +136,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<LatexFennecFox> i
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexFennecFox entity) {
         animator.setupHand();
     }
 
@@ -173,7 +173,7 @@ public class LatexFennecFoxModel extends AdvancedHumanoidModel<LatexFennecFox> i
     }
 
     @Override
-    public HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> getAnimator() {
+    public HumanoidAnimator<LatexFennecFox, LatexFennecFoxModel> getAnimator(LatexFennecFox entity) {
         return animator;
     }
 }

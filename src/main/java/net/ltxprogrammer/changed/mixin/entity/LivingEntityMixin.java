@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.*;
@@ -118,7 +119,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
     public void hasEffect(MobEffect effect, CallbackInfoReturnable<Boolean> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (variant.getParent().visionType.test(effect))
+            if (variant.visionType.test(effect))
+                callback.setReturnValue(true);
+
+            if (variant.miningStrength.test(effect))
                 callback.setReturnValue(true);
 
             if (effect.equals(MobEffects.NIGHT_VISION)) {
@@ -133,7 +137,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
     public void getEffect(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(this), (player, variant) -> {
-            if (variant.getParent().visionType.test(effect))
+            if (variant.visionType.test(effect))
+                callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
+
+            if (variant.miningStrength.test(effect))
                 callback.setReturnValue(new MobEffectInstance(effect, 300, 1, false, false));
 
             if (effect.equals(MobEffects.NIGHT_VISION)) {
@@ -338,5 +345,23 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "increaseAirSupply", at = @At("HEAD"), cancellable = true)
     private void maybeAddAir(int current, CallbackInfoReturnable<Integer> cir) {
         TransfurGas.validEntityInGas((LivingEntity)(Object)this).ifPresent(gas -> cir.setReturnValue(current));
+    }
+
+    @Inject(method = "checkBedExists", at = @At("HEAD"), cancellable = true)
+    private void bedExistsOrIsStabilized(CallbackInfoReturnable<Boolean> cir) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            cir.setReturnValue(true);
+    }
+
+    @Inject(method = "isSleeping", at = @At("HEAD"), cancellable = true)
+    public void isSleepingOrStabilized(CallbackInfoReturnable<Boolean> cir) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            cir.setReturnValue(true);
+    }
+
+    @Inject(method = "stopSleeping", at = @At("HEAD"), cancellable = true)
+    public void unlessIsStabilized(CallbackInfo ci) {
+        if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
+            ci.cancel();
     }
 }

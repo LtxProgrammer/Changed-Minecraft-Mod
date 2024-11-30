@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -21,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> implements DoubleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_squid_dog_male_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_squid_dog_male_unified")).get();
+public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleSquidDogModel<T>> implements DoubleArmedModel<T> {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleSquidDogModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_squid_dog_male_unified"), ArmorLatexMaleSquidDogModel::createArmorLayer, ArmorLatexMaleSquidDogModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -97,7 +96,7 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
 
         PartDefinition LeftPad = LeftFoot.addOrReplaceChild("LeftPad", CubeListBuilder.create().texOffs(21, 21).addBox(-2.0F, 0.25F, -2.5F, 4.0F, 2.0F, 5.0F, layer.deformation), PartPose.offset(0.0F, 4.55F, -4.8F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, -2.2F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.dualDeformation), PartPose.offset(0.0F, -2.2F, 0.0F));
 
         PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.1F, -2.2F, 8.0F, 12.0F, 4.0F, layer.dualDeformation.extend(0.1F)), PartPose.offset(0.0F, -2.2F, 0.0F));
 
@@ -117,13 +116,13 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
 
         PartDefinition TentaclePart_r4 = LeftLowerTentacle.addOrReplaceChild("TentaclePart_r4", CubeListBuilder.create().texOffs(20, 23).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 4.0F, layer.deformation.extend(-0.5f)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.192F, 0.4276F, -0.0524F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation.extend(0.1F)), PartPose.offset(-5.2F, 3.9F, -0.2F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation.extend(0.1F)), PartPose.offset(-5.2F, 3.9F, -0.2F));
 
-        PartDefinition RightArm2 = partdefinition.addOrReplaceChild("RightArm2", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation.extend(0.1F)), PartPose.offset(-5.2F, -0.1F, -0.2F));
+        PartDefinition RightArm2 = partdefinition.addOrReplaceChild("RightArm2", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation.extend(0.1F)), PartPose.offset(-5.2F, -0.1F, -0.2F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-0.8F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation.extend(0.1F)).mirror(false), PartPose.offset(5.0F, 3.9F, -0.2F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-0.8F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation.extend(0.1F)).mirror(false), PartPose.offset(5.0F, 3.9F, -0.2F));
 
-        PartDefinition LeftArm2 = partdefinition.addOrReplaceChild("LeftArm2", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-0.8F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation.extend(0.1F)).mirror(false), PartPose.offset(5.0F, -0.1F, -0.2F));
+        PartDefinition LeftArm2 = partdefinition.addOrReplaceChild("LeftArm2", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-0.8F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation.extend(0.1F)).mirror(false), PartPose.offset(5.0F, -0.1F, -0.2F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
@@ -145,7 +144,7 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -173,7 +172,7 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexMaleSquidDogModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -194,12 +193,12 @@ public class ArmorLatexMaleSquidDogModel<T extends ChangedEntity> extends LatexH
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 

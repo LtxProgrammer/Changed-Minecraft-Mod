@@ -7,6 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockRenderHelper {
     public static boolean canBlockRenderAsSolid(BlockState blockState) {
         return ItemBlockRenderTypes.canRenderInLayer(blockState, RenderType.solid()) ||
-                ItemBlockRenderTypes.canRenderInLayer(blockState, LatexCoveredBlockRenderer.latexSolid());
+                ItemBlockRenderTypes.canRenderInLayer(blockState, ChangedShaders.latexSolid());
     }
 }

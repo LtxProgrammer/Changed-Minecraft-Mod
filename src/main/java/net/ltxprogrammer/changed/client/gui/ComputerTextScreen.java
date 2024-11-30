@@ -2,15 +2,20 @@ package net.ltxprogrammer.changed.client.gui;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.world.inventory.ComputerMenu;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-public class ComputerScreen extends TextMenuScreen<ComputerMenu> {
-    public ComputerScreen(ComputerMenu container, Inventory inventory, Component text) {
+public class ComputerTextScreen extends TextMenuScreen<ComputerMenu> {
+    public static final TranslatableComponent TITLE = new TranslatableComponent("container.changed.computer_writing");
+
+    public final Screen previous;
+    public ComputerTextScreen(Screen previous, ComputerMenu container, Inventory inventory, Component text) {
         super(container, inventory.player, text);
+        this.previous = previous;
     }
 
     @Override public int getBackgroundWidth() {
@@ -40,11 +45,9 @@ public class ComputerScreen extends TextMenuScreen<ComputerMenu> {
         return Changed.modResource("textures/gui/computer.png");
     }
 
-    private static final TranslatableComponent title = new TranslatableComponent("container.changed.computer_writing");
-
     @Nullable
     @Override
     public Component getNoteTitle() {
-        return title;
+        return TITLE;
     }
 }

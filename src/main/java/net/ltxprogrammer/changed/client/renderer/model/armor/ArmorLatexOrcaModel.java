@@ -65,7 +65,7 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -91,7 +91,7 @@ public class ArmorLatexOrcaModel<T extends ChangedEntity> extends LatexHumanoidA
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexOrcaModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexOrcaModel<T>> getAnimator(T entity) {
         return animator;
     }
 

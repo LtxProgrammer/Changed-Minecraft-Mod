@@ -185,7 +185,7 @@ public class PhageLatexWolfFemaleModel extends AdvancedHumanoidModel<PhageLatexW
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(PhageLatexWolfFemale entity) {
         animator.setupHand();
     }
 
@@ -223,7 +223,7 @@ public class PhageLatexWolfFemaleModel extends AdvancedHumanoidModel<PhageLatexW
     }
 
     @Override
-    public HumanoidAnimator<PhageLatexWolfFemale, PhageLatexWolfFemaleModel> getAnimator() {
+    public HumanoidAnimator<PhageLatexWolfFemale, PhageLatexWolfFemaleModel> getAnimator(PhageLatexWolfFemale entity) {
         return animator;
     }
 }

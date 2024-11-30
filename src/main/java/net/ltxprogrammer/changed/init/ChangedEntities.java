@@ -112,6 +112,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = registerSpawning("white_latex_centaur", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(WhiteLatexCentaur::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(1.1F, 2.0F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, WhiteLatexCentaur::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<LatexHyenaTaur>> LATEX_HYENA_TAUR = registerSpawning("latex_hyena_taur", 0xffbf75, 0xc0604d,
+            EntityType.Builder.of(LatexHyenaTaur::new, MobCategory.MONSTER).clientTrackingRange(10).sized(1.1F, 2.0F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexHyenaTaur::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<HeadlessKnight>> HEADLESS_KNIGHT = registerSpawning("headless_knight", 0xFFFFFF, 0x1E1E1E,
             EntityType.Builder.of(HeadlessKnight::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(1.1F, 1.1F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, HeadlessKnight::checkEntitySpawnRules);
@@ -139,6 +142,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<GasWolf>> GAS_WOLF = registerSpawning("gas_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(GasWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GasWolf::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<PooltoyWolf>> POOLTOY_WOLF = registerSpawning("pooltoy_wolf", 0x50c3ff, 0x57a9ec,
+            EntityType.Builder.of(PooltoyWolf::new, MobCategory.MONSTER).clientTrackingRange(10).sized(0.7F * PooltoyWolf.SCALE, 1.93F * PooltoyWolf.SCALE),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PooltoyWolf::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<DarkDragon>> DARK_DRAGON = registerSpawning("dark_dragon", 0x393939, 0x909090,
             EntityType.Builder.of(DarkDragon::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkDragon::checkEntitySpawnRules);
@@ -154,6 +160,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<DarkLatexYufeng>> DARK_LATEX_YUFENG = registerSpawning("dark_latex_yufeng", 0x393939, 0x0,
             EntityType.Builder.of(DarkLatexYufeng::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexYufeng::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<DarkLatexDoubleYufeng>> DARK_LATEX_DOUBLE_YUFENG = registerSpawning("dark_latex_double_yufeng", 0x393939, 0x0,
+            EntityType.Builder.of(DarkLatexDoubleYufeng::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, DarkLatexDoubleYufeng::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<PhageLatexWolfMale>> PHAGE_LATEX_WOLF_MALE = registerSpawning("phage_latex_wolf_male", 0x393939, 0x3499ff,
             EntityType.Builder.of(PhageLatexWolfMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PhageLatexWolfMale::checkEntitySpawnRules);
@@ -253,6 +262,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexAlien>> LATEX_ALIEN = registerSpawning("latex_alien", 0x1983A9, 0x2DAAB9,
             EntityType.Builder.of(LatexAlien::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexAlien::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<LatexSiameseCat>> LATEX_SIAMESE_CAT = registerSpawning("latex_siamese_cat", 0xfdeae0, 0x604e61,
+            EntityType.Builder.of(LatexSiameseCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSiameseCat::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSnowLeopardMale>> LATEX_SNOW_LEOPARD_MALE = registerSpawning("latex_snow_leopard_male", 0x9C9C9C, 0x272727,
             EntityType.Builder.of(LatexSnowLeopardMale::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSnowLeopardMale::checkEntitySpawnRules);
@@ -301,6 +313,10 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = registerSpawning("pure_white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(PureWhiteLatexWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexWolf::checkEntitySpawnRules);
+
+    public static final RegistryObject<EntityType<CustomLatexEntity>> CUSTOM_LATEX = registerSpawning("custom_latex", 0xFFFFFF, 0xFAFAFA,
+            EntityType.Builder.of(CustomLatexEntity::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, CustomLatexEntity::checkEntitySpawnRules);
 
     public static final RegistryObject<EntityType<SeatEntity>> SEAT_ENTITY = REGISTRY.register("seat_entity",
             () -> EntityType.Builder.of(SeatEntity::new, MobCategory.MISC).sized(0.01f, 0.01f).build("seat_entity"));
@@ -421,7 +437,8 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, HEADLESS_KNIGHT, 40, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, WHITE_LATEX_KNIGHT_FUSION, 20, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_KEON_WOLF, 10, 1, 1, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MING_CAT, 10, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MING_CAT, 15, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SIAMESE_CAT, 15, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, MILK_PUDDING, 80, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_MALE, 10, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_WOLF_FEMALE, 10, 1, 1, 0.7, 0.15);
@@ -441,6 +458,7 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_PINK_YUIN_DRAGON, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_YUIN, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_YUFENG, 20, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_LATEX_DOUBLE_YUFENG, 5, 1, 1, 0.7, 0.15);
 
                 // Passive
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, DARK_DRAGON, 5, 1, 1, 0.7, 0.15);
@@ -472,6 +490,9 @@ public class ChangedEntities {
 
             if (event.getCategory() == Biome.BiomeCategory.BEACH && !event.getName().equals(Biomes.STONY_SHORE.getRegistryName())) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_OTTER, 100, 1, 3, 0.7, 0.15);
+
+                // Passive
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, POOLTOY_WOLF, 1, 1, 2, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.MESA) {
@@ -487,6 +508,7 @@ public class ChangedEntities {
             if (event.getCategory() == Biome.BiomeCategory.SAVANNA) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYPNO_CAT, 60, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MEDUSA_CAT, 40, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYENA_TAUR, 40, 1, 1, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GREEN_LIZARD, 20, 1, 2, 0.7, 0.15);
             }
 

@@ -90,13 +90,6 @@ public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Ma
             }
         }
 
-        this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 74, 14) {
-            @Override
-            public boolean mayPlace(@Nonnull ItemStack stack) {
-                return stack.is(Items.SADDLE);
-            }
-        }));
-
         this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 92, 14) {
             @Override
             public boolean mayPlace(@Nonnull ItemStack stack) {
@@ -117,7 +110,6 @@ public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Ma
         if (ability == null)
             return;
 
-        internal.insertItem(0, ability.saddle, false);
         internal.insertItem(1, ability.chest, false);
     }
 
@@ -267,15 +259,9 @@ public class TaurSaddleMenu extends AbstractContainerMenu implements Supplier<Ma
 
     public boolean tick(AccessSaddleAbilityInstance abilityInstance) {
         boolean dirty = false;
-        if (!abilityInstance.saddle.equals(internal.getStackInSlot(0)))
-            dirty = true;
         if (!dirty && !abilityInstance.chest.equals(internal.getStackInSlot(1)))
             dirty = true;
-        abilityInstance.saddle = internal.getStackInSlot(0);
         abilityInstance.chest = internal.getStackInSlot(1);
-
-        if (abilityInstance.saddle.isEmpty())
-            player.ejectPassengers();
 
         return dirty;
     }

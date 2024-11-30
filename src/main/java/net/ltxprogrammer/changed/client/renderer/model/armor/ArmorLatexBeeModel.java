@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.DoubleArmedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -21,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> implements DoubleArmedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_bee_unified")).get();
+public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexBeeModel<T>> implements DoubleArmedModel<T> {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexBeeModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_bee_unified"), ArmorLatexBeeModel::createArmorLayer, ArmorLatexBeeModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -75,13 +74,13 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
 
         PartDefinition Base_r1 = TailPrimary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.75F, -1.5F, 4.0F, 4.0F, 4.0F, layer.altDeformation.extend(-0.3F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.2654F, 0.0F, 0.0F));
 
-        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.deformation), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 5.5F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 5.5F, 0.0F));
 
         PartDefinition RightArm2 = partdefinition.addOrReplaceChild("RightArm2", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 1.5F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 5.5F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation).mirror(false), PartPose.offset(5.0F, 5.5F, 0.0F));
 
         PartDefinition LeftArm2 = partdefinition.addOrReplaceChild("LeftArm2", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 1.5F, 0.0F));
 
@@ -105,7 +104,7 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -133,7 +132,7 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexBeeModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexBeeModel<T>> getAnimator(T entity) {
         return animator;
     }
 
@@ -154,12 +153,12 @@ public class ArmorLatexBeeModel<T extends ChangedEntity> extends LatexHumanoidAr
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(ChangedEntity entity, HumanoidArm arm, PoseStack poseStack) {
 
     }
 

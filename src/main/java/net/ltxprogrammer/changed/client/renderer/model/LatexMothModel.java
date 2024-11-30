@@ -148,7 +148,7 @@ public class LatexMothModel extends AdvancedHumanoidModel<LatexMoth> implements 
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexMoth entity) {
         animator.setupHand();
     }
 
@@ -185,7 +185,7 @@ public class LatexMothModel extends AdvancedHumanoidModel<LatexMoth> implements 
     }
 
     @Override
-    public HumanoidAnimator<LatexMoth, LatexMothModel> getAnimator() {
+    public HumanoidAnimator<LatexMoth, LatexMothModel> getAnimator(LatexMoth entity) {
         return animator;
     }
 }

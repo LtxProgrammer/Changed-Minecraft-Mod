@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Shorts;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -22,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorLatexAlienModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexAlienModel<T>> {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_alien")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_alien")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexAlienModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_alien"), ArmorLatexAlienModel::createArmorLayer, ArmorLatexAlienModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -79,9 +78,9 @@ public class ArmorLatexAlienModel<T extends ChangedEntity> extends LatexHumanoid
 
         PartDefinition cube_r3 = Tail.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 18).addBox(-1.0F, -3.875F, -3.075F, 2.0F, 5.0F, 2.0F, layer.deformation.extend(1.7F)), PartPose.offsetAndRotation(0.0F, 4.102F, 11.0928F, 1.165F, 0.0F, 0.0F));
 
-        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation), PartPose.offset(-5.0F, 0.0F, 0.0F));
+        PartDefinition RightArm = partdefinition.addOrReplaceChild("RightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(-5.0F, 0.0F, 0.0F));
 
-        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.deformation).mirror(false), PartPose.offset(5.0F, 0.0F, 0.0F));
+        PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, layer.dualDeformation).mirror(false), PartPose.offset(5.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
@@ -111,7 +110,7 @@ public class ArmorLatexAlienModel<T extends ChangedEntity> extends LatexHumanoid
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -137,7 +136,7 @@ public class ArmorLatexAlienModel<T extends ChangedEntity> extends LatexHumanoid
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexAlienModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexAlienModel<T>> getAnimator(T entity) {
         return animator;
     }
 

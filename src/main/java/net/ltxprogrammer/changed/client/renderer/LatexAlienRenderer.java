@@ -10,8 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexAlienRenderer extends AdvancedHumanoidRenderer<LatexAlien, LatexAlienModel, ArmorLatexAlienModel<LatexAlien>> {
     public LatexAlienRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexAlienModel(context.bakeLayer(LatexAlienModel.LAYER_LOCATION)),
-                ArmorLatexAlienModel::new, ArmorLatexAlienModel.INNER_ARMOR, ArmorLatexAlienModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexAlienModel(context.bakeLayer(LatexAlienModel.LAYER_LOCATION)), ArmorLatexAlienModel.MODEL_SET, 0.5f);
         this.addLayer(new EmissiveBodyLayer<>(this, Changed.modResource("textures/latex_alien_emissive.png")));
     }
 

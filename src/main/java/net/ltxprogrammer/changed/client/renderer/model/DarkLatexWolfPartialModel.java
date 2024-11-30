@@ -322,7 +322,7 @@ public class DarkLatexWolfPartialModel extends AdvancedHumanoidModel<DarkLatexWo
         }
     }
 
-    public void setupHand() {
+    public void setupHand(DarkLatexWolfPartial entity) {
         animator.setupHand();
     }
 
@@ -359,7 +359,7 @@ public class DarkLatexWolfPartialModel extends AdvancedHumanoidModel<DarkLatexWo
     }
 
     @Override
-    public HumanoidAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> getAnimator() {
+    public HumanoidAnimator<DarkLatexWolfPartial, DarkLatexWolfPartialModel> getAnimator(DarkLatexWolfPartial entity) {
         return animator;
     }
 }

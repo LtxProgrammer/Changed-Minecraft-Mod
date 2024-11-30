@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.entity.beast;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,12 +11,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomLatexEntity extends ChangedEntity {
     public enum TorsoType {
         GENERIC,
         CHISELED,
-        FEMALE;
+        FEMALE,
+        HEAVY;
 
         TorsoType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -56,7 +59,8 @@ public class CustomLatexEntity extends ChangedEntity {
 
     public enum LegType {
         BIPEDAL,
-        SNAKE;
+        CENTAUR,
+        MERMAID;
 
         LegType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
@@ -65,10 +69,30 @@ public class CustomLatexEntity extends ChangedEntity {
 
     public enum ArmType {
         GENERIC,
-        DRAGON,
+        WYVERN,
         SHARK;
 
         ArmType cycle() {
+            return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+    }
+
+    public enum ScaleType {
+        NORMAL(1.0F, 1.0F, 1.0F),
+        BUFF(1.125F, 1.0F, 1.15F),
+        SMALL(0.85F, 1.0F, 0.85F);
+
+        public final float bodyScale;
+        public final float headScale;
+        public final float bbScale;
+
+        ScaleType(float bodyScale, float headScale, float bbScale) {
+            this.bodyScale = bodyScale;
+            this.headScale = headScale;
+            this.bbScale = bbScale;
+        }
+
+        ScaleType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
         }
     }
@@ -122,6 +146,12 @@ public class CustomLatexEntity extends ChangedEntity {
         else return ArmType.values()[type];
     }
 
+    public ScaleType getScaleType() {
+        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 24) & 0xf;
+        if (type >= TailType.values().length) return ScaleType.NORMAL;
+        else return ScaleType.values()[type];
+    }
+
     public void setTorsoType(TorsoType type) {
         int flags = this.entityData.get(DATA_FORM_FLAGS);
         flags ^= (flags) & 0x0000000f;
@@ -164,6 +194,13 @@ public class CustomLatexEntity extends ChangedEntity {
         this.entityData.set(DATA_FORM_FLAGS, flags);
     }
 
+    public void setScaleType(ScaleType type) {
+        int flags = this.entityData.get(DATA_FORM_FLAGS);
+        flags ^= (flags) & 0x0f000000;
+        flags &= type.ordinal() << 24;
+        this.entityData.set(DATA_FORM_FLAGS, flags);
+    }
+
     public void cycleTorsoType() {
         setTorsoType(getTorsoType().cycle());
     }
@@ -188,6 +225,10 @@ public class CustomLatexEntity extends ChangedEntity {
         setArmType(getArmType().cycle());
     }
 
+    public void cycleScaleType() {
+        setScaleType(getScaleType().cycle());
+    }
+
     public CustomLatexEntity(EntityType<? extends ChangedEntity> type, Level level) {
         super(type, level);
     }
@@ -207,7 +248,22 @@ public class CustomLatexEntity extends ChangedEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setRawFormFlags(tag.getInt("RawFormFlags"));
+        if (tag.contains("RawFormFlags"))
+            this.setRawFormFlags(tag.getInt("RawFormFlags"));
+    }
+
+    @Override
+    public CompoundTag savePlayerVariantData() {
+        final var tag = super.savePlayerVariantData();
+        tag.putInt("RawFormFlags", this.getRawFormFlags());
+        return tag;
+    }
+
+    @Override
+    public void readPlayerVariantData(CompoundTag tag) {
+        super.readPlayerVariantData(tag);
+        if (tag.contains("RawFormFlags"))
+            this.setRawFormFlags(tag.getInt("RawFormFlags"));
     }
 
     @Override
@@ -228,5 +284,19 @@ public class CustomLatexEntity extends ChangedEntity {
     @Override
     public Color3 getDripColor() {
         return Color3.WHITE;
+    }
+
+    @Override
+    public float getScale() {
+        return getScaleType().bbScale * super.getScale();
+    }
+
+    @Override
+    public @NotNull EntityShape getEntityShape() {
+        return switch (getLegType()) {
+            case BIPEDAL -> EntityShape.ANTHRO;
+            case CENTAUR -> EntityShape.TAUR;
+            case MERMAID -> EntityShape.MER;
+        };
     }
 }

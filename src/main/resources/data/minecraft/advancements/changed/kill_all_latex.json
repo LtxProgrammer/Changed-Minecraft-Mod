@@ -131,6 +131,20 @@
         ]
       }
     },
+    "changed:dark_latex_double_yufeng": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:dark_latex_double_yufeng"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:headless_knight": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -321,6 +335,20 @@
             "condition": "minecraft:entity_properties",
             "predicate": {
               "type": "changed:latex_human"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "changed:latex_hyena_taur": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_hyena_taur"
             },
             "entity": "this"
           }
@@ -649,6 +677,20 @@
         ]
       }
     },
+    "changed:latex_siamese_cat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_siamese_cat"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:latex_siren": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -957,6 +999,20 @@
         ]
       }
     },
+    "changed:pooltoy_wolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:pooltoy_wolf"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:pure_white_latex_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1054,6 +1110,9 @@
       "changed:dark_latex_yufeng"
     ],
     [
+      "changed:dark_latex_double_yufeng"
+    ],
+    [
       "changed:headless_knight"
     ],
     [
@@ -1094,6 +1153,9 @@
     ],
     [
       "changed:latex_human"
+    ],
+    [
+      "changed:latex_hyena_taur"
     ],
     [
       "changed:latex_hypno_cat"
@@ -1165,6 +1227,9 @@
       "changed:latex_shark_male"
     ],
     [
+      "changed:latex_siamese_cat"
+    ],
+    [
       "changed:latex_siren"
     ],
     [
@@ -1229,6 +1294,9 @@
     ],
     [
       "changed:shark"
+    ],
+    [
+      "changed:pooltoy_wolf"
     ],
     [
       "changed:pure_white_latex_wolf"

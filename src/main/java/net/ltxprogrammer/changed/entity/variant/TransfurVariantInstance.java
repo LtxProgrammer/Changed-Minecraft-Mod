@@ -1,9 +1,6 @@
 package net.ltxprogrammer.changed.entity.variant;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
@@ -11,6 +8,7 @@ import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
@@ -49,6 +47,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -69,6 +68,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public AbstractAbility<?> menuAbility = null;
     public boolean abilityKeyState = false;
     public TransfurMode transfurMode;
+    public VisionType visionType;
+    public MiningStrength miningStrength;
     public int ageAsVariant = 0;
     protected int air = -100;
     protected int jumpCharges = 0;
@@ -76,6 +77,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public int ticksBreathingUnderwater;
     public int ticksFlying;
     protected int ticksSinceLastAbilityActivity = 0;
+    private int ticksInWaveVision = 0;
 
     private final Map<Attribute, Double> previousAttributes = new HashMap<>();
     private final Map<Attribute, Double> newAttributes = new HashMap<>();
@@ -214,6 +216,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         this.host = host;
 
         this.transfurMode = parent.transfurMode;
+        this.visionType = parent.visionType;
+        this.miningStrength = parent.miningStrength;
 
         var builder = new ImmutableMap.Builder<AbstractAbility<?>, AbstractAbilityInstance>();
         parent.abilities.forEach(abilityFunction -> {
@@ -409,7 +413,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 if (!event.player.isSpectator()) {
                     if (!instance.entity.level.isClientSide)
                         instance.entity.tickLeash();
-                    instance.getChangedEntity().visualTick(event.player.level);
+                    instance.getChangedEntity().variantTick(event.player.level);
                 }
             } catch (Exception x) {
                 x.printStackTrace();
@@ -601,21 +605,28 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND)
             return true;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem && !wearableItem.allowedInSlot(itemStack, player, slot))
-            return false;
+        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem) {
+            if (!wearableItem.allowedInSlot(itemStack, player, slot))
+                return false;
+        }
+
+        else { // Default expected entity shapes
+            boolean shapeFits = switch (slot) {
+                case HEAD -> getEntityShape().getHeadShape() == ClothingShape.Head.ANTHRO;
+                case CHEST -> getEntityShape().getTorsoShape() == ClothingShape.Torso.ANTHRO;
+                case LEGS -> getEntityShape().getLegsShape() == ClothingShape.Legs.BIPEDAL;
+                case FEET -> getEntityShape().getFeetShape() == ClothingShape.Feet.BIPEDAL;
+                default -> true;
+            };
+
+            if (!shapeFits)
+                return false;
+        }
+
         if (!entity.isItemAllowedInSlot(itemStack, slot))
             return false;
 
-        int expectedLegCount;
-        if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem)
-            expectedLegCount = wearableItem.getExpectedLegCount(itemStack);
-        else
-            expectedLegCount = 2;
-
-        return switch (slot) {
-            case LEGS, FEET -> expectedLegCount == parent.legCount;
-            default -> true;
-        };
+        return true;
     }
 
     protected static double correctScaling(Attribute attribute, double original) {
@@ -663,25 +674,20 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         float morph = getMorphProgression();
 
-        Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
-                        .map(slot -> Pair.of(slot, player.getItemBySlot(slot))).forEach(pair -> {
-                            var itemStack = pair.getSecond();
+        ItemUtil.getWearingItems(entity, ChangedTags.Items.WILL_BREAK_ON_TF).forEach(slottedItem -> {
+            final ItemStack itemStack = slottedItem.itemStack();
+            int currentDamage = itemStack.getDamageValue();
+            int newDamage = (int) Math.ceil(Mth.lerp(morph, 0, itemStack.getMaxDamage()));
 
-                            if (!itemStack.is(ChangedTags.Items.WILL_BREAK_ON_TF))
-                                return;
+            if (newDamage > currentDamage)
+                itemStack.setDamageValue(newDamage);
+            if (newDamage >= itemStack.getMaxDamage()) {
+                player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
+                slottedItem.slot().ifLeft(player::broadcastBreakEvent).ifRight(context -> CuriosApi.getCuriosHelper().onBrokenCurio(context));
 
-                            int currentDamage = itemStack.getDamageValue();
-                            int newDamage = (int) Math.ceil(Mth.lerp(morph, 0, itemStack.getMaxDamage()));
-
-                            if (newDamage > currentDamage)
-                                itemStack.setDamageValue(newDamage);
-                            if (newDamage >= itemStack.getMaxDamage()) {
-                                itemStack.shrink(1);
-
-                                player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
-                                player.broadcastBreakEvent(pair.getFirst());
-                            }
-                        });
+                itemStack.shrink(1);
+            }
+        });
     }
 
     protected void tickTransfurProgress() {
@@ -700,6 +706,10 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
             checkBreakItems(host);
             mapAttributes(host, previousAttributes, TransfurVariantInstance::noOp,
                     newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
+
+            if (transfurProgression >= 1f && willSurviveTransfur) {
+                CurioEntities.INSTANCE.forceReloadCurios(host);
+            }
         }
     }
 
@@ -782,6 +792,15 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                     host.setAirSupply(air-1);
                 this.ticksBreathingUnderwater = 0;
             }
+        }
+
+        // Air is fixed, doesn't increase or decrease
+        else if (host.isAlive() && parent.breatheMode == TransfurVariant.BreatheMode.NONE && shouldApplyAbilities()) {
+            if (air == -100) {
+                air = host.getAirSupply();
+            }
+
+            host.setAirSupply(Mth.clamp(air, 0, host.getMaxAirSupply()));
         }
     }
 
@@ -870,7 +889,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
 
         this.tickBreathing();
 
-        if (!parent.hasLegs && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
+        if (getEntityShape().isLegless() && host.isEyeInFluid(FluidTags.WATER) && shouldApplyAbilities())
             host.setPose(Pose.SWIMMING);
 
         // Sink in water
@@ -887,6 +906,12 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         // Effects
         if (parent.visionType == VisionType.BLIND) {
             host.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 1, false, false, false));
+        }
+
+        if (visionType == VisionType.WAVE_VISION) {
+            ticksInWaveVision++;
+        } else {
+            ticksInWaveVision = 0;
         }
 
         this.tickAbilities();
@@ -1008,6 +1033,14 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
 
         return 1.0f;
+    }
+
+    public int getTicksInWaveVision() {
+        return ticksInWaveVision;
+    }
+
+    public EntityShape getEntityShape() {
+        return entity.getEntityShape();
     }
 
     public void prepareForRender(float partialTicks) {}

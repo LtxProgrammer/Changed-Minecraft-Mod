@@ -37,6 +37,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(BehemothHandRightModel.LAYER_LOCATION, BehemothHandRightModel::createBodyLayer);
 
         event.registerLayerDefinition(GasWolfModel.LAYER_LOCATION, GasWolfModel::createBodyLayer);
+        event.registerLayerDefinition(PooltoyWolfModel.LAYER_LOCATION, PooltoyWolfModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexDragonModel.LAYER_LOCATION, DarkLatexDragonModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexWolfFemaleModel.LAYER_LOCATION, DarkLatexWolfFemaleModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexWolfMaleModel.LAYER_LOCATION, DarkLatexWolfMaleModel::createBodyLayer);
@@ -46,6 +47,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(DarkLatexWolfPartialModel.LAYER_LOCATION_LATEX_SLIM, () -> DarkLatexWolfPartialModel.createLatexLayer(true));
         event.registerLayerDefinition(DarkLatexWolfPupModel.LAYER_LOCATION, DarkLatexWolfPupModel::createBodyLayer);
         event.registerLayerDefinition(DarkLatexYufengModel.LAYER_LOCATION, DarkLatexYufengModel::createBodyLayer);
+        event.registerLayerDefinition(DarkLatexDoubleYufengModel.LAYER_LOCATION, DarkLatexDoubleYufengModel::createBodyLayer);
         event.registerLayerDefinition(PhageLatexWolfFemaleModel.LAYER_LOCATION, PhageLatexWolfFemaleModel::createBodyLayer);
         event.registerLayerDefinition(PhageLatexWolfMaleModel.LAYER_LOCATION, PhageLatexWolfMaleModel::createBodyLayer);
         event.registerLayerDefinition(HeadlessKnightModel.LAYER_LOCATION, HeadlessKnightModel::createBodyLayer);
@@ -86,6 +88,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(LatexSharkModel.LAYER_LOCATION, LatexSharkModel::createBodyLayer);
         event.registerLayerDefinition(BuffLatexSharkFemaleModel.LAYER_LOCATION, BuffLatexSharkFemaleModel::createBodyLayer);
         event.registerLayerDefinition(BuffLatexSharkMaleModel.LAYER_LOCATION, BuffLatexSharkMaleModel::createBodyLayer);
+        event.registerLayerDefinition(LatexSiameseCatModel.LAYER_LOCATION, LatexSiameseCatModel::createBodyLayer);
         event.registerLayerDefinition(LatexSirenModel.LAYER_LOCATION, LatexSirenModel::createBodyLayer);
         event.registerLayerDefinition(LatexSnakeModel.LAYER_LOCATION, LatexSnakeModel::createBodyLayer);
         event.registerLayerDefinition(LatexSniperDogModel.LAYER_LOCATION, LatexSniperDogModel::createBodyLayer);
@@ -102,6 +105,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(LatexWhiteTigerModel.LAYER_LOCATION, LatexWhiteTigerModel::createBodyLayer);
         event.registerLayerDefinition(LatexYuinModel.LAYER_LOCATION, LatexYuinModel::createBodyLayer);
         event.registerLayerDefinition(WhiteLatexCentaurModel.LAYER_LOCATION, WhiteLatexCentaurModel::createBodyLayer);
+        event.registerLayerDefinition(LatexHyenaTaurModel.LAYER_LOCATION, LatexHyenaTaurModel::createBodyLayer);
         event.registerLayerDefinition(WhiteLatexKnightModel.LAYER_LOCATION, WhiteLatexKnightModel::createBodyLayer);
         event.registerLayerDefinition(WhiteLatexKnightFusionModel.LAYER_LOCATION, WhiteLatexKnightFusionModel::createBodyLayer);
         event.registerLayerDefinition(WhiteLatexWolfFemaleModel.LAYER_LOCATION, WhiteLatexWolfFemaleModel::createBodyLayer);
@@ -110,74 +114,47 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(SharkModel.LAYER_LOCATION, SharkModel::createBodyLayer);
         event.registerLayerDefinition(PureWhiteLatexWolfModel.LAYER_LOCATION, PureWhiteLatexWolfModel::createBodyLayer);
 
-        event.registerLayerDefinition(ArmorNoneModel.INNER_ARMOR, () -> ArmorNoneModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorNoneModel.OUTER_ARMOR, () -> ArmorNoneModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorNoTailModel.INNER_ARMOR, () -> ArmorNoTailModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorNoTailModel.OUTER_ARMOR, () -> ArmorNoTailModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorUpperBodyModel.INNER_ARMOR, () -> ArmorUpperBodyModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorUpperBodyModel.OUTER_ARMOR, () -> ArmorUpperBodyModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorSnakeAbdomenModel.INNER_ARMOR, () -> ArmorSnakeAbdomenModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorSnakeAbdomenModel.OUTER_ARMOR, () -> ArmorSnakeAbdomenModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorHeadlessKnightModel.INNER_ARMOR, () -> ArmorHeadlessKnightModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorHeadlessKnightModel.OUTER_ARMOR, () -> ArmorHeadlessKnightModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexAlienModel.INNER_ARMOR, () -> ArmorLatexAlienModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexAlienModel.OUTER_ARMOR, () -> ArmorLatexAlienModel.createArmorLayer(ArmorModel.OUTER));
+        event.registerLayerDefinition(CustomLatexModel.LAYER_LOCATION, CustomLatexModel::createBodyLayer);
+
+        ArmorNoneModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorNoTailModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorSnakeAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorHeadlessKnightModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexAlienModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         // v --- ARMOR / ENTITY --- ^
 
-        event.registerLayerDefinition(ArmorLatexMaleWolfModel.INNER_ARMOR, () -> ArmorLatexMaleWolfModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleWolfModel.OUTER_ARMOR, () -> ArmorLatexMaleWolfModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleWolfModel.INNER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleWolfModel.OUTER_ARMOR, () -> ArmorLatexFemaleWolfModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorFemaleMantaRayUpperBodyModel.INNER_ARMOR, () -> ArmorFemaleMantaRayUpperBodyModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorFemaleMantaRayUpperBodyModel.OUTER_ARMOR, () -> ArmorFemaleMantaRayUpperBodyModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorFemaleMantaRayAbdomenModel.INNER_ARMOR, () -> ArmorFemaleMantaRayAbdomenModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorFemaleMantaRayAbdomenModel.OUTER_ARMOR, () -> ArmorFemaleMantaRayAbdomenModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.INNER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorMermaidSharkAbdomenModel.OUTER_ARMOR, () -> ArmorMermaidSharkAbdomenModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorMermaidSharkUpperBodyModel.INNER_ARMOR, () -> ArmorMermaidSharkUpperBodyModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorMermaidSharkUpperBodyModel.OUTER_ARMOR, () -> ArmorMermaidSharkUpperBodyModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorSirenUpperBodyModel.INNER_ARMOR, () -> ArmorSirenUpperBodyModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorSirenUpperBodyModel.OUTER_ARMOR, () -> ArmorSirenUpperBodyModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorSirenAbdomenModel.INNER_ARMOR, () -> ArmorSirenAbdomenModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorSirenAbdomenModel.OUTER_ARMOR, () -> ArmorSirenAbdomenModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexBeeModel.INNER_ARMOR, () -> ArmorLatexBeeModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexBeeModel.OUTER_ARMOR, () -> ArmorLatexBeeModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexDeerModel.INNER_ARMOR, () -> ArmorLatexDeerModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexDeerModel.OUTER_ARMOR, () -> ArmorLatexDeerModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexMaleCatModel.INNER_ARMOR, () -> ArmorLatexMaleCatModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleCatModel.OUTER_ARMOR, () -> ArmorLatexMaleCatModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleCatModel.INNER_ARMOR, () -> ArmorLatexFemaleCatModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleCatModel.OUTER_ARMOR, () -> ArmorLatexFemaleCatModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexMaleDragonModel.INNER_ARMOR, () -> ArmorLatexMaleDragonModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleDragonModel.OUTER_ARMOR, () -> ArmorLatexMaleDragonModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleDragonModel.INNER_ARMOR, () -> ArmorLatexFemaleDragonModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleDragonModel.OUTER_ARMOR, () -> ArmorLatexFemaleDragonModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexBigTailDragonModel.INNER_ARMOR, () -> ArmorLatexBigTailDragonModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexBigTailDragonModel.OUTER_ARMOR, () -> ArmorLatexBigTailDragonModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexMaleWingedDragonModel.INNER_ARMOR, () -> ArmorLatexMaleWingedDragonModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, () -> ArmorLatexMaleWingedDragonModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleWingedDragonModel.INNER_ARMOR, () -> ArmorLatexFemaleWingedDragonModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleWingedDragonModel.OUTER_ARMOR, () -> ArmorLatexFemaleWingedDragonModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexMaleSharkModel.INNER_ARMOR, () -> ArmorLatexMaleSharkModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleSharkModel.OUTER_ARMOR, () -> ArmorLatexMaleSharkModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleSharkModel.INNER_ARMOR, () -> ArmorLatexFemaleSharkModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleSharkModel.OUTER_ARMOR, () -> ArmorLatexFemaleSharkModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexMaleSquidDogModel.INNER_ARMOR, () -> ArmorLatexMaleSquidDogModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexMaleSquidDogModel.OUTER_ARMOR, () -> ArmorLatexMaleSquidDogModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexFemaleSquidDogModel.INNER_ARMOR, () -> ArmorLatexFemaleSquidDogModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexFemaleSquidDogModel.OUTER_ARMOR, () -> ArmorLatexFemaleSquidDogModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexWhiteKnightModel.INNER_ARMOR, () -> ArmorLatexWhiteKnightModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexWhiteKnightModel.OUTER_ARMOR, () -> ArmorLatexWhiteKnightModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexCentaurUpperModel.INNER_ARMOR, () -> ArmorLatexCentaurUpperModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexCentaurUpperModel.OUTER_ARMOR, () -> ArmorLatexCentaurUpperModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexCentaurLowerModel.INNER_ARMOR, () -> ArmorLatexCentaurLowerModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexCentaurLowerModel.OUTER_ARMOR, () -> ArmorLatexCentaurLowerModel.createArmorLayer(ArmorModel.OUTER));
+        ArmorLatexMaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleWolfModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorFemaleMantaRayUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorFemaleMantaRayAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorMermaidSharkAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorMermaidSharkUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorSirenUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorSirenAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexBeeModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexDeerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleCatModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleCatModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexBigTailDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleSquidDogModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleSquidDogModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexWhiteKnightModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexCentaurUpperModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexCentaurLowerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexFemaleTaurUpperModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
-        event.registerLayerDefinition(ArmorLatexOtterModel.INNER_ARMOR, () -> ArmorLatexOtterModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexOtterModel.OUTER_ARMOR, () -> ArmorLatexOtterModel.createArmorLayer(ArmorModel.OUTER));
-        event.registerLayerDefinition(ArmorLatexStigerModel.INNER_ARMOR, () -> ArmorLatexStigerModel.createArmorLayer(ArmorModel.INNER));
-        event.registerLayerDefinition(ArmorLatexStigerModel.OUTER_ARMOR, () -> ArmorLatexStigerModel.createArmorLayer(ArmorModel.OUTER));
+        ArmorHumanModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+
+        ArmorLatexOtterModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexStigerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
         if (useNewModels) {
             event.registerLayerDefinition(HairRemodel.RIG_UPPER_LOCATION, HairRemodel::createUpperHair);

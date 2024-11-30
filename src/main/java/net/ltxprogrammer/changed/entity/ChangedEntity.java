@@ -5,8 +5,10 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
 import net.ltxprogrammer.changed.entity.beast.*;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -817,7 +819,7 @@ public abstract class ChangedEntity extends Monster {
             this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true, this::targetSelectorTest));
             this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, this::targetSelectorTest));
         }
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 7.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerButNotHostGoal(this, Player.class, 7.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, ChangedEntity.class, 7.0F, 0.2F));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Villager.class, 7.0F, 0.2F));
@@ -831,7 +833,7 @@ public abstract class ChangedEntity extends Monster {
     public void tick() {
         super.tick();
         moveCloak();
-        visualTick(this.level);
+        variantTick(this.level);
 
         var player = getUnderlyingPlayer();
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
@@ -841,7 +843,7 @@ public abstract class ChangedEntity extends Monster {
         var variant = getSelfVariant();
         if (variant == null) return;
 
-        if (this.vehicle != null && (variant.rideable() || !variant.hasLegs))
+        if (this.vehicle != null && variant.rideable())
             this.stopRiding();
     }
     
@@ -952,7 +954,11 @@ public abstract class ChangedEntity extends Monster {
         return new Vec3((double)(f3), 0.0, (double)(f2));
     }
 
-    public void visualTick(Level level) {
+    /**
+     * Executed by both entity and tf'd player
+     * @param level
+     */
+    public void variantTick(Level level) {
         this.crouchAmountO = this.crouchAmount;
         this.flyAmountO = this.flyAmount;
 
@@ -1128,6 +1134,11 @@ public abstract class ChangedEntity extends Monster {
             return getSelfVariant().itemUseMode;
         else
             return UseItemMode.NORMAL;
+    }
+
+    @NotNull
+    public EntityShape getEntityShape() {
+        return EntityShape.ANTHRO;
     }
 
     public boolean isItemAllowedInSlot(ItemStack stack, EquipmentSlot slot) {

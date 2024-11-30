@@ -18,6 +18,7 @@
   "changed:dark_latex_wolf_partial": "BIPED",
   "changed:dark_latex_wolf_pup": "QUADRUPED",
   "changed:dark_latex_yufeng": "BIPED",
+  "changed:dark_latex_double_yufeng": "BIPED",
   "changed:beifeng": "BIPED",
   "changed:latex_benign_wolf": "BIPED",
   "changed:latex_blue_dragon": "BIPED",
@@ -26,6 +27,7 @@
   "changed:latex_fennec_fox": "BIPED",
   "changed:green_lizard": "BIPED",
   "changed:latex_human": "BIPED",
+  "changed:latex_hyena_taur": "QUADRUPED",
   "changed:latex_hypno_cat": "BIPED",
   "changed:latex_leaf": "BIPED",
   "changed:latex_squirrel": "BIPED",
@@ -35,6 +37,7 @@
   "changed:latex_mermaid_shark": "BIPED",
   "changed:latex_moth": "BIPED",
   "changed:latex_mutant_bloodcell_wolf": "BIPED",
+  "changed:latex_siamese_cat": "BIPED",
   "changed:latex_siren": "BIPED",
   "changed:latex_snake": "BIPED",
   "changed:latex_mimic_plant": "BIPED",
@@ -68,5 +71,6 @@
   "changed:white_wolf_female": "BIPED",
   "changed:white_wolf_male": "BIPED",
   "changed:phage_latex_wolf_female": "BIPED",
-  "changed:phage_latex_wolf_male": "BIPED"
+  "changed:phage_latex_wolf_male": "BIPED",
+  "changed:pooltoy_wolf": "BIPED"
 }

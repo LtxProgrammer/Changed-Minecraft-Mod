@@ -6,8 +6,7 @@ import net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.TransfurCapeLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexMermaidSharkModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkAbdomenModel;
-import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorMermaidSharkUpperBodyModel;
+import net.ltxprogrammer.changed.client.renderer.model.armor.*;
 import net.ltxprogrammer.changed.entity.beast.LatexMermaidShark;
 import net.ltxprogrammer.changed.item.AbdomenArmor;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,9 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 public class LatexMermaidSharkRenderer extends AdvancedHumanoidRenderer<LatexMermaidShark, LatexMermaidSharkModel, ArmorMermaidSharkUpperBodyModel<LatexMermaidShark>> {
     public LatexMermaidSharkRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexMermaidSharkModel(context.bakeLayer(LatexMermaidSharkModel.LAYER_LOCATION)),
-                ArmorMermaidSharkUpperBodyModel::new, ArmorMermaidSharkUpperBodyModel.INNER_ARMOR, ArmorMermaidSharkUpperBodyModel.OUTER_ARMOR,
-                ArmorMermaidSharkAbdomenModel::new, ArmorMermaidSharkAbdomenModel.INNER_ARMOR, ArmorMermaidSharkAbdomenModel.OUTER_ARMOR,
-                AbdomenArmor::useAbdomenModel, AbdomenArmor::useInnerAbdomenModel, 0.5f);
+                ArmorModelPicker.legless(context.getModelSet(), ArmorMermaidSharkUpperBodyModel.MODEL_SET, ArmorMermaidSharkAbdomenModel.MODEL_SET), 0.5f);
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new LatexParticlesLayer<>(this, this.model));

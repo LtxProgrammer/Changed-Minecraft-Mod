@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class WhiteLatexKnightRenderer extends AdvancedHumanoidRenderer<WhiteLatexKnight, WhiteLatexKnightModel, ArmorLatexWhiteKnightModel<WhiteLatexKnight>> {
     public WhiteLatexKnightRenderer(EntityRendererProvider.Context context) {
-        super(context, new WhiteLatexKnightModel(context.bakeLayer(WhiteLatexKnightModel.LAYER_LOCATION)),
-                ArmorLatexWhiteKnightModel::new, ArmorLatexWhiteKnightModel.INNER_ARMOR, ArmorLatexWhiteKnightModel.OUTER_ARMOR, 0.5f);
+        super(context, new WhiteLatexKnightModel(context.bakeLayer(WhiteLatexKnightModel.LAYER_LOCATION)), ArmorLatexWhiteKnightModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())

@@ -77,7 +77,7 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> imple
         this.prepareMobModel(animator, entity, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(SpecialLatex entity) {
         animator.setupHand();
     }
 
@@ -115,7 +115,7 @@ public class SpecialLatexModel extends AdvancedHumanoidModel<SpecialLatex> imple
     }
 
     @Override
-    public HumanoidAnimator<SpecialLatex, SpecialLatexModel> getAnimator() {
+    public HumanoidAnimator<SpecialLatex, SpecialLatexModel> getAnimator(SpecialLatex entity) {
         return animator;
     }
 }

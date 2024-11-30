@@ -11,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexBeeRenderer extends AdvancedHumanoidRenderer<LatexBee, LatexBeeModel, ArmorLatexBeeModel<LatexBee>> {
     public LatexBeeRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexBeeModel(context.bakeLayer(LatexBeeModel.LAYER_LOCATION)),
-                ArmorLatexBeeModel::new, ArmorLatexBeeModel.INNER_ARMOR, ArmorLatexBeeModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexBeeModel(context.bakeLayer(LatexBeeModel.LAYER_LOCATION)), ArmorLatexBeeModel.MODEL_SET, 0.5f);
         var translucent = new LatexTranslucentLayer<>(this, this.model, Changed.modResource("textures/latex_bee_translucent.png"));
         this.addLayer(translucent);
         this.addLayer(new DoubleItemInHandLayer<>(this));

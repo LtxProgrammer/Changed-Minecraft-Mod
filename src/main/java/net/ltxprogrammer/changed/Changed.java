@@ -8,6 +8,8 @@ import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.extension.curios.CurioEntities;
+import net.ltxprogrammer.changed.extension.curios.CurioSlots;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
@@ -80,11 +82,8 @@ public class Changed {
 
         instance = this;
 
-        // Initialize (Note ModEventBus is a stack; first in - last out)
-
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        //    vvv Last to process vvv
         HairStyle.REGISTRY.register(modEventBus);
         ChangedAbilities.REGISTRY.register(modEventBus);
         PlayerMover.REGISTRY.register(modEventBus);
@@ -105,7 +104,6 @@ public class Changed {
         ChangedBlocks.REGISTRY.register(modEventBus);
         ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
-        //    ^^^ First to process ^^^
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();
@@ -138,6 +136,8 @@ public class Changed {
 
     private void dataListeners(final AddReloadListenerEvent event) {
         event.addListener(ChangedFusions.INSTANCE);
+        event.addListener(CurioSlots.INSTANCE);
+        event.addListener(CurioEntities.INSTANCE);
         ChangedCompatibility.addDataListeners(event);
     }
 
@@ -176,7 +176,7 @@ public class Changed {
     public static <T extends Event & IModBusEvent> boolean postModLoadingEvent(T event) {
         return FMLJavaModLoadingContext.get().getModEventBus().post(event);
     }
-    
+
     public static <T extends Event & IModBusEvent> boolean postModLoadingEvent(T event, IEventBusInvokeDispatcher dispatcher) {
         return FMLJavaModLoadingContext.get().getModEventBus().post(event, dispatcher);
     }
@@ -188,7 +188,7 @@ public class Changed {
     public static <T extends Event> boolean postModEvent(T event) {
         return MinecraftForge.EVENT_BUS.post(event);
     }
-    
+
     public static <T extends Event> boolean postModEvent(T event, IEventBusInvokeDispatcher dispatcher) {
         return MinecraftForge.EVENT_BUS.post(event, dispatcher);
     }

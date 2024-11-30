@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.item;
 
-import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.extension.curios.CurioSlots;
+import net.ltxprogrammer.changed.util.ItemUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,23 +20,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegistryEntry<Item> implements ItemLike, net.minecraftforge.common.extensions.IForgeItem {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
-    public void use(Level level, Player player, InteractionHand p_41434_, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback) {
+    public void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback) {
         if (asItem() instanceof SaddleItem) {
-            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                variant.ifHasAbility(ChangedAbilities.ACCESS_SADDLE.get(), ability -> {
-                    if (!ability.saddle.isEmpty())
-                        return;
+            ItemStack itemstack = player.getItemInHand(hand);
 
-                    ItemStack itemstack = player.getItemInHand(p_41434_);
-                    ItemStack copy = itemstack.copy();
-                    copy.setCount(1);
-                    ability.saddle = copy;
-                    ability.ability.setDirty(ability);
-                    level.playSound((Player)null, player, SoundEvents.HORSE_SADDLE, SoundSource.PLAYERS, 0.5F, 1.0F);
-                    itemstack.shrink(1);
-                    callback.setReturnValue(InteractionResultHolder.consume(itemstack));
-                });
-            });
+            if (ItemUtil.tryEquipCurio(player, itemstack, CurioSlots.LOWER_BODY)) {
+                level.playSound((Player)null, player, SoundEvents.HORSE_SADDLE, SoundSource.PLAYERS, 0.5F, 1.0F);
+                itemstack.shrink(1);
+                callback.setReturnValue(InteractionResultHolder.consume(itemstack));
+            }
         }
     }
 }

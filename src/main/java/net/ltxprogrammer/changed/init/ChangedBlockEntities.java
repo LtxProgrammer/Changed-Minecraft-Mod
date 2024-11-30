@@ -45,4 +45,5 @@ public class ChangedBlockEntities {
             return new LabDoorOpenerEntity(pos, state, door);
         else throw new IllegalStateException("Block does not extend OpenableDoor");
     }, ChangedBlocks.LAB_DOORS.stream()));
+    public static final RegistryObject<BlockEntityType<StasisChamberBlockEntity>> STASIS_CHAMBER = REGISTRY.register("stasis_chamber", deferredProvider(StasisChamberBlockEntity::new, ChangedBlocks.STASIS_CHAMBER));
 }

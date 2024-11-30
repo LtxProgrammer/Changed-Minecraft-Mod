@@ -167,10 +167,11 @@ repositories {
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
-        url = "https://modmaven.dev"
+        url = "https://modmaven.dev/"
     }
-    maven { url "https://cursemaven.com" }
-    maven { url "https://maven.shedaniel.me" }
+    maven { url "https://maven.theillusivec4.top/" }
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://cursemaven.com/" }
 }
 
 mixin {
@@ -188,6 +189,8 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     annotationProcessor project(':ap')
+
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curiosVersion}")
 
     implementation fg.deobf("curse.maven:presence-footsteps-forge-433068:4328018") // Forge 1.18.2 v1.5.1
     implementation fg.deobf("curse.maven:spark-361579:4505375") // Forge 1.18.2 v1.10.38

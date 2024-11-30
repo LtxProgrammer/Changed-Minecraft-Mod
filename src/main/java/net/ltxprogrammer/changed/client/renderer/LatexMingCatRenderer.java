@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexMingCatRenderer extends AdvancedHumanoidRenderer<LatexMingCat, LatexMingCatModel, ArmorLatexMaleCatModel<LatexMingCat>> {
     public LatexMingCatRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexMingCatModel(context.bakeLayer(LatexMingCatModel.LAYER_LOCATION)),
-                ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexMingCatModel(context.bakeLayer(LatexMingCatModel.LAYER_LOCATION)), ArmorLatexMaleCatModel.MODEL_SET, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));

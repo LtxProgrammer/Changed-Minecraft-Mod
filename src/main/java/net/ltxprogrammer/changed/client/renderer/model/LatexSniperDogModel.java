@@ -143,7 +143,7 @@ public class LatexSniperDogModel extends AdvancedHumanoidModel<SniperDog> implem
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(SniperDog entity) {
         animator.setupHand();
     }
 
@@ -180,7 +180,7 @@ public class LatexSniperDogModel extends AdvancedHumanoidModel<SniperDog> implem
     }
 
     @Override
-    public HumanoidAnimator<SniperDog, LatexSniperDogModel> getAnimator() {
+    public HumanoidAnimator<SniperDog, LatexSniperDogModel> getAnimator(SniperDog entity) {
         return animator;
     }
 }

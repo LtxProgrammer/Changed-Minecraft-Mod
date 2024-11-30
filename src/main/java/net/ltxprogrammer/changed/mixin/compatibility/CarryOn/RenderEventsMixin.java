@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.mixin.compatibility.CarryOn;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
@@ -14,7 +13,6 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -149,8 +147,8 @@ public abstract class RenderEventsMixin {
                 entityModel.setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTicks, netHeadYaw, headPitch);
                 var torso = entityModel.getTorso();
 
-                if (entityModel instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
-                    matrix.translate(0.0, 0.0, (perspective == 2 ? -1 : 1) * modelInterface.getAnimator().forwardOffset / 8.0D);
+                if (entityModel instanceof AdvancedHumanoidModelInterface modelInterface)
+                    matrix.translate(0.0, 0.0, (perspective == 2 ? -1 : 1) * modelInterface.getAnimator(entity).forwardOffset / 8.0D);
 
                 if (torso != null) {
                     float oldY = torso.y;

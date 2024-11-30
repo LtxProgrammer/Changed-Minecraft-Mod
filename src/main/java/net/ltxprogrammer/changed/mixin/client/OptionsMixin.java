@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.mixin.client;
 
+import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.ChangedOptions;
 import net.ltxprogrammer.changed.tutorial.ChangedTutorialSteps;
 import net.minecraft.client.Options;
@@ -8,6 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Options.class)
 public abstract class OptionsMixin implements ChangedOptions {
@@ -26,5 +28,11 @@ public abstract class OptionsMixin implements ChangedOptions {
     @Inject(method = "processOptions", at = @At("RETURN"))
     private void processOptions(Options.FieldAccess access, CallbackInfo callback) {
         changedTutorialStep = access.process("changed__tutorialStep", changedTutorialStep, ChangedTutorialSteps::getByName, ChangedTutorialSteps::getName);
+    }
+
+    @Inject(method = "getEffectiveRenderDistance", at = @At("HEAD"), cancellable = true)
+    public void waveVisionRenderDistance(CallbackInfoReturnable<Integer> cir) {
+        if (ChangedClient.shouldRenderingWaveVision())
+            cir.setReturnValue(2);
     }
 }

@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class PureWhiteLatexWolfRenderer extends AdvancedHumanoidRenderer<PureWhiteLatexWolf, PureWhiteLatexWolfModel, ArmorLatexMaleWolfModel<PureWhiteLatexWolf>> {
 	public PureWhiteLatexWolfRenderer(EntityRendererProvider.Context context) {
-		super(context, new PureWhiteLatexWolfModel(context.bakeLayer(PureWhiteLatexWolfModel.LAYER_LOCATION)),
-				ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
+		super(context, new PureWhiteLatexWolfModel(context.bakeLayer(PureWhiteLatexWolfModel.LAYER_LOCATION)), ArmorLatexMaleWolfModel.MODEL_SET, 0.5f);
 		this.addLayer(new LatexParticlesLayer<>(this, getModel()));
 		this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
 		this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));

@@ -7,8 +7,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.beast.LatexTaur;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -22,9 +20,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> implements LowerTorsoedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_latex_centaur_lower")).get();
+public class ArmorLatexCentaurLowerModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexCentaurLowerModel<T>> implements LowerTorsoedModel {
+    public static final ArmorModelSet<ChangedEntity, ArmorLatexCentaurLowerModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_latex_centaur_lower"), ArmorLatexCentaurLowerModel::createArmorLayer, ArmorLatexCentaurLowerModel::new);
 
     private final ModelPart FrontRightLeg;
     private final ModelPart FrontLeftLeg;
@@ -114,12 +112,12 @@ public class ArmorLatexCentaurLowerModel<T extends ChangedEntity & LatexTaur<T>>
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorLatexCentaurLowerModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorLatexCentaurLowerModel<T>> getAnimator(T entity) {
         return animator;
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 

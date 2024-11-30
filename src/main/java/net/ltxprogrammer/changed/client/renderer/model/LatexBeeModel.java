@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexBee;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements AdvancedHumanoidModelInterface<LatexBee, LatexBeeModel>, DoubleArmedModel {
+public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements AdvancedHumanoidModelInterface<LatexBee, LatexBeeModel>, DoubleArmedModel<LatexBee> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_bee"), "main");
     private final ModelPart RightLeg;
@@ -189,7 +190,7 @@ public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements Ad
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexBee entity) {
         animator.setupHand();
     }
 
@@ -225,13 +226,13 @@ public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements Ad
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(LatexBee entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(LatexBee entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
@@ -257,7 +258,7 @@ public class LatexBeeModel extends AdvancedHumanoidModel<LatexBee> implements Ad
     }
 
     @Override
-    public HumanoidAnimator<LatexBee, LatexBeeModel> getAnimator() {
+    public HumanoidAnimator<LatexBee, LatexBeeModel> getAnimator(LatexBee entity) {
         return animator;
     }
 }

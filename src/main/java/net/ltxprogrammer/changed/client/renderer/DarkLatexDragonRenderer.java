@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class DarkLatexDragonRenderer extends AdvancedHumanoidRenderer<DarkDragon, DarkLatexDragonModel, ArmorLatexMaleWingedDragonModel<DarkDragon>> {
     public DarkLatexDragonRenderer(EntityRendererProvider.Context context) {
-        super(context, new DarkLatexDragonModel(context.bakeLayer(DarkLatexDragonModel.LAYER_LOCATION)),
-                ArmorLatexMaleWingedDragonModel::new, ArmorLatexMaleWingedDragonModel.INNER_ARMOR, ArmorLatexMaleWingedDragonModel.OUTER_ARMOR, 0.5f);
+        super(context, new DarkLatexDragonModel(context.bakeLayer(DarkLatexDragonModel.LAYER_LOCATION)), ArmorLatexMaleWingedDragonModel.MODEL_SET, 0.5f);
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(new CustomEyesLayer<>(this, context.getModelSet()));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));

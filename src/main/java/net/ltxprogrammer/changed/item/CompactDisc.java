@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.block.Computer;
+import net.ltxprogrammer.changed.computers.DiscData;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.util.TagUtil;
@@ -33,27 +34,12 @@ public class CompactDisc extends Item {
         super(new Item.Properties().stacksTo(1).tab(ChangedTabs.TAB_CHANGED_ITEMS));
     }
 
-    public @NotNull Component getName(ItemStack p_43480_) {
-        CompoundTag compoundtag = p_43480_.getTag();
-        if (compoundtag != null) {
-            String s = compoundtag.getString(TAG_TITLE);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> hoverText, TooltipFlag tooltipFlag) {
+        if (stack.hasTag()) {
+            CompoundTag tag = stack.getTag();
+            String s = DiscData.getName(tag);
             if (!StringUtil.isNullOrEmpty(s)) {
-                if (TagUtil.getBooleanOrDefault(compoundtag, TAG_TRANSLATE, false))
-                    return new TranslatableComponent(s);
-                else
-                    return new TextComponent(s);
-            }
-        }
-
-        return super.getName(p_43480_);
-    }
-
-    public void appendHoverText(ItemStack p_43457_, @Nullable Level p_43458_, List<Component> p_43459_, TooltipFlag p_43460_) {
-        if (p_43457_.hasTag()) {
-            CompoundTag compoundtag = p_43457_.getTag();
-            String s = compoundtag.getString(TAG_AUTHOR);
-            if (!StringUtil.isNullOrEmpty(s)) {
-                p_43459_.add((new TranslatableComponent("book.byAuthor", s)).withStyle(ChatFormatting.GRAY));
+                hoverText.add((new TranslatableComponent("text.changed.compact_disc.title", s)).withStyle(ChatFormatting.GRAY));
             }
         }
     }
@@ -69,7 +55,7 @@ public class CompactDisc extends Item {
         }
     }
 
-    public boolean isFoil(ItemStack p_43476_) {
-        return p_43476_.getTag() != null;
+    public boolean isFoil(ItemStack stack) {
+        return stack.getTag() != null;
     }
 }

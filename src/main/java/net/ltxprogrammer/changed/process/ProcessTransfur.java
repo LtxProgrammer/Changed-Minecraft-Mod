@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
 import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
@@ -429,6 +430,7 @@ public class ProcessTransfur {
             ChangedFunctionTags.ON_TRANSFUR.execute(ServerLifecycleHooks.getCurrentServer(), player);
         }
 
+        CurioEntities.INSTANCE.forceReloadCurios(player);
         if (player instanceof ServerPlayer serverPlayer)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> serverPlayer), SyncTransfurPacket.Builder.of(player));
         return instance;

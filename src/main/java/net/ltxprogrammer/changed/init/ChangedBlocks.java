@@ -47,6 +47,12 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ChangedBlocks {
+    /*
+    setBlock() flags:
+    1 -> update neighbors
+    2 -> notify clients
+     */
+
     public static boolean always(BlockState blockState, BlockGetter level, BlockPos blockPos) {
         return true;
     }
@@ -164,6 +170,8 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LIBRARY_DOOR = register("large_library_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::cutoutRenderer);
+
+    public static final RegistryObject<StasisChamber> STASIS_CHAMBER = register("stasis_chamber", () -> new StasisChamber(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
 
     public static final List<RegistryObject<? extends Block>> LAB_DOORS = Util.make(new ArrayList<>(), list -> {
         list.add(BLUE_LAB_DOOR);

@@ -8,7 +8,6 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.renderer.model.LowerTorsoedModel;
 import net.ltxprogrammer.changed.entity.beast.HeadlessKnight;
 import net.ltxprogrammer.changed.item.Shorts;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -23,8 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKnight, ArmorHeadlessKnightModel> implements LowerTorsoedModel {
-    public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_headless_knight")).get();
-    public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_headless_knight")).get();
+    public static final ArmorModelSet<HeadlessKnight, ArmorHeadlessKnightModel> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_headless_knight"), ArmorHeadlessKnightModel::createArmorLayer, ArmorHeadlessKnightModel::new);
 
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
@@ -95,7 +94,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
-    public HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator() {
+    public HumanoidAnimator<HeadlessKnight, ArmorHeadlessKnightModel> getAnimator(HeadlessKnight entity) {
         return animator;
     }
 
@@ -126,7 +125,7 @@ public class ArmorHeadlessKnightModel extends LatexHumanoidArmorModel<HeadlessKn
     }
 
     @Override
-    public void renderForSlot(HeadlessKnight entity, RenderLayerParent<HeadlessKnight, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(HeadlessKnight entity, RenderLayerParent<? super HeadlessKnight, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 

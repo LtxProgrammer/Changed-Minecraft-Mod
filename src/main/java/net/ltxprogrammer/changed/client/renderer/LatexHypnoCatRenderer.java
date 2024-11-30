@@ -11,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LatexHypnoCatRenderer extends AdvancedHumanoidRenderer<LatexHypnoCat, LatexHypnoCatModel, ArmorLatexMaleCatModel<LatexHypnoCat>> {
     public LatexHypnoCatRenderer(EntityRendererProvider.Context context) {
-        super(context, new LatexHypnoCatModel(context.bakeLayer(LatexHypnoCatModel.LAYER_LOCATION)),
-                ArmorLatexMaleCatModel::new, ArmorLatexMaleCatModel.INNER_ARMOR, ArmorLatexMaleCatModel.OUTER_ARMOR, 0.5f);
+        super(context, new LatexHypnoCatModel(context.bakeLayer(LatexHypnoCatModel.LAYER_LOCATION)), ArmorLatexMaleCatModel.MODEL_SET, 0.5f);
         this.addLayer(new EmissiveBodyLayer<>(this, Changed.modResource("textures/latex_hypno_cat_emissive.png")));
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));

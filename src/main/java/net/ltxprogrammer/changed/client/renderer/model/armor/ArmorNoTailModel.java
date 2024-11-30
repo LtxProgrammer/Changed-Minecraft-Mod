@@ -24,6 +24,8 @@ import java.util.List;
 public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorNoTailModel<T>> {
     public static final ModelLayerLocation INNER_ARMOR = ArmorModelLayerLocation.createInnerArmorLocation(Changed.modResource("armor_no_tail")).get();
     public static final ModelLayerLocation OUTER_ARMOR = ArmorModelLayerLocation.createOuterArmorLocation(Changed.modResource("armor_no_tail")).get();
+    public static final ArmorModelSet<ChangedEntity, ArmorNoTailModel<ChangedEntity>> MODEL_SET =
+            ArmorModelSet.of(Changed.modResource("armor_no_tail"), ArmorNoTailModel::createArmorLayer, ArmorNoTailModel::new);
 
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -105,7 +107,7 @@ public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmo
     }
 
     @Override
-    public void renderForSlot(T entity, RenderLayerParent<T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderForSlot(T entity, RenderLayerParent<? super T, ?> parent, ItemStack stack, EquipmentSlot slot, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         this.scaleForSlot(parent, slot, poseStack);
 
@@ -131,7 +133,7 @@ public class ArmorNoTailModel<T extends ChangedEntity> extends LatexHumanoidArmo
     }
 
     @Override
-    public HumanoidAnimator<T, ArmorNoTailModel<T>> getAnimator() {
+    public HumanoidAnimator<T, ArmorNoTailModel<T>> getAnimator(T entity) {
         return animator;
     }
 

@@ -60,7 +60,7 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
     public abstract int getCount();
 
     public record ColorScheme(Color3 background, Color3 foreground) {
-        ColorScheme setForegroundToBright() {
+        public ColorScheme setForegroundToBright() {
             var newBack = background;
             var newFore = foreground;
 
@@ -70,18 +70,21 @@ public abstract class AbstractRadialScreen<T extends AbstractContainerMenu> exte
             }
 
             if (newBack.brightness() < 0.0625f) {
-                newBack = newBack.add(0.0625f);
+                newBack = newBack.add(0.0625f).clamp();
             }
 
             if (newFore.brightness() - newBack.brightness() < 0.125f) {
-                newFore = newFore.add(0.125f);
+                newFore = newFore.add(0.125f).clamp();
             }
 
             return new ColorScheme(newBack, newFore);
         }
     }
 
-    public static ColorScheme getColors(TransfurVariantInstance<?> variant) {
+    public static ColorScheme getColors(@Nullable TransfurVariantInstance<?> variant) {
+        if (variant == null)
+            return new ColorScheme(Color3.WHITE, Color3.GRAY);
+
         if (variant.getChangedEntity() instanceof SpecialLatex specialLatex && specialLatex.specialLatexForm != null) {
             return new ColorScheme(
                     specialLatex.getCurrentData().primaryColor(),

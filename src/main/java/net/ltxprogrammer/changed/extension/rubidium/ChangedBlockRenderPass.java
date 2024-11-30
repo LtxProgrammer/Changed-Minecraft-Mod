@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.extension.rubidium;
 
 import me.jellysquid.mods.sodium.client.render.chunk.passes.BlockRenderPass;
-import net.ltxprogrammer.changed.client.LatexCoveredBlockRenderer;
+import net.ltxprogrammer.changed.client.ChangedShaders;
 import net.minecraft.client.renderer.RenderType;
 
 import java.lang.reflect.Method;
@@ -28,7 +28,7 @@ public abstract class ChangedBlockRenderPass {
         ctor = tmp;
     }
 
-    public static final BlockRenderPass LATEX_SOLID = create("LATEX_SOLID", LatexCoveredBlockRenderer.latexSolid(), false, 0.0F);
-    public static final BlockRenderPass LATEX_CUTOUT = create("LATEX_CUTOUT", LatexCoveredBlockRenderer.latexCutout(), false, 0.1F);
-    public static final BlockRenderPass LATEX_CUTOUT_MIPPED = create("LATEX_CUTOUT_MIPPED", LatexCoveredBlockRenderer.latexCutoutMipped(), false, 0.5F);
+    public static final BlockRenderPass LATEX_SOLID = create("LATEX_SOLID", ChangedShaders.latexSolid(), false, 0.0F);
+    public static final BlockRenderPass LATEX_CUTOUT = create("LATEX_CUTOUT", ChangedShaders.latexCutout(), false, 0.1F);
+    public static final BlockRenderPass LATEX_CUTOUT_MIPPED = create("LATEX_CUTOUT_MIPPED", ChangedShaders.latexCutoutMipped(), false, 0.5F);
 }

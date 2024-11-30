@@ -124,7 +124,7 @@ public class GreenLizardModel extends AdvancedHumanoidModel<GreenLizard> impleme
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(GreenLizard entity) {
         animator.setupHand();
     }
 
@@ -161,7 +161,7 @@ public class GreenLizardModel extends AdvancedHumanoidModel<GreenLizard> impleme
     }
 
     @Override
-    public HumanoidAnimator<GreenLizard, GreenLizardModel> getAnimator() {
+    public HumanoidAnimator<GreenLizard, GreenLizardModel> getAnimator(GreenLizard entity) {
         return animator;
     }
 }

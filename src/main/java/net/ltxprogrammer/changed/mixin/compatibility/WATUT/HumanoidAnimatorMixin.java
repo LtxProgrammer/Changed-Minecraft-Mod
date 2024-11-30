@@ -21,16 +21,16 @@ public abstract class HumanoidAnimatorMixin<T extends ChangedEntity> extends Pla
         super(p_170821_, p_170822_);
     }
 
-    @Shadow public abstract void syncPropertyModel();
+    @Shadow public abstract void syncPropertyModel(T entity);
 
     @Inject(method = "setupAnim", at = @At("TAIL"))
     public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, CallbackInfo ci) {
         Player player = pEntity.getUnderlyingPlayer();
         if (player == null) return;
-        if (!(this instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)) return;
+        if (!(this instanceof AdvancedHumanoidModelInterface modelInterface)) return;
 
-        this.syncPropertyModel();
+        this.syncPropertyModel(pEntity);
         WatutMod.getPlayerStatusManagerClient().setupRotationsHook(this, player, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-        modelInterface.getAnimator().applyPropertyModel(this);
+        modelInterface.getAnimator(pEntity).applyPropertyModel(this);
     }
 }

@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
 import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
+import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.beast.LatexSquidDogFemale;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -18,7 +19,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDogFemale> implements AdvancedHumanoidModelInterface<LatexSquidDogFemale, LatexSquidDogFemaleModel>, DoubleArmedModel {
+public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDogFemale> implements AdvancedHumanoidModelInterface<LatexSquidDogFemale, LatexSquidDogFemaleModel>, DoubleArmedModel<LatexSquidDogFemale> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_squid_dog_female"), "main");
     private final ModelPart Head;
     private final ModelPart Torso;
@@ -318,24 +319,24 @@ public class LatexSquidDogFemaleModel extends AdvancedHumanoidModel<LatexSquidDo
     }
 
     @Override
-    public void translateToUpperHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToUpperHand(LatexSquidDogFemale entity, HumanoidArm arm, PoseStack poseStack) {
         this.getArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void translateToLowerHand(HumanoidArm arm, PoseStack poseStack) {
+    public void translateToLowerHand(LatexSquidDogFemale entity, HumanoidArm arm, PoseStack poseStack) {
         this.getOtherArm(arm).translateAndRotate(poseStack);
         poseStack.translate(0.0, (this.animator.armLength - 12.0f) / 20.0, 0.0);
     }
 
     @Override
-    public void setupHand() {
+    public void setupHand(LatexSquidDogFemale entity) {
         animator.setupHand();
     }
 
     @Override
-    public HumanoidAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> getAnimator() {
+    public HumanoidAnimator<LatexSquidDogFemale, LatexSquidDogFemaleModel> getAnimator(LatexSquidDogFemale entity) {
         return animator;
     }
 

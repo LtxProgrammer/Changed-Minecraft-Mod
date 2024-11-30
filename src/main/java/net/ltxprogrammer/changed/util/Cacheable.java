@@ -8,6 +8,10 @@ public abstract class Cacheable<T> implements Supplier<T> {
     @Nullable
     private Optional<T> value = null;
 
+    public void clear() {
+        value = null;
+    }
+
     protected abstract T initialGet();
 
     @Override
@@ -15,6 +19,10 @@ public abstract class Cacheable<T> implements Supplier<T> {
         if (value == null)
             value = Optional.ofNullable(initialGet());
         return value.orElse(null);
+    }
+
+    public void forceValue(@Nullable T v) {
+        value = Optional.ofNullable(v);
     }
 
     public final boolean isResolved() {

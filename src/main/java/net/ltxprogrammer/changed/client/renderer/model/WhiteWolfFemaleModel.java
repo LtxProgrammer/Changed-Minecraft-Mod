@@ -64,7 +64,7 @@ public class WhiteWolfFemaleModel extends AdvancedHumanoidModel<WhiteWolfFemale>
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(WhiteWolfFemale entity) {
         animator.setupHand();
     }
 
@@ -101,7 +101,7 @@ public class WhiteWolfFemaleModel extends AdvancedHumanoidModel<WhiteWolfFemale>
     }
 
     @Override
-    public HumanoidAnimator<WhiteWolfFemale, WhiteWolfFemaleModel> getAnimator() {
+    public HumanoidAnimator<WhiteWolfFemale, WhiteWolfFemaleModel> getAnimator(WhiteWolfFemale entity) {
         return animator;
     }
 }

@@ -20,9 +20,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-
 @OnlyIn(Dist.CLIENT)
 public class LatexHumanModel extends AdvancedHumanoidModel<LatexHuman> implements AdvancedHumanoidModelInterface<LatexHuman, LatexHumanModel> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("latex_human"), "main");
@@ -123,7 +120,7 @@ public class LatexHumanModel extends AdvancedHumanoidModel<LatexHuman> implement
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(LatexHuman entity) {
         animator.setupHand();
     }
 
@@ -160,7 +157,7 @@ public class LatexHumanModel extends AdvancedHumanoidModel<LatexHuman> implement
     }
 
     @Override
-    public HumanoidAnimator<LatexHuman, LatexHumanModel> getAnimator() {
+    public HumanoidAnimator<LatexHuman, LatexHumanModel> getAnimator(LatexHuman entity) {
         return animator;
     }
 }

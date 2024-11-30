@@ -40,14 +40,14 @@ public abstract class CameraMixin implements CameraExtender {
     @Shadow @Final private Vector3f up;
 
     @Unique
-    private <T extends ChangedEntity> void adjustAnimForEntity(T ChangedEntity, float partialTicks) {
-        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ChangedEntity) instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoid &&
-                latexHumanoid.getModel(ChangedEntity) instanceof AdvancedHumanoidModelInterface AdvancedHumanoidModel) {
-            boolean shouldSit = ChangedEntity.isPassenger() && (ChangedEntity.getVehicle() != null && ChangedEntity.getVehicle().shouldRiderSit());
-            float f = Mth.rotLerp(partialTicks, ChangedEntity.yBodyRotO, ChangedEntity.yBodyRot);
-            float f1 = Mth.rotLerp(partialTicks, ChangedEntity.yHeadRotO, ChangedEntity.yHeadRot);
+    private <T extends ChangedEntity> void adjustAnimForEntity(T changedEntity, float partialTicks) {
+        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(changedEntity) instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoid &&
+                latexHumanoid.getModel(changedEntity) instanceof AdvancedHumanoidModelInterface AdvancedHumanoidModel) {
+            boolean shouldSit = changedEntity.isPassenger() && (changedEntity.getVehicle() != null && changedEntity.getVehicle().shouldRiderSit());
+            float f = Mth.rotLerp(partialTicks, changedEntity.yBodyRotO, changedEntity.yBodyRot);
+            float f1 = Mth.rotLerp(partialTicks, changedEntity.yHeadRotO, changedEntity.yHeadRot);
             float netHeadYaw = f1 - f;
-            if (shouldSit && ChangedEntity.getVehicle() instanceof LivingEntity livingentity) {
+            if (shouldSit && changedEntity.getVehicle() instanceof LivingEntity livingentity) {
                 f = Mth.rotLerp(partialTicks, livingentity.yBodyRotO, livingentity.yBodyRot);
                 netHeadYaw = f1 - f;
                 float f3 = Mth.wrapDegrees(netHeadYaw);
@@ -67,18 +67,18 @@ public abstract class CameraMixin implements CameraExtender {
                 netHeadYaw = f1 - f;
             }
 
-            float headPitch = Mth.lerp(partialTicks, ChangedEntity.xRotO, ChangedEntity.getXRot());
-            if (LivingEntityRenderer.isEntityUpsideDown(ChangedEntity)) {
+            float headPitch = Mth.lerp(partialTicks, changedEntity.xRotO, changedEntity.getXRot());
+            if (LivingEntityRenderer.isEntityUpsideDown(changedEntity)) {
                 headPitch *= -1.0F;
                 netHeadYaw *= -1.0F;
             }
 
             float limbSwingAmount = 0.0F;
             float limbSwing = 0.0F;
-            if (!shouldSit && ChangedEntity.isAlive()) {
-                limbSwingAmount = Mth.lerp(partialTicks, ChangedEntity.animationSpeedOld, ChangedEntity.animationSpeed);
-                limbSwing = ChangedEntity.animationPosition - ChangedEntity.animationSpeed * (1.0F - partialTicks);
-                if (ChangedEntity.isBaby()) {
+            if (!shouldSit && changedEntity.isAlive()) {
+                limbSwingAmount = Mth.lerp(partialTicks, changedEntity.animationSpeedOld, changedEntity.animationSpeed);
+                limbSwing = changedEntity.animationPosition - changedEntity.animationSpeed * (1.0F - partialTicks);
+                if (changedEntity.isBaby()) {
                     limbSwing *= 3.0F;
                 }
 
@@ -87,12 +87,12 @@ public abstract class CameraMixin implements CameraExtender {
                 }
             }
 
-            var animator = AdvancedHumanoidModel.getAnimator();
-            animator.setupVariables(ChangedEntity, partialTicks);
-            animator.setupCameraAnim(this, ChangedEntity,
+            var animator = AdvancedHumanoidModel.getAnimator(changedEntity);
+            animator.setupVariables(changedEntity, partialTicks);
+            animator.setupCameraAnim(this, changedEntity,
                     limbSwing,
                     limbSwingAmount,
-                    ChangedEntity.tickCount + partialTicks,
+                    changedEntity.tickCount + partialTicks,
                     netHeadYaw,
                     headPitch
             );

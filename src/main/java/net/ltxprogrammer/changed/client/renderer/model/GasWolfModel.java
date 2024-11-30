@@ -137,7 +137,7 @@ public class GasWolfModel extends AdvancedHumanoidModel<GasWolf> implements Adva
         this.prepareMobModel(animator, p_102861_, p_102862_, p_102863_, p_102864_);
     }
 
-    public void setupHand() {
+    public void setupHand(GasWolf entity) {
         animator.setupHand();
     }
 
@@ -174,7 +174,7 @@ public class GasWolfModel extends AdvancedHumanoidModel<GasWolf> implements Adva
     }
 
     @Override
-    public HumanoidAnimator<GasWolf, GasWolfModel> getAnimator() {
+    public HumanoidAnimator<GasWolf, GasWolfModel> getAnimator(GasWolf entity) {
         return animator;
     }
 }
