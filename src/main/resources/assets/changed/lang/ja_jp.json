@@ -1,13 +1,13 @@
 {
-  "itemGroup.tab_changed_blocks": "チェンジドブロック",
-  "itemGroup.tab_changed_items": "チェンジドアイテム",
-  "itemGroup.tab_changed_entities": "チェンジドエンティティ",
-  "itemGroup.tab_changed_combat": "チェンジコンバット",
-  "itemGroup.tab_changed_music": "チェンジドの音楽",
+  "itemGroup.tab_changed_blocks": "changed ブロック",
+  "itemGroup.tab_changed_items": "changed アイテム",
+  "itemGroup.tab_changed_entities": "changed ドエンティティ",
+  "itemGroup.tab_changed_combat": "changed コンバット",
+  "itemGroup.tab_changed_music": "changed 音楽",
 
   "ability.changed.access_saddle": "アクセスサドル",
   "ability.changed.switch_transfur_mode": "トランスファーモードの切り替え",
-  "ability.changed.switch_transfur_mode.select": "トランスファーモードは今だ：%s",
+  "ability.changed.switch_transfur_mode.select": "今のトランスファーモードは：%s",
   "ability.changed.create_cobweb": "コブクロの作成",
   "ability.changed.create_inkball": "インクボールの作成",
   "ability.changed.create_honeycomb": "ハニカムを作る",
@@ -120,29 +120,29 @@
 
   "syringe.changed:form_special": "パトロン カスタムフォームシリンジ",
 
-  "death.attack.changed:transfur": "%1$sが移された",
-  "death.attack.changed:transfur.player": "%1$sは%2$sによって移された。",
-  "death.attack.changed:white_latex": "%sは白いラテックスで溶かされた",
-  "death.attack.changed:white_latex.player": "%1$s1$sは%2$sから逃げようとして白いラテックスに溶かされた。",
-  "death.attack.changed:pale": "%sはペールに取られた",
-  "death.attack.changed:bloodloss": "%sは外国の血漿を使用しました。",
-  "death.attack.changed:bloodloss.player": "%1$sは%2$sのおかげで外国製プラズマを使用した。",
-  "death.attack.changed:fan": "はファンによってサイコロ状にされた",
-  "death.attack.changed:fan.player": "%1$sは %2$sと戦っているときにファンにサイコロで切られた。",
+  "death.attack.changed:transfur": "%1$sがlatex化された",
+  "death.attack.changed:transfur.player": "%1$sは%2$sによってlatex化された",
+  "death.attack.changed:white_latex": "%sはホワイトlatexに食われた",
+  "death.attack.changed:white_latex.player": "%1$s1$sは%2$sから逃げようとしてホワイトlatexに食われた",
+  "death.attack.changed:pale": "%sはペール病で亡くなった",
+  "death.attack.changed:bloodloss": "%sは血液の拒絶反応で亡くなった",
+  "death.attack.changed:bloodloss.player": "%1$sは%2$sの血液を注射したら血液の拒絶反応で亡くなった。",
+  "death.attack.changed:fan": "%sは扇風機によって亡くなった",
+  "death.attack.changed:fan.player": "%1$sは%2$sと戦っているときに扇風機によって亡くなった",
 
-  "command.changed.error.not_latex_form": "無効なラテックスフォーム",
+  "command.changed.error.not_latex_form": "無効なlatexフォームです",
   "command.changed.error.used_by_other_mod": "プレイヤーはすでに他のMODで使用されている",
-  "command.changed.error.no_special_form": "特別な用紙は指定せず、visit https://www.patreon.com/ltxprogrammer",
+  "command.changed.error.no_special_form": "特別なフォームは指定できませんでした、詳しくはhttps://www.patreon.com/ltxprogrammerをごらんください",
 
-  "gamerule.changed:keepConscious": "トランスファーに常に意識を向ける",
-  "gamerule.changed:keepForm": "パーマネントトランスファー",
-  "gamerule.changed:latexGrowthRate": "ラテックスを自然に拡散させる",
-  "gamerule.changed:npcWantFusePlayer": "プレイヤーとの融合を望むラテックス製NPC",
-  "gamerule.changed:doPale": "ペールが有効か",
-  "gamerule.changed:fusabilityDurationPlayer": "トランスファー後の可溶化期間（ダニ）",
+  "gamerule.changed:keepConscious": "latex化後に意識を保つ",
+  "gamerule.changed:keepForm": "死んたあともlatex化を保つ",
+  "gamerule.changed:latexGrowthRate": "latexを自然に拡散させる",
+  "gamerule.changed:npcWantFusePlayer": "latexがプレイヤーと融合できる",
+  "gamerule.changed:doPale": "ペール病が有効か",
+  "gamerule.changed:fusabilityDurationPlayer": "latex化後、latexと融合できる時間(ticks)",
 
-  "key.changed.variant_ability": "アクティブバリアント能力",
-  "key.changed.use_ability": "バリアント能力を使う",
+  "key.changed.variant_ability": "latexの能力を選ぶ",
+  "key.changed.use_ability": "latexの能力を使える",
   "key.changed.extra_jump": "エクストラジャンプ",
 
   "container.changed.extra_hands": "エクストラハンドメニュー",
@@ -435,23 +435,26 @@
   "item.changed.phage_latex_wolf_female_spawn_egg": "女性ファージ・ラテックス・ウルフのスポーンエッグ",
   "item.changed.phage_latex_wolf_male_spawn_egg": "雄ファージ・ラテックス・ウルフのスポーンエッグ",
 
-  "changed.patreon.level0": "ディスクードメンバー",
-  "changed.patreon.level1": "ティア1",
-  "changed.patreon.level2": "ティア2",
-  "changed.patreon.level3": "ティア3",
-  "changed.patreon.level4": "ティア4",
+  "changed.patreon.level0": "ディスコートメンバー",
+  "changed.patreon.level1": "レベル1",
+  "changed.patreon.level2": "レベル2",
+  "changed.patreon.level3": "レベル3",
+  "changed.patreon.level4": "レベル4",
 
   "changed.error.corrupted_disc": "ERR: ディスクが破損している",
 
   "changed.compact_disc.title.light_latex_wolf": "世界を救おうとする",
   "changed.compact_disc.content.light_latex_wolf": "発生した病気を治そうとしたところ、動物だけが治療可能であることに気づきました。そこで、人間をより動物に近づけようとした。ラテックス・ベースの創造で 進展があった DNAを瞬時に変化させる素材だ アウトブレイクを終わらせることができる",
+
   "changed.compact_disc.title.aerosol_latex_wolf": "褐色狼",
   "changed.compact_disc.content.aerosol_latex_wolf": "長い眠れない夜の後、私はついにデータベースに貢献することができました。ラテックスウルフのブランクはつまらないので、ブラウンダイを混ぜて、まあ、それほどつまらないものを作りました。",
 
   "changed.compact_disc.title.dark_latex_wolf": "仮面ミステリ",
   "changed.compact_disc.content.dark_latex_wolf": "前述したように、アウトブレイクの治療を受けられるのは動物だけです。人間への移植は、ラテックスベースと黒い染料を注射器で混ぜて、マスクした狼のような生き物を作りました。さらなるテストが必要です。",
+
   "changed.compact_disc.title.dark_latex_yufeng": "仮面竜？",
   "changed.compact_disc.content.dark_latex_yufeng": "ダークラテックスのオオカミと同じベースを使って、フェザーも追加して、飛ぶことはできないが滑空することができるクリーチャーを作成しました。このクリーチャーは竜に少し似ていて、マスクも持っています。",
+
   "changed.compact_disc.title.dark_dragon": "バイペダル・竜",
   "changed.compact_disc.content.dark_dragon": "この生物はダークラテックス・ウルフに由来しているが、意外にもマスクは持っていない。二足歩行の♪竜.♪は滑空することができる。ダークラテックス・ウルフのレシピに ファントムメンブレインを混ぜて ドラゴンのDNAを作った。",
 
@@ -460,12 +463,16 @@
 
   "changed.compact_disc.title.latex_shark": "サメの概要",
   "changed.compact_disc.content.latex_shark": "私たちが作った鮫は実際に水中で呼吸ができます。陸上では他の生物より少し遅いですが、泳ぐスピードは他の追随を許しません。",
+
   "changed.compact_disc.title.latex_tiger_shark": "シマザメ",
   "changed.compact_disc.content.latex_tiger_shark": "通常の鮫を変形させたもので、陸上では速く、水中ではそれほど速くはない。",
+
   "changed.compact_disc.title.latex_orca": "鯱",
   "changed.compact_disc.content.latex_orca": "鮫と並んで、鯱も作りました。",
+
   "changed.compact_disc.title.latex_squid_dog": "イカ...犬？",
   "changed.compact_disc.content.latex_squid_dog": "水中で呼吸ができるだけでなく、余った手でより多くのものを運ぶことができるのです。",
+
 
   "changed.compact_disc.title.white_latex_creature": "シェイプドグープ",
   "changed.compact_disc.content.white_latex_creature": "この実験は、圧倒的に奇妙なものだ。遺伝子の構造上、自分自身の物質に溶けて泳ぐことができるのです。もっと実験が必要だ。",
@@ -541,7 +548,7 @@
   "changed.config.color_picker_green": "緑：%s",
   "changed.config.color_picker_blue": "青：%s",
 
-  "changed.config.bpi.screen": "選手基本情報",
+  "changed.config.bpi.screen": "latexプレイヤーの基本情報",
   "changed.config.bpi.hair_color": "髪の色",
   "changed.config.bpi.iris_color.left": "左のアイリスの色",
   "changed.config.bpi.iris_color.right": "右のアイリスの色",
