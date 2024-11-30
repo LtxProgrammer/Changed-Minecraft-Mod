@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -53,7 +54,7 @@ public class TransfurPredicate {
         this.legless = legless;
     }
 
-    public boolean matches(TransfurVariant<?> form) {
+    public boolean matches(TransfurVariantInstance<?> form) {
         if (this == ANY)
             return true;
         if (forms != null)
@@ -62,11 +63,11 @@ public class TransfurPredicate {
                     return true;
         if (type != null)
             return form.getLatexType() == type;
-        if (form.canGlide && flying)
+        if (form.getParent().canGlide && flying)
             return true;
-        if (form.getBreatheMode().canBreatheWater() && swimming)
+        if (form.getParent().getBreatheMode().canBreatheWater() && swimming)
             return true;
-        if (!form.hasLegs && legless)
+        if (form.getEntityShape().isLegless() && legless)
             return true;
         return false;
     }

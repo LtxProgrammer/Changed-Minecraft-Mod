@@ -100,7 +100,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements P
         if (!player.level.isClientSide) return;
 
         ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-            if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && !variant.getParent().hasLegs && player.isUnderWater())
+            if (player.getAttributeBaseValue(ForgeMod.SWIM_SPEED.get()) >= 1.1F && variant.getEntityShape().isLegless() && player.isUnderWater())
                 player.setSprinting(true);
         });
     }

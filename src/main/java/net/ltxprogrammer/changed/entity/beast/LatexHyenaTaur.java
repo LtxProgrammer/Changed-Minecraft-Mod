@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -105,5 +107,10 @@ public class LatexHyenaTaur extends WhiteLatexKnight implements LatexTaur<LatexH
     @Override
     public boolean isAllowedToSwim() {
         return true;
+    }
+
+    @Override
+    public @NotNull EntityShape getEntityShape() {
+        return EntityShape.TAUR;
     }
 }

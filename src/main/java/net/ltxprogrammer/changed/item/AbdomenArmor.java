@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.entity.variant.ClothingShape;
+import net.ltxprogrammer.changed.entity.variant.EntityShapeProvider;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -40,18 +42,11 @@ public class AbdomenArmor extends ArmorItem implements ExtendedItemProperties {
 
     @Override
     public boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
-        if (!ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot))
+        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
+        if (instance != null && !instance.shouldApplyAbilities())
             return false;
 
-        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
-        if (instance != null) {
-            return !instance.getParent().hasLegs && instance.shouldApplyAbilities();
-        }
-
-        else {
-            var variant = TransfurVariant.getEntityVariant(wearer);
-            return variant != null && !variant.hasLegs;
-        }
+        return ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot);
     }
 
     @Nullable
@@ -69,7 +64,12 @@ public class AbdomenArmor extends ArmorItem implements ExtendedItemProperties {
     }
 
     @Override
-    public int getExpectedLegCount(ItemStack itemStack) {
-        return 0;
+    public ClothingShape.Legs getExpectedLegShape(ItemStack itemStack) {
+        return ClothingShape.Legs.TAIL;
+    }
+
+    @Override
+    public ClothingShape.Feet getExpectedFeetShape(ItemStack itemStack) {
+        return ClothingShape.Feet.TAIL;
     }
 }

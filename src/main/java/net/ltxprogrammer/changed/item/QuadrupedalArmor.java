@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.item;
 
+import net.ltxprogrammer.changed.entity.variant.ClothingShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTabs;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -86,23 +87,21 @@ public class QuadrupedalArmor extends ArmorItem implements ExtendedItemPropertie
 
     @Override
     public boolean allowedToWear(ItemStack itemStack, LivingEntity wearer, EquipmentSlot slot) {
-        if (!ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot))
+        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
+        if (instance != null && !instance.shouldApplyAbilities())
             return false;
 
-        var instance = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(wearer));
-        if (instance != null) {
-            return instance.getParent().legCount == 4 && instance.shouldApplyAbilities();
-        }
-
-        else {
-            var variant = TransfurVariant.getEntityVariant(wearer);
-            return variant != null && variant.legCount == 4;
-        }
+        return ExtendedItemProperties.super.allowedToWear(itemStack, wearer, slot);
     }
 
     @Override
-    public int getExpectedLegCount(ItemStack itemStack) {
-        return 4;
+    public ClothingShape.Legs getExpectedLegShape(ItemStack itemStack) {
+        return ClothingShape.Legs.QUADRUPEDAL;
+    }
+
+    @Override
+    public ClothingShape.Feet getExpectedFeetShape(ItemStack itemStack) {
+        return ClothingShape.Feet.QUADRUPEDAL;
     }
 
     @Nullable

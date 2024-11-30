@@ -4,6 +4,7 @@ import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -52,5 +54,10 @@ public class LatexMantaRayFemale extends AbstractLatexMantaRay {
 
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#6f7696");
+    }
+
+    @Override
+    public @NotNull EntityShape getEntityShape() {
+        return EntityShape.MER;
     }
 }
