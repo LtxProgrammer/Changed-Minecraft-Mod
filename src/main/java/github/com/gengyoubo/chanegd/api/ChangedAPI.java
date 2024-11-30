@@ -2,9 +2,7 @@ package github.com.gengyoubo.chanegd.api;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
-import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
