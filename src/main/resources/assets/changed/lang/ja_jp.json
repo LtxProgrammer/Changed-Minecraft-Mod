@@ -4,6 +4,7 @@
   "itemGroup.tab_changed_entities": "changed ドエンティティ",
   "itemGroup.tab_changed_combat": "changed コンバット",
   "itemGroup.tab_changed_music": "changed 音楽",
+
   "ability.changed.access_saddle": "アクセスサドル",
   "ability.changed.switch_transfur_mode": "トランスファーモードの切り替え",
   "ability.changed.switch_transfur_mode.select": "今のトランスファーモードは：%s",
@@ -23,6 +24,7 @@
   "ability.changed.select_special_state": "特別な状態を選択する",
   "ability.changed.summon_sharks": "鮫を召喚する",
   "ability.changed.toggle_night_vision": "Toggle Night Vision",
+  "ability.changed.toggle_wave_vision": "Toggle Wave Vision",
   "ability.changed.grab_entity": "Grab Entity",
   "ability.changed.grab_entity.how_to_grab": "Hold [%s] to grab an entity",
   "ability.changed.grab_entity.how_to_release": "Hold [%s] to release the entity",
@@ -30,8 +32,10 @@
   "ability.changed.grab_entity.how_to_absorb": "Hold [%s] and [%s] to progress absorption",
   "ability.changed.grab_entity.how_to_suit": "Hold [%s] to switch to suit",
   "ability.changed.grab_entity.how_to_toggle_control": "Press [%s] to toggle control",
+
   "attribute.name.changed.transfur_damage": "Transfur Damage",
   "attribute.name.changed.transfur_tolerance": "Transfur Tolerance",
+
   "subtitles.changed.attack1": "Roomba beeps",
   "subtitles.changed.sound3": "有機トランスファー",
   "subtitles.changed.poison": "トランスファー",
@@ -58,6 +62,7 @@
   "subtitles.changed.paralyze3": "インターコムが発表",
   "subtitles.changed.blow1": "プレイヤーラテックス",
   "subtitles.changed.vacuum": "Vacuum spins",
+
   "item.changed.benign_pants": "ラテックスショーツ",
   "item.changed.blood_syringe": "血液シリンジ",
   "item.changed.dark_latex_crystal_fragment": "ダークラテックス結晶片",
@@ -78,6 +83,7 @@
   "item.changed.orange": "オレンジ",
   "item.changed.pink_pants": "ピンクショーツ",
   "item.changed.roomba": "Roomba",
+  "item.changed.sports_bra": "Sports Bra",
   "item.changed.syringe": "シリンジ",
   "item.changed.white_latex_goo": "白色ラテックスグー",
   "item.changed.white_latex_bucket": "白色ラテックスバケット",
@@ -127,7 +133,9 @@
   "item.changed.the_white_tail_chase_part_1_record.desc": "Shizi - The White Tail Chase Part 1",
   "item.changed.the_white_tail_chase_part_2_record.desc": "Shizi - The White Tail Chase Part 2",
   "item.changed.vent_pipe_record.desc": "Shizi - Vent Pipe",
+
   "syringe.changed:form_special": "パトロン カスタムフォームシリンジ",
+
   "death.attack.changed:transfur": "%1$sがlatex化された",
   "death.attack.changed:transfur.player": "%1$sは%2$sによってlatex化された",
   "death.attack.changed:absorb": "%1$s was absorbed",
@@ -142,6 +150,7 @@
   "death.attack.changed:bloodloss.player": "%1$sは%2$sの血液を注射したら血液の拒絶反応で亡くなった。",
   "death.attack.changed:fan": "%sは扇風機によって亡くなった",
   "death.attack.changed:fan.player": "%1$sは%2$sと戦っているときに扇風機によって亡くなった",
+
   "command.changed.success.transfurred.one": "Transfurred %s into %s",
   "command.changed.success.transfurred.many": "Transfurred %s player(s) into %s",
   "command.changed.success.untransfurred.one": "Untransfurred %s",
@@ -154,6 +163,7 @@
   "command.changed.error.not_cause": "Invalid transfur cause",
   "command.changed.error.used_by_other_mod": "プレイヤーはすでに他のMODで使用されている",
   "command.changed.error.no_special_form": "特別なフォームは指定できませんでした、詳しくはhttps://www.patreon.com/ltxprogrammerをごらんください",
+
   "gamerule.changed:fusabilityDurationPlayer": "latex化後、latexと融合できる時間(ticks)",
   "gamerule.changed:keepConscious": "latex化後に意識を保つ",
   "gamerule.changed:keepForm": "死んたあともlatex化を保つ",
@@ -161,9 +171,11 @@
   "gamerule.changed:doTransfurAnimation": "Players have a small transfur animation",
   "gamerule.changed:npcWantFusePlayer": "latexがプレイヤーと融合できる",
   "gamerule.changed:doPale": "ペール病が有効か",
+
   "key.changed.variant_ability": "latexの能力を選ぶ",
   "key.changed.use_ability": "latexの能力を使える",
   "key.changed.extra_jump": "エクストラジャンプ",
+
   "container.changed.extra_hands": "エクストラハンドメニュー",
   "container.changed.infuser": "インフューザーメニュー",
   "container.changed.computer_writing": "ディスクへの書き込み",
@@ -174,6 +186,8 @@
   "container.changed.access_chest": "チェストインベントリー",
   "container.changed.cardboard_container": "段ボール容器",
   "container.changed.cardboard_box_small": "Small Cardboard Box",
+
+  "text.changed.compact_disc.title": "\"%s\"",
   "text.changed.game_saved": "ゲームが保存されました。",
   "text.changed.game_saved_fail": "ゲームの保存ができません。",
   "text.changed.game_keypad_incorrect": "誤ったパスコード。",
@@ -186,10 +200,16 @@
   "text.changed.warning": "Warning",
   "text.changed.warning.content1": "This modded version of Minecraft contains content from Changed,",
   "text.changed.warning.content2": "and is not suitable for all audiences.",
+
   "effect.changed.hypercoagulation": "血液凝固促進作用",
   "effect.changed.shock": "ショック",
+
   "enchantment.changed.latex_protection": "ラテックス保護",
   "enchantment.changed.latex_protection.desc": "トランスファーから着用者を守る。",
+
+  "curios.identifier.legs": "Legs",
+  "curios.identifier.lower_body": "Lower Body",
+
   "block.changed.air_conditioner": "Air Conditioner",
   "block.changed.beaker": "ビーカー",
   "block.changed.bedside_iv_rack": "IVラック",
@@ -251,6 +271,7 @@
   "block.changed.retinal_scanner": "網膜スキャナー",
   "block.changed.roomba_charger": "Roomba Charger",
   "block.changed.speaker": "スピーカー",
+  "block.changed.stasis_chamber": "Stasis Chamber",
   "block.changed.tape_recorder": "テープレコーダー",
   "block.changed.tiles_blue": "青いタイル",
   "block.changed.tiles_blue_small": "小さな青いタイル",
@@ -308,11 +329,14 @@
   "block.changed.red_pillow": "赤い枕",
   "block.changed.white_pillow": "白い枕",
   "block.changed.yellow_pillow": "黄色い枕",
+
   "fluid.changed.dark_latex": "液状濃色ラテックス",
   "fluid.changed.white_latex": "液状白いラテックス",
   "fluid.changed.wolf_gas": "Wolf Transfur Gas",
+
   "biome.changed.dark_latex_plains": "ダークラテックス平原",
   "biome.changed.white_latex_forest": "白色ラテックスの森",
+
   "entity.changed.special": "特殊ラテックス",
   "entity.changed.behemoth_head": "ベヒーモス頭部",
   "entity.changed.behemoth_hand_left": "左ベヒーモスの手",
@@ -326,6 +350,7 @@
   "entity.changed.dark_dragon": "黒ラテックス竜",
   "entity.changed.dark_latex_wolf_pup": "ダーク・ラテックス・パップ",
   "entity.changed.dark_latex_yufeng": "黒ラテックス油峰",
+  "entity.changed.dark_latex_double_yufeng": "Dark Latex Two-Headed Yufeng",
   "entity.changed.gas_particle": "ラテックスガス粒子",
   "entity.changed.gas_wolf": "ガスラテックス狼",
   "entity.changed.green_lizard": "緑色のトカゲ",
@@ -339,6 +364,7 @@
   "entity.changed.latex_deer": "ラテックス鹿",
   "entity.changed.latex_fennec_fox": "ラテックスフェネック",
   "entity.changed.latex_human": "ラテックス人間",
+  "entity.changed.latex_hyena_taur": "Latex Hyena Taur",
   "entity.changed.latex_hypno_cat": "ラテックスヒプノ猫",
   "entity.changed.latex_keon_wolf": "ラテックス・キオン",
   "entity.changed.latex_leaf": "ラテックス葉",
@@ -362,10 +388,11 @@
   "entity.changed.latex_shark": "ラテックス鮫",
   "entity.changed.latex_shark_female": "女性ラテックス鮫のフュージョン",
   "entity.changed.latex_shark_male": "男性ラテックス鮫のフュージョン",
-  "entity.changed.latex_snow_leopard_female": "女性ラテックス雪豹スポーンエッグ",
-  "entity.changed.latex_snow_leopard_male": "男性ラテックス雪豹スポーンエッグ",
+  "entity.changed.latex_siamese_cat": "Latex Siamese Cat",
   "entity.changed.latex_siren": "ラテックスサイレン",
   "entity.changed.latex_snake": "ラテックス蛇",
+  "entity.changed.latex_snow_leopard_female": "女性ラテックス雪豹スポーンエッグ",
+  "entity.changed.latex_snow_leopard_male": "男性ラテックス雪豹スポーンエッグ",
   "entity.changed.latex_squid_dog_female": "女型ラテックスイカ犬",
   "entity.changed.latex_squid_dog_male": "男型ラテックスイカ犬",
   "entity.changed.latex_squirrel": "ラテックスリス",
@@ -379,6 +406,7 @@
   "entity.changed.milk_pudding": "ミルクプリン",
   "entity.changed.phage_latex_wolf_female": "女性ファージ・ラテックス・ウルフ",
   "entity.changed.phage_latex_wolf_male": "雄ファージ・ラテックス・ウルフ",
+  "entity.changed.pooltoy_wolf": "Pooltoy Wolf",
   "entity.changed.pure_white_latex_wolf": "白色ラテックス狼",
   "entity.changed.roomba": "Roomba",
   "entity.changed.shark": "鮫",
@@ -390,6 +418,8 @@
   "entity.changed.white_latex_wolf_male": "男性ライトラテックス狼",
   "entity.changed.white_wolf_female": "Female White Wolf",
   "entity.changed.white_wolf_male": "Male White Wolf",
+  "entity.changed.custom_latex": "Custom Latex",
+
   "item.changed.beifeng_spawn_egg": "ラテックス北峰スポーンエッグ",
   "item.changed.crystal_wolf_spawn_egg": "ラテックスクリスタル狼スポーンエッグ",
   "item.changed.crystal_wolf_horned_spawn_egg": "ホーンテッドクリスタル狼のスポーンエッグ",
@@ -398,6 +428,7 @@
   "item.changed.dark_latex_wolf_male_spawn_egg": "男性暗黒ラテックス狼スポーンエッグ",
   "item.changed.dark_latex_wolf_pup_spawn_egg": "スポーンエッグのダーク・ラテックス・パップ",
   "item.changed.dark_latex_yufeng_spawn_egg": "黒ラテックス油峰スポーンエッグ",
+  "item.changed.dark_latex_double_yufeng_spawn_egg": "Dark Latex Two-Headed Yufeng Spawn Egg",
   "item.changed.gas_wolf_spawn_egg": "ガスラテックス狼スポーンエッグ",
   "item.changed.green_lizard_spawn_egg": "緑色のトカゲのスポーンエッグ",
   "item.changed.headless_knight_spawn_egg": "首なしナイトスポーンエッグ",
@@ -409,6 +440,7 @@
   "item.changed.latex_crocodile_spawn_egg": "ラテックスクロコダイルスポーンエッグ",
   "item.changed.latex_deer_spawn_egg": "ラテックス鹿スポーンエッグ",
   "item.changed.latex_fennec_fox_spawn_egg": "ラテックスフェネックのスポーンエッグ",
+  "item.changed.latex_hyena_taur_spawn_egg": "Latex Hyena Taur Spawn Egg",
   "item.changed.latex_hypno_cat_spawn_egg": "ラテックスヒプノ猫スポーンエッグ",
   "item.changed.latex_keon_wolf_spawn_egg": "スポーンエッグのラテックス・キオン",
   "item.changed.latex_leaf_spawn_egg": "ラテックス葉スポーンエッグ",
@@ -432,14 +464,15 @@
   "item.changed.latex_shark_spawn_egg": "ラテックス鮫スポーンエッグ",
   "item.changed.latex_shark_female_spawn_egg": "女性ラテックス鮫のフュージョンスポーンエッグ",
   "item.changed.latex_shark_male_spawn_egg": "男性ラテックス鮫のフュージョンスポーンエッグ",
+  "item.changed.latex_siamese_cat_spawn_egg": "Latex Siamese Cat Spawn Egg",
+  "item.changed.latex_siren_spawn_egg": "ラテックスサイレンスポーンエッグ",
+  "item.changed.latex_snake_spawn_egg": "ラテックス蛇のスポーンエッグ",
   "item.changed.latex_snow_leopard_female_spawn_egg": "女性ラテックス雪豹スポーンエッグ",
   "item.changed.latex_snow_leopard_male_spawn_egg": "男性ラテックス雪豹スポーンエッグ",
   "item.changed.latex_squid_dog_female_spawn_egg": "女型ラテックスイカ犬スポーンエッグ",
   "item.changed.latex_squid_dog_male_spawn_egg": "男型ラテックスイカ犬スポーンエッグ",
   "item.changed.latex_squirrel_spawn_egg": "ラテックスリススポーンエッグ",
   "item.changed.latex_stiger_spawn_egg": "ラテックススティガースポーンエッグ",
-  "item.changed.latex_siren_spawn_egg": "ラテックスサイレンスポーンエッグ",
-  "item.changed.latex_snake_spawn_egg": "ラテックス蛇のスポーンエッグ",
   "item.changed.latex_tiger_shark_spawn_egg": "ラテックス鼬鮫スポーンエッグ",
   "item.changed.latex_traffic_cone_dragon_spawn_egg": "ラテックストラフィックコーン竜スポーンエッグ",
   "item.changed.latex_translucent_lizard_spawn_egg": "ラテックス半透明蜥蜴スポーンエッグ",
@@ -449,6 +482,7 @@
   "item.changed.milk_pudding_spawn_egg": "ミルクプリンスポーンエッグ",
   "item.changed.phage_latex_wolf_female_spawn_egg": "女性ファージ・ラテックス・ウルフのスポーンエッグ",
   "item.changed.phage_latex_wolf_male_spawn_egg": "雄ファージ・ラテックス・ウルフのスポーンエッグ",
+  "item.changed.pooltoy_wolf_spawn_egg": "Pooltoy Wolf Spawn Egg",
   "item.changed.pure_white_latex_wolf_spawn_egg": "Pure White Latex Wolf Spawn Egg",
   "item.changed.shark_spawn_egg": "鮫のスポーンエッグ",
   "item.changed.sniper_dog_spawn_egg": "ラテックススナイパー犬スポーンエッグ",
@@ -459,6 +493,8 @@
   "item.changed.white_latex_wolf_male_spawn_egg": "男性ライトラテックス狼スポーンエッグ",
   "item.changed.white_wolf_female_spawn_egg": "White Wolf Female Spawn Egg",
   "item.changed.white_wolf_male_spawn_egg": "White Wolf Male Spawn Egg",
+  "item.changed.custom_latex_spawn_egg": "Custom Latex Spawn Egg",
+
   "changed.patreon.level0": "ディスコートメンバー",
   "changed.patreon.level1": "レベル1",
   "changed.patreon.level2": "レベル2",
@@ -521,6 +557,7 @@
   "changed.tutorial.select_ability.description": "%sを押す",
   "changed.tutorial.use_ability.title": "実力を発揮する",
   "changed.tutorial.use_ability.description": "%sを押し続ける",
+
   "facility.zone.red_zone": "赤ゾーン",
   "facility.zone.gray_zone": "グレーゾーン",
   "facility.zone.maintenance_zone": "メンテナンス・ゾーン",
@@ -528,15 +565,18 @@
   "facility.zone.vent_zone": "ベントゾーン",
   "facility.zone.greenhouse_zone": "温室ゾーン",
   "facility.zone.blue_zone": "青ゾーン",
+
   "glu_block.size": "大きさ %1$sx%1$s",
   "glu_block.has_door": "ドア付き",
   "glu_block.zone": "ゾーン",
   "glu_block.joint_type": "ジョイント式",
   "glu_block.joint.entrance": "入口",
   "glu_block.joint.exit": "出口",
+
   "eyestyle.changed.v1": "原文",
   "eyestyle.changed.v2": "細身",
   "eyestyle.changed.tall": "背が高い",
+
   "changed.config.color_picker_tooltip": "高度なカラーピッカーを開くにはクリックしてください。",
   "changed.config.color_picker_red": "赤：%s",
   "changed.config.color_picker_green": "緑：%s",
@@ -552,5 +592,12 @@
   "changed.config.bpi.size": "モデル寸法",
   "changed.config.bpi.size.value": "サイズ： %s%%",
   "changed.config.bpi.override_dl_iris": "アイリスの色をダークラテックスバリエーションに上書きする",
-  "changed.config.bpi.override_all_eye_styles": "すべてのアイスタイルをオーバーライドする"
+  "changed.config.bpi.override_all_eye_styles": "すべてのアイスタイルをオーバーライドする",
+
+  "changed.stasis.open": "Open Door",
+  "changed.stasis.close": "Close Door",
+  "changed.stasis.run": "Execute Modifications",
+  "changed.stasis.capture_next": "Capture Next",
+  "changed.stasis.toggle_stasis": "Stasis: %s",
+  "changed.stasis.modify": "Modifications"
 }
