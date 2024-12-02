@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.client.renderer.animate.bipedal.*;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.DragonCameraCreativeFlyAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.OrcaCameraSwimAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.camera.SharkCameraSwimAnimator;
+import net.ltxprogrammer.changed.client.renderer.animate.camera.TaurCameraJumpAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.BeeAntennaeInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.CatEarsInitAnimator;
 import net.ltxprogrammer.changed.client.renderer.animate.ears.WolfEarsInitAnimator;
@@ -297,7 +298,9 @@ public class AnimatorPresets {
                     .addAnimator(new TaurUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new TaurUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new TaurUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
-                    .addAnimator(new TaurUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+                    .addAnimator(new TaurUpperBodyStandAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new TaurUpperBodyJumpAnimator<>(head, torso, leftArm, rightArm))
+                    .addCameraAnimator(new TaurCameraJumpAnimator<>());
         };
     }
 
@@ -977,6 +980,7 @@ public class AnimatorPresets {
                             backLeftLeg,  backLeftLegLower,  backLeftFoot,  backLeftPad,
                             backRightLeg,  backRightLegLower,  backRightFoot,  backRightPad))
                     .addAnimator(new QuadrupedalFallFlyAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
+                    .addAnimator(new QuadrupedalJumpAnimator<>(lowerTorso, frontLeftLeg, frontRightLeg, backLeftLeg, backRightLeg))
                     .addAnimator(new WolfTailInitAnimator<>(tail, tailJoints));
         };
     }
