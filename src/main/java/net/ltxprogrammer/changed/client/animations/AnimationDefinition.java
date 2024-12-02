@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ import java.util.Map;
 public class AnimationDefinition {
     public final float length;
     public final float transitionDuration;
+    public final boolean looped;
     public final ImmutableMap<Limb, List<AnimationChannel>> channels;
     public final ImmutableList<ResourceLocation> entityProps;
     public final ImmutableList<AnimationChannel> itemProps;
@@ -23,6 +22,7 @@ public class AnimationDefinition {
     public static final Codec<AnimationDefinition> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.FLOAT.fieldOf("length").forGetter(definition -> definition.length),
             Codec.FLOAT.fieldOf("transitionDuration").forGetter(definition -> definition.transitionDuration),
+            Codec.BOOL.fieldOf("looped").orElse(false).forGetter(definition -> definition.looped),
             Codec.unboundedMap(
                     Limb.CODEC,
                     Codec.list(AnimationChannel.CODEC)
@@ -31,27 +31,16 @@ public class AnimationDefinition {
             Codec.list(AnimationChannel.CODEC).fieldOf("items").orElse(List.of()).forGetter(definition -> definition.itemProps)
     ).apply(builder, AnimationDefinition::new));
 
-    public AnimationDefinition(float length, float transitionDuration,
+    public AnimationDefinition(float length, float transitionDuration, boolean looped,
                                Map<Limb, List<AnimationChannel>> channels,
                                List<ResourceLocation> entities,
                                List<AnimationChannel> items) {
         this.length = length;
         this.transitionDuration = transitionDuration;
+        this.looped = looped;
         this.channels = ImmutableMap.copyOf(channels);
         this.entityProps = ImmutableList.copyOf(entities);
         this.itemProps = ImmutableList.copyOf(items);
-    }
-
-    public AnimationInstance createInstance(HumanoidModel<?> model) {
-        final var instance = new AnimationInstance(this);
-        instance.captureBaseline(model);
-        return instance;
-    }
-
-    public AnimationInstance createInstance(AdvancedHumanoidModel<?> model) {
-        final var instance = new AnimationInstance(this);
-        instance.captureBaseline(model);
-        return instance;
     }
 
     public float getLength() {
@@ -65,6 +54,7 @@ public class AnimationDefinition {
         private final List<AnimationChannel> items = new ArrayList<>();
 
         private float transitionDuration = 1.25f;
+        private boolean looped = false;
 
         private Builder(float length) {
             this.length = length;
@@ -76,6 +66,11 @@ public class AnimationDefinition {
 
         public Builder withTransition(float duration) {
             this.transitionDuration = duration;
+            return this;
+        }
+
+        public Builder looped(boolean value) {
+            this.looped = value;
             return this;
         }
 
@@ -95,7 +90,7 @@ public class AnimationDefinition {
         }
 
         public AnimationDefinition build() {
-            return new AnimationDefinition(length, transitionDuration, animations, entities, items);
+            return new AnimationDefinition(length, transitionDuration, looped, animations, entities, items);
         }
     }
 }

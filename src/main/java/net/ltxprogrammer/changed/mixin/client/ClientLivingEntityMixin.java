@@ -1,8 +1,11 @@
 package net.ltxprogrammer.changed.mixin.client;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.animations.AnimationCategory;
+import net.ltxprogrammer.changed.client.animations.AnimationDefinition;
+import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
 import net.ltxprogrammer.changed.client.animations.AnimationInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -32,6 +37,7 @@ public class ClientLivingEntityMixin implements ClientLivingEntityExtender {
 
     @Override
     public void addAnimation(AnimationCategory category, AnimationInstance animationInstance) {
+        clearAnimation(category);
         animations.put(category, animationInstance);
     }
 
@@ -41,17 +47,47 @@ public class ClientLivingEntityMixin implements ClientLivingEntityExtender {
     }
 
     @Override
+    public @Nullable AnimationInstance getAnimation(AnimationCategory category, Supplier<AnimationDefinition> definition) {
+        final var instance = animations.get(category);
+        if (instance == null)
+            return null;
+        if (instance.getDefinition() != definition.get())
+            return null;
+        return instance;
+    }
+
+    @Override
     public void clearAnimation(AnimationCategory category) {
         if (!animations.containsKey(category))
             return;
 
         animations.get(category).clear();
+        animations.remove(category);
+    }
+
+    @Override
+    public void clearAnimation(AnimationCategory category, Supplier<AnimationDefinition> definition) {
+        if (!animations.containsKey(category))
+            return;
+
+        if (animations.get(category).getDefinition() != definition.get())
+            return;
+
+        animations.get(category).clear();
+        animations.remove(category);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickAnimations(CallbackInfo ci) {
-        animations.entrySet().stream().filter(entry -> entry.getValue().isDone())
+        animations.entrySet().stream().filter(entry -> entry.getValue().isDone()).collect(Collectors.toSet())
                 .forEach(completed -> clearAnimation(completed.getKey()));
         animations.values().forEach(AnimationInstance::tickTime);
+
+        if (StasisChamber.isEntityCaptured((LivingEntity)(Object)this)) {
+            if (getAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE) == null)
+                addAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE.createInstance((LivingEntity)(Object)this));
+        } else {
+            clearAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE);
+        }
     }
 }

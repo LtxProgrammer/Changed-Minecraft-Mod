@@ -1,8 +1,12 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.client.ChangedClient;
+import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.EntityRenderHelper;
+import net.ltxprogrammer.changed.client.animations.AnimationCategory;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.PlayerLayerWrapper;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -14,8 +18,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.CapeLayer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -45,17 +47,52 @@ public abstract class EntityRenderDispatcherMixin {
     @Shadow public Map<EntityType<?>, EntityRenderer<?>> renderers;
 
     @Inject(method = "render", at = @At("HEAD"))
-    public <E extends Entity> void beforeRender(E entity, double camX, double camY, double camZ, float p_114389_, float p_114390_, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
+    public <E extends Entity> void beforeRender(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
         EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.addLast(new Vec3(camX, camY, camZ));
     }
 
     @Inject(method = "render", at = @At("RETURN"))
-    public <E extends Entity> void afterRender(E entity, double camX, double camY, double camZ, float p_114389_, float p_114390_, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
+    public <E extends Entity> void afterRender(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
         EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.removeLast();
+    }
+
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
+    public <E extends Entity> void animateOffset(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
+        if (!(entity instanceof LivingEntity livingEntity))
+            return;
+
+        ((ClientLivingEntityExtender)entity).getAnimationSafe(AnimationCategory.PROP)
+                .ifPresent(instance -> {
+                    if (instance.isDone())
+                        return;
+                    final LivingEntity parent = instance.getParentEntity();
+                    if (parent == null)
+                        return;
+
+                    double dx = Mth.lerp(partialTicks, parent.xOld, parent.getX()) - Mth.lerp(partialTicks, livingEntity.xOld, livingEntity.getX());
+                    double dy = Mth.lerp(partialTicks, parent.yOld, parent.getY()) - Mth.lerp(partialTicks, livingEntity.yOld, livingEntity.getY());
+                    double dz = Mth.lerp(partialTicks, parent.zOld, parent.getZ()) - Mth.lerp(partialTicks, livingEntity.zOld, livingEntity.getZ());
+
+                    float dYBodyRot = Mth.lerp(partialTicks, parent.yBodyRotO, parent.yBodyRot) - Mth.lerp(partialTicks, livingEntity.yBodyRotO, livingEntity.yBodyRot);
+
+                    final double transition = instance.computeTransition(partialTicks);
+
+                    poseStack.translate(
+                            Mth.lerp(transition, dx, 0.0),
+                            Mth.lerp(transition, dy, 0.0),
+                            Mth.lerp(transition, dz, 0.0)
+                    );
+
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(-dYBodyRot));
+                });
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;renderShadow(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/Entity;FFLnet/minecraft/world/level/LevelReader;F)V"))
     public <E extends Entity> void maybeRenderShadow(PoseStack stack, MultiBufferSource blockpos, E entity, float shadowStrength, float partialTicks, LevelReader level, float radius) {
+        if (ChangedClient.isRenderingWaveVision()) {
+            return;
+        }
+
         if (entity instanceof LivingEntityDataExtension ext && ext.getGrabbedBy() != null) {
             var grabAbility = AbstractAbility.getAbilityInstance(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get());
             if (grabAbility != null && !grabAbility.grabbedHasControl) {

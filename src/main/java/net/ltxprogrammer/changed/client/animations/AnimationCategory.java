@@ -6,6 +6,10 @@ public enum AnimationCategory {
      */
     TRANSFUR,
     /**
+     * Entity is idle
+     */
+    IDLE,
+    /**
      * Entity is used in other entity's animation
      */
     PROP

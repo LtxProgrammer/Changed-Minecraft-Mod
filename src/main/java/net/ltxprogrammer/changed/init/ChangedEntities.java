@@ -313,6 +313,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<PureWhiteLatexWolf>> PURE_WHITE_LATEX_WOLF = registerSpawning("pure_white_latex_wolf", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(PureWhiteLatexWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexWolf::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<PureWhiteLatexWolfPup>> PURE_WHITE_LATEX_WOLF_PUP = registerSpawning("pure_white_latex_wolf_pup", 0xFFFFFF, 0xFAFAFA,
+            EntityType.Builder.of(PureWhiteLatexWolfPup::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.6F, 0.85F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, PureWhiteLatexWolfPup::checkEntitySpawnRules);
 
     public static final RegistryObject<EntityType<CustomLatexEntity>> CUSTOM_LATEX = registerSpawning("custom_latex", 0xFFFFFF, 0xFAFAFA,
             EntityType.Builder.of(CustomLatexEntity::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),

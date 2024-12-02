@@ -23,7 +23,7 @@ public class ClientTransfurVariantInstance<T extends ChangedEntity> extends Tran
     public void prepareForRender(float partialTicks) {
         AnimationInstance tfAnimation = ((ClientLivingEntityExtender)host).getAnimation(AnimationCategory.TRANSFUR);
         if (transfurProgression < 1f && tfAnimation == null) {
-            tfAnimation = new AnimationInstance(TransfurAnimations.getAnimationFromCause(this.transfurContext.cause));
+            tfAnimation = new AnimationInstance(TransfurAnimations.getAnimationFromCause(this.transfurContext.cause), host);
             if (this.transfurContext.source != null)
                 tfAnimation.addEntity(this.transfurContext.source.getEntity());
 

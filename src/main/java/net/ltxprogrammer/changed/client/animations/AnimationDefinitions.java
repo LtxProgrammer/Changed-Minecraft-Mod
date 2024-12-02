@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +20,18 @@ public class AnimationDefinitions extends SimplePreparableReloadListener<Immutab
 
     private static ImmutableMap<ResourceLocation, AnimationDefinition> definitions;
 
-    public static final Supplier<AnimationDefinition> PLACEHOLDER = () -> definitions.get(Changed.modResource("transfur/placeholder"));
+    public interface AnimationDefinitionHolder extends Supplier<AnimationDefinition> {
+        default AnimationInstance createInstance(LivingEntity host) {
+            return new AnimationInstance(get(), host);
+        }
+    }
+
+    public static final AnimationDefinitionHolder PLACEHOLDER = wellKnownAnimation(Changed.modResource("transfur/placeholder"));
+    public static final AnimationDefinitionHolder STASIS_IDLE = wellKnownAnimation(Changed.modResource("stasis_idle"));
+
+    public static AnimationDefinitionHolder wellKnownAnimation(ResourceLocation name) {
+        return () -> definitions.get(name);
+    }
 
     public static AnimationDefinition getAnimation(ResourceLocation id) {
         return definitions.get(id);

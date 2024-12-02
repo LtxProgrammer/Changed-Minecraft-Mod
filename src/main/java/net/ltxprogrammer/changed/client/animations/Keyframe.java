@@ -19,21 +19,24 @@ public class Keyframe {
             Codec.FLOAT.fieldOf("time").forGetter(keyframe -> keyframe.time),
             Vector3f.CODEC.optionalFieldOf("degrees").forGetter(keyframe -> Optional.empty()),
             Vector3f.CODEC.optionalFieldOf("radians").forGetter(keyframe -> Optional.empty()),
-            Vector3f.CODEC.optionalFieldOf("position").forGetter(keyframe -> Optional.of(keyframe.value)),
+            Vector3f.CODEC.optionalFieldOf("position").forGetter(keyframe -> Optional.empty()),
+            Vector3f.CODEC.optionalFieldOf("value").forGetter(keyframe -> Optional.of(keyframe.value)),
             AnimationChannel.Interpolation.CODEC.fieldOf("interpolation").forGetter(option -> option.interpolation)
-    ).apply(builder, (time, degrees, radians, position, interpolation) -> {
-        Vector3f value;
+    ).apply(builder, (time, degrees, radians, position, value, interpolation) -> {
+        Vector3f actual;
         if (degrees.isPresent()) {
-            value = degrees.get();
-            value.mul(Mth.DEG_TO_RAD);
+            actual = degrees.get();
+            actual.mul(Mth.DEG_TO_RAD);
         } else if (radians.isPresent())
-            value = radians.get();
+            actual = radians.get();
         else if (position.isPresent())
-            value = position.get();
+            actual = position.get();
+        else if (value.isPresent())
+            actual = value.get();
         else
-            throw new InvalidParameterException("At least one of degress, radians, or position must be specified");
+            throw new InvalidParameterException("At least one of degrees, radians, position, or value must be specified");
 
-        return new Keyframe(time, value, interpolation);
+        return new Keyframe(time, actual, interpolation);
     }));
 
     public Keyframe(float time, Vector3f value, AnimationChannel.Interpolation interpolation) {

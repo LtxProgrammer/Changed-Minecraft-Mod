@@ -44,7 +44,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
     private @Nullable ScheduledCommand currentCommand = null;
     private LivingEntity cachedEntity;
 
-    private @Nullable TransfurVariant<?> configuredVariant = null;
+    private @Nullable TransfurVariant<?> configuredVariant = ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.get();
     private int configuredCustomLatex = 0;
     private int waitDuration = 0;
     private boolean stabilized = false;

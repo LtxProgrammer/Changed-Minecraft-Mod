@@ -8,6 +8,8 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraftforge.common.IExtensibleEnum;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +70,7 @@ public class AnimationChannel {
         return keyframes.stream().map(Keyframe::getTime).allMatch(keyTime -> keyTime < time);
     }
 
-    public void animate(AnimationDefinition definition, ModelPart part, float time) {
+    public Vector3f getValue(AnimationDefinition definition, float time) {
         var p = getKeyframePair(time);
         final var p1 = p.left().left();
         final var p2 = p.left().right();
@@ -103,23 +105,30 @@ public class AnimationChannel {
             p3.getInterpolation().accept(Mth.map(time, 0.0f, p3.getTime(), 0.0f, 1.0f), float4Consumer);
         }
 
-        final Vector3f result = atomic.getAcquire();
+        return atomic.getAcquire();
+    }
+
+    public void animate(AnimationDefinition definition, ModelPart part, float time) {
+        final Vector3f result = getValue(definition, time);
 
         switch (target) {
             case POSITION:
                 part.x = result.x();
-                part.y = result.y();
+                part.y = -result.y();
                 part.z = result.z();
+                break;
             case ROTATION:
                 part.xRot = result.x();
                 part.yRot = result.y();
                 part.zRot = result.z();
+                break;
         }
     }
 
-    public enum Target implements StringRepresentable {
+    public enum Target implements StringRepresentable, IExtensibleEnum {
         POSITION("position"),
-        ROTATION("rotation");
+        ROTATION("rotation"),
+        TRANSFUR("transfur");
 
         public static final Codec<Target> CODEC = Codec.STRING.comapFlatMap(Target::fromSerial, Target::getSerializedName);
 
@@ -137,6 +146,10 @@ public class AnimationChannel {
         public static DataResult<Target> fromSerial(String name) {
             return Arrays.stream(values()).filter(type -> type.serialName.equals(name))
                     .findFirst().map(DataResult::success).orElseGet(() -> DataResult.error(name + " is not a valid target"));
+        }
+
+        public static Target create(String name, String serialName) {
+            throw new NotImplementedException("Enum not extended");
         }
     }
 

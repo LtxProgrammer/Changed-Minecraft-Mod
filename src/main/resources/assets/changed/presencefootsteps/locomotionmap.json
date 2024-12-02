@@ -68,6 +68,7 @@
   "changed:milk_pudding": "BIPED",
   "changed:shark": "BIPED",
   "changed:pure_white_latex_wolf": "BIPED",
+  "changed:pure_white_latex_wolf_pup": "QUADRUPED",
   "changed:white_wolf_female": "BIPED",
   "changed:white_wolf_male": "BIPED",
   "changed:phage_latex_wolf_female": "BIPED",
