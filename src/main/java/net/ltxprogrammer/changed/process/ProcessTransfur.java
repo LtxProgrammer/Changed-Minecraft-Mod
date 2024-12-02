@@ -722,6 +722,9 @@ public class ProcessTransfur {
             ChangedSounds.broadcastSound(entity, variant.sound, 1.0f, 1.0f);
             if ((keepConscious || doAnimation) && entity instanceof ServerPlayer player) {
                 var instance = setPlayerTransfurVariant(player, variant, context, doAnimation ? 0.0f : 1.0f);
+                if (instance == null)
+                    return; // Event canceled
+
                 instance.willSurviveTransfur = keepConscious;
                 instance.transfurContext = context;
 

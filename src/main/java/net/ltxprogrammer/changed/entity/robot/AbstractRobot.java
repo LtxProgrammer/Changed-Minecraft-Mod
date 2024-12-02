@@ -246,7 +246,7 @@ public abstract class AbstractRobot extends PathfinderMob {
         @Override
         public void tick() {
             super.tick();
-            if (robot.getNavigation().isDone()) {
+            if (robot.getNavigation().isDone() && robot.closestCharger != null) {
                 BlockState state = robot.level.getBlockState(robot.closestCharger);
                 if (state.getBlock() instanceof IRobotCharger charger) {
                     charger.acceptRobot(state, robot.level, robot.closestCharger, robot);
