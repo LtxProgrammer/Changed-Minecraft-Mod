@@ -31,7 +31,7 @@ Submitting content that fails to meet quality expectations isn't an issue, and c
 
 ## How can I make my own extension mod?
 
-Please refer to the [wiki](wiki) for tutorials on setting up, and using the API.
+Please refer to the [wiki](https://github.com/LtxProgrammer/Changed-Minecraft-Mod/wiki) for tutorials on setting up, and using the API.
 
 ## How can I compile the mod?
 
