@@ -67,6 +67,9 @@ public abstract class AbstractAbilityInstance {
     public abstract void tick();
     public abstract void stopUsing();
 
+    // Called every variant tick, regardless
+    public void tickIdle() {}
+
     // Called when the player loses the variant (death or untransfur)
     public void onRemove() {}
 

@@ -791,8 +791,8 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         }
 
         if (!isTemporaryFromSuit() && shouldApplyAbilities()) {
-            if (abilityInstances.containsKey(ChangedAbilities.GRAB_ENTITY_ABILITY.get())) {
-                getAbilityInstance(ChangedAbilities.GRAB_ENTITY_ABILITY.get()).tickIdle();
+            for (var instance : abilityInstances.values()) {
+                instance.tickIdle();
             }
 
             if (selectedAbility != null) {
