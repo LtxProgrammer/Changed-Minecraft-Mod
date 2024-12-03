@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#D#",
+    "LBL"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "D": {
+      "item": "minecraft:black_dye"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "B": {
+      "item": "changed:latex_base"
+    }
+  },
+  "result": {
+    "item": "changed:sports_bra"
+  }
+}
