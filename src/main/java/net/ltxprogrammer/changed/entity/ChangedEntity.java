@@ -89,6 +89,17 @@ public abstract class ChangedEntity extends Monster {
     float tailDragAmount = 0.0F;
     float tailDragAmountO;
 
+    Vec3 deltaMovementOO = Vec3.ZERO;
+    Vec3 deltaMovementO = Vec3.ZERO;
+
+    public Vec3 getDeltaMovement(float partialTicks) {
+        return new Vec3(
+                Mth.lerp(partialTicks, deltaMovementOO.x, deltaMovementO.x),
+                this.onGround ? 0.0 : Mth.lerp(partialTicks, deltaMovementOO.y, deltaMovementO.y),
+                Mth.lerp(partialTicks, deltaMovementOO.z, deltaMovementO.z)
+        );
+    }
+
     final Map<SpringType.Direction, EnumMap<SpringType, SpringType.Simulator>> simulatedSprings;
 
     public BasicPlayerInfo getBasicPlayerInfo() {
@@ -984,6 +995,9 @@ public abstract class ChangedEntity extends Monster {
         this.tailDragAmount *= 0.75F;
         this.tailDragAmount -= (float) (Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F);
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
+
+        this.deltaMovementOO = this.deltaMovementO;
+        this.deltaMovementO = this.getDeltaMovement();
 
         simulatedSprings.forEach((direction, map) -> {
             final float deltaVelocity = direction.apply(this);

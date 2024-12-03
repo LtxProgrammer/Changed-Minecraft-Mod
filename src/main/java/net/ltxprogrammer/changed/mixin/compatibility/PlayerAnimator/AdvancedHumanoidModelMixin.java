@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 @Mixin(value = AdvancedHumanoidModel.class, remap = false)
-@RequiredMods("presencefootsteps")
+@RequiredMods("playeranimator")
 public abstract class AdvancedHumanoidModelMixin<T extends ChangedEntity> extends PlayerModel<T> implements ArmedModel, HeadedModel, TorsoedModel {
     public AdvancedHumanoidModelMixin(ModelPart p_170821_, boolean p_170822_) {
         super(p_170821_, p_170822_);

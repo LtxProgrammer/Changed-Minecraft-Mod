@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,6 +23,15 @@ public class LocalTransfurVariantInstance<T extends ChangedEntity> extends Clien
         if (transfurProgression < 1f || this.ageAsVariant < 30 || !this.getItemUseMode().holdMainHand) {
             ((LocalPlayerAccessor)host).setHandsBusy(true);
         } else if (host.getVehicle() == null && host.isHandsBusy()) {
+            ((LocalPlayerAccessor)host).setHandsBusy(false);
+        }
+    }
+
+    @Override
+    public void unhookAll(Player player) {
+        super.unhookAll(player);
+
+        if (host.getVehicle() == null && host.isHandsBusy()) {
             ((LocalPlayerAccessor)host).setHandsBusy(false);
         }
     }
