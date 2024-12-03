@@ -30,63 +30,8 @@ We strive to keep the code and assets of the Changed: Minecraft Mod at a excelle
 Submitting content that fails to meet quality expectations isn't an issue, and can be a good learning experience on what can be improved. However, excessively submitting issues/pull requests that repeatedly fail to meet quality expectations will result in a warning, and then a ban from contributing.
 
 ## How can I make my own extension mod?
-First, grab the [Forge MDK](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.18.2.html), and install **Intellij**.
-Changed:MC uses many mixins to alter code for compatibility and functionality.
-Add this line to your buildscript dependencies and repositories (*build.gradle*):
-```gradle
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-```
 
-And add it as a plugin (*build.gradle*):
-```gradle
-apply plugin: 'org.spongepowered.mixin'
-```
-
-Add this line in your repositories (*build.gradle*): 
-
-```gradle
-repositories {
-    maven {
-        name = "Changed"
-        url = "https://raw.githubusercontent.com/LtxProgrammer/Changed-Minecraft-Mod/master/mcmodsrepo/"
-    }
-}
-```
-Add this line in **your dependencies** (*build.gradle*):
-
-```gradle
-dependencies {
-    implementation fg.deobf("net.ltxprogrammer.changed:Changed-m${minecraftVersion}-f${forgeVersion}:${changedVersion}")
-}
-```
-Make sure you specify which environment versions you are using in the line above. This can be done by directly subsituting (e.g. `Changed-m1.18.2-f40.2.0:v0.13.1`), or in you *gradle.properties*:
-```properties
-minecraftVersion = 1.18.2
-forgeVersion = 40.2.0
-changedVersion = v0.13.1
-```
-
-Then add a **mod dependency** to *mods.toml*:
-
-```toml
-[[dependencies.your_mod_id]]
-    modId="changed"
-    mandatory=true
-    versionRange="[0.13.1]" # Replace with the version you plan to mod
-    ordering="NONE"
-    side="BOTH"
-```
-
-*Note: any issues relating to gradle/mixin should be properly be researched (Googled) before creating an issue.*
-
-You'll now have access to **all the tools** within the Changed: Minecraft Mod, good luck!
+Please refer to the [wiki](https://github.com/LtxProgrammer/Changed-Minecraft-Mod/wiki) for tutorials on setting up, and using the API.
 
 ## How can I compile the mod?
 
