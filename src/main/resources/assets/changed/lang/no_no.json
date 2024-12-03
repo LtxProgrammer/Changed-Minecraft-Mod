@@ -355,7 +355,7 @@
   "entity.changed.dark_latex_wolf_male": "Mannlig mørk lateks ulv",
   "entity.changed.dark_latex_wolf_partial": "Delvis mørk lateks ulv",
   "entity.changed.dark_dragon": "Mørk drage",
-  "entity.changed.dark_latex_wolf_pup": "Mørk lateks ulveunge",
+  "entity.changed.dark_latex_wolf_pup": "Mørk lateks ulvevalp",
   "entity.changed.dark_latex_yufeng": "Mørk lateks yufeng",
   "entity.changed.dark_latex_double_yufeng": "Mørk lateks tohodet yufeng",
   "entity.changed.gas_particle": "Ulv transpelsgasspartikkel",
@@ -415,6 +415,7 @@
   "entity.changed.phage_latex_wolf_male": "Mannlig bakteriofag lateks ulv",
   "entity.changed.pooltoy_wolf": "Bassengleketøy ulv",
   "entity.changed.pure_white_latex_wolf": "Helt hvit lateks ulv",
+  "entity.changed.pure_white_latex_wolf_pup": "Helt hvit lateks ulvevalp",
   "entity.changed.roomba": "Feiende robot",
   "entity.changed.shark": "Hai",
   "entity.changed.sniper_dog": "Snikskytterhund",
@@ -433,7 +434,7 @@
   "item.changed.dark_dragon_spawn_egg": "Fremkallingsegg for mørk drage",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Fremkallingsegg for kvinnelig mørk lateks ulv",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig mørk lateks ulv",
-  "item.changed.dark_latex_wolf_pup_spawn_egg": "Fremkallingsegg for mørk lateks ulveunge",
+  "item.changed.dark_latex_wolf_pup_spawn_egg": "Fremkallingsegg for mørk lateks ulvevalp",
   "item.changed.dark_latex_yufeng_spawn_egg": "Fremkallingsegg for mørk lateks yufeng",
   "item.changed.dark_latex_double_yufeng_spawn_egg": "Fremkallingsegg for mørk lateks tohodet yufeng",
   "item.changed.gas_wolf_spawn_egg": "Fremkallingsegg for gass ulv",
@@ -491,6 +492,7 @@
   "item.changed.phage_latex_wolf_male_spawn_egg": "Fremkallingsegg for mannlig bakteriofag lateks ulv",
   "item.changed.pooltoy_wolf_spawn_egg": "Fremkallingsegg for bassengleketøy ulv",
   "item.changed.pure_white_latex_wolf_spawn_egg": "Fremkallingsegg for helt hvit lateks ulv",
+  "item.changed.pure_white_latex_wolf_pup_spawn_egg": "Fremkallingsegg for helt hvit lateks ulvevalp",
   "item.changed.shark_spawn_egg": "Fremkallingsegg for hai",
   "item.changed.sniper_dog_spawn_egg": "Fremkallingsegg for snikskytterhund",
   "item.changed.white_latex_centaur_spawn_egg": "Fremkallingsegg for hvit lateks kentaur",
@@ -622,5 +624,12 @@
   "changed.config.bpi.size": "Modellstørrelse",
   "changed.config.bpi.size.value": "Størrelse: %s%%",
   "changed.config.bpi.override_dl_iris": "Overstyre regnbuehinnefarge på mørk lateks varianter",
-  "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche"
+  "changed.config.bpi.override_all_eye_styles": "Overstyre alle øyenstilen å matche",
+
+  "changed.stasis.open": "Åpne dør",
+  "changed.stasis.close": "Lukk dør",
+  "changed.stasis.run": "Utføre modifikasjoner",
+  "changed.stasis.capture_next": "Fange neste",
+  "changed.stasis.toggle_stasis": "Stase: %s",
+  "changed.stasis.modify": "Modifikasjoner"
 }

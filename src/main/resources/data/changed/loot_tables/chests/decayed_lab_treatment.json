@@ -21,6 +21,11 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 10,
+          "name": "changed:sports_bra"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 5,
           "name": "changed:bedside_iv_rack"
         },
