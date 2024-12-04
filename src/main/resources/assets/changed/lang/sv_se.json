@@ -355,7 +355,7 @@
   "entity.changed.dark_latex_wolf_male": "Manlig mörk latexvarg",
   "entity.changed.dark_latex_wolf_partial": "Partiell mörk latexvarg",
   "entity.changed.dark_dragon": "Mörk drake",
-  "entity.changed.dark_latex_wolf_pup": "Mörk latex vargvalp",
+  "entity.changed.dark_latex_wolf_pup": "Mörk latexvargvalp",
   "entity.changed.dark_latex_yufeng": "Mörk latex yufeng",
   "entity.changed.dark_latex_double_yufeng": "Mörk latex tvåhövdade yufeng",
   "entity.changed.gas_particle": "Varg förpälsvandlagaspartikel",
@@ -415,6 +415,7 @@
   "entity.changed.phage_latex_wolf_male": "Manlig bakteriofag latexvarg",
   "entity.changed.pooltoy_wolf": "Bassängleksak varg",
   "entity.changed.pure_white_latex_wolf": "Helt vitt latexvarg",
+  "entity.changed.pure_white_latex_wolf_pup": "Helt vitt latexvargvalp",
   "entity.changed.roomba": "Svepande robot",
   "entity.changed.shark": "Haj",
   "entity.changed.sniper_dog": "Prickskytthund",
@@ -433,7 +434,7 @@
   "item.changed.dark_dragon_spawn_egg": "Skapelseägg för mörk drake",
   "item.changed.dark_latex_wolf_female_spawn_egg": "Skapelseägg för kvinnlig mörk latexvarg",
   "item.changed.dark_latex_wolf_male_spawn_egg": "Skapelseägg för manlig mörk latexvarg",
-  "item.changed.dark_latex_wolf_pup_spawn_egg": "Skapelseägg för mörk latex vargvalp",
+  "item.changed.dark_latex_wolf_pup_spawn_egg": "Skapelseägg för mörk latexvargvalp",
   "item.changed.dark_latex_yufeng_spawn_egg": "Skapelseägg för mörk latex yufeng",
   "item.changed.dark_latex_double_yufeng_spawn_egg": "Skapelseägg för mörk latex tvåhövdade yufeng",
   "item.changed.gas_wolf_spawn_egg": "Skapelseägg för gas varg",
@@ -491,6 +492,7 @@
   "item.changed.phage_latex_wolf_male_spawn_egg": "Skapelseägg för manlig bakteriofag latexvarg",
   "item.changed.pooltoy_wolf_spawn_egg": "Skapelseägg för bassängleksak varg",
   "item.changed.pure_white_latex_wolf_spawn_egg": "Skapelseägg för helt vitt latexvarg",
+  "item.changed.pure_white_latex_wolf_pup_spawn_egg": "Skapelseägg för helt vitt latexvargvalp",
   "item.changed.shark_spawn_egg": "Skapelseägg för haj",
   "item.changed.sniper_dog_spawn_egg": "Skapelseägg för prickskytthund",
   "item.changed.white_latex_centaur_spawn_egg": "Skapelseägg för vit latex kentaur",
@@ -622,5 +624,12 @@
   "changed.config.bpi.size": "Modellstorlek",
   "changed.config.bpi.size.value": "Storlek: %s%%",
   "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",
-  "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha"
+  "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha",
+
+  "changed.stasis.open": "Öppna dörr",
+  "changed.stasis.close": "Stäng dörr",
+  "changed.stasis.run": "Exekvera modifikationer",
+  "changed.stasis.capture_next": "Fångst nästa",
+  "changed.stasis.toggle_stasis": "Stas: %s",
+  "changed.stasis.modify": "Modifikationer"
 }
