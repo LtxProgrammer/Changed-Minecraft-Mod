@@ -111,6 +111,7 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractPuddle> WHITE_LATEX_PUDDLE_FEMALE = register("white_latex_puddle_female", () -> new AbstractPuddle(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(0.1F), ChangedTransfurVariants.WHITE_LATEX_WOLF_FEMALE));
     public static final RegistryObject<AbstractPuddle> WHITE_LATEX_PUDDLE_MALE = register("white_latex_puddle_male", () -> new AbstractPuddle(BlockBehaviour.Properties.copy(WHITE_LATEX_PUDDLE_FEMALE.get()), ChangedTransfurVariants.WHITE_LATEX_WOLF_MALE));
     public static final RegistryObject<PipeBlock> PIPE = register("pipe", PipeBlock::new);
+    public static final RegistryObject<PetriDishBlock> PETRI_DISH = register("petri_dish", () -> new PetriDishBlock(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.COLOR_RED).sound(SoundType.GLASS).strength(0.5F).dynamicShape()));
     public static final RegistryObject<RetinalScanner> RETINAL_SCANNER = register("retinal_scanner", () -> new RetinalScanner(BlockBehaviour.Properties.copy(COMPUTER.get()).lightLevel((state) -> 0)));
     public static final RegistryObject<RoombaCharger> ROOMBA_CHARGER = register("roomba_charger", () -> new RoombaCharger(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(3.0f, 3.0f)));
     public static final RegistryObject<SpeakerBlock> SPEAKER = register("speaker", () -> new SpeakerBlock(BlockBehaviour.Properties.copy(RETINAL_SCANNER.get())), ChangedBlocks::cutoutRenderer);
