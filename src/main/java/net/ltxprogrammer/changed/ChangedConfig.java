@@ -43,7 +43,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> displayPatronage;
 
         public Common(ForgeConfigSpec.Builder builder) {
-            builder.comment("Choose your domain. Use \"raw.fastgit.org\" if your ISP blocks github.");
+            builder.comment("Choose your domain. Let's you specify a mirror domain if your ISP blocks github (for whatever reason)");
             githubDomain = builder.define("githubDomain", "raw.githubusercontent.com");
             builder.comment("Compatibility is weird, you can disable displaying player's patronage to Changed:MC here");
             displayPatronage = builder.define("displayPatronage", true);
