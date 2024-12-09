@@ -6,7 +6,7 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.EntityRenderHelper;
-import net.ltxprogrammer.changed.client.animations.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.PlayerLayerWrapper;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;

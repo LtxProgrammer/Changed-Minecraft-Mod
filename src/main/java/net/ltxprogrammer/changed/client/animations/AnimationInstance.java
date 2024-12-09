@@ -4,6 +4,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -66,7 +67,10 @@ public class AnimationInstance {
      * Adds new animation to the entity's prop animation category, if the animation is defined.
      * @param livingEntity Entity to animate
      */
-    public void addEntity(LivingEntity livingEntity) {
+    public void addEntity(@Nullable LivingEntity livingEntity) {
+        if (livingEntity == null)
+            return;
+
         if (entities.containsKey(livingEntity))
             return;
 

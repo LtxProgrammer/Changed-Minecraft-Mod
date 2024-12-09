@@ -24,6 +24,10 @@ public abstract class ResourceUtil {
         void accept(T builder, ResourceLocation fullResourceName, ResourceLocation registryName, JsonObject root) throws Exception;
     }
 
+    public interface JSONFileConsumer<T> {
+        void accept(T builder, ResourceLocation fullResourceName, JsonObject root) throws Exception;
+    }
+
     public static <T> T processResources(T builder, @NotNull ResourceManager resources, @NotNull String path, @NotNull String extension, ResourceConsumer<T> consumer) {
         resources.listResources(path, filename -> ResourceLocation.isValidResourceLocation(filename) && filename.endsWith(extension))
                 .forEach(filename -> {
@@ -48,13 +52,39 @@ public abstract class ResourceUtil {
 
 
                     try {
-                        final String id = Path.of(filename.getPath()).getFileName().toString().replace(".json", "");
                         final Resource content = resources.getResource(filename);
 
                         try {
                             final Reader reader = new InputStreamReader(content.getInputStream(), StandardCharsets.UTF_8);
 
                             consumer.accept(builder, filename, registryName, JsonParser.parseReader(reader).getAsJsonObject());
+
+                            reader.close();
+                        } catch (Exception e) {
+                            content.close();
+                            throw e;
+                        }
+
+                        content.close();
+                    } catch (Exception e) {
+                        onException.accept(e, filename);
+                    }
+                });
+
+        return builder;
+    }
+
+    public static <T> T processJSONFiles(T builder, @NotNull ResourceManager resources, @NotNull String fullName, JSONFileConsumer<T> consumer, BiConsumer<Exception, ResourceLocation> onException) {
+        resources.getNamespaces().stream().map(namespace -> new ResourceLocation(namespace, fullName))
+                .filter(resources::hasResource)
+                .forEach(filename -> {
+                    try {
+                        final Resource content = resources.getResource(filename);
+
+                        try {
+                            final Reader reader = new InputStreamReader(content.getInputStream(), StandardCharsets.UTF_8);
+
+                            consumer.accept(builder, filename, JsonParser.parseReader(reader).getAsJsonObject());
 
                             reader.close();
                         } catch (Exception e) {

@@ -44,6 +44,7 @@ public class ChangedPackets {
         addNetworkMessage(TransfurEntityEventPacket.class, TransfurEntityEventPacket::new);
         addNetworkMessage(AbilityPayloadPacket.class, AbilityPayloadPacket::new);
         addNetworkMessage(MultiRotateHeadPacket.class, MultiRotateHeadPacket::new);
+        addNetworkMessage(AnimationEventPacket.class, AnimationEventPacket::new);
     }
 
     private <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

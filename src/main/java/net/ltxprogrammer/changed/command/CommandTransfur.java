@@ -215,14 +215,14 @@ public class CommandTransfur {
             form = Util.getRandom(TransfurVariant.getPublicTransfurVariants().collect(Collectors.toList()), player.getRandom()).getFormId();
 
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
-            ProcessTransfur.progressPlayerTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context);
+            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), context);
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
             if (!ChangedRegistry.TRANSFUR_VARIANT.get().containsKey(key))
                 throw NO_SPECIAL_FORM.create();
 
-            ProcessTransfur.progressPlayerTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), context);
+            ProcessTransfur.progressTransfur(player, progression, ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), context);
         }
         else
             throw NOT_LATEX_FORM.create();

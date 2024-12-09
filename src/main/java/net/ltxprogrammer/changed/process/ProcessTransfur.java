@@ -6,16 +6,15 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.TransfurAnimationParameters;
 import net.ltxprogrammer.changed.entity.beast.SpecialLatex;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.extension.curios.CurioEntities;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
-import net.ltxprogrammer.changed.network.packet.CheckForUpdatesPacket;
-import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
-import net.ltxprogrammer.changed.network.packet.SyncTransfurProgressPacket;
+import net.ltxprogrammer.changed.network.packet.*;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.PatreonBenefits;
 import net.ltxprogrammer.changed.world.enchantments.LatexProtectionEnchantment;
@@ -109,7 +108,7 @@ public class ProcessTransfur {
         return amount;
     }
 
-    public static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
+    protected static boolean progressPlayerTransfur(Player player, float amount, TransfurVariant<?> transfurVariant, TransfurContext context) {
         if (player.isCreative() || player.isSpectator() || ProcessTransfur.isPlayerPermTransfurred(player))
             return false;
         if (player.isDeadOrDying() || player.isRemoved())

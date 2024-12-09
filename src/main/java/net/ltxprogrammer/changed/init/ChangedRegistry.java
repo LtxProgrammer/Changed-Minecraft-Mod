@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
+import net.ltxprogrammer.changed.entity.animation.AnimationEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,6 +37,8 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
 
         @Override
         public ForgeRegistry<T> get() {
+            if (REGISTRY_HOLDERS.isEmpty())
+                throw new IllegalStateException("Cannot access registries before creation");
             return (ForgeRegistry<T>) REGISTRY_HOLDERS.get(key).get();
         }
 
@@ -44,11 +47,13 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
         }
     }
 
+    // TODO rename registeries to be plural, and have modern names
     public static final RegistryHolder<TransfurVariant<?>> TRANSFUR_VARIANT = new RegistryHolder<TransfurVariant<?>>(registryKey("latex_variant"));
     public static final RegistryHolder<AbstractAbility<?>> ABILITY = new RegistryHolder<AbstractAbility<?>>(registryKey("ability"));
     public static final RegistryHolder<HairStyle> HAIR_STYLE = new RegistryHolder<HairStyle>(registryKey("hair_style"));
     public static final RegistryHolder<PlayerMover<?>> PLAYER_MOVER = new RegistryHolder<PlayerMover<?>>(registryKey("player_mover"));
     public static final RegistryHolder<LatexParticleType<?>> LATEX_PARTICLE_TYPE = new RegistryHolder<LatexParticleType<?>>(registryKey("latex_particle_type"));
+    public static final RegistryHolder<AnimationEvent<?>> ANIMATION_EVENTS = new RegistryHolder<AnimationEvent<?>>(registryKey("animation_events"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
@@ -64,6 +69,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
             builder.missing((key, network) -> PlayerMover.DEFAULT_MOVER.get());
         }, null);
         createRegistry(event, LATEX_PARTICLE_TYPE.key, c(LatexParticleType.class));
+        createRegistry(event, ANIMATION_EVENTS.key, c(AnimationEvent.class));
     }
 
     private static <T extends IForgeRegistryEntry<T>> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key, Class<T> type) {

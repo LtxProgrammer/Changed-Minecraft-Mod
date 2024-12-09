@@ -1,0 +1,38 @@
+{
+  "changed:stasis_idle": {
+    "category": "idle",
+    "animations": [
+      {
+        "name": "changed:stasis_idle",
+        "criteria": {}
+      }
+    ]
+  },
+  "changed:shock_stun": {
+    "category": "idle",
+    "animations": [
+      {
+        "name": "changed:stun",
+        "criteria": {}
+      }
+    ]
+  },
+  "changed:transfur_replicate": {
+    "category": "transfur",
+    "animations": [
+      {
+        "name": "changed:transfur/placeholder",
+        "criteria": {}
+      }
+    ]
+  },
+  "changed:transfur_absorb": {
+    "category": "transfur",
+    "animations": [
+      {
+        "name": "changed:transfur/placeholder",
+        "criteria": {}
+      }
+    ]
+  }
+}

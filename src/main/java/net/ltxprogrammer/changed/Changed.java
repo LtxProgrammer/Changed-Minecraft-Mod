@@ -104,6 +104,7 @@ public class Changed {
         ChangedBlocks.REGISTRY.register(modEventBus);
         ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
+        ChangedAnimationEvents.REGISTRY.register(modEventBus);
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();

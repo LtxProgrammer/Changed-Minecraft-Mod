@@ -179,8 +179,13 @@ public interface IAbstractChangedEntity {
 
             @Override
             public void replaceVariant(TransfurVariant<?> otherVariant) {
+                if (instance.get().getParent() == otherVariant)
+                    return;
+
                 var old = getTransfurVariantInstance();
+                float beforeHealth = player.getHealth();
                 ProcessTransfur.setPlayerTransfurVariant(player, otherVariant, old.transfurContext, 1.0f);
+                player.setHealth(beforeHealth);
                 instance.clear();
                 latex.clear();
             }
@@ -358,6 +363,9 @@ public interface IAbstractChangedEntity {
 
             @Override
             public void replaceVariant(TransfurVariant<?> otherVariant) { // Replaces entity without invalidating this abstraction
+                if (otherVariant == getSelfVariant())
+                    return; // No work
+
                 ChangedEntity oldEntity = cached.get();
                 ChangedEntity newEntity = otherVariant.getEntityType().create(getLevel());
                 getLevel().addFreshEntity(newEntity);

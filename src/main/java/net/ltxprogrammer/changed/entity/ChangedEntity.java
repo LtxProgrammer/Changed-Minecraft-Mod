@@ -7,12 +7,15 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.TransfurAnimationParameters;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.network.packet.AnimationEventPacket;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -558,52 +561,40 @@ public abstract class ChangedEntity extends Monster {
      * @return True if the entity was absorbed, False otherwise
      */
     public boolean tryAbsorbTarget(LivingEntity target, IAbstractChangedEntity source, float amount, @Nullable List<TransfurVariant<?>> possibleMobFusions) {
+        final TransfurVariant<?> sourceTfVariant = source.getTransfurVariant();
+
+        if (sourceTfVariant == null)
+            return false;
+
         if (!ProcessTransfur.willTransfur(target, amount)) {
-            ProcessTransfur.progressTransfur(target, amount, source.getTransfurVariant(), source.attack());
+            ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.attack());
             return false;
         }
 
         // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
         if (!source.isPlayer() && target instanceof Player &&
-                ProcessTransfur.progressTransfur(target, amount, source.getTransfurVariant(), source.attack())) {
+                ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.attack())) {
+            ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(target, sourceTfVariant, source.getEntity());
             source.getEntity().discard();
             return true;
         }
 
-        if (possibleMobFusions != null && !possibleMobFusions.isEmpty()) {
-            TransfurVariant<?> mobFusionVariant = possibleMobFusions.get(source.getEntity().getRandom().nextInt(possibleMobFusions.size()));
-            if (source.getEntity() instanceof Player sourcePlayer) {
-                float beforeHealth = sourcePlayer.getHealth();
-                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, mobFusionVariant, source.attack());
-                sourcePlayer.setHealth(beforeHealth);
-            }
+        TransfurVariant<?> actualTfVariant;
 
-            else {
-                source.getEntity().discard();
-                source = IAbstractChangedEntity.forEntity(mobFusionVariant.getEntityType().create(source.getLevel()));
-                source.getLevel().addFreshEntity(source.getEntity());
-            }
-        }
+        if (possibleMobFusions != null && !possibleMobFusions.isEmpty())
+            actualTfVariant = Util.getRandom(possibleMobFusions, source.getEntity().getRandom());
+        else
+            actualTfVariant = sourceTfVariant;
 
-        else if (source.getSelfVariant() == null || !source.getSelfVariant().getFormId().equals(source.getTransfurVariant().getFormId())) {
-            if (source.getEntity() instanceof Player sourcePlayer) {
-                float beforeHealth = sourcePlayer.getHealth();
-                ProcessTransfur.setPlayerTransfurVariant(sourcePlayer, source.getTransfurVariant(), source.attack());
-                sourcePlayer.setHealth(beforeHealth);
-            }
-
-            else {
-                source.getEntity().discard();
-                source = IAbstractChangedEntity.forEntity(source.getTransfurVariant().getEntityType().create(source.getLevel()));
-                source.getLevel().addFreshEntity(source.getEntity());
-            }
-        }
+        source.replaceVariant(actualTfVariant); // Replace entity variant if tf variant is different
 
         source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
         var pos = target.position();
         source.getEntity().teleportTo(pos.x, pos.y, pos.z);
         source.getEntity().setYRot(target.getYRot());
         source.getEntity().setXRot(target.getXRot());
+
+        ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(target, actualTfVariant, source.getEntity());
 
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
@@ -668,6 +659,7 @@ public abstract class ChangedEntity extends Monster {
                     this.discard();
                 }
 
+                ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(entity, fusionVariant, source.getEntity());
                 return true;
             }
         }
@@ -692,6 +684,8 @@ public abstract class ChangedEntity extends Monster {
         if (ProcessTransfur.hasVariant(entity)) {
             if (!possibleMobFusions.isEmpty()) {
                 var mobFusionVariant = Util.getRandom(possibleMobFusions, random);
+
+                ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(entity, mobFusionVariant, source.getEntity());
 
                 if (underlyingPlayer != null) {
                     float beforeHealth = underlyingPlayer.getHealth();
@@ -774,17 +768,11 @@ public abstract class ChangedEntity extends Monster {
         if (entity instanceof LivingEntity livingEntity) {
             final var context = getAttackContext();
             damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
-            if (tryFuseWithTarget(livingEntity, context.source, damage))
+            if (tryFuseWithTarget(livingEntity, context.source, damage)) // Absorption or Fusion
                 return true;
 
             if (TransfurVariant.getEntityVariant(livingEntity) == null) {
-                if (livingEntity instanceof Player player) {
-                    ProcessTransfur.progressPlayerTransfur(player, damage, variant, context);
-                    return true;
-                } else if (livingEntity.getType().is(ChangedTags.EntityTypes.HUMANOIDS)) {
-                    ProcessTransfur.progressTransfur(livingEntity, damage, variant, context);
-                    return true;
-                }
+                ProcessTransfur.progressTransfur(livingEntity, damage, variant, context);
             }
         }
 

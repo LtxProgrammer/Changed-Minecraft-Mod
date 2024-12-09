@@ -1,13 +1,9 @@
 package net.ltxprogrammer.changed.mixin.client;
 
-import com.mojang.datafixers.util.Pair;
-import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
-import net.ltxprogrammer.changed.client.animations.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.client.animations.AnimationDefinition;
-import net.ltxprogrammer.changed.client.animations.AnimationDefinitions;
 import net.ltxprogrammer.changed.client.animations.AnimationInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,12 +78,5 @@ public class ClientLivingEntityMixin implements ClientLivingEntityExtender {
         animations.entrySet().stream().filter(entry -> entry.getValue().isDone()).collect(Collectors.toSet())
                 .forEach(completed -> clearAnimation(completed.getKey()));
         animations.values().forEach(AnimationInstance::tickTime);
-
-        if (StasisChamber.isEntityCaptured((LivingEntity)(Object)this)) {
-            if (getAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE) == null)
-                addAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE.createInstance((LivingEntity)(Object)this));
-        } else {
-            clearAnimation(AnimationCategory.IDLE, AnimationDefinitions.STASIS_IDLE);
-        }
     }
 }

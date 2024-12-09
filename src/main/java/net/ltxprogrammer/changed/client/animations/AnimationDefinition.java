@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,10 @@ public class AnimationDefinition {
 
     public float getLength() {
         return length;
+    }
+
+    public AnimationInstance createInstance(LivingEntity entity) {
+        return new AnimationInstance(this, entity);
     }
 
     public static class Builder {

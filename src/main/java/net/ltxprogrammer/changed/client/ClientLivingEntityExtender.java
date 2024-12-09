@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.client;
 
-import net.ltxprogrammer.changed.client.animations.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.client.animations.AnimationDefinition;
 import net.ltxprogrammer.changed.client.animations.AnimationInstance;
 
