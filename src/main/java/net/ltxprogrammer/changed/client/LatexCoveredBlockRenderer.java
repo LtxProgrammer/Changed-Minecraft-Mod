@@ -324,7 +324,11 @@ public abstract class LatexCoveredBlockRenderer {
                     model.getMaterials(this::getModel, new HashSet<>());
                 } catch (Exception ignored) {}
 
-                event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+                try {
+                    event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+                } catch (Exception ex) {
+                    LOGGER.warn("Unable to bake {}, skipping : {}", name, ex);
+                }
 
                 int currentIndex = index.incrementAndGet();
                 if (currentIndex % 50000 == 0) {
