@@ -164,7 +164,14 @@ public class AnimationInstance {
         animation.channels.keySet().forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
     }
 
+    private void playSounds(float timeO, float time) {
+        animation.soundEffects.forEach(soundEffect -> {
+            soundEffect.playIfInRange(this.hostEntity, timeO, time);
+        });
+    }
+
     public void setTime(float time) {
+        playSounds(this.timeO, time);
         this.time = time;
         this.timeO = time;
     }
@@ -172,6 +179,7 @@ public class AnimationInstance {
     public void tickTime() {
         this.timeO = this.time;
         this.time += 1.0f / 20.0f;
+        playSounds(this.timeO, this.time);
     }
 
     public boolean isDone() {

@@ -19,6 +19,7 @@ public class AnimationDefinition {
     public final ImmutableMap<Limb, List<AnimationChannel>> channels;
     public final ImmutableList<ResourceLocation> entityProps;
     public final ImmutableList<AnimationChannel> itemProps;
+    public final ImmutableList<TimedSoundEffect> soundEffects;
 
     public static final Codec<AnimationDefinition> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.FLOAT.fieldOf("length").forGetter(definition -> definition.length),
@@ -29,19 +30,22 @@ public class AnimationDefinition {
                     Codec.list(AnimationChannel.CODEC)
             ).fieldOf("channels").forGetter(definition -> definition.channels),
             Codec.list(ResourceLocation.CODEC).fieldOf("entities").orElse(List.of()).forGetter(definition -> definition.entityProps),
-            Codec.list(AnimationChannel.CODEC).fieldOf("items").orElse(List.of()).forGetter(definition -> definition.itemProps)
+            Codec.list(AnimationChannel.CODEC).fieldOf("items").orElse(List.of()).forGetter(definition -> definition.itemProps),
+            Codec.list(TimedSoundEffect.CODEC).fieldOf("soundEffects").orElse(List.of()).forGetter(definition -> definition.soundEffects)
     ).apply(builder, AnimationDefinition::new));
 
     public AnimationDefinition(float length, float transitionDuration, boolean looped,
                                Map<Limb, List<AnimationChannel>> channels,
                                List<ResourceLocation> entities,
-                               List<AnimationChannel> items) {
+                               List<AnimationChannel> items,
+                               List<TimedSoundEffect> soundEffects) {
         this.length = length;
         this.transitionDuration = transitionDuration;
         this.looped = looped;
         this.channels = ImmutableMap.copyOf(channels);
         this.entityProps = ImmutableList.copyOf(entities);
         this.itemProps = ImmutableList.copyOf(items);
+        this.soundEffects = ImmutableList.copyOf(soundEffects);
     }
 
     public float getLength() {
@@ -57,6 +61,7 @@ public class AnimationDefinition {
         private final Map<Limb, List<AnimationChannel>> animations = new HashMap<>();
         private final List<ResourceLocation> entities = new ArrayList<>();
         private final List<AnimationChannel> items = new ArrayList<>();
+        private final List<TimedSoundEffect> soundEffects = new ArrayList<>();
 
         private float transitionDuration = 1.25f;
         private boolean looped = false;
@@ -94,8 +99,13 @@ public class AnimationDefinition {
             return this;
         }
 
+        public Builder addSoundEffect(TimedSoundEffect soundEffect) {
+            soundEffects.add(soundEffect);
+            return this;
+        }
+
         public AnimationDefinition build() {
-            return new AnimationDefinition(length, transitionDuration, looped, animations, entities, items);
+            return new AnimationDefinition(length, transitionDuration, looped, animations, entities, items, soundEffects);
         }
     }
 }
