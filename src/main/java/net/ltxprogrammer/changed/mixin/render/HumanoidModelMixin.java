@@ -1,11 +1,8 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
-import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
-import net.ltxprogrammer.changed.client.animations.AnimationInstance;
 import net.ltxprogrammer.changed.client.animations.Limb;
-import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimations;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;

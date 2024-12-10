@@ -5,6 +5,8 @@ import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
+import net.ltxprogrammer.changed.entity.animation.AnimationParameters;
+import net.ltxprogrammer.changed.entity.animation.NoParameters;
 import net.ltxprogrammer.changed.util.Transition;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -26,25 +29,30 @@ public class AnimationInstance {
     private final Map<LivingEntity, AnimationInstance> entities = new HashMap<>(0);
     private float time = 0.0f;
     private float timeO = 0.0f;
+    @NotNull
     private final LivingEntity hostEntity;
+    @NotNull
+    private final AnimationParameters parameters;
     @Nullable
     private final LivingEntity parentEntity;
 
-    public AnimationInstance(AnimationDefinition animation, LivingEntity hostEntity) {
+    public AnimationInstance(AnimationDefinition animation, @NotNull LivingEntity hostEntity, @Nullable AnimationParameters parameters) {
         this.animation = animation;
         this.hostEntity = hostEntity;
+        this.parameters = parameters == null ? NoParameters.INSTANCE : parameters;
         this.parentEntity = null;
     }
 
-    private AnimationInstance(AnimationDefinition animation, LivingEntity hostEntity, LivingEntity parentEntity) {
+    private AnimationInstance(AnimationDefinition animation, @NotNull LivingEntity hostEntity, @Nullable AnimationParameters parameters, @Nullable LivingEntity parentEntity) {
         this.animation = animation;
         this.hostEntity = hostEntity;
+        this.parameters = parameters == null ? NoParameters.INSTANCE : parameters;
         this.parentEntity = parentEntity;
     }
 
     public void captureBaseline(HumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> {
+        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).filter(Limb::isVanillaPart).forEach(limb -> {
             baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
         });
     }
@@ -57,7 +65,7 @@ public class AnimationInstance {
 
     public void captureBaseline(AdvancedHumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().forEach(limb -> {
+        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).forEach(limb -> {
             baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
         });
     }
@@ -78,7 +86,7 @@ public class AnimationInstance {
             return;
 
         final ResourceLocation id = animation.entityProps.get(entities.size());
-        final AnimationInstance instance = new AnimationInstance(AnimationDefinitions.getAnimation(id), livingEntity, hostEntity);
+        final AnimationInstance instance = new AnimationInstance(AnimationDefinitions.getAnimation(id), livingEntity, null, hostEntity);
         entities.put(livingEntity, instance);
         ((ClientLivingEntityExtender)livingEntity).addAnimation(AnimationCategory.PROP, instance);
     }
@@ -128,14 +136,14 @@ public class AnimationInstance {
         final float in = Mth.clamp(Mth.map(time, 0.0f, animation.transitionDuration, 1.0f, 0.0f), 0.0f, 1.0f);
         final float out = Mth.clamp(Mth.map(time, animation.length - animation.transitionDuration, animation.length, 0.0f, 1.0f), 0.0f, 1.0f);
 
-        if (animation.looped)
+        if (parameters.shouldLoop(hostEntity, this.time))
             return Transition.easeInOutSine(Mth.clamp(in, 0.0f, 1.0f));
         else
             return Transition.easeInOutSine(Mth.clamp(in + out, 0.0f, 1.0f));
     }
 
     public float computeTime(float partialTicks) {
-        if (animation.looped)
+        if (parameters.shouldLoop(hostEntity, this.time))
             return Mth.positiveModulo(Mth.lerp(partialTicks, this.timeO, this.time), animation.length);
         else
             return Mth.lerp(partialTicks, this.timeO, this.time);
@@ -183,7 +191,9 @@ public class AnimationInstance {
     }
 
     public boolean isDone() {
-        if (animation.looped)
+        if (parameters.shouldEndAnimation(hostEntity, this.time))
+            return true;
+        if (parameters.shouldLoop(hostEntity, this.time))
             return false;
 
         return animation.channels.values().stream().flatMap(List::stream).allMatch(channel -> channel.isDone(time)) &&

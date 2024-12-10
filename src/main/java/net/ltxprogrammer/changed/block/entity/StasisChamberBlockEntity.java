@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.entity.SeatEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
+import net.ltxprogrammer.changed.entity.animation.StasisAnimationParameters;
 import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -117,7 +118,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         else if (entityHolder != null) {
             if (!level.isClientSide) {
                 entity.startRiding(entityHolder);
-                ChangedAnimationEvents.broadcastEntityAnimation(entity, ChangedAnimationEvents.STASIS_IDLE.get(), null);
+                ChangedAnimationEvents.broadcastEntityAnimation(entity, ChangedAnimationEvents.STASIS_IDLE.get(), StasisAnimationParameters.INSTANCE);
             }
             return true;
         }

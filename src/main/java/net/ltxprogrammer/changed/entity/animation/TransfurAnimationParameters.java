@@ -24,7 +24,7 @@ public class TransfurAnimationParameters implements AnimationParameters {
     private static final ResourceLocation VARIANT_FIELD = Changed.modResource("variant");
 
     @Override
-    public AnimationAssociation.Match apply(AnimationAssociation animationSetup) {
+    public AnimationAssociation.Match matchesAssociation(AnimationAssociation animationSetup) {
         return animationSetup.fieldEqualsResourceLocation(VARIANT_FIELD, variantId);
     }
 }

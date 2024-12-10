@@ -21,8 +21,8 @@ public class ChangedAnimationEvents {
     public static RegistryObject<AnimationEvent<TransfurAnimationParameters>> TRANSFUR_REPLICATE = register("transfur_replicate", TransfurAnimationParameters.CODEC);
     public static RegistryObject<AnimationEvent<TransfurAnimationParameters>> TRANSFUR_ABSORB = register("transfur_absorb", TransfurAnimationParameters.CODEC);
 
-    public static RegistryObject<AnimationEvent<NoParameters>> STASIS_IDLE = register("stasis_idle", AnimationEvent.NO_PARAMETERS);
-    public static RegistryObject<AnimationEvent<NoParameters>> SHOCK_STUN = register("shock_stun", AnimationEvent.NO_PARAMETERS);
+    public static RegistryObject<AnimationEvent<StasisAnimationParameters>> STASIS_IDLE = register("stasis_idle", StasisAnimationParameters.CODEC);
+    public static RegistryObject<AnimationEvent<StunAnimationParameters>> SHOCK_STUN = register("shock_stun", StunAnimationParameters.CODEC);
 
     private static <T extends AnimationParameters> RegistryObject<AnimationEvent<T>> register(String name, Codec<T> parameters) {
         return REGISTRY.register(name, () -> new AnimationEvent<>(parameters));

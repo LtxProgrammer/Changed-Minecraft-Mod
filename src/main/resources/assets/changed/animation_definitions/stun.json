@@ -1,7 +1,6 @@
 {
   "length": 1.5,
   "transitionDuration": 0.1,
-  "looped": true,
   "channels": {
     "head": [
       {

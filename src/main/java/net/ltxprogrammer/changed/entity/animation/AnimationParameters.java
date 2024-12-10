@@ -1,6 +1,15 @@
 package net.ltxprogrammer.changed.entity.animation;
 
-import java.util.function.Function;
+import net.minecraft.world.entity.LivingEntity;
 
-public interface AnimationParameters extends Function<AnimationAssociation, AnimationAssociation.Match> {
+public interface AnimationParameters {
+    AnimationAssociation.Match matchesAssociation(AnimationAssociation association);
+
+    default boolean shouldEndAnimation(LivingEntity livingEntity, float totalTime) {
+        return false;
+    }
+
+    default boolean shouldLoop(LivingEntity livingEntity, float totalTime) {
+        return false;
+    }
 }

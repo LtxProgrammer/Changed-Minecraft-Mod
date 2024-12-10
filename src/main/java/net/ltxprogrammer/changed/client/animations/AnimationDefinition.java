@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.ltxprogrammer.changed.entity.animation.AnimationParameters;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -15,7 +16,6 @@ import java.util.Map;
 public class AnimationDefinition {
     public final float length;
     public final float transitionDuration;
-    public final boolean looped;
     public final ImmutableMap<Limb, List<AnimationChannel>> channels;
     public final ImmutableList<ResourceLocation> entityProps;
     public final ImmutableList<AnimationChannel> itemProps;
@@ -24,7 +24,6 @@ public class AnimationDefinition {
     public static final Codec<AnimationDefinition> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.FLOAT.fieldOf("length").forGetter(definition -> definition.length),
             Codec.FLOAT.fieldOf("transitionDuration").forGetter(definition -> definition.transitionDuration),
-            Codec.BOOL.fieldOf("looped").orElse(false).forGetter(definition -> definition.looped),
             Codec.unboundedMap(
                     Limb.CODEC,
                     Codec.list(AnimationChannel.CODEC)
@@ -34,14 +33,13 @@ public class AnimationDefinition {
             Codec.list(TimedSoundEffect.CODEC).fieldOf("soundEffects").orElse(List.of()).forGetter(definition -> definition.soundEffects)
     ).apply(builder, AnimationDefinition::new));
 
-    public AnimationDefinition(float length, float transitionDuration, boolean looped,
+    public AnimationDefinition(float length, float transitionDuration,
                                Map<Limb, List<AnimationChannel>> channels,
                                List<ResourceLocation> entities,
                                List<AnimationChannel> items,
                                List<TimedSoundEffect> soundEffects) {
         this.length = length;
         this.transitionDuration = transitionDuration;
-        this.looped = looped;
         this.channels = ImmutableMap.copyOf(channels);
         this.entityProps = ImmutableList.copyOf(entities);
         this.itemProps = ImmutableList.copyOf(items);
@@ -52,8 +50,8 @@ public class AnimationDefinition {
         return length;
     }
 
-    public AnimationInstance createInstance(LivingEntity entity) {
-        return new AnimationInstance(this, entity);
+    public AnimationInstance createInstance(LivingEntity entity, AnimationParameters parameters) {
+        return new AnimationInstance(this, entity, parameters);
     }
 
     public static class Builder {
@@ -64,7 +62,6 @@ public class AnimationDefinition {
         private final List<TimedSoundEffect> soundEffects = new ArrayList<>();
 
         private float transitionDuration = 1.25f;
-        private boolean looped = false;
 
         private Builder(float length) {
             this.length = length;
@@ -76,11 +73,6 @@ public class AnimationDefinition {
 
         public Builder withTransition(float duration) {
             this.transitionDuration = duration;
-            return this;
-        }
-
-        public Builder looped(boolean value) {
-            this.looped = value;
             return this;
         }
 
@@ -105,7 +97,7 @@ public class AnimationDefinition {
         }
 
         public AnimationDefinition build() {
-            return new AnimationDefinition(length, transitionDuration, looped, animations, entities, items, soundEffects);
+            return new AnimationDefinition(length, transitionDuration, animations, entities, items, soundEffects);
         }
     }
 }

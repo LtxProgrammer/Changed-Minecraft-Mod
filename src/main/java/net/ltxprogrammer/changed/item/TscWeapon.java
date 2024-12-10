@@ -2,10 +2,9 @@ package net.ltxprogrammer.changed.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.ltxprogrammer.changed.init.ChangedEffects;
-import net.ltxprogrammer.changed.init.ChangedParticles;
-import net.ltxprogrammer.changed.init.ChangedSounds;
-import net.ltxprogrammer.changed.init.ChangedTabs;
+import net.ltxprogrammer.changed.entity.animation.StasisAnimationParameters;
+import net.ltxprogrammer.changed.entity.animation.StunAnimationParameters;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -67,5 +66,6 @@ public abstract class TscWeapon extends Item implements Vanishable {
     public void applyShock(LivingEntity enemy) {
         ChangedSounds.broadcastSound(enemy, ChangedSounds.PARALYZE1, 1, 1);
         enemy.addEffect(new MobEffectInstance(ChangedEffects.SHOCK, attackStun(), 0, false, false, true));
+        ChangedAnimationEvents.broadcastEntityAnimation(enemy, ChangedAnimationEvents.SHOCK_STUN.get(), StunAnimationParameters.INSTANCE);
     }
 }

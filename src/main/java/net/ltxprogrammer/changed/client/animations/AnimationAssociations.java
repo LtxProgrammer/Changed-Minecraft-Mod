@@ -61,13 +61,13 @@ public class AnimationAssociations extends SimplePreparableReloadListener<Immuta
     public static <T extends AnimationParameters> void dispatchAnimation(LivingEntity livingEntity, AnimationEvent<T> event, @Nullable AnimationCategory category, @Nullable T parameters,
                                                                          List<LivingEntity> propEntities, List<ItemStack> propItems) {
         final var eventAssoc = associations.get(event.getRegistryName()).stream()
-                .filter(assoc -> parameters == null || parameters.apply(assoc) != AnimationAssociation.Match.DENY)
+                .filter(assoc -> parameters == null || parameters.matchesAssociation(assoc) != AnimationAssociation.Match.DENY)
                 .toList();
 
         final var chosen = Util.getRandomSafe(eventAssoc, livingEntity.getRandom());
         chosen.map(AnimationAssociation::getName)
                 .map(AnimationDefinitions::getAnimation)
-                .map(definition -> definition.createInstance(livingEntity))
+                .map(definition -> definition.createInstance(livingEntity, parameters))
                 .ifPresent(instance -> {
                     propEntities.forEach(instance::addEntity);
                     propItems.forEach(instance::addItem);
