@@ -30,7 +30,6 @@ public interface IAbstractChangedEntity {
     @NotNull LivingEntity getEntity();
     @NotNull ChangedEntity getChangedEntity();
 
-    @NotNull TransfurContext attack();
     @NotNull BlockPos getBlockPosition();
     @Nullable TransfurVariant<?> getSelfVariant();
     @Nullable TransfurVariant<?> getTransfurVariant();
@@ -90,6 +89,13 @@ public interface IAbstractChangedEntity {
         return doesAbsorption;
     }
 
+    default @NotNull TransfurContext replicate() {
+        return TransfurContext.latexHazard(this, TransfurCause.GRAB_REPLICATE);
+    }
+    default @NotNull TransfurContext absorb() {
+        return TransfurContext.latexHazard(this, TransfurCause.GRAB_ABSORB);
+    }
+
     default <T extends AbstractAbilityInstance> Optional<T> getAbilityInstanceSafe(AbstractAbility<T> ability) {
         return Optional.ofNullable(getAbilityInstance(ability));
     }
@@ -107,11 +113,6 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull ChangedEntity getChangedEntity() {
                 return latex.get();
-            }
-
-            @Override
-            public @NotNull TransfurContext attack() {
-                return TransfurContext.playerLatexAttack(player);
             }
 
             @Override
@@ -289,11 +290,6 @@ public interface IAbstractChangedEntity {
             @Override
             public @NotNull ChangedEntity getChangedEntity() {
                 return cached.get();
-            }
-
-            @Override
-            public @NotNull TransfurContext attack() {
-                return TransfurContext.npcLatexAttack(cached.get());
             }
 
             @Override

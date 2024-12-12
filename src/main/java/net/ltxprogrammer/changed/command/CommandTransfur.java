@@ -37,10 +37,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLLoader;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -60,7 +57,7 @@ public class CommandTransfur {
     });
 
     public static final SuggestionProvider<CommandSourceStack> SUGGEST_TRANSFUR_CAUSE = SuggestionProviders.register(Changed.modResource("cause"), (p_121667_, p_121668_) -> {
-        var list = Arrays.stream(TransfurCause.values()).map(TransfurCause::name).map(String::toLowerCase);
+        var list = Arrays.stream(TransfurCause.values()).map(TransfurCause::getSerializedName);
         return SharedSuggestionProvider.suggest(list, p_121668_);
     });
 
@@ -140,14 +137,7 @@ public class CommandTransfur {
                 ));
     }
 
-    private static int transfurPlayer(CommandSourceStack source, ServerPlayer player, ResourceLocation form, String cause) throws CommandSyntaxException {
-        final TransfurCause transfurCause;
-        try {
-            transfurCause = TransfurCause.valueOf(cause.toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            throw NOT_CAUSE.create();
-        }
-
+    private static int transfurPlayer(CommandSourceStack source, ServerPlayer player, ResourceLocation form, TransfurCause cause) throws CommandSyntaxException {
         if (ChangedCompatibility.isPlayerUsedByOtherMod(player))
             throw USED_BY_OTHER_MOD.create();
 
@@ -156,7 +146,7 @@ public class CommandTransfur {
 
         if (TransfurVariant.getPublicTransfurVariants().map(TransfurVariant::getRegistryName).anyMatch(form::equals)) {
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(form), true,
-                    TransfurContext.hazard(transfurCause));
+                    TransfurContext.hazard(cause));
         }
         else if (form.equals(TransfurVariant.SPECIAL_LATEX)) {
             ResourceLocation key = Changed.modResource("special/form_" + player.getUUID());
@@ -164,7 +154,7 @@ public class CommandTransfur {
                 throw NO_SPECIAL_FORM.create();
 
             ProcessTransfur.transfur(player, source.getLevel(), ChangedRegistry.TRANSFUR_VARIANT.get().getValue(key), true,
-                    TransfurContext.hazard(transfurCause));
+                    TransfurContext.hazard(cause));
         }
         else
             throw NOT_LATEX_FORM.create();
@@ -172,16 +162,20 @@ public class CommandTransfur {
     }
 
     private static int transfurPlayers(CommandSourceStack source, Collection<ServerPlayer> players, ResourceLocation form, String cause) throws CommandSyntaxException {
+        final TransfurCause transfurCause = TransfurCause.fromSerial(cause).result().orElse(null);
+        if (transfurCause == null)
+            throw NOT_CAUSE.create();
+
         if (players.size() == 1) {
             final ServerPlayer player = players.stream().findFirst().get();
-            int success = transfurPlayer(source, player, form, cause);
+            int success = transfurPlayer(source, player, form, transfurCause);
             if (success > 0)
                 source.sendSuccess(new TranslatableComponent("command.changed.success.transfurred.one", player.getScoreboardName(), form), false);
             return success;
         } else if (players.size() > 1) {
             int success = players.stream().map(player -> {
                 try {
-                    return transfurPlayer(source, player, form, cause);
+                    return transfurPlayer(source, player, form, transfurCause);
                 } catch (CommandSyntaxException e) {
                     return 0;
                 }

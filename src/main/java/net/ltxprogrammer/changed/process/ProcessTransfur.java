@@ -726,6 +726,8 @@ public class ProcessTransfur {
                 if (instance == null)
                     return; // Event canceled
 
+                ChangedAnimationEvents.broadcastTransfurAnimation(player, instance.getParent(), context);
+
                 instance.willSurviveTransfur = keepConscious;
                 instance.transfurContext = context;
 

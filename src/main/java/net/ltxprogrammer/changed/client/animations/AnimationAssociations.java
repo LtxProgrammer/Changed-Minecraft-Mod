@@ -1,6 +1,8 @@
 package net.ltxprogrammer.changed.client.animations;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationAssociations extends SimplePreparableReloadListener<ImmutableMultimap<ResourceLocation, AnimationAssociation>> {
@@ -60,11 +63,17 @@ public class AnimationAssociations extends SimplePreparableReloadListener<Immuta
 
     public static <T extends AnimationParameters> void dispatchAnimation(LivingEntity livingEntity, AnimationEvent<T> event, @Nullable AnimationCategory category, @Nullable T parameters,
                                                                          List<LivingEntity> propEntities, List<ItemStack> propItems) {
-        final var eventAssoc = associations.get(event.getRegistryName()).stream()
-                .filter(assoc -> parameters == null || parameters.matchesAssociation(assoc) != AnimationAssociation.Match.DENY)
-                .toList();
+        final List<AnimationAssociation> allowed = new ArrayList<>();
+        final List<AnimationAssociation> defaulted = new ArrayList<>();
 
-        final var chosen = Util.getRandomSafe(eventAssoc, livingEntity.getRandom());
+        associations.get(event.getRegistryName()).forEach(association -> {
+            switch (parameters == null ? AnimationAssociation.Match.DEFAULT : parameters.matchesAssociation(association)) {
+                case ALLOW -> allowed.add(association);
+                case DEFAULT -> defaulted.add(association);
+            }
+        });
+
+        final var chosen = Util.getRandomSafe(allowed, livingEntity.getRandom()).or(() -> Util.getRandomSafe(defaulted, livingEntity.getRandom()));
         chosen.map(AnimationAssociation::getName)
                 .map(AnimationDefinitions::getAnimation)
                 .map(definition -> definition.createInstance(livingEntity, parameters))

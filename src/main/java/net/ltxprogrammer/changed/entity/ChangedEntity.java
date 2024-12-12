@@ -7,15 +7,12 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.entity.ai.LookAtPlayerButNotHostGoal;
 import net.ltxprogrammer.changed.entity.ai.UseAbilityGoal;
-import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
-import net.ltxprogrammer.changed.entity.animation.TransfurAnimationParameters;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.*;
-import net.ltxprogrammer.changed.network.packet.AnimationEventPacket;
 import net.ltxprogrammer.changed.network.syncher.ChangedEntityDataSerializers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -542,11 +539,18 @@ public abstract class ChangedEntity extends Monster {
         return false;
     }
 
-    public TransfurContext getAttackContext() {
+    public TransfurContext getReplicateContext() {
         if (underlyingPlayer == null)
-            return TransfurContext.npcLatexAttack(this);
+            return TransfurContext.npcLatexHazard(this, TransfurCause.GRAB_REPLICATE);
         else
-            return TransfurContext.playerLatexAttack(underlyingPlayer);
+            return TransfurContext.playerLatexHazard(underlyingPlayer, TransfurCause.GRAB_REPLICATE);
+    }
+
+    public TransfurContext getAbsorbContext() {
+        if (underlyingPlayer == null)
+            return TransfurContext.npcLatexHazard(this, TransfurCause.GRAB_ABSORB);
+        else
+            return TransfurContext.playerLatexHazard(underlyingPlayer, TransfurCause.GRAB_ABSORB);
     }
 
     public LivingEntity maybeGetUnderlying() {
@@ -567,14 +571,13 @@ public abstract class ChangedEntity extends Monster {
             return false;
 
         if (!ProcessTransfur.willTransfur(target, amount)) {
-            ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.attack());
+            ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.absorb());
             return false;
         }
 
         // Special scenario where source is NPC, and attacked is Player, transfur player with possible keepCon
         if (!source.isPlayer() && target instanceof Player &&
-                ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.attack())) {
-            ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(target, sourceTfVariant, source.getEntity());
+                ProcessTransfur.progressTransfur(target, amount, sourceTfVariant, source.absorb())) {
             source.getEntity().discard();
             return true;
         }
@@ -594,12 +597,12 @@ public abstract class ChangedEntity extends Monster {
         source.getEntity().setYRot(target.getYRot());
         source.getEntity().setXRot(target.getXRot());
 
-        ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(target, actualTfVariant, source.getEntity());
+        ChangedAnimationEvents.broadcastTransfurAnimation(target, actualTfVariant, source.absorb());
 
         // Should be one-hit absorption here
         if (target instanceof Player loserPlayer) {
             if (!ProcessTransfur.killPlayerByAbsorption(loserPlayer, source.getEntity())) { // Failed to kill player
-                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), source.attack(), 1.0f);
+                var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), source.absorb(), 1.0f);
                 instance.willSurviveTransfur = true;
 
                 ProcessTransfur.forceNearbyToRetarget(level, loserPlayer);
@@ -659,7 +662,7 @@ public abstract class ChangedEntity extends Monster {
                     this.discard();
                 }
 
-                ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(entity, fusionVariant, source.getEntity());
+                ChangedAnimationEvents.broadcastTransfurAnimation(entity, fusionVariant, source.absorb());
                 return true;
             }
         }
@@ -685,17 +688,17 @@ public abstract class ChangedEntity extends Monster {
             if (!possibleMobFusions.isEmpty()) {
                 var mobFusionVariant = Util.getRandom(possibleMobFusions, random);
 
-                ChangedAnimationEvents.broadcastTransfurAbsorptionAnimation(entity, mobFusionVariant, source.getEntity());
+                ChangedAnimationEvents.broadcastTransfurAnimation(entity, mobFusionVariant, source.absorb());
 
                 if (underlyingPlayer != null) {
                     float beforeHealth = underlyingPlayer.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAttackContext());
+                    ProcessTransfur.setPlayerTransfurVariant(underlyingPlayer, mobFusionVariant, getAbsorbContext());
                     underlyingPlayer.setHealth(beforeHealth);
                 }
 
                 else if (entity instanceof Player victimPlayer) {
                     float beforeHealth = entity.getHealth();
-                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAttackContext());
+                    ProcessTransfur.setPlayerTransfurVariant(victimPlayer, mobFusionVariant, getAbsorbContext());
                     entity.setHealth(beforeHealth);
                     this.discard();
                     return true;
@@ -766,7 +769,7 @@ public abstract class ChangedEntity extends Monster {
         TransfurVariant<?> variant = this.getTransfurVariant();
 
         if (entity instanceof LivingEntity livingEntity) {
-            final var context = getAttackContext();
+            final var context = getReplicateContext();
             damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
             if (tryFuseWithTarget(livingEntity, context.source, damage)) // Absorption or Fusion
                 return true;

@@ -17,21 +17,14 @@
       }
     ]
   },
-  "changed:transfur_replicate": {
+  "changed:transfur": {
     "category": "transfur",
     "animations": [
       {
         "name": "changed:transfur/placeholder",
-        "criteria": {}
-      }
-    ]
-  },
-  "changed:transfur_absorb": {
-    "category": "transfur",
-    "animations": [
-      {
-        "name": "changed:transfur/placeholder",
-        "criteria": {}
+        "criteria": {
+          "changed:cause": [ "grab_replicate", "grab_absorb" ]
+        }
       }
     ]
   }

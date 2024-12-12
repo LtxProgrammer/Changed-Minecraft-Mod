@@ -25,12 +25,14 @@ public class TransfurContext {
         return new TransfurContext(cause, source);
     }
 
+    @Deprecated
     public static TransfurContext playerLatexAttack(Player player) {
         return new TransfurContext(
                 player.getRandom().nextBoolean() ? TransfurCause.ATTACK_REPLICATE_LEFT : TransfurCause.ATTACK_REPLICATE_RIGHT, IAbstractChangedEntity.forPlayer(player)
         );
     }
 
+    @Deprecated
     public static TransfurContext npcLatexAttack(ChangedEntity latex) {
         return new TransfurContext(
                 latex.getRandom().nextBoolean() ? TransfurCause.ATTACK_REPLICATE_LEFT : TransfurCause.ATTACK_REPLICATE_RIGHT, IAbstractChangedEntity.forEntity(latex)

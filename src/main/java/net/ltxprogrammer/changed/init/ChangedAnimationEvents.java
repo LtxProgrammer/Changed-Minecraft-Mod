@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.init;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.entity.animation.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.network.packet.AnimationEventPacket;
@@ -18,8 +19,7 @@ import java.util.List;
 public class ChangedAnimationEvents {
     public static DeferredRegister<AnimationEvent<?>> REGISTRY = ChangedRegistry.ANIMATION_EVENTS.createDeferred(Changed.MODID);
 
-    public static RegistryObject<AnimationEvent<TransfurAnimationParameters>> TRANSFUR_REPLICATE = register("transfur_replicate", TransfurAnimationParameters.CODEC);
-    public static RegistryObject<AnimationEvent<TransfurAnimationParameters>> TRANSFUR_ABSORB = register("transfur_absorb", TransfurAnimationParameters.CODEC);
+    public static RegistryObject<AnimationEvent<TransfurAnimationParameters>> TRANSFUR = register("transfur", TransfurAnimationParameters.CODEC);
 
     public static RegistryObject<AnimationEvent<StasisAnimationParameters>> STASIS_IDLE = register("stasis_idle", StasisAnimationParameters.CODEC);
     public static RegistryObject<AnimationEvent<StunAnimationParameters>> SHOCK_STUN = register("shock_stun", StunAnimationParameters.CODEC);
@@ -42,20 +42,14 @@ public class ChangedAnimationEvents {
         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), packet);
     }
 
-    public static void broadcastTransfurReplicateAnimation(LivingEntity livingEntity, TransfurVariant<?> variant, @Nullable LivingEntity source) {
-        if (source != null)
+    public static void broadcastTransfurAnimation(LivingEntity livingEntity, TransfurVariant<?> variant, TransfurContext context) {
+        if (context.source != null)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
-                    AnimationEventPacket.Builder.of(livingEntity, TRANSFUR_REPLICATE.get(), AnimationCategory.TRANSFUR,
-                            new TransfurAnimationParameters(variant)).addEntity(source).build());
+                    AnimationEventPacket.Builder.of(livingEntity, TRANSFUR.get(), AnimationCategory.TRANSFUR,
+                            new TransfurAnimationParameters(variant, context.cause)).addEntity(context.source.getEntity()).build());
         else
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
-                    AnimationEventPacket.Builder.of(livingEntity, TRANSFUR_REPLICATE.get(), AnimationCategory.TRANSFUR,
-                            new TransfurAnimationParameters(variant)).build());
-    }
-
-    public static void broadcastTransfurAbsorptionAnimation(LivingEntity livingEntity, TransfurVariant<?> variant, @NotNull LivingEntity source) {
-        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
-                AnimationEventPacket.Builder.of(livingEntity, TRANSFUR_ABSORB.get(), AnimationCategory.TRANSFUR,
-                        new TransfurAnimationParameters(variant)).addEntity(source).build());
+                    AnimationEventPacket.Builder.of(livingEntity, TRANSFUR.get(), AnimationCategory.TRANSFUR,
+                            new TransfurAnimationParameters(variant, context.cause)).build());
     }
 }

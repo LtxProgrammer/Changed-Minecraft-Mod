@@ -4,8 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class AnimationAssociation {
     private final AnimationCategory category;
@@ -50,6 +55,15 @@ public class AnimationAssociation {
         return Optional.ofNullable(criteria.get(field.toString()));
     }
 
+    private Optional<Stream<JsonElement>> getFieldSet(ResourceLocation field) {
+        return Optional.ofNullable(criteria.get(field.toString()))
+                .map(element -> {
+                    if (element.isJsonArray())
+                        return StreamSupport.stream(element.getAsJsonArray().spliterator(), false);
+                    return Stream.of(element);
+                });
+    }
+
     public Match fieldEqualsResourceLocation(ResourceLocation field, ResourceLocation value) {
         return getField(field)
                 .map(JsonElement::getAsString)
@@ -63,6 +77,20 @@ public class AnimationAssociation {
         return getField(field)
                 .map(JsonElement::getAsString)
                 .map(value::equals)
+                .map(Match::fromBoolean)
+                .orElse(Match.DEFAULT);
+    }
+
+    public Match fieldContainsResourceLocation(ResourceLocation field, ResourceLocation value) {
+        return getFieldSet(field)
+                .map(stream -> stream.map(JsonElement::getAsString).map(ResourceLocation::tryParse).anyMatch(value::equals))
+                .map(Match::fromBoolean)
+                .orElse(Match.DEFAULT);
+    }
+
+    public Match fieldContainsString(ResourceLocation field, String value) {
+        return getFieldSet(field)
+                .map(stream -> stream.map(JsonElement::getAsString).anyMatch(value::equals))
                 .map(Match::fromBoolean)
                 .orElse(Match.DEFAULT);
     }
