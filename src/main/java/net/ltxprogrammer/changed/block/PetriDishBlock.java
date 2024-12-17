@@ -14,6 +14,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class PetriDishBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final VoxelShape ONE_AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 1.0D, 10.0D);
+    public static final VoxelShape SHAPE = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 1.0D, 10.0D);
 
     public PetriDishBlock(Properties properties) {
         super(properties.dynamicShape());
@@ -46,6 +47,16 @@ public class PetriDishBlock extends Block implements SimpleWaterloggedBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(WATERLOGGED);
+    }
+
+    @Override
+    public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block source, BlockPos sourcePos, boolean simulate) {
+        super.neighborChanged(blockState, level, blockPos, source, sourcePos, simulate);
+        if (!blockState.canSurvive(level, blockPos)) {
+            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+            dropResources(blockState, level, blockPos, blockentity);
+            level.removeBlock(blockPos, false);
+        }
     }
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
@@ -70,7 +81,7 @@ public class PetriDishBlock extends Block implements SimpleWaterloggedBlock {
 
     public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
         Vec3 vec3 = state.getOffset(level, pos);
-        return ONE_AABB.move(vec3.x, vec3.y, vec3.z);
+        return SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
 
     public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
