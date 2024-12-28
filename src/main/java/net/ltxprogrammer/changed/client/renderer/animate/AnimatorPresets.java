@@ -880,6 +880,24 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeAbdomenArmor(ModelPart abdomen, ModelPart lowerAbdomen,
+                                                                                                                                   ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints));
+        };
+    }
+
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeUpperBodyArmor(ModelPart head, ModelPart torso,
+                                                                                                                                     ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkHeadInitAnimator<>(head))
+                    .addAnimator(new SharkHeadSwimAnimator<>(head))
+                    .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
+        };
+    }
+
     public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessShark(ModelPart head, ModelPart torso,
                                                                                                                ModelPart leftArm, ModelPart rightArm,
                                                                                                                ModelPart abdomen, ModelPart lowerAbdomen,

@@ -224,7 +224,7 @@ public class ChangedEntities {
             EntityType.Builder.of(LatexSiren::new, ChangedMobCategories.AQUATIC).clientTrackingRange(10).sized(0.7F, 1.58625F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.IN_WATER, LatexSiren::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexSnake>> LATEX_SNAKE = registerSpawning("latex_snake", 0xFFFFFF, 0x7E7E7E,
-            EntityType.Builder.of(LatexSnake::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            EntityType.Builder.of(LatexSnake::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.64F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexSnake::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexMimicPlant>> LATEX_MIMIC_PLANT = registerSpawning("latex_mimic_plant", 0x446d5d, 0x729c6a,
             EntityType.Builder.of(LatexMimicPlant::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
