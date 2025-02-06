@@ -29,20 +29,28 @@ public class ChangedAnimationEvents {
     }
 
     public static <T extends AnimationParameters> void broadcastEntityAnimation(LivingEntity livingEntity, AnimationEvent<T> event, @Nullable T parameters) {
+        if (livingEntity.level.isClientSide) return; // Should only be called on the server
+
         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
                 new AnimationEventPacket<>(livingEntity.getId(), event, null, parameters, IntList.of(), List.of()));
     }
 
     public static <T extends AnimationParameters> void broadcastEntityAnimation(LivingEntity livingEntity, AnimationEvent<T> event, AnimationCategory category, @Nullable T parameters) {
+        if (livingEntity.level.isClientSide) return; // Should only be called on the server
+
         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
                 new AnimationEventPacket<>(livingEntity.getId(), event, category, parameters, IntList.of(), List.of()));
     }
 
     public static <T extends AnimationParameters> void broadcastEntityAnimation(LivingEntity livingEntity, AnimationEventPacket<T> packet) {
+        if (livingEntity.level.isClientSide) return; // Should only be called on the server
+
         Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), packet);
     }
 
     public static void broadcastTransfurAnimation(LivingEntity livingEntity, TransfurVariant<?> variant, TransfurContext context) {
+        if (livingEntity.level.isClientSide) return; // Should only be called on the server
+
         if (context.source != null)
             Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
                     AnimationEventPacket.Builder.of(livingEntity, TRANSFUR.get(), AnimationCategory.TRANSFUR,
