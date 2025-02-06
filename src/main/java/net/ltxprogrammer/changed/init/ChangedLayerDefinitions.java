@@ -120,7 +120,6 @@ public class ChangedLayerDefinitions {
         ArmorNoneModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorNoTailModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
-        ArmorSnakeAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorHeadlessKnightModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexAlienModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
 
@@ -134,6 +133,8 @@ public class ChangedLayerDefinitions {
         ArmorMermaidSharkUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorSirenUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorSirenAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorSnakeUpperBodyModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorSnakeAbdomenModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexBeeModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexDeerModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleCatModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);

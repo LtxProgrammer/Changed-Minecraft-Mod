@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,10 +16,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,6 +26,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
@@ -38,9 +38,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
+public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
-
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
     public static final VoxelShape SHAPE_STEM = Block.box(7.5D, 4.0D, 7.5D, 8.5D, 25.0D, 8.5D);
     public static final VoxelShape SHAPE_TOP = Block.box(2.5D, 25.0D, 7.5D, 13.5D, 30.0D, 8.5D);
@@ -48,7 +48,7 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
 
     public BedsideIVRack() {
         super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).dynamicShape().strength(3.0F, 5.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never));
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(FULL, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false).setValue(FULL, false));
     }
 
     @Override
@@ -62,23 +62,31 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_52863_) {
-        BlockPos blockpos = p_52863_.getClickedPos();
-        Level level = p_52863_.getLevel();
-        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(p_52863_) ? super.getStateForPlacement(p_52863_) : null;
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        FluidState fluidState = level.getFluidState(pos);
+        if (pos.getY() < level.getHeight() - 1) {
+            if (level.getBlockState(pos.above()).canBeReplaced(context)) {
+                return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())
+                        .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+            }
+        }
+        return null;
     }
 
-    public void setPlacedBy(Level p_52872_, BlockPos p_52873_, BlockState p_52874_, LivingEntity p_52875_, ItemStack p_52876_) {
-        BlockPos blockpos = p_52873_.above();
-        p_52872_.setBlock(blockpos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(FACING, p_52874_.getValue(FACING)), 3);
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack) {
+        BlockPos blockpos = pos.above();
+        level.setBlock(blockpos, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(FACING, state.getValue(FACING)), 3);
     }
 
-    public boolean canSurvive(BlockState p_52887_, LevelReader p_52888_, BlockPos p_52889_) {
-        if (p_52887_.getValue(HALF) != DoubleBlockHalf.UPPER) {
-            return super.canSurvive(p_52887_, p_52888_, p_52889_);
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        if (state.getValue(HALF) != DoubleBlockHalf.UPPER) {
+            return super.canSurvive(state, level, pos);
         } else {
-            BlockState blockstate = p_52888_.getBlockState(p_52889_.below());
-            if (p_52887_.getBlock() != this) return super.canSurvive(p_52887_, p_52888_, p_52889_); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            BlockState blockstate = level.getBlockState(pos.below());
+            if (state.getBlock() != this) return super.canSurvive(state, level, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
     }
@@ -91,6 +99,39 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
         return PushReaction.BLOCK;
+    }
+
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> state) {
+        super.createBlockStateDefinition(state);
+        state.add(FULL, WATERLOGGED);
+    }
+
+    public BlockState updateShape(BlockState state, Direction direction, BlockState dState, LevelAccessor level, BlockPos pos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
+        if (isDoubleBlock(state)) {
+            DoubleBlockHalf half = state.getValue(HALF);
+            if ((direction.getAxis() != Direction.Axis.Y) || ((half == DoubleBlockHalf.LOWER) != (direction == Direction.UP)) || ((dState.getBlock() == this) && (dState.getValue(HALF) != half))) {
+                if ((half != DoubleBlockHalf.LOWER) || (direction != Direction.DOWN) || state.canSurvive(level, pos)) {
+                    return state;
+                }
+            }
+
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        return state;
+    }
+
+    private boolean isDoubleBlock(BlockState state) {
+        return state.hasProperty(HALF);
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
@@ -126,11 +167,6 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock {
             }
         }
 
-    }
-
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
-        super.createBlockStateDefinition(p_52901_);
-        p_52901_.add(FULL);
     }
 
     @Override

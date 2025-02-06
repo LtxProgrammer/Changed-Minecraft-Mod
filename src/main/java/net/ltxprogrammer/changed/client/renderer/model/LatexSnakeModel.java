@@ -74,9 +74,9 @@ public class LatexSnakeModel extends AdvancedHumanoidModel<LatexSnake> implement
 
         PartDefinition Abdomen = partdefinition.addOrReplaceChild("Abdomen", CubeListBuilder.create().texOffs(16, 36).addBox(-4.0F, 0.5F, -2.0F, 8.0F, 4.0F, 4.0F, new CubeDeformation(0.15F)), PartPose.offset(0.0F, 8.0F, 0.0F));
 
-        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(24, 16).addBox(-4.0F, 0.75F, -2.5F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.35F)), PartPose.offset(0.0F, 3.75F, 0.5F));
+        PartDefinition LowerAbdomen = Abdomen.addOrReplaceChild("LowerAbdomen", CubeListBuilder.create().texOffs(24, 16).addBox(-4.0F, 0.75F, -2.5F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.35F)), PartPose.offset(0.0F, 2.75F, 0.5F));
 
-        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(24, 26).addBox(-4.0F, 0.25F, -3.0F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 6.5F, 0.5F));
+        PartDefinition Tail = LowerAbdomen.addOrReplaceChild("Tail", CubeListBuilder.create().texOffs(24, 26).addBox(-4.0F, 0.25F, -3.0F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 5.5F, 0.5F));
 
         PartDefinition TailPrimary = Tail.addOrReplaceChild("TailPrimary", CubeListBuilder.create().texOffs(40, 36).addBox(-3.5F, 0.25F, -3.0F, 7.0F, 5.0F, 4.0F, new CubeDeformation(0.15F)), PartPose.offset(0.0F, 6.0F, 0.0F));
 
@@ -88,9 +88,9 @@ public class LatexSnakeModel extends AdvancedHumanoidModel<LatexSnake> implement
 
         PartDefinition TailQuintary = TailQuaternary.addOrReplaceChild("TailQuintary", CubeListBuilder.create(), PartPose.offset(0.0F, 4.5F, 0.0F));
 
-        PartDefinition Base_r1 = TailQuintary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(16, 29).addBox(2.0F, 1.5F, 0.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.15F)), PartPose.offsetAndRotation(-3.0F, -1.05F, -2.0F, 0.0F, 0.0F, 0.0F));
+        PartDefinition Base_r1 = TailQuintary.addOrReplaceChild("Base_r1", CubeListBuilder.create().texOffs(16, 29).addBox(2.0F, 1.5F, 0.0F, 2.0F, 4.0F, 2.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-3.0F, -1.05F, -2.0F, 0.0F, 0.0F, 0.0F));
 
-        return LayerDefinition.create(meshdefinition, 64, 64);
+        return LayerDefinition.create(meshdefinition, 96, 96);
     }
 
     @Override

@@ -30,7 +30,8 @@ import java.util.function.BiFunction;
 public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends ChangedEntity> extends RenderLayer<T, M> {
     public enum HeadShape implements StringRepresentable {
         NORMAL("normal", 0, 0, -4, -8, -4, 8, 8, 8, new CubeDeformation(0.0025f)),
-        PUP("pup", 2, 2, -4, -4, -6, 8, 8, 6, new CubeDeformation(0.0025f));
+        PUP("pup", 2, 2, -4, -4, -6, 8, 8, 6, new CubeDeformation(0.0025f)),
+        PUP_P1("pup_p1", 2, 2, -4, -4, -7, 8, 8, 6, new CubeDeformation(0.0025f));
         final String serializedName;
         final int texX, texY;
         final int x, y, z, width, height, depth;
