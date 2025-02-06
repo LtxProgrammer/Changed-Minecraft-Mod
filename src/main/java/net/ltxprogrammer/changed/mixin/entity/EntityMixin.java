@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
@@ -168,5 +169,15 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 cir.setReturnValue(true);
             }
         }
+    }
+
+    @Inject(method = "isAttackable", at = @At("RETURN"), cancellable = true)
+    public void ignoreGrabbedEntities(CallbackInfoReturnable<Boolean> cir) {
+        if ((Entity)(Object)this instanceof LivingEntity livingEntity)
+            GrabEntityAbility.getGrabberSafe(livingEntity).flatMap(grabber -> grabber.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get()))
+                    .ifPresent(ability -> {
+                        if (ability.suited)
+                            cir.setReturnValue(false);
+                    });
     }
 }

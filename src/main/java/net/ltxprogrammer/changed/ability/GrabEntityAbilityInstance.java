@@ -139,7 +139,7 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
         if (entity instanceof Player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
-        } else {
+        } else if (!entity.getLevel().isClientSide) {
             this.grabbedEntity.setInvisible(wasGrabbedInvisible);
             this.grabbedEntity.setSilent(wasGrabbedSilent);
         }
