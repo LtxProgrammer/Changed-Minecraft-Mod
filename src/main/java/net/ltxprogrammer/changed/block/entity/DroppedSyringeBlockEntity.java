@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class DroppedSyringeBlockEntity extends BlockEntity {
-    @NotNull
     private TransfurVariant<?> variant = ChangedTransfurVariants.FALLBACK_VARIANT.get();
 
     public DroppedSyringeBlockEntity(BlockPos pos, BlockState state) {
@@ -22,11 +21,14 @@ public class DroppedSyringeBlockEntity extends BlockEntity {
     }
 
     public ItemStack getSyringe() {
-        return Syringe.setUnpureVariant(new ItemStack(ChangedItems.LATEX_SYRINGE.get()), variant.getFormId());
+        return Syringe.setUnpureVariant(new ItemStack(ChangedItems.LATEX_SYRINGE.get()), getVariant().getFormId());
     }
 
     public @NotNull TransfurVariant<?> getVariant() {
-        return variant;
+        if (variant != null)
+            return variant;
+        else
+            return ChangedTransfurVariants.FALLBACK_VARIANT.get();
     }
 
     public void setVariant(TransfurVariant<?> variant) {
@@ -34,13 +36,13 @@ public class DroppedSyringeBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putInt("variant", ChangedRegistry.TRANSFUR_VARIANT.get().getID(variant));
+        tag.putInt("variant", ChangedRegistry.TRANSFUR_VARIANT.get().getID(getVariant()));
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(tag.getInt("variant"));
     }
