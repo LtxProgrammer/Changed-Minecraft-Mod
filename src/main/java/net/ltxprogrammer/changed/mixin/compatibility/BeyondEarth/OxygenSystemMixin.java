@@ -25,7 +25,7 @@ public abstract class OxygenSystemMixin {
         });
     }
 
-    @Inject(method = "canBreatheWithoutSuit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"), cancellable = true)
+    @Inject(method = "canBreatheWithoutSuit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z", remap = true), cancellable = true)
     private static void isInTransfurGas(LivingEntity entity, boolean applyChunkO2, CallbackInfoReturnable<OxygenSystem.AirCheckResult> callback) {
         TransfurGas.validEntityInGas(entity).ifPresent(gas -> callback.setReturnValue(IN_FLUID));
     }
