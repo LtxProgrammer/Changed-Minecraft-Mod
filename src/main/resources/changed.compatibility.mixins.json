@@ -16,6 +16,7 @@
     "CGM.LatexItemInHandLayerMixin",
     "ChiselsAndBits.ChiselRenderTypeMixin",
     "CTM.BlockRenderLayerMixin",
+    "DoABarrelRoll.AdvancedHumanoidRendererMixin",
     "FirstPerson.FirstPersonBaseMixin",
     "Forgery.LatexHumanoidArmorLayerMixin",
     "HardcoreRevival.KnockoutHandlerMixin",
