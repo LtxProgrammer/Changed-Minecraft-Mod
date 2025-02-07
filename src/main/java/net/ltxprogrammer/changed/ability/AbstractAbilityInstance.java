@@ -7,12 +7,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Supplier;
 
 public abstract class AbstractAbilityInstance {
@@ -116,5 +119,13 @@ public abstract class AbstractAbilityInstance {
 
     public AbstractAbility.Controller getController() {
         return controller;
+    }
+
+    public Component getAbilityName() {
+        return ability.getAbilityName(entity);
+    }
+
+    public Collection<Component> getAbilityDescription() {
+        return ability.getAbilityDescription(entity);
     }
 }

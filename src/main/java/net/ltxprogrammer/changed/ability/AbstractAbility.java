@@ -16,6 +16,8 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -232,8 +234,12 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
         return null;
     }
 
-    public TranslatableComponent getDisplayName(IAbstractChangedEntity entity) {
+    public Component getAbilityName(IAbstractChangedEntity entity) {
         return new TranslatableComponent("ability." + getRegistryName().toString().replace(':', '.'));
+    }
+
+    public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
+        return Collections.emptyList();
     }
 
     public UseType getUseType(IAbstractChangedEntity entity) { return UseType.INSTANT; }
