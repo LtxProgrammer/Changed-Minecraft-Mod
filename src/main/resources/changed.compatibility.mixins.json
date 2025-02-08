@@ -17,6 +17,7 @@
     "ChiselsAndBits.ChiselRenderTypeMixin",
     "CTM.BlockRenderLayerMixin",
     "DoABarrelRoll.AdvancedHumanoidRendererMixin",
+    "EMF.AdvancedHumanoidModelMixin",
     "FirstPerson.FirstPersonBaseMixin",
     "Forgery.LatexHumanoidArmorLayerMixin",
     "HardcoreRevival.KnockoutHandlerMixin",

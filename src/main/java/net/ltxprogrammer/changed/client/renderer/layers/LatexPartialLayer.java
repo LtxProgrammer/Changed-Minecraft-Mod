@@ -52,7 +52,7 @@ public class LatexPartialLayer<T extends ChangedEntity, M extends AdvancedHumano
 
             this.prepareMobModel(entity, partialTicks);
             this.model.getAnimator().setupVariables(entity, partialTicks);
-            this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            this.model.getAnimator().applyPropertyModel(this.getParentModel());
             this.model.renderToBuffer(pose, vertexconsumer, packedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
