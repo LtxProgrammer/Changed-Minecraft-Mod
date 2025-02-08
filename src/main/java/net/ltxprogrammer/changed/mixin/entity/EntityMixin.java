@@ -100,12 +100,10 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             if (Math.abs(z) < 0.0001f) return;
             if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
                 return; // Ignore
+            double yRot = Math.toRadians(player.yBodyRot);
 
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
-            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
-                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
-            callback.setReturnValue(vec.add(look.x() * z, 0.0f, look.z() * z));
+            callback.setReturnValue(vec.add(-Math.sin(yRot) * z, 0.0f, Math.cos(yRot) * z));
         });
     }
 
@@ -116,14 +114,11 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
             if (Math.abs(z) < 0.0001f) return;
             if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
                 return; // Ignore
+            double yRot = Math.toRadians(Mth.rotLerp(v, player.yBodyRotO, player.yBodyRot));
 
-            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
-                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
-
-            double d0 = Mth.lerp(v, player.xo + look.x() * z, player.getX() + look.x() * z);
+            double d0 = Mth.lerp(v, player.xo + -Math.sin(yRot) * z, player.getX() + -Math.sin(yRot) * z);
             double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
-            double d2 = Mth.lerp(v, player.zo + look.z() * z, player.getZ() + look.z() * z);
+            double d2 = Mth.lerp(v, player.zo + Math.cos(yRot) * z, player.getZ() + Math.cos(yRot) * z);
             callback.setReturnValue(new Vec3(d0, d1, d2));
         });
     }

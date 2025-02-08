@@ -132,12 +132,8 @@ public abstract class CameraMixin implements CameraExtender {
         if (self.getEntity() instanceof Player player && !player.isSpectator()) {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 float z = Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset);
-                var look = self.getLookVector().copy();
-                if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
-                    look = self.getUpVector().copy();
-                look.mul(1.0f, 0.0f, 1.0f);
-                look.normalize();
-                var newVec = vec.add(look.x() * z, 0.0f, look.z() * z);
+                double yRot = Math.toRadians(Mth.rotLerp(Minecraft.getInstance().getDeltaFrameTime(), player.yBodyRotO, player.yBodyRot));
+                var newVec = vec.add(-Math.sin(yRot) * z, 0.0f, Math.cos(yRot) * z);
                 self.position = newVec;
                 self.blockPosition.set(newVec.x, newVec.y, newVec.z);
                 callbackInfo.cancel();
