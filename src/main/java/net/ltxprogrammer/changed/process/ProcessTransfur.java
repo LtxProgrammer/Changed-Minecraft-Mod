@@ -276,11 +276,15 @@ public class ProcessTransfur {
 
     public static class KeepConsciousEvent extends Event {
         public final Player player;
+        public final TransfurVariant<?> variant;
+        public final TransfurContext context;
         public final boolean keepConscious;
         public boolean shouldKeepConscious;
 
-        public KeepConsciousEvent(Player player, boolean keepConscious) {
+        public KeepConsciousEvent(Player player, TransfurVariant<?> variant, TransfurContext context, boolean keepConscious) {
             this.player = player;
+            this.variant = variant;
+            this.context = context;
             this.keepConscious = keepConscious;
             this.shouldKeepConscious = keepConscious;
         }
@@ -698,7 +702,7 @@ public class ProcessTransfur {
             if (player.isCreative())
                 keepConscious = true;
             else {
-                KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
+                KeepConsciousEvent event = new KeepConsciousEvent(player, variant, context, keepConscious);
                 Changed.postModEvent(event);
                 keepConscious = event.shouldKeepConscious;
             }
