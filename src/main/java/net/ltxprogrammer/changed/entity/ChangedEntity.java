@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -760,6 +761,11 @@ public abstract class ChangedEntity extends Monster {
 
         if (entity instanceof LivingEntity livingEntity) {
             final var context = getAttackContext();
+
+            ProcessTransfur.TransfurAttackEvent event = new ProcessTransfur.TransfurAttackEvent(livingEntity, variant, context);
+            if (Changed.postModEvent(event))
+                return false;
+
             damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
             if (tryFuseWithTarget(livingEntity, context.source, damage))
                 return true;
