@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
@@ -9,6 +11,7 @@ import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,6 +23,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
@@ -246,10 +250,17 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
 
         this.shapedHeads.get(headShape).copyFrom(this.getParentModel().getHead());
 
+        var eyePos = new Vector4f(new Vector3f(entity.getEyePosition()));
+        eyePos.transform(pose.last().pose());
+        eyePos.perspectiveDivide();
+        float distance = Mth.sqrt(eyePos.dot(new Vector4f(eyePos.x(), eyePos.y(), eyePos.z(), 0.0f)));
+        float zFightOffset = Mth.clamp(Mth.map(distance, 60.0f, 100.0f, 0.0f, 0.05f), 0.0f, 0.05f);
+
         pose.pushPose();
         if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
             modelInterface.scaleForHead(pose);
 
+        pose.scale(zFightOffset + 1.0f, zFightOffset + 1.0f, zFightOffset + 1.0f);
         scleraColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getSclera())), packedLight, overlay, data.color, data.alpha);
         });
