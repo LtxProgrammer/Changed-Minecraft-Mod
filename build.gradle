@@ -243,6 +243,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:entity-texture-features-fabric-568563:5275072") // Forge 1.18.2 v6.0
     compileOnly fg.deobf("curse.maven:entity-model-features-844662:5304245") // Forge 1.18.2 v2.0.2
 
+    compileOnly fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6069322") // Forge 1.18.2 v1.1.4-Hotfix
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

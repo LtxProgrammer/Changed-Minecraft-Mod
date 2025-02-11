@@ -21,6 +21,7 @@ public class TaurUpperBodyInitAnimator<T extends ChangedEntity, M extends Advanc
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
+        torso.zRot = 0.0F;
         rightArm.z = 0.0F;
         rightArm.x = -core.torsoWidth;
         leftArm.z = 0.0F;

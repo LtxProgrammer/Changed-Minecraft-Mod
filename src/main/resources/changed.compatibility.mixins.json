@@ -36,6 +36,7 @@
     "PresenceFootsteps.StateLookupMixin",
     "Rubidium.BlockRenderPassManagerMixin",
     "Rubidium.BlockRenderPassMixin",
+    "TaCZ.HumanoidAnimatorMixin",
     "Vivecraft.VRArmRendererMixin",
     "WATUT.HumanoidAnimatorMixin",
     "WATUT.PlayerStatusManagerClientMixin"
