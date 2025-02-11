@@ -32,8 +32,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
-    private boolean wasGrabbedSilent = false;
-    private boolean wasGrabbedInvisible = false;
     @Nullable
     public LivingEntity grabbedEntity = null;
     private int grabCooldown = 0;
@@ -139,9 +137,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
             Changed.PACKET_HANDLER.sendToServer(GrabEntityPacket.release(player, this.grabbedEntity));
         if (entity instanceof Player) {
             this.grabbedEntity.setDeltaMovement(Vec3.ZERO);
-        } else if (!entity.getLevel().isClientSide) {
-            this.grabbedEntity.setInvisible(wasGrabbedInvisible);
-            this.grabbedEntity.setSilent(wasGrabbedSilent);
         }
         this.grabbedEntity.noPhysics = false;
         this.grabbedEntity.resetFallDistance();
@@ -157,12 +152,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         getController().resetHoldTicks();
 
         ProcessTransfur.forceNearbyToRetarget(entity.level, entity);
-        if (!(entity instanceof Player)) {
-            wasGrabbedSilent = entity.isSilent();
-            wasGrabbedInvisible = entity.isInvisible();
-            entity.setSilent(true);
-            entity.setInvisible(true);
-        }
 
         if (this.grabbedEntity != entity)
             this.releaseEntity();
@@ -178,8 +167,6 @@ public class GrabEntityAbilityInstance extends AbstractAbilityInstance {
         if (this.grabbedEntity == entity) {
             this.suited = false;
             this.grabbedHasControl = false;
-            entity.setSilent(wasGrabbedSilent);
-            entity.setInvisible(wasGrabbedInvisible);
             //this.grabStrength = 1.0f;
             return;
         }

@@ -166,6 +166,19 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         }
     }
 
+    @Inject(method = "isSilent", at = @At("RETURN"), cancellable = true)
+    public void makeGrabbedEntityQuiet(CallbackInfoReturnable<Boolean> cir) {
+        if (this instanceof LivingEntityDataExtension ext) {
+            boolean shouldRender = AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                    .map(ability -> !(ability.suited && !ability.grabbedHasControl))
+                    .orElse(true);
+
+            if (!shouldRender) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
     @Inject(method = "isAttackable", at = @At("RETURN"), cancellable = true)
     public void ignoreGrabbedEntities(CallbackInfoReturnable<Boolean> cir) {
         if ((Entity)(Object)this instanceof LivingEntity livingEntity)
