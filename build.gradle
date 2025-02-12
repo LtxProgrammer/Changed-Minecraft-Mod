@@ -245,6 +245,8 @@ dependencies {
 
     compileOnly fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6069322") // Forge 1.18.2 v1.1.4-Hotfix
 
+    compileOnly fg.deobf("curse.maven:parcool-482378:6035542") // Forge 1.18.2 v3.3.1.0
+
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

@@ -982,7 +982,7 @@ public abstract class ChangedEntity extends Monster {
         this.tailDragAmountO = this.tailDragAmount;
 
         this.tailDragAmount *= 0.75F;
-        this.tailDragAmount -= (float) (Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F);
+        this.tailDragAmount -= (float) (Math.toRadians(Mth.wrapDegrees(this.yBodyRot - this.yBodyRotO)) * 0.35F);
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         simulatedSprings.forEach((direction, map) -> {

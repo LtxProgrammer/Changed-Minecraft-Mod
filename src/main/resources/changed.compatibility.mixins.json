@@ -27,6 +27,8 @@
     "NotEnoughAnimations.HumanoidAnimatorMixin",
     "NotEnoughAnimations.PetAnimationMixin",
     "Oculus.WorldRenderingPhaseMixin",
+    "Parcool.AdvancedHumanoidRendererMixin",
+    "Parcool.HumanoidAnimatorMixin",
     "Pehkui.ChangedEntityMixin",
     "Pehkui.ScaleTypeMixin",
     "PlayerAnimator.AdvancedHumanoidModelMixin",
