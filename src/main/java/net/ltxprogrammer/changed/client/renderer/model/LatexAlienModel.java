@@ -1,7 +1,4 @@
 package net.ltxprogrammer.changed.client.renderer.model;
-// Made with Blockbench 4.1.5
-// Exported for Minecraft version 1.17 with Mojang mappings
-// Paste this class into your mod and generate all required imports
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -41,7 +38,21 @@ public class LatexAlienModel extends AdvancedHumanoidModel<LatexAlien> implement
 		this.Tail = Torso.getChild("Tail");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		animator = HumanoidAnimator.of(this).addPreset(AnimatorPresets.wolfLikeOld(Head, Torso, LeftArm, RightArm, Tail, List.of(), LeftLeg, RightLeg));
+
+		var tailPrimary = Tail.getChild("TailPrimary");
+		var tailSecondary = tailPrimary.getChild("TailSecondary");
+		var tailTertiary = tailSecondary.getChild("TailTertiary");
+
+		var leftLowerLeg = LeftLeg.getChild("LeftLowerLeg");
+		var leftFoot = leftLowerLeg.getChild("LeftFoot");
+		var rightLowerLeg = RightLeg.getChild("RightLowerLeg");
+		var rightFoot = rightLowerLeg.getChild("RightFoot");
+
+		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
+				.addPreset(AnimatorPresets.dragonLike(
+						Head, Torso, LeftArm, RightArm,
+						Tail, List.of(tailPrimary, tailSecondary, tailTertiary),
+						LeftLeg, leftLowerLeg, leftFoot, leftFoot.getChild("LeftPad"), RightLeg, rightLowerLeg, rightFoot, rightFoot.getChild("RightPad")));
 	}
 
 	public static LayerDefinition createBodyLayer() {
