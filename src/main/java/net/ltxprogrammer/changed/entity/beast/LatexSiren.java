@@ -72,6 +72,11 @@ public class LatexSiren extends AbstractAquaticGenderedEntity {
         return super.isVisuallySwimming();
     }
 
+    @Override
+    public double getMyRidingOffset() {
+        return 0.02;
+    }
+
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#969696");
     }

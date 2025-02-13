@@ -60,7 +60,7 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
 
     @Override
     public double getMyRidingOffset() {
-        return -0.0625;
+        return -0.0125;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

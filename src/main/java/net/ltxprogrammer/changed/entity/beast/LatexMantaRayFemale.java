@@ -46,6 +46,11 @@ public class LatexMantaRayFemale extends AbstractLatexMantaRay {
     }
 
     @Override
+    public double getMyRidingOffset() {
+        return 0.02;
+    }
+
+    @Override
     public boolean isVisuallySwimming() {
         if (this.getUnderlyingPlayer() != null && this.getUnderlyingPlayer().isEyeInFluid(FluidTags.WATER))
             return true;
