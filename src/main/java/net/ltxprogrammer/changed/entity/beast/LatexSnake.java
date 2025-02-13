@@ -64,6 +64,11 @@ public class LatexSnake extends ChangedEntity {
     }
 
     @Override
+    public double getMyRidingOffset() {
+        return -0.1175;
+    }
+
+    @Override
     public @NotNull EntityShape getEntityShape() {
         return EntityShape.NAGA;
     }
