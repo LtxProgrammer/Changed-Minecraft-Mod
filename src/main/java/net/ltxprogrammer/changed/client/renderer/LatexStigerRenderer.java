@@ -17,7 +17,9 @@ public class LatexStigerRenderer extends AdvancedHumanoidRenderer<LatexStiger, L
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
-                .withSclera(Color3.WHITE).withIris(Color3.fromInt(0xe1517b)).build());
+                .withSclera(Color3.WHITE).build());
+        this.addLayer(AdditionalEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.WHITE).build(Changed.modResource("latex_stiger")));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 

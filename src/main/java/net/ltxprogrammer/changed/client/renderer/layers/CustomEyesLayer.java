@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -232,6 +233,11 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         this.shapedHeads.get(headShape).render(pose, buffer, packedLight, overlay, color.red(), color.green(), color.blue(), alpha);
     }
 
+    public static float getZFightingOffset(LivingEntity entity) {
+        float distance = (float)Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().distanceTo(entity.getEyePosition());
+        return Mth.clamp(Mth.map(distance, 8.0f, 50.0f, 0.0f, 0.05f), 0.0f, 0.05f);
+    }
+
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity.isInvisible())
@@ -249,12 +255,7 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 
         this.shapedHeads.get(headShape).copyFrom(this.getParentModel().getHead());
-
-        var eyePos = new Vector4f(new Vector3f(entity.getEyePosition()));
-        eyePos.transform(pose.last().pose());
-        eyePos.perspectiveDivide();
-        float distance = Mth.sqrt(eyePos.dot(new Vector4f(eyePos.x(), eyePos.y(), eyePos.z(), 0.0f)));
-        float zFightOffset = Mth.clamp(Mth.map(distance, 60.0f, 100.0f, 0.0f, 0.05f), 0.0f, 0.05f);
+        float zFightOffset = getZFightingOffset(entity);
 
         pose.pushPose();
         if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)

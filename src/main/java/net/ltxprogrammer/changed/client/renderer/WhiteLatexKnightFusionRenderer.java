@@ -14,10 +14,13 @@ public class WhiteLatexKnightFusionRenderer extends AdvancedHumanoidRenderer<Whi
         super(context, new WhiteLatexKnightFusionModel(context.bakeLayer(WhiteLatexKnightFusionModel.LAYER_LOCATION)),
                 ArmorLatexMaleWolfModel::new, ArmorLatexMaleWolfModel.INNER_ARMOR, ArmorLatexMaleWolfModel.OUTER_ARMOR, 0.5f);
         this.addLayer(new LatexParticlesLayer<>(this, getModel()));
-        this.addLayer(new AdditionalEyesLayer<>(this, context.getModelSet(), Changed.modResource("white_latex_knight_fusion")));
         this.addLayer(TransfurCapeLayer.normalCape(this, context.getModelSet()));
         this.addLayer(CustomEyesLayer.builder(this, context.getModelSet())
                 .withSclera(Color3.fromInt(0x000000)).build());
+        this.addLayer(AdditionalEyesLayer.builder(this, context.getModelSet())
+                .withSclera(Color3.fromInt(0x000000))
+                .withIris(Color3.fromInt(0xdfdfdf))
+                .build(Changed.modResource("white_latex_knight_fusion")));
         this.addLayer(GasMaskLayer.forSnouted(this, context.getModelSet()));
     }
 
