@@ -69,7 +69,7 @@ public class CommandTransfur {
                                 .executes(context -> transfurPlayers(context.getSource(),
                                         EntityArgument.getPlayers(context, "players"),
                                         ResourceLocationArgument.getId(context, "form"),
-                                        TransfurCause.GRAB_REPLICATE.name()))
+                                        TransfurCause.GRAB_REPLICATE.getSerializedName()))
                                 .then(Commands.argument("cause", StringArgumentType.string()).suggests(SUGGEST_TRANSFUR_CAUSE)
                                         .executes(context -> transfurPlayers(context.getSource(),
                                                 EntityArgument.getPlayers(context, "players"),
