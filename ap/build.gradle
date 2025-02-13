@@ -5,6 +5,10 @@ plugins {
 group = "net.ltxprogrammer.changed"
 version = "v1.0"
 
+// Should be the same as the primary mod
+java.toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
 repositories {
     mavenCentral()
 }
