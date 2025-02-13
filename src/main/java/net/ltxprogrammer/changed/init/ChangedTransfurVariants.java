@@ -133,9 +133,9 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexYuin>> LATEX_YUIN = register("form_latex_yuin",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_YUIN).stepSize(0.7f).reducedFall().absorbing());
     public static final RegistryObject<TransfurVariant<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("form_white_latex_centaur",
-            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_CENTAUR).quadrupedal().stepSize(1.1f).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
+            TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_CENTAUR).quadrupedal().stepSize(1.1f).cameraZOffset(3.5f / 16.0f).jumpStrength(1.25f).rideable().reducedFall());
     public static final RegistryObject<TransfurVariant<LatexHyenaTaur>> LATEX_HYENA_TAUR = register("form_latex_hyena_taur",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_HYENA_TAUR).quadrupedal().stepSize(1.1f).cameraZOffset(7.0f / 16.0f).jumpStrength(1.25f).absorbing().rideable().reducedFall());
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_HYENA_TAUR).quadrupedal().stepSize(1.1f).cameraZOffset(3.5f / 16.0f).jumpStrength(1.25f).absorbing().rideable().reducedFall());
     public static final RegistryObject<TransfurVariant<WhiteLatexKnight>> WHITE_LATEX_KNIGHT = register("form_white_latex_knight",
             TransfurVariant.Builder.of(ChangedEntities.WHITE_LATEX_KNIGHT).stepSize(0.7f).absorbing());
     public static final RegistryObject<TransfurVariant<WhiteLatexKnightFusion>> WHITE_LATEX_KNIGHT_FUSION = register("form_white_latex_knight_fusion",

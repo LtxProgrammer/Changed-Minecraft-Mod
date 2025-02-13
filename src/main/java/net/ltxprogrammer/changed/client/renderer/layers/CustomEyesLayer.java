@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.client.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
@@ -9,6 +11,7 @@ import net.ltxprogrammer.changed.entity.BasicPlayerInfo;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.util.Color3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,7 +23,9 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -229,6 +234,11 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         this.shapedHeads.get(headShape).render(pose, buffer, packedLight, overlay, color.red(), color.green(), color.blue(), alpha);
     }
 
+    public static float getZFightingOffset(LivingEntity entity) {
+        float distance = (float)Minecraft.getInstance().gameRenderer.getMainCamera().getPosition().distanceTo(entity.getEyePosition());
+        return Mth.clamp(Mth.map(distance, 8.0f, 50.0f, 0.0f, 0.05f), 0.0f, 0.05f);
+    }
+
     @Override
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity.isInvisible())
@@ -246,11 +256,13 @@ public class CustomEyesLayer<M extends AdvancedHumanoidModel<T>, T extends Chang
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 
         this.shapedHeads.get(headShape).copyFrom(this.getParentModel().getHead());
+        float zFightOffset = getZFightingOffset(entity);
 
         pose.pushPose();
         if (this.getParentModel() instanceof AdvancedHumanoidModelInterface<?,?> modelInterface)
             modelInterface.scaleForHead(pose);
 
+        pose.scale(zFightOffset + 1.0f, zFightOffset + 1.0f, zFightOffset + 1.0f);
         scleraColorFn.getColorSafe(entity, info).ifPresent(data -> {
             renderHead(pose, bufferSource.getBuffer(data.getRenderType(style.getSclera())), packedLight, overlay, data.color, data.alpha);
         });

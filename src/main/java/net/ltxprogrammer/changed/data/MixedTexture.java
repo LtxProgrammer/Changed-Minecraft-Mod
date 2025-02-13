@@ -20,7 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -30,6 +32,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @OnlyIn(Dist.CLIENT)
 public class MixedTexture {
+    private static final String CACHE_ROOT = "cache/changed_textures/";
+
     public static class OverlayBlock {
         public final ResourceLocation top, side, bottom;
         public final Material particleMaterial;
@@ -210,17 +214,33 @@ public class MixedTexture {
         if (!Changed.config.client.cacheGeneratedTextures.get())
             return false;
 
-        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        String path = CACHE_ROOT + mixedName.getNamespace() + "/" + mixedName.getPath();
         return Files.exists(Path.of(path));
     }
 
-    public static Optional<NativeImage> findCachedTexture(ResourceLocation mixedName) {
+    public static Optional<NativeImage> findCachedTexture(ResourceLocation mixedName, @Nullable String packSequenceHash) {
         if (!Changed.config.client.cacheGeneratedTextures.get())
             return Optional.empty();
 
-        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        String path = CACHE_ROOT + mixedName.getNamespace() + "/" + mixedName.getPath();
         if (!Files.exists(Path.of(path)))
             return Optional.empty();
+
+        if (packSequenceHash != null) {
+            if (!Files.exists(Path.of(path + ".cache")))
+                return Optional.empty();
+
+            try {
+                var cacheFile = new FileInputStream(path + ".cache");
+                var foundHash = new String(cacheFile.readAllBytes(), StandardCharsets.UTF_8);
+                cacheFile.close();
+
+                if (!foundHash.equals(packSequenceHash))
+                    return Optional.empty();
+            } catch (Exception ex) {
+                return Optional.empty();
+            }
+        }
 
         try {
             var fileStream = new FileInputStream(path);
@@ -232,23 +252,29 @@ public class MixedTexture {
         }
     }
 
-    private static void cacheMixedTexture(ResourceLocation mixedName, NativeImage image) {
+    private static void cacheMixedTexture(ResourceLocation mixedName, NativeImage image, @Nullable String packSequenceHash) {
         if (!Changed.config.client.cacheGeneratedTextures.get()) {
             return;
         }
 
-        String path = "cache/" + mixedName.getNamespace() + "/" + mixedName.getPath();
+        String path = CACHE_ROOT + mixedName.getNamespace() + "/" + mixedName.getPath();
 
         try {
             Files.createDirectories(Path.of(path).getParent());
             image.writeToFile(path);
+
+            if (packSequenceHash != null) {
+                var cacheFile = new FileOutputStream(path + ".cache");
+                cacheFile.write(packSequenceHash.getBytes(StandardCharsets.UTF_8));
+                cacheFile.close();
+            }
         } catch (Exception ex) {
             LOGGER.error("Failed to cache texture {}", mixedName, ex);
         }
     }
 
     @Nullable
-    public NativeImage load(@NotNull ResourceManager resourceManager) {
+    public NativeImage load(@NotNull ResourceManager resourceManager, @Nullable String packSequenceHash) {
         try {
             while (!ATOMIC_LOCK.compareAndSet(false, true)) {}
 
@@ -301,7 +327,7 @@ public class MixedTexture {
             }
 
             Pair<Integer, Integer> frameSize = imageSize(baseImage, baseMetadata);
-            var possibleCached = findCachedTexture(name);
+            var possibleCached = findCachedTexture(name, packSequenceHash);
             if (possibleCached.isPresent()) {
                 if (frameSize.getFirst() == possibleCached.get().getWidth() && frameSize.getSecond() == possibleCached.get().getHeight())
                     return possibleCached.get(); // Image already cached
@@ -373,7 +399,7 @@ public class MixedTexture {
 
             if (!Changed.config.client.memCacheBaseImages.get())
                 baseImage.close();
-            cacheMixedTexture(getResourceLocation(name), newImage);
+            cacheMixedTexture(getResourceLocation(name), newImage, packSequenceHash);
             return newImage;
         } catch (Exception exception) {
             LOGGER.error("Failed to mix textures. {} + {}", baseLocation, overlayLocation, exception);

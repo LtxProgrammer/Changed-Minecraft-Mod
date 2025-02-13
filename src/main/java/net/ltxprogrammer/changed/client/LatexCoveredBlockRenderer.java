@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.InactiveProfiler;
@@ -142,10 +143,18 @@ public abstract class LatexCoveredBlockRenderer {
 
         @Nullable
         public TextureAtlasSprite load(ResourceManager resources, TextureAtlasSprite.Info info, int atlasWidth, int atlasHeight, int mipLevels, int x, int y) {
+            var packSequenceHash = resources.listPacks().map(PackResources::getName).reduce("", (a, b) -> {
+                if (a.isEmpty())
+                    return b;
+                if (b.isEmpty())
+                    return a;
+                return a + "," + b;
+            }).toUpperCase();
+
             ResourceLocation fullPath = MixedTexture.getResourceLocation(info.name());
-            NativeImage image = MixedTexture.findCachedTexture(fullPath).orElse(null);
+            NativeImage image = MixedTexture.findCachedTexture(fullPath, packSequenceHash).orElse(null);
             if (image == null)
-                image = textureFunction.apply(info.name()).load(resources);
+                image = textureFunction.apply(info.name()).load(resources, packSequenceHash);
             if (image != null)
                 return new TextureAtlasSprite(this, info, mipLevels, atlasWidth, atlasHeight, x, y, image);
             LOGGER.error("Using missing texture, unable to load {}", fullPath);
@@ -310,7 +319,11 @@ public abstract class LatexCoveredBlockRenderer {
                     model.getMaterials(this::getModel, new HashSet<>());
                 } catch (Exception ignored) {}
 
-                event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+                try {
+                    event.getModelRegistry().put(name, model.bake(event.getModelLoader(), this::getSprite, BlockModelRotation.X0_Y0, name));
+                } catch (Exception ex) {
+                    LOGGER.warn("Unable to bake {}, skipping : {}", name, ex);
+                }
 
                 int currentIndex = index.incrementAndGet();
                 if (currentIndex % 50000 == 0) {

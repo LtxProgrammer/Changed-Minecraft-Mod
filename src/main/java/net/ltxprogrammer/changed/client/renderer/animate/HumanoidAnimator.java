@@ -137,6 +137,12 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends AdvancedHumanoi
         Arrays.stream(AnimateStage.values()).forEach(stage -> cameraAnimators.put(stage, new ArrayList<>())); // Populate array
     }
 
+    public void applyPropertyModelLimbs(HumanoidModel<?> propertyModel) {
+        for (var anim : animators.get(AnimateStage.INIT)) {
+            anim.copyFrom(propertyModel);
+        }
+    }
+
     public void applyPropertyModel(HumanoidModel<?> propertyModel) {
         leftArmPose = propertyModel.leftArmPose;
         rightArmPose = propertyModel.rightArmPose;
@@ -146,9 +152,7 @@ public class HumanoidAnimator<T extends ChangedEntity, M extends AdvancedHumanoi
         entityModel.riding = propertyModel.riding;
         entityModel.young = propertyModel.young;
 
-        for (var anim : animators.get(AnimateStage.INIT)) {
-            anim.copyFrom(propertyModel);
-        }
+        this.applyPropertyModelLimbs(propertyModel);
     }
 
     public void writePropertyModelHumanoid(HumanoidModel<?> propertyModel) {

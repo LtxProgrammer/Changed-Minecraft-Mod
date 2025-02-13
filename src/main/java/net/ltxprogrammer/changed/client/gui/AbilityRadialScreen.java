@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.client.gui;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
@@ -8,14 +9,18 @@ import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.VariantAbilityActivate;
 import net.ltxprogrammer.changed.util.SingleRunnable;
 import net.ltxprogrammer.changed.world.inventory.AbilityRadialMenu;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.core.Registry;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -47,7 +52,22 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
     @Nullable
     @Override
     public List<Component> tooltipsFor(int section) {
-        return List.of(abilities.get(section).getDisplayName(IAbstractChangedEntity.forPlayer(menu.player)));
+        var abilityInstance = menu.variant.getAbilityInstance(abilities.get(section));
+        if (abilityInstance == null)
+            return List.of();
+
+        var desc = abilityInstance.getAbilityDescription();
+        var builder = ImmutableList.<Component>builder().add(abilityInstance.getAbilityName());
+
+        if (!desc.isEmpty()) {
+            builder.add(TextComponent.EMPTY);
+            builder.addAll(desc);
+        }
+
+        if (this.minecraft.options.advancedItemTooltips)
+            builder.add((new TextComponent(abilityInstance.ability.getRegistryName().toString())).withStyle(ChatFormatting.DARK_GRAY));
+
+        return builder.build();
     }
 
     @Override

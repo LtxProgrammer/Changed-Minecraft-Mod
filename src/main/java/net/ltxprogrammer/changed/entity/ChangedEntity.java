@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.entity;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
@@ -770,6 +771,11 @@ public abstract class ChangedEntity extends Monster {
 
         if (entity instanceof LivingEntity livingEntity) {
             final var context = getReplicateContext();
+
+            ProcessTransfur.TransfurAttackEvent event = new ProcessTransfur.TransfurAttackEvent(livingEntity, variant, context);
+            if (Changed.postModEvent(event))
+                return false;
+
             damage = ProcessTransfur.checkBlocked(livingEntity, damage, context.source);
             if (tryFuseWithTarget(livingEntity, context.source, damage)) // Absorption or Fusion
                 return true;
@@ -984,7 +990,7 @@ public abstract class ChangedEntity extends Monster {
         this.tailDragAmountO = this.tailDragAmount;
 
         this.tailDragAmount *= 0.75F;
-        this.tailDragAmount -= (float) (Math.toRadians(this.yBodyRot - this.yBodyRotO) * 0.35F);
+        this.tailDragAmount -= (float) (Math.toRadians(Mth.wrapDegrees(this.yBodyRot - this.yBodyRotO)) * 0.35F);
         this.tailDragAmount = Mth.clamp(this.tailDragAmount, -1.1F, 1.1F);
 
         this.deltaMovementOO = this.deltaMovementO;

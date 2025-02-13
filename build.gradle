@@ -21,7 +21,7 @@ group = 'net.ltxprogrammer.changed' // http://maven.apache.org/guides/mini/guide
 archivesBaseName = "Changed-m${minecraftVersion}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -198,7 +198,7 @@ dependencies {
     implementation fg.deobf("curse.maven:rubidium-574856:4494903") // Forge 1.18.2 v0.5.6
     implementation fg.deobf("curse.maven:oculus-581495:4578744") // Forge 1.18.2 v1.6.4
     implementation fg.deobf("curse.maven:vivecraft-667903:5830810") // Forge 1.18.2 v1.1.14
-    //implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.c-298") // Create
+    runtimeOnly fg.deobf("curse.maven:ferritecore-429235:4074294") // Forge 1.18.2 v4.2.2
 
     compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
     //runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
@@ -241,6 +241,14 @@ dependencies {
     //runtimeOnly fg.deobf("curse.maven:caelus-308989:3650485")
 
     compileOnly fg.deobf("curse.maven:forgery-434087:5669989")
+
+    compileOnly fg.deobf("curse.maven:do-a-barrel-roll-663658:4344182") // Forge 1.18.2 v2.5.3
+    compileOnly fg.deobf("curse.maven:entity-texture-features-fabric-568563:5275072") // Forge 1.18.2 v6.0
+    compileOnly fg.deobf("curse.maven:entity-model-features-844662:5304245") // Forge 1.18.2 v2.0.2
+
+    compileOnly fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6069322") // Forge 1.18.2 v1.1.4-Hotfix
+
+    compileOnly fg.deobf("curse.maven:parcool-482378:6035542") // Forge 1.18.2 v3.3.1.0
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

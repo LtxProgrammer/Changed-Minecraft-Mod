@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -11,8 +12,8 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedTags;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.util.StackUtil;
 import net.minecraft.commands.CommandSource;
-import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -24,13 +25,9 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -102,11 +99,13 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = Mth.lerp(variant.getMorphProgression(), 0.0f, variant.getParent().cameraZOffset);
+            if (Math.abs(z) < 0.0001f) return;
+            if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
+                return; // Ignore
+            double yRot = Math.toRadians(player.yBodyRot);
+
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
-            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
-                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
-            callback.setReturnValue(vec.add(look.x() * z, 0.0f, look.z() * z));
+            callback.setReturnValue(vec.add(-Math.sin(yRot) * z, 0.0f, Math.cos(yRot) * z));
         });
     }
 
@@ -115,23 +114,15 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = Mth.lerp(variant.getMorphProgression(), 0.0f, variant.getParent().cameraZOffset);
             if (Math.abs(z) < 0.0001f) return;
-            var look = player.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-            if (Math.abs(look.x()) < 0.0001f && Math.abs(look.z()) < 0.0001f)
-                look = player.getUpVector(1.0f).multiply(1.0, 0.0, 1.0).normalize();
+            if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
+                return; // Ignore
+            double yRot = Math.toRadians(Mth.rotLerp(v, player.yBodyRotO, player.yBodyRot));
 
-            double d0 = Mth.lerp(v, player.xo + look.x() * z, player.getX() + look.x() * z);
+            double d0 = Mth.lerp(v, player.xo + -Math.sin(yRot) * z, player.getX() + -Math.sin(yRot) * z);
             double d1 = Mth.lerp(v, player.yo, player.getY()) + (double) player.getEyeHeight();
-            double d2 = Mth.lerp(v, player.zo + look.z() * z, player.getZ() + look.z() * z);
+            double d2 = Mth.lerp(v, player.zo + Math.cos(yRot) * z, player.getZ() + Math.cos(yRot) * z);
             callback.setReturnValue(new Vec3(d0, d1, d2));
         });
-    }
-
-    @Redirect(method = "isInWall", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyePosition()Lnet/minecraft/world/phys/Vec3;"))
-    public Vec3 isInWall(Entity entity) {
-        TransfurVariantInstance<?> variant = ProcessTransfur.getPlayerTransfurVariant(EntityUtil.playerOrNull(entity));
-        if (variant != null && variant.getParent().cameraZOffset != 0.0f)
-            return new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-        return this.getEyePosition();
     }
 
     @Inject(method = "canEnterPose", at = @At("HEAD"), cancellable = true)
@@ -179,5 +170,28 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
                 cir.setReturnValue(true);
             }
         }
+    }
+
+    @Inject(method = "isSilent", at = @At("RETURN"), cancellable = true)
+    public void makeGrabbedEntityQuiet(CallbackInfoReturnable<Boolean> cir) {
+        if (this instanceof LivingEntityDataExtension ext) {
+            boolean shouldRender = AbstractAbility.getAbilityInstanceSafe(ext.getGrabbedBy(), ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                    .map(ability -> !(ability.suited && !ability.grabbedHasControl))
+                    .orElse(true);
+
+            if (!shouldRender) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
+    @Inject(method = "isAttackable", at = @At("RETURN"), cancellable = true)
+    public void ignoreGrabbedEntities(CallbackInfoReturnable<Boolean> cir) {
+        if ((Entity)(Object)this instanceof LivingEntity livingEntity)
+            GrabEntityAbility.getGrabberSafe(livingEntity).flatMap(grabber -> grabber.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get()))
+                    .ifPresent(ability -> {
+                        if (ability.suited)
+                            cir.setReturnValue(false);
+                    });
     }
 }

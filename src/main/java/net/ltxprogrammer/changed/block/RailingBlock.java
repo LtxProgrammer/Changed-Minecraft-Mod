@@ -354,6 +354,9 @@ public class RailingBlock extends AbstractCustomShapeBlock implements SimpleWate
 
         BlockState newState = super.updateShape(state, direction, otherState, level, pos, otherPos);
 
+        if (direction == Direction.UP || direction == Direction.DOWN)
+            return newState;
+
         boolean fullyConnected = newState.getValue(SHAPE).getConnectionDirections(newState.getValue(FACING))
                 .filter(connectionDirection -> connectionDirection != direction)
                 .map(connectionDirection ->

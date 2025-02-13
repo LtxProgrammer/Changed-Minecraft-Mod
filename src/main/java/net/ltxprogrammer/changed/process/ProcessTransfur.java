@@ -274,13 +274,34 @@ public class ProcessTransfur {
         return Optional.empty();
     }
 
+    public static class TransfurAttackEvent extends Event {
+        public final LivingEntity target;
+        public final TransfurVariant<?> variant;
+        public final TransfurContext context;
+
+        public TransfurAttackEvent(LivingEntity target, TransfurVariant<?> variant, TransfurContext context) {
+            this.target = target;
+            this.variant = variant;
+            this.context = context;
+        }
+
+        @Override
+        public boolean isCancelable() {
+            return true;
+        }
+    }
+
     public static class KeepConsciousEvent extends Event {
         public final Player player;
+        public final TransfurVariant<?> variant;
+        public final TransfurContext context;
         public final boolean keepConscious;
         public boolean shouldKeepConscious;
 
-        public KeepConsciousEvent(Player player, boolean keepConscious) {
+        public KeepConsciousEvent(Player player, TransfurVariant<?> variant, TransfurContext context, boolean keepConscious) {
             this.player = player;
+            this.variant = variant;
+            this.context = context;
             this.keepConscious = keepConscious;
             this.shouldKeepConscious = keepConscious;
         }
@@ -699,7 +720,7 @@ public class ProcessTransfur {
             if (player.isCreative())
                 keepConscious = true;
             else {
-                KeepConsciousEvent event = new KeepConsciousEvent(player, keepConscious);
+                KeepConsciousEvent event = new KeepConsciousEvent(player, variant, context, keepConscious);
                 Changed.postModEvent(event);
                 keepConscious = event.shouldKeepConscious;
             }
