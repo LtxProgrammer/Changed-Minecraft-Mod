@@ -147,6 +147,18 @@ public class AnimatorPresets {
         };
     }
 
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2Snake(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
+        return animator -> {
+            animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessRideAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessCrouchAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessFallFlyAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessStandAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSlitherAnimator<>(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addAnimator(new LeglessSleepAnimator<>(abdomen, lowerAbdomen, tail, tailJoints));
+        };
+    }
+
     public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> leglessV2VerticalSwim(ModelPart abdomen, ModelPart lowerAbdomen, ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
             animator.addAnimator(new LeglessInitAnimatorV2<>(abdomen, lowerAbdomen, tail, tailJoints))
@@ -254,6 +266,17 @@ public class AnimatorPresets {
                     .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new OrcaUpperBodySwimAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
+        };
+    }
+
+    public static <T extends ChangedEntity, M extends AdvancedHumanoidModel<T>> Consumer<HumanoidAnimator<T, M>> snakeUpperBody(ModelPart head, ModelPart torso, ModelPart leftArm, ModelPart rightArm) {
+        return animator -> {
+            animator.setupHands(1, leftArm, rightArm)
+                    .addAnimator(new HoldEntityAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyInitAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyCrouchAnimator<>(head, torso, leftArm, rightArm))
+                    .addAnimator(new SharkUpperBodyAttackAnimator<>(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkUpperBodyStandAnimator<>(head, torso, leftArm, rightArm));
         };
     }
@@ -870,13 +893,11 @@ public class AnimatorPresets {
                                                                                                             ModelPart abdomen, ModelPart lowerAbdomen,
                                                                                                             ModelPart tail, List<ModelPart> tailJoints) {
         return animator -> {
-            animator.addPreset(leglessV2(abdomen, lowerAbdomen, tail, tailJoints))
-                    .addPreset(sharkUpperBody(head, torso, leftArm, rightArm))
+            animator.addPreset(leglessV2Snake(abdomen, lowerAbdomen, tail, tailJoints))
+                    .addPreset(snakeUpperBody(head, torso, leftArm, rightArm))
                     .addAnimator(new SharkHeadInitAnimator<>(head))
-                    .addAnimator(new SharkHeadSwimAnimator<>(head))
                     .addAnimator(new ArmBobAnimator<>(leftArm, rightArm))
-                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm))
-                    .addCameraAnimator(new SharkCameraSwimAnimator<>());
+                    .addAnimator(new ArmRideAnimator<>(leftArm, rightArm));
         };
     }
 
