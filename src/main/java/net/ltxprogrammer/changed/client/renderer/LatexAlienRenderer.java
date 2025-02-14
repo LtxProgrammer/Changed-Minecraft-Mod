@@ -2,6 +2,7 @@ package net.ltxprogrammer.changed.client.renderer;
 
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.renderer.layers.EmissiveBodyLayer;
+import net.ltxprogrammer.changed.client.renderer.layers.LatexParticlesLayer;
 import net.ltxprogrammer.changed.client.renderer.model.LatexAlienModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexAlienModel;
 import net.ltxprogrammer.changed.entity.beast.LatexAlien;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 public class LatexAlienRenderer extends AdvancedHumanoidRenderer<LatexAlien, LatexAlienModel, ArmorLatexAlienModel<LatexAlien>> {
     public LatexAlienRenderer(EntityRendererProvider.Context context) {
         super(context, new LatexAlienModel(context.bakeLayer(LatexAlienModel.LAYER_LOCATION)), ArmorLatexAlienModel.MODEL_SET, 0.5f);
+        this.addLayer(new LatexParticlesLayer<>(this, this.model));
         this.addLayer(new EmissiveBodyLayer<>(this, Changed.modResource("textures/latex_alien_emissive.png")));
     }
 
