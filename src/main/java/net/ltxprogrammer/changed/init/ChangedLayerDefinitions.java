@@ -144,6 +144,7 @@ public class ChangedLayerDefinitions {
         ArmorLatexBigTailDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
+        ArmorLatexMaleDoubleHeadedWingedDragonModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexFemaleSharkModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
         ArmorLatexMaleSquidDogModel.MODEL_SET.registerDefinitions(event::registerLayerDefinition);
