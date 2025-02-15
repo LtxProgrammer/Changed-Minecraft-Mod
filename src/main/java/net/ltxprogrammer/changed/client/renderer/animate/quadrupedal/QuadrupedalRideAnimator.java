@@ -24,5 +24,11 @@ public class QuadrupedalRideAnimator<T extends ChangedEntity, M extends Advanced
         frontLeftLeg.xRot = -1.4137167F;
         frontLeftLeg.yRot = (-(float)Math.PI / 10F);
         frontLeftLeg.zRot = -0.07853982F;
+        backRightLeg.xRot = -1.26439408F;
+        backRightLeg.yRot = ((float)Math.PI / 10F);
+        backRightLeg.zRot = 0.26179938F;
+        backLeftLeg.xRot = -1.26439408F;
+        backLeftLeg.yRot = (-(float)Math.PI / 10F);
+        backLeftLeg.zRot = -0.26179938F;
     }
 }
