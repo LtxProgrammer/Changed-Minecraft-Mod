@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.renderer.animate.legless;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.entity.SpringType;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -64,11 +65,17 @@ public class LeglessInitAnimatorV2<T extends ChangedEntity, M extends AdvancedHu
         tail.zRot = 0f;
         tail.yRot = 0f;
 
+        float tailDrag = entity.getTailDragAmount(this.core.partialTicks) * 0.5f;
+        float verticalDrag = entity.getSimulatedSpring(SpringType.HEAVY_STRONG, SpringType.Direction.VERTICAL, this.core.partialTicks) * 0.4f;
+        if (entity.isOnGround())
+            verticalDrag = Math.min(0f, verticalDrag);
+
         for (ModelPart joint : tailJoints) {
             joint.zRot = slitherAngle(segmentPosition, limbSwing * SLITHER_RATE) - overallAngle;
             joint.yRot = 0f;
-            joint.xRot = 0f;
+            joint.xRot = -verticalDrag;
             overallAngle += joint.zRot;
+            joint.zRot -= tailDrag * 1.5F;
             segmentPosition += SEGMENT_SIZE;
         }
     }

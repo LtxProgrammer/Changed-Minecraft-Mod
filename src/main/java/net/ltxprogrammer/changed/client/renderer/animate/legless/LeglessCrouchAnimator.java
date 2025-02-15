@@ -20,8 +20,10 @@ public class LeglessCrouchAnimator<T extends ChangedEntity, M extends AdvancedHu
 
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        abdomen.y = 12.2F + core.hipOffset + (12.0f - core.legLength);
-        abdomen.z = 4.0F;
-        lowerAbdomen.xRot = (float) Math.toRadians(60);
+        abdomen.y = 2.5f + core.calculateLegPositionY();
+        abdomen.z = 3f;
+        abdomen.xRot = (float) Math.toRadians(40);
+        lowerAbdomen.xRot = (float) Math.toRadians(30);
+        tail.xRot = (float) Math.toRadians(20);
     }
 }
