@@ -93,13 +93,25 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         });
     }
 
+    @Unique
+    private boolean isCallingIsInWall = false;
+
+    @Inject(method = "isInWall", at = @At("HEAD"))
+    public void startIsInWall(CallbackInfoReturnable<Boolean> cir) {
+        isCallingIsInWall = true;
+    }
+
+    @Inject(method = "isInWall", at = @At("TAIL"))
+    public void endIsInWall(CallbackInfoReturnable<Boolean> cir) {
+        isCallingIsInWall = false;
+    }
+
     @Inject(method = "getEyePosition()Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     public final void getEyePosition(CallbackInfoReturnable<Vec3> callback) {
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = Mth.lerp(variant.getMorphProgression(), 0.0f, variant.getParent().cameraZOffset);
             if (Math.abs(z) < 0.0001f) return;
-            if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
-                return; // Ignore
+            if (isCallingIsInWall) return; // Ignore
             double yRot = Math.toRadians(player.yBodyRot);
 
             var vec = new Vec3(player.getX(), player.getEyeY(), player.getZ());
@@ -112,8 +124,7 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
         ProcessTransfur.ifPlayerTransfurred(EntityUtil.playerOrNull(asEntity()), (player, variant) -> {
             float z = Mth.lerp(variant.getMorphProgression(), 0.0f, variant.getParent().cameraZOffset);
             if (Math.abs(z) < 0.0001f) return;
-            if (StackUtil.callStackContainsMethod(Entity.class, StackUtil.getMcpMethod("isInWall")))
-                return; // Ignore
+            if (isCallingIsInWall) return; // Ignore
             double yRot = Math.toRadians(Mth.rotLerp(v, player.yBodyRotO, player.yBodyRot));
 
             double d0 = Mth.lerp(v, player.xo + -Math.sin(yRot) * z, player.getX() + -Math.sin(yRot) * z);
