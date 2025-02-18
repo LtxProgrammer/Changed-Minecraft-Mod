@@ -126,6 +126,11 @@ public abstract class CameraMixin implements CameraExtender {
         }
     }
 
+    @Unique
+    private Double lastYRot = null;
+    @Unique
+    private float LERP_STRENGTH = 0.2f;
+
     @Inject(method = "setPosition(Lnet/minecraft/world/phys/Vec3;)V", at = @At("HEAD"), cancellable = true)
     protected void setPositionAndAdjustForVariant(Vec3 vec, CallbackInfo callbackInfo) {
         Camera self = (Camera)(Object)this;
@@ -133,6 +138,10 @@ public abstract class CameraMixin implements CameraExtender {
             ProcessTransfur.ifPlayerTransfurred(player, variant -> {
                 float z = Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset);
                 double yRot = Math.toRadians(Mth.rotLerp(Minecraft.getInstance().getDeltaFrameTime(), player.yBodyRotO, player.yBodyRot));
+                if (lastYRot == null)
+                    lastYRot = yRot;
+                yRot = Mth.lerp(LERP_STRENGTH, lastYRot, yRot);
+                lastYRot = yRot;
                 var newVec = vec.add(-Math.sin(yRot) * z, 0.0f, Math.cos(yRot) * z);
                 self.position = newVec;
                 self.blockPosition.set(newVec.x, newVec.y, newVec.z);
