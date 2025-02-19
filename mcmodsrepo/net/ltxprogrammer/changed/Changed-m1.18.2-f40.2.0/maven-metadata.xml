@@ -3,8 +3,8 @@
   <groupId>net.ltxprogrammer.changed</groupId>
   <artifactId>Changed-m1.18.2-f40.2.0</artifactId>
   <versioning>
-    <latest>v0.14b</latest>
-    <release>v0.14b</release>
+    <latest>v0.14c</latest>
+    <release>v0.14c</release>
     <versions>
       <version>v0.10</version>
       <version>v0.10b</version>
@@ -23,7 +23,8 @@
       <version>v0.13.1</version>
       <version>v0.14</version>
       <version>v0.14b</version>
+      <version>v0.14c</version>
     </versions>
-    <lastUpdated>20241129180156</lastUpdated>
+    <lastUpdated>20250219203618</lastUpdated>
   </versioning>
 </metadata>
