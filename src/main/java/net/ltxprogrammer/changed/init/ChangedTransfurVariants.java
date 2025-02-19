@@ -74,6 +74,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_HUMAN).stepSize(0.6f));
     public static final RegistryObject<TransfurVariant<LatexFennecFox>> LATEX_FENNEC_FOX = register("form_latex_fennec_fox",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_FENNEC_FOX).stepSize(0.7f));
+    public static final RegistryObject<TransfurVariant<LatexGoldenDragon>> LATEX_GOLDEN_DRAGON = register("form_latex_golden_dragon",
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_GOLDEN_DRAGON).glide());
     public static final RegistryObject<TransfurVariant<LatexHypnoCat>> LATEX_HYPNO_CAT = register("form_latex_hypno_cat",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_HYPNO_CAT).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION).addAbility(ChangedAbilities.HYPNOSIS));
     public static final RegistryObject<TransfurVariant<LatexKeonWolf>> LATEX_KEON_WOLF = register("form_latex_keon_wolf",

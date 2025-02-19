@@ -93,6 +93,7 @@ public class ChangedEntityRenderers {
         registerHumanoid(event, ChangedEntities.CRYSTAL_WOLF_HORNED.get(), LatexCrystalWolfHornedRenderer::new);
         registerHumanoid(event, ChangedEntities.LATEX_DEER.get(), LatexDeerRenderer::new);
         registerHumanoid(event, ChangedEntities.LATEX_FENNEC_FOX.get(), LatexFennecFoxRenderer::new);
+        registerHumanoid(event, ChangedEntities.LATEX_GOLDEN_DRAGON.get(), LatexGoldenDragonRenderer::new);
         registerHumanoid(event, ChangedEntities.GREEN_LIZARD.get(), GreenLizardRenderer::new);
         registerHumanoid(event, ChangedEntities.LATEX_HYPNO_CAT.get(), LatexHypnoCatRenderer::new);
         registerHumanoid(event, ChangedEntities.LATEX_KEON_WOLF.get(), LatexKeonWolfRenderer::new);
