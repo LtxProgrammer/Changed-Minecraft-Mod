@@ -190,6 +190,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<GreenLizard>> GREEN_LIZARD = registerSpawning("green_lizard", 0xB3e53A, 0xFBE5BC,
             EntityType.Builder.of(GreenLizard::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GreenLizard::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<LatexGoldenDragon>> LATEX_GOLDEN_DRAGON = registerSpawning("latex_golden_dragon", 0xffdb4f, 0xf9b44a,
+            EntityType.Builder.of(LatexGoldenDragon::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexGoldenDragon::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexHypnoCat>> LATEX_HYPNO_CAT = registerSpawning("latex_hypno_cat", 0x52596D, 0xD7FF46,
             EntityType.Builder.of(LatexHypnoCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexHypnoCat::checkEntitySpawnRules);
@@ -487,6 +490,7 @@ public class ChangedEntities {
             if (event.getCategory() == Biome.BiomeCategory.DESERT) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_FENNEC_FOX, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SNAKE, 100, 1, 3, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_GOLDEN_DRAGON, 40, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_ALIEN, 20, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GREEN_LIZARD, 10, 1, 2, 0.7, 0.15);
             }
@@ -511,8 +515,9 @@ public class ChangedEntities {
             if (event.getCategory() == Biome.BiomeCategory.SAVANNA) {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYPNO_CAT, 60, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MEDUSA_CAT, 40, 1, 3, 0.7, 0.15);
-                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYENA_TAUR, 40, 1, 1, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_HYENA_TAUR, 40, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GREEN_LIZARD, 20, 1, 2, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_GOLDEN_DRAGON, 10, 1, 3, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.TAIGA || event.getCategory() == Biome.BiomeCategory.ICY) {

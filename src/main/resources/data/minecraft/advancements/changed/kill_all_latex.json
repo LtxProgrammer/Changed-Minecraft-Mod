@@ -313,6 +313,20 @@
         ]
       }
     },
+    "changed:latex_golden_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:latex_golden_dragon"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:green_lizard": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1161,6 +1175,9 @@
     ],
     [
       "changed:latex_fennec_fox"
+    ],
+    [
+      "changed:latex_golden_dragon"
     ],
     [
       "changed:green_lizard"
