@@ -1,12 +1,17 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.math.Vector3f;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.client.CameraExtender;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModelInterface;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
+import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -126,18 +131,53 @@ public abstract class CameraMixin implements CameraExtender {
         }
     }
 
+    @Unique
+    private Double lastYRot = null;
+
+    @Unique
+    private float getEntityZOffset(LivingEntity entity) {
+        var playerVariantOffset = ProcessTransfur.getPlayerTransfurVariantSafe(EntityUtil.playerOrNull(entity)).map(variant ->
+                Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset));
+        if (playerVariantOffset.isPresent())
+            return playerVariantOffset.get();
+
+        var grabberVariantOffset = GrabEntityAbility.getGrabberSafe(entity).map(IAbstractChangedEntity::getSelfVariant).map(variant ->
+                variant.cameraZOffset);
+        if (grabberVariantOffset.isPresent())
+            return grabberVariantOffset.get() + 0.5f;
+
+        if (entity instanceof ChangedEntity changedEntity) {
+            var variant = changedEntity.getSelfVariant();
+            if (variant != null)
+                return variant.cameraZOffset;
+        }
+
+        return 0f;
+    }
+
     @Inject(method = "setPosition(Lnet/minecraft/world/phys/Vec3;)V", at = @At("HEAD"), cancellable = true)
     protected void setPositionAndAdjustForVariant(Vec3 vec, CallbackInfo callbackInfo) {
         Camera self = (Camera)(Object)this;
-        if (self.getEntity() instanceof Player player && !player.isSpectator()) {
-            ProcessTransfur.ifPlayerTransfurred(player, variant -> {
-                float z = Mth.lerp(variant.getMorphProgression(Minecraft.getInstance().getDeltaFrameTime()), 0.0f, variant.getParent().cameraZOffset);
-                double yRot = Math.toRadians(Mth.rotLerp(Minecraft.getInstance().getDeltaFrameTime(), player.yBodyRotO, player.yBodyRot));
-                var newVec = vec.add(-Math.sin(yRot) * z, 0.0f, Math.cos(yRot) * z);
-                self.position = newVec;
-                self.blockPosition.set(newVec.x, newVec.y, newVec.z);
-                callbackInfo.cancel();
-            });
+        if (self.getEntity() instanceof Player player && player.isSpectator()) {
+            return;
+        }
+
+        if (self.getEntity() instanceof LivingEntity livingEntity) {
+            float zOffset = getEntityZOffset(livingEntity);
+            if (Mth.equal(zOffset, 0f))
+                return;
+
+            if (Minecraft.getInstance().options.getCameraType().isFirstPerson())
+                zOffset *= 2f;
+            double yRot = Math.toRadians(Mth.rotLerp(Minecraft.getInstance().getDeltaFrameTime(), livingEntity.yBodyRotO, livingEntity.yBodyRot));
+            if (lastYRot == null)
+                lastYRot = yRot;
+            yRot = Mth.lerp(0.2f, lastYRot, yRot);
+            lastYRot = yRot;
+            var newVec = vec.add(-Math.sin(yRot) * zOffset, 0.0f, Math.cos(yRot) * zOffset);
+            self.position = newVec;
+            self.blockPosition.set(newVec.x, newVec.y, newVec.z);
+            callbackInfo.cancel();
         }
     }
 

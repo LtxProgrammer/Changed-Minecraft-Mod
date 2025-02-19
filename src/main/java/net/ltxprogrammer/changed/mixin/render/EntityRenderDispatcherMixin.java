@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.ChangedClient;
 import net.ltxprogrammer.changed.client.ClientLivingEntityExtender;
-import net.ltxprogrammer.changed.client.EntityRenderHelper;
+import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.entity.animation.AnimationCategory;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
 import net.ltxprogrammer.changed.client.renderer.layers.PlayerLayerWrapper;
@@ -14,6 +14,7 @@ import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.init.ChangedEntityRenderers;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -46,14 +47,16 @@ public abstract class EntityRenderDispatcherMixin {
 
     @Shadow public Map<EntityType<?>, EntityRenderer<?>> renderers;
 
-    @Inject(method = "render", at = @At("HEAD"))
-    public <E extends Entity> void beforeRender(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
-        EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.addLast(new Vec3(camX, camY, camZ));
-    }
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
+    public <E extends Entity> void adjustRiderOffset(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
+        if (!(Minecraft.getInstance().cameraEntity instanceof LivingEntity livingEntity) ||
+                IAbstractChangedEntity.forEither(livingEntity) == null)
+            return;
 
-    @Inject(method = "render", at = @At("RETURN"))
-    public <E extends Entity> void afterRender(E entity, double camX, double camY, double camZ, float p_114389_, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int p_114393_, CallbackInfo callback) {
-        EntityRenderHelper.ENTITY_RENDER_DISPATCHER_ENTITY_MINUS_CAMERA.removeLast();
+        if (entity.getVehicle() == Minecraft.getInstance().cameraEntity && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            double yRot = Math.toRadians(Mth.rotLerp(Minecraft.getInstance().getDeltaFrameTime(), livingEntity.yBodyRotO, livingEntity.yBodyRot));
+            poseStack.translate(Math.sin(yRot) * 0.5f, 0.0f, -Math.cos(yRot) * 0.5f);
+        }
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
