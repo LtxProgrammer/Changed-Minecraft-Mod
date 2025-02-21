@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ArmorLatexMaleDoubleHeadedWingedDragonModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorLatexMaleDoubleHeadedWingedDragonModel<T>> {
     public static final ArmorModelSet<ChangedEntity, ArmorLatexMaleDoubleHeadedWingedDragonModel<ChangedEntity>> MODEL_SET =
-            ArmorModelSet.of(Changed.modResource("armor_latex_winged_dragon_male_unified"), ArmorLatexMaleDoubleHeadedWingedDragonModel::createArmorLayer, ArmorLatexMaleDoubleHeadedWingedDragonModel::new);
+            ArmorModelSet.of(Changed.modResource("armor_latex_double_headed_winged_dragon_male_unified"), ArmorLatexMaleDoubleHeadedWingedDragonModel::createArmorLayer, ArmorLatexMaleDoubleHeadedWingedDragonModel::new);
 
     private final ModelPart Head;
     private final ModelPart Head2;
