@@ -23,14 +23,12 @@ import javax.annotation.Nullable;
 public class StasisChamberModifyScreen extends Screen implements MenuAccess<StasisChamberMenu> {
     private final StasisChamberMenu menu;
     private final Screen lastScreen;
-    private final @Nullable IAbstractChangedEntity chambered;
     private @Nullable Runnable toolTip = null;
 
-    public StasisChamberModifyScreen(StasisChamberMenu menu, Screen parent, @Nullable IAbstractChangedEntity chambered) {
+    public StasisChamberModifyScreen(StasisChamberMenu menu, Screen parent) {
         super(new TranslatableComponent("changed.stasis.modify"));
         this.menu = menu;
         this.lastScreen = parent;
-        this.chambered = chambered;
     }
 
     public @NotNull StasisChamberMenu getMenu() {
@@ -53,90 +51,54 @@ public class StasisChamberModifyScreen extends Screen implements MenuAccess<Stas
     @Override
     protected void init() {
         super.init();
-        if (chambered == null)
-            return;
-        if (!chambered.getChangedEntity().getType().is(ChangedTags.EntityTypes.LATEX))
-            return;
-
-        if (chambered.getChangedEntity() instanceof CustomLatexEntity customLatexEntity) {
-            // Buttons to cycle through torso, arms, legs, etc
-        } else ChangedTransfurVariants.Gendered.getOpposite(chambered.getSelfVariant()).ifPresent(otherVariant -> {
-            var originalVariant = chambered.getSelfVariant();
-            // Button to swap gender
-        });
-
-        var bpi = Changed.config.client.basicPlayerInfo;
         int i = 0;
 
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.hair_color"),
-                bpi::getHairColor, bpi::setHairColor));
-        i++;
-        this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.sclera_color"),
-                bpi::getScleraColor, bpi::setScleraColor));
-        i++;
-        var rightIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.right"),
-                bpi::getRightIrisColor, bpi::setRightIrisColor));
-        i++;
-        var leftIris = this.addRenderableWidget(new ColorSelector(this.font, this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.iris_color.left"),
-                bpi::getLeftIrisColor, bpi::setLeftIrisColor));
-        this.addRenderableWidget(new Button((this.width / 2 - 155 + i % 2 * 160) + 110, (this.height / 6 + 24 * (i >> 1)) + 24, 40, 20, new TranslatableComponent("changed.config.bpi.iris_color.sync"),
-                button -> {
-                    leftIris.setValue(rightIris.getValue());
-                    //bpi.setLeftIrisColor(bpi.getRightIrisColor());
-                }, (button, stack, x, y) -> {
-                    setToolTip(() -> this.renderTooltip(stack, new TranslatableComponent("changed.config.bpi.iris_color.sync_tooltip"), x, y));
-                }));
-        i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.eye_style", bpi.getEyeStyle().getName()), button -> {
-            var style = bpi.getEyeStyle();
-            int id = style.ordinal();
-            if (id < EyeStyle.values().length - 1)
-                id += 1;
-            else
-                id = 0;
-            style = EyeStyle.values()[id];
-            bpi.setEyeStyle(style);
-            button.setMessage(new TranslatableComponent("changed.config.bpi.eye_style", style.getName()));
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.torso", CustomLatexEntity.TorsoType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.TorsoType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.torso", next.name()));
         }));
-        i += 2;
-        this.addRenderableWidget(new AbstractSliderButton(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.size"), bpi.getSizeValueForConfiguration()) {
-            {
-                this.updateMessage();
-            }
-
-            private double convertToScaledValue() {
-                return (this.value * BasicPlayerInfo.getSizeTolerance() * 2) - BasicPlayerInfo.getSizeTolerance() + 1.0;
-            }
-
-            @Override
-            protected void updateMessage() {
-                this.setMessage(new TranslatableComponent("changed.config.bpi.size.value", Math.round(convertToScaledValue() * 100)));
-            }
-
-            @Override
-            protected void applyValue() {
-                bpi.setSize((float)convertToScaledValue());
-            }
-        });
-        i += 2;
-        this.addRenderableWidget(new Checkbox(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.override_dl_iris"), bpi.isOverrideIrisOnDarkLatex()) {
-            @Override
-            public void onPress() {
-                super.onPress();
-                bpi.setOverrideIrisOnDarkLatex(this.selected());
-            }
-        });
-        i += 2;
-        this.addRenderableWidget(new Checkbox(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.config.bpi.override_all_eye_styles"), bpi.isOverrideOthersToMatchStyle()) {
-            @Override
-            public void onPress() {
-                super.onPress();
-                bpi.setOverrideOthersToMatchStyle(this.selected());
-            }
-        });
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.hair", CustomLatexEntity.HairType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.HairType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.hair", next.name()));
+        }));
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.ears", CustomLatexEntity.EarType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.EarType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.ears", next.name()));
+        }));
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.tail", CustomLatexEntity.TailType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.TailType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.tail", next.name()));
+        }));
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.legs", CustomLatexEntity.LegType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.LegType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.legs", next.name()));
+        }));
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.arms", CustomLatexEntity.ArmType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.ArmType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.arms", next.name()));
+        }));
+        i++;
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.scale", CustomLatexEntity.ScaleType.fromFlags(menu.configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.ScaleType.fromFlags(menu.configuredCustomLatex).cycle();
+            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+            button.setMessage(new TranslatableComponent("changed.stasis.modify.scale", next.name()));
+        }));
+        i++;
         i += 2;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
+            menu.inputCustomLatexConfig(menu.configuredCustomLatex);
             this.minecraft.setScreen(this.lastScreen);
         }));
     }

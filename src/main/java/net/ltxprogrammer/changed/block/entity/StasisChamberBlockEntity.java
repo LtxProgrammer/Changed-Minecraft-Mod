@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.entity.SeatEntity;
@@ -12,6 +13,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -42,7 +44,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
     private @Nullable ScheduledCommand currentCommand = null;
     private LivingEntity cachedEntity;
 
-    private @Nullable TransfurVariant<?> configuredVariant = ChangedTransfurVariants.DARK_LATEX_WOLF_MALE.get();
+    private @Nullable TransfurVariant<?> configuredVariant = null;
     private int configuredCustomLatex = 0;
     private int waitDuration = 0;
     private boolean stabilized = false;
@@ -143,6 +145,18 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         return getChamberedEntity().map(IAbstractChangedEntity::forEither);
     }
 
+    public Optional<ScheduledCommand> getCurrentCommand() {
+        return Optional.ofNullable(currentCommand);
+    }
+
+    public Optional<TransfurVariant<?>> getConfiguredTransfurVariant() {
+        return Optional.ofNullable(configuredVariant);
+    }
+
+    public ImmutableList<ScheduledCommand> getScheduledCommands() {
+        return ImmutableList.copyOf(scheduledCommands);
+    }
+
     public float getFluidLevel(float partialTick) {
         return Mth.lerp(partialTick, fluidLevel, fluidLevelO);
     }
@@ -160,36 +174,40 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         this.fluidItem = fluidItem;
     }
 
+    protected static void updateMenus(Level level, StasisChamberBlockEntity blockEntity) {
+        level.players().forEach(player -> {
+            if (player.containerMenu instanceof StasisChamberMenu menu && menu.blockEntity == blockEntity) {
+                menu.updateChamberStatus();
+            }
+        });
+    }
+
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, StasisChamberBlockEntity blockEntity) {
         var commands = blockEntity.scheduledCommands;
-        if (commands.isEmpty()) {
-            // No scheduled work, return to idle state
-
-            // These are for debugging
-            commands.add(ScheduledCommand.OPEN);
-            commands.add(ScheduledCommand.CAPTURE_ENTITY);
-            commands.add(ScheduledCommand.FILL);
-            commands.add(ScheduledCommand.TRANSFUR_ENTITY);
-            commands.add(ScheduledCommand.MODIFY_ENTITY);
-            // End debug
-
+        if (commands.isEmpty() && !blockEntity.getEntitiesWithin().isEmpty()) {
+            // No scheduled work, ensure entities within can leave
             commands.add(ScheduledCommand.DRAIN);
             commands.add(ScheduledCommand.RELEASE);
             commands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
         }
 
-        if (blockEntity.currentCommand == null) {
+        if (!commands.isEmpty() && blockEntity.currentCommand == null) {
             blockEntity.currentCommand = commands.get(0);
             commands.remove(0);
 
             if (blockEntity.currentCommand == null || !blockEntity.currentCommand.canStart(blockEntity)) {
                 blockEntity.currentCommand = null; // Cannot start command
+                updateMenus(level, blockEntity);
                 return;
+            } else {
+                updateMenus(level, blockEntity);
             }
         }
 
-        if (!blockEntity.currentCommand.tick(blockEntity))
+        if (blockEntity.currentCommand != null && !blockEntity.currentCommand.tick(blockEntity)) {
             blockEntity.currentCommand = null; // Command finished
+            updateMenus(level, blockEntity);
+        }
     }
 
     public boolean isOpen() {
@@ -257,6 +275,48 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
 
     public boolean isStabilized() {
         return stabilized;
+    }
+
+    private void trimSchedule() {
+        while (!scheduledCommands.isEmpty()) {
+            var lastCommand = scheduledCommands.get(scheduledCommands.size() - 1);
+            switch (lastCommand) {
+                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN -> scheduledCommands.remove(scheduledCommands.size() - 1);
+                default -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public void inputProgram(String program) {
+        if ("transfur".equals(program) && !scheduledCommands.contains(ScheduledCommand.TRANSFUR_ENTITY)) {
+            trimSchedule();
+
+            scheduledCommands.add(ScheduledCommand.OPEN);
+            scheduledCommands.add(ScheduledCommand.CAPTURE_ENTITY);
+            scheduledCommands.add(ScheduledCommand.FILL);
+            scheduledCommands.add(ScheduledCommand.TRANSFUR_ENTITY);
+
+            scheduledCommands.add(ScheduledCommand.DRAIN);
+            scheduledCommands.add(ScheduledCommand.RELEASE);
+            scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
+            updateMenus(this.level, this);
+        }
+
+        else if ("modify".equals(program) && !scheduledCommands.contains(ScheduledCommand.MODIFY_ENTITY)) {
+            trimSchedule();
+
+            scheduledCommands.add(ScheduledCommand.OPEN);
+            scheduledCommands.add(ScheduledCommand.CAPTURE_ENTITY);
+            scheduledCommands.add(ScheduledCommand.FILL);
+            scheduledCommands.add(ScheduledCommand.MODIFY_ENTITY);
+
+            scheduledCommands.add(ScheduledCommand.DRAIN);
+            scheduledCommands.add(ScheduledCommand.RELEASE);
+            scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
+            updateMenus(this.level, this);
+        }
     }
 
     public enum ScheduledCommand {

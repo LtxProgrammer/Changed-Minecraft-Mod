@@ -20,8 +20,20 @@ public class CustomLatexEntity extends ChangedEntity {
         FEMALE,
         HEAVY;
 
-        TorsoType cycle() {
+        public TorsoType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static TorsoType fromFlags(int flags) {
+            var type = (flags) & 0xf;
+            if (type >= TorsoType.values().length) return TorsoType.GENERIC;
+            else return TorsoType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x0000000f;
+            flags |= ordinal();
+            return flags;
         }
     }
 
@@ -30,8 +42,20 @@ public class CustomLatexEntity extends ChangedEntity {
         SHORT,
         LONG;
 
-        HairType cycle() {
+        public HairType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static HairType fromFlags(int flags) {
+            var type = (flags >> 4) & 0xf;
+            if (type >= HairType.values().length) return HairType.BALD;
+            else return HairType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x000000f0;
+            flags |= ordinal() << 4;
+            return flags;
         }
     }
 
@@ -41,8 +65,20 @@ public class CustomLatexEntity extends ChangedEntity {
         DRAGON,
         SHARK;
 
-        EarType cycle() {
+        public EarType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static EarType fromFlags(int flags) {
+            var type = (flags >> 8) & 0xf;
+            if (type >= EarType.values().length) return EarType.WOLF;
+            else return EarType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x00000f00;
+            flags |= ordinal() << 8;
+            return flags;
         }
     }
 
@@ -52,8 +88,20 @@ public class CustomLatexEntity extends ChangedEntity {
         DRAGON,
         SHARK;
 
-        TailType cycle() {
+        public TailType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static TailType fromFlags(int flags) {
+            var type = (flags >> 12) & 0xf;
+            if (type >= TailType.values().length) return TailType.WOLF;
+            else return TailType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x0000f000;
+            flags |= ordinal() << 12;
+            return flags;
         }
     }
 
@@ -62,8 +110,20 @@ public class CustomLatexEntity extends ChangedEntity {
         CENTAUR,
         MERMAID;
 
-        LegType cycle() {
+        public LegType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static LegType fromFlags(int flags) {
+            var type = (flags >> 16) & 0xf;
+            if (type >= LegType.values().length) return LegType.BIPEDAL;
+            else return LegType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x000f0000;
+            flags |= ordinal() << 16;
+            return flags;
         }
     }
 
@@ -72,8 +132,20 @@ public class CustomLatexEntity extends ChangedEntity {
         WYVERN,
         SHARK;
 
-        ArmType cycle() {
+        public ArmType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static ArmType fromFlags(int flags) {
+            var type = (flags >> 20) & 0xf;
+            if (type >= ArmType.values().length) return ArmType.GENERIC;
+            else return ArmType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x00f00000;
+            flags |= ordinal() << 20;
+            return flags;
         }
     }
 
@@ -92,8 +164,20 @@ public class CustomLatexEntity extends ChangedEntity {
             this.bbScale = bbScale;
         }
 
-        ScaleType cycle() {
+        public ScaleType cycle() {
             return values()[this.ordinal() + 1 >= values().length ? 0 : this.ordinal() + 1];
+        }
+
+        public static ScaleType fromFlags(int flags) {
+            var type = (flags >> 24) & 0xf;
+            if (type >= TailType.values().length) return ScaleType.NORMAL;
+            else return ScaleType.values()[type];
+        }
+
+        public int setFlags(int flags) {
+            flags ^= (flags) & 0x0f000000;
+            flags |= ordinal() << 24;
+            return flags;
         }
     }
 
@@ -111,45 +195,31 @@ public class CustomLatexEntity extends ChangedEntity {
     }
 
     public TorsoType getTorsoType() {
-        var type = this.entityData.get(DATA_FORM_FLAGS) & 0xf;
-        if (type >= TorsoType.values().length) return TorsoType.GENERIC;
-        else return TorsoType.values()[type];
+        return TorsoType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public HairType getHairType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 4) & 0xf;
-        if (type >= HairType.values().length) return HairType.BALD;
-        else return HairType.values()[type];
+        return HairType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public EarType getEarType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 8) & 0xf;
-        if (type >= EarType.values().length) return EarType.WOLF;
-        else return EarType.values()[type];
+        return EarType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public TailType getTailType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 12) & 0xf;
-        if (type >= TailType.values().length) return TailType.WOLF;
-        else return TailType.values()[type];
+        return TailType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public LegType getLegType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 16) & 0xf;
-        if (type >= TailType.values().length) return LegType.BIPEDAL;
-        else return LegType.values()[type];
+        return LegType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public ArmType getArmType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 20) & 0xf;
-        if (type >= TailType.values().length) return ArmType.GENERIC;
-        else return ArmType.values()[type];
+        return ArmType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public ScaleType getScaleType() {
-        var type = (this.entityData.get(DATA_FORM_FLAGS) >> 24) & 0xf;
-        if (type >= TailType.values().length) return ScaleType.NORMAL;
-        else return ScaleType.values()[type];
+        return ScaleType.fromFlags(this.entityData.get(DATA_FORM_FLAGS));
     }
 
     public void setTorsoType(TorsoType type) {
