@@ -196,6 +196,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexHypnoCat>> LATEX_HYPNO_CAT = registerSpawning("latex_hypno_cat", 0x52596D, 0xD7FF46,
             EntityType.Builder.of(LatexHypnoCat::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexHypnoCat::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<LatexKobold>> LATEX_KOBOLD = registerSpawning("latex_kobold", 0x789ac7, 0x5d6891,
+            EntityType.Builder.of(LatexKobold::new, ChangedMobCategories.UNDERGROUND).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexKobold::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<LatexLeaf>> LATEX_LEAF = registerSpawning("latex_leaf", 0xBFF298, 0x76C284,
             EntityType.Builder.of(LatexLeaf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexLeaf::checkEntitySpawnRules);
@@ -426,9 +429,10 @@ public class ChangedEntities {
 
             /* Cave spawning entities */
 
-            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_STIGER, 100, 1, 3, 0.7, 0.15);
+            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_STIGER, 80, 1, 3, 0.7, 0.15);
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRAFFIC_CONE_DRAGON, 100, 1, 3, 0.7, 0.15);
-            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRANSLUCENT_LIZARD, 100, 1, 3, 0.7, 0.15);
+            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRANSLUCENT_LIZARD, 60, 1, 3, 0.7, 0.15);
+            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_KOBOLD, 100, 1, 3, 0.7, 0.15);
 
             // Passive
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, BEIFENG, 10, 1, 1, 0.7, 0.15);

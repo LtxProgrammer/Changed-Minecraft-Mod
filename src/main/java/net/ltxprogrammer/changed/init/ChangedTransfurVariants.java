@@ -80,6 +80,8 @@ public class ChangedTransfurVariants {
             TransfurVariant.Builder.of(ChangedEntities.LATEX_HYPNO_CAT).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION).addAbility(ChangedAbilities.HYPNOSIS));
     public static final RegistryObject<TransfurVariant<LatexKeonWolf>> LATEX_KEON_WOLF = register("form_latex_keon_wolf",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_KEON_WOLF).stepSize(0.7f).scares(AbstractSkeleton.class));
+    public static final RegistryObject<TransfurVariant<LatexKobold>> LATEX_KOBOLD = register("form_latex_kobold",
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_KOBOLD).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<LatexLeaf>> LATEX_LEAF = register("form_latex_leaf",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_LEAF).stepSize(0.7f).absorbing());
     public static final RegistryObject<TransfurVariant<LatexMedusaCat>> LATEX_MEDUSA_CAT = register("form_latex_medusa_cat",
