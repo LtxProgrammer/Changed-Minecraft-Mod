@@ -432,7 +432,7 @@ public class ChangedEntities {
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_STIGER, 80, 1, 3, 0.7, 0.15);
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRAFFIC_CONE_DRAGON, 100, 1, 3, 0.7, 0.15);
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_TRANSLUCENT_LIZARD, 60, 1, 3, 0.7, 0.15);
-            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_KOBOLD, 100, 1, 3, 0.7, 0.15);
+            ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, LATEX_KOBOLD, 50, 1, 3, 0.7, 0.15);
 
             // Passive
             ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.UNDERGROUND, BEIFENG, 10, 1, 1, 0.7, 0.15);

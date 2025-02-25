@@ -126,11 +126,11 @@ public class LatexKoboldModel extends AdvancedHumanoidModel<LatexKobold> impleme
 
         PartDefinition SideHorn_r2 = RightSideHorns.addOrReplaceChild("SideHorn_r2", CubeListBuilder.create().texOffs(0, 56).addBox(-1.6F, -3.4F, 0.0F, 1.0F, 2.0F, 5.0F, new CubeDeformation(0.04F)), PartPose.offsetAndRotation(-2.7F, -28.0F, -0.7F, 0.1745F, -0.6109F, 0.2618F));
 
-        PartDefinition SideHorn_r3 = RightSideHorns.addOrReplaceChild("SideHorn_r3", CubeListBuilder.create().texOffs(50, 39).addBox(-1.0F, -2.0F, -1.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.12F)), PartPose.offsetAndRotation(-4.0F, -27.8F, -0.2F, -0.1745F, -0.6109F, 0.5672F));
+        PartDefinition SideHorn_r3 = RightSideHorns.addOrReplaceChild("SideHorn_r3", CubeListBuilder.create().texOffs(50, 39).addBox(-1.0F, -2.0F, -1.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.12F)), PartPose.offsetAndRotation(-3.9F, -27.8F, -0.2F, -0.1745F, -0.6109F, 0.5672F));
 
         PartDefinition LeftSideHorns = Head.addOrReplaceChild("LeftSideHorns", CubeListBuilder.create(), PartPose.offset(-0.1F, 25.0F, 0.0F));
 
-        PartDefinition SideHorn_r4 = LeftSideHorns.addOrReplaceChild("SideHorn_r4", CubeListBuilder.create().texOffs(46, 50).addBox(-1.0F, -2.0F, -1.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.12F)), PartPose.offsetAndRotation(4.0F, -27.8F, -0.2F, -0.1745F, 0.6109F, -0.5672F));
+        PartDefinition SideHorn_r4 = LeftSideHorns.addOrReplaceChild("SideHorn_r4", CubeListBuilder.create().texOffs(46, 50).addBox(-1.0F, -2.0F, -1.1F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.12F)), PartPose.offsetAndRotation(3.9F, -27.8F, -0.2F, -0.1745F, 0.6109F, -0.5672F));
 
         PartDefinition SideHorn_r5 = LeftSideHorns.addOrReplaceChild("SideHorn_r5", CubeListBuilder.create().texOffs(16, 51).addBox(0.6F, -3.4F, 0.0F, 1.0F, 2.0F, 5.0F, new CubeDeformation(0.04F)), PartPose.offsetAndRotation(2.7F, -28.0F, -0.7F, 0.1745F, 0.6109F, -0.2618F));
 
