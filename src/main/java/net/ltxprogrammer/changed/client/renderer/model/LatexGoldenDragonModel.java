@@ -20,7 +20,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 public class LatexGoldenDragonModel extends AdvancedHumanoidModel<LatexGoldenDragon> implements AdvancedHumanoidModelInterface<LatexGoldenDragon, LatexGoldenDragonModel> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("dark_dragon"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Changed.modResource("golden_dragon"), "main");
     private final ModelPart RightLeg;
     private final ModelPart LeftLeg;
     private final ModelPart RightArm;
