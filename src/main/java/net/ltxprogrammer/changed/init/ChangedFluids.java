@@ -34,6 +34,12 @@ public class ChangedFluids {
     public static final RegistryObject<TransfurGas> WOLF_GAS = register("wolf_gas", WolfGas.Source::new, ChangedFluids::translucentRenderer);
     public static final RegistryObject<TransfurGas> WOLF_GAS_FLOWING = register("wolf_gas_flowing", WolfGas.Flowing::new, ChangedFluids::translucentRenderer);
 
+    public static final RegistryObject<TransfurGas> TIGER_GAS = register("tiger_gas", TigerGas.Source::new, ChangedFluids::translucentRenderer);
+    public static final RegistryObject<TransfurGas> TIGER_GAS_FLOWING = register("tiger_gas_flowing", TigerGas.Flowing::new, ChangedFluids::translucentRenderer);
+
+    public static final RegistryObject<TransfurGas> SKUNK_GAS = register("skunk_gas", SkunkGas.Source::new, ChangedFluids::translucentRenderer);
+    public static final RegistryObject<TransfurGas> SKUNK_GAS_FLOWING = register("skunk_gas_flowing", SkunkGas.Flowing::new, ChangedFluids::translucentRenderer);
+
     public static void cutoutRenderer(Fluid fluid) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
                 ItemBlockRenderTypes.setRenderLayer(fluid, renderType -> renderType == RenderType.cutout()));

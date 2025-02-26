@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:tiger_gas",
     "changed:wolf_gas"
   ]
 }

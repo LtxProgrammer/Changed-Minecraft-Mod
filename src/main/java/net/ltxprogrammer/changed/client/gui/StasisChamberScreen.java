@@ -24,29 +24,33 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
     public StasisChamberScreen(StasisChamberMenu menu, Inventory inventory, Component text) {
         super(menu, inventory, text);
         this.menu = menu;
-        this.imageWidth = 176;
+        this.imageWidth = 285;
         this.imageHeight = 166;
 
         menu.requestUpdate();
     }
 
-    private static final ResourceLocation texture = Changed.modResource("textures/gui/purifier.png");
+    private static final ResourceLocation texture = Changed.modResource("textures/gui/stasis_chamber.png");
 
     @Override
     public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
 
+        final int textLeftMargin = this.leftPos + 176;
+        final int textTopMargin = this.topPos + 6;
+        final int commandsTopMargin = this.topPos + 24;
+
         menu.getConfiguredTransfurVariant().ifPresent(variant -> {
-            Gui.drawString(ms, Minecraft.getInstance().font, variant.getEntityType().getDescription(), this.width / 2 - 50, 30, 0xFFFFFF);
+            Gui.drawCenteredString(ms, Minecraft.getInstance().font, variant.getEntityType().getDescription(), textLeftMargin + 50, textTopMargin, 0xFFFFFF);
         });
 
         AtomicInteger yOffset = new AtomicInteger(0);
         menu.getCurrentCommand().ifPresent(command -> {
-            Gui.drawString(ms, Minecraft.getInstance().font, "> " + command.name() + " <", this.width / 2 - 50, 50 + yOffset.getAndAdd(14), 0x20FF20);
+            Gui.drawString(ms, Minecraft.getInstance().font, command.getActiveDisplayText(), textLeftMargin, commandsTopMargin + yOffset.getAndAdd(12), 0x20FF20);
         });
         menu.getScheduledCommands().forEach(command -> {
-            Gui.drawString(ms, Minecraft.getInstance().font, command.name(), this.width / 2 - 50, 50 + yOffset.getAndAdd(14), 0xFFFFFF);
+            Gui.drawString(ms, Minecraft.getInstance().font, command.getDisplayText(), textLeftMargin, commandsTopMargin + yOffset.getAndAdd(12), 0xFFFFFF);
         });
 
         this.renderTooltip(ms, mouseX, mouseY);
@@ -58,15 +62,15 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        /*RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShaderTexture(0, texture);
         blit(ms, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 
         RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/progress_bar_back.png"));
-        blit(ms, this.leftPos + 63, this.topPos + 62, 0, 0, 48, 12, 48, 12);
+        blit(ms, this.leftPos + 217, this.topPos + 144, 0, 0, 48, 12, 48, 12);
 
-        float progress = menu.getFluidLevel(partialTicks);
+        float progress = ((float)menu.data.get(0)) * 0.001f;
         RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/progress_bar_front.png"));
-        blit(ms, this.leftPos + 63, this.topPos + 62, 0, 0, (int)(48 * progress), 12, 48, 12);*/
+        blit(ms, this.leftPos + 217, this.topPos + 144, 0, 0, (int)(48 * progress), 12, 48, 12);
 
         RenderSystem.disableBlend();
     }
@@ -94,6 +98,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
     private boolean initialized = false;
     private boolean showPrograms = false;
     private Button programsButton;
+    private Button modifyButton;
     private Button openDoorButton;
     private Button closeDoorButton;
     private Button captureNextEntityButton;
@@ -106,6 +111,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
 
         boolean open = menu.isChamberOpen();
         programsButton.active = true;
+        modifyButton.active = true;
         openDoorButton.active = !open;
         openDoorButton.visible = !showPrograms;
         closeDoorButton.active = open;
@@ -131,35 +137,42 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
 
         this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-        programsButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6, 100, 20, new TranslatableComponent("changed.stasis.programs"), button -> {
+        int leftMargin = this.leftPos + 7;
+        int topMargin = this.topPos + 7;
+        int buttonWidth = 79;
+        int buttonHeight = 20;
+        int buttonHeightSpacing = buttonHeight + 4;
+        int buttonWidthSpacing = buttonWidth + 4;
+
+        programsButton = this.addRenderableWidget(new Button(leftMargin, topMargin, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.programs"), button -> {
             showPrograms = !showPrograms;
         }));
 
-        openDoorButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24, 100, 20, new TranslatableComponent("changed.stasis.open"), button -> {
-            menu.sendSimpleCommand(StasisChamberMenu.Command.OPEN_DOOR);
-        }));
-
-        closeDoorButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24 * 2, 100, 20, new TranslatableComponent("changed.stasis.close"), button -> {
-            menu.sendSimpleCommand(StasisChamberMenu.Command.CLOSE_DOOR);
-        }));
-
-        captureNextEntityButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24 * 3, 100, 20, new TranslatableComponent("changed.stasis.capture_next"), button -> {
-
-        }));
-
-        toggleStasisButton = this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24 * 4, 100, 20, new TranslatableComponent("changed.stasis.toggle_stasis"), button -> {
-
-        }));
-
-        this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24 * 5, 100, 20, new TranslatableComponent("changed.stasis.modify"), button -> {
+        modifyButton = this.addRenderableWidget(new Button(leftMargin + buttonWidthSpacing, topMargin, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.modify"), button -> {
             this.minecraft.setScreen(new StasisChamberModifyScreen(menu, this));
         }));
 
-        programButtons.add(this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24, 100, 20, new TranslatableComponent("changed.stasis.program.transfur"), button -> {
+        openDoorButton = this.addRenderableWidget(new Button(leftMargin, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.open"), button -> {
+            menu.sendSimpleCommand(StasisChamberMenu.Command.OPEN_DOOR);
+        }));
+
+        closeDoorButton = this.addRenderableWidget(new Button(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.close"), button -> {
+            menu.sendSimpleCommand(StasisChamberMenu.Command.CLOSE_DOOR);
+        }));
+
+        captureNextEntityButton = this.addRenderableWidget(new Button(leftMargin, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.capture_next"), button -> {
+
+        }));
+
+        toggleStasisButton = this.addRenderableWidget(new Button(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.toggle_stasis"), button -> {
+
+        }));
+
+        programButtons.add(this.addRenderableWidget(new Button(leftMargin, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.program.transfur"), button -> {
             menu.inputProgram("transfur");
         })));
 
-        programButtons.add(this.addRenderableWidget(new Button(this.width / 2 - 155, this.height / 6 + 24 * 2, 100, 20, new TranslatableComponent("changed.stasis.program.modify"), button -> {
+        programButtons.add(this.addRenderableWidget(new Button(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.program.modify"), button -> {
             menu.inputProgram("modify");
         })));
 

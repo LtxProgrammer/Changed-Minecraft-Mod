@@ -494,7 +494,7 @@ public class StasisChamber extends HorizontalDirectionalBlock implements NonLate
     @Override
     public MenuProvider getMenuProvider(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos) {
         if (this.stateHasBlockEntity(state))
-            return new SimpleMenuProvider((id, inventory, player) -> new StasisChamberMenu(id, inventory, level.getBlockEntity(pos, ChangedBlockEntities.STASIS_CHAMBER.get()).orElse(null)), CONTAINER_TITLE);
+            return level.getBlockEntity(pos, ChangedBlockEntities.STASIS_CHAMBER.get()).orElse(null);
         return null;
     }
 

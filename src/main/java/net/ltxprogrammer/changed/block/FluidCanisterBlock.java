@@ -1,12 +1,8 @@
 package net.ltxprogrammer.changed.block;
 
-import com.mojang.math.Vector3f;
 import net.ltxprogrammer.changed.block.entity.GasCanisterBlockEntity;
-import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.fluid.Gas;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
-import net.ltxprogrammer.changed.init.ChangedEntities;
-import net.ltxprogrammer.changed.init.ChangedFluids;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +32,6 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,21 +42,21 @@ import java.util.stream.Collectors;
 
 import static net.ltxprogrammer.changed.item.GasCanister.CAPACITY;
 
-public class GasCanisterBlock extends AbstractCustomShapeTallEntityBlock {
+public class FluidCanisterBlock extends AbstractCustomShapeTallEntityBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final VoxelShape SHAPE_WHOLE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 28.0D, 12.0D);
-    private final Supplier<? extends Gas> gas;
+    private final @Nullable Supplier<? extends Gas> gas;
     private FluidState stateOpen;
     private FluidState stateClosed;
 
     private void maybeInitializeFluidStates() {
         if (stateOpen == null)
-            stateOpen = gas.get().getSource(false);
+            stateOpen = gas != null ? gas.get().getSource(false) : Fluids.EMPTY.defaultFluidState();
         if (stateClosed == null)
             stateClosed = Fluids.EMPTY.defaultFluidState();
     }
 
-    public GasCanisterBlock(Supplier<? extends Gas> gas) {
+    public FluidCanisterBlock(@Nullable Supplier<? extends Gas> gas) {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).color(MaterialColor.WOOL).strength(0.7F));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
         this.gas = gas;
@@ -178,7 +173,7 @@ public class GasCanisterBlock extends AbstractCustomShapeTallEntityBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
-        if (state.getValue(OPEN)) {
+        if (state.getValue(OPEN) && gas != null) {
             level.scheduleTick(pos, gas.get(), gas.get().getTickDelay(level));
             level.scheduleTick(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below(), gas.get(), gas.get().getTickDelay(level));
         }

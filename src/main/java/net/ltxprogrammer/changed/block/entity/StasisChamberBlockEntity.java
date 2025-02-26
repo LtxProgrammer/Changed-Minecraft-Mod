@@ -11,22 +11,36 @@ import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.TagUtil;
+import net.ltxprogrammer.changed.world.inventory.PurifierMenu;
 import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -35,31 +49,127 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlockEntity {
+public class StasisChamberBlockEntity extends BaseContainerBlockEntity implements SeatableBlockEntity, StackedContentsCompatible {
     private SeatEntity entityHolder; // Track single entity when active
     private float fluidLevel = 0.0f; // Allows chamber to fill up with fluid
     private float fluidLevelO = 0.0f;
-    private ItemStack fluidItem = ItemStack.EMPTY; // Could be used to fill the chamber with oxygenated fluid for stasis (or latex to transfur)
     private final List<ScheduledCommand> scheduledCommands = new ArrayList<>();
     private @Nullable ScheduledCommand currentCommand = null;
     private LivingEntity cachedEntity;
 
-    private @Nullable TransfurVariant<?> configuredVariant = null;
+    public NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private int configuredCustomLatex = 0;
     private int waitDuration = 0;
     private boolean stabilized = false;
 
+    protected final ContainerData dataAccess = new ContainerData() {
+        public int get(int dataSlot) {
+            return switch (dataSlot) {
+                case 0 -> (int)(StasisChamberBlockEntity.this.fluidLevel * 1000);
+                case 1 -> StasisChamberBlockEntity.this.configuredCustomLatex;
+                default -> 0;
+            };
+        }
+
+        public void set(int dataSlot, int dataValue) {
+            switch (dataSlot) {
+                case 0 -> StasisChamberBlockEntity.this.fluidLevel = ((float)dataValue) * 0.001f;
+                case 1 -> StasisChamberBlockEntity.this.configuredCustomLatex = dataValue;
+            };
+        }
+
+        public int getCount() {
+            return 2;
+        }
+    };
+
+    protected @NotNull Component getDefaultName() {
+        return new TranslatableComponent("container.changed.stasis_chamber");
+    }
+
+    protected @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory) {
+        return new StasisChamberMenu(id, inventory, this, this.dataAccess);
+    }
+
     public StasisChamberBlockEntity(BlockPos pos, BlockState state) {
         super(ChangedBlockEntities.STASIS_CHAMBER.get(), pos, state);
+    }
+
+    public boolean isEmpty() {
+        for(ItemStack itemstack : this.items) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public ItemStack getItem(int p_58328_) {
+        return this.items.get(p_58328_);
+    }
+
+    public ItemStack removeItem(int p_58330_, int p_58331_) {
+        return ContainerHelper.removeItem(this.items, p_58330_, p_58331_);
+    }
+
+    public ItemStack removeItemNoUpdate(int p_58387_) {
+        return ContainerHelper.takeItem(this.items, p_58387_);
+    }
+
+    public void setItem(int slotId, ItemStack stack) {
+        ItemStack existingItem = this.items.get(slotId);
+        boolean flag = !stack.isEmpty() && stack.sameItem(existingItem) && ItemStack.tagMatches(stack, existingItem);
+        this.items.set(slotId, stack);
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
+        }
+
+        if (slotId == 0 && !flag) {
+            this.setChanged();
+        }
+
+        if (slotId == 1 && !flag) {
+            this.setChanged();
+        }
+    }
+
+    public int getContainerSize() {
+        return this.items.size();
+    }
+
+    public boolean stillValid(Player player) {
+        if (this.level.getBlockEntity(this.worldPosition) != this) {
+            return false;
+        } else {
+            return player.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) <= 64.0D;
+        }
+    }
+
+    public boolean canPlaceItem(int slotId, ItemStack stack) {
+        if (slotId == 0)
+            return stack.is(ChangedItems.LATEX_SYRINGE.get());
+        else if (slotId == 1)
+            return stack.is(ChangedItems.LATEX_SYRINGE.get()); // TODO
+        else
+            return false;
+    }
+
+    public void clearContent() {
+        this.items.clear();
+    }
+
+    public void fillStackedContents(StackedContents contents) {
+        for(ItemStack itemstack : this.items) {
+            contents.accountStack(itemstack);
+        }
     }
 
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putFloat("fluidLevel", fluidLevel);
         tag.putFloat("fluidLevelO", fluidLevelO);
-        tag.put("fluidItem", fluidItem.serializeNBT());
-        if (configuredVariant != null)
-            TagUtil.putResourceLocation(tag, "configuredVariant", configuredVariant.getFormId());
+        ContainerHelper.saveAllItems(tag, this.items);
         tag.putInt("configuredCustomLatex", configuredCustomLatex);
         tag.putInt("waitDuration", waitDuration);
         tag.putBoolean("stabilized", stabilized);
@@ -75,9 +185,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         super.load(tag);
         fluidLevel = tag.getFloat("fluidLevel");
         fluidLevelO = tag.getFloat("fluidLevelO");
-        fluidItem = ItemStack.of(tag.getCompound("fluidItem"));
-        if (tag.contains("configuredVariant"))
-            configuredVariant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(TagUtil.getResourceLocation(tag, "configuredVariant"));
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         configuredCustomLatex = tag.getInt("configuredCustomLatex");
         waitDuration = tag.getInt("waitDuration");
         stabilized = tag.getBoolean("stabilized");
@@ -149,8 +257,12 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         return Optional.ofNullable(currentCommand);
     }
 
+    private @Nullable TransfurVariant<?> findVariantFromSlots() {
+        return items.get(0).is(ChangedItems.LATEX_SYRINGE.get()) ? Syringe.getVariant(items.get(0)) : null;
+    }
+
     public Optional<TransfurVariant<?>> getConfiguredTransfurVariant() {
-        return Optional.ofNullable(configuredVariant);
+        return Optional.ofNullable(findVariantFromSlots());
     }
 
     public ImmutableList<ScheduledCommand> getScheduledCommands() {
@@ -158,20 +270,12 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
     }
 
     public float getFluidLevel(float partialTick) {
-        return Mth.lerp(partialTick, fluidLevel, fluidLevelO);
+        return Mth.lerp(partialTick, fluidLevelO, fluidLevel);
     }
 
     public void setFluidLevel(float fluidLevel) {
         this.fluidLevelO = fluidLevel;
         this.fluidLevel = fluidLevel;
-    }
-
-    public ItemStack getFluidItem() {
-        return fluidItem;
-    }
-
-    public void setFluidItem(ItemStack fluidItem) {
-        this.fluidItem = fluidItem;
     }
 
     protected static void updateMenus(Level level, StasisChamberBlockEntity blockEntity) {
@@ -222,8 +326,16 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
         return fluidLevel >= 1.0f;
     }
 
+    public boolean isPartiallyFilled() {
+        return fluidLevel > 0.0f;
+    }
+
     public boolean isClosedAndDrained() {
         return isClosed() && isDrained();
+    }
+
+    public boolean isClosedAndNotFull() {
+        return isClosed() && !isFilled();
     }
 
     public boolean isDrained() {
@@ -278,6 +390,12 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
     }
 
     private void trimSchedule() {
+        if (currentCommand != null) {
+            currentCommand = switch (currentCommand) {
+                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN -> null;
+                default -> currentCommand;
+            };
+        }
         while (!scheduledCommands.isEmpty()) {
             var lastCommand = scheduledCommands.get(scheduledCommands.size() - 1);
             switch (lastCommand) {
@@ -346,7 +464,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
 
             return false;
         }), // If chamber is open -> Closes chamber
-        FILL(StasisChamberBlockEntity::isClosedAndDrained, blockEntity -> {
+        FILL(StasisChamberBlockEntity::isClosedAndNotFull, blockEntity -> {
             blockEntity.fluidLevelO = blockEntity.fluidLevel;
             blockEntity.fluidLevel += 0.005f; // Take 10 seconds to fill
 
@@ -380,7 +498,7 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
             return false;
         }), // If chamber is filled, and has captured latex -> Modifies latex with given configuration
         TRANSFUR_ENTITY(blockEntity -> {
-            return blockEntity.configuredVariant != null && blockEntity.isFilledAndHasEntity() && !blockEntity.isFilledAndHasLatex();
+            return blockEntity.findVariantFromSlots() != null && blockEntity.isFilledAndHasEntity() && !blockEntity.isFilledAndHasLatex();
         }, blockEntity -> {
             if (!blockEntity.ensureCapturedIsStillInside())
                 return false;
@@ -388,20 +506,20 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
             blockEntity.getChamberedEntity().ifPresent(entity -> {
                 if (TransfurVariant.getEntityVariant(entity) != null) return;
 
-                ProcessTransfur.transfur(entity, entity.level, blockEntity.configuredVariant, true, TransfurContext.hazard(TransfurCause.STASIS_CHAMBER));
+                ProcessTransfur.transfur(entity, entity.level, blockEntity.findVariantFromSlots(), true, TransfurContext.hazard(TransfurCause.STASIS_CHAMBER));
                 if (entity.isRemoved() || entity.isDeadOrDying()) { // Transfurring killed entity, replaced with npc
                     blockEntity.cachedEntity = null;
                     blockEntity.ensureCapturedIsStillInside();
                 }
 
-                blockEntity.configuredVariant = null;
+                blockEntity.setItem(0, new ItemStack(ChangedItems.SYRINGE.get()));
             });
 
             return blockEntity.getChamberedLatex().map(IAbstractChangedEntity::getTransfurVariantInstance)
                     .map(TransfurVariantInstance::isTransfurring)
                     .orElse(false);
         }), // If chamber is filled, and has captured entity -> Transfurs the entity with given variant
-        DRAIN(StasisChamberBlockEntity::isFilled, blockEntity -> {
+        DRAIN(StasisChamberBlockEntity::isPartiallyFilled, blockEntity -> {
             blockEntity.fluidLevelO = blockEntity.fluidLevel;
             blockEntity.fluidLevel -= 0.01f; // Take 5 seconds to drain
 
@@ -452,6 +570,14 @@ public class StasisChamberBlockEntity extends BlockEntity implements SeatableBlo
 
         public boolean tick(StasisChamberBlockEntity blockEntity) {
             return this.functionTick.apply(blockEntity);
+        }
+
+        public TranslatableComponent getDisplayText() {
+            return new TranslatableComponent("changed.stasis.command." + name().toLowerCase());
+        }
+
+        public TranslatableComponent getActiveDisplayText() {
+            return new TranslatableComponent("changed.stasis.command._active", getDisplayText());
         }
     }
 }

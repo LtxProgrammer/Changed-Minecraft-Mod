@@ -29,9 +29,9 @@ import java.util.function.Supplier;
 public class GasCanister extends BlockItem implements SpecializedAnimations {
     public static final int CAPACITY = 800;
 
-    private final Supplier<? extends TransfurGas> gas;
+    private final @Nullable Supplier<? extends TransfurGas> gas;
 
-    public GasCanister(Block block, Supplier<? extends TransfurGas> gas) {
+    public GasCanister(Block block, @Nullable Supplier<? extends TransfurGas> gas) {
         super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(CAPACITY));
         this.gas = gas;
     }
@@ -61,7 +61,7 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
             return;
         }
 
-        if (level.isClientSide || gas.get().variants.isEmpty())
+        if (level.isClientSide || gas == null || gas.get().variants.isEmpty())
             return;
 
         GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level).setVariant(

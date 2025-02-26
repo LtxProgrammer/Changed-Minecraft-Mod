@@ -63,8 +63,9 @@ public abstract class TransfurGas extends Gas {
 
             if(air <= 0) {
                 air = 0;
-                ProcessTransfur.progressTransfur(entity, 8.0f, Util.getRandom(transfurGas.variants, entity.level.random).get(),
-                        TransfurContext.hazard(TransfurCause.FACE_HAZARD));
+                Util.getRandomSafe(transfurGas.variants, entity.level.random).map(Supplier::get)
+                        .ifPresent(variant ->
+                                ProcessTransfur.progressTransfur(entity, 8.0f, variant, TransfurContext.hazard(TransfurCause.FACE_HAZARD)));
             }
 
             entity.setAirSupply(air);

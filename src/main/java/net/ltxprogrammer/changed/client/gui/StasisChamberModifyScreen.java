@@ -113,4 +113,9 @@ public class StasisChamberModifyScreen extends Screen implements MenuAccess<Stas
             toolTip = null;
         }
     }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }

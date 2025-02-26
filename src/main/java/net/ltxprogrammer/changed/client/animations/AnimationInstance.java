@@ -116,7 +116,8 @@ public class AnimationInstance {
             }
         });
 
-        part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
+        if (base != null)
+            part.loadPose(TransfurAnimator.lerpPartPose(part.storePose(), base, transition));
     }
 
     public Vector3f getTargetValue(Limb limb, AnimationChannel.Target target, float partialTicks) {

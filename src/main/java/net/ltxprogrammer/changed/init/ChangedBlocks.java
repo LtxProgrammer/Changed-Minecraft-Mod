@@ -154,11 +154,7 @@ public class ChangedBlocks {
     public static final RegistryObject<LabBlock> WALL_GREEN_STRIPED = register("wall_green_striped", () -> new LabBlock(BlockBehaviour.Properties.copy(TILES_CAUTION.get())));
     public static final RegistryObject<LabBlock> WALL_VENT = register("wall_vent", () -> new LabBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(2.5F, 6.5F)));
     public static final RegistryObject<LabBlock> WALL_WHITE = register("wall_white", () -> new LabBlock(BlockBehaviour.Properties.copy(WALL_GRAY.get()).color(MaterialColor.QUARTZ)));
-    public static final RegistryObject<GasCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
-            () -> new GasCanisterBlock(ChangedFluids.WOLF_GAS), null,
-            canister -> new GasCanister(canister, ChangedFluids.WOLF_GAS));
     public static final RegistryObject<LabTable> WHITE_LAB_TABLE = register("white_lab_table", () -> new LabTable(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(3.0F, 5.0F)), ChangedBlocks::cutoutRenderer);
-    public static final RegistryObject<GasFluidBlock> WOLF_GAS = registerNoItem("wolf_gas", () -> new GasFluidBlock(ChangedFluids.WOLF_GAS));
 
     public static final RegistryObject<WhiteLatexFluidBlock> WHITE_LATEX_FLUID = registerNoItem("white_latex_fluid", WhiteLatexFluidBlock::new);
     public static final RegistryObject<WhiteLatexPillar> WHITE_LATEX_PILLAR = register("white_latex_pillar", () -> new WhiteLatexPillar(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.QUARTZ).sound(SoundType.SLIME_BLOCK).strength(1.0F, 4.0F).noOcclusion()));
@@ -171,6 +167,22 @@ public class ChangedBlocks {
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_MAINTENANCE_DOOR = register("large_maintenance_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false));
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LAB_DOOR = register("large_lab_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, false), ChangedBlocks::cutoutRenderer);
     public static final RegistryObject<AbstractLargeLabDoor> LARGE_LIBRARY_DOOR = register("large_library_door", () -> new AbstractLargeLabDoor(ChangedSounds.OPEN3, ChangedSounds.CLOSE3, true), ChangedBlocks::cutoutRenderer);
+
+    public static final RegistryObject<FluidCanisterBlock> EMPTY_CANISTER = register("empty_canister",
+            () -> new FluidCanisterBlock(null), null,
+            canister -> new GasCanister(canister, null));
+    public static final RegistryObject<GasFluidBlock> SKUNK_GAS = registerNoItem("skunk_gas", () -> new GasFluidBlock(ChangedFluids.SKUNK_GAS));
+    public static final RegistryObject<FluidCanisterBlock> SKUNK_GAS_CANISTER = register("skunk_gas_canister",
+            () -> new FluidCanisterBlock(ChangedFluids.SKUNK_GAS), null,
+            canister -> new GasCanister(canister, ChangedFluids.TIGER_GAS));
+    public static final RegistryObject<GasFluidBlock> TIGER_GAS = registerNoItem("tiger_gas", () -> new GasFluidBlock(ChangedFluids.TIGER_GAS));
+    public static final RegistryObject<FluidCanisterBlock> TIGER_GAS_CANISTER = register("tiger_gas_canister",
+            () -> new FluidCanisterBlock(ChangedFluids.TIGER_GAS), null,
+            canister -> new GasCanister(canister, ChangedFluids.TIGER_GAS));
+    public static final RegistryObject<GasFluidBlock> WOLF_GAS = registerNoItem("wolf_gas", () -> new GasFluidBlock(ChangedFluids.WOLF_GAS));
+    public static final RegistryObject<FluidCanisterBlock> WOLF_GAS_CANISTER = register("wolf_gas_canister",
+            () -> new FluidCanisterBlock(ChangedFluids.WOLF_GAS), null,
+            canister -> new GasCanister(canister, ChangedFluids.WOLF_GAS));
 
     public static final RegistryObject<StasisChamber> STASIS_CHAMBER = register("stasis_chamber", () -> new StasisChamber(ChangedSounds.OPEN3, ChangedSounds.CLOSE3), ChangedBlocks::cutoutRenderer);
 
