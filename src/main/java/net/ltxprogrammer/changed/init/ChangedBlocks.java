@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.block.*;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.beast.DarkLatexEntity;
 import net.ltxprogrammer.changed.item.BlockEntityRenderedBlockItem;
+import net.ltxprogrammer.changed.item.FluidCanister;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.BiomeColors;
@@ -170,11 +171,11 @@ public class ChangedBlocks {
 
     public static final RegistryObject<FluidCanisterBlock> EMPTY_CANISTER = register("empty_canister",
             () -> new FluidCanisterBlock(null), null,
-            canister -> new GasCanister(canister, null));
+            canister -> new FluidCanister(canister, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS), null));
     public static final RegistryObject<GasFluidBlock> SKUNK_GAS = registerNoItem("skunk_gas", () -> new GasFluidBlock(ChangedFluids.SKUNK_GAS));
     public static final RegistryObject<FluidCanisterBlock> SKUNK_GAS_CANISTER = register("skunk_gas_canister",
             () -> new FluidCanisterBlock(ChangedFluids.SKUNK_GAS), null,
-            canister -> new GasCanister(canister, ChangedFluids.TIGER_GAS));
+            canister -> new GasCanister(canister, ChangedFluids.SKUNK_GAS));
     public static final RegistryObject<GasFluidBlock> TIGER_GAS = registerNoItem("tiger_gas", () -> new GasFluidBlock(ChangedFluids.TIGER_GAS));
     public static final RegistryObject<FluidCanisterBlock> TIGER_GAS_CANISTER = register("tiger_gas_canister",
             () -> new FluidCanisterBlock(ChangedFluids.TIGER_GAS), null,

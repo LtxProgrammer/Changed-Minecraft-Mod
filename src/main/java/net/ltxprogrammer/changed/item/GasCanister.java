@@ -26,13 +26,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class GasCanister extends BlockItem implements SpecializedAnimations {
+public class GasCanister extends FluidCanister implements SpecializedAnimations {
     public static final int CAPACITY = 800;
 
     private final @Nullable Supplier<? extends TransfurGas> gas;
 
     public GasCanister(Block block, @Nullable Supplier<? extends TransfurGas> gas) {
-        super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(CAPACITY));
+        super(block, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS).durability(CAPACITY), gas);
         this.gas = gas;
     }
 
@@ -61,12 +61,13 @@ public class GasCanister extends BlockItem implements SpecializedAnimations {
             return;
         }
 
-        if (level.isClientSide || gas == null || gas.get().variants.isEmpty())
+        if (level.isClientSide)
             return;
 
-        GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level).setVariant(
-                Util.getRandom(gas.get().variants, level.random).get()
-        );
+        GasParticle nParticle = new GasParticle(ChangedEntities.GAS_PARTICLE.get(), level);
+
+        if (gas != null && !gas.get().variants.isEmpty())
+            nParticle.setVariant(Util.getRandom(gas.get().variants, level.random).get());
 
         float randX = (level.random.nextFloat(90.0f) - 45.0f) * 0.5f;
         float randY = (level.random.nextFloat(90.0f) - 45.0f) * 0.5f;

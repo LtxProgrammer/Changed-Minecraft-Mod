@@ -11,10 +11,9 @@ import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
-import net.ltxprogrammer.changed.util.TagUtil;
-import net.ltxprogrammer.changed.world.inventory.PurifierMenu;
 import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -37,8 +36,8 @@ import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
@@ -271,6 +270,14 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public float getFluidLevel(float partialTick) {
         return Mth.lerp(partialTick, fluidLevelO, fluidLevel);
+    }
+
+    public Optional<Fluid> getFluidType() {
+        ItemStack canisterStack = items.get(1);
+        if (canisterStack.getCount() > 0 && canisterStack.getItem() instanceof GasCanister canisterItem) {
+            return Optional.ofNullable(canisterItem.getFluid());
+        }
+        return Optional.empty();
     }
 
     public void setFluidLevel(float fluidLevel) {
