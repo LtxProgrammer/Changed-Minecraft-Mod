@@ -68,7 +68,7 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/progress_bar_back.png"));
         blit(ms, this.leftPos + 217, this.topPos + 144, 0, 0, 48, 12, 48, 12);
 
-        float progress = ((float)menu.data.get(0)) * 0.001f;
+        float progress = menu.getFluidLevel(partialTicks);
         RenderSystem.setShaderTexture(0, Changed.modResource("textures/gui/progress_bar_front.png"));
         blit(ms, this.leftPos + 217, this.topPos + 144, 0, 0, (int)(48 * progress), 12, 48, 12);
 

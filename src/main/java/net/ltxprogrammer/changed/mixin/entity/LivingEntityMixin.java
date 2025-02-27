@@ -2,17 +2,16 @@ package net.ltxprogrammer.changed.mixin.entity;
 
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.block.ThreeXThreeSection;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
+import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.fluid.Gas;
 import net.ltxprogrammer.changed.fluid.TransfurGas;
-import net.ltxprogrammer.changed.init.ChangedAbilities;
-import net.ltxprogrammer.changed.init.ChangedAttributes;
-import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.init.ChangedTags;
+import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -39,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
@@ -189,6 +189,18 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         double yFluid = ((float)blockpos.getY() + fluidstate.getHeight(this.level, blockpos));
         if (yFluid > yCheck && fluidstate.getType() instanceof Gas transfurGas)
             eyeInGas = transfurGas;
+
+        var blockstate = this.level.getBlockState(blockpos);
+        if (blockstate.is(ChangedBlocks.STASIS_CHAMBER.get())) {
+            this.level.getBlockEntity(
+                    blockstate.getValue(StasisChamber.SECTION).getRelative(blockpos, blockstate.getValue(HorizontalDirectionalBlock.FACING), ThreeXThreeSection.CENTER),
+                    ChangedBlockEntities.STASIS_CHAMBER.get()
+            ).filter(chamber -> chamber.getFluidYHeight() > yCheck).flatMap(StasisChamberBlockEntity::getFluidType).ifPresent(fluid -> {
+                fluid.defaultFluidState().getTags().forEach(this.fluidOnEyes::add);
+                if (fluid instanceof Gas gas)
+                    eyeInGas = gas;
+            });
+        }
     }
 
     @Override

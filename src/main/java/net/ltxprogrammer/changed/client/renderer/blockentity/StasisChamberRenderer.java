@@ -193,7 +193,7 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
 
             var color = fluid.getAttributes().getColor(blockEntity.getLevel(), blockEntity.getBlockPos());
             var rgb = Color3.fromInt(color);
-            var alpha = 1f;//((float)(color >> 24)) / 255f;
+            var alpha = ((float)(color >> 24)) / 255f;
 
             float fillYLevel = fillPercent * 2.75f; // Fill percent -> fill in blocks
             pose.translate(0, fillYLevel + 0.125f, 0);

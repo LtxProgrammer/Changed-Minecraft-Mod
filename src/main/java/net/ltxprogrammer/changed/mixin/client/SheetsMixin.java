@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.mixin.client;
 
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.variant.ClothingShape;
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.minecraft.client.renderer.Sheets;
@@ -43,5 +44,7 @@ public abstract class SheetsMixin {
                 .map(ClothingShape.Feet::getEmptyArmorSlot)
                 .mapMulti(SheetsMixin::getMaterialFromSlot)
                 .forEach(materialConsumer);
+
+        materialConsumer.accept(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_slot_syringe")));
     }
 }

@@ -10,6 +10,8 @@ import net.ltxprogrammer.changed.entity.animation.StasisAnimationParameters;
 import net.ltxprogrammer.changed.entity.beast.CustomLatexEntity;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
+import net.ltxprogrammer.changed.fluid.Gas;
+import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.item.Syringe;
@@ -38,6 +40,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
@@ -185,6 +188,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         fluidLevel = tag.getFloat("fluidLevel");
         fluidLevelO = tag.getFloat("fluidLevelO");
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(tag, this.items);
         configuredCustomLatex = tag.getInt("configuredCustomLatex");
         waitDuration = tag.getInt("waitDuration");
         stabilized = tag.getBoolean("stabilized");
@@ -197,6 +201,11 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         if (tag.contains("currentCommand")) {
             currentCommand = ScheduledCommand.valueOf(tag.getString("currentCommand"));
         }
+    }
+
+    private void markUpdated() {
+        this.setChanged();
+        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -225,7 +234,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         if (this.getSeatedEntity() != null)
             return false;
         else if (entityHolder != null) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && getFluidType().orElse(null) instanceof WaterFluid) {
                 entity.startRiding(entityHolder);
                 ChangedAnimationEvents.broadcastEntityAnimation(entity, ChangedAnimationEvents.STASIS_IDLE.get(), StasisAnimationParameters.INSTANCE);
             }
@@ -268,6 +277,14 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return ImmutableList.copyOf(scheduledCommands);
     }
 
+    public float getFluidLevel() {
+        return fluidLevel;
+    }
+
+    public float getFluidYHeight() {
+        return (getFluidLevel() * 2.75f + 0.125f) + this.getBlockPos().below().getY();
+    }
+
     public float getFluidLevel(float partialTick) {
         return Mth.lerp(partialTick, fluidLevelO, fluidLevel);
     }
@@ -285,14 +302,6 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         this.fluidLevel = fluidLevel;
     }
 
-    protected static void updateMenus(Level level, StasisChamberBlockEntity blockEntity) {
-        level.players().forEach(player -> {
-            if (player.containerMenu instanceof StasisChamberMenu menu && menu.blockEntity == blockEntity) {
-                menu.updateChamberStatus();
-            }
-        });
-    }
-
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, StasisChamberBlockEntity blockEntity) {
         var commands = blockEntity.scheduledCommands;
         if (commands.isEmpty() && !blockEntity.getEntitiesWithin().isEmpty()) {
@@ -308,16 +317,16 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
             if (blockEntity.currentCommand == null || !blockEntity.currentCommand.canStart(blockEntity)) {
                 blockEntity.currentCommand = null; // Cannot start command
-                updateMenus(level, blockEntity);
+                blockEntity.markUpdated();
                 return;
             } else {
-                updateMenus(level, blockEntity);
+                blockEntity.markUpdated();
             }
         }
 
         if (blockEntity.currentCommand != null && !blockEntity.currentCommand.tick(blockEntity)) {
             blockEntity.currentCommand = null; // Command finished
-            updateMenus(level, blockEntity);
+            blockEntity.markUpdated();
         }
     }
 
@@ -390,6 +399,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public void setConfiguredCustomLatex(int configuredCustomLatex) {
         this.configuredCustomLatex = configuredCustomLatex;
+        markUpdated();
     }
 
     public boolean isStabilized() {
@@ -426,7 +436,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             scheduledCommands.add(ScheduledCommand.DRAIN);
             scheduledCommands.add(ScheduledCommand.RELEASE);
             scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
-            updateMenus(this.level, this);
+            markUpdated();
         }
 
         else if ("modify".equals(program) && !scheduledCommands.contains(ScheduledCommand.MODIFY_ENTITY)) {
@@ -440,7 +450,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             scheduledCommands.add(ScheduledCommand.DRAIN);
             scheduledCommands.add(ScheduledCommand.RELEASE);
             scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
-            updateMenus(this.level, this);
+            markUpdated();
         }
     }
 
@@ -478,6 +488,12 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             if (blockEntity.fluidLevel > 0.6f)
                 blockEntity.ensureCapturedIsStillInside();
 
+            if (blockEntity.isFilled()) {
+                blockEntity.fluidLevelO = 1f;
+                blockEntity.fluidLevel = 1f;
+            }
+
+            blockEntity.markUpdated();
             return !blockEntity.isFilled();
         }), // If chamber is closed, and drained -> Fills chamber with fluidItem, then restricts entity with entityHolder
         STABILIZE_ENTITY(StasisChamberBlockEntity::isFilledAndHasEntity, blockEntity -> {
@@ -540,6 +556,12 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
                     seatEntity.getPassengers().forEach(Entity::stopRiding);
             }
 
+            if (blockEntity.isDrained()) {
+                blockEntity.fluidLevelO = 0f;
+                blockEntity.fluidLevel = 0f;
+            }
+
+            blockEntity.markUpdated();
             return !blockEntity.isDrained();
         }), // If chamber is filled -> frees captured entity's autonomy, and drains chamber
         RELEASE(StasisChamberBlockEntity::isClosedAndDrained, blockEntity -> {

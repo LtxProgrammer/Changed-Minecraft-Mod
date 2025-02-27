@@ -25,10 +25,13 @@ public class StasisChamberModifyScreen extends Screen implements MenuAccess<Stas
     private final Screen lastScreen;
     private @Nullable Runnable toolTip = null;
 
+    public int configuredCustomLatex = -1;
+
     public StasisChamberModifyScreen(StasisChamberMenu menu, Screen parent) {
         super(new TranslatableComponent("changed.stasis.modify"));
         this.menu = menu;
         this.lastScreen = parent;
+        this.configuredCustomLatex = menu.getConfiguredCustomLatex();
     }
 
     public @NotNull StasisChamberMenu getMenu() {
@@ -53,52 +56,52 @@ public class StasisChamberModifyScreen extends Screen implements MenuAccess<Stas
         super.init();
         int i = 0;
 
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.torso", CustomLatexEntity.TorsoType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.TorsoType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.torso", CustomLatexEntity.TorsoType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.TorsoType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.torso", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.hair", CustomLatexEntity.HairType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.HairType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.hair", CustomLatexEntity.HairType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.HairType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.hair", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.ears", CustomLatexEntity.EarType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.EarType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.ears", CustomLatexEntity.EarType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.EarType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.ears", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.tail", CustomLatexEntity.TailType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.TailType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.tail", CustomLatexEntity.TailType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.TailType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.tail", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.legs", CustomLatexEntity.LegType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.LegType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.legs", CustomLatexEntity.LegType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.LegType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.legs", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.arms", CustomLatexEntity.ArmType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.ArmType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.arms", CustomLatexEntity.ArmType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.ArmType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.arms", next.name()));
         }));
         i++;
-        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.scale", CustomLatexEntity.ScaleType.fromFlags(menu.configuredCustomLatex).name()), button -> {
-            var next = CustomLatexEntity.ScaleType.fromFlags(menu.configuredCustomLatex).cycle();
-            menu.configuredCustomLatex = next.setFlags(menu.configuredCustomLatex);
+        this.addRenderableWidget(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, new TranslatableComponent("changed.stasis.modify.scale", CustomLatexEntity.ScaleType.fromFlags(configuredCustomLatex).name()), button -> {
+            var next = CustomLatexEntity.ScaleType.fromFlags(configuredCustomLatex).cycle();
+            configuredCustomLatex = next.setFlags(configuredCustomLatex);
             button.setMessage(new TranslatableComponent("changed.stasis.modify.scale", next.name()));
         }));
         i++;
         i += 2;
 
         this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, CommonComponents.GUI_DONE, (p_96700_) -> {
-            menu.inputCustomLatexConfig(menu.configuredCustomLatex);
+            menu.inputCustomLatexConfig(configuredCustomLatex);
             this.minecraft.setScreen(this.lastScreen);
         }));
     }
