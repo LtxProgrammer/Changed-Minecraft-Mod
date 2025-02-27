@@ -198,6 +198,18 @@ public class StasisChamberRenderer<T extends StasisChamberBlockEntity> implement
             float fillYLevel = fillPercent * 2.75f; // Fill percent -> fill in blocks
             pose.translate(0, fillYLevel + 0.125f, 0);
 
+            if (fillYLevel + 0.125f >= 1f) {
+                fluid.defaultFluidState().animateTick(blockEntity.getLevel(), blockEntity.getBlockPos().below(), blockEntity.getLevel().getRandom());
+            }
+
+            if (fillYLevel + 0.125f >= 2f) {
+                fluid.defaultFluidState().animateTick(blockEntity.getLevel(), blockEntity.getBlockPos(), blockEntity.getLevel().getRandom());
+            }
+
+            if (fillYLevel + 0.25f >= 3f) {
+                fluid.defaultFluidState().animateTick(blockEntity.getLevel(), blockEntity.getBlockPos().above(), blockEntity.getLevel().getRandom());
+            }
+
             for (RenderType rendertype : RenderType.chunkBufferLayers()) {
                 if (!fluidState.isEmpty() && ItemBlockRenderTypes.canRenderInLayer(fluidState, rendertype)) {
                     if (fillPercent < 1f)

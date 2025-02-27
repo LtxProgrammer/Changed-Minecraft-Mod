@@ -93,4 +93,12 @@ public record Color3(float red, float green, float blue) {
     public float dot(Color3 color) {
         return (red * color.red) + (green * color.green) + (blue * color.blue);
     }
+
+    public Color3 lerp(float v, Color3 other) {
+        return new Color3(
+                Mth.lerp(v, red, other.red),
+                Mth.lerp(v, green, other.green),
+                Mth.lerp(v, blue, other.blue)
+        );
+    }
 }
