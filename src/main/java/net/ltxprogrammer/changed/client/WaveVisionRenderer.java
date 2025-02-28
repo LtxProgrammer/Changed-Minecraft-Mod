@@ -3,10 +3,7 @@ package net.ltxprogrammer.changed.client;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexBuffer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -26,6 +23,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.function.Function;
+
 public class WaveVisionRenderer {
     private final LevelRenderer levelRenderer;
     private final Minecraft minecraft;
@@ -34,6 +33,28 @@ public class WaveVisionRenderer {
     private float waveEffect = 0.0f;
 
     public static final Vector3f LATEX_RESONANCE_NEUTRAL = new Vector3f(1.0f, 1.0f, 1.0f);
+
+    public static class WaveVisionBufferSource extends RenderTypeOverride {
+        public WaveVisionBufferSource(MultiBufferSource actualSource) {
+            super(actualSource, WaveVisionBufferSource::overwriteRenderType);
+        }
+
+        public static RenderType overwriteRenderType(RenderType renderType) {
+            if (renderType.format() != DefaultVertexFormat.NEW_ENTITY)
+                return renderType;
+
+            if (renderType instanceof RenderType.CompositeRenderType composite) {
+                return composite.state().textureState.cutoutTexture().map(texture -> {
+                    if (texture.getPath().contains("dark_latex"))
+                        return ChangedShaders.waveVisionEntityResonant(texture, WaveVisionRenderer.LATEX_RESONANCE_NEUTRAL);
+                    else
+                        return ChangedShaders.waveVisionEntity(texture);
+                }).orElse(renderType);
+            }
+
+            return renderType;
+        }
+    }
 
     public WaveVisionRenderer(LevelRenderer levelRenderer, Minecraft minecraft, ObjectArrayList<LevelRenderer.RenderChunkInfo> renderChunksInFrustum, EntityRenderDispatcher entityRenderDispatcher) {
         this.levelRenderer = levelRenderer;

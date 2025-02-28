@@ -438,18 +438,7 @@ public abstract class LevelRendererMixin {
         MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
 
         // Force rendering entities to use the WaveVision shader
-        RenderTypeOverride overwrittenSource = new RenderTypeOverride(bufferSource, renderType -> {
-            if (renderType instanceof RenderType.CompositeRenderType composite) {
-                return composite.state().textureState.cutoutTexture().map(texture -> {
-                    if (texture.getPath().contains("dark_latex"))
-                        return ChangedShaders.waveVisionEntityResonant(texture, WaveVisionRenderer.LATEX_RESONANCE_NEUTRAL);
-                    else
-                        return ChangedShaders.waveVisionEntity(texture);
-                }).orElse(renderType);
-            }
-
-            return renderType;
-        });
+        WaveVisionRenderer.WaveVisionBufferSource overwrittenSource = new WaveVisionRenderer.WaveVisionBufferSource(bufferSource);
 
         this.renderedEntities += waveVisionRenderer.renderEntities(this.level, frustum, camera, poseStack, camX, camY, camZ, partialTicks, overwrittenSource, bufferSource::endLastBatch);
 
