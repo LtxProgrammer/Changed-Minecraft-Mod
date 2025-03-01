@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.world.entity.player.Player;
-import top.theillusivec4.curios.client.render.CuriosLayer;
 
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class PlayerLayerWrapper<T extends ChangedEntity, M extends AdvancedHuman
         if (layer instanceof DarkLatexMaskLayer<?,?>) return false;
         if (layer instanceof GasMaskLayer<?,?>) return false;
 
-        if (layer instanceof CuriosLayer<?,?>) return false;
+        if (layer instanceof AccessoryLayer<?,?>) return false;
         return true;
     }
 

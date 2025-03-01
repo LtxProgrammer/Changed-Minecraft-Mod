@@ -6,9 +6,10 @@ import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.AbstractAbilityInstance;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
-import net.ltxprogrammer.changed.extension.curios.CurioEntities;
+import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.network.packet.BasicPlayerInfoPacket;
@@ -47,7 +48,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -683,7 +683,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                 itemStack.setDamageValue(newDamage);
             if (newDamage >= itemStack.getMaxDamage()) {
                 player.awardStat(Stats.ITEM_BROKEN.get(itemStack.getItem()));
-                slottedItem.slot().ifLeft(player::broadcastBreakEvent).ifRight(context -> CuriosApi.getCuriosHelper().onBrokenCurio(context));
+                slottedItem.slot().ifLeft(player::broadcastBreakEvent).ifRight(slotType -> AccessorySlots.onBrokenAccessory(player, slotType));
 
                 itemStack.shrink(1);
             }
@@ -708,7 +708,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
                     newAttributes, TransfurVariantInstance::correctScaling, getMorphProgression());
 
             if (transfurProgression >= 1f && willSurviveTransfur) {
-                CurioEntities.INSTANCE.forceReloadCurios(host);
+                AccessoryEntities.INSTANCE.forceReloadAccessories(host);
             }
         }
     }

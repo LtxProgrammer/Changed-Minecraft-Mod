@@ -74,7 +74,7 @@
     "changed:phage_latex_wolf_male"
   ],
   "slots": [
-    "body",
-    "legs"
+    "changed:body",
+    "changed:legs"
   ]
 }

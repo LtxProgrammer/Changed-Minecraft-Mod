@@ -8,8 +8,7 @@ import net.ltxprogrammer.changed.data.BuiltinRepositorySource;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
-import net.ltxprogrammer.changed.extension.curios.CurioEntities;
-import net.ltxprogrammer.changed.extension.curios.CurioSlots;
+import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.network.ChangedPackets;
 import net.ltxprogrammer.changed.network.packet.ChangedPacket;
@@ -105,6 +104,7 @@ public class Changed {
         ChangedTransfurVariants.REGISTRY.register(modEventBus);
         ChangedEntities.REGISTRY.register(modEventBus);
         ChangedAnimationEvents.REGISTRY.register(modEventBus);
+        ChangedAccessorySlots.REGISTRY.register(modEventBus);
 
         // Our DFU references the above registries, so they need to be initialized before the DFU is created
         dataFixer = new ChangedDataFixer();
@@ -137,8 +137,7 @@ public class Changed {
 
     private void dataListeners(final AddReloadListenerEvent event) {
         event.addListener(ChangedFusions.INSTANCE);
-        event.addListener(CurioSlots.INSTANCE);
-        event.addListener(CurioEntities.INSTANCE);
+        event.addListener(AccessoryEntities.INSTANCE);
         ChangedCompatibility.addDataListeners(event);
     }
 

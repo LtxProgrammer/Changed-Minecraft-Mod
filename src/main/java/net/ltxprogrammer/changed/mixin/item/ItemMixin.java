@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.mixin.item;
 
-import net.ltxprogrammer.changed.extension.curios.CurioSlots;
+import net.ltxprogrammer.changed.init.ChangedAccessorySlots;
 import net.ltxprogrammer.changed.util.ItemUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,7 +24,7 @@ public abstract class ItemMixin extends net.minecraftforge.registries.ForgeRegis
         if (asItem() instanceof SaddleItem) {
             ItemStack itemstack = player.getItemInHand(hand);
 
-            if (ItemUtil.tryEquipCurio(player, itemstack, CurioSlots.LOWER_BODY)) {
+            if (ItemUtil.tryEquipAccessory(player, itemstack, ChangedAccessorySlots.LOWER_BODY.get())) {
                 level.playSound((Player)null, player, SoundEvents.HORSE_SADDLE, SoundSource.PLAYERS, 0.5F, 1.0F);
                 itemstack.shrink(1);
                 callback.setReturnValue(InteractionResultHolder.consume(itemstack));

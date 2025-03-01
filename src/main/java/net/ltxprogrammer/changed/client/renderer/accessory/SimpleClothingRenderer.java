@@ -1,4 +1,4 @@
-package net.ltxprogrammer.changed.client.renderer.curio;
+package net.ltxprogrammer.changed.client.renderer.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
@@ -7,9 +7,9 @@ import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorHumanModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModel;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
+import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.item.Clothing;
-import net.ltxprogrammer.changed.item.Shorts;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -22,13 +22,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio {
+public class SimpleClothingRenderer implements AccessoryRenderer, TransitionalAccessory {
     protected final HumanoidModel clothingModel;
     protected final ArmorModel armorModel;
     protected final EquipmentSlot renderAs;
@@ -40,12 +38,12 @@ public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio
     }
 
     @Override
-    public Optional<HumanoidModel<?>> getBeforeModel(ItemStack stack, SlotContext slotContext, RenderLayerParent<?,?> renderLayerParent) {
+    public Optional<HumanoidModel<?>> getBeforeModel(AccessorySlotContext<?> slotContext, RenderLayerParent<?,?> renderLayerParent) {
         return Optional.of(clothingModel);
     }
 
     @Override
-    public Optional<AdvancedHumanoidModel<?>> getAfterModel(ItemStack stack, SlotContext slotContext, RenderLayerParent<?,?> renderLayerParent) {
+    public Optional<AdvancedHumanoidModel<?>> getAfterModel(AccessorySlotContext<?> slotContext, RenderLayerParent<?,?> renderLayerParent) {
         if (renderLayerParent instanceof AdvancedHumanoidRenderer advancedHumanoidRenderer) {
             final LatexHumanoidArmorLayer layer = advancedHumanoidRenderer.getArmorLayer();
             return Optional.of((LatexHumanoidArmorModel<?, ?>) layer.modelPicker.getModelSetForSlot(renderAs)
@@ -56,18 +54,20 @@ public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio
     }
 
     @Override
-    public Optional<ResourceLocation> getModelTexture(ItemStack stack, SlotContext slotContext) {
-        if (stack.getItem() instanceof Clothing clothing)
-            return Optional.ofNullable(clothing.getTexture(stack, slotContext.entity()));
+    public Optional<ResourceLocation> getModelTexture(AccessorySlotContext<?> slotContext) {
+        if (slotContext.stack().getItem() instanceof Clothing clothing)
+            return Optional.ofNullable(clothing.getTexture(slotContext.stack(), slotContext.wearer()));
         else
             return Optional.empty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
+    public <T extends LivingEntity, M extends EntityModel<T>> void render(AccessorySlotContext<T> slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
                                                                           int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        ItemStack stack = slotContext.stack();
         if (stack.getItem() instanceof Clothing clothing) {
-            final T entity = (T)slotContext.entity();
+            final T entity = slotContext.wearer();
             ResourceLocation texture = clothing.getTexture(stack, entity);
             if (texture == null) return;
 
@@ -95,7 +95,7 @@ public class SimpleClothingRenderer implements ICurioRenderer, TransitionalCurio
         }
     }
 
-    public static Supplier<ICurioRenderer> of(ArmorModel armorModel, EquipmentSlot renderAs) {
+    public static Supplier<AccessoryRenderer> of(ArmorModel armorModel, EquipmentSlot renderAs) {
         return () -> new SimpleClothingRenderer(armorModel, renderAs);
     }
 }

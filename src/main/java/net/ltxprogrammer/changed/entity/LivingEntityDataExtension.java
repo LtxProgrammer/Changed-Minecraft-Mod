@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity;
 
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.fluid.Gas;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -18,4 +19,6 @@ public interface LivingEntityDataExtension {
 
     void do_hurtCurrentlyUsedShield(float blocked);
     void do_blockUsingShield(LivingEntity attacker);
+
+    Optional<AccessorySlots> getAccessorySlots();
 }

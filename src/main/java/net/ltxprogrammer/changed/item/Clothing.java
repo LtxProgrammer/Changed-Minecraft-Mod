@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -8,12 +9,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
 
-public interface Clothing extends ICurioItem {
+public interface Clothing extends AccessoryItem {
     ArmorMaterial MATERIAL = new ArmorMaterial() {
         @Override
         public int getDurabilityForSlot(EquipmentSlot p_40410_) {
@@ -62,7 +61,7 @@ public interface Clothing extends ICurioItem {
     }
 
     @Override
-    default void curioBreak(SlotContext slotContext, ItemStack stack) {
-        slotContext.entity().breakItem(stack);
+    default void accessoryBreak(AccessorySlotContext<?> slotContext, ItemStack stack) {
+        slotContext.wearer().breakItem(stack);
     }
 }

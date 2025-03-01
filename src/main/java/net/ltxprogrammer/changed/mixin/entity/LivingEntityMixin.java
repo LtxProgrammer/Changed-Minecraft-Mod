@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.block.ThreeXThreeSection;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
@@ -19,6 +20,7 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.LocalUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -70,6 +72,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public int controlDisabledFor = 0;
     @Unique @Nullable
     public LivingEntity grabbedBy = null;
+    @Unique
+    public AccessorySlots accessorySlots = new AccessorySlots();
 
     @Override
     public int getNoControlTicks() {
@@ -90,6 +94,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Override
     public void setGrabbedBy(@Nullable LivingEntity grabbedBy) {
         this.grabbedBy = grabbedBy;
+    }
+
+    @Override
+    public Optional<AccessorySlots> getAccessorySlots() {
+        return Optional.of(accessorySlots);
     }
 
     @Inject(method = "updateFallFlying", at = @At("HEAD"), cancellable = true)
@@ -375,5 +384,16 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public void unlessIsStabilized(CallbackInfo ci) {
         if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
             ci.cancel();
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
+    public void addExtendedData(CompoundTag tag, CallbackInfo ci) {
+        tag.put("ChangedAccessorySlots", accessorySlots.save());
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
+    public void readExtendedData(CompoundTag tag, CallbackInfo ci) {
+        if (tag.contains("ChangedAccessorySlots"))
+            accessorySlots.load(tag.getCompound("ChangedAccessorySlots"));
     }
 }

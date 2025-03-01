@@ -28,7 +28,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.client.render.CuriosLayer;
 
 public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extends AdvancedHumanoidModel<T>, A extends LatexHumanoidArmorModel<T, ?>> extends MobRenderer<T, M> {
     @Nullable
@@ -61,7 +60,7 @@ public abstract class AdvancedHumanoidRenderer<T extends ChangedEntity, M extend
         this.addLayer(new LatexSpinAttackEffectLayer<>(this, context.getModelSet()));
         this.addLayer(new LatexHeldEntityLayer<>(this));
 
-        this.addLayer(new CuriosLayer<>(this));
+        this.addLayer(new AccessoryLayer<>(this));
     }
 
     public void setModelResetPoseStack(T entity, @Nullable PoseStack.Pose pose) {

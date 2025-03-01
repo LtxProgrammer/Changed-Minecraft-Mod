@@ -16,8 +16,6 @@
     "CGM.LatexItemInHandLayerMixin",
     "ChiselsAndBits.ChiselRenderTypeMixin",
     "CTM.BlockRenderLayerMixin",
-    "Curios.SlotHelperMixin",
-    "Curios.SlotTypeManagerMixin",
     "DoABarrelRoll.AdvancedHumanoidRendererMixin",
     "EMF.AdvancedHumanoidModelMixin",
     "FirstPerson.FirstPersonBaseMixin",

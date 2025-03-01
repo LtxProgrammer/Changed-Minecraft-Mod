@@ -8,9 +8,12 @@ import net.ltxprogrammer.changed.client.FormRenderHandler;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.AdvancedHumanoidRenderer;
-import net.ltxprogrammer.changed.client.renderer.curio.TransitionalCurio;
+import net.ltxprogrammer.changed.client.renderer.accessory.TransitionalAccessory;
+import net.ltxprogrammer.changed.client.renderer.layers.AccessoryLayer;
 import net.ltxprogrammer.changed.client.renderer.layers.LatexHumanoidArmorLayer;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
+import net.ltxprogrammer.changed.data.AccessorySlotContext;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.LimbCoverTransition;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
@@ -38,11 +41,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
-import top.theillusivec4.curios.client.render.CuriosLayer;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -519,10 +517,10 @@ public abstract class TransfurAnimator {
         return Optional.empty();
     }
 
-    private static Optional<CuriosLayer<?,?>> findCuriosLayer(LivingEntityRenderer<?,?> renderer) {
+    private static Optional<AccessoryLayer<?,?>> findAccessoryLayer(LivingEntityRenderer<?,?> renderer) {
         for (var layer : renderer.layers)
-            if (layer instanceof CuriosLayer<?,?> curiosLayer)
-                return Optional.of(curiosLayer);
+            if (layer instanceof AccessoryLayer<?,?> accessoryLayer)
+                return Optional.of(accessoryLayer);
         return Optional.empty();
     }
 
@@ -603,47 +601,31 @@ public abstract class TransfurAnimator {
                     afterModel.unprepareVisibility(armorSlot, item);
                 });
             });
-            findCuriosLayer(livingPlayerRenderer).ifPresent(curiosLayer -> {
-                CuriosApi.getCuriosHelper().getCuriosHandler(player)
-                        .ifPresent(handler -> handler.getCurios().forEach((id, stacksHandler) -> {
-                            IDynamicStackHandler stackHandler = stacksHandler.getStacks();
-                            IDynamicStackHandler cosmeticStacksHandler = stacksHandler.getCosmeticStacks();
+            findAccessoryLayer(livingPlayerRenderer).flatMap(accessoryLayer -> AccessorySlots.getForEntity(player))
+                    .ifPresent(slots -> slots.forEachSlot((slotType, itemStack) -> {
+                        if (itemStack.isEmpty())
+                            return;
 
-                            for (int i = 0; i < stackHandler.getSlots(); i++) {
-                                ItemStack itemStack = cosmeticStacksHandler.getStackInSlot(i);
-                                boolean cosmetic = true;
-                                NonNullList<Boolean> renderStates = stacksHandler.getRenders();
-                                boolean renderable = renderStates.size() > i && renderStates.get(i);
+                        var slotContextPlayer = new AccessorySlotContext<>(player, slotType, itemStack);
+                        var slotContextVariant = new AccessorySlotContext<>(variant.getChangedEntity(), slotType, itemStack);
 
-                                if (itemStack.isEmpty() && renderable) {
-                                    itemStack = stackHandler.getStackInSlot(i);
-                                    cosmetic = false;
-                                }
+                        AccessoryLayer.getRenderer(itemStack.getItem()).ifPresent(renderer -> {
+                            if (renderer instanceof TransitionalAccessory transitionalAccessory) {
+                                final var texture = transitionalAccessory.getModelTexture(slotContextVariant);
+                                final var before = transitionalAccessory.getBeforeModel(slotContextPlayer, livingPlayerRenderer);
+                                final var after = transitionalAccessory.getAfterModel(slotContextPlayer, latexHumanoidRenderer);
 
-                                if (!itemStack.isEmpty()) {
-                                    SlotContext slotContextPlayer = new SlotContext(id, player, i, cosmetic, renderable);
-                                    SlotContext slotContextVariant = new SlotContext(id, variant.getChangedEntity(), i, cosmetic, renderable);
-                                    ItemStack finalStack = itemStack;
-                                    CuriosRendererRegistry.getRenderer(itemStack.getItem()).ifPresent(renderer -> {
-                                        if (renderer instanceof TransitionalCurio transitionalCurio) {
-                                            final var texture = transitionalCurio.getModelTexture(finalStack, slotContextVariant);
-                                            final var before = transitionalCurio.getBeforeModel(finalStack, slotContextPlayer, livingPlayerRenderer);
-                                            final var after = transitionalCurio.getAfterModel(finalStack, slotContextPlayer, latexHumanoidRenderer);
+                                if (texture.isEmpty() || before.isEmpty() || after.isEmpty())
+                                    return;
 
-                                            if (texture.isEmpty() || before.isEmpty() || after.isEmpty())
-                                                return;
-
-                                            renderMorphedEntity(player,
-                                                    before.get(),
-                                                    after.get(),
-                                                    morphProgress, Color3.WHITE, 1f, stack, buffer, light,
-                                                    texture.get(), true);
-                                        }
-                                    });
-                                }
+                                renderMorphedEntity(player,
+                                        before.get(),
+                                        after.get(),
+                                        morphProgress, Color3.WHITE, 1f, stack, buffer, light,
+                                        texture.get(), true);
                             }
-                        }));
-            });
+                        });
+            }));
         }
     }
 
@@ -734,7 +716,7 @@ public abstract class TransfurAnimator {
             return true;
         if (layer instanceof LatexHumanoidArmorLayer<?,?,?>)
             return true;
-        if (layer instanceof CuriosLayer<?,?>)
+        if (layer instanceof AccessoryLayer<?,?>)
             return true;
         return false;
     }

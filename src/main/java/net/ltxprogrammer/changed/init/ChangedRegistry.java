@@ -4,6 +4,7 @@ import com.mojang.serialization.Lifecycle;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.client.latexparticles.LatexParticleType;
+import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.PlayerMover;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -54,6 +55,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
     public static final RegistryHolder<PlayerMover<?>> PLAYER_MOVER = new RegistryHolder<PlayerMover<?>>(registryKey("player_mover"));
     public static final RegistryHolder<LatexParticleType<?>> LATEX_PARTICLE_TYPE = new RegistryHolder<LatexParticleType<?>>(registryKey("latex_particle_type"));
     public static final RegistryHolder<AnimationEvent<?>> ANIMATION_EVENTS = new RegistryHolder<AnimationEvent<?>>(registryKey("animation_events"));
+    public static final RegistryHolder<AccessorySlotType> ACCESSORY_SLOTS = new RegistryHolder<AccessorySlotType>(registryKey("accessory_slots"));
 
     @SubscribeEvent
     public static void onCreateRegistries(NewRegistryEvent event) {
@@ -70,6 +72,7 @@ public abstract class ChangedRegistry<T> extends Registry<T> {
         }, null);
         createRegistry(event, LATEX_PARTICLE_TYPE.key, c(LatexParticleType.class));
         createRegistry(event, ANIMATION_EVENTS.key, c(AnimationEvent.class));
+        createRegistry(event, ACCESSORY_SLOTS.key, AccessorySlotType.class);
     }
 
     private static <T extends IForgeRegistryEntry<T>> void createRegistry(NewRegistryEvent event, ResourceKey<? extends Registry<T>> key, Class<T> type) {

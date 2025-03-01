@@ -5,6 +5,7 @@ import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.network.packet.MountTransfurPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.ItemUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.CuriosApi;
 
 public interface LatexTaur<T extends ChangedEntity> extends Saddleable {
     @Override default boolean isSaddleable() { return false; }
@@ -30,7 +30,7 @@ public interface LatexTaur<T extends ChangedEntity> extends Saddleable {
     }
 
     default boolean isSaddled(T self) {
-        return !CuriosApi.getCuriosHelper().findCurios(self, Items.SADDLE).isEmpty() ||
+        return ItemUtil.isWearingItem(self, Items.SADDLE).isPresent() ||
                 self.getPersistentData().contains(SADDLE_LOCATION);
     }
 

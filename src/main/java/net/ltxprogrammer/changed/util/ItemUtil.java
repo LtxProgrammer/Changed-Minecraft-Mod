@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.util;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.data.AccessorySlotType;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.entity.TransfurContext;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -12,36 +14,26 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class ItemUtil {
-    public record SlottedItem(Either<EquipmentSlot, SlotContext> slot, ItemStack itemStack) {}
+    public record SlottedItem(Either<EquipmentSlot, AccessorySlotType> slot, ItemStack itemStack) {
+        SlottedItem(EquipmentSlot slot, ItemStack stack) {
+            this(Either.left(slot), stack);
+        }
 
-    public static boolean tryEquipCurio(LivingEntity entity, ItemStack stack, String slot) {
-        return CuriosApi.getCuriosHelper().getCuriosHandler(entity).resolve()
-                .flatMap(handler -> handler.getStacksHandler(slot))
-                .map(ICurioStacksHandler::getStacks)
-                .map(handler -> {
-                    for (int i = 0; i < handler.getSlots(); ++i) {
-                        if (!handler.getStackInSlot(i).isEmpty()) continue;
+        SlottedItem(AccessorySlotType slot, ItemStack stack) {
+            this(Either.right(slot), stack);
+        }
+    }
 
-                        ItemStack copied = stack.copy();
-                        copied.setCount(1);
-                        handler.setStackInSlot(i, copied);
-                        return true;
-                    }
-
-                    return false;
-                }).orElse(false);
+    public static boolean tryEquipAccessory(LivingEntity entity, ItemStack stack, AccessorySlotType slotType) {
+        return AccessorySlots.getForEntity(entity)
+                .map(slots -> slots.moveToSlot(slotType, stack)).orElse(false);
     }
 
     public static Optional<SlottedItem> isWearingItem(LivingEntity entity, Item item) {
@@ -55,17 +47,9 @@ public class ItemUtil {
     public static Stream<SlottedItem> getWearingItems(LivingEntity entity) {
         return Stream.concat(
                 Arrays.stream(EquipmentSlot.values()).filter(slot -> slot.getType() == EquipmentSlot.Type.ARMOR)
-                                .map(slot -> new SlottedItem(Either.left(slot), entity.getItemBySlot(slot))),
+                                .map(slot -> new SlottedItem(slot, entity.getItemBySlot(slot))),
 
-                CuriosApi.getCuriosHelper().getCuriosHandler(entity).resolve()
-                        .map(handler -> Pair.of(handler.getWearer(), handler.getCurios().values().stream())).stream()
-                        .flatMap(entityStreamPair -> entityStreamPair.getSecond().flatMap(handler -> {
-                            final var stacks = handler.getStacks();
-                            return Stream.iterate(0, idx -> idx < stacks.getSlots(), idx -> idx + 1)
-                                    .map(idx -> new SlottedItem(
-                                            Either.right(new SlotContext(handler.getIdentifier(), entityStreamPair.getFirst(), idx, handler.hasCosmetic(), handler.isVisible())),
-                                            stacks.getStackInSlot(idx)));
-                        }))
+                AccessorySlots.getForEntity(entity).stream().flatMap(slots -> slots.getMergedStream(SlottedItem::new))
         );
     }
 

@@ -1,6 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
-import net.ltxprogrammer.changed.extension.curios.CurioSlots;
+import net.ltxprogrammer.changed.init.ChangedAccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.ltxprogrammer.changed.util.ItemUtil;
 import net.ltxprogrammer.changed.world.inventory.TaurSaddleMenu;
@@ -54,7 +54,7 @@ public class AccessSaddleAbilityInstance extends AbstractAbilityInstance {
         super.readData(tag);
         if (tag.contains("saddle")) {
             ItemStack stack = ItemStack.of(tag.getCompound("saddle"));
-            if (!ItemUtil.tryEquipCurio(entity.getEntity(), stack, CurioSlots.LOWER_BODY))
+            if (!ItemUtil.tryEquipAccessory(entity.getEntity(), stack, ChangedAccessorySlots.LOWER_BODY.get()))
                 if (!entity.addItem(stack))
                     entity.drop(stack, true);
         }

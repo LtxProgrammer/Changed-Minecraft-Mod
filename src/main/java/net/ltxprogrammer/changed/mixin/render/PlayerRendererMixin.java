@@ -2,6 +2,8 @@ package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.FormRenderHandler;
+import net.ltxprogrammer.changed.client.renderer.layers.AccessoryLayer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -21,6 +23,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
     public PlayerRendererMixin(EntityRendererProvider.Context p_174289_, PlayerModel<AbstractClientPlayer> p_174290_, float p_174291_) {
         super(p_174289_, p_174290_, p_174291_);
+    }
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    public void addChangedLayers(EntityRendererProvider.Context context, boolean slim, CallbackInfo ci) {
+        this.addLayer(new AccessoryLayer<>(this));
     }
 
     @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
