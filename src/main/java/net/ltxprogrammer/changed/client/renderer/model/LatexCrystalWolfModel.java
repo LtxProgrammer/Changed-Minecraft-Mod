@@ -90,6 +90,22 @@ public class LatexCrystalWolfModel extends AdvancedHumanoidModel<CrystalWolf> im
 
         PartDefinition Snout_r1 = Head.addOrReplaceChild("Snout_r1", CubeListBuilder.create().texOffs(24, 2).addBox(-1.0F, -29.625F, -0.95F, 1.0F, 1.0F, 1.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.5F, 26.0F, 0.0F, 0.1745F, 0.0F, 0.0F));
 
+        PartDefinition RightCrystals = Head.addOrReplaceChild("RightCrystals", CubeListBuilder.create(), PartPose.offset(-3.0F, -1.5F, 0.0F));
+
+        PartDefinition Crystal_r1 = RightCrystals.addOrReplaceChild("Crystal_r1", CubeListBuilder.create().texOffs(40, 55).mirror().addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.025F)).mirror(false), PartPose.offsetAndRotation(-0.1F, 0.3F, -2.4F, 0.0873F, -0.6981F, 0.0F));
+
+        PartDefinition Crystal_r2 = RightCrystals.addOrReplaceChild("Crystal_r2", CubeListBuilder.create().texOffs(0, 63).mirror().addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(-0.01F)).mirror(false), PartPose.offsetAndRotation(0.1F, 0.9F, -2.6F, -0.2618F, -0.5236F, 0.0F));
+
+        PartDefinition Crystal_r3 = RightCrystals.addOrReplaceChild("Crystal_r3", CubeListBuilder.create().texOffs(7, 60).mirror().addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(-0.04F)).mirror(false), PartPose.offsetAndRotation(-0.1F, -0.5F, -2.6F, 0.3491F, -0.6109F, 0.0F));
+
+        PartDefinition LeftCrystals = Head.addOrReplaceChild("LeftCrystals", CubeListBuilder.create(), PartPose.offset(3.0F, -1.5F, 0.0F));
+
+        PartDefinition Crystal_r4 = LeftCrystals.addOrReplaceChild("Crystal_r4", CubeListBuilder.create().texOffs(44, 57).addBox(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.025F)), PartPose.offsetAndRotation(0.1F, 0.3F, -2.4F, 0.0873F, 0.6981F, 0.0F));
+
+        PartDefinition Crystal_r5 = LeftCrystals.addOrReplaceChild("Crystal_r5", CubeListBuilder.create().texOffs(0, 60).addBox(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(-0.01F)), PartPose.offsetAndRotation(-0.1F, 0.9F, -2.6F, -0.2618F, 0.5236F, 0.0F));
+
+        PartDefinition Crystal_r6 = LeftCrystals.addOrReplaceChild("Crystal_r6", CubeListBuilder.create().texOffs(7, 63).addBox(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, new CubeDeformation(-0.04F)), PartPose.offsetAndRotation(0.1F, -0.5F, -2.6F, 0.3491F, 0.6109F, 0.0F));
+
         PartDefinition RightEar = Head.addOrReplaceChild("RightEar", CubeListBuilder.create(), PartPose.offset(-3.0F, -7.5F, 0.0F));
 
         PartDefinition RightEarPivot = RightEar.addOrReplaceChild("RightEarPivot", CubeListBuilder.create().texOffs(0, 4).addBox(-1.9F, -1.2F, -1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.05F))

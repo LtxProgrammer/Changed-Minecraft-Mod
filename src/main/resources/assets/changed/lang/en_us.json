@@ -342,9 +342,9 @@
   "block.changed.yellow_pillow": "Yellow Pillow",
 
   "fluid.changed.dark_latex": "Liquid Dark Latex",
+  "fluid.changed.white_latex": "Liquid White Latex",
   "fluid.changed.skunk_gas": "Skunk Transfur Gas",
   "fluid.changed.tiger_gas": "Tiger Transfur Gas",
-  "fluid.changed.white_latex": "Liquid White Latex",
   "fluid.changed.wolf_gas": "Wolf Transfur Gas",
 
   "biome.changed.dark_latex_plains": "Dark Latex Plains",
@@ -364,7 +364,7 @@
   "entity.changed.dark_latex_wolf_pup": "Dark Latex Wolf Pup",
   "entity.changed.dark_latex_yufeng": "Dark Latex Yufeng",
   "entity.changed.dark_latex_double_yufeng": "Dark Latex Two-Headed Yufeng",
-  "entity.changed.gas_particle": "Wolf Transfur Gas Particle",
+  "entity.changed.gas_particle": "Transfur Gas Particle",
   "entity.changed.gas_wolf": "Gas Wolf",
   "entity.changed.green_lizard": "Green Lizard",
   "entity.changed.headless_knight": "Headless Knight",
