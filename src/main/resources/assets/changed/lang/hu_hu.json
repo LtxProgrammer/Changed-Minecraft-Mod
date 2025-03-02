@@ -642,7 +642,7 @@
   "changed.stasis.run": "Módosítások végrehajtása",
   "changed.stasis.capture_next": "Következő rögzítése",
   "changed.stasis.toggle_stasis": "Sztázis: %s",
-  "changed.stasis.modify": "Módosítások"
+  "changed.stasis.modify": "Módosítások",
 
   "changed.stasis.command._active": "> %s",
   "changed.stasis.command.open": "Ajtó megnyitása",
