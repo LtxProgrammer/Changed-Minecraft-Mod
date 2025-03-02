@@ -240,6 +240,7 @@
   "block.changed.dark_dragon_crystal": "Sötét latex sárkány kristály",
   "block.changed.dark_latex_ice": "Sötét latex jég",
   "block.changed.duct": "Szellőztető csatorna",
+  "block.changed.empty_canister": "Üres gázpalack",
   "block.changed.erlenmeyer_flask": "Erlenmeyer-lombik",
   "block.changed.glu": "Ragasztó blokk",
   "block.changed.infuser": "Infúzor",
@@ -277,9 +278,11 @@
   "block.changed.purifier": "Tisztító",
   "block.changed.retinal_scanner": "Retina szkenner",
   "block.changed.roomba_charger": "Robotporszívó töltő",
+  "block.changed.skunk_gas_canister": "Bűzösborz transzfur gázpalack",
   "block.changed.speaker": "Hangszóró",
   "block.changed.stasis_chamber": "Sztázis kamra",
   "block.changed.tape_recorder": "Magnetofon",
+  "block.changed.tiger_gas_canister": "Tigris transzfur gázpalack",
   "block.changed.tiles_blue": "Kék burkolat",
   "block.changed.tiles_blue_small": "Kicsi kék burkolat",
   "block.changed.tiles_caution": "Figyelmeztető burkolat",
@@ -340,6 +343,8 @@
   
   "fluid.changed.dark_latex": "Folyékony sötét latex",
   "fluid.changed.white_latex": "Folyékony fehér latex",
+  "fluid.changed.skunk_gas": "Bűzösborz transzfur gáz",
+  "fluid.changed.tiger_gas": "Tigris transzfur gáz",
   "fluid.changed.wolf_gas": "Farkas transzfur gáz",
 
   "biome.changed.dark_latex_plains": "Sötét latex mező",
@@ -359,7 +364,7 @@
   "entity.changed.dark_latex_wolf_pup": "Sötét latex farkaskölyök",
   "entity.changed.dark_latex_yufeng": "Sötét latex jüfeng",
   "entity.changed.dark_latex_double_yufeng": "Sötét latex kétfejű jüfeng",
-  "entity.changed.gas_particle": "Farkas transzfur gázrészecske",
+  "entity.changed.gas_particle": "Transzfur gázrészecske",
   "entity.changed.gas_wolf": "Gáz farkas",
   "entity.changed.green_lizard": "Zöld gyík",
   "entity.changed.headless_knight": "Fej nélküli lovag",
@@ -631,10 +636,35 @@
   "changed.config.bpi.override_dl_iris": "Szivárványhártya színének felülbírálása sötét latex változatoknál",
   "changed.config.bpi.override_all_eye_styles": "Az összes szem stílus felülbírálása, hogy megfeleljen",
 
+  "changed.stasis.programs": "Programok",
   "changed.stasis.open": "Ajtó megnyitása",
   "changed.stasis.close": "Ajtó bezárása",
   "changed.stasis.run": "Módosítások végrehajtása",
   "changed.stasis.capture_next": "Következő rögzítése",
   "changed.stasis.toggle_stasis": "Sztázis: %s",
   "changed.stasis.modify": "Módosítások"
+
+  "changed.stasis.command._active": "> %s",
+  "changed.stasis.command.open": "Ajtó megnyitása",
+  "changed.stasis.command.close": "Ajtó bezárása",
+  "changed.stasis.command.capture_entity": "Entitás elfogása",
+  "changed.stasis.command.fill": "Kamra kitöltése",
+  "changed.stasis.command.stabilize_entity": "Stabilizálás",
+  "changed.stasis.command.modify_entity": "Entitás módosítása",
+  "changed.stasis.command.transfur_entity": "Entitás transzfurálása",
+  "changed.stasis.command.drain": "Kamra kiürítése",
+  "changed.stasis.command.release": "Entitás elengedése",
+  "changed.stasis.command.close_when_empty": "Ajtó bezárása",
+  "changed.stasis.command.wait": "Várjon",
+
+  "changed.stasis.program.transfur": "Transzfur",
+  "changed.stasis.program.modify": "Módosít",
+
+  "changed.stasis.modify.torso": "Törzs: %s",
+  "changed.stasis.modify.hair": "Haj: %s",
+  "changed.stasis.modify.ears": "Fülek: %s",
+  "changed.stasis.modify.tail": "Farok: %s",
+  "changed.stasis.modify.legs": "Lábak: %s",
+  "changed.stasis.modify.arms": "Karok: %s",
+  "changed.stasis.modify.scale": "Méret: %s"
 }
