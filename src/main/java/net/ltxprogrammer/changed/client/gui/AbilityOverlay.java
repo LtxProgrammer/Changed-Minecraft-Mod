@@ -64,6 +64,7 @@ public class AbilityOverlay {
                 selected,
                 x,
                 y,
+                32,
                 1.0f,
                 true,
                 0

@@ -108,6 +108,7 @@ public class AbilityRadialScreen extends VariantRadialScreen<AbilityRadialMenu> 
                     menu.variant.getAbilityInstance(abilities.get(section)),
                     (int) (x - 24 + this.leftPos),
                     (int) (y - 24 + this.topPos),
+                    48,
                     (enabled ? 1 : 0.5f),
                     enabled,
                     0);
