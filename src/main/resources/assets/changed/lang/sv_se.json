@@ -240,6 +240,7 @@
   "block.changed.dark_dragon_crystal": "Mörk drakekristall",
   "block.changed.dark_latex_ice": "Mörk latex is",
   "block.changed.duct": "Ventilationskanal",
+  "block.changed.empty_canister": "Tom behållare",
   "block.changed.erlenmeyer_flask": "Erlenmeyerkolv",
   "block.changed.glu": "Limblock",
   "block.changed.infuser": "Infusionsanordning",
@@ -277,9 +278,11 @@
   "block.changed.purifier": "Renare",
   "block.changed.retinal_scanner": "Näthinnanskanner",
   "block.changed.roomba_charger": "Svepande robotladdare",
+  "block.changed.skunk_gas_canister": "Skunk förpälsvandlagasbehållare",
   "block.changed.speaker": "Högtalare",
   "block.changed.stasis_chamber": "Staskammare",
   "block.changed.tape_recorder": "Bandspelare",
+  "block.changed.tiger_gas_canister": "Tiger förpälsvandlagasbehållare",
   "block.changed.tiles_blue": "Blå tegel",
   "block.changed.tiles_blue_small": "Litet blå tegel",
   "block.changed.tiles_caution": "Försiktighettegel",
@@ -319,7 +322,7 @@
   "block.changed.white_latex_pillar": "Vit latexspelare",
   "block.changed.white_latex_puddle_female": "Kvinnlig vit latex vargpöl",
   "block.changed.white_latex_puddle_male": "Manlig vit latex vargpöl",
-  "block.changed.wolf_gas_canister": "Varggasbehållare",
+  "block.changed.wolf_gas_canister": "Varg förpälsvandlagasbehållare",
 
   "block.changed.black_pillow": "Svart kudde",
   "block.changed.blue_pillow": "Blå kudde",
@@ -340,6 +343,8 @@
 
   "fluid.changed.dark_latex": "Flytande mörk latex",
   "fluid.changed.white_latex": "Flytande vit latex",
+  "fluid.changed.skunk_gas": "Skunk förpälsvandlagas",
+  "fluid.changed.tiger_gas": "Tiger förpälsvandlagas",
   "fluid.changed.wolf_gas": "Varg förpälsvandlagas",
 
   "biome.changed.dark_latex_plains": "Mörk latexslätter",
@@ -359,7 +364,7 @@
   "entity.changed.dark_latex_wolf_pup": "Mörk latexvargvalp",
   "entity.changed.dark_latex_yufeng": "Mörk latex yufeng",
   "entity.changed.dark_latex_double_yufeng": "Mörk latex tvåhövdade yufeng",
-  "entity.changed.gas_particle": "Varg förpälsvandlagaspartikel",
+  "entity.changed.gas_particle": "Förpälsvandlagaspartikel",
   "entity.changed.gas_wolf": "Gas varg",
   "entity.changed.green_lizard": "Grön ödla",
   "entity.changed.headless_knight": "Huvudlös riddare",
@@ -631,10 +636,35 @@
   "changed.config.bpi.override_dl_iris": "Överskrida regnbågshinnefärg på mörk latex varianter",
   "changed.config.bpi.override_all_eye_styles": "Överskrida alla ögonstilar att matcha",
 
+  "changed.stasis.programs": "Program",
   "changed.stasis.open": "Öppna dörr",
   "changed.stasis.close": "Stäng dörr",
-  "changed.stasis.run": "Exekvera modifikationer",
-  "changed.stasis.capture_next": "Fångst nästa",
+  "changed.stasis.run": "Exekvera ändringar",
+  "changed.stasis.capture_next": "Fånga nästa",
   "changed.stasis.toggle_stasis": "Stas: %s",
-  "changed.stasis.modify": "Modifikationer"
+  "changed.stasis.modify": "Ändringar",
+
+
+  "changed.stasis.command.open": "Öppna dörr",
+  "changed.stasis.command.close": "Stäng dörr",
+  "changed.stasis.command.capture_entity": "Fånga enhet",
+  "changed.stasis.command.fill": "Fyll kammare",
+  "changed.stasis.command.stabilize_entity": "Stabilisera",
+  "changed.stasis.command.modify_entity": "Ändra enhet",
+  "changed.stasis.command.transfur_entity": "Förpälsvandla enhet",
+  "changed.stasis.command.drain": "Tömma kammare",
+  "changed.stasis.command.release": "Frige enhet",
+  "changed.stasis.command.close_when_empty": "Stäng dörr",
+  "changed.stasis.command.wait": "Vänta",
+
+  "changed.stasis.program.transfur": "Förpälsvandla ",
+  "changed.stasis.program.modify": "Ändra",
+
+  "changed.stasis.modify.torso": "Torso: %s",
+  "changed.stasis.modify.hair": "Hår: %s",
+  "changed.stasis.modify.ears": "Öron: %s",
+  "changed.stasis.modify.tail": "Svans: %s",
+  "changed.stasis.modify.legs": "Ben: %s",
+  "changed.stasis.modify.arms": "armar: %s",
+  "changed.stasis.modify.scale": "Skala: %s"
 }
