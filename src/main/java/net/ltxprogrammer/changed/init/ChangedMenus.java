@@ -25,6 +25,7 @@ public class ChangedMenus {
     public static final MenuType<ClipboardMenu> CLIPBOARD = register("clipboard", ClipboardMenu::new);
     public static final MenuType<NoteMenu> NOTE = register("note", NoteMenu::new);
     public static final MenuType<StasisChamberMenu> STASIS_CHAMBER = register("stasis_chamber", StasisChamberMenu::new);
+    public static final MenuType<AccessoryAccessMenu> ACCESSORY_ACCESS = register("accessory_access", AccessoryAccessMenu::new);
 
     private static <T extends AbstractContainerMenu> MenuType<T> register(String name, IContainerFactory<T> containerFactory) {
         MenuType<T> menuType = new MenuType<T>(containerFactory);

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.client.renderer.accessory.AccessoryRenderer;
 import net.ltxprogrammer.changed.data.AccessorySlotContext;
 import net.ltxprogrammer.changed.data.AccessorySlots;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -17,14 +18,14 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class AccessoryLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
-    private static final Map<ItemLike, AccessoryRenderer> RENDERERS = new HashMap<>();
+    private static final Map<ItemLike, Cacheable<AccessoryRenderer>> RENDERERS = new HashMap<>();
 
     public static void registerRenderer(ItemLike item, Supplier<AccessoryRenderer> renderer) {
-        RENDERERS.put(item, renderer.get());
+        RENDERERS.put(item, Cacheable.of(renderer));
     }
 
     public static Optional<AccessoryRenderer> getRenderer(ItemLike item) {
-        return Optional.ofNullable(RENDERERS.get(item));
+        return Optional.ofNullable(RENDERERS.get(item)).map(Supplier::get);
     }
 
     private final RenderLayerParent<T, M> parent;
@@ -43,8 +44,8 @@ public class AccessoryLayer<T extends LivingEntity, M extends EntityModel<T>> ex
                 if (!RENDERERS.containsKey(stack.getItem()))
                     return;
 
-                var context = new AccessorySlotContext<T>(entity, slotType, stack);
-                RENDERERS.get(stack.getItem()).render(context, poseStack, this.parent, buffers, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                var context = new AccessorySlotContext<>(entity, slotType, stack);
+                RENDERERS.get(stack.getItem()).get().render(context, poseStack, this.parent, buffers, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             });
         });
     }

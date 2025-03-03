@@ -1,7 +1,5 @@
 package net.ltxprogrammer.changed.data;
 
-import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -11,7 +9,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class AccessorySlotType extends ForgeRegistryEntry<AccessorySlotType> {
     private TagKey<Item> itemTagKey = null;
-    private ResourceLocation noItemTexture = null;
+    private ResourceLocation noItemIcon = null;
 
     public TagKey<Item> getItemTag() {
         if (itemTagKey != null)
@@ -25,12 +23,12 @@ public class AccessorySlotType extends ForgeRegistryEntry<AccessorySlotType> {
         return itemStack.is(this.getItemTag());
     }
 
-    public ResourceLocation getNoItemTexture() {
-        if (noItemTexture != null)
-            return noItemTexture;
+    public ResourceLocation getNoItemIcon() {
+        if (noItemIcon != null)
+            return noItemIcon;
 
         ResourceLocation id = this.getRegistryName();
-        noItemTexture = new ResourceLocation(id.getNamespace(), "items/empty_" + id.getPath() + "_slot");
-        return noItemTexture;
+        noItemIcon = new ResourceLocation(id.getNamespace(), "items/empty_" + id.getPath() + "_slot");
+        return noItemIcon;
     }
 }

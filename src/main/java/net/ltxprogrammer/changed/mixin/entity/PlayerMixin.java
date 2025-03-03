@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.network.packet.SyncMoversPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.CameraUtil;
 import net.ltxprogrammer.changed.util.EntityUtil;
+import net.ltxprogrammer.changed.world.inventory.AccessoryAccessMenu;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
@@ -47,9 +48,6 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     @Shadow public abstract boolean isSwimming();
 
     @Shadow public abstract boolean isSpectator();
-
-    @Nullable
-    @Unique public PlayerMoverInstance<?> playerMover = null;
 
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
@@ -146,6 +144,8 @@ public abstract class PlayerMixin extends LivingEntity implements PlayerDataExte
     }
 
     // ADDITIONAL DATA
+    @Nullable @Unique
+    public PlayerMoverInstance<?> playerMover = null;
     @Unique
     public TransfurVariantInstance<?> latexVariant = null;
     @Unique

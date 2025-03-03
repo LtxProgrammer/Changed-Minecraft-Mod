@@ -2,7 +2,9 @@ package net.ltxprogrammer.changed.mixin.client;
 
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.entity.variant.ClothingShape;
+import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
@@ -42,6 +44,11 @@ public abstract class SheetsMixin {
                 .forEach(materialConsumer);
         Arrays.stream(ClothingShape.Feet.values())
                 .map(ClothingShape.Feet::getEmptyArmorSlot)
+                .mapMulti(SheetsMixin::getMaterialFromSlot)
+                .forEach(materialConsumer);
+
+        ChangedRegistry.ACCESSORY_SLOTS.get().getValues().stream()
+                .map(AccessorySlotType::getNoItemIcon)
                 .mapMulti(SheetsMixin::getMaterialFromSlot)
                 .forEach(materialConsumer);
 

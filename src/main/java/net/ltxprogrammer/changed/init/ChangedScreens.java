@@ -23,6 +23,7 @@ public class ChangedScreens {
             MenuScreens.register(ChangedMenus.CLIPBOARD, ClipboardScreen::new);
             MenuScreens.register(ChangedMenus.NOTE, NoteScreen::new);
             MenuScreens.register(ChangedMenus.STASIS_CHAMBER, StasisChamberScreen::new);
+            MenuScreens.register(ChangedMenus.ACCESSORY_ACCESS, AccessoryAccessScreen::new);
         });
     }
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,12 +29,15 @@ import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
 
 public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<EntityType<?>, AccessorySlotType>> {
     public static final AccessoryEntities INSTANCE = new AccessoryEntities();
     private final Multimap<EntityType<?>, AccessorySlotType> validEntities = HashMultimap.create();
 
-    private EntityType<?> getApparentEntityType(LivingEntity entity) {
+    public static EntityType<?> getApparentEntityType(LivingEntity entity) {
         return IAbstractChangedEntity.forEitherSafe(entity)
                 .map(IAbstractChangedEntity::getChangedEntity)
                 .map(ChangedEntity::getType)
@@ -42,9 +46,10 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
 
     public void forceReloadAccessories(LivingEntity entity) {
         AccessorySlots.getForEntity(entity).ifPresent(slots -> {
-            slots.initialize(
-                    slotType -> canEntityTypeUseSlot(getApparentEntityType(entity), slotType),
-                    AccessorySlots.defaultInvalidHandler(entity));
+            if (!slots.initialize(
+                    canEntityTypeUseSlot(getApparentEntityType(entity)),
+                    AccessorySlots.defaultInvalidHandler(entity)))
+                return;
 
             if (!entity.level.isClientSide)
                 Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
@@ -52,8 +57,9 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
         });
     }
 
-    public boolean canEntityTypeUseSlot(EntityType<?> entityType, AccessorySlotType slot) {
-         return validEntities.get(entityType).contains(slot);
+    public Predicate<AccessorySlotType> canEntityTypeUseSlot(EntityType<?> entityType) {
+        final var allowedSlots = validEntities.get(entityType);
+        return allowedSlots::contains;
     }
 
     private Multimap<EntityType<?>, AccessorySlotType> processJSONFile(JsonObject root) {

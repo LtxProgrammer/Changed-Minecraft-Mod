@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTextures;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.world.inventory.AccessoryAccessMenu;
 import net.ltxprogrammer.changed.world.inventory.SlotWrapper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -15,6 +16,8 @@ import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
@@ -55,37 +58,29 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
         if (slot instanceof SlotWrapper)
             return; // Process as normal
 
-        if ((Screen)this instanceof EffectRenderingInventoryScreen<?> inventoryScreen) {
-            InventoryMenu menu = null;
-            if (inventoryScreen.getMenu() instanceof CreativeModeInventoryScreen.ItemPickerMenu pickerMenu)
-                menu = (InventoryMenu)pickerMenu.inventoryMenu;
-            else if (inventoryScreen.getMenu() instanceof InventoryMenu invMenu)
-                menu = invMenu;
+        if (slot.container instanceof Inventory inventory) {
+            ProcessTransfur.ifPlayerTransfurred(inventory.player, variant -> {
+                var material = slot.getNoItemIcon();
+                if (material == null)
+                    return;
 
-            if (menu != null) {
-                ProcessTransfur.ifPlayerTransfurred(menu.owner, variant -> {
-                    var material = slot.getNoItemIcon();
-                    if (material == null)
-                        return;
+                var entityShape = variant.getChangedEntity().getEntityShape();
+                if (!REVERSE_MAP.containsKey(material.getSecond()))
+                    return;
 
-                    var entityShape = variant.getChangedEntity().getEntityShape();
-                    if (!REVERSE_MAP.containsKey(material.getSecond()))
-                        return;
+                material = switch (REVERSE_MAP.get(material.getSecond())) {
+                    case HEAD -> createMaterialFrom(entityShape.getHeadShape().getEmptyArmorSlot());
+                    case CHEST -> createMaterialFrom(entityShape.getTorsoShape().getEmptyArmorSlot());
+                    case LEGS -> createMaterialFrom(entityShape.getLegsShape().getEmptyArmorSlot());
+                    case FEET -> createMaterialFrom(entityShape.getFeetShape().getEmptyArmorSlot());
+                    default -> null;
+                };
 
-                    material = switch (REVERSE_MAP.get(material.getSecond())) {
-                        case HEAD -> createMaterialFrom(entityShape.getHeadShape().getEmptyArmorSlot());
-                        case CHEST -> createMaterialFrom(entityShape.getTorsoShape().getEmptyArmorSlot());
-                        case LEGS -> createMaterialFrom(entityShape.getLegsShape().getEmptyArmorSlot());
-                        case FEET -> createMaterialFrom(entityShape.getFeetShape().getEmptyArmorSlot());
-                        default -> null;
-                    };
-
-                    if (material != null) {
-                        callback.cancel();
-                        renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, material));
-                    }
-                });
-            }
+                if (material != null) {
+                    callback.cancel();
+                    renderSlot(pose, new SlotWrapper(slot, slot.getSlotIndex(), slot.x, slot.y, material));
+                }
+            });
         }
     }
 }

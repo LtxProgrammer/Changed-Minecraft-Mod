@@ -73,7 +73,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Unique @Nullable
     public LivingEntity grabbedBy = null;
     @Unique
-    public AccessorySlots accessorySlots = new AccessorySlots();
+    public AccessorySlots accessorySlots = Util.make(new AccessorySlots((LivingEntity)(Object)this), slots -> {
+        slots.initialize(
+                AccessoryEntities.INSTANCE.canEntityTypeUseSlot(AccessoryEntities.getApparentEntityType(slots.owner)),
+                AccessorySlots.defaultInvalidHandler(slots.owner));
+    });
 
     @Override
     public int getNoControlTicks() {

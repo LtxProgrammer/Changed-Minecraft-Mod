@@ -4,7 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.gui.AbstractRadialScreen;
+import net.ltxprogrammer.changed.data.AccessorySlots;
+import net.ltxprogrammer.changed.network.packet.AccessorySyncPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
@@ -29,9 +32,17 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
     @Shadow private float xMouse;
     @Shadow private float yMouse;
     @Unique private static final ResourceLocation LATEX_INVENTORY_LOCATION = Changed.modResource("textures/gui/latex_inventory.png");
+    @Unique private static final ResourceLocation ACCESSORY_ICON = Changed.modResource("textures/gui/basic_player_info.png");
 
     public InventoryScreenMixin(InventoryMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
+    }
+
+    @Inject(method = "init", at = @At("RETURN"))
+    protected void addAccessoryButton(CallbackInfo ci) {
+        this.addRenderableWidget(new ImageButton(this.leftPos - 24, this.height / 2 - 22, 20, 20, 0, 0, 20, ACCESSORY_ICON, 20, 40, (button) -> {
+            Changed.PACKET_HANDLER.sendToServer(new AccessorySyncPacket(menu.owner.getId(), AccessorySlots.DUMMY));
+        }));
     }
 
     @Inject(method = "renderLabels", at = @At("HEAD"), cancellable = true)
