@@ -9,6 +9,7 @@ import net.ltxprogrammer.changed.client.renderer.model.armor.ArmorModelPicker;
 import net.ltxprogrammer.changed.client.renderer.model.armor.LatexHumanoidArmorModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.extension.ChangedCompatibility;
+import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -53,7 +54,7 @@ public class LatexHumanoidArmorLayer<T extends ChangedEntity, M extends Advanced
     }
 
     private void renderArmorPiece(PoseStack pose, MultiBufferSource buffers, T entity, EquipmentSlot slot, int packedLight, LatexHumanoidArmorModel<? super T, ?> model) {
-        ItemStack itemstack = entity.getItemBySlot(slot);
+        ItemStack itemstack = FormFittingEnchantment.getFormFitted(entity, entity.getItemBySlot(slot), slot);
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem)itemstack.getItem();
             if (armoritem.getSlot() == slot) {

@@ -212,6 +212,8 @@
 
   "enchantment.changed.latex_protection": "Latex Protection",
   "enchantment.changed.latex_protection.desc": "Protects the wearer from being transfurred.",
+  "enchantment.changed.form_fitting": "Form Fitting",
+  "enchantment.changed.form_fitting.desc": "The armor will conform itself to the wearer's form.",
 
   "curios.identifier.legs": "Legs",
   "curios.identifier.lower_body": "Lower Body",

@@ -18,6 +18,7 @@ import net.ltxprogrammer.changed.network.packet.SyncTransfurPacket;
 import net.ltxprogrammer.changed.process.Pale;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.*;
+import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -605,6 +606,7 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
     public boolean canWear(Player player, ItemStack itemStack, EquipmentSlot slot) {
         if (slot == EquipmentSlot.MAINHAND)
             return true;
+        itemStack = FormFittingEnchantment.getFormFitted(player, itemStack, slot);
         if (itemStack.getItem() instanceof ExtendedItemProperties wearableItem) {
             if (!wearableItem.allowedInSlot(itemStack, player, slot))
                 return false;

@@ -12,6 +12,8 @@ public abstract class ClothingShape {
         NONE("none"),
         ANTHRO("anthro");
 
+        public static final Head DEFAULT = ANTHRO;
+
         private final String serialName;
 
         Head(String serialName) {
@@ -38,6 +40,8 @@ public abstract class ClothingShape {
     public enum Torso implements IExtensibleEnum, StringRepresentable {
         NONE("none"),
         ANTHRO("anthro");
+
+        public static final Torso DEFAULT = ANTHRO;
 
         private final String serialName;
 
@@ -68,6 +72,8 @@ public abstract class ClothingShape {
         QUADRUPEDAL("quadrupedal"),
         TAIL("tail");
 
+        public static final Legs DEFAULT = BIPEDAL;
+
         private final String serialName;
 
         Legs(String serialName) {
@@ -96,6 +102,8 @@ public abstract class ClothingShape {
         BIPEDAL("bipedal"),
         QUADRUPEDAL("quadrupedal"),
         TAIL("tail");
+
+        public static final Feet DEFAULT = BIPEDAL;
 
         private final String serialName;
 
