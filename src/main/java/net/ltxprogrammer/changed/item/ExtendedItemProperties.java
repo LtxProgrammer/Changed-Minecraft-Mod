@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.item;
 
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.variant.ClothingShape;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
+import net.ltxprogrammer.changed.init.ChangedEnchantments;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -79,13 +82,10 @@ public interface ExtendedItemProperties {
                             .forEach(slot -> {
                                 var itemStack = event.getEntityLiving().getItemBySlot(slot);
                                 if (itemStack.getItem() instanceof ExtendedItemProperties extended) {
-                                    if (!extended.allowedInSlot(itemStack, event.getEntityLiving(), slot)) {
-                                        ItemStack nStack = itemStack.copy();
-                                        itemStack.setCount(0);
-                                        if (event.getEntityLiving() instanceof Player player)
-                                            player.addItem(nStack);
-                                        else
-                                            Block.popResource(event.getEntityLiving().level, event.getEntityLiving().blockPosition(), nStack);
+                                    if (!extended.allowedInSlot(itemStack, event.getEntityLiving(), slot) &&
+                                            EnchantmentHelper.getItemEnchantmentLevel(ChangedEnchantments.FORM_FITTING.get(), itemStack) <= 0) {
+                                        event.getEntityLiving().setItemSlot(slot, ItemStack.EMPTY);
+                                        AccessorySlots.defaultInvalidHandler(event.getEntityLiving()).accept(itemStack);
                                         return;
                                     }
 

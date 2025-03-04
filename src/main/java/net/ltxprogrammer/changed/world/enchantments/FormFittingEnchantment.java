@@ -54,7 +54,7 @@ public class FormFittingEnchantment extends Enchantment {
             if (candidate instanceof ExtendedItemProperties ext && ext.getExpectedHeadShape(pseudo) == shape) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
-            } else if (shape == ClothingShape.Head.DEFAULT) {
+            } else if (!(candidate instanceof ExtendedItemProperties) && shape == ClothingShape.Head.DEFAULT) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
             }
@@ -75,7 +75,7 @@ public class FormFittingEnchantment extends Enchantment {
             if (candidate instanceof ExtendedItemProperties ext && ext.getExpectedTorsoShape(pseudo) == shape) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
-            } else if (shape == ClothingShape.Torso.DEFAULT) {
+            } else if (!(candidate instanceof ExtendedItemProperties) && shape == ClothingShape.Torso.DEFAULT) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
             }
@@ -96,7 +96,7 @@ public class FormFittingEnchantment extends Enchantment {
             if (candidate instanceof ExtendedItemProperties ext && ext.getExpectedLegShape(pseudo) == shape) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
-            } else if (shape == ClothingShape.Legs.DEFAULT) {
+            } else if (!(candidate instanceof ExtendedItemProperties) && shape == ClothingShape.Legs.DEFAULT) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
             }
@@ -117,7 +117,7 @@ public class FormFittingEnchantment extends Enchantment {
             if (candidate instanceof ExtendedItemProperties ext && ext.getExpectedFeetShape(pseudo) == shape) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
-            } else if (shape == ClothingShape.Feet.DEFAULT) {
+            } else if (!(candidate instanceof ExtendedItemProperties) && shape == ClothingShape.Feet.DEFAULT) {
                 pseudo.setTag(itemStack.getTag());
                 return pseudo;
             }
