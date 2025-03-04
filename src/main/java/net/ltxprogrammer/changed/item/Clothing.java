@@ -61,7 +61,7 @@ public interface Clothing extends AccessoryItem {
     }
 
     @Override
-    default void accessoryBreak(AccessorySlotContext<?> slotContext, ItemStack stack) {
-        slotContext.wearer().breakItem(stack);
+    default void accessoryBreak(AccessorySlotContext<?> slotContext) {
+        slotContext.wearer().breakItem(slotContext.stack());
     }
 }

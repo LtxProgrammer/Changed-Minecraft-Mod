@@ -46,6 +46,7 @@ public class ChangedPackets {
         addNetworkMessage(MultiRotateHeadPacket.class, MultiRotateHeadPacket::new);
         addNetworkMessage(AnimationEventPacket.class, AnimationEventPacket::new);
         addNetworkMessage(AccessorySyncPacket.class, AccessorySyncPacket::new);
+        addNetworkMessage(AccessoryEventPacket.class, AccessoryEventPacket::new);
     }
 
     private <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,

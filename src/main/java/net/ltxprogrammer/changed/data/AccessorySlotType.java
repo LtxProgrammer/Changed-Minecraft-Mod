@@ -1,9 +1,11 @@
 package net.ltxprogrammer.changed.data;
 
+import net.ltxprogrammer.changed.item.AccessoryItem;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -40,5 +42,10 @@ public class AccessorySlotType extends ForgeRegistryEntry<AccessorySlotType> {
 
     public EquipmentSlot getEquivalentSlot() {
         return equivalentSlot;
+    }
+
+    public void handleEvent(LivingEntity wearer, ItemStack itemStack, int event) {
+        if (event == 1 && itemStack.getItem() instanceof AccessoryItem accessoryItem)
+            accessoryItem.accessoryBreak(new AccessorySlotContext<>(wearer, this, itemStack));
     }
 }

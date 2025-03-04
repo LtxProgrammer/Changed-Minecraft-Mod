@@ -3,9 +3,11 @@ package net.ltxprogrammer.changed.data;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
+import net.ltxprogrammer.changed.network.packet.AccessoryEventPacket;
 import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -88,7 +91,11 @@ public class AccessorySlots implements Container {
     }
 
     public static void onBrokenAccessory(LivingEntity livingEntity, AccessorySlotType slotType) {
-        // TODO
+        if (livingEntity.level.isClientSide)
+            return;
+
+        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
+                new AccessoryEventPacket(livingEntity.getId(), slotType, 1));
     }
 
     /**
