@@ -1,11 +1,15 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
+import com.google.common.collect.Maps;
+import com.mojang.datafixers.util.Pair;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.block.ThreeXThreeSection;
 import net.ltxprogrammer.changed.block.WearableBlock;
 import net.ltxprogrammer.changed.block.WhiteLatexTransportInterface;
 import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
+import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -15,6 +19,7 @@ import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.*;
 import net.ltxprogrammer.changed.item.ExtendedItemProperties;
 import net.ltxprogrammer.changed.item.SpecializedAnimations;
+import net.ltxprogrammer.changed.network.packet.AccessorySyncPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.util.LocalUtil;
@@ -28,10 +33,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -46,6 +48,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,9 +61,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityDataExtension {
@@ -190,6 +191,48 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
     }
 
+    @Unique
+    private Map<AccessorySlotType, ItemStack> collectAccessoryChanges() {
+        Map<AccessorySlotType, ItemStack> map = null;
+
+        for (AccessorySlotType slotType : ChangedRegistry.ACCESSORY_SLOTS.get().getValues()) {
+            ItemStack lastStack = accessorySlots.getLastItem(slotType);
+            ItemStack newStack = accessorySlots.getItem(slotType).orElse(ItemStack.EMPTY);
+            if (!ItemStack.matches(newStack, lastStack)) {
+                //net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent(this, equipmentslot, lastStack, newStack));
+                if (map == null) {
+                    map = new HashMap<>();
+                }
+
+                map.put(slotType, newStack);
+                if (!lastStack.isEmpty()) {
+                    this.getAttributes().removeAttributeModifiers(lastStack.getAttributeModifiers(slotType.getEquivalentSlot()));
+                }
+
+                if (!newStack.isEmpty()) {
+                    this.getAttributes().addTransientAttributeModifiers(newStack.getAttributeModifiers(slotType.getEquivalentSlot()));
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @Unique
+    private void handleAccessoryChanges(Map<AccessorySlotType, ItemStack> map) {
+        map.forEach((slotType, stack) -> {
+            accessorySlots.setLastItem(slotType, stack.copy());
+        });
+        Changed.PACKET_HANDLER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this), new AccessorySyncPacket(this.getId(), map));
+    }
+
+    @Inject(method = "detectEquipmentUpdates", at = @At("RETURN"))
+    private void detectAccessoryUpdates(CallbackInfo ci) {
+        Map<AccessorySlotType, ItemStack> map = this.collectAccessoryChanges();
+        if (map != null && !map.isEmpty())
+            this.handleAccessoryChanges(map);
+    }
+
     @Unique @Nullable private Gas eyeInGas = null;
 
     private void checkForGas() {
@@ -299,6 +342,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow protected abstract void hurtCurrentlyUsedShield(float p_21316_);
 
     @Shadow protected abstract void blockUsingShield(LivingEntity p_21200_);
+
+    @Shadow public abstract AttributeMap getAttributes();
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

@@ -1,5 +1,7 @@
 package net.ltxprogrammer.changed.data;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
@@ -10,6 +12,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +37,7 @@ public class AccessorySlots implements Container {
 
     public final @Nullable LivingEntity owner;
     private final Map<AccessorySlotType, ItemStack> items = new HashMap<>();
+    private final Map<AccessorySlotType, ItemStack> lastItems = new HashMap<>();
     private final List<ItemStack> invalidItems = new ArrayList<>();
     private final Cacheable<List<AccessorySlotType>> orderedSlots = Cacheable.of(() -> {
         final var registry = ChangedRegistry.ACCESSORY_SLOTS.get();
@@ -132,6 +137,10 @@ public class AccessorySlots implements Container {
         return stack.isEmpty();
     }
 
+    public void getAttributeModifiers(Consumer<Multimap<Attribute, AttributeModifier>> modifierConsumer) {
+        forEachSlot((slotType, stack) -> modifierConsumer.accept(stack.getAttributeModifiers(slotType.getEquivalentSlot())));
+    }
+
     public boolean quickMoveStack(ItemStack stack) {
         for (var slot : items.keySet()) {
             if (moveToSlot(slot, stack))
@@ -168,6 +177,14 @@ public class AccessorySlots implements Container {
         if (items.containsKey(slotType))
             return Optional.of(items.get(slotType));
         return Optional.empty();
+    }
+
+    public ItemStack getLastItem(AccessorySlotType slotType) {
+        return Objects.requireNonNullElse(lastItems.get(slotType), ItemStack.EMPTY);
+    }
+
+    public void setLastItem(AccessorySlotType slotType, ItemStack stack) {
+        lastItems.put(slotType, stack);
     }
 
     public Set<AccessorySlotType> getAccessorySlotsForItem(ItemStack stack) {
@@ -223,8 +240,8 @@ public class AccessorySlots implements Container {
         ));
     }
 
-    public void setAll(AccessorySlots other) {
-        this.emptySlots();
+    public void setAll(AccessorySlots other, boolean empty) {
+        if (empty) this.emptySlots();
         items.putAll(other.items);
     }
 
@@ -271,6 +288,11 @@ public class AccessorySlots implements Container {
 
         items.put(slotType, ItemStack.EMPTY);
         return taken;
+    }
+
+    public void setItem(AccessorySlotType slotType, ItemStack stack) {
+        if (items.keySet().contains(slotType))
+            items.put(slotType, stack);
     }
 
     @Override
