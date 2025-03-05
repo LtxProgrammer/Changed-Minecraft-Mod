@@ -212,6 +212,8 @@
 
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
   "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli forvandpelset.",
+  "enchantment.changed.form_fitting": "Formtilpasset",
+  "enchantment.changed.form_fitting.desc": "Rustningen vil samsvare seg selv til brukerens form.",
 
   "curios.identifier.legs": "Ben",
   "curios.identifier.lower_body": "Underkropp",

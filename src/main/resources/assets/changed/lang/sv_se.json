@@ -212,6 +212,8 @@
 
   "enchantment.changed.latex_protection": "Latexskydd",
   "enchantment.changed.latex_protection.desc": "Skyddar bäraren från att förpälsvandlas.",
+  "enchantment.changed.form_fitting": "Formanpassad",
+  "enchantment.changed.form_fitting.desc": "Rustningen kommer att anpassa själva till bärarens form.",
 
   "curios.identifier.legs": "Ben",
   "curios.identifier.lower_body": "Underkropp",
