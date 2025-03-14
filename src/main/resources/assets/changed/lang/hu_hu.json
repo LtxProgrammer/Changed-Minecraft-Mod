@@ -212,6 +212,8 @@
   
   "enchantment.changed.latex_protection": "Latexvédelem",
   "enchantment.changed.latex_protection.desc": "Védi a viselőjét a transzfurálástól.",
+  "enchantment.changed.form_fitting": "Alakra simulás",
+  "enchantment.changed.form_fitting.desc": "A páncél alkalmazkodni fog a viselőjének alakjához.",
 
   "curios.identifier.legs": "Lábak",
   "curios.identifier.lower_body": "Alsótest",
