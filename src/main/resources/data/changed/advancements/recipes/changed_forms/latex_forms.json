@@ -2,6 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
+      "changed:form_gas_tiger",
       "changed:form_gas_wolf",
       "changed:form_dark_dragon",
       "changed:form_dark_latex_wolf",

@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "changed:form_gas_tiger",
     "changed:form_dark_dragon",
     "changed:form_beifeng",
     "changed:form_crystal_wolf",
