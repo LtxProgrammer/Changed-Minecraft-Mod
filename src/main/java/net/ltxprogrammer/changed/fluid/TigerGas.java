@@ -25,7 +25,7 @@ public abstract class TigerGas extends TransfurGas {
             .block(ChangedBlocks.TIGER_GAS);
 
     protected TigerGas() {
-        super(PROPERTIES, List.of());
+        super(PROPERTIES, ChangedTransfurVariants.GAS_TIGER);
     }
 
     @Override

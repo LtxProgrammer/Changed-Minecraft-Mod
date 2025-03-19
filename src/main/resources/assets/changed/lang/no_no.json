@@ -212,6 +212,8 @@
 
   "enchantment.changed.latex_protection": "Lateksbeskyttelse",
   "enchantment.changed.latex_protection.desc": "Beskytter brukeren mot å bli forvandpelset.",
+  "enchantment.changed.form_fitting": "Formtilpasset",
+  "enchantment.changed.form_fitting.desc": "Rustningen vil samsvare seg selv til brukerens form.",
 
   "curios.identifier.legs": "Ben",
   "curios.identifier.lower_body": "Underkropp",
@@ -365,6 +367,7 @@
   "entity.changed.dark_latex_yufeng": "Mørk lateks yufeng",
   "entity.changed.dark_latex_double_yufeng": "Mørk lateks tohodet yufeng",
   "entity.changed.gas_particle": "Forvandpelsgasspartikkel",
+  "entity.changed.gas_tiger": "Gass tiger",
   "entity.changed.gas_wolf": "Gass ulv",
   "entity.changed.green_lizard": "Grønn øgle",
   "entity.changed.headless_knight": "Hodeløs ridder",
@@ -445,6 +448,7 @@
   "item.changed.dark_latex_wolf_pup_spawn_egg": "Fremkallingsegg for mørk lateks ulvevalp",
   "item.changed.dark_latex_yufeng_spawn_egg": "Fremkallingsegg for mørk lateks yufeng",
   "item.changed.dark_latex_double_yufeng_spawn_egg": "Fremkallingsegg for mørk lateks tohodet yufeng",
+  "item.changed.gas_tiger_spawn_egg": "Fremkallingsegg for gass tiger",
   "item.changed.gas_wolf_spawn_egg": "Fremkallingsegg for gass ulv",
   "item.changed.green_lizard_spawn_egg": "Fremkallingsegg for grønn øgle",
   "item.changed.headless_knight_spawn_egg": "Fremkallingsegg for hodeløs ridder",

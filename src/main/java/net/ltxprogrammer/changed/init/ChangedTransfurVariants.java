@@ -22,6 +22,8 @@ import java.util.stream.Stream;
 public class ChangedTransfurVariants {
     public static final DeferredRegister<TransfurVariant<?>> REGISTRY = ChangedRegistry.TRANSFUR_VARIANT.createDeferred(Changed.MODID);
 
+    public static final RegistryObject<TransfurVariant<GasTiger>> GAS_TIGER = register("form_gas_tiger",
+            TransfurVariant.Builder.of(ChangedEntities.GAS_TIGER).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
     public static final RegistryObject<TransfurVariant<GasWolf>> GAS_WOLF = register("form_gas_wolf",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF).stepSize(0.7f).scares(AbstractSkeleton.class).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",

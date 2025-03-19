@@ -19,6 +19,20 @@
     "experience": 150
   },
   "criteria": {
+    "changed:gas_tiger": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "changed:gas_tiger"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
     "changed:gas_wolf": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
@@ -1127,6 +1141,9 @@
     }
   },
   "requirements": [
+    [
+      "changed:gas_tiger"
+    ],
     [
       "changed:gas_wolf"
     ],

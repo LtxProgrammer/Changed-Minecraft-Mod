@@ -139,6 +139,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexKeonWolf>> LATEX_KEON_WOLF = registerSpawning("latex_keon_wolf", 0x959CA5, 0x272727,
             EntityType.Builder.of(LatexKeonWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexKeonWolf::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<GasTiger>> GAS_TIGER = registerSpawning("gas_tiger", 0xFFFFFF, 0x212121,
+            EntityType.Builder.of(GasTiger::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GasTiger::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<GasWolf>> GAS_WOLF = registerSpawning("gas_wolf", 0x5D4743, 0xFFFFFF,
             EntityType.Builder.of(GasWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GasWolf::checkEntitySpawnRules);
@@ -530,6 +533,9 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SNOW_LEOPARD_MALE, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_SNOW_LEOPARD_FEMALE, 100, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_WHITE_TIGER, 80, 1, 3, 0.7, 0.15);
+
+                // Passive
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GAS_TIGER, 1, 1, 2, 0.7, 0.15);
             }
 
             /* Water spawning entities */
