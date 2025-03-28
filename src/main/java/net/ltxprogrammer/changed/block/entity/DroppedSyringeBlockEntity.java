@@ -8,6 +8,7 @@ import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,18 @@ public class DroppedSyringeBlockEntity extends BlockEntity {
     }
 
     public void setVariant(TransfurVariant<?> variant) {
+        if (this.variant == variant) return;
+
         this.variant = variant;
+        this.setChanged();
+    }
+
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
     }
 
     @Override
@@ -44,6 +56,6 @@ public class DroppedSyringeBlockEntity extends BlockEntity {
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        variant = ChangedRegistry.TRANSFUR_VARIANT.get().getValue(tag.getInt("variant"));
+        setVariant(ChangedRegistry.TRANSFUR_VARIANT.get().getValue(tag.getInt("variant")));
     }
 }
