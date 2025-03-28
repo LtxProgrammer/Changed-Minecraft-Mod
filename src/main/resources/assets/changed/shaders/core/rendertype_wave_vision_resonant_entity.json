@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "changed:rendertype_wave_vision_entity_resonant",
-  "fragment": "changed:rendertype_wave_vision_entity_resonant",
+  "vertex": "changed:rendertype_wave_vision_resonant_entity",
+  "fragment": "changed:rendertype_wave_vision_resonant_entity",
   "attributes": [
     "Position",
     "Color",
