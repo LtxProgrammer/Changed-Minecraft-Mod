@@ -3,9 +3,13 @@ package net.ltxprogrammer.changed.ability;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.BlockGetter;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Stream;
 
 public class SummonSharksAbility extends SimpleAbility {
@@ -56,5 +60,12 @@ public class SummonSharksAbility extends SimpleAbility {
     @Override
     public int getCoolDown(IAbstractChangedEntity entity) {
         return 2 * 60 * 20; // 2 Minutes
+    }
+
+    private static final Collection<Component> DESCRIPTION = Collections.singleton(new TranslatableComponent("ability.changed.summon_sharks.desc"));
+
+    @Override
+    public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
+        return DESCRIPTION;
     }
 }

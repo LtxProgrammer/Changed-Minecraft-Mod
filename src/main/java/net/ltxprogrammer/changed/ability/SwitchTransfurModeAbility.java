@@ -1,9 +1,13 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.entity.TransfurMode;
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.*;
 
 public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
@@ -52,5 +56,18 @@ public class SwitchTransfurModeAbility extends SimpleAbility {
     @Override
     public int getCoolDown(IAbstractChangedEntity entity) {
         return 10;
+    }
+
+    private static final Map<TransfurMode, Collection<Component>> DESCRIPTION = Util.make(new EnumMap<>(TransfurMode.class), map -> {
+        TranslatableComponent baseDesc = new TranslatableComponent("ability.changed.switch_transfur_mode.desc");
+
+        map.put(TransfurMode.NONE, List.of(baseDesc, new TranslatableComponent("ability.changed.switch_transfur_mode.none.desc")));
+        map.put(TransfurMode.ABSORPTION, List.of(baseDesc, new TranslatableComponent("ability.changed.switch_transfur_mode.absorption.desc")));
+        map.put(TransfurMode.REPLICATION, List.of(baseDesc, new TranslatableComponent("ability.changed.switch_transfur_mode.replication.desc")));
+    });
+
+    @Override
+    public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
+        return DESCRIPTION.get(entity.getTransfurMode());
     }
 }
