@@ -30,14 +30,14 @@ public abstract class TextureAtlasMixin implements TextureAtlasExtender {
     @Override
     public int getWidth() {
         return getSprites().findAny().map(sprite -> {
-            return (int)((float)sprite.getX() / sprite.getU0());
+            return (int)((float)(sprite.getX() + sprite.getWidth()) / sprite.getU1());
         }).orElseThrow();
     }
 
     @Override
     public int getHeight() {
         return getSprites().findAny().map(sprite -> {
-            return (int)((float)sprite.getY() / sprite.getV0());
+            return (int)((float)(sprite.getY() + sprite.getHeight()) / sprite.getV1());
         }).orElseThrow();
     }
 

@@ -1,7 +1,7 @@
 package net.ltxprogrammer.changed.mixin.render;
 
-import llamalad7.mixinextras.injector.wrapoperation.Operation;
-import llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.ltxprogrammer.changed.world.enchantments.FormFittingEnchantment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
