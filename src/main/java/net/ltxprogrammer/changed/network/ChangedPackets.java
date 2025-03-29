@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.network;
 
 import net.ltxprogrammer.changed.block.CustomFallable;
+import net.ltxprogrammer.changed.entity.AccessoryEntities;
 import net.ltxprogrammer.changed.network.packet.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -45,6 +46,7 @@ public class ChangedPackets {
         addNetworkMessage(AbilityPayloadPacket.class, AbilityPayloadPacket::new);
         addNetworkMessage(MultiRotateHeadPacket.class, MultiRotateHeadPacket::new);
         addNetworkMessage(AnimationEventPacket.class, AnimationEventPacket::new);
+        addNetworkMessage(AccessoryEntities.SyncPacket.class, AccessoryEntities.SyncPacket::new);
         addNetworkMessage(AccessorySyncPacket.class, AccessorySyncPacket::new);
         addNetworkMessage(AccessoryEventPacket.class, AccessoryEventPacket::new);
     }
