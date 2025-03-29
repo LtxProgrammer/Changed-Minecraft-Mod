@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "#changed:latex_crystal",
+    "changed:dark_latex_block",
+    "changed:dark_latex_ice",
+    "changed:wolf_crystal_block",
+
+    "#minecraft:crystal_sound_blocks",
+    "minecraft:small_amethyst_bud",
+    "minecraft:medium_amethyst_bud",
+    "minecraft:large_amethyst_bud",
+    "minecraft:amethyst_cluster",
+
+    "#minecraft:diamond_ores",
+    "minecraft:diamond_block",
+    "#minecraft:emerald_ores",
+    "minecraft:emerald_block"
+  ]
+}

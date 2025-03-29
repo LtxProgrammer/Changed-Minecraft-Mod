@@ -4,6 +4,7 @@
 #moj_import <changed/wave.glsl>
 
 uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
 
 uniform vec4 ColorModulator;
 uniform float FogStart;
@@ -24,6 +25,6 @@ void main() {
     if (color.a < 0.5) {
         discard;
     }
-    color = waveVision(color, WaveEffect, vertexDistance, WaveResonance);
+    color = waveVision(color, WaveEffect, vertexDistance, WaveResonance * texture(Sampler1, texCoord0).rgb);
     fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
 }

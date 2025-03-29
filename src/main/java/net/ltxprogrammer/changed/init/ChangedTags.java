@@ -38,6 +38,7 @@ public class ChangedTags {
         public static final TagKey<Block> AIR_CONDITIONER = create("air_conditioner");
         public static final TagKey<Block> LATEX_CRYSTAL = create("latex_crystal");
         public static final TagKey<Block> LATEX_SPAWNABLE_ON = create("latex_spawnable_on");
+        public static final TagKey<Block> CRYSTALLINE = create("crystalline");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registry.BLOCK_REGISTRY, Changed.modResource(name));
