@@ -285,7 +285,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
                 ProcessTransfur.forceNearbyToRetarget(player.level, player);
 
-                player.heal(10.0F);
+                ProcessTransfur.onNewlyTransfurred(IAbstractChangedEntity.forPlayer(player));
                 return IAbstractChangedEntity.forPlayer(player);
             }
         } else if (entity instanceof ChangedEntity changedEntity) {
