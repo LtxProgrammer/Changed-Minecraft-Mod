@@ -44,6 +44,8 @@ public abstract class CameraMixin implements CameraExtender {
 
     @Shadow @Final private Vector3f up;
 
+    @Shadow public abstract void setup(BlockGetter p_90576_, Entity p_90577_, boolean p_90578_, boolean p_90579_, float p_90580_);
+
     @Unique
     private <T extends ChangedEntity> void adjustAnimForEntity(T changedEntity, float partialTicks) {
         if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(changedEntity) instanceof AdvancedHumanoidRenderer<?,?,?> latexHumanoid &&
@@ -117,8 +119,18 @@ public abstract class CameraMixin implements CameraExtender {
         }
     }
 
-    @Inject(method = "setup", at = @At("HEAD"))
+    @Inject(method = "setup", at = @At("HEAD"), cancellable = true)
     public void setupWithTug(BlockGetter level, Entity entity, boolean firstPerson, boolean mirrored, float partialTicks, CallbackInfo ci) {
+        if (!(entity instanceof LivingEntity livingEntity))
+            return;
+
+        LivingEntity controlling = GrabEntityAbility.getControllingEntity(livingEntity);
+        if (controlling != livingEntity) {
+            this.setup(level, controlling, firstPerson, mirrored, partialTicks);
+            ci.cancel();
+            return;
+        }
+
         if (!(entity instanceof Player player))
             return;
 

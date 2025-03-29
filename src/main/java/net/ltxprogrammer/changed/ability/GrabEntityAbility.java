@@ -46,6 +46,16 @@ public class GrabEntityAbility extends AbstractAbility<GrabEntityAbilityInstance
 
     private static final Collection<Component> DESCRIPTION = Collections.singleton(new TranslatableComponent("ability.changed.grab_entity.desc"));
 
+    public static LivingEntity getControllingEntity(LivingEntity livingEntity) {
+        var grabbedByEntity = getGrabberSafe(livingEntity)
+                .flatMap(changedEntity -> changedEntity.getAbilityInstanceSafe(ChangedAbilities.GRAB_ENTITY_ABILITY.get()))
+                .map(ability -> ability.grabbedHasControl ? livingEntity : ability.entity.getEntity());
+
+        return grabbedByEntity.orElseGet(() -> AbstractAbility.getAbilityInstanceSafe(livingEntity, ChangedAbilities.GRAB_ENTITY_ABILITY.get())
+                .map(ability -> ability.grabbedHasControl ? ability.grabbedEntity : livingEntity)
+                .orElse(livingEntity));
+    }
+
     @Override
     public Collection<Component> getAbilityDescription(IAbstractChangedEntity entity) {
         return DESCRIPTION;
