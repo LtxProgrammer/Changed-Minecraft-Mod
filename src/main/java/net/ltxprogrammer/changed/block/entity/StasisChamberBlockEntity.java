@@ -17,6 +17,7 @@ import net.ltxprogrammer.changed.item.FluidCanister;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.ltxprogrammer.changed.world.inventory.StasisChamberMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
@@ -407,17 +409,17 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
         return stabilized;
     }
 
-    private void trimSchedule() {
+    public void trimSchedule() {
         if (currentCommand != null) {
             currentCommand = switch (currentCommand) {
-                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN -> null;
+                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN, WAIT -> null;
                 default -> currentCommand;
             };
         }
         while (!scheduledCommands.isEmpty()) {
             var lastCommand = scheduledCommands.get(scheduledCommands.size() - 1);
             switch (lastCommand) {
-                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN -> scheduledCommands.remove(scheduledCommands.size() - 1);
+                case CLOSE_WHEN_EMPTY, RELEASE, DRAIN, WAIT -> scheduledCommands.remove(scheduledCommands.size() - 1);
                 default -> {
                     return;
                 }
@@ -452,6 +454,47 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             scheduledCommands.add(ScheduledCommand.RELEASE);
             scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
             markUpdated();
+        }
+
+        else if ("captureNextEntity".equals(program) && !scheduledCommands.contains(ScheduledCommand.CAPTURE_ENTITY)) {
+            trimSchedule();
+
+            scheduledCommands.add(ScheduledCommand.OPEN);
+            scheduledCommands.add(ScheduledCommand.CAPTURE_ENTITY);
+            scheduledCommands.add(ScheduledCommand.WAIT);
+            waitDuration = 200; // Default 10 seconds
+
+            scheduledCommands.add(ScheduledCommand.DRAIN);
+            scheduledCommands.add(ScheduledCommand.RELEASE);
+            scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
+            markUpdated();
+        }
+
+        else if ("toggleStasis".equals(program)) {
+            if (stabilized || scheduledCommands.contains(ScheduledCommand.STABILIZE_ENTITY) || currentCommand == ScheduledCommand.STABILIZE_ENTITY) {
+                trimSchedule();
+
+                currentCommand = ScheduledCommand.DRAIN;
+                scheduledCommands.clear();
+                scheduledCommands.add(ScheduledCommand.RELEASE);
+                scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
+
+                markUpdated();
+            } else {
+                trimSchedule();
+
+                scheduledCommands.add(ScheduledCommand.OPEN);
+                scheduledCommands.add(ScheduledCommand.CAPTURE_ENTITY);
+                scheduledCommands.add(ScheduledCommand.FILL);
+                scheduledCommands.add(ScheduledCommand.STABILIZE_ENTITY);
+                scheduledCommands.add(ScheduledCommand.WAIT);
+                waitDuration = 400; // Default 20 seconds
+
+                scheduledCommands.add(ScheduledCommand.DRAIN);
+                scheduledCommands.add(ScheduledCommand.RELEASE);
+                scheduledCommands.add(ScheduledCommand.CLOSE_WHEN_EMPTY);
+                markUpdated();
+            }
         }
     }
 
@@ -502,6 +545,10 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
                 return false;
 
             blockEntity.stabilized = true;
+            blockEntity.getChamberedEntity().map(EntityUtil::playerOrNull).map(Player::getLevel).ifPresent(level -> {
+                if (level instanceof ServerLevel serverLevel)
+                    serverLevel.updateSleepingPlayerList();
+            });
 
             return false;
         }), // If chamber is filled, and has captured entity -> Disable npc AI or "freeze" players
@@ -547,7 +594,13 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
             blockEntity.fluidLevelO = blockEntity.fluidLevel;
             blockEntity.fluidLevel -= 0.01f; // Take 5 seconds to drain
 
-            blockEntity.stabilized = false;
+            if (blockEntity.stabilized) {
+                blockEntity.stabilized = false;
+                blockEntity.getChamberedEntity().map(EntityUtil::playerOrNull).map(Player::getLevel).ifPresent(level -> {
+                    if (level instanceof ServerLevel serverLevel)
+                        serverLevel.updateSleepingPlayerList();
+                });
+            }
 
             if (blockEntity.fluidLevel > 0.6f)
                 blockEntity.ensureCapturedIsStillInside();

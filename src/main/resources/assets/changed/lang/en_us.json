@@ -660,7 +660,7 @@
   "changed.stasis.close": "Close Door",
   "changed.stasis.run": "Execute Modifications",
   "changed.stasis.capture_next": "Capture Next",
-  "changed.stasis.toggle_stasis": "Stasis: %s",
+  "changed.stasis.toggle_stasis": "Toggle Stasis",
   "changed.stasis.modify": "Modifications",
 
   "changed.stasis.command._active": "> %s",

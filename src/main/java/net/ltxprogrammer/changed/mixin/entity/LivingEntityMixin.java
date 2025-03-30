@@ -24,6 +24,7 @@ import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -434,7 +435,17 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     }
 
     @Inject(method = "stopSleeping", at = @At("HEAD"), cancellable = true)
-    public void unlessIsStabilized(CallbackInfo ci) {
+    public void unlessIsStabilizedAndMultiplayer(CallbackInfo ci) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (serverLevel.players().stream().filter(player -> !player.isSpectator()).count() == 1) {
+                // Singleplayer, just skip stasis time
+                if (this.vehicle instanceof SeatEntity seatEntity) {
+                    this.level.getBlockEntity(seatEntity.getAttachedBlockPos(), ChangedBlockEntities.STASIS_CHAMBER.get())
+                            .ifPresent(StasisChamberBlockEntity::trimSchedule);
+                }
+                return;
+            }
+        }
         if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
             ci.cancel();
     }
