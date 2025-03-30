@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.block;
 
-import net.ltxprogrammer.changed.block.entity.BedsideIVRackBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlockEntities;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedItems;
@@ -38,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements SimpleWaterloggedBlock {
+public class BedsideIVRack extends AbstractCustomShapeTallBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty FULL = BooleanProperty.create("full");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final VoxelShape SHAPE_BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
@@ -49,16 +48,6 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements
     public BedsideIVRack() {
         super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).dynamicShape().strength(3.0F, 5.0F).isSuffocating(ChangedBlocks::never).isViewBlocking(ChangedBlocks::never));
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, false).setValue(FULL, false));
-    }
-
-    @Override
-    public BlockEntity newBlockEntity(BlockPos p_153277_, BlockState p_153278_) {
-        return new BedsideIVRackBlockEntity(p_153277_, p_153278_);
-    }
-
-    @Override
-    public boolean stateHasBlockEntity(BlockState blockState) {
-        return true;
     }
 
     @Nullable
@@ -89,12 +78,6 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements
             if (state.getBlock() != this) return super.canSurvive(state, level, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             return blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
-    }
-
-    public static void placeAt(LevelAccessor p_153174_, BlockState p_153175_, BlockPos p_153176_, int p_153177_) {
-        BlockPos blockpos = p_153176_.above();
-        p_153174_.setBlock(p_153176_, p_153175_.setValue(HALF, DoubleBlockHalf.LOWER), p_153177_);
-        p_153174_.setBlock(blockpos, p_153175_.setValue(HALF, DoubleBlockHalf.UPPER), p_153177_);
     }
 
     public PushReaction getPistonPushReaction(BlockState p_52814_) {
@@ -155,20 +138,6 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements
         super.playerDestroy(p_52865_, p_52866_, p_52867_, Blocks.AIR.defaultBlockState(), p_52869_, p_52870_);
     }
 
-    protected static void preventCreativeDropFromBottomPart(Level p_52904_, BlockPos p_52905_, BlockState p_52906_, Player p_52907_) {
-        DoubleBlockHalf doubleblockhalf = p_52906_.getValue(HALF);
-        if (doubleblockhalf == DoubleBlockHalf.UPPER) {
-            BlockPos blockpos = p_52905_.below();
-            BlockState blockstate = p_52904_.getBlockState(blockpos);
-            if (blockstate.is(p_52906_.getBlock()) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                BlockState blockstate1 = blockstate.hasProperty(BlockStateProperties.WATERLOGGED) && blockstate.getValue(BlockStateProperties.WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                p_52904_.setBlock(blockpos, blockstate1, 35);
-                p_52904_.levelEvent(p_52907_, 2001, blockpos, Block.getId(blockstate));
-            }
-        }
-
-    }
-
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
@@ -195,24 +164,5 @@ public class BedsideIVRack extends AbstractCustomShapeTallEntityBlock implements
 
     public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
         return getInteractionShape(p_54561_, p_54562_, p_54563_);
-    }
-
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (!state.getValue(FULL) && stack.is(ChangedItems.LATEX_SYRINGE.get())) {
-            BlockPos other = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
-            BlockEntity blockEntity = level.getBlockEntity(state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : other);
-            if (blockEntity instanceof BedsideIVRackBlockEntity bedsideIVRackBlockEntity) {
-                bedsideIVRackBlockEntity.items.set(0, stack);
-                player.setItemInHand(hand, new ItemStack(ChangedItems.SYRINGE.get()));
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
-        return InteractionResult.FAIL;
-    }
-
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153273_, BlockState p_153274_, BlockEntityType<T> p_153275_) {
-        return p_153273_.isClientSide ? null : createTickerHelper(p_153275_, ChangedBlockEntities.BEDSIDE_IV_RACK.get(), BedsideIVRackBlockEntity::serverTick);
     }
 }
