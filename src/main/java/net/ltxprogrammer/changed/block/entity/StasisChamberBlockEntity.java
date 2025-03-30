@@ -13,6 +13,7 @@ import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
 import net.ltxprogrammer.changed.fluid.Gas;
 import net.ltxprogrammer.changed.fluid.TransfurGas;
 import net.ltxprogrammer.changed.init.*;
+import net.ltxprogrammer.changed.item.FluidCanister;
 import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.item.Syringe;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
@@ -291,7 +292,7 @@ public class StasisChamberBlockEntity extends BaseContainerBlockEntity implement
 
     public Optional<Fluid> getFluidType() {
         ItemStack canisterStack = items.get(1);
-        if (canisterStack.getCount() > 0 && canisterStack.getItem() instanceof GasCanister canisterItem) {
+        if (canisterStack.getCount() > 0 && canisterStack.getItem() instanceof FluidCanister canisterItem) {
             return Optional.ofNullable(canisterItem.getFluid());
         }
         return Optional.empty();

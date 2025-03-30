@@ -321,6 +321,10 @@ public class StasisChamber extends HorizontalDirectionalBlock implements NonLate
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockPos bePos = getBlockEntityPos(state, pos);
         BlockState beState = level.getBlockState(bePos);
+        StasisChamberBlockEntity blockEntity = level.getBlockEntity(pos, ChangedBlockEntities.STASIS_CHAMBER.get()).orElse(null);
+
+        if (blockEntity != null && blockEntity.getChamberedEntity().map(chambered -> chambered == player).orElse(false))
+            return InteractionResult.FAIL;
 
         if (player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openGui(serverPlayer, getMenuProvider(beState, level, bePos), extra -> {

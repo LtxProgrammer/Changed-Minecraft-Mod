@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -172,6 +173,10 @@ public class ChangedBlocks {
     public static final RegistryObject<FluidCanisterBlock> EMPTY_CANISTER = register("empty_canister",
             () -> new FluidCanisterBlock(null), null,
             canister -> new FluidCanister(canister, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS), null));
+    public static final RegistryObject<FluidCanisterBlock> OXYGENATED_WATER_CANISTER = register("oxygenated_water_canister",
+            () -> new FluidCanisterBlock(null), null,
+            canister -> new FluidCanister(canister, new Item.Properties().tab(ChangedTabs.TAB_CHANGED_BLOCKS), () -> Fluids.WATER));
+
     public static final RegistryObject<GasFluidBlock> SKUNK_GAS = registerNoItem("skunk_gas", () -> new GasFluidBlock(ChangedFluids.SKUNK_GAS));
     public static final RegistryObject<FluidCanisterBlock> SKUNK_GAS_CANISTER = register("skunk_gas_canister",
             () -> new FluidCanisterBlock(ChangedFluids.SKUNK_GAS), null,

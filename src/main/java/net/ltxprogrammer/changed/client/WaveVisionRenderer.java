@@ -324,8 +324,6 @@ public class WaveVisionRenderer {
 
             NativeImage maskBuilder = new NativeImage(ext.getWidth(), ext.getHeight(), false);
 
-            new ItemStack(ChangedBlocks.EMPTY_CANISTER.get());
-
             ext.getSprites().forEach(sprite -> {
                 ResourceLocation resonanceMask = MixedTexture.getResourceLocation(resolveResonanceTexture(sprite.getName()));
                 if (resources.hasResource(resonanceMask)) {
