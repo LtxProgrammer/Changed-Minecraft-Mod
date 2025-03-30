@@ -35,6 +35,7 @@
     "entity.VillagerHostilesSensorMixin",
     "entity.WanderingTraderMixin",
     "fluid.LavaFluidMixin",
+    "forge.ForgeHooksMixin",
     "item.ArmorItemMixin",
     "item.ItemMixin",
     "item.ItemStackMixin",
