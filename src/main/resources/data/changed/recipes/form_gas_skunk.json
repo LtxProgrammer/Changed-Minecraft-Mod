@@ -1,0 +1,12 @@
+{
+  "type": "changed:infuser",
+  "ingredients": [
+    {
+      "item": "changed:latex_base"
+    },
+    {
+      "item": "changed:skunk_gas_canister"
+    }
+  ],
+  "form": "changed:form_gas_skunk"
+}

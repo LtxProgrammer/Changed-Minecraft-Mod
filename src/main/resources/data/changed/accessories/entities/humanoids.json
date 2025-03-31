@@ -3,6 +3,7 @@
     "minecraft:player",
 
     "changed:beifeng",
+    "changed:gas_skunk",
     "changed:gas_tiger",
     "changed:gas_wolf",
     "changed:crystal_wolf",
