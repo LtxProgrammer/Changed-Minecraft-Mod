@@ -13,7 +13,6 @@ public class ChangedScreens {
     public static void clientLoad(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ChangedMenus.COMPUTER, ComputerExploreScreen::new);
-            MenuScreens.register(ChangedMenus.TAUR_SADDLE, TaurSaddleScreen::new);
             MenuScreens.register(ChangedMenus.INFUSER, InfuserScreen::new);
             MenuScreens.register(ChangedMenus.PURIFIER, PurifierScreen::new);
             MenuScreens.register(ChangedMenus.ABILITY_RADIAL, AbilityRadialScreen::new);

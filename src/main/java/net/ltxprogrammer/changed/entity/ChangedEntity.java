@@ -845,12 +845,6 @@ public abstract class ChangedEntity extends Monster {
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
             mirrorLiving(player);
         }
-
-        var variant = getSelfVariant();
-        if (variant == null) return;
-
-        if (this.vehicle != null && variant.rideable())
-            this.stopRiding();
     }
     
     public void mirrorLiving(LivingEntity player) {

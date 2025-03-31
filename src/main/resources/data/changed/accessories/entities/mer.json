@@ -1,0 +1,10 @@
+{
+  "entities": [
+    "changed:latex_manta_ray_female",
+    "changed:latex_mermaid_shark",
+    "changed:latex_siren"
+  ],
+  "slots": [
+    "changed:body"
+  ]
+}

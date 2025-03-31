@@ -18,7 +18,6 @@ public class ChangedMenus {
     public static final MenuType<HairStyleRadialMenu> HAIRSTYLE_RADIAL = register("hairstyle_radial", HairStyleRadialMenu::new);
     public static final MenuType<SpecialStateRadialMenu> SPECIAL_RADIAL = register("special_radial", SpecialStateRadialMenu::new);
     public static final MenuType<ComputerMenu> COMPUTER = register("computer", ComputerMenu::new);
-    public static final MenuType<TaurSaddleMenu> TAUR_SADDLE = register("taur_saddle", TaurSaddleMenu::new);
     public static final MenuType<InfuserMenu> INFUSER = register("infuser", InfuserMenu::new);
     public static final MenuType<PurifierMenu> PURIFIER = register("purifier", PurifierMenu::new);
     public static final MenuType<KeypadMenu> KEYPAD = register("keypad", KeypadMenu::new);
