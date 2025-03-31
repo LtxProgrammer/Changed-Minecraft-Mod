@@ -22,10 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
@@ -132,7 +129,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
             var delta = livingEntity.getDeltaMovement();
             var xyMovement = delta.subtract(0, delta.y, 0);
-            if (livingEntity.isCrouching() || xyMovement.lengthSqr() < Mth.EPSILON)
+            if (livingEntity.getPose() == Pose.CROUCHING || xyMovement.lengthSqr() < Mth.EPSILON)
                 return false;
         }
 
