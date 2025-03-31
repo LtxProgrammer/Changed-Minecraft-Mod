@@ -116,9 +116,9 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         openDoorButton.visible = !showPrograms;
         closeDoorButton.active = open;
         closeDoorButton.visible = !showPrograms;
-        captureNextEntityButton.active = open;
+        captureNextEntityButton.active = true;
         captureNextEntityButton.visible = !showPrograms;
-        toggleStasisButton.active = !open;
+        toggleStasisButton.active = true;
         toggleStasisButton.visible = !showPrograms;
 
         programButtons.forEach(button -> button.visible = showPrograms);
@@ -161,11 +161,11 @@ public class StasisChamberScreen extends AbstractContainerScreen<StasisChamberMe
         }));
 
         captureNextEntityButton = this.addRenderableWidget(new Button(leftMargin, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.capture_next"), button -> {
-
+            menu.inputProgram("captureNextEntity");
         }));
 
         toggleStasisButton = this.addRenderableWidget(new Button(leftMargin + buttonWidthSpacing, topMargin + buttonHeightSpacing * 2, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.toggle_stasis"), button -> {
-
+            menu.inputProgram("toggleStasis");
         }));
 
         programButtons.add(this.addRenderableWidget(new Button(leftMargin, topMargin + buttonHeightSpacing, buttonWidth, buttonHeight, new TranslatableComponent("changed.stasis.program.transfur"), button -> {

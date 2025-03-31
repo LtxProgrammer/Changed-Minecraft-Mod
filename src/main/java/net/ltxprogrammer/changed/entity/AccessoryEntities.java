@@ -10,6 +10,9 @@ import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.AccessorySyncPacket;
+import net.ltxprogrammer.changed.network.packet.ChangedPacket;
+import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -20,7 +23,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +34,11 @@ import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<EntityType<?>, AccessorySlotType>> {
     public static final AccessoryEntities INSTANCE = new AccessoryEntities();
@@ -116,5 +123,52 @@ public class AccessoryEntities extends SimplePreparableReloadListener<Multimap<E
     protected void apply(@NotNull Multimap<EntityType<?>, AccessorySlotType> output, @NotNull ResourceManager resources, @NotNull ProfilerFiller profiler) {
         validEntities.clear();
         validEntities.putAll(output);
+    }
+
+    public static class SyncPacket implements ChangedPacket {
+        private final Multimap<EntityType<?>, AccessorySlotType> map;
+
+        protected SyncPacket(Multimap<EntityType<?>, AccessorySlotType> map) {
+            this.map = map;
+        }
+
+        public SyncPacket(FriendlyByteBuf buffer) {
+            this.map = HashMultimap.create();
+            buffer.readMap(FriendlyByteBuf::readInt, mapBuffer -> {
+                return mapBuffer.readCollection(HashSet::new, FriendlyByteBuf::readInt);
+            }).forEach((key, slots) -> {
+                final EntityType<?> entityType = Registry.ENTITY_TYPE.byId(key);
+                for (var slotTypeId : slots) {
+                    map.put(entityType, ChangedRegistry.ACCESSORY_SLOTS.get().getValue(slotTypeId));
+                }
+            });
+        }
+
+        @Override
+        public void write(FriendlyByteBuf buffer) {
+            var intMap = new HashMap<Integer, Set<Integer>>();
+            this.map.forEach((entityType, slotType) -> {
+                intMap.computeIfAbsent(Registry.ENTITY_TYPE.getId(entityType), id -> new HashSet<>())
+                        .add(ChangedRegistry.ACCESSORY_SLOTS.get().getID(slotType));
+            });
+            buffer.writeMap(intMap, FriendlyByteBuf::writeInt,
+                    (setBuffer, intSet) -> setBuffer.writeCollection(intSet, FriendlyByteBuf::writeInt));
+        }
+
+        @Override
+        public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
+            var context = contextSupplier.get();
+
+            if (context.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
+                AccessoryEntities.INSTANCE.validEntities.clear();
+                AccessoryEntities.INSTANCE.validEntities.putAll(this.map);
+
+                context.setPacketHandled(true);
+            }
+        }
+    }
+
+    public SyncPacket syncPacket() {
+        return new SyncPacket(this.validEntities);
     }
 }

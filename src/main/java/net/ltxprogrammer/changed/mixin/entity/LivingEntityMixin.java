@@ -1,9 +1,8 @@
 package net.ltxprogrammer.changed.mixin.entity;
 
-import com.google.common.collect.Maps;
-import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.block.StasisChamber;
 import net.ltxprogrammer.changed.block.ThreeXThreeSection;
 import net.ltxprogrammer.changed.block.WearableBlock;
@@ -22,13 +21,12 @@ import net.ltxprogrammer.changed.item.SpecializedAnimations;
 import net.ltxprogrammer.changed.network.packet.AccessorySyncPacket;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
-import net.ltxprogrammer.changed.util.LocalUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -36,18 +34,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,7 +49,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -407,6 +400,18 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
     }
 
+    @Inject(method = "isBlocking", at = @At("RETURN"), cancellable = true)
+    public void isControllerBlocking(CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValue())
+            return;
+
+        LivingEntity controlling = GrabEntityAbility.getControllingEntity((LivingEntity)(Object)this);
+        if (controlling == (Object)this)
+            return;
+
+        cir.setReturnValue(controlling.isBlocking());
+    }
+
     @Inject(method = "createLivingAttributes", at = @At("RETURN"))
     private static void addChangedAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         cir.getReturnValue().add(ChangedAttributes.TRANSFUR_TOLERANCE.get());
@@ -430,7 +435,17 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     }
 
     @Inject(method = "stopSleeping", at = @At("HEAD"), cancellable = true)
-    public void unlessIsStabilized(CallbackInfo ci) {
+    public void unlessIsStabilizedAndMultiplayer(CallbackInfo ci) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (serverLevel.players().stream().filter(player -> !player.isSpectator()).count() == 1) {
+                // Singleplayer, just skip stasis time
+                if (this.vehicle instanceof SeatEntity seatEntity) {
+                    this.level.getBlockEntity(seatEntity.getAttachedBlockPos(), ChangedBlockEntities.STASIS_CHAMBER.get())
+                            .ifPresent(StasisChamberBlockEntity::trimSchedule);
+                }
+                return;
+            }
+        }
         if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
             ci.cancel();
     }

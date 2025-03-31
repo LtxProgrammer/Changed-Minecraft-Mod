@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -69,11 +70,14 @@ public interface WhiteLatexTransportInterface extends NonLatexCoverableBlock {
     }
 
     static boolean isBoundingBoxInWhiteLatex(LivingEntity entity) {
-        return entity.level.getBlockStates(entity.getBoundingBox().inflate(-0.05)).anyMatch(blockState -> {
+        AABB testHitbox = entity.getBoundingBox().inflate(-0.05);
+        return BlockPos.betweenClosedStream(testHitbox).anyMatch(blockPos -> {
+            final BlockState blockState = entity.level.getBlockState(blockPos);
             if (blockState.getBlock() instanceof WhiteLatexTransportInterface transportInterface)
                 return transportInterface.allowTransport(blockState);
             if (blockState.getProperties().contains(COVERED) && blockState.getValue(COVERED) == LatexType.WHITE_LATEX) {
-                return blockState.isCollisionShapeFullBlock(entity.level, entity.blockPosition());
+                var shape = blockState.getCollisionShape(entity.level, blockPos, CollisionContext.empty()).move((double)blockPos.getX(), (double)blockPos.getY(), (double)blockPos.getZ());
+                return Shapes.joinIsNotEmpty(shape, Shapes.create(testHitbox), BooleanOp.AND);
             }
 
             return false;

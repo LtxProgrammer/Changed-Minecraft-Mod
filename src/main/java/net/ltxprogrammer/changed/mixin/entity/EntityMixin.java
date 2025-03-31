@@ -3,6 +3,8 @@ package net.ltxprogrammer.changed.mixin.entity;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.block.StasisChamber;
+import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
 import net.ltxprogrammer.changed.entity.SeatEntity;
@@ -139,6 +141,11 @@ public abstract class EntityMixin extends net.minecraftforge.common.capabilities
     @Inject(method = "canEnterPose", at = @At("HEAD"), cancellable = true)
     public void canEnterPose(Pose pose, CallbackInfoReturnable<Boolean> callback) {
         if (!((Entity)(Object)this instanceof LivingEntity livingEntity)) return;
+
+        if (StasisChamber.isEntityStabilized(livingEntity) && pose != Pose.STANDING) {
+            callback.setReturnValue(false);
+            return;
+        }
 
         IAbstractChangedEntity.forEitherSafe(livingEntity)
                 .map(IAbstractChangedEntity::getChangedEntity)

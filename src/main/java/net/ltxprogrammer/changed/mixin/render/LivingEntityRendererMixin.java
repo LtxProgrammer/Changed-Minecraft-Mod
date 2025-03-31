@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.mixin.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import llamalad7.mixinextras.injector.WrapWithCondition;
 import net.ltxprogrammer.changed.client.LivingEntityRendererExtender;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.minecraft.client.Minecraft;

@@ -78,6 +78,7 @@
   "subtitles.changed.vacuum": "Vacuum spins",
 
   "item.changed.benign_pants": "Latex Shorts",
+  "item.changed.black_tshirt": "Black T-Shirt",
   "item.changed.blood_syringe": "Blood Syringe",
   "item.changed.dark_latex_crystal_fragment": "Dark Latex Crystal Shard",
   "item.changed.dark_dragon_crystal_fragment": "Dark Dragon Crystal Shard",
@@ -288,6 +289,7 @@
   "block.changed.orange_lab_carpeting": "Orange Lab Carpeting",
   "block.changed.orange_tree_sapling": "Orange Tree Sapling",
   "block.changed.orange_tree_leaves": "Orange Tree Leaves",
+  "block.changed.oxygenated_water_canister": "Oxygenated Water Canister",
   "block.changed.pipe": "Pipes",
   "block.changed.petri_dish": "Petri Dish",
   "block.changed.purifier": "Purifier",
@@ -658,7 +660,7 @@
   "changed.stasis.close": "Close Door",
   "changed.stasis.run": "Execute Modifications",
   "changed.stasis.capture_next": "Capture Next",
-  "changed.stasis.toggle_stasis": "Stasis: %s",
+  "changed.stasis.toggle_stasis": "Toggle Stasis",
   "changed.stasis.modify": "Modifications",
 
   "changed.stasis.command._active": "> %s",
