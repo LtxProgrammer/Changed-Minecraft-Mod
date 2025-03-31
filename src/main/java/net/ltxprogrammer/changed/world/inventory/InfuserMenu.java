@@ -6,6 +6,7 @@ import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedMenus;
 import net.ltxprogrammer.changed.init.ChangedRecipeTypes;
+import net.ltxprogrammer.changed.item.GasCanister;
 import net.ltxprogrammer.changed.recipe.InfuserRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -185,6 +186,9 @@ public class InfuserMenu extends RecipeBookMenu<SimpleContainer> implements Supp
                     ItemStack item = craftingGrid.getStackInSlot(j);
                     if (item.getItem() instanceof BucketItem) {
                         player.getInventory().placeItemBackInInventory(new ItemStack(Items.BUCKET));
+                    }
+                    else if (item.getItem() instanceof GasCanister) {
+                        player.getInventory().placeItemBackInInventory(new ItemStack(ChangedBlocks.EMPTY_CANISTER.get()));
                     }
                     else if (item.getItem() instanceof BowlFoodItem) {
                         player.getInventory().placeItemBackInInventory(new ItemStack(Items.BOWL));

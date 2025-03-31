@@ -139,6 +139,9 @@ public class ChangedEntities {
     public static final RegistryObject<EntityType<LatexKeonWolf>> LATEX_KEON_WOLF = registerSpawning("latex_keon_wolf", 0x959CA5, 0x272727,
             EntityType.Builder.of(LatexKeonWolf::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, LatexKeonWolf::checkEntitySpawnRules);
+    public static final RegistryObject<EntityType<GasSkunk>> GAS_SKUNK = registerSpawning("gas_skunk", 0x334752, 0xFDFDFD,
+            EntityType.Builder.of(GasSkunk::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
+            ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GasSkunk::checkEntitySpawnRules);
     public static final RegistryObject<EntityType<GasTiger>> GAS_TIGER = registerSpawning("gas_tiger", 0xFFFFFF, 0x212121,
             EntityType.Builder.of(GasTiger::new, ChangedMobCategories.CHANGED).clientTrackingRange(10).sized(0.7F, 1.93F),
             ChangedEntities::overworldOnly, SpawnPlacements.Type.ON_GROUND, GasTiger::checkEntitySpawnRules);
@@ -461,6 +464,7 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, WHITE_WOLF_FEMALE, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, CRYSTAL_WOLF, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, CRYSTAL_WOLF_HORNED, 10, 1, 2, 0.7, 0.15);
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GAS_SKUNK, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GAS_WOLF, 10, 1, 2, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, SNIPER_DOG, 10, 1, 2, 0.7, 0.15);
             }
@@ -486,6 +490,9 @@ public class ChangedEntities {
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MOTH, 40, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_MIMIC_PLANT, 50, 1, 3, 0.7, 0.15);
                 ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, LATEX_RACCOON, 30, 1, 3, 0.7, 0.15);
+
+                // Passive
+                ChangedBiomeInterface.addSpawn(spawns, ChangedMobCategories.CHANGED, GAS_SKUNK, 10, 1, 3, 0.7, 0.15);
             }
 
             if (event.getCategory() == Biome.BiomeCategory.JUNGLE) {
