@@ -114,18 +114,18 @@ public class FacilityPieces {
 
     public static final FacilityPieceCollection SPLITS = new FacilityPieceCollection()
             // Blue
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/blue/corridor_blue_t_v1")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/blue/intersection1_blue")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/blue/intersection2_blue")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/blue/corridor_blue_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/blue/intersection1_blue")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/blue/intersection2_blue")))
             // Gray
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/gray/corridor_gray_t_v1")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/gray/corridor_gray_circle")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/gray/intersection1_gray")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/gray/intersection1_gray")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/gray/corridor_gray_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/gray/corridor_gray_circle")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/gray/intersection1_gray")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/gray/intersection1_gray")))
             // Red
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/red/corridor_red_t_v1")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/red/intersection1_red")))
-            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/intersection/red/intersection2_red")));
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/red/corridor_red_t_v1")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/red/intersection1_red")))
+            .register(new FacilitySplitSection(Changed.modResource("facility/corridor/splits/red/intersection2_red")));
 
     public static final FacilityPieceCollection ROOMS = new FacilityPieceCollection()
             .register(new FacilityRoomPiece(Changed.modResource("facility/room/room_blue_wl_test"), LootTables.DECAYED_LAB_WL))
