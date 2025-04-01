@@ -46,6 +46,11 @@
         {
           "type": "minecraft:item",
           "weight": 5,
+          "name": "changed:black_tshirt"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
           "name": "changed:tsc_staff"
         },
         {
