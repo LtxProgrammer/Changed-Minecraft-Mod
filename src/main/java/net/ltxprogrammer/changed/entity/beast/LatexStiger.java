@@ -2,27 +2,18 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Random;
 
 public class LatexStiger extends AbstractCaveEntity {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(LatexStiger.class, EntityDataSerializers.BYTE);
@@ -41,21 +32,6 @@ public class LatexStiger extends AbstractCaveEntity {
     public int getTicksRequiredToFreeze() { return 240; }
 
     @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    @Override
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return layer == 0 ? Color3.getColor("#7b4251") : Color3.getColor("#512742");
-    }
-
-    @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -66,12 +42,6 @@ public class LatexStiger extends AbstractCaveEntity {
     @Override
     public MobType getMobType() {
         return MobType.UNDEFINED;
-    }
-
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor("#7b4251");
     }
 
     protected void defineSynchedData() {

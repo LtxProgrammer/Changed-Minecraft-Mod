@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B",
+    "C",
+    "L"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:black_dye"
+    },
+    "C": {
+      "item": "minecraft:leather_chestplate"
+    },
+    "L": {
+      "item": "changed:latex_base"
+    }
+  },
+  "result": {
+    "item": "changed:black_tshirt"
+  }
+}

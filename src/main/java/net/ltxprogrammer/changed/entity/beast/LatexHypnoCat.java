@@ -6,12 +6,10 @@ import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.init.ChangedAbilities;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
+public class LatexHypnoCat extends ChangedEntity implements GenderedEntity, PatronOC {
     protected final SimpleAbilityInstance hypnosis;
 
     public LatexHypnoCat(EntityType<? extends LatexHypnoCat> type, Level level) {
@@ -19,9 +17,14 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
         hypnosis = registerAbility(ability -> this.wantToHypno(), new SimpleAbilityInstance(ChangedAbilities.HYPNOSIS.get(), IAbstractChangedEntity.forEntity(this)));
     }
 
-    public boolean wantToHypno() {
-        return getTarget() != null;
+    @Override
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        AttributePresets.catLike(attributes);
     }
+
+    @Override
+    public int getTicksRequiredToFreeze() { return 200; }
 
     @Override
     public Gender getGender() {
@@ -34,12 +37,12 @@ public class LatexHypnoCat extends AbstractLatexHypnoCat implements PatronOC {
     }
 
     @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.fromInt(0x52596d);
+    public LatexType getLatexType() {
+        return LatexType.NEUTRAL;
     }
 
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of(HairStyle.SHORT_MESSY.get());
+    public boolean wantToHypno() {
+        return getTarget() != null;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

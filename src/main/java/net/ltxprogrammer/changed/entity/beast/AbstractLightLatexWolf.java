@@ -26,17 +26,7 @@ public abstract class AbstractLightLatexWolf extends ChangedEntity implements Ge
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
     public Color3 getTransfurColor(TransfurCause cause) {
-        return Color3.WHITE;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
         return Color3.WHITE;
     }
 }

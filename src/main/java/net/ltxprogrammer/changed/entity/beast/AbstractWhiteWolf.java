@@ -2,14 +2,9 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.AttributePresets;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
-import net.ltxprogrammer.changed.entity.HairStyle;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public abstract class AbstractWhiteWolf extends AbstractLatexWolf implements GenderedEntity {
     public AbstractWhiteWolf(EntityType<? extends AbstractWhiteWolf> p_19870_, Level p_19871_) {
@@ -20,23 +15,5 @@ public abstract class AbstractWhiteWolf extends AbstractLatexWolf implements Gen
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         AttributePresets.wolfLike(attributes);
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
-    }
-
-    public Color3 getDripColor() {
-        return Color3.WHITE;
     }
 }

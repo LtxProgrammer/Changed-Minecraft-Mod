@@ -23,11 +23,6 @@ public abstract class AbstractDarkLatexWolf extends AbstractDarkLatexEntity impl
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.DARK;
-    }
-
-    @Override
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.fromInt(0x3d3d3d);
     }

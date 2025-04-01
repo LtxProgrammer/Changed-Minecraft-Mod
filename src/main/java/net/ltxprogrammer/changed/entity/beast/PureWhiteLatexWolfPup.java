@@ -1,6 +1,5 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.EntityShape;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
@@ -13,9 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class PureWhiteLatexWolfPup extends PureWhiteLatexWolf {
     public PureWhiteLatexWolfPup(EntityType<? extends PureWhiteLatexWolfPup> type, Level level) {
@@ -23,18 +19,13 @@ public class PureWhiteLatexWolfPup extends PureWhiteLatexWolf {
     }
 
     @Override
-    public TransfurMode getTransfurMode() {
-        return TransfurMode.ABSORPTION;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    @Override
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of();
+    protected void setAttributes(AttributeMap attributes) {
+        super.setAttributes(attributes);
+        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.25);
+        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
+        attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
+        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
     }
 
     @Override
@@ -55,13 +46,8 @@ public class PureWhiteLatexWolfPup extends PureWhiteLatexWolf {
     }
 
     @Override
-    protected void setAttributes(AttributeMap attributes) {
-        super.setAttributes(attributes);
-        attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(1.25);
-        attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.975);
-        attributes.getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        attributes.getInstance(Attributes.FOLLOW_RANGE).setBaseValue(16.0);
-        attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(12.0);
+    public TransfurMode getTransfurMode() {
+        return TransfurMode.ABSORPTION;
     }
 
     @Override
