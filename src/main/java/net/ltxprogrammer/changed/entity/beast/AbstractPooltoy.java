@@ -1,7 +1,6 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.*;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class AbstractPooltoy extends ChangedEntity implements PowderSnowWalkable {
@@ -55,11 +53,6 @@ public abstract class AbstractPooltoy extends ChangedEntity implements PowderSno
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         AttributePresets.wolfLike(attributes);
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
     }
 
     @Override

@@ -5,7 +5,6 @@ import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -24,11 +23,6 @@ public abstract class Behemoth extends ChangedEntity {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
     }
 
     public TransfurVariant<?> getSelfVariant() {

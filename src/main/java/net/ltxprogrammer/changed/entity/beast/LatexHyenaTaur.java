@@ -17,8 +17,6 @@ import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class LatexHyenaTaur extends WhiteLatexKnight implements LatexTaur<LatexHyenaTaur> {
     public LatexHyenaTaur(EntityType<? extends LatexHyenaTaur> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
@@ -46,25 +44,6 @@ public class LatexHyenaTaur extends WhiteLatexKnight implements LatexTaur<LatexH
     @Override
     public TransfurVariant<?> getTransfurVariant() {
         return ChangedTransfurVariants.LATEX_HYENA_TAUR.get();
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
     }
 
     @Override

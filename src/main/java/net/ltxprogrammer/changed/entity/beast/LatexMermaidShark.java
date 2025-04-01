@@ -10,9 +10,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
     public LatexMermaidShark(EntityType<? extends LatexMermaidShark> p_19870_, Level p_19871_) {
@@ -35,15 +32,6 @@ public class LatexMermaidShark extends AbstractAquaticGenderedEntity {
     @Override
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.SHORT_MESSY.get();
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

@@ -7,9 +7,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LatexLeaf extends ChangedEntity implements PatronOC {
     public LatexLeaf(EntityType<? extends ChangedEntity> p_19870_, Level p_19871_) {
@@ -31,20 +28,6 @@ public class LatexLeaf extends ChangedEntity implements PatronOC {
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.GREEN;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

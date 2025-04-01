@@ -1,12 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-
 
 public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWalkable {
     public LatexPinkYuinDragon(EntityType<? extends LatexPinkYuinDragon> p_19870_, Level p_19871_) {
@@ -17,11 +15,6 @@ public class LatexPinkYuinDragon extends LatexPinkWyvern implements PowderSnowWa
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         AttributePresets.dragonLike(attributes);
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor(this.random.nextInt(4) < 3 ? "#f2aaba" : "#d1626d");
     }
 
     @Override

@@ -25,9 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     protected static final int MAX_AGE = 72000;
@@ -96,11 +93,6 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.DARK;
-    }
-
-    @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.NONE;
     }
@@ -108,16 +100,6 @@ public class DarkLatexWolfPup extends AbstractDarkLatexEntity {
     @Override
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.DARK;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    @Override
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return List.of();
     }
 
     @Override
