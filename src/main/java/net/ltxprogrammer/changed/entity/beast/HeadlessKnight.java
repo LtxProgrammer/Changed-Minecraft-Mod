@@ -1,12 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.Changed;
-import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.LatexType;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,8 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<HeadlessKnight> {
     public HeadlessKnight(EntityType<? extends HeadlessKnight> p_19870_, Level p_19871_) {
@@ -41,16 +37,6 @@ public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<Headle
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.ABSORPTION;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
     }
 
     @Override
@@ -95,9 +81,5 @@ public class HeadlessKnight extends WhiteLatexKnight implements LatexTaur<Headle
         }
 
         return InteractionResult.PASS;
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
     }
 }

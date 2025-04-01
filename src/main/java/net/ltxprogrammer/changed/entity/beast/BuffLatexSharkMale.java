@@ -2,16 +2,12 @@ package net.ltxprogrammer.changed.entity.beast;
 
 import net.ltxprogrammer.changed.entity.Gender;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
-import net.ltxprogrammer.changed.entity.HairStyle;
 import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class BuffLatexSharkMale extends AbstractLatexShark implements GenderedEntity {
     public BuffLatexSharkMale(EntityType<? extends BuffLatexSharkMale> p_19870_, Level p_19871_) {
@@ -24,15 +20,6 @@ public class BuffLatexSharkMale extends AbstractLatexShark implements GenderedEn
         attributes.getInstance(Attributes.MOVEMENT_SPEED).setBaseValue(0.9);
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(1.5);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(28);
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.BALD.get();
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
     }
 
     @Override

@@ -102,14 +102,6 @@ public class SpecialLatex extends ChangedEntity {
     }
 
     @Override
-    public Color3 getDripColor() {
-        if (specialLatexForm == null)
-            return null;
-        return getCurrentData().dripColors().isEmpty() ? null :
-                getCurrentData().dripColors().get(level.random.nextInt(getCurrentData().dripColors().size()));
-    }
-
-    @Override
     public TransfurVariant<?> getTransfurVariant() {
         return specialLatexForm.variant();
     }

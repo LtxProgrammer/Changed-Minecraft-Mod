@@ -1,15 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
 
 public class LatexMingCat extends ChangedEntity implements PatronOC {
     public LatexMingCat(EntityType<? extends LatexMingCat> p_19870_, Level p_19871_) {
@@ -20,25 +15,6 @@ public class LatexMingCat extends ChangedEntity implements PatronOC {
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
         AttributePresets.catLike(attributes);
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor(this.random.nextInt(4) < 3 ? "#d2a87f" : "#ffffff");
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.SHORT_MESSY.get();
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.MALE.getStyles();
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.getColor("#d2a87f");
     }
 
     @Override
