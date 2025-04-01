@@ -39,7 +39,7 @@
   "ability.changed.toggle_wave_vision.desc": "Változtassa meg a világról alkotott képét. A kristályos és ismerős anyagok rezonálnak a hullámaiból.",
 
   "ability.changed.grab_entity": "Entitás megragadása",
-  "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.,
+  "ability.changed.grab_entity.desc": "Ragaszkodjon egy entitásba, hogy transzfurálja vagy megvédje.",
   "ability.changed.grab_entity.how_to_grab": "Tartsa nyomva a [%s] gombot egy entitás megragadásához",
   "ability.changed.grab_entity.how_to_release": "Tartsa nyomva a [%s] gombot az entitás elengedéséhez",
   "ability.changed.grab_entity.how_to_transfur": "Tartsa nyomva a [%s] gombot a transzfur előrehaladásához",
