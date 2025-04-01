@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.fluid;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.ltxprogrammer.changed.init.ChangedFluids;
+import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +25,7 @@ public abstract class SkunkGas extends TransfurGas {
             .block(ChangedBlocks.SKUNK_GAS);
 
     protected SkunkGas() {
-        super(PROPERTIES, List.of());
+        super(PROPERTIES, ChangedTransfurVariants.GAS_SKUNK);
     }
 
     @Override

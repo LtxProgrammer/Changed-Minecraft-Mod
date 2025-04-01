@@ -277,7 +277,8 @@ public class AccessorySlots implements Container {
 
     @Override
     public ItemStack getItem(int id) {
-        return items.get(getSlotTypeByIndex(id));
+        // Default to empty stack, while GUI re-evaluates
+        return Objects.requireNonNullElse(items.get(getSlotTypeByIndex(id)), ItemStack.EMPTY);
     }
 
     @Override

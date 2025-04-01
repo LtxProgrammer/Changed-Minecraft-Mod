@@ -7,6 +7,7 @@ import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.ability.AbstractAbility;
 import net.ltxprogrammer.changed.ability.IAbstractChangedEntity;
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.beast.*;
 import net.ltxprogrammer.changed.init.*;
@@ -319,7 +320,10 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
 
     public boolean canDoubleJump() { return extraJumpCharges > 0; }
 
-    public boolean rideable() { return this.abilities.contains(ChangedAbilities.ACCESS_SADDLE); }
+    @Deprecated
+    public boolean rideable() {
+        return AccessoryEntities.INSTANCE.canEntityTypeUseSlot(this.getEntityType()).test(ChangedAccessorySlots.LOWER_BODY.get());
+    }
 
     public static class UniversalAbilitiesEvent extends Event implements IModBusEvent {
         private final List<Function<EntityType<?>, ? extends AbstractAbility<?>>> abilities;
@@ -481,7 +485,7 @@ public class TransfurVariant<T extends ChangedEntity> extends ForgeRegistryEntry
         }
 
         public Builder<T> rideable() {
-            return addAbility(ChangedAbilities.ACCESS_SADDLE).addAbility(ChangedAbilities.ACCESS_CHEST);
+            return addAbility(ChangedAbilities.ACCESS_CHEST);
         }
 
         public Builder<T> absorbing() {

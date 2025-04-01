@@ -71,6 +71,7 @@ public class ChangedEntityRenderers {
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_LEFT.get(), BehemothHandLeftRenderer::new);
         event.registerEntityRenderer(ChangedEntities.BEHEMOTH_HAND_RIGHT.get(), BehemothHandRightRenderer::new);
 
+        registerHumanoid(event, ChangedEntities.GAS_SKUNK.get(), GasSkunkRenderer::new);
         registerHumanoid(event, ChangedEntities.GAS_TIGER.get(), GasTigerRenderer::new);
         registerHumanoid(event, ChangedEntities.GAS_WOLF.get(), GasWolfRenderer::new);
         registerHumanoid(event, ChangedEntities.POOLTOY_WOLF.get(), PooltoyWolfRenderer::new);

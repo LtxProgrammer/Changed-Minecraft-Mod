@@ -872,9 +872,6 @@ public abstract class TransfurVariantInstance<T extends ChangedEntity> {
         if (host.isOnGround())
             jumpCharges = parent.extraJumpCharges;
 
-        if (parent.rideable())
-            host.stopRiding();
-
         this.tickFlying();
 
         if (shouldApplyAbilities())

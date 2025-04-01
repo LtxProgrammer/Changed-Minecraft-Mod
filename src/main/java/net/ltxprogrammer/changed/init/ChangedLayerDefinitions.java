@@ -36,6 +36,7 @@ public class ChangedLayerDefinitions {
         event.registerLayerDefinition(BehemothHandLeftModel.LAYER_LOCATION, BehemothHandLeftModel::createBodyLayer);
         event.registerLayerDefinition(BehemothHandRightModel.LAYER_LOCATION, BehemothHandRightModel::createBodyLayer);
 
+        event.registerLayerDefinition(GasSkunkModel.LAYER_LOCATION, GasSkunkModel::createBodyLayer);
         event.registerLayerDefinition(GasTigerModel.LAYER_LOCATION, GasTigerModel::createBodyLayer);
         event.registerLayerDefinition(GasWolfModel.LAYER_LOCATION, GasWolfModel::createBodyLayer);
         event.registerLayerDefinition(PooltoyWolfModel.LAYER_LOCATION, PooltoyWolfModel::createBodyLayer);

@@ -274,17 +274,6 @@ public abstract class AbstractAbility<Instance extends AbstractAbilityInstance> 
             Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, entity.getUUID()));
     }
 
-    public final void setDirty(AccessSaddleAbilityInstance instance) {
-        CompoundTag data = new CompoundTag();
-        instance.saveData(data);
-
-        int id = ChangedRegistry.ABILITY.get().getID(this);
-        if (instance.entity.getLevel().isClientSide)
-            Changed.PACKET_HANDLER.sendToServer(new SyncVariantAbilityPacket(id, data));
-        else
-            Changed.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SyncVariantAbilityPacket(id, data, instance.entity.getUUID()));
-    }
-
     @Nullable
     public static <T extends AbstractAbilityInstance> T getAbilityInstance(LivingEntity livingEntity, AbstractAbility<T> ability) {
         if (livingEntity == null) return null;

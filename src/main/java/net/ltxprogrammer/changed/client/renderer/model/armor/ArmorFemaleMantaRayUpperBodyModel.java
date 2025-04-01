@@ -3,8 +3,11 @@ package net.ltxprogrammer.changed.client.renderer.model.armor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.client.animations.Limb;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
 import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
+import net.ltxprogrammer.changed.client.tfanimations.HelperModel;
+import net.ltxprogrammer.changed.client.tfanimations.TransfurHelper;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,6 +19,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends LatexHumanoidArmorModel<T, ArmorFemaleMantaRayUpperBodyModel<T>> {
     public static final ArmorModelSet<ChangedEntity, ArmorFemaleMantaRayUpperBodyModel<ChangedEntity>> MODEL_SET =
@@ -43,12 +47,9 @@ public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends 
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition Torso = partdefinition.addOrReplaceChild("Torso", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 8.0F, 4.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
-        PartDefinition Plantoids = Torso.addOrReplaceChild("Plantoids", CubeListBuilder.create(), PartPose.offset(0.0F, 0.5F, -2.0F));
-
-        PartDefinition Plantoid_r1 = Plantoids.addOrReplaceChild("Plantoid_r1", CubeListBuilder.create().texOffs(18, 22).mirror().addBox(-4.0F, 2.3F, -0.8F, 8.0F, 1.0F, 2.0F, layer.deformation.extend(-0.5f)).mirror(false)
-                .texOffs(18, 19).mirror().addBox(-4.0F, -1.7F, -0.8F, 8.0F, 3.0F, 2.0F, layer.deformation.extend(-0.5f)).mirror(false), PartPose.offsetAndRotation(0.0F, 2.0F, 0.0F, -0.2793F, 0.0F, 0.0F));
+        addBreastplate(Torso, layer);
 
         PartDefinition Head = partdefinition.addOrReplaceChild("Head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, layer.dualDeformation), PartPose.offset(0.0F, -0.5F, 0.0F));
 
@@ -79,6 +80,13 @@ public class ArmorFemaleMantaRayUpperBodyModel<T extends ChangedEntity> extends 
         }
 
         poseStack.popPose();
+    }
+
+    @Override
+    public @Nullable HelperModel getTransfurHelperModel(Limb limb) {
+        if (limb == Limb.TORSO)
+            return TransfurHelper.getFeminineTorso(this.armorModel);
+        return super.getTransfurHelperModel(limb);
     }
 
     public ModelPart getArm(HumanoidArm arm) {

@@ -1,10 +1,8 @@
 {
   "entities": [
-    "changed:latex_hyena_taur",
-    "changed:white_latex_centaur"
+    "changed:headless_knight"
   ],
   "slots": [
-    "changed:body",
     "changed:lower_body",
     "changed:lower_body_side"
   ]

@@ -3,6 +3,7 @@ package net.ltxprogrammer.changed.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.ltxprogrammer.changed.Changed;
+import net.ltxprogrammer.changed.ability.GrabEntityAbility;
 import net.ltxprogrammer.changed.client.tfanimations.TransfurAnimator;
 import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.Color3;
@@ -85,6 +86,7 @@ public class TransfurProgressOverlay {
             morphColor = variant.getTransfurColor();
 
             if (variant.getTransfurProgression(partialTick) >= 1.0f && !variant.isTemporaryFromSuit()) return;
+            if (variant.isTemporaryFromSuit() && GrabEntityAbility.getControllingEntity(player) == player) return;
         }
 
         if (dangerLevel <= 0.1f && coverProgress <= 0.0f) return;
