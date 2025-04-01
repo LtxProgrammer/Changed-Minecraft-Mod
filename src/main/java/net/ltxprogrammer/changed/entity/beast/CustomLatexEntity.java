@@ -352,11 +352,6 @@ public class CustomLatexEntity extends ChangedEntity {
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
     public float getScale() {
         return getScaleType().bbScale * super.getScale();
     }

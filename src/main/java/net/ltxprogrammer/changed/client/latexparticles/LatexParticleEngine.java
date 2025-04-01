@@ -142,6 +142,7 @@ public class LatexParticleEngine implements PreparableReloadListener {
                 particlerendertype.begin(bufferbuilder, this.textureManager);
 
                 for(var particle : particleSet) {
+                    if (particle.getRenderType() != particlerendertype) continue;
                     if (clippingHelper != null && particle.shouldCull() && !clippingHelper.isVisible(particle.getBoundingBox())) continue;
                     try {
                         particle.renderFromEvent(bufferbuilder, camera, partialTicks, context);

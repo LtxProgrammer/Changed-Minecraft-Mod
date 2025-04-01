@@ -28,7 +28,6 @@ public class ChangedBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Changed.MODID);
     public static final RegistryObject<BlockEntityType<PurifierBlockEntity>> PURIFIER = REGISTRY.register("purifier", deferredProvider(PurifierBlockEntity::new, ChangedBlocks.PURIFIER));
-    public static final RegistryObject<BlockEntityType<BedsideIVRackBlockEntity>> BEDSIDE_IV_RACK = REGISTRY.register("bedside_iv_rack", deferredProvider(BedsideIVRackBlockEntity::new, ChangedBlocks.BEDSIDE_IV_RACK));
     public static final RegistryObject<BlockEntityType<CardboardBoxTallBlockEntity>> CARDBOARD_BOX_TALL = REGISTRY.register("cardboard_box", deferredProvider(CardboardBoxTallBlockEntity::new, ChangedBlocks.CARDBOARD_BOX_TALL));
     public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD = REGISTRY.register("keypad", deferredProvider(KeypadBlockEntity::new, ChangedBlocks.KEYPAD));
     public static final RegistryObject<BlockEntityType<LatexContainerBlockEntity>> LATEX_CONTAINER = REGISTRY.register("latex_container", deferredProvider(LatexContainerBlockEntity::new, ChangedBlocks.LATEX_CONTAINER));

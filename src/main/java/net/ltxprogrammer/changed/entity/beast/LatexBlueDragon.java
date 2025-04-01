@@ -7,9 +7,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class LatexBlueDragon extends ChangedEntity implements PowderSnowWalkable, PatronOC {
     public LatexBlueDragon(EntityType<? extends LatexBlueDragon> p_19870_, Level p_19871_) {
@@ -34,20 +31,6 @@ public class LatexBlueDragon extends ChangedEntity implements PowderSnowWalkable
     @Override
     public TransfurMode getTransfurMode() {
         return TransfurMode.REPLICATION;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor("#cae5fe");
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
-    public @Nullable List<HairStyle> getValidHairStyles() {
-        return HairStyle.Collection.EMPTY;
     }
 
     public Color3 getTransfurColor(TransfurCause cause) {

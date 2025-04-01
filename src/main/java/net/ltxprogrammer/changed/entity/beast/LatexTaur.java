@@ -35,7 +35,7 @@ public interface LatexTaur<T extends ChangedEntity> extends Saddleable {
     }
 
     default void doPlayerRide(T self, Player player) {
-        if (!self.level.isClientSide) {
+        if (!self.level.isClientSide && player.getFirstPassenger() == null) {
             player.setYRot(self.getYRot());
             player.setXRot(self.getXRot());
             Player underlying = self.getUnderlyingPlayer();

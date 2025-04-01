@@ -6,7 +6,6 @@ import net.ltxprogrammer.changed.entity.TransfurMode;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.init.ChangedEntities;
 import net.ltxprogrammer.changed.init.ChangedTransfurVariants;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -55,15 +54,5 @@ public class MilkPudding extends ChangedEntity {
     @Override
     public TransfurVariant<?> getSelfVariant() {
         return null;
-    }
-
-    @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
     }
 }

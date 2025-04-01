@@ -1,0 +1,9 @@
+{
+  "entities": [
+    "changed:headless_knight"
+  ],
+  "slots": [
+    "changed:lower_body",
+    "changed:lower_body_side"
+  ]
+}

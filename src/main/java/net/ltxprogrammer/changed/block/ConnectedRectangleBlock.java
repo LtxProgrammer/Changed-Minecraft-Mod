@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.block;
 
+import net.ltxprogrammer.changed.init.ChangedBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -155,7 +156,7 @@ public class ConnectedRectangleBlock extends LabBlock {
     }
 
     public ConnectedRectangleBlock(Properties properties) {
-        super(properties);
+        super(properties.hasPostProcess(ChangedBlocks::always));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -1,6 +1,7 @@
 package net.ltxprogrammer.changed.ability;
 
 import net.ltxprogrammer.changed.init.ChangedAbilities;
+import net.ltxprogrammer.changed.init.ChangedAccessorySlots;
 import net.ltxprogrammer.changed.init.ChangedGameRules;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 public class AccessChestAbilityInstance extends AbstractAbilityInstance implements Container, MenuProvider {
@@ -26,15 +28,18 @@ public class AccessChestAbilityInstance extends AbstractAbilityInstance implemen
 
     @Override
     public boolean canUse() {
-        var ability = entity.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get());
-        return !(ability == null || ability.chest == null || ability.chest.isEmpty());
+        return entity.getAccessorySlots()
+                .flatMap(slots -> slots.getItem(ChangedAccessorySlots.LOWER_BODY_SIDE.get()))
+                .map(stack -> !stack.isEmpty()).orElse(false);
     }
 
     @Override
     public boolean canKeepUsing() {
         if (!entity.isStillLatex())
             return false;
-        return !entity.getAbilityInstance(ChangedAbilities.ACCESS_SADDLE.get()).chest.isEmpty();
+        return entity.getAccessorySlots()
+                .flatMap(slots -> slots.getItem(ChangedAccessorySlots.LOWER_BODY_SIDE.get()))
+                .map(stack -> !stack.isEmpty()).orElse(false);
     }
 
     @Override

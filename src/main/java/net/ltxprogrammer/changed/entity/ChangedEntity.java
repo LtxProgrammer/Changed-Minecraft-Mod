@@ -592,7 +592,7 @@ public abstract class ChangedEntity extends Monster {
 
         source.replaceVariant(actualTfVariant); // Replace entity variant if tf variant is different
 
-        source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+        ProcessTransfur.onAbsorbEntity(source);
         var pos = target.position();
         source.getEntity().teleportTo(pos.x, pos.y, pos.z);
         source.getEntity().setYRot(target.getYRot());
@@ -606,9 +606,7 @@ public abstract class ChangedEntity extends Monster {
                 var instance = ProcessTransfur.setPlayerTransfurVariant(loserPlayer, source.getTransfurVariant(), source.absorb(), 1.0f);
                 instance.willSurviveTransfur = true;
 
-                ProcessTransfur.forceNearbyToRetarget(level, loserPlayer);
-
-                loserPlayer.heal(10.0F);
+                ProcessTransfur.onNewlyTransfurred(IAbstractChangedEntity.forPlayer(loserPlayer));
             }
         }
 
@@ -711,7 +709,7 @@ public abstract class ChangedEntity extends Monster {
                     source.getLevel().addFreshEntity(source.getEntity());
                 }
 
-                source.getEntity().heal(14.0f); // Heal 7 hearts, and teleport to old entity location
+                ProcessTransfur.onAbsorbEntity(source);
                 var pos = entity.position();
                 source.getEntity().teleportTo(pos.x, pos.y, pos.z);
                 source.getEntity().setYRot(entity.getYRot());
@@ -847,12 +845,6 @@ public abstract class ChangedEntity extends Monster {
         if (player != null) { // ticking whilst hosting a player, mirror players inputs
             mirrorLiving(player);
         }
-
-        var variant = getSelfVariant();
-        if (variant == null) return;
-
-        if (this.vehicle != null && variant.rideable())
-            this.stopRiding();
     }
     
     public void mirrorLiving(LivingEntity player) {
@@ -938,9 +930,6 @@ public abstract class ChangedEntity extends Monster {
         else
             return super.getCapability(capability, facing);
     }
-
-    @Deprecated
-    public abstract Color3 getDripColor();
 
     public Color3 getTransfurColor(TransfurCause cause) { return Color3.WHITE; }
 

@@ -20,21 +20,6 @@ public class LatexPurpleFox extends AbstractLatexWolf implements PowderSnowWalka
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.93);
     }
 
-    @Override
-    public Color3 getDripColor() {
-        return Color3.getColor("#cebbe8");
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.fromInt(0xfae9fa);
-    }
-
-    @Override
-    public HairStyle getDefaultHairStyle() {
-        return HairStyle.SHORT_MESSY.get();
-    }
-
     public Color3 getTransfurColor(TransfurCause cause) {
         return Color3.getColor("#bbbde9");
     }

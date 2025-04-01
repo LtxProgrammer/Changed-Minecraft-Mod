@@ -7,7 +7,6 @@ import net.ltxprogrammer.changed.entity.ai.LatexOwnerHurtByTargetGoal;
 import net.ltxprogrammer.changed.entity.ai.LatexOwnerHurtTargetGoal;
 import net.ltxprogrammer.changed.init.ChangedCriteriaTriggers;
 import net.ltxprogrammer.changed.init.ChangedItems;
-import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,14 +21,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -112,11 +106,6 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
     }
 
     @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.DARK;
-    }
-
-    @Override
     protected boolean targetSelectorTest(LivingEntity livingEntity) {
         final var owner = this.getOwner();
         if (livingEntity == owner)
@@ -132,7 +121,7 @@ public abstract class AbstractDarkLatexEntity extends AbstractLatexWolf implemen
 
             var delta = livingEntity.getDeltaMovement();
             var xyMovement = delta.subtract(0, delta.y, 0);
-            if (livingEntity.isCrouching() || xyMovement.lengthSqr() < Mth.EPSILON)
+            if (livingEntity.getPose() == Pose.CROUCHING || xyMovement.lengthSqr() < Mth.EPSILON)
                 return false;
         }
 

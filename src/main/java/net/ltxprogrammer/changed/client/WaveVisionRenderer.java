@@ -55,7 +55,7 @@ public class WaveVisionRenderer {
     private final EntityRenderDispatcher entityRenderDispatcher;
     private float waveEffect = 0.0f;
 
-    private static DynamicTexture WAVE_RESONANCE_BLOCK_MASK_TEXTURE = new DynamicTexture(1, 1, false);
+    private static DynamicTexture WAVE_RESONANCE_BLOCK_MASK_TEXTURE = null;
     public static final ResourceLocation WAVE_RESONANCE_BLOCK_MASK = Changed.modResource("wave_resonance_block_mask");
 
     public static final Vector3f LATEX_RESONANCE_NEUTRAL = new Vector3f(1.0f, 1.0f, 1.0f);
@@ -324,8 +324,6 @@ public class WaveVisionRenderer {
 
             NativeImage maskBuilder = new NativeImage(ext.getWidth(), ext.getHeight(), false);
 
-            new ItemStack(ChangedBlocks.EMPTY_CANISTER.get());
-
             ext.getSprites().forEach(sprite -> {
                 ResourceLocation resonanceMask = MixedTexture.getResourceLocation(resolveResonanceTexture(sprite.getName()));
                 if (resources.hasResource(resonanceMask)) {
@@ -342,8 +340,8 @@ public class WaveVisionRenderer {
 
             LOGGER.info("Resonance block mask created");
 
-            WAVE_RESONANCE_BLOCK_MASK_TEXTURE.releaseId();
-
+            if (WAVE_RESONANCE_BLOCK_MASK_TEXTURE != null)
+                WAVE_RESONANCE_BLOCK_MASK_TEXTURE.releaseId();
             WAVE_RESONANCE_BLOCK_MASK_TEXTURE = new DynamicTexture(maskBuilder);
 
             if (!RenderSystem.isOnRenderThreadOrInit()) {

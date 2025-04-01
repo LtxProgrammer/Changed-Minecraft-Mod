@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.ability;
 
+import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariantInstance;
@@ -98,6 +99,10 @@ public interface IAbstractChangedEntity {
 
     default <T extends AbstractAbilityInstance> Optional<T> getAbilityInstanceSafe(AbstractAbility<T> ability) {
         return Optional.ofNullable(getAbilityInstance(ability));
+    }
+
+    default Optional<AccessorySlots> getAccessorySlots() {
+        return AccessorySlots.getForEntity(this.getEntity());
     }
 
     static IAbstractChangedEntity forPlayer(Player player) {

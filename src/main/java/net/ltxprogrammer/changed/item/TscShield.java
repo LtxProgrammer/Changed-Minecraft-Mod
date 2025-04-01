@@ -136,7 +136,6 @@ public class TscShield extends TscWeapon implements SpecializedItemRendering {
         @SubscribeEvent
         public static void onShieldBlock(ShieldBlockEvent event) {
             if (event.getEntityLiving().getUseItem().is(ChangedItems.TSC_SHIELD.get())) {
-                event.setShieldTakesDamage(true);
                 if (event.getDamageSource() instanceof EntityDamageSource entityDamageSource && entityDamageSource.getEntity() instanceof LivingEntity source) {
                     ChangedItems.TSC_SHIELD.get().applyShock(source);
                     if (TransfurVariant.getEntityVariant(source) != null)

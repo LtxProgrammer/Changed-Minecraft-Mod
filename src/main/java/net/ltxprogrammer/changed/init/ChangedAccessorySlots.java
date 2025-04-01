@@ -11,4 +11,5 @@ public class ChangedAccessorySlots {
     public static final RegistryObject<AccessorySlotType> BODY = REGISTRY.register("body", () -> new AccessorySlotType(EquipmentSlot.CHEST));
     public static final RegistryObject<AccessorySlotType> LEGS = REGISTRY.register("legs", () -> new AccessorySlotType(EquipmentSlot.LEGS));
     public static final RegistryObject<AccessorySlotType> LOWER_BODY = REGISTRY.register("lower_body", () -> new AccessorySlotType(EquipmentSlot.CHEST));
+    public static final RegistryObject<AccessorySlotType> LOWER_BODY_SIDE = REGISTRY.register("lower_body_side", () -> new AccessorySlotType(EquipmentSlot.CHEST));
 }

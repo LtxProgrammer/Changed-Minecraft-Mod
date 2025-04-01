@@ -19,16 +19,6 @@ public abstract class AbstractSnowLeopard extends ChangedEntity implements Gende
     @Override
     public int getTicksRequiredToFreeze() { return 420; }
 
-    @Override
-    public Color3 getDripColor() {
-        return level.random.nextInt(10) > 3 ? Color3.GRAY : Color3.WHITE;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
-    }
-
     public LatexType getLatexType() {
         return LatexType.NEUTRAL;
     }
@@ -44,5 +34,4 @@ public abstract class AbstractSnowLeopard extends ChangedEntity implements Gende
         attributes.getInstance(ForgeMod.SWIM_SPEED.get()).setBaseValue(0.9);
         attributes.getInstance(Attributes.MAX_HEALTH).setBaseValue(22.0);
     }
-
 }

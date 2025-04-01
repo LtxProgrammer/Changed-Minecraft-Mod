@@ -1,13 +1,10 @@
 package net.ltxprogrammer.changed.entity.beast;
 
-import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.GenderedEntity;
 import net.ltxprogrammer.changed.entity.TransfurCause;
 import net.ltxprogrammer.changed.util.Color3;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
@@ -18,21 +15,11 @@ public abstract class AbstractLatexSquidDog extends AbstractAquaticEntity implem
     }
 
     @Override
-    public Color3 getDripColor() {
-        return Color3.WHITE;
-    }
-
-    @Override
     public Color3 getTransfurColor(TransfurCause cause) {
         if (cause == TransfurCause.SQUID_DOG_INKBALL)
             return Color3.fromInt(0x101010);
         else
             return Color3.WHITE;
-    }
-
-    @Override
-    public Color3 getHairColor(int layer) {
-        return Color3.WHITE;
     }
 
     @Override

@@ -97,18 +97,6 @@ public abstract class BlockBehaviourMixin extends net.minecraftforge.registries.
             callbackInfoReturnable.setReturnValue(Shapes.empty());
     }
 
-    @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
-    public void getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> callbackInfoReturnable) {
-        if (getLatexed(state) == LatexType.WHITE_LATEX) {
-            if (context instanceof EntityCollisionContext ecc) {
-                if (ecc.getEntity() instanceof LivingEntity le) {
-                    if (WhiteLatexTransportInterface.isEntityInWhiteLatex(le))
-                        callbackInfoReturnable.setReturnValue(Shapes.empty());
-                }
-            }
-        }
-    }
-
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> callbackInfoReturnable) {
         var coveredWith = getLatexed(state);
