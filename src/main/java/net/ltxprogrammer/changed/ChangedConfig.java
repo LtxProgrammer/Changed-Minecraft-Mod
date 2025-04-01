@@ -60,6 +60,7 @@ public class ChangedConfig {
         public final ForgeConfigSpec.ConfigValue<Boolean> generateUniqueTexturesForAllBlocks;
         public final ForgeConfigSpec.ConfigValue<Boolean> fastAndCheapLatexBlocks;
         public final ForgeConfigSpec.ConfigValue<TransfurProgressOverlay.Position> transfurMeterPosition;
+        public final ForgeConfigSpec.ConfigValue<Boolean> renderDripParticlesWithNormal;
 
         public final BasicPlayerInfo basicPlayerInfo = new BasicPlayerInfo();
 
@@ -82,6 +83,8 @@ public class ChangedConfig {
             fastAndCheapLatexBlocks = builder.define("fastAndCheapLatexBlocks", false);
             builder.comment("Specify the location of the transfur meter");
             transfurMeterPosition = builder.defineEnum("transfurMeterPosition", TransfurProgressOverlay.Position.BOTTOM_LEFT);
+            builder.comment("Disable this to test fix for black drip particles (https://github.com/LtxProgrammer/Changed-Minecraft-Mod/issues/1291)");
+            renderDripParticlesWithNormal = builder.define("renderDripParticlesWithNormal", true);
         }
 
         @Override

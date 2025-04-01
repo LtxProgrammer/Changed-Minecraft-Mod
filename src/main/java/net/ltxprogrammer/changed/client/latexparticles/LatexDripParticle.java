@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
+import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.client.ModelPartStem;
 import net.ltxprogrammer.changed.client.PoseStackExtender;
 import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
@@ -327,18 +328,30 @@ public class LatexDripParticle extends LatexParticle {
 
         int lightColor = this.getLightColor(partialTicks);
         int overlay = attached ? LivingEntityRenderer.getOverlayCoords(attachedEntity, 0.0F) : OverlayTexture.NO_OVERLAY;
-        float normX = attached ? surfaceNormalRelativeCamera.x() : 0;
-        float normY = attached ? surfaceNormalRelativeCamera.y() : 0;
-        float normZ = attached ? surfaceNormalRelativeCamera.z() : 1;
 
-        buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v1)
-                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
-        buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v0)
-                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
-        buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v0)
-                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
-        buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v1)
-                .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+        if (Changed.config.client.renderDripParticlesWithNormal.get()) {
+            float normX = attached ? surfaceNormalRelativeCamera.x() : 0;
+            float normY = attached ? surfaceNormalRelativeCamera.y() : 0;
+            float normZ = attached ? surfaceNormalRelativeCamera.z() : 1;
+
+            buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v1)
+                    .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+            buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u1, v0)
+                    .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+            buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v0)
+                    .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+            buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha).uv(u0, v1)
+                    .overlayCoords(overlay).uv2(lightColor).normal(normX, normY, normZ).endVertex();
+        } else {
+            buffer.vertex(genVec[0].x(), genVec[0].y(), genVec[0].z()).uv(u1, v1).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha)
+                    .uv2(lightColor).endVertex();
+            buffer.vertex(genVec[1].x(), genVec[1].y(), genVec[1].z()).uv(u1, v0).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha)
+                    .uv2(lightColor).endVertex();
+            buffer.vertex(genVec[2].x(), genVec[2].y(), genVec[2].z()).uv(u0, v0).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha)
+                    .uv2(lightColor).endVertex();
+            buffer.vertex(genVec[3].x(), genVec[3].y(), genVec[3].z()).uv(u0, v1).color(this.color.red(), this.color.green(), this.color.blue(), this.alpha)
+                    .uv2(lightColor).endVertex();
+        }
     }
 
     @Override
@@ -348,7 +361,11 @@ public class LatexDripParticle extends LatexParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return alpha >= 1.0f ? LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE : LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_TRANSLUCENT;
+        if (Changed.config.client.renderDripParticlesWithNormal.get()) {
+            return alpha >= 1.0f ? LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_OPAQUE : LatexParticleRenderType.LATEX_PARTICLE_SHEET_3D_TRANSLUCENT;
+        } else {
+            return LatexParticleRenderType.LATEX_PARTICLE_SHEET_OPAQUE;
+        }
     }
 
     public static LatexParticleProvider<LatexDripParticle> of(ChangedEntity attachedEntity, AdvancedHumanoidModel<?> attachedModel, ModelPartStem attachedPart, SurfacePoint surface, Color3 color, float alpha, int lifespan) {
