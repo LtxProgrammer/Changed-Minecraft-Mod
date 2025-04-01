@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -502,11 +503,32 @@ public class StasisChamber extends HorizontalDirectionalBlock implements NonLate
         return null;
     }
 
+    @Override
+    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity player) {
+        return true;
+    }
+
+    @Override
+    public Direction getBedDirection(BlockState state, LevelReader level, BlockPos pos) {
+        return state.getValue(FACING).getOpposite();
+    }
+
+    @Override
+    public void setBedOccupied(BlockState state, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
+        return;
+    }
+
     private static final Vec3 SIT_OFFSET = new Vec3(0.0D, -0.9D, 0.0D);
+    private static final Vec3 SLEEP_OFFSET = new Vec3(0.4D, -0.3D, 0.0D);
 
     @Override
     public Vec3 getSitOffset(BlockGetter level, BlockState state, BlockPos pos) {
         return SIT_OFFSET;
+    }
+
+    @Override
+    public Vec3 getSleepOffset(BlockGetter level, BlockState state, BlockPos pos) {
+        return SLEEP_OFFSET;
     }
 
     public static boolean isEntityStabilized(LivingEntity livingEntity) {

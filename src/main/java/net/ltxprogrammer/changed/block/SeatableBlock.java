@@ -17,4 +17,8 @@ public interface SeatableBlock {
     default void onExitSeat(BlockGetter level, BlockState state, BlockPos pos, @NotNull Entity entity) {
 
     }
+
+    default Vec3 getSleepOffset(BlockGetter level, BlockState state, BlockPos pos) {
+        return Vec3.ZERO;
+    }
 }

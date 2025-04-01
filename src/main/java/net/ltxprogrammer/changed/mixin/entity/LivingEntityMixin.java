@@ -23,6 +23,7 @@ import net.ltxprogrammer.changed.process.ProcessTransfur;
 import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
@@ -448,6 +449,15 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
         }
         if (StasisChamber.isEntityStabilized((LivingEntity)(Object)this))
             ci.cancel();
+    }
+
+    @Inject(method = "getBedOrientation", at = @At("HEAD"), cancellable = true)
+    public void getStasisChamberOrientation(CallbackInfoReturnable<Direction> cir) {
+        if (this.vehicle instanceof SeatEntity seatEntity) {
+            seatEntity.getAttachedBlockState()
+                    .map(state -> state.getBedDirection(this.level, seatEntity.getAttachedBlockPos()))
+                    .ifPresent(cir::setReturnValue);
+        }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
