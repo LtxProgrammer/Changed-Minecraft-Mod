@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "changed:computer"
+      "changed:roomba"
     ]
   },
   "criteria": {
-    "has_quartz": {
+    "has_computer": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:quartz"
+              "changed:computer"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "changed:computer"
+        "recipe": "changed:roomba"
       }
     }
   },
   "requirements": [
     [
-      "has_quartz",
+      "has_computer",
       "has_the_recipe"
     ]
   ]

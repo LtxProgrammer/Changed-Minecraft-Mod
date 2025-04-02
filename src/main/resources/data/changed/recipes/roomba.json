@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "I#I",
+    "FMF"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    },
+    "M": {
+      "item": "minecraft:hopper_minecart"
+    },
+    "#": {
+      "item": "changed:computer"
+    }
+  },
+  "result": {
+    "item": "changed:roomba"
+  }
+}
