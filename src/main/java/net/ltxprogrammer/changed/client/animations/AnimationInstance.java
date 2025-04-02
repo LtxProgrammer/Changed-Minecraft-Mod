@@ -25,7 +25,8 @@ import java.util.Optional;
 
 public class AnimationInstance {
     private final AnimationDefinition animation;
-    private final Map<Limb, PartPose> baseline = new HashMap<>();
+    private final Map<Limb, PartPose> baselineH = new HashMap<>();
+    private final Map<Limb, PartPose> baselineAH = new HashMap<>();
     private final Map<LivingEntity, AnimationInstance> entities = new HashMap<>(0);
     private float time = 0.0f;
     private float timeO = 0.0f;
@@ -52,21 +53,21 @@ public class AnimationInstance {
 
     public void captureBaseline(HumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).filter(Limb::isVanillaPart).forEach(limb -> {
-            baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        animation.channels.keySet().stream().filter(limb -> !baselineH.containsKey(limb)).filter(Limb::isVanillaPart).forEach(limb -> {
+            baselineH.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
         });
     }
 
     public void resetToBaseline(HumanoidModel<?> model) {
-        animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baseline::containsKey).forEach(limb -> {
-            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baseline.get(limb)));
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).filter(baselineH::containsKey).forEach(limb -> {
+            limb.getModelPartSafe(model).ifPresent(part -> part.loadPose(baselineH.get(limb)));
         });
     }
 
     public void captureBaseline(AdvancedHumanoidModel<?> model) {
         /* Capture model position baseline */
-        animation.channels.keySet().stream().filter(limb -> !baseline.containsKey(limb)).forEach(limb -> {
-            baseline.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
+        animation.channels.keySet()/*.stream().filter(limb -> !baselineAH.containsKey(limb))*/.forEach(limb -> {
+            baselineAH.put(limb, limb.getModelPartSafe(model).map(ModelPart::storePose).orElse(null));
         });
     }
 
@@ -95,7 +96,7 @@ public class AnimationInstance {
         // TODO: Item animation track, either lock to limb or be keyframed
     }
 
-    private void animateLimb(Limb limb, ModelPart part, float time, float transition) {
+    private void animateLimb(Limb limb, ModelPart part, Map<Limb, PartPose> baseline, float time, float transition) {
         if (part == null)
             return;
 
@@ -161,7 +162,7 @@ public class AnimationInstance {
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
-        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
+        animation.channels.keySet().stream().filter(Limb::isVanillaPart).forEach(limb -> animateLimb(limb, limb.getModelPart(model), baselineH, time, transition));
     }
 
     public void animate(AdvancedHumanoidModel<?> model, float partialTicks) {
@@ -170,7 +171,7 @@ public class AnimationInstance {
         final float time = computeTime(partialTicks);
         final float transition = computeTransition(partialTicks);
 
-        animation.channels.keySet().forEach(limb -> animateLimb(limb, limb.getModelPart(model), time, transition));
+        animation.channels.keySet().forEach(limb -> animateLimb(limb, limb.getModelPart(model), baselineAH, time, transition));
     }
 
     private void playSounds(float timeO, float time) {
