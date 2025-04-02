@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
@@ -44,6 +45,19 @@ public class Roomba extends AbstractRobot {
     @Override
     public boolean isAffectedByWater() {
         return true;
+    }
+
+    public void push(Entity entity) {
+        if (!this.onGround || entity instanceof Roomba) {
+            super.push(entity);
+        } else {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(this.getDeltaMovement()));
+        }
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !this.onGround ? super.canBeCollidedWith() : this.isAlive();
     }
 
     @Override
