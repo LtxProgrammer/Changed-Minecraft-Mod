@@ -47,11 +47,6 @@ public abstract class SheetsMixin {
                 .mapMulti(SheetsMixin::getMaterialFromSlot)
                 .forEach(materialConsumer);
 
-        ChangedRegistry.ACCESSORY_SLOTS.get().getValues().stream()
-                .map(AccessorySlotType::getNoItemIcon)
-                .mapMulti(SheetsMixin::getMaterialFromSlot)
-                .forEach(materialConsumer);
-
         materialConsumer.accept(new Material(InventoryMenu.BLOCK_ATLAS, Changed.modResource("items/empty_slot_syringe")));
     }
 }
