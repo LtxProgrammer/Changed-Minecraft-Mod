@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.ltxprogrammer.changed.block.Pillow;
 import net.ltxprogrammer.changed.block.entity.PillowBlockEntity;
 import net.ltxprogrammer.changed.init.ChangedBlocks;
+import net.ltxprogrammer.changed.util.Cacheable;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ChangedBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
-    private final PillowBlockEntity pillow = new PillowBlockEntity(BlockPos.ZERO, ChangedBlocks.PILLOWS.get(DyeColor.WHITE).get().defaultBlockState());
+    private final Cacheable<PillowBlockEntity> pillow = Cacheable.of(() -> new PillowBlockEntity(BlockPos.ZERO, ChangedBlocks.PILLOWS.get(DyeColor.WHITE).get().defaultBlockState()));
     private final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
     
     public ChangedBlockEntityWithoutLevelRenderer(BlockEntityRenderDispatcher dispatcher, EntityModelSet modelSet) {
@@ -36,8 +37,8 @@ public class ChangedBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLe
             BlockState blockstate = block.defaultBlockState();
             BlockEntity blockentity;
             if (block instanceof Pillow pillowBlock) {
-                this.pillow.setColor(pillowBlock.getColor());
-                blockentity = this.pillow;
+                this.pillow.get().setColor(pillowBlock.getColor());
+                blockentity = this.pillow.get();
             } else {
                 return;
             }
