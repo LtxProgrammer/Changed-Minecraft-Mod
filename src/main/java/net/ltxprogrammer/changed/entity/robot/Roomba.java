@@ -47,6 +47,7 @@ public class Roomba extends AbstractRobot {
         return true;
     }
 
+    @Override
     public void push(Entity entity) {
         if (!this.onGround || entity instanceof Roomba) {
             super.push(entity);
