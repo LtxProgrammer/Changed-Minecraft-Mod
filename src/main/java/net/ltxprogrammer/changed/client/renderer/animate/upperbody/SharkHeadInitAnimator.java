@@ -19,9 +19,9 @@ public class SharkHeadInitAnimator<T extends ChangedEntity, M extends AdvancedHu
     @Override
     public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
-        head.x = 0.0F;
         head.yRot = netHeadYaw * ((float)Math.PI / 180F);
         head.zRot = 0.0F;
+        head.x = 0.0F;
         if (fallFlying) {
             head.xRot = (-(float)Math.PI / 4F);
         } else if (core.swimAmount > 0.0F) {

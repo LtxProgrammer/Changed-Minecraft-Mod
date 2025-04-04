@@ -7,6 +7,7 @@ import net.ltxprogrammer.changed.client.renderer.model.ExoskeletonModel;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.robot.Exoskeleton;
 import net.ltxprogrammer.changed.util.Cacheable;
+import net.ltxprogrammer.changed.util.EntityUtil;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -62,14 +63,8 @@ public class ExoskeletonLayer<T extends LivingEntity, M extends EntityModel<T> &
         return new ExoskeletonLayer<>(parent, modelSet, ExoskeletonModel.LAYER_LOCATION_SUIT, null);
     }
 
-    public LivingEntity maybeGetUnderlying(T entity) {
-        if (entity instanceof ChangedEntity changedEntity)
-            return changedEntity.maybeGetUnderlying();
-        return entity;
-    }
-
     public void render(PoseStack pose, MultiBufferSource bufferSource, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!(maybeGetUnderlying(entity).getFirstPassenger() instanceof Exoskeleton exoskeleton)) return;
+        if (!(EntityUtil.maybeGetUnderlying(entity).getFirstPassenger() instanceof Exoskeleton exoskeleton)) return;
         
         var suitModel = this.suitModel.getOrThrow();
 

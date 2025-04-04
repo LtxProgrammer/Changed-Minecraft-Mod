@@ -40,6 +40,7 @@ public class TripleArmUpperBodyInitAnimator<T extends ChangedEntity, M extends A
         boolean fallFlying = entity.getFallFlyingTicks() > 4;
         torso.yRot = 0.0F;
         torso.zRot = 0.0F;
+        torso.x = 0F;
         torso.y = core.calculateTorsoPositionY();
         float f = 1.0F;
         if (fallFlying) {
