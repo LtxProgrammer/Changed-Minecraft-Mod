@@ -37,6 +37,8 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -73,11 +75,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 AccessoryEntities.INSTANCE.canEntityTypeUseSlot(AccessoryEntities.getApparentEntityType(slots.owner)),
                 AccessorySlots.defaultInvalidHandler(slots.owner));
     });
-
-    @Override
-    public boolean isJumping() {
-        return jumping;
-    }
 
     @Override
     public int getNoControlTicks() {
@@ -478,5 +475,19 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     public void readExtendedData(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("ChangedAccessorySlots"))
             accessorySlots.load(tag.getCompound("ChangedAccessorySlots"));
+    }
+
+    @Inject(method = "dropEquipment", at = @At("RETURN"))
+    public void dropAccessories(CallbackInfo ci) {
+        if (!this.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            for(int i = 0; i < accessorySlots.getContainerSize(); ++i) {
+                ItemStack itemstack = accessorySlots.getItem(i);
+                if (!itemstack.isEmpty() && EnchantmentHelper.hasVanishingCurse(itemstack)) {
+                    accessorySlots.removeItemNoUpdate(i);
+                }
+            }
+
+            accessorySlots.dropAll(AccessorySlots.dropItemHandler((LivingEntity)(Object)this));
+        }
     }
 }

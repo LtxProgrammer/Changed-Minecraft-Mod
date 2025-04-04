@@ -256,13 +256,19 @@ public class AccessorySlots implements Container {
         if (entity instanceof Player player)
             return stack -> ItemHandlerHelper.giveItemToPlayer(player, stack);
         else
-            return stack -> {
-                ItemEntity itemEntity = new ItemEntity(entity.level, entity.getX(), entity.getY() + 0.5, entity.getZ(), stack);
-                itemEntity.setPickUpDelay(40);
-                itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().multiply(0, 1, 0));
+            return dropItemHandler(entity);
+    }
 
-                entity.level.addFreshEntity(itemEntity);
-            };
+    public static Consumer<ItemStack> dropItemHandler(LivingEntity entity) {
+        return stack -> {
+            if (stack.isEmpty()) return;
+
+            ItemEntity itemEntity = new ItemEntity(entity.level, entity.getX(), entity.getY() + 0.5, entity.getZ(), stack);
+            itemEntity.setPickUpDelay(40);
+            itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().multiply(0, 1, 0));
+
+            entity.level.addFreshEntity(itemEntity);
+        };
     }
 
     @Override
@@ -325,5 +331,18 @@ public class AccessorySlots implements Container {
     @Override
     public void clearContent() {
         items.clear();
+    }
+
+    public void replaceWith(@Nullable AccessorySlots other) {
+        this.invalidItems.addAll(this.items.values());
+        this.items.clear();
+
+        if (other != null)
+            this.items.putAll(other.items);
+    }
+
+    public void dropAll(Consumer<ItemStack> consumer) {
+        this.items.values().forEach(consumer);
+        this.items.keySet().forEach(slotType -> this.items.put(slotType, ItemStack.EMPTY));
     }
 }
