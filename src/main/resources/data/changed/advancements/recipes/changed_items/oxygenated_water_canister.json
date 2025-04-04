@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "changed:oxygenated_water_canister"
+    ]
+  },
+  "criteria": {
+    "has_empty_canister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "changed:empty_canister"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "changed:oxygenated_water_canister"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_empty_canister",
+      "has_the_recipe"
+    ]
+  ]
+}

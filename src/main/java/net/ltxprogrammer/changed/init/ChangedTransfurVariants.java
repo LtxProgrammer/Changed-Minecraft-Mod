@@ -25,7 +25,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<GasSkunk>> GAS_SKUNK = register("form_gas_skunk",
             TransfurVariant.Builder.of(ChangedEntities.GAS_SKUNK).stepSize(0.7f).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<GasTiger>> GAS_TIGER = register("form_gas_tiger",
-            TransfurVariant.Builder.of(ChangedEntities.GAS_TIGER).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
+            TransfurVariant.Builder.of(ChangedEntities.GAS_TIGER).jumpStrength(1.25f).stepSize(0.7f).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
     public static final RegistryObject<TransfurVariant<GasWolf>> GAS_WOLF = register("form_gas_wolf",
             TransfurVariant.Builder.of(ChangedEntities.GAS_WOLF).stepSize(0.7f).scares(AbstractSkeleton.class).sound(ChangedSounds.SOUND3.getLocation()));
     public static final RegistryObject<TransfurVariant<PooltoyWolf>> POOLTOY_WOLF = register("form_pooltoy_wolf",
@@ -137,7 +137,7 @@ public class ChangedTransfurVariants {
     public static final RegistryObject<TransfurVariant<LatexWatermelonCat>> LATEX_WATERMELON_CAT = register("form_latex_watermelon_cat",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_WATERMELON_CAT).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION).absorbing());
     public static final RegistryObject<TransfurVariant<LatexWhiteTiger>> LATEX_WHITE_TIGER = register("form_latex_white_tiger",
-            TransfurVariant.Builder.of(ChangedEntities.LATEX_WHITE_TIGER).jumpStrength(1.25f).stepSize(0.7f).breatheMode(TransfurVariant.BreatheMode.WEAK).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
+            TransfurVariant.Builder.of(ChangedEntities.LATEX_WHITE_TIGER).jumpStrength(1.25f).stepSize(0.7f).reducedFall().scares(Creeper.class).nightVision().addAbility(ChangedAbilities.TOGGLE_NIGHT_VISION));
     public static final RegistryObject<TransfurVariant<LatexYuin>> LATEX_YUIN = register("form_latex_yuin",
             TransfurVariant.Builder.of(ChangedEntities.LATEX_YUIN).stepSize(0.7f).reducedFall().absorbing());
     public static final RegistryObject<TransfurVariant<WhiteLatexCentaur>> WHITE_LATEX_CENTAUR = register("form_white_latex_centaur",
