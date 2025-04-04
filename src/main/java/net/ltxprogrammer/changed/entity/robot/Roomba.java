@@ -1,5 +1,6 @@
 package net.ltxprogrammer.changed.entity.robot;
 
+import net.ltxprogrammer.changed.init.ChangedItems;
 import net.ltxprogrammer.changed.init.ChangedSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -35,6 +37,10 @@ public class Roomba extends AbstractRobot {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.15D);
+    }
+
+    public ItemLike getDropItem() {
+        return ChangedItems.ROOMBA.get();
     }
 
     @Override
@@ -130,6 +136,8 @@ public class Roomba extends AbstractRobot {
 
     @Override
     public void tick() {
+        this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+
         super.tick();
 
         setYBodyRot(getYRot());

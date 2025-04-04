@@ -11,6 +11,7 @@ import net.ltxprogrammer.changed.block.entity.StasisChamberBlockEntity;
 import net.ltxprogrammer.changed.data.AccessorySlotType;
 import net.ltxprogrammer.changed.data.AccessorySlots;
 import net.ltxprogrammer.changed.entity.*;
+import net.ltxprogrammer.changed.entity.robot.WearableExoskeleton;
 import net.ltxprogrammer.changed.entity.variant.TransfurVariant;
 import net.ltxprogrammer.changed.fluid.AbstractLatexFluid;
 import net.ltxprogrammer.changed.fluid.Gas;
@@ -27,7 +28,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -73,6 +73,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
                 AccessoryEntities.INSTANCE.canEntityTypeUseSlot(AccessoryEntities.getApparentEntityType(slots.owner)),
                 AccessorySlots.defaultInvalidHandler(slots.owner));
     });
+
+    @Override
+    public boolean isJumping() {
+        return jumping;
+    }
 
     @Override
     public int getNoControlTicks() {
@@ -122,6 +127,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Inject(method = "getJumpPower", at = @At("RETURN"), cancellable = true)
     public void getJumpPower(CallbackInfoReturnable<Float> callback) {
         ProcessTransfur.getEntityVariant((LivingEntity)(Object)this).map(variant -> callback.getReturnValue() * variant.jumpStrength).ifPresent(callback::setReturnValue);
+        if (this.getFirstPassenger() instanceof WearableExoskeleton mechSuit)
+            callback.setReturnValue(callback.getReturnValue() * mechSuit.getJumpStrengthMultiplier());
     }
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
@@ -338,6 +345,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityDa
     @Shadow protected abstract void blockUsingShield(LivingEntity p_21200_);
 
     @Shadow public abstract AttributeMap getAttributes();
+
+    @Shadow protected boolean jumping;
 
     @Unique private boolean isInLatex() {
         return !this.firstTick && this.fluidHeight.getDouble(ChangedTags.Fluids.LATEX) > 0.0D;

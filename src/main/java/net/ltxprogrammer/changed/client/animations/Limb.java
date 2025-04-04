@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.ltxprogrammer.changed.client.renderer.model.*;
 import net.ltxprogrammer.changed.entity.VisionType;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.StringRepresentable;
@@ -121,6 +122,18 @@ public enum Limb implements StringRepresentable {
 
     public Optional<ModelPart> getModelPartSafe(AdvancedHumanoidModel<?> model) {
         return Optional.ofNullable(getLatexModelPartFn.apply(model));
+    }
+
+    public ModelPart getModelPart(EntityModel<?> model) {
+        if (model instanceof HumanoidModel<?> humanoidModel)
+            return getModelPart(humanoidModel);
+        else if (model instanceof AdvancedHumanoidModel<?> advancedHumanoidModel)
+            return getModelPart(advancedHumanoidModel);
+        return null;
+    }
+
+    public Optional<ModelPart> getModelPartSafe(EntityModel<?> model) {
+        return Optional.ofNullable(getModelPart(model));
     }
 
     public boolean isVanillaPart() {

@@ -10,6 +10,7 @@ import net.ltxprogrammer.changed.entity.beast.boss.BehemothHandRight;
 import net.ltxprogrammer.changed.entity.beast.boss.BehemothHead;
 import net.ltxprogrammer.changed.entity.projectile.GasParticle;
 import net.ltxprogrammer.changed.entity.projectile.LatexInkball;
+import net.ltxprogrammer.changed.entity.robot.Exoskeleton;
 import net.ltxprogrammer.changed.entity.robot.Roomba;
 import net.ltxprogrammer.changed.world.biome.ChangedBiomeInterface;
 import net.minecraft.core.Registry;
@@ -352,6 +353,8 @@ public class ChangedEntities {
 
     public static final RegistryObject<EntityType<Roomba>> ROOMBA = REGISTRY.register("roomba",
             () -> EntityType.Builder.of(Roomba::new, MobCategory.MISC).clientTrackingRange(10).sized(0.6F, 0.125f).build("roomba"));
+    public static final RegistryObject<EntityType<Exoskeleton>> EXOSKELETON = REGISTRY.register("exoskeleton",
+            () -> EntityType.Builder.of(Exoskeleton::new, MobCategory.MISC).clientTrackingRange(10).sized(0.7F, 1.93f).build("exoskeleton"));
 
     public static final RegistryObject<EntityType<LatexInkball>> LATEX_INKBALL = REGISTRY.register("latex_inkball",
             () -> EntityType.Builder.<LatexInkball>of(LatexInkball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("latex_inkball"));
@@ -422,6 +425,7 @@ public class ChangedEntities {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         ATTR_FUNC_REGISTRY.forEach((pair) -> event.put(pair.getFirst().get(), pair.getSecond().get().build()));
         event.put(ROOMBA.get(), Roomba.createAttributes().build());
+        event.put(EXOSKELETON.get(), Exoskeleton.createAttributes().build());
     }
 
     @Mod.EventBusSubscriber

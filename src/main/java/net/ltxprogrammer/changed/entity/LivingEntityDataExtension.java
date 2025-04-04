@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public interface LivingEntityDataExtension {
+    boolean isJumping();
+
     int getNoControlTicks();
     void setNoControlTicks(int ticks);
 
