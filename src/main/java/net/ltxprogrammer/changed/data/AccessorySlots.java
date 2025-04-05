@@ -1,11 +1,11 @@
 package net.ltxprogrammer.changed.data;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import com.mojang.datafixers.util.Pair;
 import net.ltxprogrammer.changed.Changed;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.entity.LivingEntityDataExtension;
+import net.ltxprogrammer.changed.extension.ChangedCompatibility;
 import net.ltxprogrammer.changed.init.ChangedRegistry;
 import net.ltxprogrammer.changed.network.packet.AccessoryEventPacket;
 import net.ltxprogrammer.changed.util.Cacheable;
@@ -19,6 +19,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
@@ -342,7 +344,47 @@ public class AccessorySlots implements Container {
     }
 
     public void dropAll(Consumer<ItemStack> consumer) {
-        this.items.values().forEach(consumer);
-        this.items.keySet().forEach(slotType -> this.items.put(slotType, ItemStack.EMPTY));
+        this.items.entrySet().stream().filter(entry -> {
+            final var event = new DropItemEvent(this.owner, entry.getKey(), entry.getValue());
+            ChangedCompatibility.shouldAccessoryDropOnDeath(event);
+            Changed.postModEvent(event);
+            return event.shouldDrop();
+        }).forEach(entry -> {
+            consumer.accept(entry.getValue());
+            entry.setValue(ItemStack.EMPTY);
+        });
+    }
+
+    public static class DropItemEvent extends Event {
+        protected final LivingEntity entity;
+        protected final AccessorySlotType slot;
+        protected final ItemStack stack;
+        protected boolean doDrop = true;
+
+        public DropItemEvent(LivingEntity entity, AccessorySlotType slot, ItemStack stack) {
+            this.entity = entity;
+            this.slot = slot;
+            this.stack = stack;
+        }
+
+        public LivingEntity getEntity() {
+            return entity;
+        }
+
+        public ItemStack getStack() {
+            return stack;
+        }
+
+        public void keepItem() {
+            this.doDrop = false;
+        }
+
+        public void dropItem() {
+            this.doDrop = true;
+        }
+
+        public boolean shouldDrop() {
+            return doDrop;
+        }
     }
 }

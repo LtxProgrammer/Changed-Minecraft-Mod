@@ -64,12 +64,8 @@ public abstract class ServerPlayerMixin extends Player implements PlayerDataExte
                 newVariant.handleRespawn();
             });
         }
-        
-        if (restore) {
-            this.getAccessorySlots().ifPresent(slots -> slots.replaceWith(AccessorySlots.getForEntity(player).orElse(null)));
-        } else if (this.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || player.isSpectator()) {
-            this.getAccessorySlots().ifPresent(slots -> slots.replaceWith(AccessorySlots.getForEntity(player).orElse(null)));
-        }
+
+        this.getAccessorySlots().ifPresent(slots -> slots.replaceWith(AccessorySlots.getForEntity(player).orElse(null)));
     }
 
     @Unique
